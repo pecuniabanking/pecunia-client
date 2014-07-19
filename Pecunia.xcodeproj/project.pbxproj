@@ -514,6 +514,18 @@
 		277D1A711799B26900C0E4DF /* closed-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6E1799B26900C0E4DF /* closed-sign.png */; };
 		277D1A721799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
 		277D1A731799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
+		2784D448197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */; };
+		2784D449197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */; };
+		2784D44A197A6CB300A40249 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43E197A6CB300A40249 /* DDASLLogCapture.m */; };
+		2784D44B197A6CB300A40249 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43E197A6CB300A40249 /* DDASLLogCapture.m */; };
+		2784D44C197A6CB300A40249 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D440197A6CB300A40249 /* DDASLLogger.m */; };
+		2784D44D197A6CB300A40249 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D440197A6CB300A40249 /* DDASLLogger.m */; };
+		2784D44E197A6CB300A40249 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D442197A6CB300A40249 /* DDFileLogger.m */; };
+		2784D44F197A6CB300A40249 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D442197A6CB300A40249 /* DDFileLogger.m */; };
+		2784D450197A6CB300A40249 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D444197A6CB300A40249 /* DDLog.m */; };
+		2784D451197A6CB300A40249 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D444197A6CB300A40249 /* DDLog.m */; };
+		2784D452197A6CB300A40249 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D447197A6CB300A40249 /* DDTTYLogger.m */; };
+		2784D453197A6CB300A40249 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D447197A6CB300A40249 /* DDTTYLogger.m */; };
 		2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
@@ -656,16 +668,6 @@
 		27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
-		27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
-		27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
-		27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
-		27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
-		27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
-		27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
-		27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
-		27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
-		27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
-		27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
 		27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
 		27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
@@ -1170,6 +1172,19 @@
 		277C84921657F6DB0090D46D /* GenerateDataController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenerateDataController.xib; sourceTree = "<group>"; };
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
+		2784D43B197A6CB300A40249 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
+		2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
+		2784D43D197A6CB300A40249 /* DDASLLogCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogCapture.h; sourceTree = "<group>"; };
+		2784D43E197A6CB300A40249 /* DDASLLogCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogCapture.m; sourceTree = "<group>"; };
+		2784D43F197A6CB300A40249 /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
+		2784D440197A6CB300A40249 /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
+		2784D441197A6CB300A40249 /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
+		2784D442197A6CB300A40249 /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
+		2784D443197A6CB300A40249 /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
+		2784D444197A6CB300A40249 /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
+		2784D445197A6CB300A40249 /* DDLog+LOGV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
+		2784D446197A6CB300A40249 /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
+		2784D447197A6CB300A40249 /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1293,17 +1308,6 @@
 		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
-		27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
-		27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
-		27D24EB218A7D63A00F1EADA /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
-		27D24EB318A7D63A00F1EADA /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
-		27D24EB418A7D63A00F1EADA /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
-		27D24EB518A7D63A00F1EADA /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
-		27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
-		27D24EB718A7D63A00F1EADA /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; wrapsLines = 0; };
-		27D24EB818A7D63A00F1EADA /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
-		27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
-		27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
 		27D302941538453300D6A2CC /* sort-indicator-inc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-inc.png"; sourceTree = "<group>"; };
 		27D302961538461700D6A2CC /* sort-indicator-dec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-dec.png"; sourceTree = "<group>"; };
 		27D3168F14A8C81B002F500D /* blue arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow.png"; sourceTree = "<group>"; };
@@ -2062,17 +2066,19 @@
 		27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */ = {
 			isa = PBXGroup;
 			children = (
-				27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */,
-				27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */,
-				27D24EB218A7D63A00F1EADA /* DDASLLogger.h */,
-				27D24EB318A7D63A00F1EADA /* DDASLLogger.m */,
-				27D24EB418A7D63A00F1EADA /* DDFileLogger.h */,
-				27D24EB518A7D63A00F1EADA /* DDFileLogger.m */,
-				27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */,
-				27D24EB718A7D63A00F1EADA /* DDLog.h */,
-				27D24EB818A7D63A00F1EADA /* DDLog.m */,
-				27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */,
-				27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */,
+				2784D43B197A6CB300A40249 /* DDAbstractDatabaseLogger.h */,
+				2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */,
+				2784D43D197A6CB300A40249 /* DDASLLogCapture.h */,
+				2784D43E197A6CB300A40249 /* DDASLLogCapture.m */,
+				2784D43F197A6CB300A40249 /* DDASLLogger.h */,
+				2784D440197A6CB300A40249 /* DDASLLogger.m */,
+				2784D441197A6CB300A40249 /* DDFileLogger.h */,
+				2784D442197A6CB300A40249 /* DDFileLogger.m */,
+				2784D443197A6CB300A40249 /* DDLog.h */,
+				2784D444197A6CB300A40249 /* DDLog.m */,
+				2784D445197A6CB300A40249 /* DDLog+LOGV.h */,
+				2784D446197A6CB300A40249 /* DDTTYLogger.h */,
+				2784D447197A6CB300A40249 /* DDTTYLogger.m */,
 			);
 			path = CocoaLumberJack;
 			sourceTree = "<group>";
@@ -3473,7 +3479,6 @@
 				2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
-				27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				27778877173CE22700430EBC /* BankStatement.m in Sources */,
 				27778878173CE22700430EBC /* BankAccount.m in Sources */,
 				27778879173CE22700430EBC /* Category.m in Sources */,
@@ -3518,6 +3523,7 @@
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
+				2784D451197A6CB300A40249 /* DDLog.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
@@ -3593,6 +3599,7 @@
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
+				2784D453197A6CB300A40249 /* DDTTYLogger.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
@@ -3600,10 +3607,8 @@
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
-				27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
 				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
-				27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
@@ -3630,6 +3635,7 @@
 				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
 				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
+				2784D44D197A6CB300A40249 /* DDASLLogger.m in Sources */,
 				277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */,
 				277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */,
 				277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */,
@@ -3639,9 +3645,12 @@
 				277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */,
 				277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */,
 				277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */,
+				2784D44F197A6CB300A40249 /* DDFileLogger.m in Sources */,
 				27778900173CE22700430EBC /* TanWindow.m in Sources */,
 				27778901173CE22700430EBC /* 102.xcmappingmodel in Sources */,
+				2784D449197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
 				27778902173CE22700430EBC /* TransferPrintView.m in Sources */,
+				2784D44B197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */,
 				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
@@ -3664,8 +3673,6 @@
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */,
-				27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */,
-				27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				B19CA99319410C04005B1125 /* SepaData.m in Sources */,
 				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
@@ -3697,7 +3704,6 @@
 				2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
-				27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
 				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
@@ -3742,6 +3748,7 @@
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
+				2784D450197A6CB300A40249 /* DDLog.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
@@ -3817,6 +3824,7 @@
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
+				2784D452197A6CB300A40249 /* DDTTYLogger.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
@@ -3824,10 +3832,8 @@
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
-				27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
 				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
-				27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
@@ -3854,6 +3860,7 @@
 				2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */,
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,
+				2784D44C197A6CB300A40249 /* DDASLLogger.m in Sources */,
 				27E662B615A09BDA002F9277 /* TransferTemplatesListView.m in Sources */,
 				27E662B715A09BDA002F9277 /* TransferTemplateListViewCell.m in Sources */,
 				B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */,
@@ -3863,9 +3870,12 @@
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
+				2784D44E197A6CB300A40249 /* DDFileLogger.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
+				2784D448197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
+				2784D44A197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
@@ -3888,8 +3898,6 @@
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */,
-				27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */,
-				27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				B19CA99219410C04005B1125 /* SepaData.m in Sources */,
 				27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */,

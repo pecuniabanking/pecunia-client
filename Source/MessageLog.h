@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 - (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...;
 
 - (void)sendLog;
+- (void)showLog;
 - (void)openLogFolder;
 - (void)cleanUp;
 

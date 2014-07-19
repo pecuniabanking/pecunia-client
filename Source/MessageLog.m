@@ -44,21 +44,18 @@
 
 @implementation ComTraceFileManager
 
-- (NSString *)newLogFileName
-{
+- (NSString *)newLogFileName {
     return @"Pecunia Com Trace.log";
 }
 
-- (BOOL)isLogFile: (NSString *)fileName
-{
+- (BOOL)isLogFile: (NSString *)fileName {
     return [fileName isEqualToString: @"Pecunia Com Trace.log"];
 }
 
 @end
 
-@interface MessageLog ()
-{
-    int logLevel;                 // One of the CocoaLumberjack log levels. Only used for the regular logger.
+@interface MessageLog () {
+    int          logLevel;        // One of the CocoaLumberjack log levels. Only used for the regular logger.
     DDFileLogger *fileLogger;     // The regular file logger.
     DDFileLogger *comTraceLogger; // The communication trace logger.
 }
@@ -69,8 +66,7 @@
 @synthesize currentLevel;
 @synthesize isComTraceActive;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self != nil) {
         // Default log level is info, unless we are debugging or got a custom log level.
@@ -100,8 +96,7 @@
     return self;
 }
 
-- (void)setIsComTraceActive: (BOOL)flag
-{
+- (void)setIsComTraceActive: (BOOL)flag {
     if (isComTraceActive != flag) {
         if (isComTraceActive) {
             // Going to switch off the com trace. Remove logger and log file.
@@ -139,10 +134,9 @@
 /**
  * Internal helper method for prettyPrintServerMessage.
  */
-+ (NSString *)doPrettyPrint: (NSString *)text
-{
++ (NSString *)doPrettyPrint: (NSString *)text {
     if ([text hasPrefix: @"<"]) {
-        NSError *error;
+        NSError       *error;
         NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString: text
                                                                    options: NSXMLNodePreserveAll
                                                                      error: &error];
@@ -165,12 +159,11 @@
  * Server messages can have different formats and this functions tries to pretty print in a human
  * readable format.
  */
-+ (NSString *)prettyPrintServerMessage: (NSString *)text
-{
++ (NSString *)prettyPrintServerMessage: (NSString *)text {
     // For now only format plain xml log messages (usually commands) whose format isn't important for error analysis,
     // but which profit from better readablility. All other messages stay as they are.
     if ([text hasPrefix: @"<"]) {
-        NSError *error;
+        NSError       *error;
         NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString: text
                                                                    options: NSXMLNodePreserveAll
                                                                      error: &error];
@@ -180,19 +173,17 @@
 
         return [NSString stringWithFormat: @"{\n%@\n}", text];
     }
-    
+
     return text;
 }
 
-+ (NSString *)getStringInfoFor: (const char *)name
-{
++ (NSString *)getStringInfoFor: (const char *)name {
     NSString *result = @"Unknown";
 
     size_t len = 0;
     sysctlbyname(name, NULL, &len, NULL, 0);
 
-    if (len > 0)
-    {
+    if (len > 0) {
         char *value = malloc(len * sizeof(char));
         sysctlbyname(name, value, &len, NULL, 0);
         result = [NSString stringWithUTF8String: value];
@@ -202,8 +193,7 @@
     return result;
 }
 
-+ (NSNumber *)getNumberInfoFor: (const char *)name
-{
++ (NSNumber *)getNumberInfoFor: (const char *)name {
     size_t len = 0;
     sysctlbyname(name, NULL, &len, NULL, 0);
 
@@ -213,18 +203,19 @@
             sysctlbyname(name, &value, &len, NULL, 0);
             return [NSNumber numberWithInt: value];
         }
+
         case 8: {
             int64_t value = 0;
             sysctlbyname(name, &value, &len, NULL, 0);
             return [NSNumber numberWithInteger: value];
         }
+
         default:
             return [NSNumber numberWithInt: 0];
     }
 }
 
-+ (MessageLog *)log
-{
++ (MessageLog *)log {
     static MessageLog *_messageLog;
 
     if (_messageLog == nil) {
@@ -251,8 +242,7 @@
     return _messageLog;
 }
 
-- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
-{
+- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
     self.hasError = YES;
     if ((logLevel & LOG_FLAG_ERROR) != 0) {
         va_list args;
@@ -271,8 +261,7 @@
     }
 }
 
-- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
-{
+- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
     if ((logLevel & LOG_FLAG_WARN) != 0) {
         va_list args;
         va_start(args, line);
@@ -290,8 +279,7 @@
     }
 }
 
-- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
-{
+- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
     if ((logLevel & LOG_FLAG_INFO) != 0) {
         va_list args;
         va_start(args, line);
@@ -309,8 +297,7 @@
     }
 }
 
-- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
-{
+- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
     if ((logLevel & LOG_FLAG_DEBUG) != 0) {
         va_list args;
         va_start(args, line);
@@ -328,8 +315,7 @@
     }
 }
 
-- (void)logDebug: (NSString *)format, ...
-{
+- (void)logDebug: (NSString *)format, ... {
     if ((logLevel & LOG_FLAG_WARN) != 0) {
         va_list args;
         va_start(args, format);
@@ -347,8 +333,7 @@
     }
 }
 
-- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
-{
+- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
     if ((logLevel & LOG_FLAG_VERBOSE) != 0) {
         va_list args;
         va_start(args, line);
@@ -370,8 +355,7 @@
  * Logs a communication trace message with the given level. For com traces we don't filter by log level, as we want
  * all messages logged at the moment. Communication traces are enabled only on demand, so this is ok.
  */
-- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...
-{
+- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ... {
     if (level == HBCILogError) {
         self.hasError = YES;
     }
@@ -380,7 +364,7 @@
         va_list args;
         va_start(args, format);
 
-        int ddLevel = 0;
+        int      ddLevel = 0;
         NSString *comTraceFormat;
         switch (level) {
             case HBCILogNone:
@@ -390,18 +374,22 @@
                 ddLevel = LOG_FLAG_ERROR;
                 comTraceFormat = [NSString stringWithFormat: @"[Error] %@", format];
                 break;
+
             case HBCILogWarning:
                 ddLevel = LOG_FLAG_WARN;
                 comTraceFormat = [NSString stringWithFormat: @"[Warning] %@", format];
                 break;
+
             case HBCILogInfo:
                 ddLevel = LOG_FLAG_INFO;
                 comTraceFormat = [NSString stringWithFormat: @"[Info] %@", format];
                 break;
+
             case HBCILogDebug:
                 ddLevel = LOG_FLAG_DEBUG;
                 comTraceFormat = [NSString stringWithFormat: @"[Debug] %@", format];
                 break;
+
             case HBCILogDebug2:
             case HBCILogIntern:
                 ddLevel = LOG_FLAG_VERBOSE;
@@ -428,8 +416,7 @@
  */
 - (void)compressFileAndAndAddToItems: (NSMutableArray *)items
                           sourceFile: (NSURL *)source
-                          targetFile: (NSURL *)target
-{
+                          targetFile: (NSURL *)target {
     BOOL savedAsZip = NO;
 
     @try {
@@ -457,15 +444,14 @@
 /*
  * Sends the current log via mail to the Pecunia support. If there's a communication trace this is sent too.
  */
-- (void)sendLog
-{
+- (void)sendLog {
     [DDLog flushLog];
 
     // The standard log.
     NSArray *filePaths = [fileLogger.logFileManager sortedLogFilePaths];
-    NSURL* logURL = [NSURL fileURLWithPath: filePaths[0]];
+    NSURL   *logURL = [NSURL fileURLWithPath: filePaths[0]];
 
-    NSMutableArray* mailItems = [NSMutableArray array];
+    NSMutableArray *mailItems = [NSMutableArray array];
     if (logURL != nil) {
         // We use fixed zip file names by intention, to avoid polluting the log folder with many zip files.
         NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Log.zip"];
@@ -476,7 +462,7 @@
     if (isComTraceActive) {
         filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
         if ([NSFileManager.defaultManager fileExistsAtPath: filePaths[0]]) {
-            NSURL* traceURL = [NSURL fileURLWithPath: filePaths[0]];
+            NSURL    *traceURL = [NSURL fileURLWithPath: filePaths[0]];
             NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Com Trace.zip"];
             [self compressFileAndAndAddToItems: mailItems sourceFile: traceURL targetFile: [NSURL fileURLWithPath: zip]];
         }
@@ -497,10 +483,10 @@
         [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: mailItems];
         [[NSWorkspace sharedWorkspace] openURL: url];
     } else {
-        NSAttributedString* textAttributedString = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP121", nil)];
+        NSAttributedString *textAttributedString = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP121", nil)];
 
-        NSSharingService* mailShare = [NSSharingService sharingServiceNamed: NSSharingServiceNameComposeEmail];
-        [mailItems insertObject:textAttributedString atIndex: 0];
+        NSSharingService *mailShare = [NSSharingService sharingServiceNamed: NSSharingServiceNameComposeEmail];
+        [mailItems insertObject: textAttributedString atIndex: 0];
         if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
             // Mavericks and up. The best solution.
             mailShare.subject = NSLocalizedString(@"AP123", nil);
@@ -513,37 +499,40 @@
     }
 }
 
-- (void)openLogFolder
-{
+- (void)showLog {
+    [DDLog flushLog];
+
+    // The standard log.
     NSArray *filePaths = [fileLogger.logFileManager sortedLogFilePaths];
-    NSURL* logURL = [NSURL fileURLWithPath: filePaths[0]];
+    [NSWorkspace.sharedWorkspace openFile: filePaths[0]];
+}
+
+- (void)openLogFolder {
+    NSArray *filePaths = [fileLogger.logFileManager sortedLogFilePaths];
+    NSURL   *logURL = [NSURL fileURLWithPath: filePaths[0]];
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
 }
 
-- (void)cleanUp
-{
+- (void)cleanUp {
     // Clean up the log folder. Remove any com trace and zip file there.
     NSFileManager *manager = NSFileManager.defaultManager;
 
-    NSString *logFolder = fileLogger.logFileManager.logsDirectory;
-    NSArray *allFiles = [manager contentsOfDirectoryAtPath: logFolder error: nil];
+    NSString    *logFolder = fileLogger.logFileManager.logsDirectory;
+    NSArray     *allFiles = [manager contentsOfDirectoryAtPath: logFolder error: nil];
     NSPredicate *filter = [NSPredicate predicateWithFormat: @"self ENDSWITH '.zip'"];
-    NSArray *filteredFiles = [allFiles filteredArrayUsingPredicate: filter];
+    NSArray     *filteredFiles = [allFiles filteredArrayUsingPredicate: filter];
 
-    for (NSString *file in filteredFiles)
-    {
+    for (NSString *file in filteredFiles) {
         NSError *error = nil;
-        [manager removeItemAtPath:[logFolder stringByAppendingPathComponent: file] error: &error];
+        [manager removeItemAtPath: [logFolder stringByAppendingPathComponent: file] error: &error];
         if (error != nil) {
             LogError(@"Could not remove file. Reason: %@", error);
         }
     }
-
     filter = [NSPredicate predicateWithFormat: @"self CONTAINS 'com trace'"];
     filteredFiles = [allFiles filteredArrayUsingPredicate: filter];
 
-    for (NSString *file in filteredFiles)
-    {
+    for (NSString *file in filteredFiles) {
         NSError *error = nil;
         [manager removeItemAtPath: [logFolder stringByAppendingPathComponent: file] error: &error];
         if (error != nil) {

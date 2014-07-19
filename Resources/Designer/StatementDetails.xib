@@ -111,7 +111,7 @@ Line 3</string>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="1tE-JT-xlX"/>
                     </constraints>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="rRJ-Z9-Xot">
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="rRJ-Z9-Xot">
                         <rect key="frame" x="0.0" y="30" width="348" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -933,7 +933,7 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="nMx-VY-N4o">
-                        <rect key="frame" x="382" y="0.0" width="16" height="58"/>
+                        <rect key="frame" x="383" y="0.0" width="15" height="58"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -1117,12 +1117,12 @@ Line 3</string>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
+                                <binding destination="-2" name="toolTip" keyPath="view.representedObject.statement.remoteName" id="AGb-hU-rhJ"/>
                                 <binding destination="-2" name="value" keyPath="view.representedObject.statement.remoteName" id="Q8l-QL-Wop">
                                     <dictionary key="options">
                                         <string key="NSValueTransformerName">StringCasingTransformer</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="-2" name="toolTip" keyPath="view.sepaDetails.PURP" id="dW2-Yg-VDK"/>
                             </connections>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TJE-00-gPL" userLabel="Account Number Label">

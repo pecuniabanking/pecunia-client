@@ -1368,6 +1368,14 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)openHomepage: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.pecuniabanking.de"]];
+}
+
+- (IBAction)openForum: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.onlinebanking-forum.de/phpBB2/viewforum.php?f=56"]];
+}
+
 - (IBAction)sendErrorReport: (id)sender {
     NSMutableString *text = [NSMutableString string];
 
@@ -1383,8 +1391,16 @@ static BankingController *bankinControllerInstance;
     [MessageLog.log openLogFolder];
 }
 
+- (IBAction)showLog: (id)sender {
+    [MessageLog.log showLog];
+}
+
 - (IBAction)comTraceToggle: (id)sender {
     [comTracePanel toggleComTrace: sender];
+}
+
+- (IBAction)openBugTracker: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://code.google.com/p/pecuniabanking/issues/list"]];
 }
 
 - (IBAction)changeFontSize: (id)sender {

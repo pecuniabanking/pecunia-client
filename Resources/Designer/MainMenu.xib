@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -529,19 +529,6 @@ Unterstütze die Entwicklung!</string>
                 <outlet property="initialFirstResponder" destination="281" id="6358"/>
             </connections>
         </window>
-        <menu id="hCW-hx-1go">
-            <items>
-                <menuItem title="Item 1" id="ktX-q7-nIO">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Item 2" id="pNg-e9-OLs">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Item 3" id="vUx-GB-BwK">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-            </items>
-        </menu>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>
                 <menuItem title="Pecunia" id="56">
@@ -938,39 +925,65 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Hilfe" systemMenu="help" id="5286">
                         <items>
-                            <menuItem title="Pecunia-Hilfe" keyEquivalent="?" id="5287">
-                                <connections>
-                                    <action selector="showHelp:" target="-1" id="5288"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Lizenz" id="5289">
+                            <menuItem title="Pecunia Homepage" id="5287">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="showLicense:" target="235" id="5290"/>
+                                    <action selector="openHomepage:" target="235" id="I47-HR-YUC"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pecunia-Hilfe" keyEquivalent="?" id="xzT-Lw-LTE">
+                                <connections>
+                                    <action selector="showHelp:" target="-1" id="Wzd-w4-EWr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pecunia Forum" id="o58-eK-HsR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openForum:" target="235" id="aM9-p6-OQw"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="3D4-LS-roi"/>
-                            <menuItem title="Fehlerbericht senden" id="bZF-NA-SN5">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="sendErrorReport:" target="235" id="Ocx-IB-9Wt"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Log Verzeichnis öffnen" id="laH-Jl-m7P">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openLogFolder:" target="235" id="4PE-Jc-Kgx"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Log anzeigen" id="sg0-Sg-0VH">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showLog:" target="235" id="ohu-s6-Tyv"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="N79-Kz-94x"/>
                             <menuItem title="Com trace" id="suc-Py-BAh">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="comTraceToggle:" target="235" id="Gmk-W2-baZ"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Fehlerbericht senden" id="bZF-NA-SN5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="sendErrorReport:" target="235" id="Ocx-IB-9Wt"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Konsolenlog anzeigen" keyEquivalent="k" id="7062">
                                 <connections>
                                     <action selector="showConsole:" target="235" id="7063"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pecunia Bugtracker" id="Jxv-rg-hu8">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openBugTracker:" target="235" id="Q74-yA-iei"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="fqt-dL-kZb"/>
+                            <menuItem title="Lizenz" id="5289">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showLicense:" target="235" id="5290"/>
                                 </connections>
                             </menuItem>
                         </items>
