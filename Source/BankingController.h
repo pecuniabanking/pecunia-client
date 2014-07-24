@@ -155,6 +155,7 @@
 - (IBAction)generateData: (id)sender;
 
 - (IBAction)creditCardSettlements: (id)sender;
+- (IBAction)accountStatements:(id)sender;
 
 - (void)statementsNotification: (NSNotification *)notification;
 - (Category *)getBankingRoot;

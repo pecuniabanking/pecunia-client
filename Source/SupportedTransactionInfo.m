@@ -203,6 +203,10 @@
         if ([jobName isEqualToString: @"ChangePin"]) {
             [self insertInContext: context user: user account: account type: TransactionType_ChangePin jobName: jobName];
         }
+        
+        if ([jobName isEqualToString:@"AccountStatements"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_AccountStatements jobName: jobName];
+        }
     }
     return nil;
 }

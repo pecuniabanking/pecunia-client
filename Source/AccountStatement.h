@@ -28,6 +28,17 @@ typedef enum {
 
 @class BankAccount, BankStatement;
 
+@interface AccountStatementParameters : NSObject
+
+@property (nonatomic, retain) NSNumber * canIndex;
+@property (nonatomic, retain) NSString * formats;
+@property (nonatomic, retain) NSNumber * needsReceipt;
+
+- (BOOL)supportsFormat: (AccountStatementFormat)format;
+
+@end
+
+
 @interface AccountStatement : NSManagedObject
 
 @property (nonatomic, retain) NSData * document;

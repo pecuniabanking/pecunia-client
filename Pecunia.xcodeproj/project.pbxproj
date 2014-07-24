@@ -760,6 +760,12 @@
 		B1014BEC1018E87B00ABA1FF /* save.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014BEB1018E87B00ABA1FF /* save.ico */; };
 		B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
 		B1029E120E3FA1D700CC681B /* CategoryDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */; };
+		B10C41B0196F29B300085983 /* AccountStatements.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10C41AF196F29B300085983 /* AccountStatements.xib */; };
+		B10C41B1196F29B300085983 /* AccountStatements.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10C41AF196F29B300085983 /* AccountStatements.xib */; };
+		B10C41B3196F2B2400085983 /* AccountStatementsController.h in Resources */ = {isa = PBXBuildFile; fileRef = B10C41B2196F2B2400085983 /* AccountStatementsController.h */; };
+		B10C41B4196F2B2400085983 /* AccountStatementsController.h in Resources */ = {isa = PBXBuildFile; fileRef = B10C41B2196F2B2400085983 /* AccountStatementsController.h */; };
+		B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B10C41B5196F2B5B00085983 /* AccountStatementsController.m */; };
+		B10C41B7196F2B5B00085983 /* AccountStatementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B10C41B5196F2B5B00085983 /* AccountStatementsController.m */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B11F78D3162F0BFC00D7A8E5 /* container-migration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */; };
@@ -1406,6 +1412,9 @@
 		B1014C66101A37E800ABA1FF /* DonationMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DonationMessageController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDefWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDefWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B10C41AF196F29B300085983 /* AccountStatements.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountStatements.xib; sourceTree = "<group>"; };
+		B10C41B2196F2B2400085983 /* AccountStatementsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatementsController.h; sourceTree = "<group>"; };
+		B10C41B5196F2B5B00085983 /* AccountStatementsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatementsController.m; sourceTree = "<group>"; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2140,6 +2149,7 @@
 				B1AFA836129479BA00B115A7 /* CategoryReporting.xib */,
 				B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */,
 				B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */,
+				B10C41AF196F29B300085983 /* AccountStatements.xib */,
 				27A3DA1716A1C71D00FD7335 /* Debits.xib */,
 				27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */,
 				B1D45004147843D0008DD256 /* Donation.xib */,
@@ -2646,6 +2656,8 @@
 		B1C7B193130B12870091CD72 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				B10C41B2196F2B2400085983 /* AccountStatementsController.h */,
+				B10C41B5196F2B5B00085983 /* AccountStatementsController.m */,
 				B1A1377211B6FD9400622D6C /* AccountDefController.h */,
 				B1A1377311B6FD9400622D6C /* AccountDefController.m */,
 				B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */,
@@ -3115,10 +3127,12 @@
 				277789A3173CE22700430EBC /* edit@2x.png in Resources */,
 				277789A4173CE22700430EBC /* send@2x.png in Resources */,
 				272F6E7B1955E6A500096734 /* sequence-type-blue.png in Resources */,
+				B10C41B1196F29B300085983 /* AccountStatements.xib in Resources */,
 				277789A5173CE22700430EBC /* delete2.png in Resources */,
 				277789A6173CE22700430EBC /* delete2@2x.png in Resources */,
 				277789A7173CE22700430EBC /* CreditCardSettlement.xib in Resources */,
 				277789A8173CE22700430EBC /* de.lproj in Resources */,
+				B10C41B4196F2B2400085983 /* AccountStatementsController.h in Resources */,
 				275AC7EE186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F41900359E00DCF0DB /* font-increase.png in Resources */,
 				277789A9173CE22700430EBC /* delete3.png in Resources */,
@@ -3349,10 +3363,12 @@
 				2765D42616AAD5AB00FF371E /* edit@2x.png in Resources */,
 				2765D42716AAD5AB00FF371E /* send@2x.png in Resources */,
 				272F6E7A1955E6A500096734 /* sequence-type-blue.png in Resources */,
+				B10C41B0196F29B300085983 /* AccountStatements.xib in Resources */,
 				2765D42A16AAD7C100FF371E /* delete2.png in Resources */,
 				2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */,
 				B1E3E4B116BB02C800DC1638 /* CreditCardSettlement.xib in Resources */,
 				2791FBD616CFCA4C00953116 /* delete3.png in Resources */,
+				B10C41B3196F2B2400085983 /* AccountStatementsController.h in Resources */,
 				275AC7ED186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F31900359E00DCF0DB /* font-increase.png in Resources */,
 				2791FBD716CFCA4C00953116 /* delete3@2x.png in Resources */,
@@ -3623,6 +3639,7 @@
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
 				275DAADE17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
+				B10C41B7196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
 				27778909173CE22700430EBC /* SystemNotification.m in Sources */,
 				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
@@ -3847,6 +3864,7 @@
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
+				B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,

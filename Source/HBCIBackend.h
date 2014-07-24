@@ -38,6 +38,8 @@
 @class BankSetupInfo;
 @class CCSettlementList;
 @class CreditCardSettlement;
+@class AccountStatement;
+@class AccountStatementParameters;
 
 @protocol HBCIBackend
 
@@ -108,6 +110,10 @@
 // Credit Card Settlements
 - (CreditCardSettlement *)getCreditCardSettlement: (NSString *)settleId forAccount: (BankAccount *)account;
 - (CCSettlementList *)getCCSettlementListForAccount: (BankAccount *)account;
+
+// AccountStatements
+- (AccountStatement *)getAccountStatementForAccount: (BankAccount *)account;
+- (AccountStatementParameters *)getAccountStatementParametersForUser: (BankUser *)user;
 
 // Misc
 - (PecuniaError *)setLogLevel: (HBCILogLevel)level;

@@ -20,6 +20,20 @@
 #import "AccountStatement.h"
 #import "BankAccount.h"
 #import "BankStatement.h"
+#import "NSString+PecuniaAdditions.h"
+
+@implementation AccountStatementParameters
+
+@synthesize canIndex;
+@synthesize formats;
+@synthesize needsReceipt;
+
+- (BOOL)supportsFormat: (AccountStatementFormat)format {
+    NSString *f = [NSString stringWithFormat:@"%d", format];
+    return [formats hasSubstring:f];
+}
+
+@end
 
 
 @implementation AccountStatement

@@ -88,6 +88,7 @@
 #import "User.h"
 #import "AssignmentController.h"
 #import "AboutWindowController.h"
+#import "AccountStatementsController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"BankStatementDataType";
@@ -1224,7 +1225,9 @@ static BankingController *bankinControllerInstance;
         return;
     }
     BankAccount *account = (BankAccount *)category;
+    [account updateSupportedTransactions];
 
+    /*
     NSDictionary *details = @{@"title": account.name,
                               @"message": NSLocalizedString(@"AP818", nil),
                               @"details": NSLocalizedString(@"AP820", nil)};
@@ -1253,7 +1256,7 @@ static BankingController *bankinControllerInstance;
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
     [waitOverlay showInWindow: mainWindow];
-    
+    */
     LogLeave;
 }
 
@@ -2475,6 +2478,9 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(creditCardSettlements:)) {
             return NO;
         }
+        if ([item action] == @selector(accountStatements:)) {
+            return NO;
+        }
         if ([item action] == @selector(updateSupportedTransactions:)) {
             return NO;
         }
@@ -2516,6 +2522,9 @@ static BankingController *bankinControllerInstance;
             if ([item action] == @selector(creditCardSettlements:)) {
                 return NO;
             }
+            if ([item action] == @selector(accountStatements:)) {
+                return NO;
+            }
             if ([item action] == @selector(updateSupportedTransactions:)) {
                 return NO;
             }
@@ -2544,12 +2553,20 @@ static BankingController *bankinControllerInstance;
                 if ([item action] == @selector(creditCardSettlements:)) {
                     return NO;
                 }
+                if ([item action] == @selector(accountStatements:)) {
+                    return NO;
+                }
             } else {
                 if ([item action] == @selector(addStatement:)) {
                     return NO;
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
                     if ([[HBCIController controller] isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
+                        return NO;
+                    }
+                }
+                if ([item action] == @selector(accountStatements:)) {
+                    if ([[HBCIController controller] isTransactionSupported: TransactionType_AccountStatements forAccount: account] == NO) {
                         return NO;
                     }
                 }
@@ -3521,6 +3538,22 @@ static BankingController *bankinControllerInstance;
 
     [NSApp runModalForWindow: [controller window]];
 
+    LogLeave;
+}
+
+- (IBAction)accountStatements:(id)sender {
+    LogEnter;
+    
+    BankAccount *account = [self selectedBankAccount];
+    if (account == nil) {
+        return;
+    }
+    
+    AccountStatementsController *controller = [[AccountStatementsController alloc] init];
+    controller.account = account;
+    
+    [NSApp runModalForWindow: [controller window]];
+    
     LogLeave;
 }
 

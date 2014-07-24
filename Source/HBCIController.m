@@ -42,6 +42,7 @@
 #import "NSDecimalNumber+PecuniaAdditions.h"
 #import "SystemNotification.h"
 #import "NSString+PecuniaAdditions.h"
+#import "AccountStatement.h"
 
 static HBCIController *controller = nil;
 
@@ -903,6 +904,80 @@ static HBCIController *controller = nil;
         LogError(@"Unexpected result for getCCSettlementList: nil");
         return nil;
     }
+    return result;
+}
+
+- (AccountStatementParameters *)getAccountStatementParametersForUser: (BankUser *)user {
+    LogEnter;
+    
+    PecuniaError    *error = nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAccountStatementParameters\">"];
+    
+    // BankUser registrieren
+    if ([self registerBankUser: user error: &error] == NO) {
+        [error alertPanel];
+        return nil;
+    }
+
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [cmd appendString: @"</command>"];
+
+    AccountStatementParameters *result = [bridge syncCommand: cmd error: &error];
+    
+    if (error) {
+        [error alertPanel];
+        
+        LogLeave;
+        return nil;
+    }
+
+    LogLeave;
+    return result;
+}
+
+- (AccountStatement *)getAccountStatementForAccount: (BankAccount *)account {
+    LogEnter;
+    
+    PecuniaError    *error = nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAccountStatement\">"];
+    
+    BankUser *user = [account defaultBankUser];
+    if (user == nil) {
+        return nil;
+    }
+    
+    // BankUser registrieren
+    if ([self registerBankUser: user error: &error] == NO) {
+        [error alertPanel];
+        return nil;
+    }
+
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
+    [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"format" withValue:@"3" to:cmd];
+    
+    [cmd appendString: @"</command>"];
+    
+    [self startProgress];
+    
+    AccountStatement *result = [bridge syncCommand: cmd error: &error];
+    [self stopProgress];
+    
+    if (error) {
+        [error alertPanel];
+        
+        LogLeave;
+        return nil;
+    }
+    if (result == nil) {
+        LogError(@"Unexpected result for getAccountStatement: nil");
+    }
+    
+    LogLeave;
     return result;
 }
 
