@@ -155,9 +155,9 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @property (weak) IBOutlet NSImageView *typeImage;
 @property (weak) IBOutlet NSImageView *manualIndicator;
-@property (weak) IBOutlet NSImageView *preliminaryIndicator;
+@property (weak) IBOutlet NSImageView *isReversalIndicator;
 @property (weak) IBOutlet NSImageView *isNewIndicator;
-@property (weak) IBOutlet NSImageView *cancellationIndicator;
+@property (weak) IBOutlet NSImageView *isSettledIndicator;
 
 @property (weak) IBOutlet NSButton    *tagButton;
 @property (weak) IBOutlet NSBox       *colorBox;
@@ -178,6 +178,9 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @property (weak) IBOutlet NSLayoutConstraint *verticalConstraintValueCurrency;
 @property (weak) IBOutlet NSLayoutConstraint *dateFieldRightBorderConstraint;
+
+@property (weak) IBOutlet NSView *bankStatementDetailsContainer;
+@property (weak) IBOutlet NSView *creditCardDetailsContainer;
 
 @end
 
@@ -209,12 +212,15 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @synthesize typeImage;
 @synthesize manualIndicator;
-@synthesize preliminaryIndicator;
+@synthesize isReversalIndicator;
 @synthesize isNewIndicator;
-@synthesize cancellationIndicator;
+@synthesize isSettledIndicator;
 
 @synthesize verticalConstraintValueCurrency;
 @synthesize dateFieldRightBorderConstraint;
+
+@synthesize bankStatementDetailsContainer;
+@synthesize creditCardDetailsContainer;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -248,8 +254,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     notesTextView.editable = NO;
 
-    preliminaryIndicator.image = [NSImage imageNamed: @"icon96-1" fromCollection: 1];
-    cancellationIndicator.image = [NSImage imageNamed: @"icon66-1" fromCollection: 1];
+    isReversalIndicator.image = [NSImage imageNamed: @"icon66-1" fromCollection: 1];
 
     [self updateValueColors];
 }
@@ -337,6 +342,31 @@ extern NSString *PecuniaWordsLoadedNotification;
     return YES;
 }
 
+- (BOOL)addRowToString: (NSMutableAttributedString *)text
+                 table: (NSTextTable *)table
+                   row: (NSUInteger)row
+               caption: (NSString *)caption
+                 value: (id)value {
+    if (value == nil) {
+        return NO;
+    }
+    [text appendAttributedString: [self createCellStringWithString: [caption stringByAppendingString: @": \n"]
+                                                             table: table
+                                                         alignment: NSRightTextAlignment
+                                                               row: row
+                                                            column: 0
+                                                              font: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 12]
+                                                             color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
+    [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
+                                                             table: table
+                                                         alignment: NSLeftTextAlignment
+                                                               row: row
+                                                            column: 1
+                                                              font: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 12]
+                                                             color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
+    return YES;
+}
+
 - (void)createSEPAInfoTextInDetails: (NSMutableDictionary *)details forStatement: (BankStatement *)statement {
     SepaData *data = statement.sepa;
     if (data == nil) {
@@ -386,13 +416,46 @@ extern NSString *PecuniaWordsLoadedNotification;
     details[@"sepaInfo"] = text;
 }
 
+- (void)createCreditCardInfoTextInDetails: (NSMutableDictionary *)details forStatement: (BankStatement *)statement {
+    NSMutableAttributedString *text = [NSMutableAttributedString new];
+    NSTextTable               *table = [NSTextTable new];
+    table.numberOfColumns = 2;
+    [table setContentWidth: 100 type: NSTextBlockPercentageValueType];
+
+    // Format the credit card number with spaces if it only contains digits.
+    NSMutableString *number = statement.ccNumberUms.mutableCopy;
+    if ([number rangeOfCharacterFromSet: [NSCharacterSet.decimalDigitCharacterSet invertedSet]].location == NSNotFound) {
+        for (NSUInteger i = number.length - 4; i > 0; i -= 4) {
+            [number insertString: @" " atIndex: i];
+        }
+    }
+    int currentRow = 0;
+    if ([self addRowToString: text table: table row: currentRow caption: NSLocalizedString(@"AP436", nil) value: number]) {
+        ++currentRow;
+    }
+    if ([self addRowToString: text table: table row: currentRow caption: NSLocalizedString(@"AP437", nil) value: statement.ccChargeKey]) {
+        ++currentRow;
+    }
+    if ([self addRowToString: text table: table row: currentRow caption: NSLocalizedString(@"AP438", nil) value: statement.ccChargeTerminal]) {
+        ++currentRow;
+    }
+    if ([self addRowToString: text table: table row: currentRow caption: NSLocalizedString(@"AP439", nil) value: statement.ccChargeForeign]) {
+        ++currentRow;
+    }
+    if ([self addRowToString: text table: table row: currentRow caption: NSLocalizedString(@"AP440", nil) value: statement.ccSettlementRef]) {
+        ++currentRow;
+    }
+
+    details[@"creditCardInfo"] = text;
+}
+
 /**
  * Update text fields that depend on proper casing.
  */
--(void)updateCaseDependentText {
+- (void)updateCaseDependentText {
     StatCatAssignment *assignment = self.representedObject;
     BankStatement     *statement = assignment.statement;
-    NSString *transactionText = statement.transactionText;
+    NSString          *transactionText = statement.transactionText;
     if (transactionText.length > 0) {
         self.sepaDetails[@"PURP"] = transactionText.stringWithNaturalText;
     }
@@ -411,18 +474,18 @@ extern NSString *PecuniaWordsLoadedNotification;
     [field.cell setUsesSingleLineMode: YES];
 
     NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-    NSTextTab *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
-                                                     location: NSWidth(dateSlider.frame) - 4
-                                                      options: nil];
+    NSTextTab               *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
+                                                                   location: NSWidth(dateSlider.frame) - 4
+                                                                    options: nil];
     style.tabStops = @[tab];
 
     NSMutableAttributedString *string = [NSMutableAttributedString new];
     [string appendAttributedString: [[NSAttributedString alloc] initWithString: name
                                                                     attributes: normalAttributes]
-     ];
+    ];
     [string appendAttributedString: [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"\t%@", date]
                                                                     attributes: boldAttributes]
-     ];
+    ];
     [string addAttribute: NSParagraphStyleAttributeName
                    value: style
                    range: NSMakeRange(0, string.length)];
@@ -460,80 +523,18 @@ extern NSString *PecuniaWordsLoadedNotification;
         }
     }
 
-    if (isCreditCardStatement) {
-        details[@"receiver"] = statement.ccNumberUms;
-    } else {
-        if (statement.remoteName != nil) {
-            details[@"receiver"] = statement.remoteName;
-        } else {
-            details[@"receiver"] = @"";
-        }
-    }
-
     if (statement.sepa.purpose != nil) {
         details[@"description"] = statement.sepa.purpose;
     } else {
         details[@"description"] = statement.purpose == nil ? @"" : statement.purpose;
     }
 
-    NSString *accountTitle;
-    NSString *bankCodeTitle;
-    NSString *accountNumber;
-    NSString *bankCode;
-    if (statement.remoteIBAN != nil) {
-        accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP409", nil)];
-        bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP410", nil)];
-
-        accountNumber = statement.remoteIBAN;
-        bankCode = statement.remoteBIC == nil ? @"--" : statement.remoteBIC;
-    } else {
-        accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP401", nil)];
-        bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP400", nil)];
-
-        accountNumber = statement.remoteAccount == nil ? @"--" : statement.remoteAccount;
-        bankCode = statement.remoteBankCode == nil ? @"--" : statement.remoteBankCode;
-    }
-
-    NSDictionary *normalAttributes = @{
-        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13],
-        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.302 alpha:1.000]
-    };
-    NSDictionary *boldAttributes = @{
-        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 13],
-        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.302 alpha:1.000]
-    };
-
-    NSMutableAttributedString *string = [NSMutableAttributedString new];
-    [string appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
-                                                                    attributes: normalAttributes]
-    ];
-    [string appendAttributedString: [[NSAttributedString alloc] initWithString: accountNumber
-                                                                    attributes: boldAttributes]
-    ];
-    details[@"accountNumber"] = string;
-
-    string = [NSMutableAttributedString new];
-
-    [string appendAttributedString: [[NSAttributedString alloc] initWithString: bankCodeTitle
-                                                                    attributes: normalAttributes]
-    ];
-    [string appendAttributedString: [[NSAttributedString alloc] initWithString: bankCode
-                                                                    attributes: boldAttributes]
-    ];
-    details[@"bankCode"] = string;
-
-    [self createSEPAInfoTextInDetails: details forStatement: statement];
-    details[@"userInfo"] = [[NSAttributedString alloc] initWithString: assignment.userInfo == nil ? @"": assignment.userInfo
-                                                           attributes: normalAttributes];
-
-    [verticalConstraintValueCurrency.animator setConstant: statement.isAssigned.boolValue ? 15 : 39];
-
-    self.sepaDetails = details; // Triggers KVO.
+    [verticalConstraintValueCurrency.animator setConstant: statement.isAssigned.boolValue ? 15: 39];
 
     // Update sequence type image. We use the SEPA sequence type, if given. Otherwise we try to derive the correct
     // image from the transfer type.
     NSDictionary *sequenceTypeMap = SEPAMT94xPurposeParser.sequenceTypeMap;
-    NSString *sequenceType;
+    NSString     *sequenceType;
     if (statement.sepa.sequenceType.length > 0) {
         sequenceType = statement.sepa.sequenceType;
     } else {
@@ -541,13 +542,10 @@ extern NSString *PecuniaWordsLoadedNotification;
     }
 
     // Compose sequence type image from background and type image. Background determines future transactions.
-    BOOL futureTransaction;
     NSImage *background;
-    if ([ShortDate.currentDate compare: [ShortDate dateWithDate: statement.valutaDate]] == NSOrderedAscending) {
-        futureTransaction = YES;
+    if (statement.isPreliminary) {
         background = [NSImage imageNamed: @"sequence-type-red"];
     } else {
-        futureTransaction = NO;
         background = [NSImage imageNamed: @"sequence-type-blue"];
     }
     NSImage *sequenceImage = [[NSImage alloc] initWithSize: background.size];
@@ -562,7 +560,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     if (tooltip.length == 0) {
         tooltip = NSLocalizedString(@"AP1215", nil);
     }
-    if (futureTransaction) {
+    if (statement.isPreliminary) {
         tooltip = [tooltip stringByAppendingString: NSLocalizedString(@"AP1550", nil)];
     }
     sequenceTypeImage.toolTip = tooltip;
@@ -571,6 +569,15 @@ extern NSString *PecuniaWordsLoadedNotification;
     [overlay drawAtPoint: NSMakePoint(0, 0) fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1];
     [sequenceImage unlockFocus];
     sequenceTypeImage.image = sequenceImage;
+
+    NSDictionary *normalAttributes = @{
+        NSFontAttributeName : [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13],
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
+    };
+    NSDictionary *boldAttributes = @{
+        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 13],
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
+    };
 
     dateSlider.subviews = @[];
     ShortDate *date = [ShortDate dateWithDate: statement.date];
@@ -605,18 +612,64 @@ extern NSString *PecuniaWordsLoadedNotification;
     dateSlider.fade = NO;
     dateSlider.wrap = YES;
 
+    bankStatementDetailsContainer.hidden = isCreditCardStatement;
+    creditCardDetailsContainer.hidden = !isCreditCardStatement;
     if (isCreditCardStatement) {
         typeImage.image = [NSImage imageNamed: @"icon87-1" fromCollection: 1];
         typeImage.toolTip = NSLocalizedString(@"AP1552", nil);
+
+        isSettledIndicator.alphaValue = statement.isSettled.boolValue ? 1 : 0.25;
+
+        [self createCreditCardInfoTextInDetails: details forStatement: statement];
     } else {
         typeImage.image = [NSImage imageNamed: @"icon95-1" fromCollection: 1];
         typeImage.toolTip = NSLocalizedString(@"AP1551", nil);
+
+        manualIndicator.alphaValue = statement.isManual.boolValue ? 1 : 0.25;
+        isReversalIndicator.alphaValue = statement.isStorno.boolValue ? 1 : 0.25;
+        isNewIndicator.alphaValue = statement.isNew.boolValue ? 1 : 0.25;
+
+        NSString *accountTitle;
+        NSString *bankCodeTitle;
+        NSString *accountNumber;
+        NSString *bankCode;
+        if (statement.remoteIBAN != nil) {
+            accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP409", nil)];
+            bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP410", nil)];
+
+            accountNumber = statement.remoteIBAN;
+            bankCode = statement.remoteBIC == nil ? @"--" : statement.remoteBIC;
+        } else {
+            accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP401", nil)];
+            bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP400", nil)];
+
+            accountNumber = statement.remoteAccount == nil ? @"--" : statement.remoteAccount;
+            bankCode = statement.remoteBankCode == nil ? @"--" : statement.remoteBankCode;
+        }
+
+        NSMutableAttributedString *string = [NSMutableAttributedString new];
+        [string appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
+                                                                        attributes: normalAttributes]
+        ];
+        [string appendAttributedString: [[NSAttributedString alloc] initWithString: accountNumber
+                                                                        attributes: boldAttributes]
+        ];
+        details[@"accountNumber"] = string;
+
+        string = [NSMutableAttributedString new];
+
+        [string appendAttributedString: [[NSAttributedString alloc] initWithString: bankCodeTitle
+                                                                        attributes: normalAttributes]
+        ];
+        [string appendAttributedString: [[NSAttributedString alloc] initWithString: bankCode
+                                                                        attributes: boldAttributes]
+        ];
+        details[@"bankCode"] = string;
+
     }
 
-    manualIndicator.alphaValue = statement.isManual.boolValue ? 1 : 0.125;
-    preliminaryIndicator.alphaValue = statement.isPreliminary.boolValue ? 1 : 0.125;
-    isNewIndicator.alphaValue = statement.isNew.boolValue ? 1 : 0.125;
-    cancellationIndicator.alphaValue = statement.isStorno.boolValue ? 1 : 0.125;
+    [self createSEPAInfoTextInDetails: details forStatement: statement];
+    self.sepaDetails = details; // Triggers KVO.
 
     //BankInfo *info = [HBCIController.controller infoForBankCode: statement.remoteBankCode];
 }

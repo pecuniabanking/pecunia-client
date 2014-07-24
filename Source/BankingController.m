@@ -229,12 +229,6 @@ static BankingController *bankinControllerInstance;
     NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
-    int lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
-    if (lastSplitterPosition > 0) {
-        [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
-    }
-    self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
-
     [self setupSidebar];
 
     // Edit accounts/categories when double clicking on a node.
@@ -392,6 +386,10 @@ static BankingController *bankinControllerInstance;
 
     if ([defaults objectForKey: @"fontScale"] == nil) {
         [defaults setDouble: 1 forKey: @"fontScale"];
+    }
+
+    if ([defaults objectForKey: @"autoResetNew"] == nil) {
+        [defaults setBool: YES forKey: @"autoResetNew"];
     }
 
     // Migrate the migration flags to the local settings if a migration was done.
@@ -1315,27 +1313,6 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)toggleDetailsPane: (id)sender {
-    LogEnter;
-
-    // Can only be triggered if the overview pane is visible (otherwise the toggle button is hidden).
-    if (![(id)currentSection toggleDetailsPane]) {
-        [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
-        self.toggleDetailsPaneItem.state = NSOffState;
-    } else {
-        [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
-        self.toggleDetailsPaneItem.state = NSOnState;
-    }
-
-    LogLeave;
-}
-
-- (IBAction)toggleFeature: (id)sender {
-    if (sender == self.toggleDetailsPaneItem) {
-        [self toggleDetailsPane: sender];
-    }
-}
-
 - (void)reapplyDefaultIconsForCategory: (Category *)category {
     LogEnter;
 
@@ -1367,6 +1344,14 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)openHomepage: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.pecuniabanking.de"]];
+}
+
+- (IBAction)openForum: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.onlinebanking-forum.de/phpBB2/viewforum.php?f=56"]];
+}
+
 - (IBAction)sendErrorReport: (id)sender {
     NSMutableString *text = [NSMutableString string];
 
@@ -1382,8 +1367,16 @@ static BankingController *bankinControllerInstance;
     [MessageLog.log openLogFolder];
 }
 
+- (IBAction)showLog: (id)sender {
+    [MessageLog.log showLog];
+}
+
 - (IBAction)comTraceToggle: (id)sender {
     [comTracePanel toggleComTrace: sender];
+}
+
+- (IBAction)openBugTracker: (id)sender {
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://code.google.com/p/pecuniabanking/issues/list"]];
 }
 
 - (IBAction)changeFontSize: (id)sender {
@@ -1561,10 +1554,6 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)updateDetailsPaneButton {
-    toggleDetailsButton.hidden = (currentPage != 1) || (currentSectionIndex != 0);
-}
-
 - (void)switchMainPage: (NSInteger)page {
     LogEnter;
 
@@ -1616,7 +1605,6 @@ static BankingController *bankinControllerInstance;
         }
 
         [self updateStatusbar];
-        [self updateDetailsPaneButton];
     }
     LogLeave;
 }
@@ -1646,7 +1634,6 @@ static BankingController *bankinControllerInstance;
             [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
 
             [timeSlicer showControls: YES];
-            catActions.hidden = NO;
         }
 
         if (currentSection != nil && currentSection == heatMapController && sectionIndex != 6) {
@@ -1670,7 +1657,6 @@ static BankingController *bankinControllerInstance;
                     [currentSection deactivate];
                     [[overviewController mainView] setFrame: frame];
                     [rightPane replaceSubview: currentView with: [overviewController mainView]];
-                    overviewController.toggleDetailsButton = toggleDetailsButton;
                     currentSection = overviewController;
 
                     pageHasChanged = YES;
@@ -1732,7 +1718,6 @@ static BankingController *bankinControllerInstance;
 
             case 3:
                 [timeSlicer showControls: NO];
-                catActions.hidden = YES;
 
                 if (categoryPeriodsController == nil) {
                     categoryPeriodsController = [[CategoryPeriodsWindowController alloc] init];
@@ -1829,7 +1814,6 @@ static BankingController *bankinControllerInstance;
             [currentSection activate];
             [accountsView setNeedsDisplay];
         }
-        [self updateDetailsPaneButton];
     }
 
     LogLeave;
@@ -2247,10 +2231,6 @@ static BankingController *bankinControllerInstance;
     }
 
     Category *cat = [self currentSelection];
-
-    // set states of categorie Actions Control
-    [catActions setEnabled: [cat isRemoveable] forSegment: 2];
-    [catActions setEnabled: [cat isInsertable] forSegment: 1];
 
     // Update current section if the default is not active.
     if (currentSection != nil) {

@@ -20,27 +20,18 @@
 #import "PecuniaSectionItem.h"
 #import "StatementsListView.h"
 
-@class StatementsListView;
-@class TagView;
-@class AttachmentImageView;
-@class StatementDetails;
-@class PecuniaSplitView;
-
 @interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol>
-
-@property (strong) IBOutlet PecuniaSplitView *mainView;
-@property (weak) NSButton *toggleDetailsButton; // Reference to the BankingController's toggle button.
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item;
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
 - (void)markSelectedStatementsUnread;
-- (BOOL)toggleDetailsPane;
 - (void)clearStatementFilter;
 - (void)reload;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) Category       *selectedCategory;
+@property (nonatomic, strong) IBOutlet NSView *mainView;
 
 - (void)activate;
 - (void)deactivate;

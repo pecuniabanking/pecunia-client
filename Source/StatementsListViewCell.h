@@ -20,9 +20,11 @@
 #import "PecuniaListViewCell.h"
 
 typedef NS_ENUM (NSInteger, StatementMenuAction) {
+    MenuActionShowDetails,
     MenuActionAddStatement,
     MenuActionSplitStatement,
     MenuActionDeleteStatement,
+    MenuActionMarkRead,
     MenuActionMarkUnread,
     MenuActionStartTransfer,
     MenuActionCreateTemplate

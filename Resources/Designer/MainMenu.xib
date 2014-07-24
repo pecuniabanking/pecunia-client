@@ -108,39 +108,19 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4561">
-                                                                    <rect key="frame" x="79" y="19" width="189" height="18"/>
+                                                                    <rect key="frame" x="19" y="19" width="249" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" alignment="left" style="roundRect" trackingMode="selectOne" id="4564">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <segments>
-                                                                            <segment label="Alle" width="38" selected="YES"/>
-                                                                            <segment label="2009" width="38" tag="1"/>
-                                                                            <segment label="Q1" width="38" tag="2"/>
-                                                                            <segment label="September" width="66"/>
+                                                                            <segment label="Alle" width="53" selected="YES"/>
+                                                                            <segment label="2009" width="53" tag="1"/>
+                                                                            <segment label="Q1" width="53" tag="2"/>
+                                                                            <segment label="September" width="81"/>
                                                                         </segments>
                                                                     </segmentedCell>
                                                                     <connections>
                                                                         <action selector="timeSliceChanged:" target="4624" id="4627"/>
-                                                                    </connections>
-                                                                </segmentedControl>
-                                                                <segmentedControl verticalHuggingPriority="750" id="4559">
-                                                                    <rect key="frame" x="19" y="19" width="74" height="18"/>
-                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                    <segmentedCell key="cell" controlSize="small" state="on" alignment="left" style="roundRect" trackingMode="momentary" id="4560">
-                                                                        <font key="font" metaFont="smallSystem"/>
-                                                                        <segments>
-                                                                            <segment toolTip="Kategorie anhängen (gleiche Ebene)" image="plus-8" imageScaling="none" width="22"/>
-                                                                            <segment toolTip="Kategorie einfügen (untergeordnet)" image="ins-8" width="22" tag="1"/>
-                                                                            <segment toolTip="Kategorie löschen" image="minus-8" width="22" tag="2"/>
-                                                                        </segments>
-                                                                    </segmentedCell>
-                                                                    <connections>
-                                                                        <action selector="manageCategories:" target="235" id="4566"/>
-                                                                        <binding destination="911" name="enabled" keyPath="selection.isBankAccount" id="4572">
-                                                                            <dictionary key="options">
-                                                                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                            </dictionary>
-                                                                        </binding>
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" titlePosition="noTitle" id="GLe-iy-6ip" userLabel="Divider line">
@@ -439,17 +419,6 @@ IA
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button id="6515" userLabel="Hide Details Button">
-                        <rect key="frame" x="1162" y="2" width="16" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <buttonCell key="cell" type="square" title="Button" bezelStyle="shadowlessSquare" image="hide" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="6516">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="toggleDetailsPane:" target="235" id="6520"/>
-                        </connections>
-                    </button>
                     <customView id="B96-no-ost" customClass="EDSideBar">
                         <rect key="frame" x="0.0" y="20" width="100" height="680"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
@@ -529,19 +498,6 @@ Unterstütze die Entwicklung!</string>
                 <outlet property="initialFirstResponder" destination="281" id="6358"/>
             </connections>
         </window>
-        <menu id="hCW-hx-1go">
-            <items>
-                <menuItem title="Item 1" id="ktX-q7-nIO">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Item 2" id="pNg-e9-OLs">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Item 3" id="vUx-GB-BwK">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-            </items>
-        </menu>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>
                 <menuItem title="Pecunia" id="56">
@@ -606,7 +562,6 @@ Unterstütze die Entwicklung!</string>
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Ablage" id="5xf-JL-rk2">
                         <items>
-                            <menuItem isSeparatorItem="YES" id="5507"/>
                             <menuItem title="Seite einrichten..." keyEquivalent="P" id="77">
                                 <connections>
                                     <action selector="runPageLayout:" target="-1" id="87"/>
@@ -716,12 +671,6 @@ Unterstütze die Entwicklung!</string>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="6534"/>
-                            <menuItem title="Detailsfenster" state="on" id="6532">
-                                <connections>
-                                    <action selector="toggleFeature:" target="235" id="6558"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="6862"/>
                             <menuItem title="Alle Kategorie Icons zurücksetzen..." id="6863">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -944,34 +893,47 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Hilfe" systemMenu="help" id="5286">
                         <items>
-                            <menuItem title="Pecunia-Hilfe" keyEquivalent="?" id="5287">
-                                <connections>
-                                    <action selector="showHelp:" target="-1" id="5288"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Lizenz" id="5289">
+                            <menuItem title="Pecunia Homepage" id="5287">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="showLicense:" target="235" id="5290"/>
+                                    <action selector="openHomepage:" target="235" id="I47-HR-YUC"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pecunia-Hilfe" keyEquivalent="?" id="xzT-Lw-LTE">
+                                <connections>
+                                    <action selector="showHelp:" target="-1" id="Wzd-w4-EWr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pecunia Forum" id="o58-eK-HsR">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openForum:" target="235" id="aM9-p6-OQw"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="3D4-LS-roi"/>
-                            <menuItem title="Fehlerbericht senden" id="bZF-NA-SN5">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="sendErrorReport:" target="235" id="Ocx-IB-9Wt"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Log Verzeichnis öffnen" id="laH-Jl-m7P">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="openLogFolder:" target="235" id="4PE-Jc-Kgx"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Log anzeigen" id="sg0-Sg-0VH">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showLog:" target="235" id="ohu-s6-Tyv"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="N79-Kz-94x"/>
                             <menuItem title="Com trace" id="suc-Py-BAh">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="comTraceToggle:" target="235" id="Gmk-W2-baZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fehlerbericht senden" id="bZF-NA-SN5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="sendErrorReport:" target="235" id="Ocx-IB-9Wt"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Konsolenlog anzeigen" keyEquivalent="k" id="7062">
@@ -979,16 +941,22 @@ CA
                                     <action selector="showConsole:" target="235" id="7063"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Pecunia Bugtracker" id="Jxv-rg-hu8">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openBugTracker:" target="235" id="Q74-yA-iei"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="fqt-dL-kZb"/>
+                            <menuItem title="Lizenz" id="5289">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showLicense:" target="235" id="5290"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
-            </items>
-        </menu>
-        <menu title="CategoryViewContext" showsStateColumn="NO" id="1860" userLabel="Menu (CategoryViewContext)">
-            <items>
-                <menuItem title="Kategorie erstellen" id="1861"/>
-                <menuItem isSeparatorItem="YES" id="4550"/>
-                <menuItem title="Kategorie löschen" id="1862"/>
             </items>
         </menu>
         <customView id="3592" userLabel="ExportAccessory">
@@ -1110,7 +1078,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="accountsScrollView" destination="280" id="6349"/>
                 <outlet property="accountsView" destination="281" id="1031"/>
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
-                <outlet property="catActions" destination="4559" id="4709"/>
                 <outlet property="categoryController" destination="911" id="930"/>
                 <outlet property="comTraceMenuItem" destination="suc-Py-BAh" id="j6I-1K-Ktn"/>
                 <outlet property="comTracePanel" destination="auX-7g-19I" id="RVM-e8-vDl"/>
@@ -1130,8 +1097,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="spendingsField" destination="6103" id="6108"/>
                 <outlet property="spendingsFieldLabel" destination="jgg-oi-JS7" id="5uc-Vp-xiZ"/>
                 <outlet property="timeSlicer" destination="4624" id="4672"/>
-                <outlet property="toggleDetailsButton" destination="6515" id="6517"/>
-                <outlet property="toggleDetailsPaneItem" destination="6532" id="6557"/>
                 <outlet property="waitOverlay" destination="RtS-rA-3Gv" id="aH4-YN-jUN"/>
                 <outlet property="waitViewController" destination="UlU-NN-NGf" id="lmm-G5-KTx"/>
             </connections>
@@ -1244,11 +1209,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="favorite" width="20" height="20"/>
         <image name="font-decrease" width="20" height="20"/>
         <image name="font-increase" width="20" height="20"/>
-        <image name="hide" width="16" height="16"/>
-        <image name="ins-8" width="12" height="12"/>
         <image name="magnify" width="17" height="17"/>
-        <image name="minus-8" width="8" height="8"/>
-        <image name="plus-8" width="8" height="8"/>
         <image name="refresh" width="20" height="20"/>
     </resources>
 </document>

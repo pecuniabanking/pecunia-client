@@ -31,7 +31,6 @@
 @interface StatementsListView : PecuniaListView <PXListViewDelegate, StatementsListViewNotificationProtocol>
 
 @property (nonatomic, assign) BOOL    showAssignedIndicators;
-@property (nonatomic, assign) BOOL    autoResetNew;
 @property (nonatomic, assign) BOOL    disableSelection;
 @property (nonatomic, assign) BOOL    canShowHeaders; // Headers can be switched off temporarily.
 

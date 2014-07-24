@@ -871,7 +871,7 @@ static HBCIController *controller = nil;
 - (CCSettlementList *)getCCSettlementListForAccount: (BankAccount *)account
 {
     PecuniaError    *error = nil;
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getCCSettlementList\">"];
+    NSMutableString *cmd = [NSMutableString stringWithString: @"<command name=\"getCCSettlementList\">"];
 
     [self startProgress];
 

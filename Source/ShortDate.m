@@ -240,6 +240,8 @@ NSCalendar *calendar = nil;
 
         case NSWeekCalendarUnit: // NSWeekdayCalendarUnit is deprecated but I have not replacement
                                  // with a timeframe meaning currently.
+                                 // Use NSCalendarUnitWeekOfYear as workaround (to avoid deprecation warning).
+        case NSCalendarUnitWeekOfYear:
             comps.day += 7 * units;
             break;
 
@@ -252,7 +254,6 @@ NSCalendar *calendar = nil;
             comps.day = 1;
             comps.month += 3 * units;
             break;
-
         default:
             LogError(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
             return nil;

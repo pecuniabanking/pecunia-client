@@ -43,6 +43,7 @@
 @synthesize timeSliceManager;
 @synthesize selectedCategory;
 @synthesize hideAssignedValues;
+@synthesize mainView;
 
 - (id)init
 {
@@ -79,7 +80,6 @@
 
     statementsListView.owner = self;
     statementsListView.showAssignedIndicators = YES;
-    statementsListView.autoResetNew = NO;
     [statementsListView setCellSpacing: 0];
     [statementsListView setAllowsEmptySelection: YES];
     [statementsListView setAllowsMultipleSelection: YES];

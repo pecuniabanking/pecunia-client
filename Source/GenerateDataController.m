@@ -342,7 +342,6 @@ static NSString *DemoDataKey = @"contains-demo-data";
                         statement.currency = account.currency;
                         statement.localAccount = account.accountNumber;
                         statement.localBankCode = account.bankCode;
-                        statement.isManual = @YES;
                         statement.date = date;
                         statement.valutaDate = date;
                         statement.remoteCountry = @"de";
@@ -367,6 +366,12 @@ static NSString *DemoDataKey = @"contains-demo-data";
                         } else {
                             statement.remoteAccount = remoteAccount;
                         }
+
+                        // Random values for certain flags.
+                        statement.isManual = arc4random_uniform(10) < 5 ? @NO : @YES;
+                        statement.isPreliminary = arc4random_uniform(10) < 5 ? @NO : @YES;
+                        statement.isStorno = arc4random_uniform(10) < 5 ? @NO : @YES;
+                        statement.isSettled = arc4random_uniform(10) < 5 ? @NO : @YES;
 
                         [statement addToAccount: account];
 
