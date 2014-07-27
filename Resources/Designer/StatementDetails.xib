@@ -111,7 +111,7 @@ Line 3</string>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="1tE-JT-xlX"/>
                     </constraints>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="rRJ-Z9-Xot">
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="rRJ-Z9-Xot">
                         <rect key="frame" x="0.0" y="30" width="348" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -155,13 +155,13 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Zg-so-efZ">
-                                <rect key="frame" x="4" y="4" width="265.0000001000908" height="60"/>
+                                <rect key="frame" x="4.0000001000907961" y="4" width="265" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="PVA-SH-4er">
-                                    <rect key="frame" x="0.0" y="0.0" width="265" height="60"/>
+                                    <rect key="frame" x="-1.0009080142481253e-07" y="0.0" width="265" height="60"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView focusRingType="none" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dataDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="K6c-5A-tNh" userLabel="Notes Text View" customClass="DetailsNotesView">
+                                        <textView focusRingType="none" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dataDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="K6c-5A-tNh" userLabel="Notes Text View">
                                             <rect key="frame" x="0.0" y="0.0" width="265" height="60"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
@@ -899,7 +899,7 @@ Line 3</string>
                         <rect key="frame" x="0.0" y="0.0" width="398" height="58"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" id="7XJ-6g-QrA" customClass="DetailsTableView">
+                            <textView editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" id="7XJ-6g-QrA">
                                 <rect key="frame" x="0.0" y="0.0" width="398" height="58"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" red="0.49732620319999998" green="0.48826273079999999" blue="0.46107231339999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -933,7 +933,7 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="nMx-VY-N4o">
-                        <rect key="frame" x="382" y="0.0" width="16" height="58"/>
+                        <rect key="frame" x="383" y="0.0" width="15" height="58"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -948,7 +948,7 @@ Line 3</string>
                                 <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="Lhj-AU-d34">
-                                    <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
+                                    <rect key="frame" x="0.5" y="-0.5" width="274" height="38"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView drawsBackground="NO" importsGraphics="NO" findStyle="panel" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="MUI-Mu-cgL" customClass="DetailsTagView">
@@ -1035,7 +1035,7 @@ Line 3</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textView editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" id="Hl0-Iy-lYi" customClass="DetailsTableView">
+                                    <textView editable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" id="Hl0-Iy-lYi">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="textColor" red="0.49732620319999998" green="0.48826273079999999" blue="0.46107231339999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -1131,7 +1131,7 @@ Line 3</string>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="cDJ-cW-VUJ"/>
                             </constraints>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Kontonummer: 123456" id="TAJ-Bq-eb5">
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Kontonummer: 123456" id="TAJ-Bq-eb5">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1146,7 +1146,7 @@ Line 3</string>
                             <constraints>
                                 <constraint firstAttribute="width" constant="142" id="x1o-7N-5dT"/>
                             </constraints>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BLZ: 123456" id="tat-vn-mwZ">
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BLZ: 123456" id="tat-vn-mwZ">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

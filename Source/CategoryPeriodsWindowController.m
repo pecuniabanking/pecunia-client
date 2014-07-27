@@ -53,6 +53,7 @@ extern void *UserDefaultsBindingContext;
 @implementation CategoryPeriodsWindowController
 
 @synthesize outline;
+@synthesize mainView;
 
 #pragma mark -
 #pragma mark Initialization and Deallocation

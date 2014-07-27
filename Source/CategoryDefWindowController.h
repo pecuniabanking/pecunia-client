@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 #import "PecuniaSectionItem.h"
 
 @class Category;
@@ -28,34 +26,10 @@
 @class BWGradientBox;
 
 @interface CategoryDefWindowController : NSObject <PecuniaSectionItem>
-{
-    IBOutlet NSArrayController  *assignPreviewController;
-    IBOutlet NSPredicateEditor  *predicateEditor;
-    IBOutlet NSView             *topView;
-    IBOutlet StatementsListView *statementsListView;
-    IBOutlet NSButton           *saveButton;
-    IBOutlet NSButton           *discardButton;
-    IBOutlet NSButton           *assignEntriesButton;
-    IBOutlet NSButton           *unassignEntriesButton;
-
-    IBOutlet BWGradientBox *predicatesBackground;
-
-    TimeSliceManager *timeSliceManager;
-    BOOL             ruleChanged;
-    BOOL             awaking;
-}
 
 @property (nonatomic, strong) TimeSliceManager *timeSliceManager;
 @property (nonatomic, weak) Category           *selectedCategory;
 @property bool                                 hideAssignedValues;
-
-@property (strong) IBOutlet NSSplitView *splitter;
-
-- (IBAction)predicateEditorChanged: (id)sender;
-- (IBAction)saveRule: (id)sender;
-- (IBAction)deleteRule: (id)sender;
-- (IBAction)hideAssignedChanged: (id)sender;
-- (IBAction)assignEntries: (id)sender;
 
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context;
 - (void)calculateCatAssignPredicate;

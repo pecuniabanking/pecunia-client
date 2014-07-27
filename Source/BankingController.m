@@ -392,6 +392,13 @@ static BankingController *bankinControllerInstance;
         [defaults setBool: YES forKey: @"autoResetNew"];
     }
 
+    if ([defaults objectForKey: @"showBalances"] == nil) {
+        [defaults setBool: YES forKey: @"showBalances"];
+    }
+
+    if ([defaults objectForKey: @"showHeadersInLists"] == nil) {
+        [defaults setBool: YES forKey: @"showHeadersInLists"];
+    }
     // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {

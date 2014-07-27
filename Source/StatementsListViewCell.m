@@ -41,6 +41,23 @@ extern NSDictionary    *whiteAttributes;
 @interface StatementsListViewCell ()
 {
 @private
+    IBOutlet NSTextField *dateLabel;
+    IBOutlet NSTextField *turnoversLabel;
+    IBOutlet NSTextField *remoteNameLabel;
+    IBOutlet NSTextField *purposeLabel;
+    IBOutlet NSTextField *noteLabel;
+    IBOutlet NSTextField *categoriesLabel;
+    IBOutlet NSTextField *valueLabel;
+    IBOutlet NSImageView *newImage;
+    IBOutlet NSImageView *preliminaryImage;
+    IBOutlet NSTextField *currencyLabel;
+    IBOutlet NSTextField *saldoLabel;
+    IBOutlet NSTextField *saldoCurrencyLabel;
+    IBOutlet NSTextField *transactionTypeLabel;
+    IBOutlet NSButton    *checkbox;
+    IBOutlet NSTextField *dayLabel;
+    IBOutlet NSTextField *monthLabel;
+
     int  headerHeight;
 
     NSColor *categoryColor;
@@ -236,6 +253,8 @@ extern NSDictionary    *whiteAttributes;
 
     NSDecimalNumber *nassValue = assignment.statement.nassValue;
     self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
+
+    preliminaryImage.hidden = !assignment.statement.isPreliminary.boolValue;
 }
 
 - (void)updateLabelsWithCasing: (BOOL)autoCasing
@@ -288,6 +307,10 @@ extern NSDictionary    *whiteAttributes;
 
 - (void)showBalance: (BOOL)flag
 {
+    StatCatAssignment *assignment = self.representedObject;
+    if (!assignment.category.isBankAccount) {
+        flag = NO;
+    }
     [saldoLabel setHidden: !flag];
     [saldoCurrencyLabel setHidden: !flag];
 }

@@ -728,12 +728,12 @@ AP1496 = "RCUR+Wiederkehrende Überweisung+sequence-type-repeat";
 AP1497 = "FNAL+Letzte von bisher wiederkehrenden Überweisungen+sequence-type-end";
 AP1498 = "OOFF+Einmalige Überweisung+sequence-type-once-off";
 
-// Some transfer description to help parsing out the sequence type if there's not sequence code.
+// Some transfer description to help parsing out the sequence type if there's no sequence code.
 AP1499 = "dauerauftrag:RCUR";
 
 // Tooltips
 // AP1550..AP1699
-AP1550 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist noch nicht vollständig gebucht";
+AP1550 = "\nDieser Umsatz ist noch vorläufig (noch nicht gebucht und nicht im Saldo berücksichtigt)";
 AP1551 = "Banküberweisung";
 AP1552 = "Kreditkartenumsatz";
 

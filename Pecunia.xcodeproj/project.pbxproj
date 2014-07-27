@@ -492,7 +492,6 @@
 		277789B2173CE22700430EBC /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
 		277789B4173CE22700430EBC /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
-		277789B6173CE22700430EBC /* RuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A0098817205B4800D61FE9 /* RuleEditor.xib */; };
 		277789B8173CE22700430EBC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2799180E1711748C00C1AC3D /* Quartz.framework */; };
 		277789B9173CE22700430EBC /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
 		277789BA173CE22700430EBC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
@@ -567,7 +566,6 @@
 		279C166218E830C200A4306F /* LockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279C166018E830C200A4306F /* LockView.xib */; };
 		279C166518E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
-		27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A0098817205B4800D61FE9 /* RuleEditor.xib */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */; };
@@ -727,6 +725,10 @@
 		27EEC8E016F4C9630000A1A9 /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
 		27EEDF63178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
 		27EEDF64178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
+		27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
+		27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
+		27F2A419197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */; };
+		27F2A41A197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */; };
 		27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6318BA3EFB002CBE06 /* unzip.c */; };
@@ -1232,7 +1234,6 @@
 		279C166018E830C200A4306F /* LockView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LockView.xib; sourceTree = "<group>"; };
 		279C166318E8317600A4306F /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
-		27A0098817205B4800D61FE9 /* RuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RuleEditor.xib; sourceTree = "<group>"; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
 		27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in@2x.png"; sourceTree = "<group>"; };
@@ -1374,6 +1375,9 @@
 		27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button@2x.png"; sourceTree = "<group>"; };
 		27EEDF61178B1E8F00FFE365 /* StockCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StockCard.h; path = "Home Screen/StockCard.h"; sourceTree = "<group>"; };
 		27EEDF62178B1E8F00FFE365 /* StockCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StockCard.m; path = "Home Screen/StockCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
+		27F2A414197BFA65002E6CA6 /* TagRuleEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagRuleEditorController.h; sourceTree = "<group>"; };
+		27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagRuleEditorController.m; sourceTree = "<group>"; };
+		27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagRuleEditor.xib; sourceTree = "<group>"; };
 		27F69B6018BA3EFB002CBE06 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		27F69B6118BA3EFB002CBE06 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		27F69B6218BA3EFB002CBE06 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1414,7 +1418,7 @@
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
 		A687545F1778CDC0007B4BC2 /* AssignmentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignmentController.h; sourceTree = "<group>"; };
 		A68754601778CDC0007B4BC2 /* AssignmentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssignmentController.m; sourceTree = "<group>"; };
-		A68754611778CDC0007B4BC2 /* AssignmentController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AssignmentController.xib; path = ../../Source/AssignmentController.xib; sourceTree = "<group>"; };
+		A68754611778CDC0007B4BC2 /* AssignmentController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssignmentController.xib; sourceTree = "<group>"; };
 		A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 7.xcdatamodel"; sourceTree = "<group>"; };
 		A694636E16B52D1A006D9D43 /* CCSettlementList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSettlementList.h; sourceTree = "<group>"; };
 		A694636F16B52D1A006D9D43 /* CCSettlementList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSettlementList.m; sourceTree = "<group>"; };
@@ -1917,6 +1921,8 @@
 		2795F20C17071DA5003AC74D /* Tags */ = {
 			isa = PBXGroup;
 			children = (
+				27F2A414197BFA65002E6CA6 /* TagRuleEditorController.h */,
+				27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */,
 				2795F20D17071DE6003AC74D /* TagView.h */,
 				2795F20E17071DE6003AC74D /* TagView.m */,
 			);
@@ -2188,12 +2194,12 @@
 				B1D44FF11478428E008DD256 /* PasswordWindow.xib */,
 				B1D44FEE14784213008DD256 /* Preferences.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
-				27A0098817205B4800D61FE9 /* RuleEditor.xib */,
 				B1835C1215D2A1C6003B93ED /* SigningOptions.xib */,
 				2747C5931944981C0089A7C9 /* StatementDetails.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
 				27FD0DA118411AA00047911C /* StatementsOverview.xib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
+				27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */,
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
 				B1D44FE7147841DA008DD256 /* TanMethods.xib */,
 				A6E9242915E38FFE00FA09A3 /* TanWindow.xib */,
@@ -2989,6 +2995,7 @@
 				2777892C173CE22700430EBC /* BankStatementController.xib in Resources */,
 				272722711871CE7E00215DFB /* donate-active@2x.png in Resources */,
 				2777892D173CE22700430EBC /* PurposeSplitWindow.xib in Resources */,
+				27F2A41A197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */,
 				272F6E6F1955D72300096734 /* sequence-type-end@2x.png in Resources */,
 				27AA5682186C3E9100B113E7 /* assign.png in Resources */,
 				2777892E173CE22700430EBC /* TransferTemplates.xib in Resources */,
@@ -3171,7 +3178,6 @@
 				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
 				277789B4173CE22700430EBC /* gray-hatch.png in Resources */,
 				277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */,
-				277789B6173CE22700430EBC /* RuleEditor.xib in Resources */,
 				27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */,
 				27AF5A9E173FC8EC00929B0E /* move-cursor@2x.png in Resources */,
 				273273711747DEE6005DF560 /* blue arrow@2x.png in Resources */,
@@ -3229,6 +3235,7 @@
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
 				272722701871CE7E00215DFB /* donate-active@2x.png in Resources */,
+				27F2A419197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */,
 				272F6E6E1955D72300096734 /* sequence-type-end@2x.png in Resources */,
 				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
@@ -3411,7 +3418,6 @@
 				2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */,
 				270A3DFA18146E820079B37F /* calendar.png in Resources */,
 				2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */,
-				27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */,
 				27AF5A9B173FC8EC00929B0E /* move-cursor.png in Resources */,
 				27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */,
 				273273701747DEE6005DF560 /* blue arrow@2x.png in Resources */,
@@ -3502,6 +3508,7 @@
 				2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
 				2777887C173CE22700430EBC /* TransactionLimits.m in Sources */,
+				27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
 				27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				2777887D173CE22700430EBC /* PreferenceController.m in Sources */,
 				27778880173CE22700430EBC /* MOAssistant.m in Sources */,
@@ -3728,6 +3735,7 @@
 				2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
 				B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */,
+				27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
 				27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				B17074870D55104000FBF186 /* PreferenceController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
