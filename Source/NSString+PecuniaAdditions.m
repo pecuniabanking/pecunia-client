@@ -252,14 +252,6 @@ static BOOL wordsValid;
     return NO;
 }
 
-- (BOOL)beginsWith: (NSString *)substring {
-    if (substring != nil) {
-        NSRange r = [self rangeOfString: substring];
-        return r.location == 0;
-    }
-    return NO;
-}
-
 /**
  * Processes the content of the receiver and creates a new string with a more natural appearance, if possible.
  * This mostly involves truecasing words.

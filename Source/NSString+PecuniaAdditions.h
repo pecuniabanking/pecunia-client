@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
-
 #import "BankDetailsParser.h" // Another enhancement for NSString.
 
 @interface NSString (PecuniaAdditions)
@@ -32,7 +30,6 @@
 - (NSString *)formatXML;
 
 - (BOOL)hasSubstring: (NSString *)substring;
-- (BOOL)beginsWith: (NSString *)substring;
 
 - (NSString *)stringWithNaturalText;
 - (NSString *)stringWithNormalizedGermanChars;

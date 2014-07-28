@@ -108,6 +108,7 @@ AP128 = "Fehler bei der Auftragsausführung";
 AP129 = "Die Bankkennung '%@' wurde erfolgreich synchronisiert";
 AP130 = "Buchung";
 AP131 = "Kreditkartenbuchung";
+AP132 = "Dieser Vorgang kann nicht rückgängig gemacht werden!";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199
@@ -140,6 +141,7 @@ AP175 = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpas
 AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
 AP177 = "Bitte wählen Sie die Datei %@ aus";
 AP178 = "Die Verwendungszweckinformationen werden nach SEPA-Informationen durchsucht. Dies kann bei großen Datenmengen etwas länger dauern.";
+AP179 = "Die Bankkennung %@ jetzt löschen?";
 
 // Banking common + business transactions
 // AP200..AP249

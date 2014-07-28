@@ -56,13 +56,11 @@
 // user cache
 static NSMutableDictionary *users = nil;
 
-- (id)copyWithZone: (NSZone *)zone
-{
+- (id)copyWithZone: (NSZone *)zone {
     return self;
 }
 
-- (void)updateTanMethods: (NSArray *)methods
-{
+- (void)updateTanMethods: (NSArray *)methods {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSMutableSet           *oldMethods = [[self tanMethods] copy];
     NSEntityDescription    *entity = [NSEntityDescription entityForName: @"TanMethod" inManagedObjectContext: context];
@@ -88,8 +86,7 @@ static NSMutableDictionary *users = nil;
     [context processPendingChanges];
 }
 
-- (void)updateTanMedia: (NSArray *)media
-{
+- (void)updateTanMedia: (NSArray *)media {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSMutableSet           *oldMedia = [[self tanMedia] copy];
     NSEntityDescription    *entity = [NSEntityDescription entityForName: @"TanMedium" inManagedObjectContext: context];
@@ -115,8 +112,7 @@ static NSMutableDictionary *users = nil;
     [context processPendingChanges];
 }
 
-- (NSArray *)getTanSigningOptions
-{
+- (NSArray *)getTanSigningOptions {
     if ([self.secMethod intValue] != SecMethod_PinTan) {
         return nil;
     }
@@ -191,8 +187,7 @@ static NSMutableDictionary *users = nil;
     return [options sortedArrayUsingDescriptors: sortDescriptors];
 }
 
-- (NSArray *)getSigningOptions
-{
+- (NSArray *)getSigningOptions {
     if (self.userId == nil) {
         return nil;
     }
@@ -211,8 +206,7 @@ static NSMutableDictionary *users = nil;
     return options;
 }
 
-- (void)setpreferredSigningOption: (SigningOption *)option
-{
+- (void)setpreferredSigningOption: (SigningOption *)option {
     if (option == nil) {
         self.preferredTanMethod = nil;
         return;
@@ -233,8 +227,7 @@ static NSMutableDictionary *users = nil;
     }
 }
 
-- (SigningOption *)preferredSigningOption
-{
+- (SigningOption *)preferredSigningOption {
     TanMethod *method = self.preferredTanMethod;
     if (method == nil) {
         return nil;
@@ -254,8 +247,7 @@ static NSMutableDictionary *users = nil;
     return option;
 }
 
-- (int)getpreferredSigningOptionIdx
-{
+- (int)getpreferredSigningOptionIdx {
     if ([self.secMethod intValue] == SecMethod_DDV) {
         return 0;
     }
@@ -277,13 +269,14 @@ static NSMutableDictionary *users = nil;
     for (SigningOption *opt in options) {
         if ([opt.tanMethod isEqualToString: option.tanMethod] && ((opt.tanMediumName == nil && option.tanMediumName == nil) || [opt.tanMediumName isEqualToString: option.tanMediumName])) {
             return idx;
-        } else {idx++; }
+        } else {
+            idx++;
+        }
     }
     return [options count];
 }
 
-- (void)setpreferredSigningOptionIdx: (NSIndexSet *)iSet
-{
+- (void)setpreferredSigningOptionIdx: (NSIndexSet *)iSet {
     int idx = [iSet firstIndex];
     if (idx < 0) {
         return;
@@ -293,8 +286,7 @@ static NSMutableDictionary *users = nil;
     [self setpreferredSigningOption: options[idx]];
 }
 
-- (void)checkForUpdatedLoginData
-{
+- (void)checkForUpdatedLoginData {
     if (self.updatedUserId != nil) {
         self.userId = self.updatedUserId;
         for (BankAccount *account in self.accounts) {
@@ -310,24 +302,22 @@ static NSMutableDictionary *users = nil;
     }
 }
 
-- (NSString*)description
-{
+- (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
 
 /**
  * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).
  */
-- (NSString*)descriptionWithIndent: (NSString *)indent
-{
-    NSString *format = NSLocalizedString(@"AP1018", @"");
+- (NSString *)descriptionWithIndent: (NSString *)indent {
+    NSString        *format = NSLocalizedString(@"AP1018", @"");
     NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName];
     [s appendFormat: NSLocalizedString(@"AP1019", @""), indent, self.customerId, self.hbciVersion];
     [s appendFormat: NSLocalizedString(@"AP1020", @""), indent, self.bankURL];
 
     if (self.tanMethods.count > 0) {
         NSMutableString *temp = [NSMutableString string];
-        NSArray *sortedMethods = [[self.tanMethods allObjects] sortedArrayUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
+        NSArray         *sortedMethods = [[self.tanMethods allObjects] sortedArrayUsingComparator: ^NSComparisonResult (id obj1, id obj2) {
             TanMethod *method1 = (TanMethod *)obj1;
             TanMethod *method2 = (TanMethod *)obj2;
             return [method1.method compare: method2.method];
@@ -335,7 +325,6 @@ static NSMutableDictionary *users = nil;
         for (TanMethod *method in sortedMethods) {
             [temp appendString: [method descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
-
         [s appendFormat: NSLocalizedString(@"AP1021", @""), indent, temp, indent];
     } else {
         [s appendFormat: NSLocalizedString(@"AP1022", @""), indent];
@@ -346,7 +335,6 @@ static NSMutableDictionary *users = nil;
         for (TanMedium *medium in self.tanMedia) {
             [temp appendString: [medium descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
-
         [s appendFormat: NSLocalizedString(@"AP1023", @""), indent, temp, indent];
     } else {
         [s appendFormat: NSLocalizedString(@"AP1024", @""), indent];
@@ -357,7 +345,6 @@ static NSMutableDictionary *users = nil;
         for (BankAccount *account in self.accounts) {
             [temp appendFormat: @"%@\n", [account descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
-
         [s appendFormat: NSLocalizedString(@"AP1025", @""), indent, temp, indent];
     } else {
         [s appendFormat: NSLocalizedString(@"AP1026", @""), indent];
@@ -366,8 +353,7 @@ static NSMutableDictionary *users = nil;
     return s;
 }
 
-+ (NSArray *)allUsers
-{
++ (NSArray *)allUsers {
     NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
@@ -381,22 +367,21 @@ static NSMutableDictionary *users = nil;
     return bankUsers;
 }
 
-// important: bankCode of BankUser and bankCode of accounts can be different!
-// for that reason, if we don't find a user with the same bankCode we look for one with just the same
-// userId
-+ (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode
-{
-    NSError                *error = nil;
-    
+// Important: bankCode of BankUser and bankCode of accounts can be different!
+// For that reason, if we don't find a user with the same bank code we look for one with just the same
+// userId.
++ (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode {
+    NSError *error = nil;
+
     if (userId == nil) {
         return nil;
     }
-    
+
     if (users == nil) {
-        users = [NSMutableDictionary dictionaryWithCapacity:10];
+        users = [NSMutableDictionary dictionaryWithCapacity: 10];
     }
-    
-    NSArray *bankUsers = [users objectForKey:userId];
+
+    NSArray *bankUsers = [users objectForKey: userId];
     if (bankUsers == nil) {
         NSManagedObjectContext *context = [[MOAssistant assistant] context];
         NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
@@ -416,30 +401,27 @@ static NSMutableDictionary *users = nil;
                             nil, nil, userId, bankCode);
             return nil;
         }
-        [users setObject:bankUsers forKey:userId];
+        [users setObject: bankUsers forKey: userId];
     }
-    
-    // do we have a user with the right bankCode?
+
+    // Do we have a user with the right bankCode?
     for (BankUser *user in bankUsers) {
-        if ([user.bankCode isEqualToString:bankCode]) {
+        if ([user.bankCode isEqualToString: bankCode]) {
             return user;
         }
     }
-    
-    // no - take the last one
-    return [bankUsers lastObject];    
+    // No user found. Take the last one we have.
+    return bankUsers.lastObject;
 }
 
-+ (void)removeUser:(BankUser*)user
-{
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
++ (void)removeUser: (BankUser *)user {
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     if (user.userId != nil) {
-        [users removeObjectForKey:user.userId];
+        [users removeObjectForKey: user.userId];
     }
-    
+
     [context deleteObject: user];
 }
-
 
 @end
