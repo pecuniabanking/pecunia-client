@@ -20,61 +20,89 @@
 #import "TransferPrintView.h"
 #import "Transfer.h"
 #import "BankAccount.h"
+#import "PreferenceController.h"
+
 #import "NSString+PecuniaAdditions.h"
+#import "NS(Attributed)String+Geometrics.h"
 
-#define VERT_PADDING  5
-#define HEADER_HEIGHT 25
+#define SPACING       5  // The distance between two entries in the table.
+#define PADDING       3  // Left and right padding within in a column.
+#define HEADER_HEIGHT 25 // The height of the header on each page.
 
-@interface TransferPrintView (private)
+// Fixed column widths, except for the description column, which is computed from the overall width and these values.
+#define DATE_COLUMN_WIDTH  40
+#define AMOUNT_COLUMN_WIDTH  65
+#define ACCOUNT_COLUMN_WIDTH 150
 
-- (int)getTransferHeights;
+@interface TransferPrintView () {
+    CGFloat topMargin;
+    CGFloat bottomMargin;
+    CGFloat leftMargin;
+    CGFloat rightMargin;
+
+    CGFloat purposeWidth;
+    CGFloat pageWidth;
+
+    NSUInteger totalPages;
+    NSUInteger pageHeight;
+
+    NSAttributedString *title;
+    NSMutableArray     *entries; // Dictionaries with attributed strings (date, client, account, amount) and a height (NSNumber).
+
+    NSDateFormatter *dateFormatter;
+    NSDateFormatter *dateTimeFormatter;
+
+    NSFont *normalFont;
+    NSFont *smallFont;
+    NSFont *boldFont;
+}
 
 @end
 
 @implementation TransferPrintView
 
-@synthesize transfers;
-
 - (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi {
-    NSRect frame = NSMakeRect(0, 0, pi.paperSize.width - pi.leftMargin - pi.rightMargin, pi.paperSize.height - pi.topMargin - pi.bottomMargin);
+    NSRect frame = NSMakeRect(0, 0, pi.paperSize.width - pi.leftMargin - pi.rightMargin,
+                              pi.paperSize.height - pi.topMargin - pi.bottomMargin);
+
     self = [super initWithFrame: frame];
     if (self != nil) {
-        int height = [self getTransferHeights];
-        if (height > pageHeight) {
-            frame.size.height = height;
-            [self setFrame: frame];
-        }
-
-        paperSize = pi.paperSize;
         topMargin = pi.topMargin;
         bottomMargin = pi.bottomMargin;
         leftMargin = pi.leftMargin;
         rightMargin = pi.rightMargin;
-        pageHeight = paperSize.height - topMargin - bottomMargin;
-        pageWidth = paperSize.width - leftMargin - rightMargin;
-        dateWidth = 37;
-        amountWidth = 65;
-        bankAddressWidth = 130;
-        purposeWidth = pageWidth - dateWidth - amountWidth - bankAddressWidth;
-        padding = 3;
-        currentPage = 1;
+        
+        pageHeight = pi.paperSize.height - topMargin - bottomMargin;
+        pageWidth = pi.paperSize.width - leftMargin - rightMargin;
+        purposeWidth = pageWidth - DATE_COLUMN_WIDTH - AMOUNT_COLUMN_WIDTH - ACCOUNT_COLUMN_WIDTH;
 
-        self.transfers = [transfersToPrint mutableCopy];
+        NSDictionary *attributes = @{
+            NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 16],
+            NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.000 green: 0.405 blue: 0.819 alpha: 1.000]
+        };
+        title = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"Pecunia %@", NSLocalizedString(@"AP435", nil)]
+                                                attributes: attributes];
+
+        dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"dd.MM.yy";
+
+        dateTimeFormatter = [NSDateFormatter new];
+        dateTimeFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateTimeFormatter.timeStyle = NSDateFormatterMediumStyle;
+
+        normalFont = [NSFont fontWithName: PreferenceController.mainFontName size: 9];
+        smallFont = [NSFont fontWithName: PreferenceController.mainFontName size: 8];
+        boldFont = [NSFont fontWithName: PreferenceController.mainFontNameBold size: 9];
+
+        NSMutableArray   *sortedTransfers = [transfersToPrint mutableCopy];
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-        NSArray          *sds = @[sd];
-        [self.transfers sortUsingDescriptors: sds];
+        [sortedTransfers sortUsingDescriptors: @[sd]];
 
-        statHeights = (int *)malloc([self.transfers count] * sizeof(int));
-
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat: @"dd.MM."];
-
-        numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-        [numberFormatter setMinimumFractionDigits: 2];
-
-        debitNumberFormatter = [numberFormatter copy];
-        [debitNumberFormatter setMinusSign: @""];
+        NSUInteger height = [self computeEntriesFromTransfers: sortedTransfers];
+        if (height > pageHeight) {
+            frame.size.height = height;
+            [self setFrame: frame];
+        }
     }
 
     return self;
@@ -85,13 +113,11 @@
 }
 
 - (NSAttributedString *)textFromTransfer: (Transfer *)transfer {
-    // Receiver
-    NSFont                    *font = [NSFont fontWithName: @"Lucida Grande Bold" size: 9];
-    NSMutableAttributedString *result = [[transfer.remoteName attributedStringWithFont: font] mutableCopy];
+    NSMutableAttributedString *result = [[transfer.remoteName attributedStringWithFont: boldFont] mutableCopy];
 
     // Type
-    TransferType type = [transfer.type intValue];
-    NSString     *typeString = nil;
+    TransferType type = transfer.type.intValue;
+    NSString     *typeString;
     switch (type) {
         case TransferTypeOldStandard:
             typeString = NSLocalizedString(@"AP404", nil);
@@ -118,265 +144,247 @@
             break;
     }
 
-    // Type
-    typeString = [NSString stringWithFormat: @"\n(%@)", typeString];
-    font = [NSFont fontWithName: @"Helvetica Oblique" size: 8];
-    [result appendAttributedString: [typeString attributedStringWithFont: font]];
+    if (typeString.length > 0) {
+        typeString = [NSString stringWithFormat: @"\n(%@)", typeString];
+        [result appendAttributedString: [typeString attributedStringWithFont: smallFont]];
+    }
 
     // Purpose
-    font = [NSFont fontWithName: @"Lucida Grande" size: 9];
-    [result appendAttributedString: [[@"\n" stringByAppendingString : transfer.purpose] attributedStringWithFont: font]];
+    [result appendAttributedString: [[@"\n" stringByAppendingString : transfer.purpose] attributedStringWithFont: normalFont]];
+
+    NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
+    style.maximumLineHeight = 9.5;
+    //[result addAttribute: NSParagraphStyleAttributeName value: style range: NSMakeRange(0, result.length)];
 
     return result;
 }
 
 - (NSAttributedString *)bankAddressTextFromTransfer: (Transfer *)transfer {
     if ([transfer isSEPAorEU]) {
-        NSFont                    *font1 = [NSFont fontWithName: @"Lucida Grande" size: 9];
-        NSFont                    *font2 = [NSFont fontWithName: @"Lucida Grande Bold" size: 8];
-        NSMutableAttributedString *mas = [[@"IBAN: " attributedStringWithFont : font1] mutableCopy];
-        [mas appendAttributedString: [transfer.remoteIBAN attributedStringWithFont: font2]];
-        [mas appendAttributedString: [@"\nBIC: " attributedStringWithFont : font1]];
-        [mas appendAttributedString: [transfer.remoteBIC attributedStringWithFont: font2]];
+        NSMutableAttributedString *mas = [[@"IBAN: " attributedStringWithFont : normalFont] mutableCopy];
+        [mas appendAttributedString: [transfer.remoteIBAN attributedStringWithFont: boldFont]];
+        [mas appendAttributedString: [@"\nBIC: " attributedStringWithFont : normalFont]];
+        [mas appendAttributedString: [transfer.remoteBIC attributedStringWithFont: boldFont]];
         return mas;
     } else {
-        NSFont                    *font1 = [NSFont fontWithName: @"Lucida Grande" size: 9];
-        NSFont                    *font2 = [NSFont fontWithName: @"Lucida Grande Bold" size: 9];
-        NSMutableAttributedString *mas = [[@"Konto: " attributedStringWithFont : font1] mutableCopy];
-        [mas appendAttributedString: [transfer.remoteAccount attributedStringWithFont: font2]];
-        [mas appendAttributedString: [@"\nBLZ: " attributedStringWithFont : font1]];
-        [mas appendAttributedString: [transfer.remoteBankCode attributedStringWithFont: font2]];
-        [mas appendAttributedString: [[@"\n" stringByAppendingString : transfer.remoteBankName] attributedStringWithFont: font1]];
+        NSMutableAttributedString *mas = [[@"Konto: " attributedStringWithFont : normalFont] mutableCopy];
+        [mas appendAttributedString: [transfer.remoteAccount attributedStringWithFont: boldFont]];
+        [mas appendAttributedString: [@"\nBLZ: " attributedStringWithFont : normalFont]];
+        [mas appendAttributedString: [transfer.remoteBankCode attributedStringWithFont: boldFont]];
+        [mas appendAttributedString: [[@"\n" stringByAppendingString : transfer.remoteBankName] attributedStringWithFont: normalFont]];
         return mas;
     }
 }
 
-- (int)getTransferHeights {
-    NSSize purposeSize;
-    NSSize addressSize;
-    NSSize dateSize;
-    purposeSize.width = purposeWidth - 2 * padding;
-    purposeSize.height = 400;
-    addressSize.width = bankAddressWidth - 2 * padding;
-    addressSize.height = 400;
-    dateSize.width = dateWidth - 2 * padding;
-    dateSize.height = 400;
-    int                 page = 0;
-    int                 idx = 0;
-    int                 h = 45;
-    int                 height;
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    attributes[NSFontAttributeName] = [NSFont userFontOfSize: 9];
+/**
+ * Determines the text to be printed for each transfer, the height of that entry and the overall height.
+ */
+- (NSUInteger)computeEntriesFromTransfers: (NSArray *)transfers {
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.minimumFractionDigits = 2;
 
-    NSRect r = [@"01.01.\n10.10." boundingRectWithSize : dateSize options : NSStringDrawingUsesLineFragmentOrigin attributes : attributes];
-    minStatHeight = r.size.height;
+    NSUInteger totalHeight = 0;
 
-    for (Transfer *transfer in self.transfers) {
-        NSAttributedString *s = [self textFromTransfer: transfer];
-        r = [s boundingRectWithSize: purposeSize options: NSStringDrawingUsesLineFragmentOrigin];
-        height = r.size.height;
-        if (height < minStatHeight) {
-            height = minStatHeight;
+    entries = [NSMutableArray new];
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    attributes[NSFontAttributeName] = [NSFont fontWithName: PreferenceController.mainFontName size: 8];
+
+    NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
+    style.alignment = NSRightTextAlignment;
+    NSMutableDictionary *rightAlignAttributes = [attributes mutableCopy];
+    rightAlignAttributes[NSParagraphStyleAttributeName] = style;
+
+    style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
+    style.alignment = NSCenterTextAlignment;
+    NSMutableDictionary *centerAlignAttributes = [attributes mutableCopy];
+    centerAlignAttributes[NSParagraphStyleAttributeName] = style;
+
+    for (Transfer *transfer in transfers) {
+        NSMutableDictionary *entry = [NSMutableDictionary new];
+
+        NSAttributedString *s;
+        if (transfer.valutaDate != nil) {
+            s = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n%@",
+                                                             [dateFormatter stringFromDate: transfer.date],
+                                                             [dateFormatter stringFromDate: transfer.valutaDate]]
+                                                attributes: centerAlignAttributes];
+        } else {
+            s = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@",
+                                                             [dateFormatter stringFromDate: transfer.date]]
+                                                attributes: centerAlignAttributes];
         }
+        entry[@"date"] = s;
+
+        NSRect r = [s boundingRectWithSize : NSMakeSize(DATE_COLUMN_WIDTH - 2 * PADDING, 0)
+                                   options : NSStringDrawingUsesLineFragmentOrigin];
+        NSUInteger entryHeight = r.size.height;
+
+        s = [self textFromTransfer: transfer];
+        entry[@"client"] = s;
+
+        r = [s boundingRectWithSize: NSMakeSize(purposeWidth - 2 * PADDING, 0)
+                            options: NSStringDrawingUsesLineFragmentOrigin];
+        if (r.size.height > entryHeight) {
+            entryHeight = r.size.height;
+        }
+
         s = [self bankAddressTextFromTransfer: transfer];
-        r = [s boundingRectWithSize: addressSize options: NSStringDrawingUsesLineFragmentOrigin];
-        if (r.size.height > height) {
-            height = r.size.height;
-        }
-        if (h + height + VERT_PADDING > pageHeight) {
-            page++;
-            h = HEADER_HEIGHT + VERT_PADDING;
-        }
-        h += height + VERT_PADDING;
-        statHeights[idx++] = height;
-    }
-    totalPages = page + 1;
-    return page * pageHeight + h + 18;
-}
+        entry[@"account"] = s;
 
-- (void)finalizePage: (int)page atPosition: (int)pos {
-    int baseHeight = page * pageHeight;
-    int hBase = 0;
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(0, baseHeight + pos) toPoint: NSMakePoint(pageWidth, baseHeight + pos)];
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
-    hBase += dateWidth;
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
-    hBase += purposeWidth;
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
-    hBase += bankAddressWidth;
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
-    hBase += amountWidth;
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
+        r = [s boundingRectWithSize: NSMakeSize(ACCOUNT_COLUMN_WIDTH - 2 * PADDING, 0)
+                            options: NSStringDrawingUsesLineFragmentOrigin];
+        if (r.size.height > entryHeight) {
+            entryHeight = r.size.height;
+        }
+
+        formatter.currencyCode = transfer.currency;
+        s = [[NSAttributedString alloc] initWithString: [formatter stringFromNumber: transfer.value]
+                                            attributes: rightAlignAttributes];
+        entry[@"amount"] = s;
+
+        r = [s boundingRectWithSize: NSMakeSize(AMOUNT_COLUMN_WIDTH - 2 * PADDING, 0)
+                            options: NSStringDrawingUsesLineFragmentOrigin];
+        if (r.size.height > entryHeight) {
+            entryHeight = r.size.height;
+        }
+
+        entry[@"height"] = @(entryHeight);
+        [entries addObject: entry];
+
+        totalHeight += entryHeight + SPACING;
+    }
+
+    totalPages = ceil(totalHeight / (pageHeight - HEADER_HEIGHT - SPACING)) + 1;
+    return totalPages * pageHeight;
 }
 
 - (void)drawHeaderForPage: (int)page {
     int baseHeight = page * pageHeight;
-    int hBase = 0;
 
-    // Attributes for header text
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    attributes[NSFontAttributeName] = [NSFont fontWithName: @"Helvetica-Bold" size: 9];
-    [NSBezierPath setDefaultLineWidth: 0.5];
+    // Attributes for header text.
+    NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
+    style.maximumLineHeight = 9;
+    style.alignment = NSCenterTextAlignment;
+    NSDictionary *attributes = @{
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontName size: 8],
+        NSParagraphStyleAttributeName: style
+    };
 
-    // first header rect
+    // The header with column headings.
     NSRect headerFrame = NSMakeRect(0, baseHeight + 1, pageWidth, HEADER_HEIGHT);
-    [[NSColor lightGrayColor] setFill];
+    [[NSColor colorWithCalibratedWhite: 0.895 alpha: 1.000] setFill];
     [NSBezierPath fillRect: headerFrame];
+
+    NSColor *lineColor = [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000];
+    [lineColor setStroke];
     [NSBezierPath strokeRect: headerFrame];
-    //[NSBezierPath strokeLineFromPoint:NSMakePoint(0, baseHeight+20) toPoint:NSMakePoint(pageWidth, baseHeight+20) ];
 
-    // dates
-    hBase += dateWidth;
-    headerFrame = NSMakeRect(0, baseHeight, dateWidth, HEADER_HEIGHT);
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight) toPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT)];
-    NSAttributedString *as = [[NSAttributedString alloc] initWithString: @"Datum\nValuta" attributes: attributes];
-    headerFrame.origin.y += 1;
-    headerFrame.origin.x += padding;
-    [as drawInRect: headerFrame];
+    headerFrame.origin.y += 3;
+    headerFrame.origin.x += PADDING;
 
-    // purpose
-    hBase += purposeWidth;
-    headerFrame = NSMakeRect(dateWidth, baseHeight, purposeWidth, HEADER_HEIGHT);
-    //	[NSBezierPath strokeRect:headerFrame ];
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight) toPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT)];
-    as = [[NSAttributedString alloc] initWithString: @"Empfänger\nBuchungshinweis" attributes: attributes];
-    headerFrame.origin.y += 1;
-    headerFrame.origin.x += padding;
-    [as drawInRect: headerFrame];
+    // Dates.
+    headerFrame.size.width = DATE_COLUMN_WIDTH - 2 * PADDING;
+    NSAttributedString *text = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP135", nil)
+                                                               attributes: attributes];
+    [text drawInRect: headerFrame];
+    [lineColor setStroke];
+    [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight)
+                              toPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight + HEADER_HEIGHT)];
 
-    // bankAddress
-    hBase += bankAddressWidth;
-    headerFrame = NSMakeRect(dateWidth + purposeWidth, baseHeight, bankAddressWidth, HEADER_HEIGHT);
-    //	[NSBezierPath strokeRect:headerFrame ];
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight) toPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT)];
-    as = [[NSAttributedString alloc] initWithString: @"Kontoverbindung" attributes: attributes];
-    headerFrame.origin.y += 1;
-    headerFrame.origin.x += padding;
-    [as drawInRect: headerFrame];
+    // Purpose.
+    headerFrame.origin.x += DATE_COLUMN_WIDTH;
+    headerFrame.size.width = purposeWidth - 2 * PADDING;
+    text = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP136", nil)
+                                           attributes: attributes];
+    [text drawInRect: headerFrame];
+    [lineColor setStroke];
+    [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight)
+                              toPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight + HEADER_HEIGHT)];
 
-    // amount
-    hBase += amountWidth;
-    headerFrame = NSMakeRect(dateWidth + purposeWidth + bankAddressWidth, baseHeight, amountWidth, HEADER_HEIGHT);
-    //	[NSBezierPath strokeRect:headerFrame ];
-    [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight) toPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT)];
-    as = [[NSAttributedString alloc] initWithString: @"Betrag" attributes: attributes];
-    headerFrame.origin.y += 1;
-    headerFrame.origin.x += padding;
-    [as drawInRect: headerFrame];
+    // Address.
+    headerFrame.origin.x += purposeWidth;
+    headerFrame.size.width = ACCOUNT_COLUMN_WIDTH - 2 * PADDING;
+    text = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP137", nil)
+                                           attributes: attributes];
+    [text drawInRect: headerFrame];
+    [lineColor setStroke];
+    [NSBezierPath strokeLineFromPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight)
+                              toPoint: NSMakePoint(NSMaxX(headerFrame) + PADDING, baseHeight + HEADER_HEIGHT)];
+
+    // Amount.
+    headerFrame.origin.x += ACCOUNT_COLUMN_WIDTH;
+    headerFrame.size.width = AMOUNT_COLUMN_WIDTH - 2 * PADDING;
+    text = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP606", nil)
+                                           attributes: attributes];
+    [text drawInRect: headerFrame];
 }
 
 - (void)drawPageBorderWithSize: (NSSize)borderSize {
-    NSString        *s;
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateStyle: NSDateFormatterMediumStyle];
-    [df setTimeStyle: NSDateFormatterMediumStyle];
-
-    NSParagraphStyle        *ps = [NSParagraphStyle defaultParagraphStyle];
-    NSMutableParagraphStyle *mps = [ps mutableCopy];
-    [mps setAlignment: NSRightTextAlignment];
-
-    NSRect frame = [self frame];
-    NSRect newFrame = NSMakeRect(0, 0, borderSize.width, borderSize.height);
-    [self setFrame: newFrame];
+    NSRect origionalFrame = self.frame;
+    self.frame = NSMakeRect(0, 0, borderSize.width, borderSize.height);
     [self lockFocus];
 
     // Header
-    NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    headerAttributes[NSFontAttributeName] = [NSFont fontWithName: @"Helvetica Bold Oblique" size: 16];
-    NSRect rect = NSMakeRect(leftMargin, topMargin - 30, pageWidth, 25);
-    NSString *title = NSLocalizedString(@"AP435", nil);
-    [title drawInRect: rect withAttributes: headerAttributes];
+    [title drawInRect: NSMakeRect(leftMargin, topMargin - 30, pageWidth, 25)];
 
     // Footer
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    attributes[NSFontAttributeName] = [NSFont fontWithName: @"Helvetica-Bold" size: 9];
+    NSDictionary *attributes = @{
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 9],
+        NSForegroundColorAttributeName: NSColor.blackColor,
+    };
 
-    rect = NSMakeRect(leftMargin, topMargin + pageHeight + VERT_PADDING, pageWidth, 20);
-    s = [NSString stringWithFormat: @"Erstellt am %@", [df stringFromDate: [NSDate date]]];
+    NSRect rect = NSMakeRect(leftMargin, topMargin + pageHeight + SPACING, pageWidth, 20);
+    NSString *s = [NSString stringWithFormat: NSLocalizedString(@"AP133", nil), [dateTimeFormatter stringFromDate: NSDate.date]];
     [s drawInRect: rect withAttributes: attributes];
 
-    attributes[NSParagraphStyleAttributeName] = mps;
-    s = [NSString stringWithFormat: @"Seite %li von %i", [[NSPrintOperation currentOperation] currentPage], totalPages];
-    [s drawInRect: rect withAttributes: attributes];
+    NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
+    style.alignment = NSRightTextAlignment;
+    attributes = @{
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 9],
+        NSForegroundColorAttributeName: NSColor.blackColor,
+        NSParagraphStyleAttributeName: style
+    };
 
+    s = [NSString stringWithFormat: NSLocalizedString(@"AP134", nil), NSPrintOperation.currentOperation.currentPage, totalPages];
+    [s drawInRect: rect withAttributes: attributes];
 
     [self unlockFocus];
-    [self setFrame: frame];
+    self.frame = origionalFrame;
 }
 
 - (void)drawRect: (NSRect)dirtyRect {
-    NSSize size;
-    NSRect rect;
-    int    page = 0;
-    int    idx = 0;
-    int    height;
+    NSUInteger page = -1;
+    NSUInteger currentPageHeight = pageHeight + 1;
 
-    NSParagraphStyle        *ps = [NSParagraphStyle defaultParagraphStyle];
-    NSMutableParagraphStyle *mps = [ps mutableCopy];
-    [mps setAlignment: NSRightTextAlignment];
-
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    attributes[NSFontAttributeName] = [NSFont userFontOfSize: 9];
-
-    NSMutableDictionary *amountAttributes = [NSMutableDictionary dictionaryWithCapacity: 2];
-    amountAttributes[NSFontAttributeName] = [NSFont fontWithName: @"Lucida Grande" size: 10];
-    amountAttributes[NSParagraphStyleAttributeName] = mps;
-
-    size.width = purposeWidth - 2 * padding;
-    size.height = 400;
-    int h = HEADER_HEIGHT + VERT_PADDING;
-
-    [self drawHeaderForPage: 0];
-
-    // draw statements
-    for (Transfer *transfer in self.transfers) {
-        int hBase = 0;
-        height = statHeights[idx++];
-        if (h + height + VERT_PADDING > pageHeight) {
-            [self finalizePage: page atPosition: h];
-            page++;
-            h = HEADER_HEIGHT + VERT_PADDING;
-            [self drawHeaderForPage: page];
+    for (NSDictionary *entry in entries) {
+        NSUInteger height = [entry[@"height"] integerValue];
+        if (currentPageHeight + height > pageHeight) {
+            [self drawHeaderForPage: ++page];
+            currentPageHeight = HEADER_HEIGHT + SPACING;
         }
-        rect.origin.x = hBase + padding;
-        rect.origin.y = page * pageHeight + h;
-        rect.size.height = height;
 
-        // dates
-        rect.size.width = dateWidth - 2 * padding;
-        NSDate   *valutaDate = transfer.valutaDate;
-        NSString *s;
-        if (valutaDate) {
-            s = [NSString stringWithFormat: @"%@\n%@", [dateFormatter stringFromDate: transfer.date], [dateFormatter stringFromDate: transfer.valutaDate]];
-        } else {
-            s = [dateFormatter stringFromDate: transfer.date];
-        }
-        rect.origin.y += 2;
-        [s drawInRect: rect withAttributes: attributes];
-        rect.origin.y -= 2;
-        hBase += dateWidth;
+        NSRect rect = NSMakeRect(PADDING, page * pageHeight + currentPageHeight, DATE_COLUMN_WIDTH - 2 * PADDING, height);
+        NSAttributedString *s = entry[@"date"];
+        [s drawInRect: rect];
+        rect.origin.x += DATE_COLUMN_WIDTH;
 
-        // receiver etc.
-        rect.size.width = purposeWidth - 2 * padding;
-        rect.origin.x = hBase + padding;
-        NSAttributedString *as = [self textFromTransfer: transfer];
-        [as drawInRect: rect];
-        hBase += purposeWidth;
+        rect.size.width = purposeWidth - 2 * PADDING;
+        s = entry[@"client"];
+        [s drawInRect: rect];
+        rect.origin.x += purposeWidth;
 
-        rect.size.width = bankAddressWidth - 2 * padding;
-        rect.origin.x = hBase + padding;
-        as = [self bankAddressTextFromTransfer: transfer];
-        [as drawInRect: rect];
-        hBase += bankAddressWidth;
+        rect.size.width = ACCOUNT_COLUMN_WIDTH - 2 * PADDING;
+        s = entry[@"account"];
+        [s drawInRect: rect];
+        rect.origin.x += ACCOUNT_COLUMN_WIDTH;
 
-        // Amount
-        rect.size.width = amountWidth - 2 * padding;
-        rect.origin.x = hBase + padding;
-        [numberFormatter setCurrencyCode: transfer.currency];
-        [[numberFormatter stringFromNumber: transfer.value] drawInRect: rect withAttributes: amountAttributes];
-        h += height + VERT_PADDING;
+        rect.size.width = AMOUNT_COLUMN_WIDTH - 2 * PADDING;
+        s = entry[@"amount"];
+        [s drawInRect: rect];
+
+        currentPageHeight += height + SPACING;
     }
-    [self finalizePage: page atPosition: h];
 }
 
 @end
