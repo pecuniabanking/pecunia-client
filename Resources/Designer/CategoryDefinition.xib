@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CategoryDefWindowController">
@@ -10,8 +10,8 @@
                 <outlet property="assignEntriesButton" destination="123" id="129"/>
                 <outlet property="assignPreviewController" destination="92" id="93"/>
                 <outlet property="discardButton" destination="4" id="113"/>
+                <outlet property="numberMatchRowTemplate" destination="DYe-DP-R4g" id="jVO-GL-gJB"/>
                 <outlet property="predicateEditor" destination="14" id="69"/>
-                <outlet property="predicatesBackground" destination="121" id="122"/>
                 <outlet property="saveButton" destination="3" id="112"/>
                 <outlet property="splitter" destination="116" id="131"/>
                 <outlet property="statementsListView" destination="98" id="102"/>
@@ -37,153 +37,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="959" height="294"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <customView id="121" customClass="BWGradientBox">
-                                            <rect key="frame" x="0.0" y="52" width="959" height="211"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <textField verticalHuggingPriority="750" id="114">
-                                                    <rect key="frame" x="172" y="87" width="623" height="29"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="In diesem Abschnitt sind keine Regeln definierbar" drawsBackground="YES" usesSingleLineMode="YES" id="115">
-                                                        <font key="font" metaFont="systemBold" size="24"/>
-                                                        <color key="textColor" red="0.78431373829999995" green="0.78431373829999995" blue="0.78431373829999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="backgroundColor" red="0.92941182850000004" green="0.92941182850000004" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="11">
-                                                    <rect key="frame" x="20" y="20" width="904" height="145"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="oHM-TF-zgT">
-                                                        <rect key="frame" x="0.0" y="0.0" width="904" height="145"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                        <subviews>
-                                                            <predicateEditor verticalHuggingPriority="750" tag="1" nestingMode="compound" rowHeight="25" id="14">
-                                                                <rect key="frame" x="0.0" y="0.0" width="904" height="145"/>
-                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                                <rowTemplates>
-                                                                    <predicateEditorRowTemplate rowType="compound" id="16">
-                                                                        <popUpMenus>
-                                                                            <menu id="18">
-                                                                                <items>
-                                                                                    <menuItem title="Eine" state="on" id="21">
-                                                                                        <integer key="representedObject" value="2"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Alle" id="20">
-                                                                                        <integer key="representedObject" value="1"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Keine" id="19">
-                                                                                        <integer key="representedObject" value="0"/>
-                                                                                    </menuItem>
-                                                                                </items>
-                                                                            </menu>
-                                                                            <menu id="17">
-                                                                                <items>
-                                                                                    <menuItem title="der folgenden Regeln ist wahr" state="on" id="22"/>
-                                                                                </items>
-                                                                            </menu>
-                                                                        </popUpMenus>
-                                                                    </predicateEditorRowTemplate>
-                                                                    <predicateEditorRowTemplate rowType="simple" id="15">
-                                                                        <array key="leftExpressionObject">
-                                                                            <expression type="keyPath">
-                                                                                <string key="keyPath">statement.purpose</string>
-                                                                            </expression>
-                                                                            <expression type="keyPath">
-                                                                                <string key="keyPath">statement.remoteName</string>
-                                                                            </expression>
-                                                                            <expression type="keyPath">
-                                                                                <string key="keyPath">statement.remoteAccount</string>
-                                                                            </expression>
-                                                                            <expression type="keyPath">
-                                                                                <string key="keyPath">statement.localAccount</string>
-                                                                            </expression>
-                                                                        </array>
-                                                                        <integer key="rightExpressionObject" value="700"/>
-                                                                        <comparisonPredicateOptions key="options" caseInsensitive="YES" diacriticInsensitive="YES"/>
-                                                                        <popUpMenus>
-                                                                            <menu id="23">
-                                                                                <items>
-                                                                                    <menuItem title="Verwendungszweck" state="on" id="35">
-                                                                                        <expression key="representedObject" type="keyPath">
-                                                                                            <string key="keyPath">statement.purpose</string>
-                                                                                        </expression>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Auftraggeber" id="34">
-                                                                                        <expression key="representedObject" type="keyPath">
-                                                                                            <string key="keyPath">statement.remoteName</string>
-                                                                                        </expression>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Auftraggeber-Konto" id="33">
-                                                                                        <expression key="representedObject" type="keyPath">
-                                                                                            <string key="keyPath">statement.remoteAccount</string>
-                                                                                        </expression>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Eigenes Konto" id="32">
-                                                                                        <expression key="representedObject" type="keyPath">
-                                                                                            <string key="keyPath">statement.localAccount</string>
-                                                                                        </expression>
-                                                                                    </menuItem>
-                                                                                </items>
-                                                                            </menu>
-                                                                            <menu id="24">
-                                                                                <items>
-                                                                                    <menuItem title="beinhaltet" state="on" id="31">
-                                                                                        <integer key="representedObject" value="99"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="beginnt mit" id="30">
-                                                                                        <integer key="representedObject" value="8"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="endet mit" id="29">
-                                                                                        <integer key="representedObject" value="9"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="ist" id="28">
-                                                                                        <integer key="representedObject" value="4"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="ist nicht" id="27">
-                                                                                        <integer key="representedObject" value="5"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="maskiert" id="26">
-                                                                                        <integer key="representedObject" value="7"/>
-                                                                                    </menuItem>
-                                                                                    <menuItem title="Regulärer Ausdruck" id="25">
-                                                                                        <integer key="representedObject" value="6"/>
-                                                                                    </menuItem>
-                                                                                </items>
-                                                                            </menu>
-                                                                        </popUpMenus>
-                                                                    </predicateEditorRowTemplate>
-                                                                </rowTemplates>
-                                                                <connections>
-                                                                    <action selector="predicateEditorChanged:" target="-2" id="79"/>
-                                                                    <outlet property="delegate" destination="-2" id="78"/>
-                                                                </connections>
-                                                            </predicateEditor>
-                                                        </subviews>
-                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    </clipView>
-                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="12">
-                                                        <rect key="frame" x="-100" y="-100" width="360" height="15"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
-                                                    </scroller>
-                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="13">
-                                                        <rect key="frame" x="812" y="0.0" width="16" height="123"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
-                                                    </scroller>
-                                                </scrollView>
-                                                <textField verticalHuggingPriority="750" tag="1" id="10">
-                                                    <rect key="frame" x="15" y="173" width="845" height="19"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Regeln für die automatische Zuordnung von Kontoumsätzen zu Kategorien" usesSingleLineMode="YES" id="36">
-                                                        <font key="font" size="16" name="HelveticaNeue-Medium"/>
-                                                        <color key="textColor" red="0.0" green="0.3219028115" blue="0.65158373120000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="backgroundColor" red="0.92941182850000004" green="0.92941182850000004" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                            </subviews>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="boolean" keyPath="hasFillColor" value="YES"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </customView>
                                         <button verticalHuggingPriority="750" tag="1" id="3">
                                             <rect key="frame" x="820" y="12" width="125" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -193,6 +46,7 @@
                                             </buttonCell>
                                             <connections>
                                                 <action selector="saveRule:" target="-2" id="84"/>
+                                                <binding destination="-2" name="enabled" keyPath="self.ruleChanged" id="2Lb-8N-tqu"/>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" tag="1" id="4">
@@ -206,6 +60,557 @@
                                                 <action selector="deleteRule:" target="-2" id="83"/>
                                             </connections>
                                         </button>
+                                        <textField verticalHuggingPriority="750" id="114">
+                                            <rect key="frame" x="170" y="135" width="627" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="In diesem Abschnitt sind keine Regeln definierbar" id="115">
+                                                <font key="font" size="24" name="HelveticaNeue-Bold"/>
+                                                <color key="textColor" red="0.78431373829999995" green="0.78431373829999995" blue="0.78431373829999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.92941182850000004" green="0.92941182850000004" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <scrollView borderType="line" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="11">
+                                            <rect key="frame" x="20" y="60" width="919" height="182"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="oHM-TF-zgT">
+                                                <rect key="frame" x="1" y="1" width="917" height="180"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <predicateEditor verticalHuggingPriority="750" tag="1" nestingMode="compound" rowHeight="25" id="14">
+                                                        <rect key="frame" x="0.0" y="0.0" width="917" height="200"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                        <rowTemplates>
+                                                            <predicateEditorRowTemplate rowType="compound" id="16" userLabel="Compound Row Template">
+                                                                <popUpMenus>
+                                                                    <menu id="18">
+                                                                        <items>
+                                                                            <menuItem title="Eine" state="on" id="21">
+                                                                                <integer key="representedObject" value="2"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="Alle" id="20">
+                                                                                <integer key="representedObject" value="1"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="Keine" id="19">
+                                                                                <integer key="representedObject" value="0"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="17">
+                                                                        <items>
+                                                                            <menuItem title="der folgenden Regeln ist wahr" state="on" id="22"/>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="15" userLabel="String Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.purpose</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.remoteName</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.remoteIBAN</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.remoteBIC</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.remoteAccount</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.remoteBankCode</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.account.iban</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.account.bic</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.account.accountNumber</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.account.bankCode</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <integer key="rightExpressionObject" value="700"/>
+                                                                <comparisonPredicateOptions key="options" caseInsensitive="YES" diacriticInsensitive="YES"/>
+                                                                <popUpMenus>
+                                                                    <menu id="Jpe-Oo-Cec">
+                                                                        <items>
+                                                                            <menuItem title="Verwendungszweck" state="on" id="tYb-QB-T1s">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.purpose</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem isSeparatorItem="YES" id="10u-pa-d0o">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Auftraggeber" id="enD-wz-avf">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.remoteName</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Auftraggeber IBAN" id="ihb-27-OXs">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.remoteIBAN</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Auftraggeber BIC" id="6wV-6D-m1n">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.remoteBIC</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Auftraggeber Kontonummer" id="zRA-4f-gRg">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.remoteAccount</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Auftraggeber BLZ" id="xvS-64-IS4">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.remoteBankCode</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem isSeparatorItem="YES" id="13V-93-Kgq">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Zielkonto IBAN" id="V0a-5p-ENn">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.account.iban</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Zielkonto BIC" id="iAx-DH-0Ao">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.account.bic</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Zielkonto Kontonummer" id="iAe-Ne-dxg">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.account.accountNumber</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Zielkonto BLZ" id="jL0-C8-bzk">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.account.bankCode</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="24">
+                                                                        <items>
+                                                                            <menuItem title="ist gleich" id="LOx-hL-RQs">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="enthält" state="on" id="31">
+                                                                                <integer key="representedObject" value="99"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="beginnt mit" id="30">
+                                                                                <integer key="representedObject" value="8"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="endet mit" id="29">
+                                                                                <integer key="representedObject" value="9"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist wie" id="26">
+                                                                                <integer key="representedObject" value="7"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="Regulärer Ausdruck" id="25">
+                                                                                <integer key="representedObject" value="6"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="DYe-DP-R4g" userLabel="Number Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">value</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.charge</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <integer key="rightExpressionObject" value="500"/>
+                                                                <popUpMenus>
+                                                                    <menu id="1ku-c4-1GN">
+                                                                        <items>
+                                                                            <menuItem isSeparatorItem="YES" id="RUr-rg-vyA">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Betrag" state="on" id="ad2-1t-Fjh">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">value</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Buchungsgebühr" id="tl9-ZF-wyT">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.charge</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="kJG-DS-yQt">
+                                                                        <items>
+                                                                            <menuItem title="ist gleich" id="hfQ-lM-SNx">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist ungleich" id="zkC-EL-LVi">
+                                                                                <integer key="representedObject" value="5"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist kleiner als" state="on" id="QNh-ql-klD">
+                                                                                <integer key="representedObject" value="0"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist größer als" id="X2z-Ch-O24">
+                                                                                <integer key="representedObject" value="2"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist kleiner oder gleich" id="fML-qZ-VcH">
+                                                                                <integer key="representedObject" value="1"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist größer oder gleich" id="pnw-6F-L6t">
+                                                                                <integer key="representedObject" value="3"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="2pn-ha-NSg" userLabel="String Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.sepa.mandateId</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.customerReference</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.sepa.endToEndId</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <integer key="rightExpressionObject" value="700"/>
+                                                                <comparisonPredicateOptions key="options" caseInsensitive="YES" diacriticInsensitive="YES"/>
+                                                                <popUpMenus>
+                                                                    <menu id="eeB-RZ-gS4">
+                                                                        <items>
+                                                                            <menuItem isSeparatorItem="YES" id="EgZ-KX-jwV">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Mandatsreferenz" state="on" id="VE3-mF-H0L">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.sepa.mandateId</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Kundenreferenz" id="ZUX-bs-rY0">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.customerReference</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Ende-zu-Ende Markierung" id="Stl-56-Jez">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.sepa.endToEndId</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="uxb-D9-sKo">
+                                                                        <items>
+                                                                            <menuItem title="ist gleich" id="gaE-5l-H3g">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="beinhaltet" state="on" id="H1x-ax-DjT">
+                                                                                <integer key="representedObject" value="99"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="beginnt mit" id="ehd-Za-MRa">
+                                                                                <integer key="representedObject" value="8"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="endet mit" id="QeR-w8-5Pf">
+                                                                                <integer key="representedObject" value="9"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist wie" id="FF3-fl-JOC">
+                                                                                <integer key="representedObject" value="7"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="Regulärer Ausdruck" id="dNx-QH-HyV">
+                                                                                <integer key="representedObject" value="6"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="U11-mz-AJq" userLabel="Date Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.sepa.mandateSignatureDate</string>
+                                                                    </expression>
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.sepa.settlementDate</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <integer key="rightExpressionObject" value="900"/>
+                                                                <popUpMenus>
+                                                                    <menu id="8HG-dD-YTk">
+                                                                        <items>
+                                                                            <menuItem isSeparatorItem="YES" id="AFb-S0-mdv">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Mandatsdatum" state="on" toolTip="Datum der Mandatserteilung" id="gyj-YT-ulM">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.sepa.mandateSignatureDate</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Rückbuchungsdatum" toolTip="Nur für Stornierungen, Datum zu dem die Rückbuchung abgeschlossen wurde" id="RqU-j8-bn9">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.sepa.settlementDate</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="2dY-vz-pn8">
+                                                                        <items>
+                                                                            <menuItem title="ist gleich" id="d31-Wb-XRs">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist ungleich" id="3ve-0V-t7B">
+                                                                                <integer key="representedObject" value="5"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist kleiner als" state="on" id="Vrs-AH-C9j">
+                                                                                <integer key="representedObject" value="0"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist größer als" id="4yt-0A-Soy">
+                                                                                <integer key="representedObject" value="2"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist kleiner oder gleich" id="Hkp-4U-qAn">
+                                                                                <integer key="representedObject" value="1"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist größer oder gleich" id="Yly-zu-2la">
+                                                                                <integer key="representedObject" value="3"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="peh-pW-sjc" userLabel="Constant Value Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath"></string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">dummy</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <array key="rightExpressionObject">
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$tags$</string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$refs$</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <popUpMenus>
+                                                                    <menu id="055-31-IRi">
+                                                                        <items>
+                                                                            <menuItem isSeparatorItem="YES" id="3zV-jd-pnd">
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath"></string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Buchung" state="on" id="u0E-0X-gl9">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">dummy</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="3BI-30-VXT">
+                                                                        <items>
+                                                                            <menuItem title="enhält" state="on" id="sPo-J3-uEN">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="enthält keine" id="pZQ-Kd-ngu">
+                                                                                <integer key="representedObject" value="5"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="BF6-AO-zck">
+                                                                        <items>
+                                                                            <menuItem title="Tags" state="on" id="u13-Mv-cxg">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$tags$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Anhänge" id="zZE-6Q-YS1">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$refs$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="kLQ-Q6-uOJ" userLabel="Constant Value Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="keyPath">
+                                                                        <string key="keyPath">statement.type</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <array key="rightExpressionObject">
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">0</string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">1</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <popUpMenus>
+                                                                    <menu id="QYp-97-4Cs">
+                                                                        <items>
+                                                                            <menuItem title="Buchung" state="on" id="oiu-ct-9Jw">
+                                                                                <attributedString key="attributedTitle"/>
+                                                                                <expression key="representedObject" type="keyPath">
+                                                                                    <string key="keyPath">statement.type</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="K0M-6M-JwY">
+                                                                        <items>
+                                                                            <menuItem title="ist" state="on" id="cYf-hU-b6K">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="hoO-dl-Htq">
+                                                                        <items>
+                                                                            <menuItem title="Standardumsatz" state="on" id="xjx-WA-wAs">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">0</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="Kreditkartenumsatz" id="DVa-4K-v7z">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">1</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                            <predicateEditorRowTemplate rowType="simple" id="I1w-R0-5Sv" userLabel="Constant Value Match Row Template">
+                                                                <array key="leftExpressionObject">
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">dummy</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <array key="rightExpressionObject">
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$isNew$</string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$isPreliminary$</string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$isManual$</string>
+                                                                    </expression>
+                                                                    <expression type="constant">
+                                                                        <string key="constantValue">$isStorno$</string>
+                                                                    </expression>
+                                                                </array>
+                                                                <popUpMenus>
+                                                                    <menu id="YiN-kV-WpT">
+                                                                        <items>
+                                                                            <menuItem title="Buchung" state="on" id="bDL-nu-fbb">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">dummy</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="ryv-Lz-cDD">
+                                                                        <items>
+                                                                            <menuItem title="ist" state="on" id="fgz-W7-FLG">
+                                                                                <integer key="representedObject" value="4"/>
+                                                                            </menuItem>
+                                                                            <menuItem title="ist nicht" id="uPC-QA-igV">
+                                                                                <integer key="representedObject" value="5"/>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                    <menu id="PEh-l7-nFc">
+                                                                        <items>
+                                                                            <menuItem title="neu" id="XRt-bV-eCZ">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$isNew$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="vorläufig" id="shu-4e-p1p">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$isPreliminary$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="manuell erfasst" state="on" id="9eU-Ze-95r">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$isManual$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                            <menuItem title="storniert" id="V9S-q2-bd4">
+                                                                                <expression key="representedObject" type="constant">
+                                                                                    <string key="constantValue">$isStorno$</string>
+                                                                                </expression>
+                                                                            </menuItem>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpMenus>
+                                                            </predicateEditorRowTemplate>
+                                                        </rowTemplates>
+                                                        <connections>
+                                                            <action selector="predicateEditorChanged:" target="-2" id="79"/>
+                                                            <outlet property="delegate" destination="-2" id="78"/>
+                                                        </connections>
+                                                    </predicateEditor>
+                                                </subviews>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </clipView>
+                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="12">
+                                                <rect key="frame" x="-100" y="-100" width="360" height="15"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </scroller>
+                                            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="13">
+                                                <rect key="frame" x="902" y="1" width="16" height="180"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </scroller>
+                                        </scrollView>
+                                        <textField verticalHuggingPriority="750" tag="1" id="10">
+                                            <rect key="frame" x="15" y="250" width="845" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Regeln für die automatische Zuordnung von Kontoumsätzen zu Kategorien" usesSingleLineMode="YES" id="36">
+                                                <font key="font" size="16" name="HelveticaNeue-Medium"/>
+                                                <color key="textColor" red="0.0" green="0.3219028115" blue="0.65158373120000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.92941182850000004" green="0.92941182850000004" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                 </customView>
                                 <customView id="118">
@@ -249,7 +654,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <buttonCell key="cell" type="check" title="Bereits anderen Kategorien zugeordnete Umsätze ausblenden" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="39">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="smallSystem"/>
+                                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="hideAssignedChanged:" target="-2" id="71"/>
@@ -359,7 +764,7 @@
                 <string>rule</string>
             </declaredKeys>
         </treeController>
-        <arrayController mode="entity" entityName="StatCatAssignment" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" automaticallyRearrangesObjects="YES" id="92" userLabel="AssignmentPreview">
+        <arrayController mode="entity" entityName="StatCatAssignment" automaticallyPreparesContent="YES" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" automaticallyRearrangesObjects="YES" id="92" userLabel="AssignmentPreview">
             <declaredKeys>
                 <string>imageClassification</string>
                 <string>classify</string>

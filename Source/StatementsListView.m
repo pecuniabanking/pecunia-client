@@ -64,17 +64,11 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    if ([defaults objectForKey: @"showBalances"] == nil) {
-        [defaults setBool: YES forKey: @"showBalances"];
-    }
-
     [defaults addObserver: self forKeyPath: @"showHeadersInLists" options: 0 context: UserDefaultsBindingContext];
     showHeaders = YES;
     canShowHeaders = YES;
     if ([defaults objectForKey: @"showHeadersInLists"] != nil) {
         showHeaders = [defaults boolForKey: @"showHeadersInLists"];
-    } else {
-        [defaults setBool: YES forKey: @"showHeadersInLists"];
     }
 
     [self initDetailsWithNibName: @"StatementDetails"];
@@ -123,11 +117,10 @@ extern void *UserDefaultsBindingContext;
                       ofObject: (id)object
                         change: (NSDictionary *)change
                        context: (void *)context {
-    // Coalesce many notifications into one.
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"showHeadersInLists"]) {
             showHeaders = [NSUserDefaults.standardUserDefaults boolForKey: @"showHeadersInLists"];
-            [self updateVisibleCells];
+            [self reloadData];
             return;
         }
     }

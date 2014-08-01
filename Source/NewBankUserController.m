@@ -43,8 +43,7 @@
 
 @implementation NewBankUserController
 
-- (id)initForController: (BankingController *)con
-{
+- (id)initForController: (BankingController *)con {
     self = [super initWithWindowNibName: @"BankUser"];
     bankController = con;
     bankUsers = [[BankUser allUsers] mutableCopy];
@@ -53,8 +52,7 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [hbciVersions setContent: [[HBCIController controller] supportedVersions]];
     [hbciVersions setSelectedObjects: @[@"220"]];
 
@@ -70,8 +68,7 @@
 #pragma mark -
 #pragma mark Data handling
 
-- (BankUser *)selectedUser
-{
+- (BankUser *)selectedUser {
     NSArray *selection = [bankUserController selectedObjects];
     if (selection == nil || [selection count] < 1) {
         return nil;
@@ -82,16 +79,14 @@
 #pragma mark -
 #pragma mark Window/sheet handling
 
-- (void)startProgressWithMessage: (NSString *)msg
-{
+- (void)startProgressWithMessage: (NSString *)msg {
     [msgField setStringValue: msg];
     [msgField display];
     [progressIndicator setUsesThreadedAnimation: YES];
     [progressIndicator startAnimation: self];
 }
 
-- (void)stopProgress
-{
+- (void)stopProgress {
     [progressIndicator stopAnimation: self];
     [msgField setStringValue: @""];
 
@@ -99,16 +94,14 @@
 
 - (void)userSheetDidEnd: (NSWindow *)sheet
              returnCode: (int)code
-            contextInfo: (void *)context
-{
+            contextInfo: (void *)context {
     if (code != 0) {
         [currentUserController remove: self];
     }
     [[self window] makeKeyAndOrderFront: self];
 }
 
-- (void)getBankSetupInfo
-{
+- (void)getBankSetupInfo {
     BankUser *currentUser = [currentUserController content];
 
     BankSetupInfo *info = [[HBCIController controller] getBankSetupInfo: currentUser.bankCode];
@@ -130,8 +123,7 @@
     [self prepareUserSheet];
 }
 
-- (IBAction)ok: (id)sender
-{
+- (IBAction)ok: (id)sender {
     [currentUserController commitEditing];
 
     BankUser *currentUser = [currentUserController content];
@@ -204,7 +196,7 @@
         if ([self check] == NO) {
             return;
         }
-        
+
         if (step == 1) {
             // get bank infos
             BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
@@ -257,19 +249,16 @@
     [self prepareUserSheet];
 }
 
-- (IBAction)cancelSheet: (id)sender
-{
+- (IBAction)cancelSheet: (id)sender {
     [userSheet orderOut: sender];
     [NSApp endSheet: userSheet returnCode: 1];
 }
 
-- (IBAction)secMethodChanged: (id)sender
-{
+- (IBAction)secMethodChanged: (id)sender {
     [self ok: sender];
 }
 
-- (IBAction)tanOptionChanged: (id)sender
-{
+- (IBAction)tanOptionChanged: (id)sender {
     NSArray *sel = [tanSigningOptions selectedObjects];
     if ([sel count] != 1) {
         return;
@@ -283,8 +272,7 @@
     }
 }
 
-- (void)endSheet: (id)sender
-{
+- (void)endSheet: (id)sender {
     [currentUserController commitEditing];
     if ([self check] == NO) {
         return;
@@ -293,14 +281,12 @@
     [NSApp endSheet: userSheet returnCode: 0];
 }
 
-- (BOOL)windowShouldClose: (id)sender
-{
+- (BOOL)windowShouldClose: (id)sender {
     [NSApp stopModalWithCode: 1];
     return YES;
 }
 
-- (void)windowDidBecomeKey: (NSNotification *)notification
-{
+- (void)windowDidBecomeKey: (NSNotification *)notification {
     NSArray *users = [BankUser allUsers];
     if ([users count] == 0 && triedFirst == NO) {
         [self addEntry: self];
@@ -311,8 +297,7 @@
 #pragma mark -
 #pragma mark Input handling
 
-- (BOOL)check
-{
+- (BOOL)check {
     BankUser *currentUser = [currentUserController content];
 
     if (step == 1) {
@@ -342,8 +327,7 @@
     return YES;
 }
 
-- (void)controlTextDidChange: (NSNotification *)aNotification
-{
+- (void)controlTextDidChange: (NSNotification *)aNotification {
     NSTextField *te = [aNotification object];
     NSString    *s = [te stringValue];
     BankUser    *currentUser = [currentUserController content];
@@ -369,24 +353,22 @@
 
 }
 
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification
-{
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     /*
-     NSTextField	*te = [aNotification object];
-     NSString *bankCode = [te stringValue];
-     BankUser *currentUser = [currentUserController content ];
+       NSTextField	*te = [aNotification object];
+       NSString *bankCode = [te stringValue];
+       BankUser *currentUser = [currentUserController content ];
 
-     BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
-     if (bi) {
-     currentUser.bankName = bi.name;
-     currentUser.bankURL = bi.pinTanURL;
-     currentUser.hbciVersion = bi.pinTanVersion;
-     }
+       BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
+       if (bi) {
+       currentUser.bankName = bi.name;
+       currentUser.bankURL = bi.pinTanURL;
+       currentUser.hbciVersion = bi.pinTanVersion;
+       }
      */
 }
 
-- (void)updateTanMethods
-{
+- (void)updateTanMethods {
     BankUser *user = [self selectedUser];
     if (user) {
         if ([user.secMethod intValue] == SecMethod_PinTan) {
@@ -410,13 +392,12 @@
     }
 }
 
-- (void)tableViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)tableViewSelectionDidChange: (NSNotification *)aNotification {
     [self updateTanMethods];
-    
+
     BankUser *user = [self selectedUser];
     if (user != nil) {
-        [changePinButton setEnabled:[[HBCIController controller] isTransactionSupported:TransactionType_ChangePin forUser:user]];
+        [changePinButton setEnabled: [[HBCIController controller] isTransactionSupported: TransactionType_ChangePin forUser: user]];
     } else {
         [changePinButton setEnabled: NO];
     }
@@ -425,18 +406,15 @@
 #pragma mark -
 #pragma mark IB action section
 
-- (IBAction)close: (id)sender
-{
+- (IBAction)close: (id)sender {
     [[self window] orderOut: self];
 }
 
-- (IBAction)add: (id)sender
-{
+- (IBAction)add: (id)sender {
     [[self window] close];
 }
 
-- (IBAction)allSettings: (id)sender
-{
+- (IBAction)allSettings: (id)sender {
     if (step > 3) {
         return;
     }
@@ -464,8 +442,7 @@
     step = 4;
 }
 
-- (void)prepareUserSheet_PinTan
-{
+- (void)prepareUserSheet_PinTan {
     NSArray *views = [[pinTanBox contentView] subviews];
 
     if (step == 1) {
@@ -512,8 +489,7 @@
 
 }
 
-- (void)prepareUserSheet_DDV
-{
+- (void)prepareUserSheet_DDV {
     NSArray *views = [[ddvBox contentView] subviews];
 
     if (step == 1) {
@@ -584,8 +560,7 @@
 
 }
 
-- (void)prepareUserSheet
-{
+- (void)prepareUserSheet {
     //[okButton setKeyEquivalent:@"\r" ];
     if (step == 0) {
         NSRect frame = [userSheet frame];
@@ -611,8 +586,7 @@
     }
 }
 
-- (IBAction)addEntry: (id)sender
-{
+- (IBAction)addEntry: (id)sender {
     BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
     [currentUserController setContent: user];
 
@@ -627,53 +601,59 @@
            contextInfo: NULL];
 }
 
-- (IBAction)removeEntry: (id)sender
-{
-    NSError *error = nil;
-
+- (IBAction)removeEntry: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
     }
 
-    if (user.userId == nil) {
-        //[bankUserController remove: self];
-        [BankUser removeUser:user];
-        return;
-    }
+    NSAlert *alert = [NSAlert new];
+    alert.alertStyle = NSCriticalAlertStyle;
+    alert.messageText = [NSString stringWithFormat: NSLocalizedString(@"AP179", nil), user.name];
+    alert.informativeText = NSLocalizedString(@"AP132", nil);
+    [alert addButtonWithTitle: NSLocalizedString(@"AP4", nil)];
+    [alert addButtonWithTitle: NSLocalizedString(@"AP3", nil)];
+    [alert beginSheetModalForWindow: self.window completionHandler: ^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertSecondButtonReturn) {
+            if (user.userId == nil) {
+                [BankUser removeUser: user];
+                return;
+            }
 
-    if ([[HBCIController controller] deleteBankUser: user] == TRUE) {
-        // remove user from all related bank accounts
-        NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
-        for (BankAccount *account in accounts) {
-            // check if userId must be deleted or changed
-            if ([account.userId isEqualToString: user.userId]) {
-                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                account.userId = nil;
-                account.customerId = nil;
-                for (BankUser *accUser in users) {
-                    if ([accUser.userId isEqualToString: user.userId] == NO) {
-                        account.userId = accUser.userId;
-                        account.customerId = accUser.customerId;
+            if ([[HBCIController controller] deleteBankUser: user]) {
+                // remove user from all related bank accounts
+                NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
+                for (BankAccount *account in accounts) {
+                    // check if userId must be deleted or changed
+                    if ([account.userId isEqualToString: user.userId]) {
+                        NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+                        account.userId = nil;
+                        account.customerId = nil;
+                        for (BankUser *accUser in users) {
+                            if (![accUser.userId isEqualToString: user.userId]) {
+                                account.userId = accUser.userId;
+                                account.customerId = accUser.customerId;
+                            }
+                        }
                     }
+                }
+                [BankUser removeUser: user];
+                [self updateTanMethods];
+                
+                // save updates
+                NSError *error = nil;
+                if (![context save: &error]) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                    return;
                 }
             }
         }
-        //[bankUserController remove: self];
-        [BankUser removeUser:user];
-        [self updateTanMethods];
+    }];
 
-        // save updates
-        if ([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
-    }
 }
 
-- (IBAction)changePinTanMethod: (id)sender
-{
+- (IBAction)changePinTanMethod: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
@@ -685,15 +665,14 @@
     }
 }
 
-- (IBAction)printBankParameter: (id)sender
-{
+- (IBAction)printBankParameter: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
     }
     BankParameter *bp = [[HBCIController controller] getBankParameterForUser: user];
     if (bp == nil) {
-        LogError(@"Bankparameter konnten nicht ermittelt werden");
+        LogError(@"Couldn't determine bank parameter data");
         return;
     }
 
@@ -701,8 +680,7 @@
     LogInfo(@"Anwenderparameterdaten: %@", bp.upd_raw);
 }
 
-- (IBAction)updateBankParameter: (id)sender
-{
+- (IBAction)updateBankParameter: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
@@ -718,7 +696,7 @@
     if ([user.secMethod intValue] == SecMethod_PinTan) {
         [self updateTanMethods];
     }
-    
+
     // save updates
     if ([context save: &error] == NO) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -731,61 +709,57 @@
                     NSLocalizedString(@"AP1", nil), nil, nil);
 }
 
-- (IBAction)synchronize: (id)sender
-{
+- (IBAction)synchronize: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
     }
-    
+
     PecuniaError *error = [[HBCIController controller] synchronizeUser: user];
     if (error) {
         [error alertPanel];
         return;
     }
-    
+
     // update TAN methods list
     if ([user.secMethod intValue] == SecMethod_PinTan) {
         [self updateTanMethods];
     }
-    
+
     // save updates
     if ([context save: &error] == NO) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
-    
+
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP129", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil, user.name);
 }
 
-- (IBAction)callHelp:(id)sender
-{
-    NSURL *url = [NSURL URLWithString:@"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
-    [[NSWorkspace sharedWorkspace] openURL:url];
+- (IBAction)callHelp: (id)sender {
+    NSURL *url = [NSURL URLWithString: @"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
+    [[NSWorkspace sharedWorkspace] openURL: url];
 }
 
-- (IBAction)changePin:(id)sender
-{
+- (IBAction)changePin: (id)sender {
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
     }
-    
+
     NewPinController *pinController = [[NewPinController alloc] init];
-    int res = [NSApp runModalForWindow: [pinController window]];
+    int              res = [NSApp runModalForWindow: [pinController window]];
     if (res) {
         return;
     }
-    
-    PecuniaError *error = [[HBCIController controller] changePinForUser:user toPin:[pinController result]];
+
+    PecuniaError *error = [[HBCIController controller] changePinForUser: user toPin: [pinController result]];
     if (error) {
         [error alertPanel];
         return;
     }
 }
-
 
 @end

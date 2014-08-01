@@ -310,8 +310,8 @@
             [mergedStatements sortUsingDescriptors: sds];
             NSDecimalNumber *newBalance = self.balance;
             for (stat in mergedStatements) {
+                stat.saldo = newBalance;
                 if (stat.isPreliminary.boolValue == NO) {
-                    stat.saldo = newBalance;
                     newBalance = [newBalance decimalNumberBySubtracting: stat.value];
                 }
             }
@@ -331,11 +331,12 @@
 
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
-        if (statement.isPreliminary.boolValue == NO) {
-            // Balance recomputation.
-            if (![statement.saldo isEqual: balance]) {
-                statement.saldo = balance;
-            }
+        if (![statement.saldo isEqual: balance]) {
+            statement.saldo = balance;
+        }
+        if (!statement.isPreliminary.boolValue) {
+            // Preliminary statements have no representation in the balance yet, so don't
+            // take them into account.
             balance = [balance decimalNumberBySubtracting: statement.value];
         }
     }

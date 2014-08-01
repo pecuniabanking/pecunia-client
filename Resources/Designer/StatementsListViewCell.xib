@@ -157,6 +157,11 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <imageView toolTip="Vorläufiger Umsatz, noch nicht im Saldo berücksichtigt" id="5C2-si-wzN">
+                    <rect key="frame" x="631" y="11" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" image="preliminary" id="NOR-Qr-5MU"/>
+                </imageView>
             </subviews>
             <connections>
                 <outlet property="categoriesLabel" destination="25" id="27"/>
@@ -167,6 +172,7 @@
                 <outlet property="monthLabel" destination="91" id="98"/>
                 <outlet property="newImage" destination="28" id="30"/>
                 <outlet property="noteLabel" destination="85" id="87"/>
+                <outlet property="preliminaryImage" destination="5C2-si-wzN" id="y71-mC-cxR"/>
                 <outlet property="purposeLabel" destination="11" id="19"/>
                 <outlet property="remoteNameLabel" destination="9" id="18"/>
                 <outlet property="saldoCurrencyLabel" destination="69" id="73"/>
@@ -179,5 +185,6 @@
     </objects>
     <resources>
         <image name="new-small" width="16" height="16"/>
+        <image name="preliminary" width="16" height="16"/>
     </resources>
 </document>

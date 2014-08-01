@@ -108,6 +108,12 @@ AP128 = "Fehler bei der Auftragsausführung";
 AP129 = "Die Bankkennung '%@' wurde erfolgreich synchronisiert";
 AP130 = "Buchung";
 AP131 = "Kreditkartenbuchung";
+AP132 = "Dieser Vorgang kann nicht rückgängig gemacht werden!";
+AP133 = "Erstellt am %@";
+AP134 = "Seite %i von %i";
+AP135 = "Datum\nValuta";
+AP136 = "Auftraggeber\nBuchungshinweis";
+AP137 = "Auftraggeberkonto";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199
@@ -140,6 +146,7 @@ AP175 = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpas
 AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
 AP177 = "Bitte wählen Sie die Datei %@ aus";
 AP178 = "Die Verwendungszweckinformationen werden nach SEPA-Informationen durchsucht. Dies kann bei großen Datenmengen etwas länger dauern.";
+AP179 = "Die Bankkennung %@ jetzt löschen?";
 
 // Banking common + business transactions
 // AP200..AP249
@@ -266,7 +273,7 @@ AP400 = "BLZ";
 AP401 = "Konto";
 AP402 = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
 AP403 = "Umbuchung";
-AP404 = "Standardüberweisung";
+AP404 = "Alte Standardüberweisung";
 AP405 = "EU-Überweisung";
 AP406 = "SEPA-Überweisung";
 AP407 = "Lastschrift";
@@ -297,7 +304,7 @@ AP431 = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie
 AP432 = "Jetzt senden";
 AP433 = "Möchten Sie die Überweisungsvorlage löschen?";
 AP434 = "Neue Überweisungsvorlage";
-AP435 = "Überweisungsliste";
+AP435 = "Gesendete Überweisungen";
 AP436 = "Kreditkartennummer";
 AP437 = "Gebührenschlüssel";
 AP438 = "Entgeld und Buchungsreferenz";
@@ -728,12 +735,12 @@ AP1496 = "RCUR+Wiederkehrende Überweisung+sequence-type-repeat";
 AP1497 = "FNAL+Letzte von bisher wiederkehrenden Überweisungen+sequence-type-end";
 AP1498 = "OOFF+Einmalige Überweisung+sequence-type-once-off";
 
-// Some transfer description to help parsing out the sequence type if there's not sequence code.
+// Some transfer description to help parsing out the sequence type if there's no sequence code.
 AP1499 = "dauerauftrag:RCUR";
 
 // Tooltips
 // AP1550..AP1699
-AP1550 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist noch nicht vollständig gebucht";
+AP1550 = "\nDieser Umsatz ist noch vorläufig (noch nicht gebucht und nicht im Saldo berücksichtigt)";
 AP1551 = "Banküberweisung";
 AP1552 = "Kreditkartenumsatz";
 

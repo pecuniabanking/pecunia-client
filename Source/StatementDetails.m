@@ -44,28 +44,6 @@
 extern void     *UserDefaultsBindingContext;
 extern NSString *PecuniaWordsLoadedNotification;
 
-@interface DetailsTableView : NSTextView
-@end
-
-@implementation DetailsTableView
-
-- (BOOL)canBecomeKeyView {
-    return NO;
-}
-
-@end
-
-@interface DetailsNotesView : NSTextView
-@end
-
-@implementation DetailsNotesView
-
-- (BOOL)canBecomeKeyView {
-    return NO; // Only called when the popover shows. So it can be NO all the time.
-}
-
-@end
-
 @interface DetailsViewStepperCell : NSStepperCell
 @end
 
@@ -134,10 +112,6 @@ extern NSString *PecuniaWordsLoadedNotification;
 @end
 
 @implementation DetailsTagView
-
-- (BOOL)canBecomeKeyView {
-    return NO;
-}
 
 @end
 
@@ -543,7 +517,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     // Compose sequence type image from background and type image. Background determines future transactions.
     NSImage *background;
-    if (statement.isPreliminary) {
+    if (statement.isPreliminary.boolValue) {
         background = [NSImage imageNamed: @"sequence-type-red"];
     } else {
         background = [NSImage imageNamed: @"sequence-type-blue"];
@@ -560,7 +534,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     if (tooltip.length == 0) {
         tooltip = NSLocalizedString(@"AP1215", nil);
     }
-    if (statement.isPreliminary) {
+    if (statement.isPreliminary.boolValue) {
         tooltip = [tooltip stringByAppendingString: NSLocalizedString(@"AP1550", nil)];
     }
     sequenceTypeImage.toolTip = tooltip;

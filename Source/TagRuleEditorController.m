@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,22 +17,21 @@
  * 02110-1301  USA
  */
 
-#import "BankDetailsParser.h" // Another enhancement for NSString.
+#import "TagRuleEditorController.h"
 
-@interface NSString (PecuniaAdditions)
+@interface TagRuleEditorController ()
 
-+ (NSString *)stringWithData: (NSData *)data;
+@end
 
-- (NSAttributedString *)attributedStringWithFont: (NSFont *)font;
-- (NSString *)stringByRemovingWhitespaces: (NSString *)s;
+@implementation TagRuleEditorController
 
-- (NSArray*)csvRowsWithSeparator: (NSString *)separator;
-- (NSString *)formatXML;
-
-- (BOOL)hasSubstring: (NSString *)substring;
-
-- (NSString *)stringWithNaturalText;
-- (NSString *)stringWithNormalizedGermanChars;
-- (NSString *)stringByEscapingXmlCharacters;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Initialization code here.
+    }
+    return self;
+}
 
 @end

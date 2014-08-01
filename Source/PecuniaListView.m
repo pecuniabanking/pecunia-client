@@ -23,14 +23,14 @@
 extern NSString *PecuniaWordsLoadedNotification;
 
 @interface PopoverAnimation : NSAnimation {
-@private
-    NSRect startRect;
-    NSRect endRect;
+    @private
+    NSRect    startRect;
+    NSRect    endRect;
     NSPopover *target;
 }
 @end
 
-@implementation  PopoverAnimation
+@implementation PopoverAnimation
 
 - (id)initWithPopover: (NSPopover *)popover startRect: (NSRect)start endRect: (NSRect)end {
     self = [super initWithDuration: 0.125 animationCurve: NSAnimationEaseInOut];
@@ -42,8 +42,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     return self;
 }
 
-- (void)setCurrentProgress: (NSAnimationProgress)progress
-{
+- (void)setCurrentProgress: (NSAnimationProgress)progress {
     [super setCurrentProgress: progress];
 
     NSRect newRect = startRect;
@@ -58,11 +57,11 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @synthesize representedObject;
 
-- (void)moveUp:(id)sender {
+- (void)moveUp: (id)sender {
     [self.owner moveUp: sender];
 }
 
-- (void)moveDown:(id)sender {
+- (void)moveDown: (id)sender {
     [self.owner moveDown: sender];
 }
 
@@ -76,14 +75,26 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @end
 
-@interface PecuniaListView () {
+@interface PecuniaPopover : NSPopover {
+    @public BOOL wantClose;
+}
+@end
 
-    NSPopover        *detailsPopover;
+@implementation PecuniaPopover
+- (IBAction)performClose: (id)sender {
+    wantClose = YES;
+    [super performClose: sender];
+}
+
+@end
+
+@interface PecuniaListView () <NSPopoverDelegate> {
+    PecuniaPopover   *detailsPopover;
     NSViewController *detailsPopoverController;
-
-    DetailsView *detailsView;
-
+    DetailsView      *detailsView;
     PopoverAnimation *positionAnimation;
+
+    BOOL popoverWillOpen;
 }
 
 @end
@@ -100,10 +111,42 @@ extern NSString *PecuniaWordsLoadedNotification;
     detailsView = (id)detailsPopoverController.view;
     detailsView.owner = self;
 
-    detailsPopover = [NSPopover new];
+    detailsPopover = [PecuniaPopover new];
     detailsPopover.contentViewController = detailsPopoverController;
     detailsPopover.behavior = NSPopoverBehaviorSemitransient;
     detailsPopover.animates = YES;
+    detailsPopover.delegate = self;
+}
+
+- (void)popoverWillShow: (NSNotification *)notification {
+    popoverWillOpen = YES;
+}
+
+- (void)popoverDidShow: (NSNotification *)notification {
+    detailsPopover->wantClose  = NO;
+    popoverWillOpen            = NO;
+}
+
+- (BOOL)popoverShouldClose: (NSPopover *)popover {
+    BOOL allowClose = YES;
+
+    if (!detailsPopover->wantClose) {
+        // Lets see if the mouse is over the popover ...
+        NSPoint globalLocation = NSEvent.mouseLocation;
+        NSPoint windowLocation = [popover.contentViewController.view.window convertScreenToBase: globalLocation];
+        NSPoint viewLocation = [popover.contentViewController.view convertPoint: windowLocation fromView: nil];
+        if (NSPointInRect(viewLocation, [popover.contentViewController.view bounds]) ) {
+            allowClose = NO;
+        }
+    }
+    return allowClose;
+}
+
+- (BOOL)resignFirstResponder {
+    if (popoverWillOpen) {
+        return NO;
+    }
+    return YES;
 }
 
 - (void)updateVisibleCells {
@@ -152,7 +195,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     }
 }
 
-- (void)handleMouseDown: (NSEvent*)theEvent inCell: (PXListViewCell*)theCell {
+- (void)handleMouseDown: (NSEvent *)theEvent inCell: (PXListViewCell *)theCell {
     // A mouse down will implicitly hide the popover in semi-transient mode, so temporarily
     // take over full control of the visibility.
     if (detailsPopover.shown) {
@@ -213,7 +256,6 @@ extern NSString *PecuniaWordsLoadedNotification;
     if (detailsPopover.shown) {
         NSRect rect = self.popoverRect;
         if (NSIntersectsRect(self.bounds, rect)) {
-
             if (positionAnimation != nil) {
                 [positionAnimation stopAnimation];
             }
@@ -241,7 +283,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     [detailsPopover performClose: self];
 }
 
-- (void)animationDidStop:(NSAnimation *)animation {
+- (void)animationDidStop: (NSAnimation *)animation {
     positionAnimation = nil;
 }
 

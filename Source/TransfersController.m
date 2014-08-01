@@ -1978,19 +1978,26 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)print {
     NSInteger idx = [transferTab indexOfTabViewItem: [transferTab selectedTabViewItem]];
-    if (idx == NSNotFound) {
-        return;
-    }
-
     if (idx == 0) {
-        // transfers
         NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
-        [printInfo setTopMargin: 45];
-        [printInfo setBottomMargin: 45];
+        printInfo.topMargin = 45;
+        printInfo.bottomMargin = 45;
+        printInfo.horizontalPagination = NSFitPagination;
+        printInfo.verticalPagination = NSAutoPagination;
+
+        NSView *view;
+        if (finishedTransfers.selectedObjects.count > 0) {
+            view  = [[TransferPrintView alloc] initWithTransfers: finishedTransfers.selectedObjects
+                                                       printInfo: printInfo];
+        } else {
+          view  = [[TransferPrintView alloc] initWithTransfers: finishedTransfers.arrangedObjects
+                                                     printInfo: printInfo];
+        }
+
         NSPrintOperation *printOp;
-        NSView           *view = [[TransferPrintView alloc] initWithTransfers: [finishedTransfers arrangedObjects] printInfo: printInfo];
         printOp = [NSPrintOperation printOperationWithView: view printInfo: printInfo];
-        [printOp setShowsPrintPanel: YES];
+        printOp.showsPrintPanel = YES;
+        printOp.canSpawnSeparateThread = YES;
         [printOp runOperation];
 
     }

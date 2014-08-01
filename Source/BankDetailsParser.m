@@ -67,7 +67,7 @@ static NSMutableCharacterSet *lineBreaksSet; // Line breaks only.
                 break; // No more occurences.
             }
 
-            // Due to some entries possibley being subparts of other keywords we might already have found this entry.
+            // Due to some entries possibly being subparts of other keywords we might already have found this entry.
             // In that case we ignore the currently found location.
             // For this to work more specialized keywords must appear before more general ones.
             if ([foundLocations indexOfObjectPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {

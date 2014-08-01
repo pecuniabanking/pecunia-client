@@ -33,10 +33,33 @@
 #import "StatementsListview.h"
 #import "GraphicsAdditions.h"
 
-#import "BWGradientBox.h"
+#import "NSString+PecuniaAdditions.h"
 
 #define BankStatementDataType @"BankStatementDataType"
 #define CategoryDataType      @"CategoryDataType"
+
+@interface CategoryDefWindowController ()
+{
+    IBOutlet NSArrayController  *assignPreviewController;
+    IBOutlet NSPredicateEditor  *predicateEditor;
+    IBOutlet NSView             *topView;
+    IBOutlet StatementsListView *statementsListView;
+    IBOutlet NSButton           *saveButton;
+    IBOutlet NSButton           *discardButton;
+    IBOutlet NSButton           *assignEntriesButton;
+    IBOutlet NSButton           *unassignEntriesButton;
+
+    IBOutlet NSPredicateEditorRowTemplate *numberMatchRowTemplate;
+
+    TimeSliceManager *timeSliceManager;
+    BOOL             awaking;
+}
+
+@property (strong) IBOutlet NSSplitView *splitter;
+
+@property BOOL ruleChanged;
+
+@end
 
 @implementation CategoryDefWindowController
 
@@ -80,11 +103,15 @@
 
     statementsListView.owner = self;
     statementsListView.showAssignedIndicators = YES;
-    [statementsListView setCellSpacing: 0];
-    [statementsListView setAllowsEmptySelection: YES];
-    [statementsListView setAllowsMultipleSelection: YES];
+    statementsListView.cellSpacing = 0;
+    statementsListView.allowsEmptySelection = YES;
+    statementsListView.allowsMultipleSelection = YES;
 
-    predicatesBackground.fillColor = [NSColor colorWithCalibratedWhite: 233 / 255.0 alpha: 1];
+    // The number text field in the number row template is much too narrow. Widen it to be able to enter larger numbers.
+    NSView *numberTextField = [numberMatchRowTemplate.templateViews objectAtIndex: 2];
+    NSRect frame = numberTextField.frame;
+    frame.size.width = 100;
+    numberTextField.frame = frame;
 
     awaking = NO;
 }
@@ -130,7 +157,7 @@
             [alert runModal];
             return;
         }
-        ruleChanged = NO;
+        self.ruleChanged = NO;
     }
 }
 
@@ -154,7 +181,7 @@
     }
 
     [selectedCategory setValue: nil forKey: @"rule"];
-    ruleChanged = NO;
+    self.ruleChanged = NO;
 
     // save updates
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
@@ -173,6 +200,65 @@
     [self calculateCatAssignPredicate];
 }
 
+/**
+ * Examines the given predicate if it contains some of our template values and constructs the appropriate real
+ * predicate for that. Also triggers processing for subpredicates.
+ */
+- (NSPredicate *)processPredicate: (NSPredicate *)predicate {
+    if (predicate == nil) {
+        return nil;
+    }
+
+    if ([predicate isKindOfClass: [NSCompoundPredicate class]]) {
+        NSCompoundPredicate *parent = (NSCompoundPredicate *)predicate;
+        NSArray *subPredicates = parent.subpredicates;
+        NSMutableArray *newSubPredicates = [NSMutableArray new];
+        for (NSPredicate *subpredicate in subPredicates) {
+            [newSubPredicates addObject: [self processPredicate: subpredicate]];
+        }
+        if (![subPredicates isEqualToArray: newSubPredicates]) {
+            return [[NSCompoundPredicate alloc] initWithType: parent.compoundPredicateType subpredicates: newSubPredicates];
+        }
+        return predicate;
+    }
+
+    // A simple predicate.
+    // Check for special predicates for certain properties of the statement. For those we have to recreate
+    // the real predicate.
+    NSString *predicateString = predicate.description;
+
+    NSArray *components = [predicateString componentsSeparatedByString: @"$"];
+    if (components.count > 1) {
+        // Marker found. The template value is the second last part in the string then.
+        NSString *template = components[components.count - 2];
+        BOOL isEquality = [predicateString hasSubstring: @"=="];
+        if ([template isEqualToString: @"tags"]) {
+            if (isEquality) {
+                return [NSPredicate predicateWithFormat: @"ANY statement.tags.caption != nil"];
+            } else {
+                return [NSPredicate predicateWithFormat: @"NOT (ANY statement.tags.caption != nil)"];
+            }
+        }
+
+        if ([template isEqualToString: @"refs"]) {
+            if (isEquality) {
+                return [NSPredicate predicateWithFormat: @"statement.ref1 != nil or statement.ref2 != nil or statement.ref3 != nil or statement.ref4 != nil"];
+            } else {
+                return [NSPredicate predicateWithFormat: @"statement.ref1 = nil and statement.ref2 = nil and statement.ref3 = nil and statement.ref4 = nil"];
+            }
+        }
+
+        // Any other template value stands for a property in the statement.
+        if (isEquality) {
+            return [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"statement.%@ != 0", template]];
+        } else {
+            return [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"statement.%@ == 0", template]];
+        }
+    }
+
+    return predicate;
+}
+
 - (void)calculateCatAssignPredicate
 {
     NSPredicate *pred = nil;
@@ -189,7 +275,7 @@
         pred = [NSPredicate predicateWithFormat: @"(category = %@)", selectedCategory];
         [orPreds addObject: pred];
     }
-    NSPredicate *predicate = [predicateEditor objectValue];
+    NSPredicate *predicate = [self processPredicate: predicateEditor.objectValue];
 
     // Not assigned statements
     pred = [NSPredicate predicateWithFormat: @"(category = %@)", [Category nassRoot]];
@@ -223,7 +309,7 @@
         return YES;
     }
 
-    if (ruleChanged) {
+    if (self.ruleChanged) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP305", nil),
                                   NSLocalizedString(@"AP306", nil),
                                   NSLocalizedString(@"AP3", nil),
@@ -234,7 +320,7 @@
         if (res == NSAlertDefaultReturn) {
             [self saveRule: self];
         }
-        ruleChanged = NO;
+        self.ruleChanged = NO;
     }
     return YES;
 }
@@ -251,7 +337,7 @@
         NSString *characters = [event characters];
         if ([characters length] > 0 && [characters characterAtIndex: 0] == 0x0D) {
             [self calculateCatAssignPredicate];
-            ruleChanged = YES;
+            self.ruleChanged = YES;
         }
     }
 
@@ -259,6 +345,7 @@
 
 - (void)ruleEditorRowsDidChange: (NSNotification *)notification
 {
+    self.ruleChanged = YES;
     [self calculateCatAssignPredicate];
 }
 
@@ -435,8 +522,9 @@
             NSCompoundPredicate *comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
             pred = comp;
         }
-        [predicateEditor setObjectValue: pred];
+        predicateEditor.objectValue = pred;
         [self calculateCatAssignPredicate];
+        self.ruleChanged = NO;
     }
 }
 
