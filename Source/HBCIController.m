@@ -936,7 +936,7 @@ static HBCIController *controller = nil;
     return result;
 }
 
-- (AccountStatement *)getAccountStatementForAccount: (BankAccount *)account {
+- (AccountStatement *)getAccountStatement: (int)number year: (int)year account: (BankAccount *)account {
     LogEnter;
     
     PecuniaError    *error = nil;
@@ -958,7 +958,11 @@ static HBCIController *controller = nil;
     [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
-    [self appendTag: @"format" withValue:@"3" to:cmd];
+    [self appendTag: @"format" withValue: @"3" to:cmd];
+    if (year > 0 && number > 0) {
+        [self appendTag: @"number" withValue: [NSString stringWithFormat:@"%d", number] to:cmd];
+        [self appendTag: @"year" withValue: [NSString stringWithFormat:@"%d", year] to:cmd];
+    }
     
     [cmd appendString: @"</command>"];
     

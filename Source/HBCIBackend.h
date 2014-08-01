@@ -112,7 +112,7 @@
 - (CCSettlementList *)getCCSettlementListForAccount: (BankAccount *)account;
 
 // AccountStatements
-- (AccountStatement *)getAccountStatementForAccount: (BankAccount *)account;
+- (AccountStatement *)getAccountStatement: (int)number year: (int)year account: (BankAccount *)account;
 - (AccountStatementParameters *)getAccountStatementParametersForUser: (BankUser *)user;
 
 // Misc

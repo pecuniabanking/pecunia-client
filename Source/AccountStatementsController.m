@@ -117,10 +117,24 @@
 
 - (void)update
 {
+    int number = 0, year = 0;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
-    AccountStatement *memStatement = [[HBCIController controller] getAccountStatementForAccount: account];
+    NSString *s = numberField.stringValue;
+    if (s != nil && s.length != 0) {
+        number = s.intValue;
+    }
+    s = yearField.stringValue;
+    if (s != nil && s.length != 0) {
+        year = s.intValue;
+    }
+    
+    AccountStatement *memStatement = [[HBCIController controller] getAccountStatement: number year: year account: account];
     if (memStatement == nil) {
+        return;
+    }
+    
+    if (memStatement.document == nil) {
         return;
     }
     

@@ -27,6 +27,8 @@
     IBOutlet PDFView  *pdfView;
     IBOutlet NSButton *prevButton;
     IBOutlet NSButton *nextButton;
+    IBOutlet NSTextField *numberField;
+    IBOutlet NSTextField *yearField;
 
     BankAccount *account;
     NSArray     *statements;
