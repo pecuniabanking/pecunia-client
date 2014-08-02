@@ -31,6 +31,7 @@
 
 #import "AnimationHelper.h"
 #import "BWGradientBox.h"
+#import "MessageLog.h"
 
 @interface NewBankUserController (Private)
 
@@ -676,8 +677,16 @@
         return;
     }
 
-    LogInfo(@"Bankparameterdaten: %@", bp.bpd_raw);
-    LogInfo(@"Anwenderparameterdaten: %@", bp.upd_raw);
+    if (MessageLog.log.isComTraceActive == YES) {
+        LogInfo(@"Bankparameterdaten:\n%@", bp.bpd_raw);
+        LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
+    } else {
+        MessageLog.log.isComTraceActive = YES;
+        LogInfo(@"Bankparameterdaten:\n%@", bp.bpd_raw);
+        LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
+        [MessageLog.log sendLog];
+        MessageLog.log.isComTraceActive = NO;
+    }
 }
 
 - (IBAction)updateBankParameter: (id)sender {

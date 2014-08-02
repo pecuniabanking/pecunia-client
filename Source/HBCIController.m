@@ -43,6 +43,7 @@
 #import "SystemNotification.h"
 #import "NSString+PecuniaAdditions.h"
 #import "AccountStatement.h"
+#import "ResultWindowController.h"
 
 static HBCIController *controller = nil;
 
@@ -86,6 +87,7 @@ static HBCIController *controller = nil;
 {
     // TODO: see if we can reuse that in a different way (like showing a progress indicator).
     MessageLog.log.hasError = NO;
+    [MessageLog.log.resultWindow clear];
 }
 
 - (void)stopProgress
@@ -96,6 +98,7 @@ static HBCIController *controller = nil;
                                     withTitle: NSLocalizedString(@"AP128", nil)
                                       context: nil];
     }
+    [MessageLog.log.resultWindow showOnError];
 }
 
 - (void)readCountryInfos

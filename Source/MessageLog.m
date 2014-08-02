@@ -31,6 +31,7 @@
 
 #include "LaunchParameters.h"
 #import "HBCIController.h"
+#import "ResultWindowController.h"
 
 #define LOG_FLAG_COM_TRACE (1 << 5)
 
@@ -65,6 +66,7 @@
 
 @synthesize currentLevel;
 @synthesize isComTraceActive;
+@synthesize resultWindow;
 
 - (id)init {
     self = [super init];
@@ -91,6 +93,7 @@
 
         fileLogger.doNotReuseLogFiles = YES; // Start with a new log file at each application launch.
 
+        self.resultWindow = [[ResultWindowController alloc] init];
         [self cleanUp]; // In case we were not shutdown properly on last run.
     }
     return self;
@@ -358,6 +361,7 @@
 - (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ... {
     if (level == HBCILogError) {
         self.hasError = YES;
+        [self.resultWindow addMessage:format];
     }
 
     if (isComTraceActive) {

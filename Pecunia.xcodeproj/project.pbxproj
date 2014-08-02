@@ -935,6 +935,10 @@
 		B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */; };
 		B1FB6915125D0A5500C54A0E /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6914125D0A5500C54A0E /* edit.png */; };
 		B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */; };
+		B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */; };
+		B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */; };
+		B1FD3B52198C324500781197 /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FD3B51198C324500781197 /* ResultWindow.xib */; };
+		B1FD3B53198C324500781197 /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FD3B51198C324500781197 /* ResultWindow.xib */; };
 		C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */; };
 		C13152B1150A0B260037958E /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
 /* End PBXBuildFile section */
@@ -1693,6 +1697,9 @@
 		B1FB6914125D0A5500C54A0E /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPrintView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPrintView.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1FD3B4D198C2A5B00781197 /* ResultWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultWindowController.h; sourceTree = "<group>"; };
+		B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultWindowController.m; sourceTree = "<group>"; };
+		B1FD3B51198C324500781197 /* ResultWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultWindow.xib; sourceTree = "<group>"; };
 		C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 100.xcmappingmodel; sourceTree = "<group>"; };
 		C13152AF150A0B260037958E /* CallbackHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackHandler.h; sourceTree = "<group>"; };
 		C13152B0150A0B260037958E /* CallbackHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackHandler.m; sourceTree = "<group>"; };
@@ -2157,6 +2164,7 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				B1FD3B51198C324500781197 /* ResultWindow.xib */,
 				27CBF36A174A4C5F0062E2A9 /* About.xib */,
 				B1D4500D147844C3008DD256 /* AccountCreate.xib */,
 				B1D4506D147848D3008DD256 /* AccountMaintenance.xib */,
@@ -2448,6 +2456,8 @@
 		B17B296A13E366C800739E7A /* Dialogs */ = {
 			isa = PBXGroup;
 			children = (
+				B1FD3B4D198C2A5B00781197 /* ResultWindowController.h */,
+				B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */,
 				B1835C0B15D2A1A2003B93ED /* SigningOptionsController.h */,
 				B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */,
 				B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */,
@@ -3116,6 +3126,7 @@
 				2732F69F186B06CE00809CF2 /* home.png in Resources */,
 				27AA5678186C3C7C00B113E7 /* table@2x.png in Resources */,
 				275AC7E5186B5BDC002E6BED /* graph4@2x.png in Resources */,
+				B1FD3B53198C324500781197 /* ResultWindow.xib in Resources */,
 				2732F6AB186B202400809CF2 /* overview.png in Resources */,
 				27778984173CE22700430EBC /* Chipcard.png in Resources */,
 				27778985173CE22700430EBC /* refresh.png in Resources */,
@@ -3356,6 +3367,7 @@
 				B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */,
 				2732F69E186B06CE00809CF2 /* home.png in Resources */,
 				27AA5677186C3C7C00B113E7 /* table@2x.png in Resources */,
+				B1FD3B52198C324500781197 /* ResultWindow.xib in Resources */,
 				275AC7E4186B5BDC002E6BED /* graph4@2x.png in Resources */,
 				2732F6AA186B202400809CF2 /* overview.png in Resources */,
 				27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */,
@@ -3544,6 +3556,7 @@
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
+				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				2784D451197A6CB300A40249 /* DDLog.m in Sources */,
@@ -3771,6 +3784,7 @@
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
+				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				2784D450197A6CB300A40249 /* DDLog.m in Sources */,

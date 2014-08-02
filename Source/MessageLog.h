@@ -19,6 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class ResultWindowController;
+
 // A mirror of the log levels defined in the HBCI server.
 typedef NS_ENUM(NSInteger, HBCILogLevel) {
     HBCILogNone,
@@ -48,6 +50,8 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 @property (nonatomic, assign) NSUInteger currentLevel;  // This is one of the CocoaLumberJack log levels, e.g. LOG_LEVEL_DEBUG.
 @property (nonatomic, assign) BOOL       isComTraceActive;
 @property (nonatomic, assign) BOOL       hasError;         // Set when either logError or logComTraceForLevel:format: was called with an error level.
+@property (nonatomic, strong) ResultWindowController *resultWindow;
+
 
 + (MessageLog *)log;
 + (NSString *)prettyPrintServerMessage: (NSString *)text;
