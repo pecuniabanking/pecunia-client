@@ -25,7 +25,7 @@
 #import "FileInZipInfo.h"
 #import "ZipReadStream.h"
 
-NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
+//NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
 
 @implementation NSString (PecuniaAdditions)
 
@@ -37,6 +37,7 @@ static NSData *receivedTmpData = nil;
 #define WORDS_LOAD_STRIDE 10000
 
 + (void)load {
+    /*
     // Schedule time consuming load of word list to a background queue.
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
 
@@ -101,6 +102,7 @@ static NSData *receivedTmpData = nil;
 
         LogDebug(@"Word list loading done in: %.2fs", [Mathematics timeDifferenceSince: startTime] / 1000000000);
     });
+     */
 }
 
 /**
