@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AccountStatementsController">
             <connections>
+                <outlet property="infoView" destination="cwi-Jw-x0p" id="q2p-Rg-yfI"/>
                 <outlet property="nextButton" destination="57" id="64"/>
                 <outlet property="numberField" destination="RkG-x8-jJv" id="JTU-VT-w7c"/>
                 <outlet property="pdfView" destination="3" id="18"/>
@@ -21,18 +22,18 @@
         <window title="Kontoauszüge" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" frameAutosaveName="accountStatements" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="842" y="670" width="729" height="666"/>
+            <rect key="contentRect" x="842" y="670" width="729" height="863"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="729" height="666"/>
+                <rect key="frame" x="0.0" y="0.0" width="729" height="863"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <pdfView autoresizesSubviews="NO" id="3">
-                        <rect key="frame" x="20" y="63" width="689" height="583"/>
+                        <rect key="frame" x="20" y="260" width="689" height="583"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </pdfView>
                     <button verticalHuggingPriority="750" id="36">
-                        <rect key="frame" x="377" y="13" width="166" height="32"/>
+                        <rect key="frame" x="377" y="14" width="166" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Kontoauszug laden" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -43,7 +44,7 @@
                         </connections>
                     </button>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="57">
-                        <rect key="frame" x="677" y="20" width="39" height="38"/>
+                        <rect key="frame" x="677" y="21" width="39" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="round" bezelStyle="circular" image="NSGoRightTemplate" imagePosition="only" alignment="center" alternateImage="NSGoRightTemplate" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="58">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -54,7 +55,7 @@
                         </connections>
                     </button>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="59">
-                        <rect key="frame" x="14" y="20" width="39" height="38"/>
+                        <rect key="frame" x="14" y="21" width="39" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="round" bezelStyle="circular" image="NSGoLeftTemplate" imagePosition="only" alignment="center" alternateImage="NSGoLeftTemplate" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="60">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -65,7 +66,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" id="RkG-x8-jJv">
-                        <rect key="frame" x="222" y="19" width="35" height="22"/>
+                        <rect key="frame" x="222" y="20" width="35" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hJg-qf-hjF">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="E6Z-Jh-22V"/>
@@ -75,7 +76,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="D3x-pB-E9v">
-                        <rect key="frame" x="153" y="21" width="64" height="17"/>
+                        <rect key="frame" x="153" y="22" width="64" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Nummer" id="7wV-OL-Gvv">
                             <font key="font" metaFont="system"/>
@@ -84,7 +85,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="NG5-PE-2Ar">
-                        <rect key="frame" x="270" y="21" width="37" height="17"/>
+                        <rect key="frame" x="270" y="22" width="37" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jahr" id="mLJ-ed-Egd">
                             <font key="font" metaFont="system"/>
@@ -93,7 +94,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="eyt-dm-pYB">
-                        <rect key="frame" x="307" y="19" width="49" height="22"/>
+                        <rect key="frame" x="307" y="20" width="49" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="c2l-fD-mAL">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="WQ7-FJ-kSA"/>
@@ -102,6 +103,35 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Xr5-Vd-OuO">
+                        <rect key="frame" x="20" y="64" width="689" height="188"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                        <clipView key="contentView" id="ZG3-SW-cfe">
+                            <rect key="frame" x="1" y="1" width="687" height="186"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="cwi-Jw-x0p">
+                                    <rect key="frame" x="0.0" y="0.0" width="687" height="186"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <size key="minSize" width="687" height="186"/>
+                                    <size key="maxSize" width="693" height="10000000"/>
+                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <size key="minSize" width="687" height="186"/>
+                                    <size key="maxSize" width="693" height="10000000"/>
+                                </textView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="KZd-DR-YSs">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4qT-X5-Dsg">
+                            <rect key="frame" x="672" y="1" width="16" height="186"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
                 </subviews>
             </view>
             <connections>

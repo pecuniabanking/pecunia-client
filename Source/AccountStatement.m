@@ -21,6 +21,9 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "NSString+PecuniaAdditions.h"
+#import "MOAssistant.h"
+#import "StatCatAssignment.h"
+#import "BankStatementPrintView.h"
 
 @implementation AccountStatementParameters
 
@@ -50,6 +53,47 @@
 @dynamic name;
 @dynamic confirmationCode;
 @dynamic account;
-@dynamic statements;
+@synthesize statements;
+
+- (void)convertStatementsToPDFForAccount: (BankAccount*)acct {
+    if (self.statements == nil) {
+        return;
+    }
+    
+    if (self.format.intValue != AccountStatement_MT940) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = MOAssistant.assistant.memContext;
+    NSMutableArray *stats = [NSMutableArray array];
+
+    // insert BankAccount
+    BankAccount *account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: context];
+    account.accountNumber = acct.accountNumber;
+    account.bankCode = acct.bankCode;
+    account.accountSuffix = acct.accountSuffix;
+    account.name = acct.name;
+    account.bankName = acct.bankName;
+    account.currency = acct.currency;
+    
+    // insert StatCatAssignments
+    for (BankStatement *statement in self.statements) {
+        statement.account = account;
+        StatCatAssignment *stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
+        stat.statement = statement;
+        stat.value = statement.value;
+        [stats addObject:stat];
+    }
+    
+    NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
+    [printInfo setTopMargin: 45];
+    [printInfo setBottomMargin: 45];
+    NSMutableData    *pdfData = [[NSMutableData alloc] init];
+    NSView           *view = [[BankStatementPrintView alloc] initWithStatements: stats printInfo: printInfo];
+    NSPrintOperation *printOp = [NSPrintOperation PDFOperationWithView:view insideRect:[view frame] toData:pdfData printInfo:printInfo];
+    [printOp runOperation];
+    
+    self.document = pdfData;
+}
 
 @end

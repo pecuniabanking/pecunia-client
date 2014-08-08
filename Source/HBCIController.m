@@ -955,13 +955,28 @@ static HBCIController *controller = nil;
         [error alertPanel];
         return nil;
     }
-
+    
+    // which format?
+    AccountStatementParameters *params = [self getAccountStatementParametersForUser:user];
+    if (params == nil) {
+        return nil;
+    }
+    if ([params supportsFormat:AccountStatement_PDF]) {
+        [self appendTag: @"format" withValue: @"3" to:cmd];
+    } else {
+        if ([params supportsFormat:AccountStatement_MT940]) {
+            [self appendTag: @"format" withValue: @"1" to:cmd];
+        } else {
+            // todo: Alert
+            LogError(@"Account statement format is not supported");
+        }
+    }
+    
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
-    [self appendTag: @"format" withValue: @"3" to:cmd];
     if (year > 0 && number > 0) {
         [self appendTag: @"number" withValue: [NSString stringWithFormat:@"%d", number] to:cmd];
         [self appendTag: @"year" withValue: [NSString stringWithFormat:@"%d", year] to:cmd];
@@ -982,6 +997,10 @@ static HBCIController *controller = nil;
     }
     if (result == nil) {
         LogError(@"Unexpected result for getAccountStatement: nil");
+    }
+    
+    if (result.format.intValue == AccountStatement_MT940) {
+        [result convertStatementsToPDFForAccount:account ];
     }
     
     LogLeave;

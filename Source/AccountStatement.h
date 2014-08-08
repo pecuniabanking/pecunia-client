@@ -41,10 +41,10 @@ typedef enum {
 
 @interface AccountStatement : NSManagedObject
 
-@property (nonatomic, retain) NSData * document;
-@property (nonatomic) AccountStatementFormat format;
-@property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSDate * endDate;
+@property (nonatomic, retain) NSData   * document;
+@property (nonatomic, retain) NSNumber * format;
+@property (nonatomic, retain) NSDate   * startDate;
+@property (nonatomic, retain) NSDate   * endDate;
 @property (nonatomic, retain) NSString * info;
 @property (nonatomic, retain) NSString * conditions;
 @property (nonatomic, retain) NSString * advertisement;
@@ -53,14 +53,9 @@ typedef enum {
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * confirmationCode;
 @property (nonatomic, retain) BankAccount *account;
-@property (nonatomic, retain) NSSet *statements;
-@end
+@property (nonatomic, retain) NSArray     *statements;
 
-@interface AccountStatement (CoreDataGeneratedAccessors)
-
-- (void)addStatementsObject:(BankStatement *)value;
-- (void)removeStatementsObject:(BankStatement *)value;
-- (void)addStatements:(NSSet *)values;
-- (void)removeStatements:(NSSet *)values;
+- (void)convertStatementsToPDFForAccount: (BankAccount*)acct;
 
 @end
+

@@ -31,6 +31,7 @@ NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
 
 static NSMutableDictionary *words;
 static BOOL wordsValid;
+static NSData *receivedTmpData = nil;
 
 // Number of entries in one batch of a dispatch_apply invocation.
 #define WORDS_LOAD_STRIDE 10000
@@ -111,9 +112,22 @@ static BOOL wordsValid;
     if (data == nil) {
         return [NSString string];
     }
+    
+    // issue with received data: if an UTF8 string is cut in between on byte level, its parts do not necessarily represent
+    // proper UTF8 strings, e.g. if the cut is between the 2 bytes of a single character
+    // we therefore have to look if the combination of 2 or several received data blocks build a valid UTF8 string.
+    if (receivedTmpData != nil) {
+        NSMutableData *mData = [NSMutableData dataWithData:receivedTmpData];
+        [mData appendData:data];
+        data = mData;
+    }
 
     NSString *result = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
     if (result == nil) {
+        receivedTmpData = data;
+        return @"";
+        
+        /*
         const unsigned char *dataBuffer = (const unsigned char *)[data bytes];
 
         if (dataBuffer == nil) {
@@ -125,7 +139,9 @@ static BOOL wordsValid;
             [hexString appendString: [NSString stringWithFormat: @"%02x", dataBuffer[i]]];
         }
         result = [NSString stringWithString: hexString];
+        */
     }
+    receivedTmpData = nil;
     return result;
 }
 

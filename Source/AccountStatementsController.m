@@ -21,6 +21,7 @@
 #import "HBCIController.h"
 #import "MOAssistant.h"
 #import "AccountStatement.h"
+#import "BankAccount.h"
 
 @interface AccountStatementsController ()
 
@@ -48,6 +49,7 @@
 
         PDFDocument *document = [[PDFDocument alloc] initWithData: statement.document];
         [pdfView setDocument: document];
+        [infoView setString: statement.info];
     } else {
         NSString *path = [NSBundle.mainBundle pathForResource: @"nostatements" ofType: @"pdf"];
 
@@ -71,6 +73,7 @@
         AccountStatement     *statement = statements[currentIndex];
         PDFDocument          *document = [[PDFDocument alloc] initWithData: statement.document];
         [pdfView setDocument: document];
+        [infoView setString: statement.info];
     }
     [self enableButtons];
 }
@@ -82,6 +85,7 @@
         AccountStatement     *statement = statements[currentIndex];
         PDFDocument          *document = [[PDFDocument alloc] initWithData: statement.document];
         [pdfView setDocument: document];
+        [infoView setString: statement.info];
     }
     [self enableButtons];
 }
@@ -134,18 +138,34 @@
         return;
     }
     
-    if (memStatement.document == nil) {
+    if (memStatement.format.intValue == AccountStatement_PDF && memStatement.document == nil) {
         return;
     }
     
-    NSEntityDescription  *entity = [memStatement entity];
+    // find old statement and remove it first
+    // fetch all existing statements for this account
+    NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"AccountStatement" inManagedObjectContext: context];
+    [fetchRequest setEntity: entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND startDate = %@", account, memStatement.startDate];
+    [fetchRequest setPredicate: predicate];
+
+    NSError *error = nil;
+    NSArray *oldStatements = [context executeFetchRequest: fetchRequest error: &error];
+    for (AccountStatement *statement in oldStatements) {
+        [context deleteObject:statement];
+    }
+    
+    // now insert new statement
+    entity = [memStatement entity];
     NSArray              *attributeKeys = [[entity attributesByName] allKeys];
     NSDictionary         *attributeValues = [memStatement dictionaryWithValuesForKeys: attributeKeys];
     AccountStatement     *newStatement = [NSEntityDescription insertNewObjectForEntityForName: @"AccountStatement" inManagedObjectContext: context];
     [newStatement setValuesForKeysWithDictionary: attributeValues];
     newStatement.account = account;
     
-    NSError *error = nil;
+    error = nil;
     if ([context save: &error] == NO) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];

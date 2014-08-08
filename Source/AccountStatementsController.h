@@ -29,6 +29,7 @@
     IBOutlet NSButton *nextButton;
     IBOutlet NSTextField *numberField;
     IBOutlet NSTextField *yearField;
+    IBOutlet NSTextView  *infoView;
 
     BankAccount *account;
     NSArray     *statements;
