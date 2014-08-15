@@ -323,10 +323,16 @@ extern NSString *const BankStatementDataType;
         count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
         for (i = 0; i < count; i++) {
             stat = self.dataSource[indexes[i]];
-            NSURL *uri = [[stat objectID] URIRepresentation];
-            [uris addObject: uri];
+            if (stat.statement.isPreliminary.boolValue == NO) {
+                NSURL *uri = [[stat objectID] URIRepresentation];
+                [uris addObject: uri];
+            }
         }
     } while (count > 0);
+    
+    if (uris.count == 0) {
+        return NO;
+    }
 
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uris];
     [dragPasteboard declareTypes: @[BankStatementDataType] owner: self];

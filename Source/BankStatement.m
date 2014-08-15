@@ -211,22 +211,23 @@ BOOL stringEqual(NSString *a, NSString *b) {
     NSMutableSet *stats = [self mutableSetValueForKey: @"assignments"];
     [stats addObject: stat];
 
-    // Initialize the categories cache if not yet done and run all category rules.
-    if (catCache == nil) {
-        [BankStatement initCategoriesCache];
-    }
-    for (Category *cat in catCache) {
-        NSPredicate *pred = [NSPredicate predicateWithFormat: cat.rule];
-        @try {
-            if ([pred evaluateWithObject: stat]) {
-                [self assignToCategory: cat];
+    if (self.isPreliminary.boolValue == NO) {
+        // Initialize the categories cache if not yet done and run all category rules.
+        if (catCache == nil) {
+            [BankStatement initCategoriesCache];
+        }
+        for (Category *cat in catCache) {
+            NSPredicate *pred = [NSPredicate predicateWithFormat: cat.rule];
+            @try {
+                if ([pred evaluateWithObject: stat]) {
+                    [self assignToCategory: cat];
+                }
+            }
+            @catch (NSException *exception) {
+                LogError(@"Error in rule: %@. Reason: %@", cat.rule, exception.debugDescription);
             }
         }
-        @catch (NSException *exception) {
-            LogError(@"Error in rule: %@. Reason: %@", cat.rule, exception.debugDescription);
-        }
     }
-    // Run the general rules.
 
     // See if there is some value left that is not yet assigned to a category.
     [self updateAssigned];

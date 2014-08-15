@@ -262,6 +262,7 @@
 - (void)calculateCatAssignPredicate
 {
     NSPredicate *pred = nil;
+    NSPredicate *pred2 = nil;
     NSPredicate *compoundPredicate = nil;
 
     // first add selected category
@@ -295,7 +296,8 @@
 
     compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds];
     pred = [timeSliceManager predicateForField: @"date"];
-    compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred]];
+    pred2 = [NSPredicate predicateWithFormat: @"(statement.isPreliminary = 0)"];
+    compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred, pred2]];
 
     // set new fetch predicate
     if (compoundPredicate) {

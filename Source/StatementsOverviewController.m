@@ -161,7 +161,13 @@ extern void *UserDefaultsBindingContext;
         if (categoryAssignments.selectedObjects.count != 1) {
             return NO;
         }
+
+        StatCatAssignment *stat = categoryAssignments.selectedObjects.lastObject;
+        if (stat.statement.isPreliminary.boolValue == YES) {
+            return NO;
+        }
     }
+    
     return YES;
 }
 

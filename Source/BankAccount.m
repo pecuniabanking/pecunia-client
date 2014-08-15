@@ -101,8 +101,20 @@
     if ([res.statements count] == 0) {
         return;
     }
+    
+    // first remove old preliminary statements
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isPreliminary = 1)", self];
+    [request setPredicate: predicate];
+    NSArray *prelimStatements = [context executeFetchRequest: request error: &error];
+    for (stat in prelimStatements) {
+        [context deleteObject:stat];
+    }
+    if (prelimStatements.count > 0) {
+        [context processPendingChanges];
+    }
+    
     stat = (res.statements)[0];     // oldest statement
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: stat.date] lowDate]];
+    predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: stat.date] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
@@ -127,12 +139,10 @@
                 BOOL isMatched = NO;
                 for (NSUInteger idx = 0; idx < [oldStats count]; idx++) {
                     BankStatement *oldStat = oldStats[idx];
+                    if (oldStat.isPreliminary.boolValue == YES) {
+                        continue;
+                    }
                     if ([stat matchesAndRepair: oldStat]) {
-                        // now check if old statement was preliminary
-                        if (oldStat.isPreliminary.boolValue == YES && stat.isPreliminary.boolValue == NO) {
-                            oldStat.isPreliminary = @NO;
-                        }
-                        
                         isMatched = YES;
                         [oldStats removeObjectAtIndex: idx];
                         break;
@@ -254,8 +264,10 @@
 
         [newStatements addObject: stmt];
         [stmt addToAccount: self];
-        if (ltd == nil || [ltd compare: stmt.date] == NSOrderedAscending) {
-            ltd = stmt.date;
+        if (stmt.isPreliminary.boolValue == NO) {
+            if (ltd == nil || [ltd compare: stmt.date] == NSOrderedAscending) {
+                ltd = stmt.date;
+            }
         }
     }
     [self updateAssignmentsForReportRange];

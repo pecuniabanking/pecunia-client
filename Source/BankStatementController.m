@@ -134,6 +134,9 @@
     if (found == NO) {
         newStatement.date = [[ShortDate dateWithDate: newStatement.date] lowDate];
     }
+    
+    // valutaDate
+    newStatement.valutaDate = [valutaField dateValue];
 
     // add to account
     [newStatement addToAccount: account];
