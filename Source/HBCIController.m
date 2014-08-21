@@ -1121,20 +1121,23 @@ NSString * escapeSpecial(NSString *s)
                 iResult.lastSettleDate = res.lastSettleDate;
                 
                 // check if order needs to be reversed
-                int idx = res.statements.count - 1;
-                
-                BankStatement *stat1 = res.statements[0];
-                BankStatement *stat2 = res.statements[idx];
-                
-                if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
-                    // reverse order
-                    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
-                    for (idx = [res.statements count] - 1; idx >= 0; idx--) {
-                        [statements addObject: res.statements[idx]];
+                int idx;
+                if (res.statements.count > 0) {
+                    idx = res.statements.count - 1;
+                    
+                    BankStatement *stat1 = res.statements[0];
+                    BankStatement *stat2 = res.statements[idx];
+                    
+                    if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
+                        // reverse order
+                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
+                        for (idx = [res.statements count] - 1; idx >= 0; idx--) {
+                            [statements addObject: res.statements[idx]];
+                        }
+                        iResult.statements = statements;
+                    } else {
+                        iResult.statements = res.statements;
                     }
-                    iResult.statements = statements;
-                } else {
-                    iResult.statements = res.statements;
                 }
                 
                 // calculate balances
