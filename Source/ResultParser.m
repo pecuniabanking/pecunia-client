@@ -38,7 +38,9 @@
     }
     stack = [[NSMutableArray alloc] initWithCapacity: 10];
     parent = par;
+    NSTimeZone *tz = [NSTimeZone timeZoneWithName:@"Europe/Berlin"];
     dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:tz];
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     resultXmlString = [[NSMutableString alloc] init];
     return self;
@@ -223,6 +225,7 @@
             // standard attributes
             if ([currentType isEqualToString: @"date"]) {
                 NSDate *date = [dateFormatter dateFromString: [stack lastObject]];
+                date = [date dateByAddingTimeInterval:12*3600]; // add 12hrs so we start at noon
                 [stack removeLastObject];
                 [stack addObject: date];
             } else if ([currentType isEqualToString: @"value"]) {

@@ -1149,18 +1149,20 @@ static HBCIController *controller = nil;
                 // check if order needs to be reversed
                 int idx;
                 
-                BankStatement *stat1 = res.statements.firstObject;
-                BankStatement *stat2 = res.statements.lastObject;
-                
-                if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
-                    // reverse order
-                    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
-                    for (idx = [res.statements count] - 1; idx >= 0; idx--) {
-                        [statements addObject: res.statements[idx]];
+                if (res.statements.count > 0) {
+                    BankStatement *stat1 = res.statements.firstObject;
+                    BankStatement *stat2 = res.statements.lastObject;
+                    
+                    if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
+                        // reverse order
+                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
+                        for (idx = [res.statements count] - 1; idx >= 0; idx--) {
+                            [statements addObject: res.statements[idx]];
+                        }
+                        iResult.statements = statements;
+                    } else {
+                        iResult.statements = res.statements;
                     }
-                    iResult.statements = statements;
-                } else {
-                    iResult.statements = res.statements;
                 }
                 
                 // calculate balances
