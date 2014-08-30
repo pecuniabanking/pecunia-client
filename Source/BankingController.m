@@ -96,6 +96,8 @@
 #import "ZipReadStream.h"
 #import "NSString+PecuniaAdditions.h"
 
+#import "RemoteResourceManager.h"
+
 NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
 
 
@@ -293,6 +295,8 @@ static BankingController *bankinControllerInstance;
 
     refreshButton.layer.anchorPoint = CGPointMake(0.50, 0.48);
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
+    
+    [RemoteResourceManager manager];
 
     LogLeave;
 }

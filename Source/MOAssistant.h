@@ -41,6 +41,9 @@
 
     // import settings directory
     NSString *importerDir;
+    
+    // resources directory
+    NSString *resourcesDir;
 
     // temporary directory
     NSString *tempDir;
@@ -62,6 +65,7 @@
 
 @property (nonatomic, copy) NSString *ppDir;
 @property (nonatomic, copy) NSString *importerDir;
+@property (nonatomic, copy) NSString *resourcesDir;
 @property (nonatomic, copy) NSString *tempDir;
 @property (nonatomic, copy) NSString *dataFilename;
 @property (nonatomic, strong) NSURL  *accountsURL;

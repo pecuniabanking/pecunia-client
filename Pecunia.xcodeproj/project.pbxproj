@@ -927,6 +927,8 @@
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		B1F8F8FB19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
+		B1F8F8FC19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
@@ -1684,6 +1686,8 @@
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteResourceManager.h; sourceTree = "<group>"; };
+		B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteResourceManager.m; sourceTree = "<group>"; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
@@ -2850,6 +2854,8 @@
 		B1FE0DD610658759005B3800 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */,
+				B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */,
 				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
 				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
@@ -3553,6 +3559,7 @@
 				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
 				27778898173CE22700430EBC /* BankQueryResult.m in Sources */,
+				B1F8F8FC19AFDFA30046638B /* RemoteResourceManager.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
@@ -3781,6 +3788,7 @@
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */,
+				B1F8F8FB19AFDFA30046638B /* RemoteResourceManager.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,

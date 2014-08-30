@@ -37,6 +37,7 @@
 @synthesize ppDir;
 @synthesize accountsURL;
 @synthesize importerDir;
+@synthesize resourcesDir;
 @synthesize tempDir;
 @synthesize dataDirURL;
 @synthesize dataFilename;
@@ -56,6 +57,7 @@ static NSString *_dataFileCrypted = @"accounts.sqlcrypt";
 static NSString *lDir = @"~/Library/Application Support/Pecunia/Data";
 static NSString *pDir = @"~/Library/Application Support/Pecunia/Passports";
 static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
+static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
 
 - (id)init {
     self = [super init];
@@ -378,6 +380,15 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         }
     }
 
+    // Resources Directory
+    self.resourcesDir = [rDir stringByExpandingTildeInPath];
+    if ([fm fileExistsAtPath: resourcesDir] == NO) {
+        [fm createDirectoryAtPath: resourcesDir withIntermediateDirectories: YES attributes: nil error: &error];
+        if (error) {
+            @throw error;
+        }
+    }
+    
     // Temporary Directory
     self.tempDir = NSTemporaryDirectory();
 
