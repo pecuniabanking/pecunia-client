@@ -22,7 +22,6 @@ static NSArray *_defaultFiles = nil;
 @implementation RemoteResourceManager
 
 @synthesize fileInfos;
-@synthesize managedFiles;
 
 
 -(id)init {
@@ -33,9 +32,6 @@ static NSArray *_defaultFiles = nil;
     
     _defaultFiles = [NSArray arrayWithObjects:DefaultRemoteFiles, nil];
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.managedFiles = [defaults arrayForKey:@"remoteFiles"];
-    
     NSData *xmlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:RemoteResourceUpdateInfo]];
     if (xmlData != nil) {
         NSError *error = nil;
@@ -57,28 +53,20 @@ static NSArray *_defaultFiles = nil;
 }
 
 - (void)addManagedFile: (NSString *)fileName {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    if (self.managedFiles != nil) {
-        self.managedFiles = [self.managedFiles arrayByAddingObject:fileName];
-    } else {
-        self.managedFiles = [NSArray arrayWithObject:fileName];
-    }
-    [defaults setObject:self.managedFiles forKey:@"managedFiles"];
-    
     [self performSelectorInBackground:@selector(updateFileAndNotify:) withObject:fileName];
 }
 
-- (void)removeManagedFile: (NSString *)fileName {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+- (BOOL)removeManagedFile: (NSString *)fileName {
+    NSError *error = nil;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *targetPath = [MOAssistant.assistant.resourcesDir stringByAppendingPathComponent:fileName];
     
-    if (self.managedFiles == nil) {
-        return;
+    [fm removeItemAtPath:targetPath error:&error];
+    if (error != nil) {
+        [[NSAlert alertWithError:error] runModal];
+        return NO;
     }
-    NSMutableArray *tmp = [self.managedFiles mutableCopy];
-    [tmp removeObject:fileName];
-    self.managedFiles = tmp;
-    [defaults setObject:self.managedFiles forKey:@"managedFiles"];
+    return YES;
 }
 
 - (BOOL)updateFile: (NSString *)fileName {
@@ -100,11 +88,6 @@ static NSArray *_defaultFiles = nil;
     }
     if ([fileInfo[@"name"] isEqualToString:fileName] == NO) {
         LogError(@"File %@ is not a remote resource file", fileName);
-        return NO;
-    }
-    
-    
-    if ([_defaultFiles containsObject:fileName] == NO && [managedFiles containsObject:fileName] == NO) {
         return NO;
     }
     
@@ -161,6 +144,7 @@ static NSArray *_defaultFiles = nil;
 
 - (void)updateFiles {
     // first check if we already did this today
+    NSError *error=nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDate *lastUpdated = [defaults objectForKey:@"remoteFilesLastUpdate"];
     ShortDate *last = lastUpdated != nil?[ShortDate dateWithDate:lastUpdated]:nil;
@@ -168,12 +152,20 @@ static NSArray *_defaultFiles = nil;
     
     if (last == nil || [last compare:now] == NSOrderedAscending) {
         // now check files
-
-        for (NSDictionary *fileInfo in self.fileInfos) {
-            NSString *fileName = fileInfo[@"name"];
-            
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *files = [fm contentsOfDirectoryAtPath:MOAssistant.assistant.resourcesDir error:&error];
+        
+        for (NSString *fileName in files) {
             [self updateFile:fileName];
         }
+        
+        // check if all mandatory files exist
+        for (NSString *fileName in _defaultFiles) {
+            if ([files containsObject:fileName] == NO) {
+                [self updateFile:fileName];
+            }
+        }
+        
         [defaults setObject: [now lowDate] forKey:@"remoteFilesLastUpdate"];
         NSNotification *notification = [NSNotification notificationWithName: PecuniaResourcesUpdatedNotification object: nil];
         [[NSNotificationCenter defaultCenter] postNotification: notification];

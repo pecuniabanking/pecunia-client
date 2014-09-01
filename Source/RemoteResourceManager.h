@@ -14,10 +14,9 @@
 }
 
 @property (nonatomic, strong) NSArray *fileInfos;
-@property (nonatomic, strong) NSArray *managedFiles;
 
 + (RemoteResourceManager*)manager;
 - (void)addManagedFile: (NSString *)fileName;
-- (void)removeManagedFile: (NSString *)fileName;
+- (BOOL)removeManagedFile: (NSString *)fileName;
 
 @end
