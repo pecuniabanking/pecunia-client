@@ -826,6 +826,8 @@
 		B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
+		B1E94A6419C77A0100163455 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E94A6319C77A0100163455 /* AboutWindowController.m */; };
+		B1E94A6519C77A0100163455 /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E94A6319C77A0100163455 /* AboutWindowController.m */; };
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
@@ -1506,6 +1508,8 @@
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
 		B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = noccsettlements.pdf; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
+		B1E94A6219C77A0100163455 /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		B1E94A6319C77A0100163455 /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; };
 		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
 		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -2522,6 +2526,8 @@
 				B1C7B18A130B11070091CD72 /* Transfers */,
 				B18B20540CC6A51B00B0B02C /* NewBankUserController.h */,
 				B18B20550CC6A51B00B0B02C /* NewBankUserController.m */,
+				B1E94A6219C77A0100163455 /* AboutWindowController.h */,
+				B1E94A6319C77A0100163455 /* AboutWindowController.m */,
 				B17074850D55104000FBF186 /* PreferenceController.h */,
 				B17074860D55104000FBF186 /* PreferenceController.m */,
 				B1014C65101A37E800ABA1FF /* DonationMessageController.h */,
@@ -3282,6 +3288,7 @@
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
+				B1E94A6519C77A0100163455 /* AboutWindowController.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
@@ -3491,6 +3498,7 @@
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
+				B1E94A6419C77A0100163455 /* AboutWindowController.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
