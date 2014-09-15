@@ -908,8 +908,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Show log if wanted.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           showLog = [defaults boolForKey: @"logForBankQuery"];
+    BOOL showLog = [defaults boolForKey: @"logForBankQuery"];
     if (showLog) {
         [logController showWindow: self];
         [[logController window] orderFront: self];
