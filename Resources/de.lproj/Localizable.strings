@@ -102,6 +102,11 @@ AP122 = "-- Hier bitte die Logdatei anhängen, z.B. durch ziehen vom Finder hier
 AP123 = "Pecunia Fehlerbericht";
 AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
 AP132 = "Dieser Vorgang kann nicht rückgängig gemacht werden!";
+AP133 = "Erstellt am %@";
+AP134 = "Seite %i von %i";
+AP135 = "Datum\nValuta";
+AP136 = "Auftraggeber\nBuchungshinweis";
+AP137 = "Auftraggeberkonto";
 
 
 // Banking setup, migration, encryption, security.
@@ -243,7 +248,7 @@ AP400 = "BLZ";
 AP401 = "Konto";
 AP402 = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
 AP403 = "Umbuchung";
-AP404 = "Standardüberweisung";
+AP404 = "Alte Standardüberweisung";
 AP405 = "EU-Überweisung";
 AP406 = "SEPA-Überweisung";
 AP407 = "Lastschrift";
@@ -274,6 +279,7 @@ AP431 = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie
 AP432 = "Jetzt senden";
 AP433 = "Möchten Sie die Überweisungsvorlage löschen?";
 AP434 = "Neue Überweisungsvorlage";
+AP435 = "Gesendete Überweisungen";
 
 // Standing orders.
 // AP450..AP499
