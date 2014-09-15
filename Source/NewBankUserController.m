@@ -630,8 +630,6 @@
 
 - (IBAction)removeEntry: (id)sender
 {
-    NSError *error = nil;
-
     BankUser *user = [self selectedUser];
     if (user == nil) {
         return;
@@ -642,35 +640,52 @@
         [BankUser removeUser:user];
         return;
     }
+    
+    NSAlert *alert = [NSAlert new];
+    alert.alertStyle = NSCriticalAlertStyle;
+    alert.messageText = [NSString stringWithFormat: NSLocalizedString(@"AP179", nil), user.name];
+    alert.informativeText = NSLocalizedString(@"AP132", nil);
+    [alert addButtonWithTitle: NSLocalizedString(@"AP4", nil)];
+    [alert addButtonWithTitle: NSLocalizedString(@"AP3", nil)];
+    [alert beginSheetModalForWindow: self.window completionHandler: ^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertSecondButtonReturn) {
+            if (user.userId == nil) {
+                [BankUser removeUser: user];
+                return;
+            }
 
-    if ([[HBCIController controller] deleteBankUser: user] == TRUE) {
-        // remove user from all related bank accounts
-        NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
-        for (BankAccount *account in accounts) {
-            // check if userId must be deleted or changed
-            if ([account.userId isEqualToString: user.userId]) {
-                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                account.userId = nil;
-                account.customerId = nil;
-                for (BankUser *accUser in users) {
-                    if ([accUser.userId isEqualToString: user.userId] == NO) {
-                        account.userId = accUser.userId;
-                        account.customerId = accUser.customerId;
+
+            if ([[HBCIController controller] deleteBankUser: user] == TRUE) {
+                // remove user from all related bank accounts
+                NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
+                for (BankAccount *account in accounts) {
+                    // check if userId must be deleted or changed
+                    if ([account.userId isEqualToString: user.userId]) {
+                        NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+                        account.userId = nil;
+                        account.customerId = nil;
+                        for (BankUser *accUser in users) {
+                            if ([accUser.userId isEqualToString: user.userId] == NO) {
+                                account.userId = accUser.userId;
+                                account.customerId = accUser.customerId;
+                            }
+                        }
                     }
+                }
+                //[bankUserController remove: self];
+                [BankUser removeUser:user];
+                [self updateTanMethods];
+
+                // save updates
+                NSError *error = nil;
+                if ([context save: &error] == NO) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                    return;
                 }
             }
         }
-        //[bankUserController remove: self];
-        [BankUser removeUser:user];
-        [self updateTanMethods];
-
-        // save updates
-        if ([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
-    }
+    }];
 }
 
 - (IBAction)changePinTanMethod: (id)sender
