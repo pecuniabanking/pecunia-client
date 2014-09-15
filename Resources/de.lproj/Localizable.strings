@@ -101,6 +101,8 @@ AP121 = "-- Hier bitte eine kurze Beschreibung des Problems eingeben:\n\n";
 AP122 = "-- Hier bitte die Logdatei anhängen, z.B. durch ziehen vom Finder hierher.\n-- Ein Finder Fenster wurde dazu geöffnet.";
 AP123 = "Pecunia Fehlerbericht";
 AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
+AP132 = "Dieser Vorgang kann nicht rückgängig gemacht werden!";
+
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
@@ -132,6 +134,8 @@ AP174 = "Backups schützen vor Datenverlust. Wenn Sie die Verschlüsselung einsc
 AP175 = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpasswort ein";
 AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
 AP177 = "Bitte wählen Sie die Datei %@ aus";
+AP179 = "Die Bankkennung %@ jetzt löschen?";
+
 
 // Banking common + business transactions
 // AP200..AP249
