@@ -539,7 +539,9 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		CGFloat totalHeight = 0;
 		
 		//Allocate the offset caching array
-        free(_cellYOffsets);
+        if (_cellYOffsets != NULL) {
+            free(_cellYOffsets);
+        }
 		_cellYOffsets = (CGFloat*)malloc(sizeof(CGFloat)*_numberOfRows);
 		
 		for( NSUInteger i = 0; i < _numberOfRows; i++ )

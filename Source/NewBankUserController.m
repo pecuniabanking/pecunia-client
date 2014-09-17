@@ -335,6 +335,7 @@
 
     if ([te tag] == 10) {
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
+        currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
             BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
             if (bi) {

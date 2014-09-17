@@ -264,7 +264,7 @@ AP309 = "Die Kategorie %@ existiert nicht. Möchten Sie die Kategorie neu erstel
 
 // Callback and backend
 // AP350..AP399
-AP350 = "Bitte legen Sie Ihre Chipkarte in das Chipkarten-Terminal ein";
+AP350 = "Bitte legen Sie Ihre Chipkarte für Benutzerkennung %@ in das Chipkarten-Terminal ein";
 AP351 = "Bitte geben Sie Ihre PIN in das Chipkarten-Terminal ein";
 AP352 = "Fehlende Signier-Informationen";
 AP353 = "Es sind keine Signier-Informationen (z.B. TAN-Methoden/TAN-Medien) für das Konto %@ bekannt. Bitte aktualisieren Sie die Bankparameter";
