@@ -2022,7 +2022,7 @@ static BankingController *bankinControllerInstance;
             return;
         }
     }
-
+    
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
 
@@ -2033,6 +2033,22 @@ static BankingController *bankinControllerInstance;
 
 - (void)createTemplateOfType: (TransferType)type fromStatement: (BankStatement *)statement {
     LogEnter;
+
+    BankAccount *account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
+
+    // check if bic and iban is defined
+    if (account != nil) {
+        if (account.iban == nil || account.bic == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
+                            NSLocalizedString(@"AP77", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            account.accountNumber);
+            return;
+        }
+    }
 
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
