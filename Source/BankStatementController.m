@@ -347,9 +347,10 @@
     if (catString != nil && catString.length > 0) {
         if ([self getSelectedCategory] == nil) {
             int result = NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                         [NSString stringWithFormat:NSLocalizedString(@"AP309", nil), catString ],
+                                         NSLocalizedString(@"AP309", nil),
                                          NSLocalizedString(@"AP4", nil),
-                                         NSLocalizedString(@"AP3", nil), nil);
+                                         NSLocalizedString(@"AP3", nil), nil,
+                                         catString);
             if (result == NSAlertAlternateReturn) {
                 [Category createCategoryWithName:catString];
                 return YES;

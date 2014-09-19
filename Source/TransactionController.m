@@ -516,8 +516,9 @@
 
         if (![curr isEqual: foreignCurr] && ![curr isEqual: @"EUR"] && ![curr isEqual: account.currency]) {
             NSRunAlertPanel(NSLocalizedString(@"AP67", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit]],
-                            NSLocalizedString(@"AP1", nil), nil, nil);
+                            NSLocalizedString(@"AP63", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            [limits localLimit]);
             return NO;
         }
 

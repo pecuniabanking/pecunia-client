@@ -2067,12 +2067,13 @@ static BankingController *bankinControllerInstance;
     if (account != nil) {
         if (account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber],
-                            NSLocalizedString(@"AP1", nil), nil, nil);
+                            NSLocalizedString(@"AP77", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            account.accountNumber);
             return;
         }
     }
-
+    
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
 
@@ -2095,8 +2096,9 @@ static BankingController *bankinControllerInstance;
     if (account != nil) {
         if (account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber],
-                            NSLocalizedString(@"AP1", nil), nil, nil);
+                            NSLocalizedString(@"AP77", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            account.accountNumber);
             return;
         }
     }

@@ -26,6 +26,7 @@
     IBOutlet NSArrayController  *splitStatController;
     IBOutlet NSArrayController  *catController;
     IBOutlet NSObjectController *currentStat;
+    IBOutlet NSNumberFormatter  *rowNumberFormatter;
 
     NSManagedObjectContext *managedObjectContext;
     BankStatement          *statement;

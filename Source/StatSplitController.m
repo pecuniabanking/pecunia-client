@@ -45,7 +45,9 @@
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sds = @[sd];
     [catController setSortDescriptors: sds];
-
+    if ([statement.value compare:NSDecimalNumber.zero] == NSOrderedAscending) {
+        rowNumberFormatter.multiplier = [NSDecimalNumber numberWithInt:-1];
+    }
 }
 
 - (void)windowDidLoad
@@ -90,9 +92,11 @@
         if (sel && [sel count] == 1) {
             StatCatAssignment *stat = sel[0];
             // ensure statement.value and stat.value have the same sign
+            /*
             if ([statement.value compare: [NSDecimalNumber zero]] != [stat.value compare: [NSDecimalNumber zero]]) {
                 stat.value = [stat.value decimalNumberByMultiplyingBy: [NSDecimalNumber decimalNumberWithString: @"-1"]];
             }
+            */
 
             [statement updateAssigned];
             [self setValue: statement.nassValue forKey: @"residualAmount"];
