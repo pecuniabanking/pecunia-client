@@ -274,6 +274,7 @@ AP356 = "Benutzerkennung %@ konnte nicht angemeldet werden (Details siehe Nachri
 AP357 = "Chipkarten-Terminal";
 AP358 = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
 AP359 = "Fehlende HBCI-Information: %@";
+AP360 = "Warte auf Chipkarte...";
 
 // Transfers (sent statements)
 // AP400..AP449

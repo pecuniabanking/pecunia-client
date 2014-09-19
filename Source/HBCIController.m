@@ -1062,13 +1062,32 @@ static HBCIController *controller = nil;
     BankQueryResult *result;
     
     //[self startProgress];
+    
+    result = resultList.firstObject;
+    if (result == nil) {
+        return;
+    }
+    
+    // if it's a chipcard account, notify user to make sure right chipcard is inserted
+    BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+    if (user == nil) {
+        return;
+    }
+    if (user.secMethod.intValue == SecMethod_DDV) {
+        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
+                        NSLocalizedString(@"AP350", @""),
+                        NSLocalizedString(@"AP1", @"Ok"),
+                        nil, nil, user.userId
+                        );
+    }
+    
+    // register user
+    user = [self getBankUserForId:result.userId bankCode:result.bankCode];
+    if (user == nil) {
+        return;
+    }
+    
     for (result in resultList) {
-        // check if user is registered
-        BankUser *user = [self getBankUserForId: result.userId bankCode: result.bankCode];
-        if (user == nil) {
-            continue;
-        }
-        
         [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber];
         [self appendTag: @"subNumber" withValue: result.accountSubnumber to: cmd];
         
@@ -1230,13 +1249,31 @@ static HBCIController *controller = nil;
 {
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">"];
     
-    for (BankQueryResult *result in resultList) {
-        // check if user is registered
-        BankUser *user = [self getBankUserForId: result.userId bankCode: result.bankCode];
-        if (user == nil) {
-            continue;
-        }
-        
+    BankQueryResult *result = resultList.firstObject;
+    if (result == nil) {
+        return;
+    }
+    
+    // if it's a chipcard account, notify user to make sure right chipcard is inserted
+    BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+    if (user == nil) {
+        return;
+    }
+    if (user.secMethod.intValue == SecMethod_DDV) {
+        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
+                        NSLocalizedString(@"AP350", @""),
+                        NSLocalizedString(@"AP1", @"Ok"),
+                        nil, nil, user.userId
+                        );
+    }
+    
+    // register user
+    user = [self getBankUserForId:result.userId bankCode:result.bankCode];
+    if (user == nil) {
+        return;
+    }
+    
+    for (result in resultList) {
         [cmd appendString: @"<accinfo>"];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd];
         [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd];
@@ -1489,6 +1526,13 @@ static HBCIController *controller = nil;
             if (account.userId == nil) {
                 account.userId = acc.userId;
                 account.customerId = acc.customerId;
+            } else {
+                // check if the account's user id still exists
+                BankUser *accUser = [BankUser userWithId:account.userId bankCode:account.bankCode];
+                if (accUser == nil) {
+                    account.userId = acc.userId;
+                    account.customerId = acc.customerId;
+                }
             }
             // ensure the user is linked to the account
             NSMutableSet *users = [account mutableSetValueForKey: @"users"];

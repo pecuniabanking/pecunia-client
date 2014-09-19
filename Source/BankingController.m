@@ -851,6 +851,7 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             selectedNodes = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
+                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -867,6 +868,7 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             result = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
+                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -876,6 +878,8 @@ static BankingController *bankinControllerInstance;
     }
 
     if ([selectedAccounts count] == 0) {
+        LogWarning(@"No accounts selected, or all selected accounts have noAutomaticQuery == true");
+        [self stopRefreshAnimation];
         return;
     }
 
@@ -887,6 +891,7 @@ static BankingController *bankinControllerInstance;
         }
     }
     if (nInactive == selectedAccounts.count) {
+        [self stopRefreshAnimation];
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
