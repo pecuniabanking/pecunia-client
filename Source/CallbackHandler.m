@@ -261,14 +261,7 @@ static CallbackHandler *callbackHandler = nil;
         [[NSNotificationCenter defaultCenter] postNotification: notification];
     }
     if ([data.command isEqualToString: @"needChipcard"]) {
-        BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
-        NSString *msg;
-        if (user == nil) {
-            msg = NSLocalizedString(@"AP201", nil);
-        } else {
-            msg = [NSString stringWithFormat:NSLocalizedString(@"AP350", nil), user.name ];
-        }
-        notificationController = [[NotificationWindowController alloc] initWithMessage: msg
+        notificationController = [[NotificationWindowController alloc] initWithMessage: NSLocalizedString(@"AP360", nil)
                                                                                  title: NSLocalizedString(@"AP357", nil)];
         [notificationController showWindow: self];
         //[self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
