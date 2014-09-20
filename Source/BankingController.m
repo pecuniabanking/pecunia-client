@@ -286,7 +286,7 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    
+
     [RemoteResourceManager manager];
 
     LogLeave;
@@ -1404,7 +1404,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (IBAction)openBugTracker: (id)sender {
-    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://code.google.com/p/pecuniabanking/issues/list"]];
+	[NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://github.com/pecuniabanking/pecunia-client/issues"]];
 }
 
 - (IBAction)changeFontSize: (id)sender {
