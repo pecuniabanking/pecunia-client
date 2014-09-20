@@ -342,19 +342,29 @@ extern NSDictionary    *whiteAttributes;
         }
     }
 
+    StatCatAssignment *assignment = self.representedObject;
+    BOOL isManualAccount = NO;
+
+    if (assignment.category.isBankAccount) {
+        isManualAccount = [(BankAccount *)assignment.category isManual].boolValue;
+    }
+
     StatementsListView *listView = (StatementsListView *)self.listView;
 
     BOOL singleSelection = listView.selectedRows.count == 1;
     NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Statement List Context menu"];
 
-    NSMenuItem *item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
-                                       action: @selector(menuAction:)
-                                keyEquivalent: @"n"];
-    item.keyEquivalentModifierMask = NSCommandKeyMask;
-    item.tag = MenuActionAddStatement;
+    NSMenuItem *item;
 
-    [menu addItem: NSMenuItem.separatorItem];
+    if (isManualAccount) {
+        item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
+                               action: @selector(menuAction:)
+                        keyEquivalent: @"n"];
+        item.keyEquivalentModifierMask = NSCommandKeyMask;
+        item.tag = MenuActionAddStatement;
 
+        [menu addItem: NSMenuItem.separatorItem];
+    }
     item = [menu addItemWithTitle: NSLocalizedString(@"AP240", nil)
                            action: @selector(menuAction:)
                     keyEquivalent: @" "];

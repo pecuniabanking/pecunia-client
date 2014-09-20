@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,30 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
-
 @class BankAccount;
 
 @interface AccountStatementsController : NSWindowController
-{
-    IBOutlet PDFView  *pdfView;
-    IBOutlet NSButton *prevButton;
-    IBOutlet NSButton *nextButton;
-    IBOutlet NSTextField *numberField;
-    IBOutlet NSTextField *yearField;
-    IBOutlet NSTextView  *infoView;
-
-    BankAccount *account;
-    NSArray     *statements;
-    NSUInteger  currentIndex;
-}
 
 @property (nonatomic, strong) BankAccount *account;
-@property (nonatomic, strong) NSArray     *statements;
-
-- (IBAction)next: (id)sender;
-- (IBAction)prev: (id)sender;
-- (IBAction)updateStatements: (id)sender;
 
 @end

@@ -49,7 +49,7 @@ typedef enum {
 
 - (void)addToAccount: (BankAccount *)account;
 - (void)sanitize;
-- (void)extractSEPAData;
+- (void)extractSEPADataUsingContext: (NSManagedObjectContext *)context;
 
 - (NSString *)floatingPurpose;
 - (NSString *)nonfloatingPurpose;

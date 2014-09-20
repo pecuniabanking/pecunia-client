@@ -246,7 +246,7 @@ static NSDictionary *heightMappings;
                        @"display": @370,
                        @"colors": @450,
                        @"export": @375,
-                       @"print": @200};
+                       @"print": @220};
 }
 
 + (void)showPreferencesWithOwner: (id)owner section: (NSString *)section
@@ -847,8 +847,8 @@ static NSDictionary *heightMappings;
 - (IBAction)assetGraphChanged: (id)sender
 {
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    settings[@"assetGraph1"] = [accountSelector1.selectedItem.representedObject name];
-    settings[@"assetGraph2"] = [accountSelector2.selectedItem.representedObject name];
+    settings[@"assetGraph1"] = [(Category *)accountSelector1.selectedItem.representedObject name];
+    settings[@"assetGraph2"] = [(Category *)accountSelector2.selectedItem.representedObject name];
 }
 
 - (IBAction)percentValueChanged: (id)sender
@@ -1018,7 +1018,7 @@ static NSString *baseFontName = @"HelveticaNeue";
     //return [NSFont systemFontOfSize: size];
 }
 
-#pragma mark - ListView delegate protocol
+#pragma mark - Color ListView delegate protocol
 
 static char *colorEntries[] = {
     "AP700|Positive Plot Gradient (high)|AP652",

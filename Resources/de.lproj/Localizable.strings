@@ -3,11 +3,11 @@ AP1 = "Ok";
 AP2 = "Abbrechen";
 AP3 = "Ja";
 AP4 = "Nein";
-AP5 = ""; // Unused
-AP6 = ""; // Unused
+AP5 = "Konten";
+AP6 = "Kategorien";
 AP7 = "Dennoch Beenden";
-AP8 = "KONTEN";
-AP9 = "KATEGORIEN";
+AP8 = "KONTEN"; // For the schema tree.
+AP9 = "KATEGORIEN"; // ditto
 AP10 = "Löschen";
 AP11 = "Warnung";
 AP12 = "Nicht zugeordnet";
@@ -114,6 +114,14 @@ AP134 = "Seite %i von %i";
 AP135 = "Datum\nValuta";
 AP136 = "Auftraggeber\nBuchungshinweis";
 AP137 = "Auftraggeberkonto";
+AP138 = "Buchungstext\nBuchungshinweis";
+AP139 = "Empfangene Überweisungen";
+AP140 = "Kontoauszug";
+AP141 = "Belastungen";
+AP142 = "Gutschriften";
+AP143 = "Zwischensaldo";
+AP144 = "Summe";
+AP145 = "Notizen";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199
@@ -267,7 +275,7 @@ AP357 = "Chipkarten-Terminal";
 AP358 = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
 AP359 = "Fehlende HBCI-Information: %@";
 
-// Transfers
+// Transfers (sent statements)
 // AP400..AP449
 AP400 = "BLZ";
 AP401 = "Konto";
@@ -425,7 +433,7 @@ AP750 = "Keine Umsätze";
 AP751 = "Block";
 AP752 = "Streifen";
 
-// Bank accounts + users
+// Bank accounts, users + statements.
 // AP800..AP849
 AP800 = "Nein, nicht jetzt";
 AP801 = "Für das Konto %@ gibt es Umsätze die Kategorien zugeordnet sind. Sie können diese Umsätze behalten, so dass die Kategoriewerte nicht verändert werden. Möchten Sie diese Umsätze behalten?";
@@ -452,6 +460,17 @@ AP821 = "Alle Zwischensalden werden neu berechnet";
 AP822 = "Neuberechnung beendet";
 AP823 = "Synchronisierung durchgeführt";
 AP824 = "Ein Fehler ist während der Aufräumarbeiten aufgetreten";
+AP825 = "";
+AP826 = "";
+AP827 = "Achtung: es werden alle geladenen Kontoauszüge entfernt. Sie können ihre Auszüge aber jederzeit über \"Kontoauszüge aktualisieren\" wieder laden. Allerdings nur soweit, wie die Bank Ihre Auszüge vorhält.\n\nMöchten Sie alle Auszüge jetzt löschen?";
+AP828 = "Keine neuen Kontoauszüge gefunden";
+AP829 = "Es wurden %i neue Kontoauszüge geladen";
+AP830 = "Es wurde ein neuer Kontoauszug geladen";
+AP831 = "Suche den ersten verfügbaren Auszug: %i/%i";
+AP832 = "Auszug %i/%i für den %@ bis %@";
+AP833 = "Kontoauszüge löschen";
+AP834 = "Lade Kontoauszug (falls verfügbar): %i/%i";
+AP835 = "Bankinformationen:\n";
 
 // Tags
 // AP850..AP949

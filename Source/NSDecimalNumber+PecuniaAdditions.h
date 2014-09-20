@@ -27,12 +27,17 @@
 
 /**
  * Returns a value whose sign is the same as that of the receiver and whose absolute value is equal
- * or larger such that only the most significant digit is not zero. If the receivers MSD and the second MSD
+ * or larger such that only the most significant digit is not zero. If the receiver's MSD and the second MSD
  * are smaller than 5 then the result is rounded towards a 5 as the second MSD instead of increasing
  * the MSD.
  * Examples: 12 => 15, 17 => 20, 45 => 50, 61 => 70, 123456 => 150000, -77000 => -80000.
  */
 - (NSDecimalNumber *)roundToUpperOuter;
+
+/**
+ * Returns YES if the receiver has a value < 0.
+ */
+- (BOOL)isNegative;
 
 /**
  * Returns the receiver value without a sign (i.e. as a positive value).

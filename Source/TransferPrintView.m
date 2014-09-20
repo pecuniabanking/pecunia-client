@@ -30,6 +30,7 @@
 #define HEADER_HEIGHT 25 // The height of the header on each page.
 
 // Fixed column widths, except for the description column, which is computed from the overall width and these values.
+// Values include padding.
 #define DATE_COLUMN_WIDTH  40
 #define AMOUNT_COLUMN_WIDTH  65
 #define ACCOUNT_COLUMN_WIDTH 150
@@ -115,61 +116,29 @@
 - (NSAttributedString *)textFromTransfer: (Transfer *)transfer {
     NSMutableAttributedString *result = [[transfer.remoteName attributedStringWithFont: boldFont] mutableCopy];
 
-    // Type
-    TransferType type = transfer.type.intValue;
-    NSString     *typeString;
-    switch (type) {
-        case TransferTypeOldStandard:
-            typeString = NSLocalizedString(@"AP404", nil);
-            break;
-
-        case TransferTypeOldStandardScheduled:
-            typeString = NSLocalizedString(@"AP429", nil);
-            break;
-
-        case TransferTypeSEPA:
-            typeString = NSLocalizedString(@"AP406", nil);
-            break;
-
-        case TransferTypeEU:
-            typeString = NSLocalizedString(@"AP405", nil);
-            break;
-
-        case TransferTypeDebit:
-            typeString = NSLocalizedString(@"AP407", nil);
-            break;
-
-        default:
-            typeString = @"";
-            break;
-    }
-
-    if (typeString.length > 0) {
-        typeString = [NSString stringWithFormat: @"\n(%@)", typeString];
-        [result appendAttributedString: [typeString attributedStringWithFont: smallFont]];
-    }
-
     // Purpose
     [result appendAttributedString: [[@"\n" stringByAppendingString : transfer.purpose] attributedStringWithFont: normalFont]];
-
-    NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
-    style.maximumLineHeight = 9.5;
-    //[result addAttribute: NSParagraphStyleAttributeName value: style range: NSMakeRange(0, result.length)];
 
     return result;
 }
 
 - (NSAttributedString *)bankAddressTextFromTransfer: (Transfer *)transfer {
     if ([transfer isSEPAorEU]) {
-        NSMutableAttributedString *mas = [[@"IBAN: " attributedStringWithFont : normalFont] mutableCopy];
+        NSString *s = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP409", nil)];
+        NSMutableAttributedString *mas = [[s attributedStringWithFont : normalFont] mutableCopy];
         [mas appendAttributedString: [transfer.remoteIBAN attributedStringWithFont: boldFont]];
-        [mas appendAttributedString: [@"\nBIC: " attributedStringWithFont : normalFont]];
+
+        s = [NSString stringWithFormat: @"\n%@: ", NSLocalizedString(@"AP410", nil)];
+        [mas appendAttributedString: [s attributedStringWithFont : normalFont]];
         [mas appendAttributedString: [transfer.remoteBIC attributedStringWithFont: boldFont]];
         return mas;
     } else {
-        NSMutableAttributedString *mas = [[@"Konto: " attributedStringWithFont : normalFont] mutableCopy];
+        NSString *s = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP401", nil)];
+        NSMutableAttributedString *mas = [[s attributedStringWithFont : normalFont] mutableCopy];
         [mas appendAttributedString: [transfer.remoteAccount attributedStringWithFont: boldFont]];
-        [mas appendAttributedString: [@"\nBLZ: " attributedStringWithFont : normalFont]];
+
+        s = [NSString stringWithFormat: @"\n%@: ", NSLocalizedString(@"AP400", nil)];
+        [mas appendAttributedString: [s attributedStringWithFont : normalFont]];
         [mas appendAttributedString: [transfer.remoteBankCode attributedStringWithFont: boldFont]];
         [mas appendAttributedString: [[@"\n" stringByAppendingString : transfer.remoteBankName] attributedStringWithFont: normalFont]];
         return mas;

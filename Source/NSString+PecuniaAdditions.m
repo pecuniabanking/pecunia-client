@@ -25,19 +25,19 @@
 #import "FileInZipInfo.h"
 #import "ZipReadStream.h"
 
-//NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
+NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
 
 @implementation NSString (PecuniaAdditions)
 
-static NSMutableDictionary *words;
-static BOOL wordsValid;
+static NSMutableDictionary * words;
+static BOOL   wordsValid;
 static NSData *receivedTmpData = nil;
 
 // Number of entries in one batch of a dispatch_apply invocation.
-#define WORDS_LOAD_STRIDE 10000
+#define WORDS_LOAD_STRIDE 200000
 
-+ (void)load {
-    /*
++ (void)loadWordList {
+    return;
     // Schedule time consuming load of word list to a background queue.
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
 
@@ -73,17 +73,18 @@ static NSData *receivedTmpData = nil;
                             [dictionaries addObject: [NSMutableDictionary new]];
                         }
                         dispatch_apply(blockCount, queue,
-                                       ^(size_t blockIndex)  {
-                                           NSUInteger start = blockIndex * WORDS_LOAD_STRIDE;
-                                           NSUInteger end = start + WORDS_LOAD_STRIDE;
-                                           if (end > lines.count) {
-                                               end = lines.count;
-                                           }
-                                           for (NSUInteger i = start; i < end; ++i) {
-                                               NSString *key = [[lines[i] stringWithNormalizedGermanChars] lowercaseString];
-                                               dictionaries[blockIndex][key] = lines[i];
-                                           }
-                                       }
+                                       ^(size_t blockIndex) {
+                            NSUInteger start = blockIndex * WORDS_LOAD_STRIDE;
+                            NSUInteger end = start + WORDS_LOAD_STRIDE;
+                            if (end > lines.count) {
+                                end = lines.count;
+                            }
+                            for (NSUInteger i = start; i < end; ++i) {
+                                NSString *key = [[lines[i] stringWithNormalizedGermanChars] lowercaseString];
+                                dictionaries[blockIndex][key] = lines[i];
+                            }
+                        }
+
                                        );
 
                         // Finally combine all dicts into one.
@@ -102,7 +103,6 @@ static NSData *receivedTmpData = nil;
 
         LogDebug(@"Word list loading done in: %.2fs", [Mathematics timeDifferenceSince: startTime] / 1000000000);
     });
-     */
 }
 
 /**
@@ -114,13 +114,13 @@ static NSData *receivedTmpData = nil;
     if (data == nil) {
         return [NSString string];
     }
-    
+
     // issue with received data: if an UTF8 string is cut in between on byte level, its parts do not necessarily represent
     // proper UTF8 strings, e.g. if the cut is between the 2 bytes of a single character
     // we therefore have to look if the combination of 2 or several received data blocks build a valid UTF8 string.
     if (receivedTmpData != nil) {
-        NSMutableData *mData = [NSMutableData dataWithData:receivedTmpData];
-        [mData appendData:data];
+        NSMutableData *mData = [NSMutableData dataWithData: receivedTmpData];
+        [mData appendData: data];
         data = mData;
     }
 
@@ -128,20 +128,20 @@ static NSData *receivedTmpData = nil;
     if (result == nil) {
         receivedTmpData = data;
         return @"";
-        
+
         /*
-        const unsigned char *dataBuffer = (const unsigned char *)[data bytes];
+           const unsigned char *dataBuffer = (const unsigned char *)[data bytes];
 
-        if (dataBuffer == nil) {
+           if (dataBuffer == nil) {
             return [NSString string];
-        }
+           }
 
-        NSMutableString *hexString  = [NSMutableString stringWithCapacity: 2 * data.length];
-        for (NSUInteger i = 0; i < data.length; ++i) {
+           NSMutableString *hexString  = [NSMutableString stringWithCapacity: 2 * data.length];
+           for (NSUInteger i = 0; i < data.length; ++i) {
             [hexString appendString: [NSString stringWithFormat: @"%02x", dataBuffer[i]]];
-        }
-        result = [NSString stringWithString: hexString];
-        */
+           }
+           result = [NSString stringWithString: hexString];
+         */
     }
     receivedTmpData = nil;
     return result;
@@ -275,6 +275,11 @@ static NSData *receivedTmpData = nil;
  * This mostly involves truecasing words.
  */
 - (NSString *)stringWithNaturalText {
+    if (words == nil) {
+        // Start loading the word list in the background, if not yet done.
+        [NSString loadWordList];
+    }
+
     if (!wordsValid) {
         // While our word list is being loaded return a simple capitalized string.
         return [self capitalizedStringWithLocale: NSLocale.currentLocale];
@@ -285,40 +290,41 @@ static NSData *receivedTmpData = nil;
                                   scheme: NSLinguisticTagSchemeLexicalClass
                                  options: 0
                              orthography: nil
-                            usingBlock: ^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop) {
-                                NSString *item = [self substringWithRange: tokenRange];
-                                if (tag == NSLinguisticTagOtherWhitespace) {
-                                    // Skip any leading whitespace.
-                                    if (result.length > 0) {
-                                        [result appendString: item];
-                                    }
-                                } else {
-                                    // Not a whitespace. See if that is a known word.
-                                    // TODO: needs localization.
-                                    NSString *key = item.stringWithNormalizedGermanChars.lowercaseString;
-                                    NSString *word = words[key];
-                                    if (word != nil) {
-                                        // If the original work contains lower case characters then it was probably
-                                        // already in true case. We only use the lookup then for replacing diacritics/sharp-s.
-                                        if ([item rangeOfCharacterFromSet: NSCharacterSet.lowercaseLetterCharacterSet].length > 0) {
-                                            [result appendString: [item substringToIndex: 1]];
-                                            [result appendString: [word substringFromIndex: 1]];
-                                        } else {
-                                            // Make the first letter upper case if it is the first entry.
-                                            // Don't touch the other letters, though!
-                                            if (result.length == 0) {
-                                                [result appendString: [word substringToIndex: 1].capitalizedString];
-                                                [result appendString: [word substringFromIndex: 1]];
-                                            } else {
-                                                [result appendString: word];
-                                            }
-                                        }
-                                    } else {
-                                        [result appendString: item];
-                                    }
-                                }
-                              }
-     ];
+                              usingBlock: ^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop) {
+        NSString *item = [self substringWithRange: tokenRange];
+        if (tag == NSLinguisticTagOtherWhitespace) {
+            // Skip any leading whitespace.
+            if (result.length > 0) {
+                [result appendString: item];
+            }
+        } else {
+            // Not a whitespace. See if that is a known word.
+            // TODO: needs localization.
+            NSString *key = item.stringWithNormalizedGermanChars.lowercaseString;
+            NSString *word = words[key];
+            if (word != nil) {
+                // If the original work contains lower case characters then it was probably
+                // already in true case. We only use the lookup then for replacing diacritics/sharp-s.
+                if ([item rangeOfCharacterFromSet: NSCharacterSet.lowercaseLetterCharacterSet].length > 0) {
+                    [result appendString: [item substringToIndex: 1]];
+                    [result appendString: [word substringFromIndex: 1]];
+                } else {
+                    // Make the first letter upper case if it is the first entry.
+                    // Don't touch the other letters, though!
+                    if (result.length == 0) {
+                        [result appendString: [word substringToIndex: 1].capitalizedString];
+                        [result appendString: [word substringFromIndex: 1]];
+                    } else {
+                        [result appendString: word];
+                    }
+                }
+            } else {
+                [result appendString: item];
+            }
+        }
+    }
+
+    ];
     return result;
 }
 

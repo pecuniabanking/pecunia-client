@@ -406,6 +406,7 @@ extern void *UserDefaultsBindingContext;
 
 @synthesize barWidth; // The width of all bars in either the main or the turnovers bar.
 @synthesize groupingInterval;
+@synthesize mainView;
 
 - (id)init
 {

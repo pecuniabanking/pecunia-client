@@ -103,7 +103,7 @@
         x2ySum += x2 * y;
     }
 
-    // Some additional paramater to solve the equation system. These are constant for this computation.
+    // Some additional parameters to solve the equation system. These are constant for this computation.
     __CLPK_integer n = 3, nrhs = 1, lda = 3, ldb = 3, info;
     __CLPK_integer ipiv[3];
 

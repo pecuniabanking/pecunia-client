@@ -147,6 +147,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 @implementation CategoryRepWindowController
 
 @synthesize selectedCategory;
+@synthesize mainView;
 
 - (void)awakeFromNib {
     earningsExplosionIndex = NSNotFound;

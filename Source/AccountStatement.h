@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,22 +17,19 @@
  * 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-
-typedef enum {
+typedef NS_ENUM (NSUInteger, AccountStatementFormat) {
     AccountStatement_MT940 = 1,
     AccountStatement_ISO8583,
     AccountStatement_PDF
-} AccountStatementFormat;
+};
 
 @class BankAccount, BankStatement;
 
 @interface AccountStatementParameters : NSObject
 
-@property (nonatomic, retain) NSNumber * canIndex;
-@property (nonatomic, retain) NSString * formats;
-@property (nonatomic, retain) NSNumber * needsReceipt;
+@property (nonatomic, retain) NSNumber *canIndex;
+@property (nonatomic, retain) NSString *formats;
+@property (nonatomic, retain) NSNumber *needsReceipt;
 
 - (BOOL)supportsFormat: (AccountStatementFormat)format;
 
@@ -41,21 +38,21 @@ typedef enum {
 
 @interface AccountStatement : NSManagedObject
 
-@property (nonatomic, retain) NSData   * document;
-@property (nonatomic, retain) NSNumber * format;
-@property (nonatomic, retain) NSDate   * startDate;
-@property (nonatomic, retain) NSDate   * endDate;
-@property (nonatomic, retain) NSString * info;
-@property (nonatomic, retain) NSString * conditions;
-@property (nonatomic, retain) NSString * advertisement;
-@property (nonatomic, retain) NSString * iban;
-@property (nonatomic, retain) NSString * bic;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * confirmationCode;
+@property (nonatomic, retain) NSData      *document;
+@property (nonatomic, retain) NSNumber    *format;
+@property (nonatomic, retain) NSDate      *startDate;
+@property (nonatomic, retain) NSDate      *endDate;
+@property (nonatomic, retain) NSString    *info;
+@property (nonatomic, retain) NSString    *conditions;
+@property (nonatomic, retain) NSString    *advertisement;
+@property (nonatomic, retain) NSString    *iban;
+@property (nonatomic, retain) NSString    *bic;
+@property (nonatomic, retain) NSString    *name;
+@property (nonatomic, retain) NSString    *confirmationCode;
 @property (nonatomic, retain) BankAccount *account;
 @property (nonatomic, retain) NSArray     *statements;
+@property (nonatomic, retain) NSNumber    *number;           // The running number of this statement within its year.
 
-- (void)convertStatementsToPDFForAccount: (BankAccount*)acct;
+- (void)convertStatementsToPDFForAccount: (BankAccount *)acct;
 
 @end
-

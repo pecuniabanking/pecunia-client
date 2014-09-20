@@ -298,12 +298,12 @@
 
 - (IBAction)negateValueChanged: (id)sender
 {
-    if ([sender state] == NSOnState) {
+    if ([(NSButton *)sender state] == NSOnState) {
         [valueField setTextColor: [NSColor redColor]];
     } else {
         [valueField setTextColor: [NSColor blackColor]];
     }
-    negateValue = ([sender state] == NSOnState);
+    negateValue = ([(NSButton *)sender state] == NSOnState);
     [self updateSaldo];
 }
 

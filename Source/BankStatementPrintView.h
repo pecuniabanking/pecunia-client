@@ -17,11 +17,14 @@
  * 02110-1301  USA
  */
 
-@interface BankStatementPrintView : NSView {
-}
+@class Category;
 
-- (id)initWithStatements: (NSArray *)stats printInfo: (NSPrintInfo *)pi;
+@interface BankStatementPrintView : NSView
 
-- (int)getStatementHeights;
+- (id)initWithStatements: (NSArray *)assignmentsToPrint
+               printInfo: (NSPrintInfo *)pi
+                   title: (NSString *)aTitle
+                category: (Category *)category
+          additionalText: (NSString *)addition;
 
 @end

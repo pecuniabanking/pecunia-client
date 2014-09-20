@@ -22,18 +22,20 @@
 static NSDecimalNumberHandler *numberHandler = nil;
 static NSDecimalNumberHandler *outboundHandler = nil;
 
-
 @implementation NSDecimalNumber (PecuniaAdditions)
 
-- (NSDecimalNumber *)abs
-{
+- (BOOL)isNegative {
+    NSDecimal value = [self decimalValue];
+    return value._isNegative;
+}
+
+- (NSDecimalNumber *)abs {
     NSDecimal value = [self decimalValue];
     value._isNegative = 0;
     return [NSDecimalNumber decimalNumberWithDecimal: value];
 }
 
-- (int)numberOfDigits
-{
+- (int)numberOfDigits {
     NSDecimal zero = [@0 decimalValue];
 
     NSDecimal value = [self decimalValue];
@@ -52,8 +54,7 @@ static NSDecimalNumberHandler *outboundHandler = nil;
     return result;
 }
 
-- (NSDecimalNumber *)roundToUpperOuter
-{
+- (NSDecimalNumber *)roundToUpperOuter {
     int digits = [self numberOfDigits];
 
     NSDecimal value = [self decimalValue];
@@ -99,8 +100,7 @@ static NSDecimalNumberHandler *outboundHandler = nil;
     return [NSDecimalNumber decimalNumberWithDecimal: value];
 }
 
-- (NSDecimalNumber *)rounded
-{
+- (NSDecimalNumber *)rounded {
     if (numberHandler == nil) {
         numberHandler = [[NSDecimalNumberHandler alloc] initWithRoundingMode: NSRoundPlain
                                                                        scale: 2
@@ -113,8 +113,7 @@ static NSDecimalNumberHandler *outboundHandler = nil;
     return [self decimalNumberByRoundingAccordingToBehavior: numberHandler];
 }
 
-- (NSDecimalNumber *)outboundNumber
-{
+- (NSDecimalNumber *)outboundNumber {
     if (outboundHandler == nil) {
         outboundHandler = [[NSDecimalNumberHandler alloc] initWithRoundingMode: NSRoundPlain
                                                                          scale: 0

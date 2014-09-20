@@ -489,7 +489,7 @@ extern NSString *PecuniaWordsLoadedNotification;
         if (transactionText.length > 0) {
             details[@"PURP"] = transactionText.stringWithNaturalText;
         } else {
-            if (statement.ccNumberUms != nil) {
+            if (isCreditCardStatement) {
                 details[@"PURP"] = NSLocalizedString(@"AP131", nil);
             } else {
                 details[@"PURP"] = NSLocalizedString(@"AP130", nil);
@@ -556,7 +556,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     dateSlider.subviews = @[];
     ShortDate *date = [ShortDate dateWithDate: statement.date];
     [self addDateField: NSLocalizedString(@"AP605", nil) forDate: date normal: normalAttributes bold: boldAttributes];
-    if (statement.valutaDate) {
+    if (statement.valutaDate != nil) {
         ShortDate *valuta = [ShortDate dateWithDate: statement.valutaDate];
         if (![date isEqual: valuta] || [valuta compare: ShortDate.currentDate] == NSOrderedDescending) {
             [self addDateField: NSLocalizedString(@"AP604", nil) forDate: valuta normal: normalAttributes bold: boldAttributes];

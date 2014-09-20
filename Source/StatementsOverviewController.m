@@ -503,10 +503,21 @@ extern void *UserDefaultsBindingContext;
 - (void)print
 {
     NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
-    [printInfo setTopMargin: 45];
-    [printInfo setBottomMargin: 45];
+
+    // Set the maxium possible print area.
+    // Note: there's a minimum marging area set by the printer. Values below that only confuse
+    //       the print preview page size computation. NSPrintInfo.imageablePageBounds is supposed to have that info
+    //       but returns, at least for my printer, twice as large vertical margins as what are really possible.
+    printInfo.topMargin = 20;
+    printInfo.bottomMargin = 20;
+    printInfo.leftMargin = 18;
+    printInfo.rightMargin = 18;
     NSPrintOperation *printOp;
-    NSView           *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects] printInfo: printInfo];
+    NSView           *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects]
+                                                                      printInfo: printInfo
+                                                                          title: nil
+                                                                        category: selectedCategory
+                                                                 additionalText: nil];
     printOp = [NSPrintOperation printOperationWithView: view printInfo: printInfo];
     [printOp setShowsPrintPanel: YES];
     [printOp runOperation];

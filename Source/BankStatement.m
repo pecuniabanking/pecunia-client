@@ -257,11 +257,10 @@ BOOL stringEqual(NSString *a, NSString *b) {
 /**
  * extract MT940 SEPA data
  */
-- (void)extractSEPAData {
+- (void)extractSEPADataUsingContext: (NSManagedObjectContext *)context {
     // Examine purpose to see if we need to extract SEPA informations.
     NSDictionary *values = [SEPAMT94xPurposeParser parse: self.purpose];
     if (values.count > 0) {
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
 
         if (self.sepa == nil) {
             self.sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
@@ -387,7 +386,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         }
     }
 
-    [self extractSEPAData];
+    [self extractSEPADataUsingContext: MOAssistant.assistant.context];
 }
 
 - (BOOL)matches: (BankStatement *)stat {

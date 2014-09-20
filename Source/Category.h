@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, CatValueType) {
  * Specifies the grouping of values when collecting statistical data, that is, which time frame
  * balance values should be coalesced in.
  */
-typedef NS_ENUM (NSUInteger, GroupingInterval) {
+typedef NS_ENUM(NSUInteger, GroupingInterval) {
     GroupByDays,
     GroupByWeeks,
     GroupByMonths,
@@ -89,7 +89,6 @@ typedef struct {
 - (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive;
 - (void)updateAssignmentsForReportRange;
 
-- (NSString *)name;
 - (NSString *)accountNumber;
 - (BOOL)isRoot;
 - (BOOL)isBankAccount;

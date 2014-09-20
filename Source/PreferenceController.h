@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 #import "PXListView.h"
 
 @interface PreferenceController : NSWindowController <PXListViewDelegate, NSTableViewDataSource> {

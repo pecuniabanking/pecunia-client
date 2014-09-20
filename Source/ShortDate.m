@@ -20,8 +20,6 @@
 #import "MessageLog.h"
 #import "ShortDate.h"
 
-NSCalendar *calendar = nil;
-
 @interface ShortDate ()
 {
     NSString *shortMonthName;
@@ -430,14 +428,17 @@ NSCalendar *calendar = nil;
     return [ShortDate dateWithYear: 2000 month: 1 day: 1];
 }
 
+static NSCalendar *calendar = nil;
+
++ (void)initialize {
+    calendar = [[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar];
+    calendar.firstWeekday = 2; // Set monday as first day of week.
+    calendar.locale = [NSLocale currentLocale];
+    calendar.minimumDaysInFirstWeek = 4; // According to DIN 1355-1/ISO 8601.
+    calendar.timeZone = [NSTimeZone localTimeZone];
+}
+
 + (NSCalendar *)calendar {
-    if (calendar == nil) {
-        calendar = [[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar];
-        calendar.firstWeekday = 2; // Set monday as first day of week.
-        calendar.locale = [NSLocale currentLocale];
-        calendar.minimumDaysInFirstWeek = 4; // According to DIN 1355-1/ISO 8601.
-        calendar.timeZone = [NSTimeZone localTimeZone];
-    }
     return calendar;
 }
 

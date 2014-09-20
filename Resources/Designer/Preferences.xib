@@ -471,7 +471,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="uUg-87-6Io">
-                                            <rect key="frame" x="7" y="111.00000260942255" width="490" height="26"/>
+                                            <rect key="frame" x="7" y="111.00000820920505" width="490" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Annuitätendarlehen" id="ajw-Sj-2dp">
                                                 <font key="font" metaFont="systemBold"/>
@@ -1064,7 +1064,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <rect key="frame" x="10" y="7" width="504" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="1043" customClass="StatementsListView">
+                                        <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="1043" customClass="PXListView">
                                             <rect key="frame" x="7" y="46" width="490" height="248"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="jYJ-ql-1cQ">
@@ -1333,7 +1333,7 @@ Die Reihenfolge in der Liste entspricht später der Reihenfolge in der Datei.</s
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button id="843">
-                                            <rect key="frame" x="22" y="270" width="214" height="18"/>
+                                            <rect key="frame" x="22" y="261" width="214" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Zusatzinfo drucken" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="844">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1344,7 +1344,7 @@ Die Reihenfolge in der Liste entspricht später der Reihenfolge in der Datei.</s
                                             </connections>
                                         </button>
                                         <button id="845">
-                                            <rect key="frame" x="22" y="248" width="175" height="18"/>
+                                            <rect key="frame" x="22" y="233" width="175" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Kategorien drucken" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="846">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1352,6 +1352,17 @@ Die Reihenfolge in der Liste entspricht später der Reihenfolge in der Datei.</s
                                             </buttonCell>
                                             <connections>
                                                 <binding destination="88" name="value" keyPath="values.printCategories" id="851"/>
+                                            </connections>
+                                        </button>
+                                        <button id="xmb-zB-3ls">
+                                            <rect key="frame" x="22" y="205" width="175" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Tags drucken" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="17y-sJ-47c">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="88" name="value" keyPath="values.printTags" id="JwR-K0-klh"/>
                                             </connections>
                                         </button>
                                     </subviews>

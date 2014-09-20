@@ -111,7 +111,7 @@ Line 3</string>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="1tE-JT-xlX"/>
                     </constraints>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="rRJ-Z9-Xot">
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="rRJ-Z9-Xot">
                         <rect key="frame" x="0.0" y="30" width="348" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -155,10 +155,10 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Zg-so-efZ">
-                                <rect key="frame" x="4.0000001000907961" y="4" width="265" height="60"/>
+                                <rect key="frame" x="4" y="4" width="265.0000001000908" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="PVA-SH-4er">
-                                    <rect key="frame" x="-1.0009080142481253e-07" y="0.0" width="265" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="265" height="60"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView focusRingType="none" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dataDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="K6c-5A-tNh" userLabel="Notes Text View">
@@ -948,7 +948,7 @@ Line 3</string>
                                 <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="Lhj-AU-d34">
-                                    <rect key="frame" x="0.5" y="-0.5" width="274" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView drawsBackground="NO" importsGraphics="NO" findStyle="panel" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="MUI-Mu-cgL" customClass="DetailsTagView">

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -52,6 +52,10 @@
     NSData             *data = [html dataUsingEncoding: NSUTF8StringEncoding];
     NSAttributedString *string = [[NSAttributedString alloc] initWithHTML: data documentAttributes: nil];
     return string;
+}
+
++ (NSAttributedString *)stringWithString: (NSString *)text attributes: (NSDictionary *)attributes {
+    return [[NSAttributedString alloc] initWithString: text attributes: attributes];
 }
 
 @end

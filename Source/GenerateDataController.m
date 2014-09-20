@@ -383,7 +383,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                             // Assign this statement to all categories which contain any of the keywords.
                             NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL (id obj, BOOL *stop) {
                                 for (NSString *keyword in keywords) {
-                                    return [[obj name] rangeOfString: keyword].length > 0;
+                                    return [[(Category *)obj name] rangeOfString: keyword].length > 0;
                                 }
                                 return NO;
                             }];

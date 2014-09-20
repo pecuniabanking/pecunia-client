@@ -998,7 +998,8 @@ static HBCIController *controller = nil;
     if (result == nil) {
         LogError(@"Unexpected result for getAccountStatement: nil");
     }
-    
+
+    result.number = @(number);
     if (result.format.intValue == AccountStatement_MT940) {
         [result convertStatementsToPDFForAccount:account ];
     }

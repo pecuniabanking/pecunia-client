@@ -90,16 +90,7 @@
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
 
-#import "Mathematics.h"
-#import "ZipFile.h"
-#import "FileInZipInfo.h"
-#import "ZipReadStream.h"
-#import "NSString+PecuniaAdditions.h"
-
 #import "RemoteResourceManager.h"
-
-NSString *PecuniaWordsLoadedNotification = @"PecuniaWordsLoadedNotification";
-
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"BankStatementDataType";
@@ -107,8 +98,9 @@ NSString *const CategoryDataType = @"CategoryDataType";
 
 // Notification and dictionary key for category color change notifications.
 extern NSString *const HomeScreenCardClickedNotification;
-NSString *const        CategoryColorNotification = @"CategoryColorNotification";
-NSString *const        CategoryKey = @"CategoryKey";
+
+NSString *const CategoryColorNotification = @"CategoryColorNotification";
+NSString *const CategoryKey = @"CategoryKey";
 
 // KVO contexts.
 void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
@@ -293,7 +285,6 @@ static BankingController *bankinControllerInstance;
     [developerMenu setHidden: NO];
 #endif
 
-    refreshButton.layer.anchorPoint = CGPointMake(0.50, 0.48);
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
     
     [RemoteResourceManager manager];
@@ -412,6 +403,19 @@ static BankingController *bankinControllerInstance;
     if ([defaults objectForKey: @"showHeadersInLists"] == nil) {
         [defaults setBool: YES forKey: @"showHeadersInLists"];
     }
+
+    if ([defaults objectForKey: @"printUserInfo"] == nil) {
+        [defaults setBool: YES forKey: @"printUserInfo"];
+    }
+
+    if ([defaults objectForKey: @"printCategories"] == nil) {
+        [defaults setBool: YES forKey: @"printCategories"];
+    }
+
+    if ([defaults objectForKey: @"printTags"] == nil) {
+        [defaults setBool: YES forKey: @"printTags"];
+    }
+
     // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {
@@ -1152,10 +1156,12 @@ static BankingController *bankinControllerInstance;
     if (category == nil || category.accountNumber == nil) {
         return;
     }
-    BankAccount *account = (BankAccount *)category;
-    NSDictionary *details = @{@"title": account.name,
-                              @"message": NSLocalizedString(@"AP818", nil),
-                              @"details": NSLocalizedString(@"AP819", nil)};
+    BankAccount  *account = (BankAccount *)category;
+    NSDictionary *details = @{
+        @"title": account.name,
+        @"message": NSLocalizedString(@"AP818", nil),
+        @"details": NSLocalizedString(@"AP819", nil)
+    };
     [waitViewController startWaiting: details];
 
     // Run maintenance in a background block.
@@ -1196,9 +1202,11 @@ static BankingController *bankinControllerInstance;
     }
     BankAccount *account = (BankAccount *)category;
 
-    NSDictionary *details = @{@"title": account.name,
-                              @"message": NSLocalizedString(@"AP818", nil),
-                              @"details": NSLocalizedString(@"AP821", nil)};
+    NSDictionary *details = @{
+        @"title": account.name,
+        @"message": NSLocalizedString(@"AP818", nil),
+        @"details": NSLocalizedString(@"AP821", nil)
+    };
     [waitViewController startWaiting: details];
 
     // Run maintenance in a background block.
@@ -1224,7 +1232,7 @@ static BankingController *bankinControllerInstance;
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
     [waitOverlay showInWindow: mainWindow];
-    
+
     LogLeave;
 }
 
@@ -1246,13 +1254,13 @@ static BankingController *bankinControllerInstance;
     [account updateSupportedTransactions];
 
     /*
-    NSDictionary *details = @{@"title": account.name,
+       NSDictionary *details = @{@"title": account.name,
                               @"message": NSLocalizedString(@"AP818", nil),
                               @"details": NSLocalizedString(@"AP820", nil)};
-    [waitViewController startWaiting: details];
+       [waitViewController startWaiting: details];
 
-    // Run maintenance in a background block.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       // Run maintenance in a background block.
+       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableDictionary *details = [NSMutableDictionary new];
         details[@"title"] = account.name;
         details[@"message"] = NSLocalizedString(@"AP823", nil);
@@ -1270,11 +1278,11 @@ static BankingController *bankinControllerInstance;
             // Run clean up on main thread.
             [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
         }
-    });
+       });
 
-    waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
-    [waitOverlay showInWindow: mainWindow];
-    */
+       waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
+       [waitOverlay showInWindow: mainWindow];
+     */
     LogLeave;
 }
 
@@ -2008,7 +2016,7 @@ static BankingController *bankinControllerInstance;
     sidebar.selectedIndex = 7;
 
     [transfersController createTemplateOfType: type fromStatement: statement];
-    
+
     LogLeave;
 }
 
@@ -3075,81 +3083,6 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-static NSMutableDictionary *words;
-static BOOL wordsValid;
-static NSData *receivedTmpData = nil;
-
-// Number of entries in one batch of a dispatch_apply invocation.
-#define WORDS_LOAD_STRIDE 10000
-
-- (void)loadWords {
-    // Schedule time consuming load of word list to a background queue.
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    
-    words = [NSMutableDictionary new];
-    dispatch_async(queue, ^{
-        LogDebug(@"Loading word list");
-        uint64_t startTime = Mathematics.beginTimeMeasure;
-        NSString *path = [NSBundle.mainBundle pathForResource: @"words" ofType: @"zip"];
-        if (path != nil) {
-            ZipFile *file = [[ZipFile alloc] initWithFileName: path mode: ZipFileModeUnzip];
-            if (file != nil) {
-                FileInZipInfo *info = file.getCurrentFileInZipInfo;
-                if (info.length < 100000000) { // Sanity check. Not more than 100MB.
-                    NSMutableData *buffer = [NSMutableData dataWithLength: info.length];
-                    ZipReadStream *stream = file.readCurrentFileInZip;
-                    NSUInteger length = [stream readDataWithBuffer: buffer];
-                    if (length == info.length) {
-                        NSString *text = [[NSString alloc] initWithData: buffer encoding: NSUTF8StringEncoding];
-                        buffer = nil; // Free buffer to lower mem consuption.
-                        NSArray *lines = [text componentsSeparatedByCharactersInSet: NSCharacterSet.newlineCharacterSet];
-                        text = nil;
-                        
-                        // Convert to lower case and decompose diacritics (e.g. umlauts).
-                        // Split work into blocks of WORDS_LOAD_STRIDE size and iterate in parallel over them.
-                        NSUInteger blockCount = lines.count / WORDS_LOAD_STRIDE;
-                        if (lines.count % WORDS_LOAD_STRIDE != 0) {
-                            ++blockCount; // One more (incomplete) block for the remainder.
-                        }
-                        
-                        // Keep an own dictionary for each block, so we don't get into concurrency issues.
-                        NSMutableArray *dictionaries = [NSMutableArray new];
-                        for (NSUInteger i = 0; i < blockCount; ++i) {
-                            [dictionaries addObject: [NSMutableDictionary new]];
-                        }
-                        dispatch_apply(blockCount, queue,
-                                       ^(size_t blockIndex)  {
-                                           NSUInteger start = blockIndex * WORDS_LOAD_STRIDE;
-                                           NSUInteger end = start + WORDS_LOAD_STRIDE;
-                                           if (end > lines.count) {
-                                               end = lines.count;
-                                           }
-                                           for (NSUInteger i = start; i < end; ++i) {
-                                               NSString *key = [[lines[i] stringWithNormalizedGermanChars] lowercaseString];
-                                               dictionaries[blockIndex][key] = lines[i];
-                                           }
-                                       }
-                                       );
-                        
-                        // Finally combine all dicts into one.
-                        for (NSUInteger i = 0; i < blockCount; ++i) {
-                            [words addEntriesFromDictionary: dictionaries[i]];
-                        }
-                    }
-                    
-                    wordsValid = YES;
-                    NSNotification *notification = [NSNotification notificationWithName: PecuniaWordsLoadedNotification
-                                                                                 object: nil];
-                    [NSNotificationCenter.defaultCenter postNotification: notification];
-                }
-            }
-        }
-        
-        LogDebug(@"Word list loading done in: %.2fs", [Mathematics timeDifferenceSince: startTime] / 1000000000);
-    });
-}
-
-
 - (void)applicationWillFinishLaunching: (NSNotification *)notification {
     LogEnter;
 
@@ -3171,8 +3104,6 @@ static NSData *receivedTmpData = nil;
 
     StatusBarController *sc = [StatusBarController controller];
     MOAssistant         *assistant = [MOAssistant assistant];
-    
-    [self loadWords];
 
     // Load context & model.
     @try {
@@ -3443,6 +3374,10 @@ static NSData *receivedTmpData = nil;
     [animation setTimingFunction: [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear]];
     [animation setRepeatCount: 20000];
 
+    CGRect layerFrame = refreshButton.layer.frame;
+    CGPoint center = CGPointMake(CGRectGetMidX(layerFrame), CGRectGetMidY(layerFrame));
+    refreshButton.layer.position = center;
+    refreshButton.layer.anchorPoint = CGPointMake(0.50, 0.48);
     [refreshButton.layer addAnimation: animation forKey: @"transform.rotation"];
     [CATransaction flush];
 }
@@ -3618,19 +3553,19 @@ static NSData *receivedTmpData = nil;
     LogLeave;
 }
 
-- (IBAction)accountStatements:(id)sender {
+- (IBAction)accountStatements: (id)sender {
     LogEnter;
-    
+
     BankAccount *account = [self selectedBankAccount];
     if (account == nil) {
         return;
     }
-    
+
     AccountStatementsController *controller = [[AccountStatementsController alloc] init];
     controller.account = account;
-    
+
     [NSApp runModalForWindow: [controller window]];
-    
+
     LogLeave;
 }
 
@@ -3762,14 +3697,14 @@ static NSData *receivedTmpData = nil;
                             );
 
             for (BankStatement *stat in statements) {
-                [stat extractSEPAData];
+                [stat extractSEPADataUsingContext: context];
             }
         }
         settings[@"Migrated112"] = @YES;
     }
 
-    
-    
+
+
     LogLeave;
 }
 
