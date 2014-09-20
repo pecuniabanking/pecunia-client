@@ -1191,6 +1191,11 @@ static BankingController *bankinControllerInstance;
     account = (BankAccount *)cat;
 
     [account doMaintenance];
+    
+    NSRunAlertPanel(NSLocalizedString(@"AP816", nil),
+                    NSLocalizedString(@"AP819", nil),
+                    NSLocalizedString(@"AP1", nil), nil, nil);
+
     [self save];
 
     LogLeave;
@@ -1208,6 +1213,11 @@ static BankingController *bankinControllerInstance;
     account = (BankAccount *)cat;
     
     [account updateStatementBalances];
+
+    NSRunAlertPanel(NSLocalizedString(@"AP816", nil),
+                    NSLocalizedString(@"AP818", nil),
+                    NSLocalizedString(@"AP1", nil), nil, nil);
+
     [self save];
     
     LogLeave;
@@ -1224,7 +1234,13 @@ static BankingController *bankinControllerInstance;
     }
     account = (BankAccount *)cat;
     
-    [account updateSupportedTransactions];
+    BOOL success = [account updateSupportedTransactions];
+    if (success) {
+        NSRunAlertPanel(NSLocalizedString(@"AP816", nil),
+                        NSLocalizedString(@"AP817", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+    }
+
     [self save];
     
     LogLeave;

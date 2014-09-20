@@ -28,6 +28,7 @@
 #import "MessageLog.h"
 #import "StatCatAssignment.h"
 #import "SupportedTransactionInfo.h"
+#import "PecuniaError.h"
 
 #import "HBCIController.h"
 
@@ -337,13 +338,19 @@
     }
 }
 
-- (void)updateSupportedTransactions
+- (BOOL)updateSupportedTransactions
 {
+    BOOL success = YES;
     for (BankUser *user in self.users) {
         if ([user.userId isEqualToString:self.userId]) {
-            [[HBCIController controller] updateSupportedTransactionsForUser:user];
+            PecuniaError *error = [[HBCIController controller] updateSupportedTransactionsForUser:user];
+            if (error != nil) {
+                [error alertPanel];
+                success = NO;
+            }
         }
     }
+    return success;
 }
 
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value

@@ -745,7 +745,8 @@ NSString * escapeSpecial(NSString *s)
             [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
             [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
             [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE": [transfer.remoteCountry uppercaseString] to: cmd];
-            if ([transfer.type intValue] == TransferTypeOldStandardScheduled) {
+            if ([transfer.type intValue] == TransferTypeOldStandardScheduled ||
+                [transfer.type intValue] == TransferTypeSEPAScheduled) {
                 NSString *fromString = [dateFormatter stringFromDate: transfer.valutaDate];
                 [self appendTag: @"valutaDate" withValue: fromString to: cmd];
             }
