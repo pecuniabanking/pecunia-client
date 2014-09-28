@@ -184,6 +184,7 @@ static BankingController *bankinControllerInstance;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
+    [userDefaults removeObserver: self forKeyPath: @"showPreliminaryStatements"];
 
     LogLeave;
 }
@@ -229,6 +230,8 @@ static BankingController *bankinControllerInstance;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
+
     NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
@@ -414,6 +417,10 @@ static BankingController *bankinControllerInstance;
 
     if ([defaults objectForKey: @"printTags"] == nil) {
         [defaults setBool: YES forKey: @"printTags"];
+    }
+
+    if ([defaults objectForKey: @"showPreliminaryStatements"] == nil) {
+        [defaults setBool: YES forKey: @"showPreliminaryStatements"];
     }
 
     // Migrate the migration flags to the local settings if a migration was done.
@@ -3472,6 +3479,17 @@ static BankingController *bankinControllerInstance;
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [categoryController prepareContent];
             return;
+        }
+
+        if ([keyPath isEqualToString: @"showPreliminaryStatements"]) {
+            if (currentSection != nil) {
+                // Update the reported assignments list.
+                Category *category = self.currentSelection;
+                [category invalidateCacheIncludeParents: YES recursive: YES];
+                [category updateAssignmentsForReportRange];
+                currentSection.selectedCategory = category;
+                return;
+            }
         }
 
         if ([keyPath isEqualToString: @"fontScale"]) {

@@ -439,7 +439,19 @@ static ShortDate *endReportDate = nil;
 
         // Update the balance value for this category while we have the filtered assignments at hand and this
         // is not a bank account.
-        if (!self.isBankAccount) {
+        // For bank accounts remove preliminary statements if set by the user.
+        if (self.isBankAccount) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            if (![defaults boolForKey: @"showPreliminaryStatements"]) {
+                NSMutableArray *candidates = [NSMutableArray new];
+                for (StatCatAssignment *assignment in fetchedObjects) {
+                    if (assignment.statement.isPreliminary.boolValue) {
+                        [candidates addObject: assignment];
+                    }
+                }
+                [result removeObjectsInArray: candidates];
+            }
+        } else {
             NSDecimalNumber *balance = NSDecimalNumber.zero;
 
             for (StatCatAssignment *assignment in fetchedObjects) {

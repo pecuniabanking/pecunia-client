@@ -243,7 +243,7 @@ static NSDictionary *heightMappings;
                        @"home": @400,
                        @"security": @270,
                        @"persistence": @260,
-                       @"display": @370,
+                       @"display": @390,
                        @"colors": @450,
                        @"export": @375,
                        @"print": @220};
