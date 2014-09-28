@@ -40,7 +40,7 @@ extern NSDictionary    *whiteAttributes;
 
 @interface StatementsListViewCell ()
 {
-@private
+    @private
     IBOutlet NSTextField *dateLabel;
     IBOutlet NSTextField *turnoversLabel;
     IBOutlet NSTextField *remoteNameLabel;
@@ -58,7 +58,7 @@ extern NSDictionary    *whiteAttributes;
     IBOutlet NSTextField *dayLabel;
     IBOutlet NSTextField *monthLabel;
 
-    int  headerHeight;
+    int headerHeight;
 
     NSColor *categoryColor;
 }
@@ -73,8 +73,7 @@ extern NSDictionary    *whiteAttributes;
 
 #pragma mark - Init/Dealloc
 
-- (id)initWithFrame: (NSRect)frame
-{
+- (id)initWithFrame: (NSRect)frame {
     self = [super initWithFrame: frame];
     if (self != nil) {
         [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
@@ -82,12 +81,12 @@ extern NSDictionary    *whiteAttributes;
                                                          queue: nil
                                                     usingBlock:
          ^(NSNotification *notifictation) {
-             Category *category = (notifictation.userInfo)[CategoryKey];
-             categoryColor = category.categoryColor;
-             [self setNeedsDisplay: YES];
-         }
+            Category *category = (notifictation.userInfo)[CategoryKey];
+            categoryColor = category.categoryColor;
+            [self setNeedsDisplay: YES];
+        }
 
-         ];
+        ];
 
         // In addition listen to certain preference changes.
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -99,8 +98,7 @@ extern NSDictionary    *whiteAttributes;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [NSNotificationCenter.defaultCenter removeObserver: self];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -112,8 +110,7 @@ extern NSDictionary    *whiteAttributes;
     [self.representedObject removeObserver: self forKeyPath: @"userInfo"];
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [self registerStandardLabel: remoteNameLabel];
     [self registerStandardLabel: purposeLabel];
     [self registerStandardLabel: categoriesLabel];
@@ -134,8 +131,7 @@ extern NSDictionary    *whiteAttributes;
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"showBalances"]) {
             [self showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
@@ -164,18 +160,17 @@ extern NSDictionary    *whiteAttributes;
 
     if ([keyPath isEqualToString: @"userInfo"]) {
         StatCatAssignment *assignment = self.representedObject;
-        id value = [self formatValue: assignment.userInfo capitalize: NO];
+        id                value = [self formatValue: assignment.userInfo capitalize: NO];
         noteLabel.stringValue = value;
         noteLabel.toolTip = value;
 
         return;
     }
-    
+
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-- (void)setHeaderHeight: (int)aHeaderHeight
-{
+- (void)setHeaderHeight: (int)aHeaderHeight {
     headerHeight = aHeaderHeight;
     if (headerHeight > 0) {
         [dateLabel setEnabled: YES];
@@ -188,22 +183,21 @@ extern NSDictionary    *whiteAttributes;
     [self setNeedsDisplay: YES];
 }
 
-- (void)setRepresentedObject: (id)object
-{
+- (void)setRepresentedObject: (id)object {
     [self.representedObject removeObserver: self forKeyPath: @"userInfo"];
 
     [super setRepresentedObject: object];
     [object addObserver: self forKeyPath: @"userInfo" options: 0 context: nil];
 
     StatCatAssignment *assignment = object;
-    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    NSUserDefaults    *defaults = NSUserDefaults.standardUserDefaults;
 
     [self updateLabelsWithCasing: [defaults boolForKey: @"autoCasing"]];
 
     if (assignment.statement == nil) {
         return;
     }
-    
+
     NSDate *currentDate = assignment.statement.date;
     if (currentDate == nil) {
         currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
@@ -231,7 +225,7 @@ extern NSDictionary    *whiteAttributes;
 
     valueLabel.objectValue = [self formatValue: assignment.value capitalize: NO];
     saldoLabel.objectValue = [self formatValue: assignment.statement.saldo capitalize: NO];
-    
+
     value = [self formatValue: assignment.statement.currency capitalize: NO];
     NSString *symbol = [currencyTransformer transformedValue: value];
     currencyLabel.stringValue = symbol;
@@ -253,12 +247,11 @@ extern NSDictionary    *whiteAttributes;
 
     NSDecimalNumber *nassValue = assignment.statement.nassValue;
     self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
-
-    preliminaryImage.hidden = !assignment.statement.isPreliminary.boolValue;
+    self.blendFactor = assignment.statement.isPreliminary.boolValue ? 0.5 : 1;
+    [preliminaryImage setHidden: !assignment.statement.isPreliminary.boolValue];
 }
 
-- (void)updateLabelsWithCasing: (BOOL)autoCasing
-{
+- (void)updateLabelsWithCasing: (BOOL)autoCasing {
     StatCatAssignment *assignment = self.representedObject;
 
     id value = [self formatValue: assignment.statement.remoteName capitalize: autoCasing];
@@ -276,8 +269,7 @@ extern NSDictionary    *whiteAttributes;
 
 #pragma mark - Reuse
 
-- (void)prepareForReuse
-{
+- (void)prepareForReuse {
     [super prepareForReuse];
 
     hasUnassignedValue = NO;
@@ -287,10 +279,15 @@ extern NSDictionary    *whiteAttributes;
 
 #pragma mark - Properties
 
-- (void)setIsNew: (BOOL)flag
-{
+- (void)setIsNew: (BOOL)flag {
+    StatCatAssignment *assignment = self.representedObject;
+    if (assignment.statement.isPreliminary.boolValue) {
+        [newImage setHidden: YES];
+        return;
+    }
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL newStatementsWithGradient = [defaults boolForKey: @"markNewStatements"];
+    BOOL           newStatementsWithGradient = [defaults boolForKey: @"markNewStatements"];
     if (newStatementsWithGradient) {
         [newImage setHidden: YES];
     } else {
@@ -299,24 +296,21 @@ extern NSDictionary    *whiteAttributes;
     isNew = flag;
 }
 
-- (void)showActivator: (BOOL)flag markActive: (BOOL)active
-{
+- (void)showActivator: (BOOL)flag markActive: (BOOL)active {
     [checkbox setHidden: !flag];
     [checkbox setState: active ? NSOnState: NSOffState];
 }
 
-- (void)showBalance: (BOOL)flag
-{
+- (void)showBalance: (BOOL)flag {
     StatCatAssignment *assignment = self.representedObject;
     if (!assignment.category.isBankAccount) {
         flag = NO;
     }
-    [saldoLabel setHidden: !flag];
-    [saldoCurrencyLabel setHidden: !flag];
+    [saldoLabel setHidden: !flag || assignment.statement.isPreliminary.boolValue];
+    [saldoCurrencyLabel setHidden: !flag || assignment.statement.isPreliminary.boolValue];
 }
 
-- (void)setTurnovers: (NSUInteger)value
-{
+- (void)setTurnovers: (NSUInteger)value {
     turnovers = value;
     if (turnovers != 1) {
         turnoversLabel.stringValue = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
@@ -328,7 +322,7 @@ extern NSDictionary    *whiteAttributes;
 - (void)rightMouseDown: (NSEvent *)theEvent {
     // Select cell on right click to have a context for the menu, if it isn't already selected.
     if (![[self.listView selectedRows] containsIndex: self.row]) {
-        NSIndexSet	*clickedIndexSet = [NSIndexSet indexSetWithIndex: self.row];
+        NSIndexSet *clickedIndexSet = [NSIndexSet indexSetWithIndex: self.row];
         [self.listView selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
     }
 
@@ -343,7 +337,7 @@ extern NSDictionary    *whiteAttributes;
     }
 
     StatCatAssignment *assignment = self.representedObject;
-    BOOL isManualAccount = NO;
+    BOOL              isManualAccount = NO;
 
     if (assignment.category.isBankAccount) {
         isManualAccount = [(BankAccount *)assignment.category isManual].boolValue;
@@ -351,7 +345,7 @@ extern NSDictionary    *whiteAttributes;
 
     StatementsListView *listView = (StatementsListView *)self.listView;
 
-    BOOL singleSelection = listView.selectedRows.count == 1;
+    BOOL   singleSelection = listView.selectedRows.count == 1;
     NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Statement List Context menu"];
 
     NSMenuItem *item;
@@ -390,10 +384,10 @@ extern NSDictionary    *whiteAttributes;
             stop = YES;
         }
     }];
-    item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil) : NSLocalizedString(@"AP239", nil)
+    item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil): NSLocalizedString(@"AP239", nil)
                            action: @selector(menuAction:)
                     keyEquivalent: @""];
-         item.tag = allRead ? MenuActionMarkUnread : MenuActionMarkRead;
+    item.tag = allRead ? MenuActionMarkUnread : MenuActionMarkRead;
 
     BankStatement *statement = [self.representedObject statement];
     if (!statement.account.isManual.boolValue) {
@@ -418,8 +412,7 @@ extern NSDictionary    *whiteAttributes;
     }
 }
 
-- (IBAction)activationChanged: (id)sender
-{
+- (IBAction)activationChanged: (id)sender {
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
         [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: self.row];
     }
@@ -428,7 +421,7 @@ extern NSDictionary    *whiteAttributes;
 - (void)selectionChanged {
     [super selectionChanged];
 
-    newImage.image = [NSImage imageNamed: self.isSelected ? @"new-small-white" : @"new-small"];
+    newImage.image = [NSImage imageNamed: self.isSelected ? @"new-small-white": @"new-small"];
 
 }
 
@@ -437,8 +430,7 @@ extern NSDictionary    *whiteAttributes;
 static NSGradient *headerGradient;
 static NSImage    *stripeImage;
 
-- (void)setupDrawStructures
-{
+- (void)setupDrawStructures {
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                       [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat)0,
                       [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat)1,
@@ -448,13 +440,13 @@ static NSImage    *stripeImage;
 
 #define DENT_SIZE 4
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     // Old style gradient drawing for unassigned and new statements.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    BOOL drawNotAssignedGradient = [defaults boolForKey: @"markNAStatements"];
-    BOOL drawNewStatementsGradient = [defaults boolForKey: @"markNewStatements"];
+    BOOL preliminary = [self.representedObject statement].isPreliminary.boolValue;
+    BOOL drawNotAssignedGradient = !preliminary && [defaults boolForKey: @"markNAStatements"];
+    BOOL drawNewStatementsGradient = !preliminary && [defaults boolForKey: @"markNewStatements"];
     BOOL isUnassignedColored = NO;
 
     if (headerGradient == nil) {
@@ -474,6 +466,15 @@ static NSImage    *stripeImage;
         bounds.size.height -= headerHeight;
     }
 
+    CGFloat alpha = 1;
+    if (preliminary) {
+        alpha = 0.5;
+        if (!self.isSelected) {
+            [[NSColor colorWithCalibratedWhite: 0.95 alpha: 1] set];
+            NSRectFill(bounds);
+        }
+    }
+    
     if (self.isSelected) {
         NSBezierPath *path = [NSBezierPath bezierPath];
 
@@ -510,7 +511,11 @@ static NSImage    *stripeImage;
             [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
             [path lineToPoint: NSMakePoint(x, y - dentHeight)];
 
-            [self.selectionGradient drawInBezierPath: path angle: 90.0];
+            if (preliminary) {
+                [self.selectionPaleGradient drawInBezierPath: path angle: 90.0];
+            } else {
+                [self.selectionGradient drawInBezierPath: path angle: 90.0];
+            }
         }
 
         if (hasUnassignedValue) {
@@ -520,27 +525,29 @@ static NSImage    *stripeImage;
             }
         }
     } else {
-        NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
+        if (!preliminary) {
+            NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
 
-        if (hasUnassignedValue) {
-            NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
-            if (color) {
-                NSGradient *aGradient = [[NSGradient alloc]
-                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
-                                         nil];
+            if (hasUnassignedValue) {
+                NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
+                if (color) {
+                    NSGradient *aGradient = [[NSGradient alloc]
+                                             initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
+                                             nil];
 
-                [aGradient drawInBezierPath: path angle: 90.0];
-                isUnassignedColored = YES;
+                    [aGradient drawInBezierPath: path angle: 90.0];
+                    isUnassignedColored = YES;
+                }
             }
-        }
-        if (isNew) {
-            NSColor *color = drawNewStatementsGradient ? [NSColor applicationColorForKey: @"Unread Transfer"] : nil;
-            if (color) {
-                NSGradient *aGradient = [[NSGradient alloc]
-                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
-                                         nil];
-
-                [aGradient drawInBezierPath: path angle: 90.0];
+            if (isNew) {
+                NSColor *color = drawNewStatementsGradient ? [NSColor applicationColorForKey: @"Unread Transfer"] : nil;
+                if (color) {
+                    NSGradient *aGradient = [[NSGradient alloc]
+                                             initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
+                                             nil];
+                    
+                    [aGradient drawInBezierPath: path angle: 90.0];
+                }
             }
         }
     }
@@ -583,7 +590,7 @@ static NSImage    *stripeImage;
     [path stroke];
 
     // Mark the value area if there is an unassigned value remaining.
-    if (hasUnassignedValue && !isUnassignedColored) {
+    if (hasUnassignedValue && !isUnassignedColored && !preliminary) {
         NSRect area = [categoriesLabel frame];
         area.origin.y = 2;
         area.size.height = bounds.size.height - 4;

@@ -28,7 +28,8 @@ extern void *UserDefaultsBindingContext;
 static void *SetRowBindingContext = @"SetRowContext";
 
 // Objects shared between all cell instances.
-static NSGradient      *innerGradientSelected; // Gradient via property to better control recreation on color changes.
+static NSGradient *innerGradientSelected;  // Gradient via property to better control recreation on color changes.
+static NSGradient *innerGradientPaleSelected;
 
 NSDateFormatter *dateFormatter;
 NSDictionary    *whiteAttributes;
@@ -47,6 +48,8 @@ NSDictionary    *whiteAttributes;
 
 @synthesize representedObject;
 @synthesize selectionGradient;
+@synthesize selectionPaleGradient;
+@synthesize blendFactor;
 
 + (void)initialize
 {
@@ -73,6 +76,7 @@ NSDictionary    *whiteAttributes;
         standardLabels = [NSMutableArray new];
         numberLabels = [NSMutableArray new];
         paleLabels = [NSMutableArray new];
+        blendFactor = 1;
 
         [self addObserver: self forKeyPath: @"row" options: 0 context: SetRowBindingContext];
 
@@ -105,6 +109,7 @@ NSDictionary    *whiteAttributes;
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateTextColors];
             innerGradientSelected = nil; // Reset the gradient. It will be created on next draw call.
+            innerGradientPaleSelected = nil;
 
             [self setNeedsDisplay: YES];
             return;
@@ -129,6 +134,17 @@ NSDictionary    *whiteAttributes;
     return innerGradientSelected;
 }
 
+- (NSGradient *)selectionPaleGradient
+{
+    if (innerGradientPaleSelected == nil) {
+        innerGradientPaleSelected = [[NSGradient alloc] initWithColorsAndLocations:
+                                 [[NSColor applicationColorForKey: @"Selection Gradient (low)"] colorWithAlphaComponent: 0.5], (CGFloat)0,
+                                 [[NSColor applicationColorForKey: @"Selection Gradient (high)"] colorWithAlphaComponent: 0.5], (CGFloat)1,
+                                 nil];
+    }
+    return innerGradientPaleSelected;
+}
+
 - (void)selectionChanged
 {
     if (self.isSelected) {
@@ -146,7 +162,7 @@ NSDictionary    *whiteAttributes;
         }
     } else {
         for (NSDictionary* entry in standardLabels) {
-            [entry[@"field"] setTextColor: NSColor.controlTextColor];
+            [entry[@"field"] setTextColor: [NSColor.controlTextColor colorWithAlphaComponent: blendFactor]];
         }
         [self updateTextColors];
     }
@@ -175,15 +191,15 @@ NSDictionary    *whiteAttributes;
 - (void)updateTextColors
 {
     if (!self.isSelected) {
-        NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-        NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+        NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [[NSColor applicationColorForKey: @"Positive Cash"] colorWithAlphaComponent: blendFactor]};
+        NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [[NSColor applicationColorForKey: @"Negative Cash"] colorWithAlphaComponent: blendFactor]};
 
         for (NSDictionary* entry in numberLabels) {
             [[[entry[@"field"] cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
             [[[entry[@"field"] cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
         }
 
-        NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
+        NSColor *paleColor = [[NSColor applicationColorForKey: @"Pale Text"] colorWithAlphaComponent: blendFactor];
         for (NSDictionary* entry in paleLabels) {
             [entry[@"field"] setTextColor: paleColor];
         }

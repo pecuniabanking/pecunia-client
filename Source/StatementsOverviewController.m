@@ -342,7 +342,9 @@ extern void *UserDefaultsBindingContext;
     NSArray *selection = [categoryAssignments selectedObjects];
     if (selection.count > 0) {
         for (StatCatAssignment *assignment in selection) {
-            assignment.statement.isNew = @YES;
+            if (!assignment.statement.isPreliminary.boolValue) {
+                assignment.statement.isNew = @YES;
+            }
         }
         [BankingController.controller updateUnread];
         [statementsListView updateVisibleCells];

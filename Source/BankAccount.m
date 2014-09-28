@@ -88,10 +88,6 @@
 }
 
 - (void)evaluateQueryResult: (BankQueryResult *)res {
-    NSError       *error = nil;
-    BankStatement *stat;
-    //	ShortDate *lastTransferDate;
-
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
@@ -105,53 +101,53 @@
     // first remove old preliminary statements
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isPreliminary = 1)", self];
     [request setPredicate: predicate];
-    NSArray *prelimStatements = [context executeFetchRequest: request error: &error];
-    for (stat in prelimStatements) {
-        [context deleteObject:stat];
+
+    NSError *error;
+    NSArray *preliminaryStatements = [context executeFetchRequest: request error: &error];
+    for (BankStatement *statement in preliminaryStatements) {
+        [context deleteObject: statement];
     }
-    if (prelimStatements.count > 0) {
+    if (preliminaryStatements.count > 0) {
         [context processPendingChanges];
     }
     
-    stat = (res.statements)[0];     // oldest statement
-    predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: stat.date] lowDate]];
+    BankStatement *newStatement = (res.statements)[0]; // oldest statement
+    predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: newStatement.date] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
-    // rearrange statements by day
+    // Rearrange statements by day.
     NSDictionary *oldDayStats = [self statementsByDay: self.dbStatements];
     NSDictionary *newDayStats = [self statementsByDay: res.statements];
 
-    // compare by day
+    // Compare by day.
     NSArray *dates = [newDayStats allKeys];
     for (ShortDate *date in dates) {
-        NSMutableArray *oldStats = oldDayStats[date];
-        NSMutableArray *newStats = newDayStats[date];
+        NSMutableArray *oldStatements = oldDayStats[date];
+        NSMutableArray *newStatments = newDayStats[date];
 
-        //repair mode...
-        //		if ([oldStats count ] == [newStats count ]) continue;
-        for (stat in newStats) {
-            if (oldStats == nil) {
-                stat.isNew = @YES;
+        for (newStatement in newStatments) {
+            if (newStatement.isPreliminary.boolValue) {
+                continue;
+            }
+            if (oldStatements == nil) {
+                newStatement.isNew = @YES;
                 continue;
             } else {
-                // find statement in old statements
+                // Find new statement in old statements.
                 BOOL isMatched = NO;
-                for (NSUInteger idx = 0; idx < [oldStats count]; idx++) {
-                    BankStatement *oldStat = oldStats[idx];
-                    if (oldStat.isPreliminary.boolValue == YES) {
-                        continue;
-                    }
-                    if ([stat matchesAndRepair: oldStat]) {
+                for (BankStatement *oldStatment in oldStatements) {
+                    if ([newStatement matchesAndRepair: oldStatment]) {
                         isMatched = YES;
-                        [oldStats removeObjectAtIndex: idx];
+                        [oldStatements removeObject: oldStatment];
                         break;
                     }
                 }
-                if (isMatched == NO) {
-                    stat.isNew = @YES;
+
+                if (!isMatched) {
+                    newStatement.isNew = @YES;
                 } else {
-                    stat.isNew = @NO;
+                    newStatement.isNew = @NO;
                 }
             }
         }
@@ -213,7 +209,8 @@
     // Statements must be properly sorted!
     NSDate *date;
     for (stat in result.statements) {
-        if (![stat.isNew boolValue]) {
+        // Preliminary statements are always newly inserted but not marked as new.
+        if (!stat.isNew.boolValue && !stat.isPreliminary.boolValue) {
             continue;
         }
 
@@ -222,22 +219,24 @@
         NSArray             *attributeKeys = [[entity attributesByName] allKeys];
         NSDictionary        *attributeValues = [stat dictionaryWithValuesForKeys: attributeKeys];
 
-        BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
+        BankStatement *bankStatement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
                                                             inManagedObjectContext: context];
 
-        [stmt setValuesForKeysWithDictionary: attributeValues];
-        stmt.isNew = @YES;
-        [stmt sanitize];
+        [bankStatement setValuesForKeysWithDictionary: attributeValues];
+        if (!bankStatement.isPreliminary.boolValue) {
+            bankStatement.isNew = @YES;
+        }
+        [bankStatement sanitize];
 
         // check for old statements
-        ShortDate *stmtDate = [ShortDate dateWithDate: stmt.date];
+        ShortDate *stmtDate = [ShortDate dateWithDate: bankStatement.date];
 
         if (currentDate == nil || ![stmtDate isEqual: currentDate]) {
             // New day found. See if this day is already in the existing statements and if so
             // take the last one for that day, so we continue from there.
             NSArray *oldStats = oldDayStats[stmtDate];
             if (oldStats == nil) {
-                date = stmt.date;
+                date = bankStatement.date;
             } else {
                 date = nil;
 
@@ -256,17 +255,17 @@
             currentDate = stmtDate;
         }
 
-        stmt.date = date;
-        if (stmt.valutaDate == nil) {
-            stmt.valutaDate = date;
+        bankStatement.date = date;
+        if (bankStatement.valutaDate == nil) {
+            bankStatement.valutaDate = date;
         }
         date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: date];
 
-        [newStatements addObject: stmt];
-        [stmt addToAccount: self];
-        if (stmt.isPreliminary.boolValue == NO) {
-            if (ltd == nil || [ltd compare: stmt.date] == NSOrderedAscending) {
-                ltd = stmt.date;
+        [newStatements addObject: bankStatement];
+        [bankStatement addToAccount: self];
+        if (bankStatement.isPreliminary.boolValue == NO) {
+            if (ltd == nil || [ltd compare: bankStatement.date] == NSOrderedAscending) {
+                ltd = bankStatement.date;
             }
         }
     }

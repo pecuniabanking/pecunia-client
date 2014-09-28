@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) id representedObject;
 @property (nonatomic, strong) NSGradient *selectionGradient;
+@property (nonatomic, strong) NSGradient *selectionPaleGradient;
+@property (assign) CGFloat blendFactor; // To blend the text against the background.
 
 - (void)registerStandardLabel: (NSTextField *)field;
 - (void)registerNumberLabel: (NSTextField *)field;

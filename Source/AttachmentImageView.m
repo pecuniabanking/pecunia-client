@@ -183,7 +183,9 @@ static NSCursor *moveCursor;
 
 - (void)mouseDown: (NSEvent *)event
 {
-    dragPending = YES;
+    if (self.isEditable) {
+        dragPending = YES;
+    }
 }
 
 - (void)mouseUp: (NSEvent *)event

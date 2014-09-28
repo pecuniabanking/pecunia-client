@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 CGColorRef CGColorCreateFromNSColor(NSColor *color);
 
 @interface NSColor (PecuniaAdditions)
