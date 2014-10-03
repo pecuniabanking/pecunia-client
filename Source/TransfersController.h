@@ -127,8 +127,8 @@
     NSPredicate *finishedTransfersPredicate;
 }
 
-@property (weak) IBOutlet TransferFormularView *transferFormular;
-@property (weak) IBOutlet ShadowedTextField *dragToHereLabel;
+@property (strong) IBOutlet TransferFormularView *transferFormular;
+@property (strong) IBOutlet ShadowedTextField *dragToHereLabel;
 
 @property (nonatomic, assign) BOOL dropToEditRejected;
 @property (nonatomic, assign) BOOL donation;

@@ -102,9 +102,9 @@
     NSUInteger        rowPositions[4];
 }
 
-@property (weak) IBOutlet DebitFormularView *debitFormular;
-@property (weak) IBOutlet NSTextField       *dragToHereLabel;
-@property (nonatomic, assign) BOOL          dropToEditRejected;
+@property (strong) IBOutlet DebitFormularView *debitFormular;
+@property (weak) IBOutlet NSTextField         *dragToHereLabel;
+@property (nonatomic, assign) BOOL            dropToEditRejected;
 
 - (IBAction)sendDebits: (id)sender;
 - (IBAction)showCalendar: (id)sender;
