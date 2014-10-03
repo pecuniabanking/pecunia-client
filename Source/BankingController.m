@@ -1681,7 +1681,7 @@ static BankingController *bankinControllerInstance;
             case 0:
                 if (overviewController == nil) {
                     overviewController = [[StatementsOverviewController alloc] init];
-                    if ([NSBundle loadNibNamed: @"StatementsOverview" owner: overviewController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"StatementsOverview" owner: overviewController topLevelObjects: nil]) {
                         NSView *view = [overviewController mainView];
                         view.frame = frame;
                     }
@@ -1704,7 +1704,7 @@ static BankingController *bankinControllerInstance;
             case 1:
                 if (categoryAnalysisController == nil) {
                     categoryAnalysisController = [[CategoryAnalysisWindowController alloc] init];
-                    if ([NSBundle loadNibNamed: @"CategoryAnalysis" owner: categoryAnalysisController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"CategoryAnalysis" owner: categoryAnalysisController topLevelObjects: nil]) {
                         NSView *view = [categoryAnalysisController mainView];
                         view.frame = frame;
                     }
@@ -1726,7 +1726,7 @@ static BankingController *bankinControllerInstance;
             case 2:
                 if (categoryReportingController == nil) {
                     categoryReportingController = [[CategoryRepWindowController alloc] init];
-                    if ([NSBundle loadNibNamed: @"CategoryReporting" owner: categoryReportingController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"CategoryReporting" owner: categoryReportingController topLevelObjects: nil]) {
                         NSView *view = [categoryReportingController mainView];
                         view.frame = frame;
                     }
@@ -1756,7 +1756,7 @@ static BankingController *bankinControllerInstance;
 
                 if (categoryPeriodsController == nil) {
                     categoryPeriodsController = [[CategoryPeriodsWindowController alloc] init];
-                    if ([NSBundle loadNibNamed: @"CategoryPeriods" owner: categoryPeriodsController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"CategoryPeriods" owner: categoryPeriodsController topLevelObjects: nil]) {
                         NSView *view = [categoryPeriodsController mainView];
                         view.frame = frame;
                         [categoryPeriodsController connectScrollViews: accountsScrollView];
@@ -1788,7 +1788,7 @@ static BankingController *bankinControllerInstance;
             case 4:
                 if (categoryDefinitionController == nil) {
                     categoryDefinitionController = [[CategoryDefWindowController alloc] init];
-                    if ([NSBundle loadNibNamed: @"CategoryDefinition" owner: categoryDefinitionController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"CategoryDefinition" owner: categoryDefinitionController topLevelObjects: nil]) {
                         NSView *view = [categoryDefinitionController mainView];
                         view.frame = frame;
                     }
@@ -1827,7 +1827,7 @@ static BankingController *bankinControllerInstance;
             case 6:
                 if (heatMapController == nil) {
                     heatMapController = [[CategoryHeatMapController alloc] init];
-                    if ([NSBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController]) {
+                    if ([NSBundle.mainBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController topLevelObjects: nil]) {
                         heatMapController.mainView.frame = frame;
                     }
                     [heatMapController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];

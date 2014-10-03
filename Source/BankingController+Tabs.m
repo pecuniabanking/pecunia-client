@@ -43,7 +43,7 @@
     if (index == NSNotFound) {
         homeScreenController = [[HomeScreenController alloc] init];
         LogDebug(@"Loading HomeScreen.xib");
-        if ([NSBundle loadNibNamed: @"HomeScreen" owner: homeScreenController]) {
+        if ([NSBundle.mainBundle loadNibNamed: @"HomeScreen" owner: homeScreenController topLevelObjects: nil]) {
             LogDebug(@"Loading successful");
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: HomeScreenTabIdentifier];
             [item setView: homeScreenController.view];
@@ -65,7 +65,7 @@
     if (index == NSNotFound) {
         standingOrderController = [[StandingOrderController alloc] init];
         LogDebug(@"Loading Orders.xib");
-        if ([NSBundle loadNibNamed: @"Orders" owner: standingOrderController]) {
+        if ([NSBundle.mainBundle loadNibNamed: @"Orders" owner: standingOrderController topLevelObjects: nil]) {
             LogDebug(@"Loading successful");
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier];
             [item setView: [standingOrderController mainView]];
@@ -88,7 +88,7 @@
     if (index == NSNotFound) {
         transfersController = [[TransfersController alloc] init];
         LogDebug(@"Loading Transfers.xib");
-        if ([NSBundle loadNibNamed: @"Transfers" owner: transfersController]) {
+        if ([NSBundle.mainBundle loadNibNamed: @"Transfers" owner: transfersController topLevelObjects: nil]) {
             LogDebug(@"Loading successful");
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier];
             [item setView: [transfersController mainView]];
@@ -111,7 +111,7 @@
     if (index == NSNotFound) {
         debitsController = [[DebitsController alloc] init];
         LogDebug(@"Loading Debits.xib");
-        if ([NSBundle loadNibNamed: @"Debits" owner: debitsController]) {
+        if ([NSBundle.mainBundle loadNibNamed: @"Debits" owner: debitsController topLevelObjects: nil]) {
             LogDebug(@"Loading successful");
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: DebitsTabIdentifier];
             [item setView: [debitsController mainView]];

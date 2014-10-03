@@ -35,7 +35,7 @@
     
     id cell = nil;
     
-    [cellNib instantiateNibWithOwner:nil topLevelObjects:&objects];
+    [cellNib instantiateWithOwner:nil topLevelObjects:&objects];
     for(id object in objects) {
         if([object isKindOfClass:[self class]]) {
             cell = object;

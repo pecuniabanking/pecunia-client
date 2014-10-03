@@ -95,7 +95,7 @@
 
     self = [super initWithFrame: frame];
     if (self != nil) {
-        if (![NSBundle loadNibNamed: @"HomeScreenTransfersView" owner: self]) {
+        if (![NSBundle.mainBundle loadNibNamed: @"HomeScreenTransfersView" owner: self topLevelObjects: nil]) {
             LogError(@"Internal error: home screen recent transfers view loading failed.");
         }
 
