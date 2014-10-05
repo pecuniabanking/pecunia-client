@@ -74,13 +74,15 @@ extern void *UserDefaultsBindingContext;
 }
 
 @property (nonatomic, strong) Category *category;
-@property NSInteger                    tag;
+
+@property NSInteger tag;
 
 @end
 
 @implementation AssetGraph
 
 @synthesize category;
+@synthesize tag;
 
 - (id)initWithFrame: (NSRect)frame category: (Category *)aCategory {
     LogEnter;

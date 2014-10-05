@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <development version="6000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -93,7 +94,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <imageView toolTip="Dieser Auftrag wurde verändert. Die Änderungen werden durch einen Klick auf &quot;Änderungen Senden&quot; zur Bank transferiert." wantsLayer="YES" id="135" customClass="NoAnimationImageView">
+                <imageView toolTip="Dieser Auftrag wurde verändert. Die Änderungen werden durch einen Klick auf &quot;Änderungen Senden&quot; zur Bank transferiert." wantsLayer="YES" id="135">
                     <rect key="frame" x="16" y="47" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <shadow key="shadow" blurRadius="1">
@@ -138,7 +139,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <imageView toolTip="Dieser Auftrag wurde erfolgreich zur Bank gesendet." wantsLayer="YES" id="156" customClass="NoAnimationImageView">
+                <imageView toolTip="Dieser Auftrag wurde erfolgreich zur Bank gesendet." wantsLayer="YES" id="156">
                     <rect key="frame" x="15" y="29" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <shadow key="shadow" blurRadius="1">
