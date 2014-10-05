@@ -68,7 +68,7 @@
 
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
-#include "ColorPopup.h"
+#import "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
 #import "ComTraceHelper.h"

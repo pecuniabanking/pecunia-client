@@ -51,7 +51,7 @@
 
 @property (strong) IBOutlet NSTextField *heading;
 @property (strong) IBOutlet NSSecureTextField *passwordField;
-@property (strong) IBOutlet NSTextField *description;
+@property (strong) IBOutlet NSTextField *mainText;
 
 @end
 
@@ -62,7 +62,7 @@
     LockViewController *result = [[LockViewController alloc] initWithNibName: @"LockView" bundle: NSBundle.mainBundle];
     [result loadView];
     result.heading.stringValue = NSLocalizedString(@"AP162", nil);
-    result.description.stringValue = NSLocalizedString(@"AP163", nil);
+    result.mainText.stringValue = NSLocalizedString(@"AP163", nil);
     result.passwordField.delegate = result;
 
     return result;

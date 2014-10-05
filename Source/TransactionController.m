@@ -20,13 +20,15 @@
 #import "TransactionController.h"
 #import "Category.h"
 #import "Transfer.h"
-#include "BankStatement.h"
+#import "BankStatement.h"
 #import "TransactionLimits.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "HBCIController.h"
 #import "Country.h"
 #import "TransferTemplate.h"
+#import "BankInfo.h"
+
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
 /**
@@ -69,19 +71,41 @@
 - (void)awakeFromNib {
     // sort descriptor for transactions view
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
-    NSArray          *sds = @[sd];
-    [countryController setSortDescriptors: sds];
+    [countryController setSortDescriptors: @[sd]];
 
     // sort descriptor for template view
     sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
-    sds = @[sd];
-    [templateController setSortDescriptors: sds];
+    [templateController setSortDescriptors: @[sd]];
 }
 
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context {
     [templateController setManagedObjectContext: context];
     [templateController prepareContent];
     [currentTransferController setManagedObjectContext: context];
+
+    [self performSelector: @selector(checkTemplates) withObject: nil afterDelay: 0.2];
+}
+
+- (void)checkTemplates {
+    // Convert old style of templates.
+    for (TransferTemplate *template in templateController.arrangedObjects) {
+        switch (template.type.intValue) {
+            case TransferTypeOldStandard:
+            {
+                template.type = @(TransferTypeSEPA);
+                BankInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                template.remoteBIC = info.bic;
+                break;
+            }
+            case TransferTypeOldStandardScheduled:
+            {
+                template.type = @(TransferTypeSEPAScheduled);
+                BankInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                template.remoteBIC = info.bic;
+                break;
+            }
+        }
+    }
 }
 
 - (void)updateLimits {
@@ -214,7 +238,6 @@
         [self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
     }
 
-    [self prepareTransfer];
     [currentTransfer copyFromTransfer: transfer withLimits: limits];
     currentTransfer.changeState = TransferChangeNew;
 
@@ -237,8 +260,6 @@
     }
 
     transferType = [template.type intValue];
-
-    [self prepareTransfer];
     [currentTransfer copyFromTemplate: template withLimits: nil];
     currentTransfer.changeState = TransferChangeNew;
 

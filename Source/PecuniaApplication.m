@@ -18,7 +18,7 @@
  */
 
 #import <ExceptionHandling/ExceptionHandling.h>
-#include <execinfo.h>
+#import <execinfo.h>
 
 #import "PecuniaApplication.h"
 #import "MessageLog.h"

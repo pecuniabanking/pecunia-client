@@ -21,7 +21,7 @@
 
 #import "DockIconController.h"
 #import "BankStatement.h"
-#include "BankAccount.h"
+#import "BankAccount.h"
 
 @implementation DockIconController
 
