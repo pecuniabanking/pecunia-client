@@ -109,7 +109,7 @@
             break;
 
         case NSCalendarUnitWeekOfYear:
-            result = [NSString stringWithFormat: @"%ld", components.week];
+            result = [NSString stringWithFormat: @"%ld", components.weekOfYear];
             break;
 
         case NSCalendarUnitMonth:

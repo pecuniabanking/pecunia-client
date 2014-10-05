@@ -269,7 +269,8 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
         static NSDateFormatter *sepaDateFormatter = nil;
         if (sepaDateFormatter == nil) {
-            sepaDateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"yyyy-MM-dd" allowNaturalLanguage: NO];
+            sepaDateFormatter = [NSDateFormatter new];
+            sepaDateFormatter.dateFormat = @"yyyy-MM-dd";
         }
 
         if ([BankStatement isValidIBAN: values[@"IBAN"]] && ![BankStatement isValidIBAN: self.remoteIBAN]) {

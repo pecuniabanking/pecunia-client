@@ -365,7 +365,7 @@ extern void *UserDefaultsBindingContext;
     CPTTextLayer       *titleLayer = [[CPTTextLayer alloc] init];
     titleAnnotation.contentLayer = titleLayer;
     titleAnnotation.rectAnchor = CPTRectAnchorLeft;
-    titleAnnotation.rotation = pi / 2;
+    titleAnnotation.rotation = M_PI / 2;
     titleLayer.attributedText = title;
     [graph addAnnotation: titleAnnotation];
 }
@@ -1545,7 +1545,7 @@ extern void *UserDefaultsBindingContext;
     CPTTextLayer       *titleLayer = [[CPTTextLayer alloc] init];
     titleAnnotation.contentLayer = titleLayer;
     titleAnnotation.rectAnchor = CPTRectAnchorLeft;
-    titleAnnotation.rotation = pi / 2;
+    titleAnnotation.rotation = M_PI / 2;
     titleLayer.attributedText = title;
     [graph addAnnotation: titleAnnotation];
 }

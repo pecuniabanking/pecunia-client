@@ -137,19 +137,19 @@ NSString *const kXMLReaderTextNodeKey = @"text";
 
 @implementation NSDictionary (PecuniaAdditions)
 
-+ (NSDictionary *)dictionaryForXMLData: (NSData *)data error: (NSError **)error
++ (NSDictionary *)dictForXMLData: (NSData *)data error: (NSError **)error
 {
     XMLReader *reader = [[XMLReader alloc] initWithError: error];
     return [reader objectWithData: data];
 }
 
-+ (NSDictionary *)dictionaryForXMLString: (NSString *)string error: (NSError **)error
++ (NSDictionary *)dictForXMLString: (NSString *)string error: (NSError **)error
 {
     NSData *data = [string dataUsingEncoding: NSUTF8StringEncoding];
-    return [self dictionaryForXMLData: data error: error];
+    return [self dictForXMLData: data error: error];
 }
 
-+ (NSDictionary *)dictionaryForUrlParameters: (NSURL *)url
++ (NSDictionary *)dictForUrlParameters: (NSURL *)url
 {
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     NSString *key = [url query];

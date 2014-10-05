@@ -492,7 +492,6 @@
 		277789B2173CE22700430EBC /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
 		277789B4173CE22700430EBC /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
-		277789B8173CE22700430EBC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2799180E1711748C00C1AC3D /* Quartz.framework */; };
 		277789B9173CE22700430EBC /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
 		277789BA173CE22700430EBC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
 		277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
@@ -556,7 +555,6 @@
 		2794FF6C1972D5BA000B69EC /* new-small-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2794FF681972D5BA000B69EC /* new-small-white@2x.png */; };
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
 		2795F20F17071DE6003AC74D /* TagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795F20E17071DE6003AC74D /* TagView.m */; };
-		2799180F1711748C00C1AC3D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2799180E1711748C00C1AC3D /* Quartz.framework */; };
 		279918121711E97400C1AC3D /* ColorPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 279918111711E97400C1AC3D /* ColorPopup.m */; };
 		279A785D1539D8EB00443854 /* TransfersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListView.m */; };
 		279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListViewCell.m */; };
@@ -690,6 +688,8 @@
 		27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27DBAAEB175123ED00E75996 /* hatch-1@2x.png */; };
 		27DCC81816EB8E640070E241 /* CategoryHeatMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */; };
 		27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */; };
+		27DCE73019E0127A0028BC75 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DCE72F19E0127A0028BC75 /* WordList.m */; };
+		27DCE73119E0127A0028BC75 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DCE72F19E0127A0028BC75 /* WordList.m */; };
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
 		27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4AFD150B6F84006C2370 /* BWGradientBox.m */; };
 		27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */; };
@@ -725,6 +725,8 @@
 		27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */; };
+		27E844DB19E147A20026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
+		27E844DC19E147EB0026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
 		27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EB308314B22CB000ABE3A6 /* Bank large.png */; };
@@ -735,6 +737,8 @@
 		27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
 		27F2A419197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */; };
 		27F2A41A197BFA65002E6CA6 /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */; };
+		27F3248319E03780002D2CAD /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F3248219E03780002D2CAD /* RemoteResourceManager.swift */; };
+		27F3248419E03780002D2CAD /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F3248219E03780002D2CAD /* RemoteResourceManager.swift */; };
 		27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6318BA3EFB002CBE06 /* unzip.c */; };
@@ -1349,6 +1353,9 @@
 		27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryHeatMap.xib; sourceTree = "<group>"; };
 		27DCC81916EB8F700070E241 /* CategoryHeatMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHeatMapController.h; sourceTree = "<group>"; };
 		27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryHeatMapController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27DCE72D19E00D3F0028BC75 /* Accounts 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 14.xcdatamodel"; sourceTree = "<group>"; };
+		27DCE72E19E0127A0028BC75 /* WordList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordList.h; sourceTree = "<group>"; };
+		27DCE72F19E0127A0028BC75 /* WordList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordList.m; sourceTree = "<group>"; };
 		27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HBCI business transactions.csv"; sourceTree = "<group>"; };
 		27DD4AFC150B6F84006C2370 /* BWGradientBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWGradientBox.h; sourceTree = "<group>"; };
 		27DD4AFD150B6F84006C2370 /* BWGradientBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWGradientBox.m; sourceTree = "<group>"; };
@@ -1394,6 +1401,8 @@
 		27F2A414197BFA65002E6CA6 /* TagRuleEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagRuleEditorController.h; sourceTree = "<group>"; };
 		27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagRuleEditorController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27F2A416197BFA65002E6CA6 /* TagRuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagRuleEditor.xib; sourceTree = "<group>"; };
+		27F3248219E03780002D2CAD /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; };
+		27F3248519E039D0002D2CAD /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
 		27F69B6018BA3EFB002CBE06 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		27F69B6118BA3EFB002CBE06 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		27F69B6218BA3EFB002CBE06 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1696,8 +1705,8 @@
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteResourceManager.h; sourceTree = "<group>"; };
-		B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteResourceManager.m; sourceTree = "<group>"; wrapsLines = 0; };
+		B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = RemoteResourceManager.h; sourceTree = "<group>"; };
+		B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = RemoteResourceManager.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
@@ -1724,9 +1733,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E844DC19E147EB0026464E /* Quartz.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
-				277789B8173CE22700430EBC /* Quartz.framework in Frameworks */,
 				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
 				277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */,
@@ -1740,9 +1749,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E844DB19E147A20026464E /* Quartz.framework in Frameworks */,
 				27E2D28319167D30001D6E80 /* Accelerate.framework in Frameworks */,
 				27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */,
-				2799180F1711748C00C1AC3D /* Quartz.framework in Frameworks */,
 				2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */,
 				B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */,
 				27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */,
@@ -2317,6 +2326,7 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				27F3248519E039D0002D2CAD /* Pecunia-Bridging-Header.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -2826,40 +2836,42 @@
 			children = (
 				B19CA9941950222E005B1125 /* AccountStatement.h */,
 				B19CA9951950222E005B1125 /* AccountStatement.m */,
-				B19CA99019410C04005B1125 /* SepaData.h */,
-				B19CA99119410C04005B1125 /* SepaData.m */,
-				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
-				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
-				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
-				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
-				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
-				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
-				B1F527030C3C1D5800BE3DFC /* Category.h */,
-				B1F527040C3C1D5800BE3DFC /* Category.m */,
 				B124F10F0C371384001065C2 /* BankAccount.h */,
 				B124F1100C371384001065C2 /* BankAccount.m */,
-				B1927D230C52B5CD00B4D390 /* Transfer.h */,
-				B1927D240C52B5CD00B4D390 /* Transfer.m */,
-				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
-				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
-				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
-				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
-				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
-				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
-				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
-				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
 				B17FE48A14CB586A00F6FAFE /* BankMessage.h */,
 				B17FE48B14CB586A00F6FAFE /* BankMessage.m */,
-				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
-				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
+				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
 				B17728FB1504C33F00256898 /* BankUser.h */,
 				B17728FC1504C33F00256898 /* BankUser.m */,
+				B1F527030C3C1D5800BE3DFC /* Category.h */,
+				B1F527040C3C1D5800BE3DFC /* Category.m */,
+				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
+				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
+				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
+				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
+				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
+				275B3C4C17E5D2F9006BBE8A /* Info.h */,
+				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
+				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
+				B19CA99019410C04005B1125 /* SepaData.h */,
+				B19CA99119410C04005B1125 /* SepaData.m */,
+				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
+				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
+				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
+				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
 				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
 				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 				27548B8E1705D98D00C4BF9B /* Tag.h */,
 				27548B8F1705D98E00C4BF9B /* Tag.m */,
-				275B3C4C17E5D2F9006BBE8A /* Info.h */,
-				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				B1927D230C52B5CD00B4D390 /* Transfer.h */,
+				B1927D240C52B5CD00B4D390 /* Transfer.m */,
+				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
+				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
+				27DCE72E19E0127A0028BC75 /* WordList.h */,
+				27DCE72F19E0127A0028BC75 /* WordList.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -2867,6 +2879,7 @@
 		B1FE0DD610658759005B3800 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				27F3248219E03780002D2CAD /* RemoteResourceManager.swift */,
 				B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */,
 				B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */,
 				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
@@ -2962,7 +2975,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
@@ -3666,6 +3679,7 @@
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
+				27F3248419E03780002D2CAD /* RemoteResourceManager.swift in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
@@ -3711,6 +3725,7 @@
 				27778900173CE22700430EBC /* TanWindow.m in Sources */,
 				27778901173CE22700430EBC /* 102.xcmappingmodel in Sources */,
 				2784D449197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
+				27DCE73119E0127A0028BC75 /* WordList.m in Sources */,
 				27778902173CE22700430EBC /* TransferPrintView.m in Sources */,
 				2784D44B197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */,
@@ -3895,6 +3910,7 @@
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
+				27F3248319E03780002D2CAD /* RemoteResourceManager.swift in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
@@ -3940,6 +3956,7 @@
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 				2784D448197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
+				27DCE73019E0127A0028BC75 /* WordList.m in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
 				2784D44A197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
@@ -4026,6 +4043,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4066,6 +4084,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4105,6 +4124,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4152,6 +4172,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4190,6 +4211,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4228,6 +4250,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4245,12 +4268,14 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Development;
@@ -4261,10 +4286,12 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Deployment;
@@ -4275,10 +4302,12 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 			};
 			name = Default;
 		};
@@ -4322,6 +4351,7 @@
 			isa = XCVersionGroup;
 			children = (
 				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
+				27DCE72D19E00D3F0028BC75 /* Accounts 14.xcdatamodel */,
 				B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */,
 				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
 				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
@@ -4336,7 +4366,7 @@
 				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
 			);
-			currentVersion = 27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */;
+			currentVersion = 27DCE72D19E00D3F0028BC75 /* Accounts 14.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -79,7 +79,7 @@
                                if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
                                    NSInteger statusCode = [(id)response statusCode];
                                    if (statusCode >= 200 && statusCode < 300) {
-                                       NSDictionary *result = [NSDictionary dictionaryForXMLData: data error: NULL];
+                                       NSDictionary *result = [NSDictionary dictForXMLData: data error: NULL];
                                        handler(result, error);
                                    } else {
                                        handler(nil, error);
@@ -139,7 +139,7 @@
                                if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
                                    NSInteger statusCode = [(id)response statusCode];
                                    if (statusCode >= 200 && statusCode < 300) {
-                                       NSDictionary *result = [NSDictionary dictionaryForXMLData: data error: NULL];
+                                       NSDictionary *result = [NSDictionary dictForXMLData: data error: NULL];
                                        handler(result, error);
                                    } else {
                                        handler(nil, error);
@@ -190,7 +190,7 @@
     if ([response isKindOfClass: [NSHTTPURLResponse class]]) {
         NSInteger statusCode = [(id)response statusCode];
         if (statusCode >= 200 && statusCode < 300) {
-            NSDictionary *rawResult = [NSDictionary dictionaryForXMLData: data error: NULL];
+            NSDictionary *rawResult = [NSDictionary dictForXMLData: data error: NULL];
 
             NSArray *list;
             if ([rawResult[@"response"][@"result"][@"list"][@"count"] intValue] == 1) {

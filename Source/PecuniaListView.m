@@ -132,9 +132,9 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     if (!detailsPopover->wantClose) {
         // Lets see if the mouse is over the popover ...
-        NSPoint globalLocation = NSEvent.mouseLocation;
-        NSPoint windowLocation = [popover.contentViewController.view.window convertScreenToBase: globalLocation];
-        NSPoint viewLocation = [popover.contentViewController.view convertPoint: windowLocation fromView: nil];
+        NSRect globalLocation = NSMakeRect(NSEvent.mouseLocation.x, NSEvent.mouseLocation.y, 0, 0);
+        NSRect windowLocation = [popover.contentViewController.view.window convertRectFromScreen: globalLocation];
+        NSPoint viewLocation = [popover.contentViewController.view convertPoint: windowLocation.origin fromView: nil];
         if (NSPointInRect(viewLocation, [popover.contentViewController.view bounds]) ) {
             allowClose = NO;
         }

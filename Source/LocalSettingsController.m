@@ -49,6 +49,7 @@
     return singleton;
 }
 
+#pragma GCC diagnostic ignored "-Wobjc-designated-initializers"
 - (id)init
 {
     return self;

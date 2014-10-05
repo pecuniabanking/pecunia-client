@@ -181,7 +181,7 @@ extern NSString *const CategoryKey;
                                                   inDirectory: subfolder];
             } else {
                 if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
-                    NSDictionary *parameters = [NSDictionary dictionaryForUrlParameters: url];
+                    NSDictionary *parameters = [NSDictionary dictForUrlParameters: url];
                     NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
                     path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
                                                            ofType: url.host.pathExtension

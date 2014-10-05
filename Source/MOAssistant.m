@@ -388,7 +388,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
             @throw error;
         }
     }
-    
+
     // Temporary Directory
     self.tempDir = NSTemporaryDirectory();
 
@@ -891,43 +891,41 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
         return;
     }
 
-    NSDictionary        *pragmaOptions = nil;
     NSMutableDictionary *storeOptions = [NSMutableDictionary dictionary];
     [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
                                    NSInferMappingModelAutomaticallyOption: @YES}];
     if (isEncrypted) {
-        pragmaOptions = @{
+        NSDictionary *pragmaOptions = @{
             @"synchronous": @"FULL", @"journal_mode": @"DELETE"
         };
         storeOptions[NSSQLitePragmasOption] = pragmaOptions;
     }
 
-    NSPersistentStoreCoordinator *coord = nil;
-
-    if (context != nil && [context persistentStoreCoordinator] != nil) {
-        coord = [context persistentStoreCoordinator];
+    NSPersistentStoreCoordinator *coordinator = nil;
+    if (context != nil && context.persistentStoreCoordinator != nil) {
+        coordinator = context.persistentStoreCoordinator;
     } else {
-        coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
+        coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
         if (context != nil) {
-            [context setPersistentStoreCoordinator: coord];
+            [context setPersistentStoreCoordinator: coordinator];
         }
     }
 
     LogInfo(@"Open context from %@", accountsURL);
-    [coord addPersistentStoreWithType: NSSQLiteStoreType
-                        configuration: nil
-                                  URL: accountsURL
-                              options: storeOptions
-                                error: &error];
-
-
+    [coordinator addPersistentStoreWithType: NSSQLiteStoreType
+                              configuration: @"Main_Configuration"
+                                        URL: accountsURL
+                                    options: storeOptions
+                                      error: &error];
+    
+    
     if (error != nil) {
         @throw error;
     }
 
     if (context == nil) {
         context = [[NSManagedObjectContext alloc] init];
-        [context setPersistentStoreCoordinator: coord];
+        [context setPersistentStoreCoordinator: coordinator];
     }
 }
 

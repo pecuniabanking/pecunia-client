@@ -382,11 +382,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSInteger lastChangeCount; // Change count of the general pasteboard.
 }
 
-- (void)updateSourceAccountSelector;
-- (void)prepareSourceAccountSelector: (BankAccount *)account forTransferType: (TransferType)transferType;
-- (void)updateTargetAccountSelector;
-- (void)storeReceiverInMRUList;
-
 @end
 
 @implementation TransfersController

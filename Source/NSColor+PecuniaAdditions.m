@@ -303,7 +303,7 @@ static NSMutableDictionary *userColors;
 
 @implementation ColorsController
 
-// Implement a singleton pattern so that LocalSettingsController can also be used in IB.
+// Implement a singleton pattern so that ColorsController can also be used in IB.
 + (id)alloc
 {
     return self.applicationColors;
@@ -329,6 +329,7 @@ static NSMutableDictionary *userColors;
     return singleton;
 }
 
+#pragma GCC diagnostic ignored "-Wobjc-designated-initializers"
 - (id)init
 {
     return self;
