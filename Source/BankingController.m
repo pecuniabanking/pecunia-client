@@ -958,7 +958,7 @@ static BankingController *bankinControllerInstance;
     }
     if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
         [selectWindowController addResults: resultList];
-        [NSApp runModalForWindow: [selectWindowController window]];
+        //[NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
             for (result in resultList) {
