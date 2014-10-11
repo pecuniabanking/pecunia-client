@@ -79,6 +79,7 @@ extern void *UserDefaultsBindingContext;
 @implementation AssetGraph
 
 @synthesize category;
+@synthesize tag;
 
 - (id)initWithFrame: (NSRect)frame category: (Category *)aCategory
 {

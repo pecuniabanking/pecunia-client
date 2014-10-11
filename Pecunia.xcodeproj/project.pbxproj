@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2701A84B165E827F00A9A1C7 /* GrowlNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* GrowlNotification.m */; };
 		2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
-		2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
+		2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2703DE27146EE6AB0083CBA2 /* ExportPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */; };
 		2704B8441573C3FC00CB1320 /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
@@ -35,12 +35,8 @@
 		272454671871F89C00AF9042 /* BankDetailsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 272454661871F89C00AF9042 /* BankDetailsParser.m */; };
 		272454681871F89C00AF9042 /* BankDetailsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 272454661871F89C00AF9042 /* BankDetailsParser.m */; };
 		2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
-		2727226E1871CE7E00215DFB /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226A1871CE7E00215DFB /* donate-active.png */; };
-		2727226F1871CE7E00215DFB /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226A1871CE7E00215DFB /* donate-active.png */; };
 		272722701871CE7E00215DFB /* donate-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226B1871CE7E00215DFB /* donate-active@2x.png */; };
 		272722711871CE7E00215DFB /* donate-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226B1871CE7E00215DFB /* donate-active@2x.png */; };
-		272722721871CE7E00215DFB /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226C1871CE7E00215DFB /* donate.png */; };
-		272722731871CE7E00215DFB /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226C1871CE7E00215DFB /* donate.png */; };
 		272722741871CE7E00215DFB /* donate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226D1871CE7E00215DFB /* donate@2x.png */; };
 		272722751871CE7E00215DFB /* donate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226D1871CE7E00215DFB /* donate@2x.png */; };
 		272B5EB3143F724600007749 /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
@@ -426,8 +422,8 @@
 		277789BD173CE22700430EBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
-		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
-		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
+		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2778C24218140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
 		2778C24318140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
 		2778C24418140027003BF49D /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24118140027003BF49D /* gear@2x.png */; };
@@ -537,6 +533,10 @@
 		27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27AF5A9E173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
+		27B435C619E94EDC006FFF3A /* pcsc-ctapi-wrapper.dylib in Copy exernal libs */ = {isa = PBXBuildFile; fileRef = 27B435C119E94EAE006FFF3A /* pcsc-ctapi-wrapper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27B435C719E94EDF006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy exernal libs */ = {isa = PBXBuildFile; fileRef = 27B435C019E94EAE006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27B435C919E94F68006FFF3A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B435C819E94F68006FFF3A /* Accelerate.framework */; };
+		27B435CA19E94FA9006FFF3A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B435C819E94F68006FFF3A /* Accelerate.framework */; };
 		27B56887159743B10064A28B /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
 		27B9868515769132008907F3 /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
@@ -550,7 +550,7 @@
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
 		27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
-		27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
 		27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */; };
@@ -725,7 +725,7 @@
 		B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B14EBCFC1031FAC700020A26 /* BankQueryResult.m */; };
 		B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
-		B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
+		B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy exernal libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B165B51F0D340C5800447DD8 /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
 		B165B5210D340C7D00447DD8 /* minus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B5200D340C7D00447DD8 /* minus-8.png */; };
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
@@ -869,15 +869,17 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27EEDE4E14153FB70099C900 /* Copy Java */ = {
+		27EEDE4E14153FB70099C900 /* Copy exernal libs */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = ..;
-			dstSubfolderSpec = 7;
+			dstSubfolderSpec = 10;
 			files = (
-				B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy Java */,
+				B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy exernal libs */,
+				27B435C619E94EDC006FFF3A /* pcsc-ctapi-wrapper.dylib in Copy exernal libs */,
+				27B435C719E94EDF006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy exernal libs */,
 			);
-			name = "Copy Java";
+			name = "Copy exernal libs";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */ = {
@@ -1113,6 +1115,9 @@
 		27AF5A99173FC8EC00929B0E /* move-cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor.png"; sourceTree = "<group>"; };
 		27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor@2x.png"; sourceTree = "<group>"; };
 		27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-slanted-stripes.png"; sourceTree = "<group>"; };
+		27B435C019E94EAE006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
+		27B435C119E94EAE006FFF3A /* pcsc-ctapi-wrapper.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "pcsc-ctapi-wrapper.dylib"; sourceTree = "<group>"; };
+		27B435C819E94F68006FFF3A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		27B56886159743B10064A28B /* basket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket.png; sourceTree = "<group>"; };
 		27B9868315769132008907F3 /* GradientButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonCell.h; sourceTree = "<group>"; };
 		27B9868415769132008907F3 /* GradientButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonCell.m; sourceTree = "<group>"; };
@@ -1542,6 +1547,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B435CA19E94FA9006FFF3A /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789B8173CE22700430EBC /* Quartz.framework in Frameworks */,
 				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
@@ -1557,6 +1563,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B435C919E94F68006FFF3A /* Accelerate.framework in Frameworks */,
 				27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				2799180F1711748C00C1AC3D /* Quartz.framework in Frameworks */,
 				2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */,
@@ -1734,6 +1741,17 @@
 				27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */,
 			);
 			name = Debits;
+			sourceTree = "<group>";
+		};
+		27B435BF19E94E6A006FFF3A /* External Libs */ = {
+			isa = PBXGroup;
+			children = (
+				27B435C019E94EAE006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib */,
+				27B435C119E94EAE006FFF3A /* pcsc-ctapi-wrapper.dylib */,
+				B1DE0768165FB554004FFC8A /* jre.zip */,
+				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
+			);
+			name = "External Libs";
 			sourceTree = "<group>";
 		};
 		27C7B501147FC41900278131 /* Drawing + Colors */ = {
@@ -2076,6 +2094,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				27B435BF19E94E6A006FFF3A /* External Libs */,
 				27E55355146EDA59001DE9BE /* Designer */,
 				27CC73CD14A0BFF40082495C /* Inline Help */,
 				B1923B560EB7A6D40079ADCA /* Images */,
@@ -2087,8 +2106,6 @@
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
-				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
-				B1DE0768165FB554004FFC8A /* jre.zip */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
@@ -2104,6 +2121,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27B435C819E94F68006FFF3A /* Accelerate.framework */,
 				27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
@@ -2660,8 +2678,8 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				27EEDE4E14153FB70099C900 /* Copy Java */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
+				27EEDE4E14153FB70099C900 /* Copy exernal libs */,
 				B150A17115ADBCC80003DF5B /* ShellScript */,
 			);
 			buildRules = (
@@ -2680,7 +2698,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
@@ -2892,7 +2910,6 @@
 				27AA56A2186C562D00B113E7 /* send3-active@2x.png in Resources */,
 				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
 				277789B4173CE22700430EBC /* gray-hatch.png in Resources */,
-				2727226F1871CE7E00215DFB /* donate-active.png in Resources */,
 				277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */,
 				277789B6173CE22700430EBC /* RuleEditor.xib in Resources */,
 				27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */,
@@ -2903,7 +2920,6 @@
 				27CBF362174A4A1E0062E2A9 /* category-analysis-help.rtf in Resources */,
 				27CBF364174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF366174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
-				272722731871CE7E00215DFB /* donate.png in Resources */,
 				27AA566A186C389900B113E7 /* distribution.png in Resources */,
 				27CBF36C174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */,
@@ -3103,7 +3119,6 @@
 				27EEC8E016F4C9630000A1A9 /* help-button@2x.png in Resources */,
 				2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */,
 				270A3DFA18146E820079B37F /* calendar.png in Resources */,
-				2727226E1871CE7E00215DFB /* donate-active.png in Resources */,
 				2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */,
 				27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */,
 				27AF5A9B173FC8EC00929B0E /* move-cursor.png in Resources */,
@@ -3114,7 +3129,6 @@
 				27CBF361174A4A1E0062E2A9 /* category-analysis-help.rtf in Resources */,
 				27CBF363174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF365174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
-				272722721871CE7E00215DFB /* donate.png in Resources */,
 				27AA5669186C389900B113E7 /* distribution.png in Resources */,
 				27CBF36B174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */,
@@ -3160,7 +3174,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nif [ $? -ne 0 ]; then\n  echo \"create plugins directory\"\n  mkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns/jre\"\nif [ $? -ne 0 ]; then\n  echo \"copy java runtime\"\n  unzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n";
+			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3637,7 +3652,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
@@ -3668,7 +3683,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3686,7 +3701,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
@@ -3708,7 +3723,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3727,7 +3742,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
@@ -3747,7 +3762,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3763,7 +3778,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3794,7 +3809,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3811,7 +3826,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
@@ -3832,7 +3847,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3848,7 +3863,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3870,7 +3885,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -3884,7 +3899,6 @@
 		B14C0A8C0AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3901,9 +3915,8 @@
 		B14C0A8D0AAF71DB00CC41C4 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -3916,7 +3929,6 @@
 		B14C0A8E0AAF71DB00CC41C4 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
