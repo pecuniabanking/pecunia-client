@@ -35,9 +35,6 @@
 
 #import "NSString+PecuniaAdditions.h"
 
-#define BankStatementDataType @"BankStatementDataType"
-#define CategoryDataType      @"CategoryDataType"
-
 @interface CategoryDefWindowController ()
 {
     IBOutlet NSArrayController  *assignPreviewController;

@@ -62,9 +62,10 @@ NSString *StatementRemoteIBANKey      = @"iban";             // NSString
 NSString *StatementRemoteBICKey       = @"bic";              // NSString
 NSString *StatementTypeKey            = @"type";             // NSNumber
 
-NSString *const TransferPredefinedTemplateDataType = @"TransferPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
-NSString *const TransferDataType = @"TransferDataType"; // For dragging an existing transfer (sent or not).
-extern NSString *TransferReadyForUseDataType;     // For dragging an edited transfer.
+static NSString *const TransferPredefinedTemplateDataType = @"pecunia.TransferPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
+
+NSString *const TransferDataType = @"pecunia.TransferDataType";        // For dragging an existing transfer (sent or not).
+extern NSString *TransferReadyForUseDataType;        // For dragging an edited transfer.
 extern NSString *TransferTemplateDataType;        // For dragging one of the stored templates.
 
 @interface DeleteTransferTargetView : NSImageView
@@ -115,7 +116,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 //--------------------------------------------------------------------------------------------------
 
-@interface DragImageView : NSImageView
+@interface DragImageView : NSImageView <NSDraggingSource, NSPasteboardItemDataProvider>
 {
     @private
     BOOL canDrag;
@@ -130,32 +131,29 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @synthesize controller;
 
+- (TransferType)typeFromTag {
+    switch (self.tag) {
+        case 0:
+            return TransferTypeInternal;
+
+        case 2:
+            return TransferTypeEU;
+
+        case 3:
+            return TransferTypeSEPA;
+
+        case 4:
+            return TransferTypeDebit;
+
+        default:
+            return TransferTypeOldStandard;
+    }
+}
+
 - (void)mouseDown: (NSEvent *)theEvent {
     if ([theEvent clickCount] > 1) {
         // Double click event. Start editing directly if possible.
-        TransferType type;
-        switch (self.tag) {
-            case 0:
-                type = TransferTypeInternal;
-                break;
-
-            case 2:
-                type = TransferTypeEU;
-                break;
-
-            case 3:
-                type = TransferTypeSEPA;
-                break;
-
-            case 4:
-                type = TransferTypeDebit;
-                break;
-
-            default:
-                type = TransferTypeOldStandard;
-                break;
-        }
-
+        TransferType type = self.typeFromTag;
         if (![controller startTransferOfType: type withAccount: nil statement: nil]) {
             [super mouseDown: theEvent];
         }
@@ -179,52 +177,44 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
-    TransferType type;
-    switch (self.tag) {
-        case 0:
-            type = TransferTypeInternal;
-            break;
-
-        case 2:
-            type = TransferTypeEU;
-            break;
-
-        case 3:
-            type = TransferTypeSEPA;
-            break;
-
-        case 4:
-            type = TransferTypeDebit;
-            break;
-
-        default:
-            type = TransferTypeOldStandard;
-            break;
-    }
-
+    TransferType type = self.typeFromTag;
     if ([controller prepareTransferOfType: type]) {
-        NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
-        [pasteBoard setString: [NSString stringWithFormat: @"%i", type] forType: TransferPredefinedTemplateDataType];
+        NSPasteboardItem *pbItem = [NSPasteboardItem new];
+        [pbItem setDataProvider: self forTypes: @[TransferPredefinedTemplateDataType]];
 
-        NSPoint location;
-        location.x = 0;
-        location.y = 0;
+        NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter: pbItem];
 
-        [self dragImage: [self image]
-                     at: location
-                 offset: NSZeroSize
-                  event: theEvent
-             pasteboard: pasteBoard
-                 source: self
-              slideBack: YES];
+        NSRect draggingRect = self.bounds;
+        [dragItem setDraggingFrame: draggingRect contents: self.image];
+        NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems: @[dragItem]
+                                                                           event: theEvent
+                                                                          source: self];
+        draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+        draggingSession.draggingFormation = NSDraggingFormationNone;
     }
 }
 
-- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)isLocal {
-    return isLocal ? NSDragOperationCopy : NSDragOperationNone;
+- (void)pasteboard: (NSPasteboard *)sender item: (NSPasteboardItem *)item provideDataForType: (NSString *)type {
+    if ([type compare: TransferPredefinedTemplateDataType] == NSOrderedSame) {
+        TransferType type = self.typeFromTag;
+        [sender setString: [NSString stringWithFormat: @"%i", type] forType: TransferPredefinedTemplateDataType];
+    }
 }
 
-- (BOOL)ignoreModifierKeysWhileDragging {
+- (NSDragOperation)       draggingSession: (NSDraggingSession *)session
+    sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
+{
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationNone;
+
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationCopy;
+    }
+}
+
+- (BOOL)ignoreModifierKeysForDraggingSession: (NSDraggingSession *)session {
     return YES;
 }
 
@@ -235,6 +225,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 @end
 
 //--------------------------------------------------------------------------------------------------
+
+@interface TransferTemplateDragDestination ()
+{
+    @private
+    BOOL     formularVisible;
+    NSString *currentDragDataType;
+}
+
+@end
 
 @implementation TransferTemplateDragDestination
 
@@ -248,8 +247,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return self;
 }
 
-#pragma mark -
-#pragma mark Drag and drop
+#pragma mark - Drag and drop
 
 - (NSDragOperation)draggingEntered: (id<NSDraggingInfo>)info {
     NSPasteboard *pasteboard = [info draggingPasteboard];
@@ -981,7 +979,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
 
-    NSError                *error = nil;
+    NSError *error = nil;
+
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     if (type == TransferReadyForUseDataType) {
@@ -1368,7 +1367,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // Make template tab active.
     [transferTab selectLastTabViewItem: nil];
 
-    NSDictionary *info = @{@"statement" : statement, @"type" : @(type)};
+    NSDictionary *info = @{
+        @"statement": statement, @"type": @(type)
+    };
     templateName.stringValue = statement.remoteName;
     [NSApp  beginSheet: templateNameSheet
         modalForWindow: [mainView window]
@@ -1985,8 +1986,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             view  = [[TransferPrintView alloc] initWithTransfers: finishedTransfers.selectedObjects
                                                        printInfo: printInfo];
         } else {
-          view  = [[TransferPrintView alloc] initWithTransfers: finishedTransfers.arrangedObjects
-                                                     printInfo: printInfo];
+            view  = [[TransferPrintView alloc] initWithTransfers: finishedTransfers.arrangedObjects
+                                                       printInfo: printInfo];
         }
 
         NSPrintOperation *printOp;

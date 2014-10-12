@@ -37,7 +37,7 @@
 #import "NSButton+PecuniaAdditions.h"
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
-NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing order to the bin.
+NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an existing order to the bin.
 
 @interface DeleteOrderTargetView : NSImageView
 {
@@ -51,16 +51,14 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 @synthesize controller;
 
-- (void)viewDidMoveToSuperview
-{
+- (void)viewDidMoveToSuperview {
     [super viewDidMoveToSuperview];
 
     // Register for types that can be deleted.
     [self registerForDraggedTypes: @[OrderDataType]];
 }
 
-- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info
-{
+- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info {
     NSPasteboard *pasteboard = [info draggingPasteboard];
     NSString     *type = [pasteboard availableTypeFromArray: @[OrderDataType]];
     if (type == nil) {
@@ -84,13 +82,11 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return NSDragOperationDelete;
 }
 
-- (void)draggingExited: (id <NSDraggingInfo>)info
-{
+- (void)draggingExited: (id <NSDraggingInfo>)info {
     [[NSCursor arrowCursor] set];
 }
 
-- (BOOL)performDragOperation: (id<NSDraggingInfo>)info
-{
+- (BOOL)performDragOperation: (id<NSDraggingInfo>)info {
     if ([controller concludeDropDeleteOperation: info]) {
         return YES;
     }
@@ -112,8 +108,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 @synthesize currentLimits;
 @synthesize currentOrder;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self != nil) {
         managedObjectContext = MOAssistant.assistant.context;
@@ -132,8 +127,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     initializing = YES;
 
     monthCell.textColor = [NSColor whiteColor];
@@ -176,50 +170,47 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     initializing = NO;
 }
 
-- (NSString *)monthDayToString: (int)day
-{
+- (NSString *)monthDayToString: (int)day {
     if (day == 97) {
         return @"Ultimo-2";
     } else if (day == 98) {
         return @"Ultimo-1";
     } else if (day == 99) {
         return @"Ultimo";
-    } else {return [NSString stringWithFormat: @"%d.", day]; }
+    } else {
+        return [NSString stringWithFormat: @"%d.", day];
+    }
 }
 
-- (NSString *)weekDayToString: (int)day
-{
+- (NSString *)weekDayToString: (int)day {
     if (day > 0 && day < 8) {
         return weekDays[day - 1];
     }
     return weekDays[1];
 }
 
-- (int)stringToMonthDay: (NSString *)s
-{
+- (int)stringToMonthDay: (NSString *)s {
     if ([s isEqualToString: @"Ultimo-2"]) {
         return 97;
     } else if ([s isEqualToString: @"Ultimo-1"]) {
         return 98;
     } else if ([s isEqualToString: @"Ultimo"]) {
         return 99;
-    } else {return [[s substringToIndex: [s length] - 1] intValue]; }
+    } else {
+        return [[s substringToIndex: [s length] - 1] intValue];
+    }
 }
 
-- (void)initCycles
-{
+- (void)initCycles {
     currentOrder.cycle = @1;
     currentOrder.executionDay = @1;
 }
 
-- (int)stringToWeekDay: (NSString *)s
-{
+- (int)stringToWeekDay: (NSString *)s {
     return [weekDays indexOfObject: s] + 1;
 }
 
-
-- (void)enableWeekly: (BOOL)weekly
-{
+- (void)enableWeekly: (BOOL)weekly {
     if (weekly) {
         [execDaysMonthPopup setTitle: @""];
         [monthCyclesPopup setTitle: @""];
@@ -233,8 +224,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [weekCyclesPopup setEnabled: weekly];
 }
 
-- (void)disableCycles
-{
+- (void)disableCycles {
     [execDaysMonthPopup setEnabled: NO];
     [monthCyclesPopup setEnabled: NO];
     [execDaysWeekPopup setEnabled: NO];
@@ -243,8 +233,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [monthCell setEnabled: NO];
 }
 
-- (void)updateWeekCycles
-{
+- (void)updateWeekCycles {
     NSInteger      selectedIndex = 0;
     NSInteger      currentCycle = currentOrder.cycle.intValue;
     NSMutableArray *weekCycles = [NSMutableArray arrayWithCapacity: 52];
@@ -252,7 +241,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (currentLimits == nil) {
         return;
     }
-    
+
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
         [weekCycles addObject: NSLocalizedString(@"AP451",  nil)];
         if (currentCycle == 1) {
@@ -296,12 +285,11 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [execDaysWeekPopup selectItemWithTitle: [self weekDayToString: currentOrder.executionDay.intValue]];
 }
 
-- (void)updateMonthCycles
-{
+- (void)updateMonthCycles {
     NSInteger      selectedIndex = 0;
     NSInteger      currentCycle = currentOrder.cycle.intValue;
     NSMutableArray *monthCycles = [NSMutableArray arrayWithCapacity: 12];
-    
+
     if (currentLimits == nil) {
         return;
     }
@@ -353,8 +341,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [execDaysMonthPopup selectItemWithTitle: [self monthDayToString: currentOrder.executionDay.intValue]];
 }
 
-- (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account
-{
+- (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account {
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
     item.representedObject = account;
 
@@ -365,16 +352,14 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
  * Refreshes the content of the source account selector.
  * An attempt is made to keep the current selection.
  */
-- (void)updateSourceAccountSelector
-{
+- (void)updateSourceAccountSelector {
     [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject];
 }
 
 /**
  * Updates the selected item of the account selector with currentObject's account.
  */
-- (void)updateSourceAccountSelection
-{
+- (void)updateSourceAccountSelection {
     NSInteger selectedItem = 0;
     NSMenu    *menu = [sourceAccountSelector menu];
     NSArray   *items = [menu itemArray];
@@ -391,8 +376,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 /**
  * Refreshes the content of the source account selector and selects the given account (if found).
  */
-- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount
-{
+- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount {
     [sourceAccountSelector removeAllItems];
 
     NSMenu *sourceMenu = [sourceAccountSelector menu];
@@ -421,7 +405,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             BankAccount *account = (BankAccount *)currentAccount;
 
             // Exclude manual accounts and those that don't support standing orders from the list.
-            if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported:TransactionType_StandingOrderSEPA forAccount:account]) {
+            if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported: TransactionType_StandingOrderSEPA forAccount: account]) {
                 continue;
             }
 
@@ -450,18 +434,21 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [self sourceAccountChanged: sourceAccountSelector];
 }
 
-- (IBAction)monthCycle: (id)sender
-{
+- (IBAction)monthCycle: (id)sender {
     StandingOrderPeriod period = [currentOrder.period intValue];
     if (period == stord_weekly) {
         self.oldWeekDay = currentOrder.executionDay;
         self.oldWeekCycle = currentOrder.cycle;
         if (oldMonthDay) {
             currentOrder.executionDay = oldMonthDay;
-        } else {currentOrder.executionDay = @1; }
+        } else {
+            currentOrder.executionDay = @1;
+        }
         if (oldMonthCycle) {
             currentOrder.cycle = oldMonthCycle;
-        } else {currentOrder.cycle = @1; }
+        } else {
+            currentOrder.cycle = @1;
+        }
     }
     [self enableWeekly: NO];
     currentOrder.period = @(stord_monthly);
@@ -469,18 +456,21 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [self updateMonthCycles];
 }
 
-- (IBAction)weekCycle: (id)sender
-{
+- (IBAction)weekCycle: (id)sender {
     StandingOrderPeriod period = [currentOrder.period intValue];
     if (period == stord_monthly) {
         self.oldMonthDay = currentOrder.executionDay;
         self.oldMonthCycle = currentOrder.cycle;
         if (oldWeekDay) {
             currentOrder.executionDay = oldWeekDay;
-        } else {currentOrder.executionDay = @1; }
+        } else {
+            currentOrder.executionDay = @1;
+        }
         if (oldWeekCycle) {
             currentOrder.cycle = oldWeekCycle;
-        } else {currentOrder.cycle = @1; }
+        } else {
+            currentOrder.cycle = @1;
+        }
     }
     [self enableWeekly: YES];
     currentOrder.period = @(stord_weekly);
@@ -489,8 +479,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 }
 
-- (IBAction)monthCycleChanged: (id)sender
-{
+- (IBAction)monthCycleChanged: (id)sender {
     int idx = [monthCyclesPopup indexOfSelectedItem];
     if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
         currentOrder.cycle = @(idx + 1);
@@ -502,14 +491,12 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     currentOrder.isChanged = @YES;
 }
 
-- (IBAction)monthDayChanged: (id)sender
-{
+- (IBAction)monthDayChanged: (id)sender {
     currentOrder.executionDay = @([self stringToMonthDay: [execDaysMonthPopup titleOfSelectedItem]]);
     currentOrder.isChanged = @YES;
 }
 
-- (IBAction)weekCycleChanged: (id)sender
-{
+- (IBAction)weekCycleChanged: (id)sender {
     int idx = [weekCyclesPopup indexOfSelectedItem];
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
         currentOrder.cycle = @(idx + 1);
@@ -522,14 +509,12 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     currentOrder.isChanged = @YES;
 }
 
-- (IBAction)weekDayChanged: (id)sender
-{
+- (IBAction)weekDayChanged: (id)sender {
     currentOrder.executionDay = @([self stringToWeekDay: [execDaysWeekPopup titleOfSelectedItem]]);
     currentOrder.isChanged = @YES;
 }
 
-- (IBAction)add: (id)sender
-{
+- (IBAction)add: (id)sender {
     StandingOrder *order = [NSEntityDescription insertNewObjectForEntityForName: @"StandingOrder"
                                                          inManagedObjectContext: managedObjectContext];
 
@@ -545,38 +530,33 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [self prepareSourceAccountSelector: nil];
 }
 
-- (IBAction)firstExecDateChanged: (id)sender
-{
+- (IBAction)firstExecDateChanged: (id)sender {
     currentOrder.isChanged = @YES;
 }
 
-- (IBAction)lastExecDateChanged: (id)sender
-{
+- (IBAction)lastExecDateChanged: (id)sender {
     currentOrder.isChanged = @YES;
 }
 
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification
-{
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     NSInteger tag = [aNotification.object tag];
     if (tag == 11) {
         NSString *bankName = [[HBCIController controller] bankNameForIBAN: [aNotification.object stringValue]];
         currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
-        NSString *bic = [[HBCIController controller] bicForIBAN:[aNotification.object stringValue]];
+        NSString *bic = [[HBCIController controller] bicForIBAN: [aNotification.object stringValue]];
         if (bic != nil) {
             currentOrder.remoteBIC = bic;
         }
     }
 }
 
-- (void)controlTextDidChange: (NSNotification *)aNotification
-{
+- (void)controlTextDidChange: (NSNotification *)aNotification {
     if (!currentOrder.isChanged.boolValue) {
         currentOrder.isChanged = @YES;
     }
 }
 
-- (BOOL)checkOrder: (StandingOrder *)stord
-{
+- (BOOL)checkOrder: (StandingOrder *)stord {
     BOOL     res;
     NSNumber *value;
 
@@ -636,8 +616,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return YES;
 }
 
-- (IBAction)update: (id)sender
-{
+- (IBAction)update: (id)sender {
     // Make the sender the first responder to finish any pending edit action.
     [[mainView window] makeFirstResponder: sender];
 
@@ -718,8 +697,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     }
 }
 
-- (IBAction)getOrders: (id)sender
-{
+- (IBAction)getOrders: (id)sender {
     // Make the sender the first responder to avoid changing anything if there was an ongoing
     // edit action.
     [[mainView window] makeFirstResponder: sender];
@@ -737,9 +715,8 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             }
         }
     }
-
     NSMutableArray *accountList = [NSMutableArray arrayWithCapacity: 10];
-    NSSet *candidates = [Category.bankRoot allCategories];
+    NSSet          *candidates = [Category.bankRoot allCategories];
     for (Category *currentAccount in candidates) {
         if (![currentAccount isKindOfClass: [BankAccount class]]) {
             continue;
@@ -748,7 +725,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         BankAccount *account = (BankAccount *)currentAccount;
 
         // Exclude manual accounts and those that don't support standing orders from the list.
-        if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported:TransactionType_StandingOrderSEPA forAccount: account]) {
+        if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported: TransactionType_StandingOrderSEPA forAccount: account]) {
             continue;
         }
 
@@ -761,15 +738,14 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             result.account = account;
             result.type = BankQueryType_StandingOrder;
             [accountList addObject: result];
-            
+
             // remove orders for this account
-            NSSet *orders = [account mutableSetValueForKey:@"standingOrders"];
+            NSSet *orders = [account mutableSetValueForKey: @"standingOrders"];
             for (StandingOrder *order in orders) {
                 [managedObjectContext deleteObject: order];
             }
         }
     }
-
     if (accountList.count > 0) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
@@ -795,8 +771,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark Other notifications
 
-- (IBAction)sourceAccountChanged: (id)sender
-{
+- (IBAction)sourceAccountChanged: (id)sender {
     BOOL accountSelected = [sender selectedItem] != nil;
     for (NSUInteger row = 0; row <= 5; row++) {
         for (NSUInteger index = 0; index < 5; index++) {
@@ -818,7 +793,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
-            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
+            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
                 self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
             }
@@ -832,8 +807,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             period = stord_monthly;
         }
 
-        if (currentLimits != nil && currentLimits.allowChangePeriod)
-        {
+        if (currentLimits != nil && currentLimits.allowChangePeriod) {
             if (period == stord_weekly) {
                 [self enableWeekly: YES];
                 [weekCell setState: NSOnState];
@@ -849,7 +823,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
                 [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
                 [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
             }
-            
+
             [weekCell setEnabled: currentLimits.allowWeekly];
             [monthCell setEnabled: currentLimits.allowMonthly];
         }
@@ -859,17 +833,15 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     }
 }
 
-- (void)ordersNotification: (NSNotification *)notification
-{
+- (void)ordersNotification: (NSNotification *)notification {
     NSArray *resultList = [notification object];
     if (resultList == nil || resultList.count == 0) {
         return;
     }
-    
+
     for (BankQueryResult *result in resultList) {
         [result.account updateStandingOrders: result.standingOrders];
     }
-    
     // save updates
     NSError *error;
     if ([managedObjectContext save: &error] == NO) {
@@ -879,11 +851,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     }
 }
 
-- (void)ordersFinalizeNotification: (NSNotification *)notification
-{
+- (void)ordersFinalizeNotification: (NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
     [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsFinalizeNotification object: nil];
-    
+
     StatusBarController *status = [StatusBarController controller];
 
     // After updating all accounts schedule a delayed cleanup.
@@ -891,15 +862,13 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     //[self performSelector: @selector(validateNewOrders) withObject: nil afterDelay: 0.5];
     [self validateNewOrders];
     [orderController prepareContent];
-    
+
     [status stopSpinning];
     [status clearMessage];
     self.requestRunning = @NO;
 }
 
-
-- (void)validateNewOrders
-{
+- (void)validateNewOrders {
     for (StandingOrder *order in [orderController arrangedObjects]) {
         if (order.remoteBankName == nil) {
             order.remoteBankName = [[HBCIController controller] bankNameForIBAN: order.remoteIBAN];
@@ -910,8 +879,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark KVO
 
-- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
-{
+- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context {
     if (object == orderController) {
         if (initializing) {
             return;
@@ -938,15 +906,15 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
-            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
+            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
                 self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
             }
         }
-        
+
         // source account cannot be changed after order is created
         [sourceAccountSelector setEnabled: currentOrder.orderKey == nil];
-        
+
         if (self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length] == 0)) {
             NSString *bankName = [[HBCIController controller] bankNameForCode: self.currentOrder.remoteBankCode];
             if (bankName) {
@@ -971,7 +939,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
                 [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
                 [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
             }
-            
+
             [weekCell setEnabled: currentLimits.allowWeekly];
             [monthCell setEnabled: currentLimits.allowMonthly];
         }
@@ -998,8 +966,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark Drag and drop
 
-- (BOOL)doDeletionOfOrder: (StandingOrder *)order
-{
+- (BOOL)doDeletionOfOrder: (StandingOrder *)order {
     // If there is no order key yet then we are deleting a newly created standing order, which
     // has not yet been sent to the bank. So we can simply remove it from the controller.
     if (order.orderKey == nil) {
@@ -1035,8 +1002,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 /**
  * Called when the user drags transfers to the waste basket, which represents a delete operation.
  */
-- (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info
-{
+- (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info {
     NSPasteboard *pasteboard = [info draggingPasteboard];
     NSString     *type = [pasteboard availableTypeFromArray: @[OrderDataType]];
     if (type == nil) {
@@ -1057,13 +1023,11 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return [self doDeletionOfOrder: order];
 }
 
-- (IBAction)deleteOrder: (id)sender
-{
+- (IBAction)deleteOrder: (id)sender {
     [self doDeletionOfOrder: currentOrder];
 }
 
-- (void)cancelDeletionForIndex: (NSUInteger)index
-{
+- (void)cancelDeletionForIndex: (NSUInteger)index {
     [orderController.arrangedObjects[index] setToDelete: @NO];
     if (orderController.arrangedObjects[index] == currentOrder) {
         deleteButton.hidden = NO;
@@ -1073,30 +1037,24 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark PecuniaTabItem protocol
 
-- (NSView *)mainView
-{
+- (NSView *)mainView {
     return mainView;
 }
 
-- (void)print
-{
+- (void)print {
 }
 
-- (void)activate
-{
+- (void)activate {
     [self updateSourceAccountSelector];
 }
 
-- (void)deactivate
-{
+- (void)deactivate {
 }
 
-- (void)prepare
-{
+- (void)prepare {
 }
 
-- (void)terminate
-{
+- (void)terminate {
 }
 
 @end

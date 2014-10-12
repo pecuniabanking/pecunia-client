@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,16 +17,7 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
-@interface AttachmentImageView : NSImageView <NSDraggingSource, NSDraggingDestination>
-{
-@private
-    id       observedObject;
-    NSString *observedKeyPath;
-    BOOL     highlight;
-    BOOL     dragPending;
-}
+@interface AttachmentImageView : NSImageView <NSDraggingSource, NSDraggingDestination, NSPasteboardItemDataProvider>
 
 @property (nonatomic, strong) NSString *reference;
 

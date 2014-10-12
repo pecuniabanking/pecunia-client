@@ -380,16 +380,16 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
 - (void)mouseDragged:(NSEvent *)theEvent
 {
     NSWindow *window = [self window];
-    NSPoint where =  [window convertBaseToScreen:[theEvent locationInWindow]];
+    NSPoint where =  [window convertRectToScreen: NSMakeRect(theEvent.locationInWindow.x, theEvent.locationInWindow.y, 0, 0)].origin;
     
     if ([window isMovableByWindowBackground] || ([window styleMask] & NSFullScreenWindowMask) == NSFullScreenWindowMask) {
         [super mouseDragged:theEvent];
         return;
     }
     NSPoint origin = [window frame].origin;
-    while ((theEvent = [NSApp nextEventMatchingMask:NSLeftMouseDownMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES]) && ([theEvent type] != NSLeftMouseUp)) {
+    while ((theEvent = [NSApp nextEventMatchingMask: NSLeftMouseDownMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES]) && ([theEvent type] != NSLeftMouseUp)) {
         @autoreleasepool {
-            NSPoint now = [window convertBaseToScreen:[theEvent locationInWindow]];
+            NSPoint now = [window convertRectToScreen: NSMakeRect(theEvent.locationInWindow.x, theEvent.locationInWindow.y, 0, 0)].origin;
             origin.x += now.x - where.x;
             origin.y += now.y - where.y;
             [window setFrameOrigin:origin];

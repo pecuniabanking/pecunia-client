@@ -93,8 +93,8 @@
 #import "RemoteResourceManager.h"
 
 // Pasteboard data types.
-NSString *const BankStatementDataType = @"BankStatementDataType";
-NSString *const CategoryDataType = @"CategoryDataType";
+NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
+NSString *const CategoryDataType = @"pecunia.CategoryDataType";
 
 // Notification and dictionary key for category color change notifications.
 extern NSString *const HomeScreenCardClickedNotification;

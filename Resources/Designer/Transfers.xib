@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1090" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TransfersController">
@@ -502,8 +502,8 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="376">
-                    <rect key="frame" x="60" y="403" width="276" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <rect key="frame" x="60" y="403" width="394" height="30"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Standardüberweisung" id="377">
                         <font key="font" size="24" name="HelveticaNeue-Bold"/>
                         <color key="textColor" red="0.44353374839999998" green="0.61568629740000003" blue="0.36564588549999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -594,7 +594,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="32" id="413">
-                    <rect key="frame" x="340" y="181" width="12" height="21"/>
+                    <rect key="frame" x="340" y="181" width="23" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="€" usesSingleLineMode="YES" id="414">
                         <font key="font" size="15" name="HelveticaNeue"/>
@@ -602,7 +602,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="94" name="displayPatternValue1" keyPath="selection.currency" id="664">
+                        <binding destination="94" name="displayPatternValue1" keyPath="selection.currency" id="77T-bs-u7y">
                             <dictionary key="options">
                                 <string key="NSDisplayPattern">%{value1}@</string>
                                 <string key="NSValueTransformerName">CurrencyValueTransformer</string>
@@ -939,7 +939,7 @@
                     </connections>
                 </button>
                 <textField hidden="YES" verticalHuggingPriority="750" id="716">
-                    <rect key="frame" x="339" y="182" width="33" height="24"/>
+                    <rect key="frame" x="343" y="182" width="33" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="EUR" drawsBackground="YES" id="717">
                         <font key="font" metaFont="system"/>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,30 +22,40 @@
 #import "MOAssistant.h"
 
 static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
+
 static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // For dragging an attachment.
 
 static NSCursor *moveCursor;
+
+@interface AttachmentImageView ()
+{
+    @private
+    NSString *observedKeyPath;
+
+    id   observedObject;
+    BOOL highlight;
+    BOOL dragPending;
+}
+
+@end
 
 @implementation AttachmentImageView
 
 @synthesize reference;
 
-+ (void)initialize
-{
++ (void)initialize {
     [self exposeBinding: @"reference"];
     moveCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"move-cursor"] hotSpot: NSMakePoint(18, 6)];
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [self unregisterDraggedTypes];
-    [self registerForDraggedTypes: @[NSStringPboardType, NSFilenamesPboardType]];
+    [self registerForDraggedTypes: @[NSStringPboardType, NSFilenamesPboardType, AttachmentDataType]];
 }
 
 #pragma mark - Destination Operations
 
-- (NSDragOperation)dragOperationFor: (id <NSDraggingInfo>)sender
-{
+- (NSDragOperation)dragOperationFor: (id <NSDraggingInfo>)sender {
     if (!self.isEditable || ([sender draggingSource] == self)) {
         return NSDragOperationNone;
     }
@@ -57,7 +67,7 @@ static NSCursor *moveCursor;
 
     if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
         NSURL *url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
-        BOOL isFolder;
+        BOOL  isFolder;
         if ([NSFileManager.defaultManager fileExistsAtPath: url.path isDirectory: &isFolder]) {
             if (isFolder) {
                 return NSDragOperationNone; // If the file is actually a folder don't accept it.
@@ -74,8 +84,7 @@ static NSCursor *moveCursor;
     return NSDragOperationNone;
 }
 
-- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender
-{
+- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender {
     NSDragOperation result = [self dragOperationFor: sender];
 
     highlight = YES;
@@ -100,16 +109,14 @@ static NSCursor *moveCursor;
 
 }
 
-- (void)draggingExited: (id <NSDraggingInfo>)sender
-{
+- (void)draggingExited: (id <NSDraggingInfo>)sender {
     [NSCursor pop];
 
     highlight = NO;
     [self setNeedsDisplay: YES];
 }
 
--(void)drawRect: (NSRect)rect
-{
+- (void)drawRect: (NSRect)rect {
     [super drawRect: rect];
 
     if (highlight) {
@@ -119,22 +126,20 @@ static NSCursor *moveCursor;
     }
 }
 
-- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
-{
+- (BOOL)prepareForDragOperation: (id <NSDraggingInfo>)sender {
     highlight = NO;
     [self setNeedsDisplay: YES];
 
     return YES;
 }
 
-- (BOOL)performDragOperation: (id<NSDraggingInfo>)sender
-{
+- (BOOL)performDragOperation: (id<NSDraggingInfo>)sender {
     NSDragOperation operation = [self dragOperationFor: sender];
 
     switch (operation) {
         case NSDragOperationMove: {
             AttachmentImageView *otherView = [sender draggingSource];
-            NSString *value = otherView.reference;
+            NSString            *value = otherView.reference;
             [observedObject setValue: value forKeyPath: observedKeyPath];
             [otherView->observedObject setValue: nil forKeyPath: otherView->observedKeyPath];
 
@@ -169,27 +174,27 @@ static NSCursor *moveCursor;
             }
             break;
         }
+
+        default:
+            return NO;
     }
 
     return YES;
 }
 
-- (void)concludeDragOperation: (id<NSDraggingInfo>)sender
-{
+- (void)concludeDragOperation: (id<NSDraggingInfo>)sender {
     // Only here to disable NSImageView's drop handling.
 }
 
 #pragma mark - Source Operations
 
-- (void)mouseDown: (NSEvent *)event
-{
+- (void)mouseDown: (NSEvent *)event {
     if (self.isEditable) {
         dragPending = YES;
     }
 }
 
-- (void)mouseUp: (NSEvent *)event
-{
+- (void)mouseUp: (NSEvent *)event {
     if (dragPending) {
         // User just clicked. No mouse move.
         dragPending = NO;
@@ -199,35 +204,37 @@ static NSCursor *moveCursor;
     }
 }
 
-- (void)mouseDragged: (NSEvent *)event
-{
+- (void)mouseDragged: (NSEvent *)event {
     if (dragPending) {
         dragPending = NO;
 
-        NSURL *url = [NSURL URLWithString: reference];
-        if (url != nil) {
-            NSPoint dragPosition = [self convertPoint: [event locationInWindow] fromView: nil];
-            dragPosition.x -= 100;
+        if (reference != nil) {
+            NSPasteboardItem *pbItem = [NSPasteboardItem new];
+            [pbItem setDataProvider: self forTypes: @[AttachmentDataType]];
 
-            NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
-            [pasteBoard declareTypes: @[AttachmentDataType] owner: self];
-            [pasteBoard writeObjects: @[url]];
+            NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter: pbItem];
 
-            [self dragImage: [self image]
-                         at: dragPosition
-                     offset: NSZeroSize
-                      event: event
-                 pasteboard: pasteBoard
-                     source: self
-                  slideBack: NO];
+            [dragItem setDraggingFrame: self.bounds contents: self.image];
+            NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems: @[dragItem]
+                                                                               event: event
+                                                                              source: self];
+            draggingSession.animatesToStartingPositionsOnCancelOrFail = NO;
+            draggingSession.draggingFormation = NSDraggingFormationNone;
         }
+    }
+}
+
+- (void)pasteboard: (NSPasteboard *)sender item: (NSPasteboardItem *)item provideDataForType: (NSString *)type
+{
+    if ([type compare: AttachmentDataType] == NSOrderedSame ) {
+        [sender setString: reference forType: AttachmentDataType];
     }
 }
 
 - (NSDragOperation)       draggingSession: (NSDraggingSession *)session
     sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
 {
-    switch(context) {
+    switch (context) {
         case NSDraggingContextOutsideApplication:
             return NSDragOperationDelete;
             break;
@@ -239,14 +246,12 @@ static NSCursor *moveCursor;
     }
 }
 
-- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session
-{
+- (BOOL)ignoreModifierKeysForDraggingSession: (NSDraggingSession *)session {
     return YES;
 }
 
 - (void)draggingSession: (NSDraggingSession *)session
-           movedToPoint: (NSPoint)screenPoint
-{
+           movedToPoint: (NSPoint)screenPoint {
     if (NSPointInRect(screenPoint, self.window.frame)) {
         NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
         NSView *view = [self.window.contentView hitTest: windowRect.origin];
@@ -256,15 +261,13 @@ static NSCursor *moveCursor;
     }
 }
 
-- (void)updateDraggingItemsForDrag: (id<NSDraggingInfo>)sender
-{
+- (void)updateDraggingItemsForDrag: (id<NSDraggingInfo>)sender {
     sender.numberOfValidItemsForDrop = 1;
 }
 
 - (void)draggedImage: (NSImage *)image
              endedAt: (NSPoint)screenPoint
-           operation: (NSDragOperation)operation
-{
+           operation: (NSDragOperation)operation {
     // NSDragOperationNone is returned outside of instances of this class. So it's good as
     // a delete indicator too.
     screenPoint.x += 100;
@@ -276,8 +279,7 @@ static NSCursor *moveCursor;
     }
 }
 
-- (void)resetCursorRects
-{
+- (void)resetCursorRects {
     [super resetCursorRects];
     [self addCursorRect: [self bounds]
                  cursor: self.isEditable ? [NSCursor pointingHandCursor]: [NSCursor operationNotAllowedCursor]];
@@ -290,8 +292,7 @@ static NSCursor *moveCursor;
  *
  * The format of the reference for a file is: "attachment://unique-id.ext?original-name.ext".
  */
-- (void)processAttachment: (NSURL *)url
-{
+- (void)processAttachment: (NSURL *)url {
     // If the current reference points to a file then remove it.
     NSURL *oldUrl = [NSURL URLWithString: reference];
     self.reference = nil;
@@ -348,8 +349,7 @@ static NSCursor *moveCursor;
  * Open the reference in the default web browser if it is a web URL, otherwise construct a full path
  * from the reference and open it with it's default application.
  */
-- (void)openReference
-{
+- (void)openReference {
     NSURL *url = [NSURL URLWithString: reference];
 
     if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
@@ -367,8 +367,7 @@ static NSCursor *moveCursor;
     }
 }
 
-- (void)setReference: (id)value
-{
+- (void)setReference: (id)value {
     [self.window invalidateCursorRectsForView: self];
 
     if (value == NSNoSelectionMarker || value == NSMultipleValuesMarker || value == nil) {
@@ -408,8 +407,8 @@ static NSCursor *moveCursor;
         }
 
         NSString *unescapedTooltipFileName = CFBridgingRelease(
-                                                               CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)tooltipFileName, CFSTR(""),
-                                                                                                                       kCFStringEncodingUTF8));
+                CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)tooltipFileName, CFSTR(""),
+                                                                        kCFStringEncodingUTF8));
         NSString *extension = targetFileName.pathExtension;
 
         self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", unescapedTooltipFileName, NSLocalizedString(@"AP120", nil)];
@@ -451,8 +450,7 @@ static NSCursor *moveCursor;
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
     withKeyPath: (NSString *)keyPath
-        options: (NSDictionary *)options
-{
+        options: (NSDictionary *)options {
     if ([binding isEqualToString: @"reference"] || [binding isEqualToString: @"valueURL"]) {
         observedObject = observableObject;
         observedKeyPath = keyPath;
@@ -462,8 +460,7 @@ static NSCursor *moveCursor;
     }
 }
 
-- (void)unbind: (NSString *)binding
-{
+- (void)unbind: (NSString *)binding {
     if ([binding isEqualToString: @"reference"]) {
         [observedObject removeObserver: self forKeyPath: observedKeyPath];
     } else {
@@ -474,8 +471,7 @@ static NSCursor *moveCursor;
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if (context == AttachmentBindingContext) {
         self.reference = [observedObject valueForKeyPath: observedKeyPath];
         return;

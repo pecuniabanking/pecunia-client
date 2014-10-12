@@ -649,6 +649,9 @@ static NSFont *smallNumberFont;
             }
 
             break;
+
+        default:
+            break;
     }
 
     switch (event.momentumPhase) {
@@ -673,6 +676,9 @@ static NSFont *smallNumberFont;
             break;
 
         case NSEventPhaseEnded:
+            break;
+
+        default:
             break;
     }
 }
@@ -810,8 +816,6 @@ static NSFont *smallNumberFont;
 }
 
 - (void)resizeWithOldSuperviewSize: (NSSize)oldSize {
-    LogEnter;
-
     NSRect frame = self.bounds;
     frame.origin.x = frame.size.width - contentWidth + 15;
     frame.size.width = contentWidth - 50;
@@ -821,7 +825,6 @@ static NSFont *smallNumberFont;
         calendar.frame = frame;
         frame.origin.y -= CALENDAR_HEIGHT;
     }
-    LogLeave;
 }
 
 @end
@@ -849,7 +852,7 @@ static NSFont *smallNumberFont;
 
     self = [super initWithFrame: frame];
     if (self) {
-        if (![NSBundle loadNibNamed: @"HomeScreenNextTransfers" owner: self]) {
+        if (![NSBundle.mainBundle loadNibNamed: @"HomeScreenNextTransfers" owner: self topLevelObjects: nil]) {
             LogError(@"Internal error: home screen next transfers view loading failed");
         }
 

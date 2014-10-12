@@ -39,8 +39,8 @@ NSString *MBTableGridDidMoveRowsNotification			= @"MBTableGridDidMoveRowsNotific
 
 #pragma mark -
 #pragma mark Drag Types
-NSString *MBTableGridColumnDataType = @"MBTableGridColumnDataType";
-NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
+NSString *MBTableGridColumnDataType = @"tablegrid.MBTableGridColumnDataType";
+NSString *MBTableGridRowDataType = @"tablegrid.MBTableGridRowDataType";
 
 @interface MBTableGrid ()
 {
@@ -947,6 +947,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 
 #pragma mark Reloading the Grid
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)reloadData
 {
 	// Update the content view's size
@@ -1450,6 +1452,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	
 	return finalImage;
 }
+
+#pragma clang diagnostic pop
 
 - (NSUInteger)_dropColumnForPoint:(NSPoint)aPoint
 {

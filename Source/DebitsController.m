@@ -50,8 +50,8 @@ extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
 
-NSString *const DebitPredefinedTemplateDataType = @"DebitPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
-NSString *const DebitDataType = @"DebitDataType"; // For dragging an existing debit (sent or not).
+NSString *const DebitPredefinedTemplateDataType = @"pecuina.DebitPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
+NSString *const DebitDataType = @"pecunia.DebitDataType"; // For dragging an existing debit (sent or not).
 extern NSString *DebitReadyForUseDataType;        // For dragging an edited transfer.
 
 @interface DeleteDebitTargetView : NSImageView
@@ -148,6 +148,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         location.x = 0;
         location.y = 0;
 
+        /* See AttachmentImageView.m how to do it now.
         [self dragImage: [self image]
                      at: location
                  offset: NSZeroSize
@@ -155,6 +156,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
              pasteboard: pasteBoard
                  source: self
               slideBack: YES];
+         */
     }
 }
 
