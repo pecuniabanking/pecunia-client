@@ -55,8 +55,9 @@
     }
 
     // sort descriptor for statements view
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    NSArray          *sds = @[sd];
+    NSSortDescriptor *sd1 = [[NSSortDescriptor alloc] initWithKey: @"localAccount" ascending: YES];
+    NSSortDescriptor *sd2 = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray          *sds = @[sd1, sd2];
     [statementsView setSortDescriptors: sds];
 }
 
@@ -92,13 +93,14 @@
     // status message
     StatusBarController *sc = [StatusBarController controller];
     [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
-
+    [self.window close];
     [NSApp stopModal];
 }
 
 - (IBAction)cancel: (id)sender
 {
     [[BankingController controller] requestFinished: nil];
+    [self.window close];
     [NSApp stopModal];
 }
 

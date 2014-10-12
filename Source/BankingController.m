@@ -973,7 +973,6 @@ static BankingController *bankinControllerInstance;
 
     if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
         [selectWindowController addResults:resultList];
-        [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
             for (result in resultList) {
@@ -3718,7 +3717,7 @@ static BankingController *bankinControllerInstance;
         }
 
         settings[@"Migrated10"] = @YES;
-        settings[@"Migrated110"] = @YES;
+        settings[@"Migrated113"] = @YES;
 
         // success message
         if ([users count] > 0 && [bankUsers count] > 0) {
@@ -3730,8 +3729,8 @@ static BankingController *bankinControllerInstance;
         }
     }
     
-    BOOL migrated110 = [settings boolForKey: @"Migrated110"];
-    if (migrated110 == NO) {
+    BOOL migrated113 = [settings boolForKey: @"Migrated113"];
+    if (migrated113 == NO) {
         // BankUser update BPD
         NSArray *bankUsers = [BankUser allUsers];
         if ([bankUsers count] > 0) {
@@ -3745,7 +3744,7 @@ static BankingController *bankinControllerInstance;
             }
         }
         
-        settings[@"Migrated110"] = @YES;
+        settings[@"Migrated113"] = @YES;
     }
     
     LogLeave;

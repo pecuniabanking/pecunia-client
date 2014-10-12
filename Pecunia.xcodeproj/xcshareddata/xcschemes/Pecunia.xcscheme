@@ -44,7 +44,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Deployment"
+      buildConfiguration = "Development"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "NO"
       allowLocationSimulation = "YES">
@@ -61,6 +61,10 @@
          <CommandLineArgument
             argument = "-loglevel info"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-f accounts3"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

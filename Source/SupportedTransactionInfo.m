@@ -145,7 +145,7 @@
             tinfo.allowsDated = @NO;
         }
         
-        if ([supportedJobNames containsObject: @"MulitUebSEPA"] == YES) {
+        if ([supportedJobNames containsObject: @"MultiUebSEPA"] == YES) {
             tinfo.allowsCollective = @YES;
         } else {
             tinfo.allowsCollective = @NO;

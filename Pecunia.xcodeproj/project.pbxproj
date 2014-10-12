@@ -421,7 +421,7 @@
 		277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		277789BD173CE22700430EBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
-		277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
+		277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2778C24218140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
@@ -2704,6 +2704,13 @@
 					27778872173CE22700430EBC = {
 						DevelopmentTeam = JY3Q678PYA;
 					};
+					8D1107260486CEB800E47090 = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
@@ -3778,8 +3785,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
@@ -3863,8 +3870,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
