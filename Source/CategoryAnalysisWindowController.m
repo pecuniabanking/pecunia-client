@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#include <math.h>
+#import <math.h>
 
 #import "CategoryAnalysisWindowController.h"
 #import "ShortDate.h"

@@ -23,7 +23,7 @@
 
 #import "NSColor+PecuniaAdditions.h"
 #import "BankStatement.h"
-#include "MOAssistant.h"
+#import "MOAssistant.h"
 
 @implementation Tag
 

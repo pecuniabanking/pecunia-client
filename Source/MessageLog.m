@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#include <sys/sysctl.h>
+#import <sys/sysctl.h>
 
 #import "MessageLog.h"
 
@@ -29,7 +29,7 @@
 #import "ZipWriteStream.h"
 #import "ZipException.h"
 
-#include "LaunchParameters.h"
+#import "LaunchParameters.h"
 #import "HBCIController.h"
 #import "ResultWindowController.h"
 

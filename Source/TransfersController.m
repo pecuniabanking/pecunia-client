@@ -1255,7 +1255,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
 
         // now ask for accounts with method "ask"
-        if ([account.collTransferMethod intValue] == CTM_ask) {
+        if (collectiveTransfer && [account.collTransferMethod intValue] == CTM_ask) {
             NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", nil),
                                             NSLocalizedString(@"AP427", nil),
                                             NSLocalizedString(@"AP4", nil),

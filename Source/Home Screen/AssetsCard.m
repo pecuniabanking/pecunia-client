@@ -74,7 +74,8 @@ extern void *UserDefaultsBindingContext;
 }
 
 @property (nonatomic, strong) Category *category;
-@property NSInteger                    tag;
+
+@property NSInteger tag;
 
 @end
 

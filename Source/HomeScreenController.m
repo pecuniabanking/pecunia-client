@@ -22,7 +22,7 @@
 #import "GraphicsAdditions.h"
 #import "PreferenceController.h"
 #import "ClickableImageView.h"
-#include "MessageLog.h"
+#import "MessageLog.h"
 
 #import "StockCard.h"
 #import "AssetsCard.h"

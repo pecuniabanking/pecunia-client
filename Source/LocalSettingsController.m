@@ -20,7 +20,7 @@
 #import "LocalSettingsController.h"
 #import "MOAssistant.h"
 #import "Info.h"
-#include "MessageLog.h"
+#import "MessageLog.h"
 
 @interface LocalSettingsController ()
 @end

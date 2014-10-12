@@ -50,10 +50,6 @@ extern NSString *OrderIsSentKey;
 
 extern void *UserDefaultsBindingContext;
 
-@interface NoAnimationImageView : NSImageView
-
-@end
-
 @interface OrdersListViewCell ()
 {
     NSColor *categoryColor;

@@ -68,7 +68,7 @@
 
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
-#include "ColorPopup.h"
+#import "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
 #import "ComTraceHelper.h"
@@ -958,7 +958,7 @@ static BankingController *bankinControllerInstance;
     }
     if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
         [selectWindowController addResults: resultList];
-        [NSApp runModalForWindow: [selectWindowController window]];
+        //[NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
             for (result in resultList) {

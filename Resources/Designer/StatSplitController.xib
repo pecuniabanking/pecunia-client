@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" promptedForUpgradeToXcode5="NO">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <development version="6000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="StatSplitController">
@@ -14,7 +16,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Umsatz splitten" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="1" userLabel="SplitWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -111,10 +113,10 @@ Zweck:</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="Xwq-wu-CxC">
                             <rect key="frame" x="1" y="17" width="660" height="171"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="32" id="31">
-                                    <rect key="frame" x="0.0" y="0.0" width="660" height="171"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="660" height="19"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -151,7 +153,7 @@ Zweck:</string>
                                             </tableHeaderCell>
                                             <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="63" id="61">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="62">
                                                     <items>
                                                         <menuItem title="Pop Up" state="on" id="63"/>
@@ -168,13 +170,13 @@ Zweck:</string>
                                                         <bool key="NSInsertsNullPlaceholder" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <binding destination="49" name="selectedObject" keyPath="arrangedObjects.category" previousBinding="103" id="149"/>
                                                 <binding destination="59" name="contentValues" keyPath="arrangedObjects.localName" previousBinding="100" id="103">
                                                     <dictionary key="options">
                                                         <bool key="NSInsertsNullPlaceholder" value="YES"/>
                                                         <string key="NSNullPlaceholder">&lt;nicht definiert&gt;</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="49" name="selectedObject" keyPath="arrangedObjects.category" previousBinding="103" id="149"/>
                                             </connections>
                                         </tableColumn>
                                         <tableColumn identifier="info" width="372" minWidth="10" maxWidth="3.4028234663852886e+38" id="37">
@@ -229,7 +231,7 @@ Zweck:</string>
                         </connections>
                     </segmentedControl>
                     <textField verticalHuggingPriority="750" id="113">
-                        <rect key="frame" x="17" y="255" width="117.706" height="17"/>
+                        <rect key="frame" x="17" y="255" width="118" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Nicht zugeordnet:" id="114">
                             <font key="font" metaFont="system"/>
@@ -293,8 +295,8 @@ Zweck:</string>
                 <string>category.name</string>
             </declaredKeys>
             <connections>
-                <binding destination="3" name="contentSet" keyPath="selection.assignments" id="91"/>
                 <binding destination="-2" name="managedObjectContext" keyPath="managedObjectContext" id="108"/>
+                <binding destination="3" name="contentSet" keyPath="selection.assignments" id="91"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="Category" fetchPredicateFormat="isBankAcc == 0 AND parent != nil AND name != &quot;++nassroot&quot;" automaticallyPreparesContent="YES" id="59" userLabel="Categories">

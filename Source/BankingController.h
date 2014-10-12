@@ -18,7 +18,7 @@
  */
 
 #import "PecuniaSectionItem.h"
-#include "Transfer.h"
+#import "Transfer.h"
 
 @class MCEMTreeController;
 @class SynchronousScrollView;

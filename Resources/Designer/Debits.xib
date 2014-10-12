@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" promptedForUpgradeToXcode5="NO">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <deployment identifier="macosx"/>
+        <development version="6000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DebitsController">
@@ -53,7 +55,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <view id="2" userLabel="Debits View" customClass="TransfersBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="1304" height="788"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -67,7 +69,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <clipView key="contentView" id="STf-n9-TgK">
                                 <rect key="frame" x="1" y="1" width="499" height="200"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <customView id="307" customClass="PXListDocumentView">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="100"/>
@@ -94,7 +96,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </textFieldCell>
                         </textField>
-                        <tabView autoresizesSubviews="NO" initialItem="316" id="315">
+                        <tabView initialItem="316" id="315">
                             <rect key="frame" x="13" y="10" width="515" height="444"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <font key="font" metaFont="system"/>
@@ -102,14 +104,14 @@
                                 <tabViewItem label="Abgeschlossen" identifier="1" id="316">
                                     <view key="view" id="317">
                                         <rect key="frame" x="10" y="33" width="495" height="398"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="49" userLabel="Finished Debits ListView" customClass="DebitsListView">
                                                 <rect key="frame" x="17" y="17" width="461" height="338"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <clipView key="contentView" id="W9L-Xp-3Ir">
                                                     <rect key="frame" x="0.0" y="0.0" width="461" height="338"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <customView id="50" customClass="PXListDocumentView">
                                                             <rect key="frame" x="0.0" y="0.0" width="422" height="194"/>
@@ -745,7 +747,7 @@
     </objects>
     <resources>
         <image name="basket" width="59" height="75"/>
-        <image name="calendar" width="22" height="24"/>
+        <image name="calendar" width="22" height="22"/>
         <image name="delete" width="16" height="16"/>
         <image name="shield" width="24" height="24"/>
         <image name="transfer-debit-preview" width="211" height="145"/>
