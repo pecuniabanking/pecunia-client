@@ -27,21 +27,18 @@
 
 @implementation ComTraceHelper
 
-- (id)initWithFrame:(NSRect)frame
-{
-    self = [super initWithFrame:frame];
+- (id)initWithFrame: (NSRect)frame {
+    self = [super initWithFrame: frame];
     if (self != nil) {
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     magnifyButton.toolTip = NSLocalizedString(@"AP125", nil);
 }
 
-- (void)viewDidChangeBackingProperties
-{
+- (void)viewDidChangeBackingProperties {
     if (MessageLog.log.isComTraceActive) {
         // Recreate the animation if it is currently running to use hidpi images.
         [magnifyButton.layer removeAllAnimations];
@@ -49,8 +46,7 @@
     }
 }
 
-- (void)startMagnifyAnimation
-{
+- (void)startMagnifyAnimation {
     magnifyButton.wantsLayer = YES;
 
     NSMutableArray *images = [NSMutableArray array];
@@ -78,8 +74,7 @@
     [magnifyButton.layer addAnimation: animation forKey: @"contents"];
 }
 
-- (IBAction)toggleComTrace: (id)sender
-{
+- (IBAction)toggleComTrace: (id)sender {
     if (MessageLog.log.isComTraceActive) {
         [magnifyButton.layer removeAllAnimations];
         magnifyButton.layer.bounds = magnifyButton.bounds;
@@ -91,16 +86,14 @@
         MessageLog.log.isComTraceActive = NO; // Must happen *after* sendLog, as it deletes the com trace file.
 
         [SystemNotification showStickyMessage: NSLocalizedString(@"AP505", nil)
-                                   withTitle: NSLocalizedString(@"AP503", nil)
-                                     context: nil];
+                                    withTitle: NSLocalizedString(@"AP503", nil)];
     } else {
         magnifyButton.toolTip = NSLocalizedString(@"AP126", nil);
         MessageLog.log.isComTraceActive = YES;
         [self startMagnifyAnimation];
 
         [SystemNotification showStickyMessage: NSLocalizedString(@"AP504", nil)
-                                   withTitle: NSLocalizedString(@"AP503", nil)
-                                     context: nil];
+                                    withTitle: NSLocalizedString(@"AP503", nil)];
     }
 }
 

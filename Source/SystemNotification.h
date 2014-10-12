@@ -17,13 +17,8 @@
  * 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
+@interface SystemNotification : NSObject <NSUserNotificationCenterDelegate>
 
-#import <Growl/Growl.h>
-
-@interface SystemNotification : NSObject <GrowlApplicationBridgeDelegate, NSUserNotificationCenterDelegate>
-
-+ (void)showMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
-+ (void)showStickyMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
++ (void)showMessage: (NSString *)message withTitle: (NSString *)title;
 
 @end

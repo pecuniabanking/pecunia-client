@@ -54,7 +54,7 @@
 	<key>NSPrincipalClass</key>
 	<string>PecuniaApplication</string>
 	<key>NSUserNotificationAlertStyle</key>
-	<string>alert</string>
+	<string>banner</string>
 	<key>SUFeedURL</key>
 	<string>http://www.pecuniabanking.de/appcast10.xml</string>
 	<key>SUPublicDSAKeyFile</key>

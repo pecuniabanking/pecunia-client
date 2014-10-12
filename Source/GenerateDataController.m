@@ -690,8 +690,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
         }
 
         [SystemNotification showMessage: NSLocalizedString(@"AP501", nil)
-                              withTitle: NSLocalizedString(@"AP500", nil)
-                                context: nil];
+                              withTitle: NSLocalizedString(@"AP500", nil)];
         [NSApp stopModal];
     }
 }

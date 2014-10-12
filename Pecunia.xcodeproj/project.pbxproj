@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
-		2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
-		2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2704B8441573C3FC00CB1320 /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
 		2704B8461573D39A00CB1320 /* internal-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8451573D39A00CB1320 /* internal-transfer-icon.png */; };
@@ -445,14 +443,12 @@
 		277789B2173CE22700430EBC /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
 		277789B4173CE22700430EBC /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
-		277789B9173CE22700430EBC /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
 		277789BA173CE22700430EBC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
 		277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		277789BD173CE22700430EBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2778C24218140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
 		2778C24318140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
 		2778C24418140027003BF49D /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24118140027003BF49D /* gear@2x.png */; };
@@ -962,7 +958,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */,
-				277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1000,7 +995,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
-				2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1013,7 +1007,6 @@
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		2701A849165E827F00A9A1C7 /* SystemNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotification.h; sourceTree = "<group>"; };
 		2701A84A165E827F00A9A1C7 /* SystemNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotification.m; sourceTree = "<group>"; wrapsLines = 0; };
-		2701A84C165E832C00A9A1C7 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
 		27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersBackgroundView.h; sourceTree = "<group>"; };
 		27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersBackgroundView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "standard-transfer-icon.png"; sourceTree = "<group>"; };
@@ -1735,7 +1728,6 @@
 				27E844E819E1740A0026464E /* Quartz.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
-				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
 				277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */,
 				277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */,
@@ -1751,7 +1743,6 @@
 				27E844E719E173FD0026464E /* Quartz.framework in Frameworks */,
 				27E2D28319167D30001D6E80 /* Accelerate.framework in Frameworks */,
 				27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */,
-				2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */,
 				B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */,
 				27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
@@ -1767,7 +1758,6 @@
 			isa = PBXGroup;
 			children = (
 				27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */,
-				2701A84C165E832C00A9A1C7 /* Growl.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */,
 			);

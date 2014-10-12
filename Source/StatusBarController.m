@@ -46,7 +46,7 @@ static StatusBarController *controller = nil;
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
 
-    [SystemNotification showMessage: message withTitle: nil context: nil];
+    [SystemNotification showMessage: message withTitle: nil];
     [messageField setStringValue: message];
 
     if (secs > 0) {
