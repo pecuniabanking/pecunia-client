@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Category;
+@class BankingCategory;
 @class ShortDate;
 
 @interface ExportController : NSObject {
@@ -27,13 +27,13 @@
     NSDate *toDate;
     BOOL   withChildren;
 
-    Category *category;
+    BankingCategory *category;
 
     IBOutlet NSView         *accessoryView;
     IBOutlet NSMutableArray *selectedFields;
 }
 
-- (void)startExport: (Category *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to;
+- (void)startExport: (BankingCategory *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to;
 + (ExportController *)controller;
 
 @end

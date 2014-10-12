@@ -19,13 +19,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Category;
+@class BankingCategory;
 
 @interface CategoryBudget : NSManagedObject {
 }
 
 @property (nonatomic, strong) NSDecimalNumber *budget;
 @property (nonatomic, strong) NSDate          *date;
-@property (nonatomic, strong) Category        *category;
+@property (nonatomic, strong) BankingCategory        *category;
 
 @end

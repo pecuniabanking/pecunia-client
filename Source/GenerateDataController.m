@@ -22,7 +22,7 @@
 #import "GenerateDataController.h"
 #import "MOAssistant.h"
 #import "BankUser.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "StatCatAssignment.h"
@@ -160,7 +160,6 @@ static NSString *DemoDataKey = @"contains-demo-data";
         [shuffledInfo exchangeObjectAtIndex: i
                           withObjectAtIndex: arc4random_uniform(i + 1)];
     }
-
     // We always add an SVWZ entry.
     [result appendString: @"SVWZ+"];
     [result appendString: purpose];
@@ -205,8 +204,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
         [result appendString: shuffledInfo[i]];
         [result appendString: @"\n"];
-}
-
+    }
     return result;
 }
 
@@ -218,7 +216,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
           sequenceTypes: (NSArray *)sequenceTypes {
     // Add transactions to each account of a bank.
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    Category               *root = Category.bankRoot;
+    BankingCategory        *root = BankingCategory.bankRoot;
     for (BankAccount *bank in root.children) {
         NSArray *accounts = [bank.children allObjects];
         for (NSUInteger year = startYear; year <= endYear; year++) {
@@ -383,11 +381,11 @@ static NSString *DemoDataKey = @"contains-demo-data";
                             // Assign this statement to all categories which contain any of the keywords.
                             NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL (id obj, BOOL *stop) {
                                 for (NSString *keyword in keywords) {
-                                    return [[(Category *)obj name] rangeOfString: keyword].length > 0;
+                                    return [[(BankingCategory *)obj name] rangeOfString: keyword].length > 0;
                                 }
                                 return NO;
                             }];
-                            for (Category *category in matchingCategories) {
+                            for (BankingCategory *category in matchingCategories) {
                                 [statement assignToCategory: category];
                             }
                         }
@@ -431,7 +429,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
         NSInteger n = (arc4random() % nElements) + i;
         [accounts exchangeObjectAtIndex: i withObjectAtIndex: n];
     }
-    Category *root = Category.bankRoot;
+    BankingCategory *root = BankingCategory.bankRoot;
     for (NSUInteger i = 0; i < bankCount; i++) {
         NSString *bank = banks[i % bankCount];
 
@@ -596,8 +594,8 @@ static NSString *DemoDataKey = @"contains-demo-data";
         // Before adding new data remove old data if requested.
         if (self.removeOldDataCheckBox.state == 1) {
             [MOAssistant.assistant clearAllData];
-            [Category recreateRoots];
-            [Category createDefaultCategories];
+            [BankingCategory recreateRoots];
+            [BankingCategory createDefaultCategories];
         }
 
         // Once all data is read start by generating bank users and accounts.
@@ -617,7 +615,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
         NSArray *sepaPurposeCodes = blocks[@"SEPA Purpose Code"];
         NSArray *sepaSequenceTypes = blocks[@"SEPA Sequence Type"];
 
-        NSSet *categories = Category.catRoot.allCategories;
+        NSSet *categories = BankingCategory.catRoot.allCategories;
 
         // Mark the database as having demo data.
         LocalSettingsController.sharedSettings[DemoDataKey] = @YES;
@@ -676,7 +674,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                          info: sepaInfo
                  purposeCodes: sepaPurposeCodes
                 sequenceTypes: sepaSequenceTypes];
-        [Category.bankRoot updateCategorySums];
+        [BankingCategory.bankRoot updateCategorySums];
 
         [self addStandingOrders: blocks[@"Standing Orders"]];
 

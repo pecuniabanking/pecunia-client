@@ -174,7 +174,7 @@ extern NSString *const CategoryKey;
         }
         if ([changedAccount.balance compare: account.balance] != NSOrderedSame) {
             [changedAccount updateBalanceWithValue:account.balance];
-            [[Category bankRoot] updateCategorySums];
+            [[BankingCategory bankRoot] updateCategorySums];
         }
     } else {
         changedAccount.accountSuffix = account.accountSuffix;

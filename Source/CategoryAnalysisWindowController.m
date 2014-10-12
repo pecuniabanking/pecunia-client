@@ -2575,7 +2575,7 @@ double mainTrend(double x)
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory
+- (void)setSelectedCategory: (BankingCategory *)newCategory
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;

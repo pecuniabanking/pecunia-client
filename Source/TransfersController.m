@@ -529,13 +529,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // use current selection if no bank account is given
     if (selectedAccount == nil) {
         BankingController *controller = [BankingController controller];
-        Category          *cat = [controller currentSelection];
+        BankingCategory          *cat = [controller currentSelection];
         if (cat != nil && [cat isBankAccount] == YES) {
             selectedAccount = (BankAccount *)cat;
         }
     }
 
-    Category         *category = [Category bankRoot];
+    BankingCategory         *category = [BankingCategory bankRoot];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sortDescriptors = @[sortDescriptor];
     NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
@@ -543,7 +543,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
     NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    Category     *currentInstitute;
+    BankingCategory     *currentInstitute;
     NSInteger    selectedItem = -1; // By default no entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
@@ -553,7 +553,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
 
-        for (Category *currentAccount in accounts) {
+        for (BankingCategory *currentAccount in accounts) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }

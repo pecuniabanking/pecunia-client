@@ -24,7 +24,7 @@
 #import "TimeSliceManager.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "CategoryView.h"
 #import "ShortDate.h"
 #import "StatCatAssignment.h"
@@ -276,7 +276,7 @@
     NSPredicate *predicate = [self processPredicate: predicateEditor.objectValue];
 
     // Not assigned statements
-    pred = [NSPredicate predicateWithFormat: @"(category = %@)", [Category nassRoot]];
+    pred = [NSPredicate predicateWithFormat: @"(category = %@)", [BankingCategory nassRoot]];
     if (predicate != nil) {
         pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
     }
@@ -372,7 +372,7 @@
         [entry.statement assignAmount: [entry value] toCategory: selectedCategory withInfo: nil];
     }
     [selectedCategory invalidateBalance];
-    [Category updateBalancesAndSums];
+    [BankingCategory updateBalancesAndSums];
 
     NSError *error;
     if (![MOAssistant.assistant.context save: &error]) {
@@ -400,7 +400,7 @@
     [StatCatAssignment removeAssignments: entries];
 
     [selectedCategory invalidateBalance];
-    [Category updateBalancesAndSums];
+    [BankingCategory updateBalancesAndSums];
 
     NSError *error;
     if (![MOAssistant.assistant.context save: &error]) {
@@ -497,12 +497,12 @@
     [self calculateCatAssignPredicate];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory
+- (void)setSelectedCategory: (BankingCategory *)newCategory
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
 
-        if (selectedCategory == [Category nassRoot] || selectedCategory == [Category catRoot]) {
+        if (selectedCategory == [BankingCategory nassRoot] || selectedCategory == [BankingCategory catRoot]) {
             [[[[predicateEditor superview] superview] animator] setHidden: YES];
             [[saveButton animator] setHidden: YES];
             [[discardButton animator] setHidden: YES];

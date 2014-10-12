@@ -23,9 +23,9 @@
 #import "PecuniaSectionItem.h"
 #import "ColumnLayoutCorePlotLayer.h"
 
-#import "Category.h"
+#import "BankingCategory.h"
 
-@class Category;
+@class BankingCategory;
 @class ShortDate;
 @class BWGradientBox;
 
@@ -64,7 +64,7 @@
     IBOutlet BWGradientBox *selectionBox;
 }
 
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) BankingCategory *selectedCategory;
 
 @property (nonatomic, readwrite) CGFloat          barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;

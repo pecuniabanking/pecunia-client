@@ -21,7 +21,7 @@
 #import "TransferTemplateListViewCell.h"
 #import "Transfer.h"
 #import "TransferTemplate.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;

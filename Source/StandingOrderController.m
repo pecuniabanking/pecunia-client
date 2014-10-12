@@ -381,7 +381,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
     NSMenu *sourceMenu = [sourceAccountSelector menu];
 
-    Category         *category = [Category bankRoot];
+    BankingCategory         *category = [BankingCategory bankRoot];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sortDescriptors = @[sortDescriptor];
     NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
@@ -389,7 +389,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
     NSInteger selectedItem = -1;
-    for (Category *currentInstitute in institutes) {
+    for (BankingCategory *currentInstitute in institutes) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
         }
@@ -397,7 +397,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         NSArray        *accountsForInstitute = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
 
-        for (Category *currentAccount in accountsForInstitute) {
+        for (BankingCategory *currentAccount in accountsForInstitute) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
@@ -716,8 +716,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         }
     }
     NSMutableArray *accountList = [NSMutableArray arrayWithCapacity: 10];
-    NSSet          *candidates = [Category.bankRoot allCategories];
-    for (Category *currentAccount in candidates) {
+    NSSet          *candidates = [BankingCategory.bankRoot allCategories];
+    for (BankingCategory *currentAccount in candidates) {
         if (![currentAccount isKindOfClass: [BankAccount class]]) {
             continue;
         }

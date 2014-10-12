@@ -18,7 +18,7 @@
  */
 
 #import "CategoryMaintenanceController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "MOAssistant.h"
 #import "NSDictionary+PecuniaAdditions.h"
 
@@ -137,7 +137,7 @@ extern NSString *const CategoryKey;
 @synthesize iconCollectionController;
 @synthesize iconCollection;
 
-- (id)initWithCategory: (Category *)aCategory
+- (id)initWithCategory: (BankingCategory *)aCategory
 {
     self = [super initWithWindowNibName: @"CategoryMaintenance"];
     if (self != nil) {

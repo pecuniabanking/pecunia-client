@@ -177,7 +177,7 @@
     // account is new - create entity in productive context
     BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode];
     if (bankRoot == nil) {
-        Category *root = [Category bankRoot];
+        BankingCategory *root = [BankingCategory bankRoot];
         if (root != nil) {
             // create root for bank
             bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: context];

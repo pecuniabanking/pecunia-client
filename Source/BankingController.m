@@ -126,7 +126,7 @@ static BankingController *bankinControllerInstance;
     NSImage  *bankImage;
 
     NSMutableArray *bankAccountItemsExpandState;
-    Category       *lastSelection;
+    BankingCategory       *lastSelection;
 
     NSInteger currentPage; // Current main page.
     NSInteger currentSectionIndex; // Current page on the accounts main page.
@@ -332,10 +332,10 @@ static BankingController *bankinControllerInstance;
 
     if (settings[@"assetGraph1"] == nil || settings[@"assetGraph2"] == nil) {
         // Find the accounts with highest and lowest balance as default for the home screen asset graphs.
-        Category *strongest;
-        Category *weakest;
-        for (Category *bank in Category.bankRoot.children) {
-            for (Category *account in bank.allCategories) {
+        BankingCategory *strongest;
+        BankingCategory *weakest;
+        for (BankingCategory *bank in BankingCategory.bankRoot.children) {
+            for (BankingCategory *account in bank.allCategories) {
                 if (strongest == nil) {
                     strongest = account;
                     weakest = account;
@@ -531,7 +531,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     id object = notification.object;
-    if ([object isKindOfClass: Category.class]) {
+    if ([object isKindOfClass: BankingCategory.class]) {
         [categoryController setSelectedObject: object];
         sidebar.selectedIndex = 2;
     }
@@ -564,12 +564,12 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (NSIndexPath *)indexPathForCategory: (Category *)cat inArray: (NSArray *)nodes {
+- (NSIndexPath *)indexPathForCategory: (BankingCategory *)cat inArray: (NSArray *)nodes {
     LogEnter;
 
     NSUInteger idx = 0;
     for (NSTreeNode *node in nodes) {
-        Category *obj = [node representedObject];
+        BankingCategory *obj = [node representedObject];
         if (obj == cat) {
             return [NSIndexPath indexPathWithIndex: idx];
         } else {
@@ -619,8 +619,8 @@ static BankingController *bankinControllerInstance;
     }
 
     [managedObjectContext processPendingChanges];
-    [[Category nassRoot] invalidateBalance];
-    [Category updateBalancesAndSums];
+    [[BankingCategory nassRoot] invalidateBalance];
+    [BankingCategory updateBalancesAndSums];
 
     // remove parent?
     BankAccount *parent = [bankAccount valueForKey: @"parent"];
@@ -644,7 +644,7 @@ static BankingController *bankinControllerInstance;
         newPath = [newPath indexPathByRemovingLastIndex];
         [categoryController removeObjectAtArrangedObjectIndexPath: newPath];
     }
-    [[Category bankRoot] updateCategorySums];
+    [[BankingCategory bankRoot] updateCategorySums];
 
     LogLeave;
 }
@@ -654,7 +654,7 @@ static BankingController *bankinControllerInstance;
 
     BOOL flg_changed = NO;
     // remove empty bank nodes
-    Category *root = [Category bankRoot];
+    BankingCategory *root = [BankingCategory bankRoot];
     if (root != nil) {
         NSArray *bankNodes = [[root mutableSetValueForKey: @"children"] allObjects];
         for (BankAccount *node in bankNodes) {
@@ -671,7 +671,7 @@ static BankingController *bankinControllerInstance;
     return flg_changed;
 }
 
-- (Category *)getBankingRoot {
+- (BankingCategory *)getBankingRoot {
     LogEnter;
 
     NSError        *error = nil;
@@ -687,7 +687,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // create Root object
-    Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
+    BankingCategory *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
                                                   inManagedObjectContext: managedObjectContext];
     [obj setValue: @"++bankroot" forKey: @"name"];
     [obj setValue: @YES forKey: @"isBankAcc"];
@@ -702,7 +702,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     NSError  *error = nil;
-    Category *catRoot;
+    BankingCategory *catRoot;
     BOOL     found = NO;
 
     // repair bank root
@@ -714,7 +714,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    for (Category *cat in cats) {
+    for (BankingCategory *cat in cats) {
         NSString *n = [cat primitiveValueForKey: @"name"];
         if (![n isEqualToString: @"++bankroot"]) {
             [cat setValue: @"++bankroot" forKey: @"name"];
@@ -730,7 +730,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    for (Category *cat in cats) {
+    for (BankingCategory *cat in cats) {
         NSString *n = [cat primitiveValueForKey: @"name"];
         if ([n isEqualToString: @"++catroot"] ||
             [n isEqualToString: @"Umsatzkategorien"] ||
@@ -743,7 +743,7 @@ static BankingController *bankinControllerInstance;
     }
     if (found == NO) {
         // create Category Root object
-        Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
+        BankingCategory *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
                                                       inManagedObjectContext: managedObjectContext];
         [obj setValue: @"++catroot" forKey: @"name"];
         [obj setValue: @NO forKey: @"isBankAcc"];
@@ -751,7 +751,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // reassign categories
-    for (Category *cat in cats) {
+    for (BankingCategory *cat in cats) {
         if (cat == catRoot) {
             continue;
         }
@@ -768,7 +768,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
     if ([cats count] == 0) {
-        Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
+        BankingCategory *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
                                                       inManagedObjectContext: managedObjectContext];
         [obj setPrimitiveValue: @"++nassroot" forKey: @"name"];
         [obj setValue: @NO forKey: @"isBankAcc"];
@@ -795,7 +795,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    for (Category *cat in cats) {
+    for (BankingCategory *cat in cats) {
         if (!cat.isBankingRoot) {
             [cat recomputeInvalidBalances];
         }
@@ -810,11 +810,11 @@ static BankingController *bankinControllerInstance;
     if ((NSEvent.modifierFlags & NSAlternateKeyMask) != 0) {
         [self synchronizeAccount: self.currentSelection];
     } else {
-        [self synchronizeAccount: Category.bankRoot];
+        [self synchronizeAccount: BankingCategory.bankRoot];
     }
 }
 
-- (void)synchronizeAccount: (Category *)category {
+- (void)synchronizeAccount: (BankingCategory *)category {
     LogEnter;
 
     NSMutableArray *selectedAccounts = [NSMutableArray arrayWithCapacity: 10];
@@ -1159,7 +1159,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)accountMaintenance: (id)sender {
     LogEnter;
 
-    Category *category = self.currentSelection;
+    BankingCategory *category = self.currentSelection;
     if (category == nil || category.accountNumber == nil) {
         return;
     }
@@ -1203,7 +1203,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)updateStatementBalances: (id)sender {
     LogEnter;
 
-    Category *category = self.currentSelection;
+    BankingCategory *category = self.currentSelection;
     if (category == nil || category.accountNumber == nil) {
         return;
     }
@@ -1253,7 +1253,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)updateSupportedTransactions: (id)sender {
     LogEnter;
 
-    Category *category = self.currentSelection;
+    BankingCategory *category = self.currentSelection;
     if (category == nil || category.accountNumber == nil) {
         return;
     }
@@ -1298,7 +1298,7 @@ static BankingController *bankinControllerInstance;
 
     PecuniaError *pec_err = nil;
     BankAccount  *account = nil;
-    Category     *cat = [self currentSelection];
+    BankingCategory     *cat = [self currentSelection];
     if (cat == nil || cat.accountNumber == nil) {
         return;
     }
@@ -1348,10 +1348,10 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)reapplyDefaultIconsForCategory: (Category *)category {
+- (void)reapplyDefaultIconsForCategory: (BankingCategory *)category {
     LogEnter;
 
-    for (Category *child in category.children) {
+    for (BankingCategory *child in category.children) {
         if ([child.name hasPrefix: @"++"]) {
             continue;
         }
@@ -1373,7 +1373,7 @@ static BankingController *bankinControllerInstance;
     if (res != NSAlertAlternateReturn) {
         return;
     }
-    [self reapplyDefaultIconsForCategory: Category.catRoot];
+    [self reapplyDefaultIconsForCategory: BankingCategory.catRoot];
     [accountsView setNeedsDisplay: YES];
 
     LogLeave;
@@ -1437,7 +1437,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     NSString *bankCode = nil;
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat != nil) {
         if ([cat isBankAccount] && ![cat isRoot]) {
             bankCode = [cat valueForKey: @"bankCode"];
@@ -1455,7 +1455,7 @@ static BankingController *bankinControllerInstance;
         [self save];
 
         [categoryController rearrangeObjects];
-        [Category.bankRoot updateCategorySums];
+        [BankingCategory.bankRoot updateCategorySums];
     }
 
     LogLeave;
@@ -1470,16 +1470,16 @@ static BankingController *bankinControllerInstance;
 - (void)doShowProperties {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat == nil) {
         return;
     }
 
-    if (!cat.isBankAccount && cat != Category.nassRoot && cat != Category.catRoot) {
+    if (!cat.isBankAccount && cat != BankingCategory.nassRoot && cat != BankingCategory.catRoot) {
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent]; // Visibility of a category could have changed.
-        [Category.catRoot updateCategorySums]; // Category could have switched its noCatRep property.
+        [BankingCategory.catRoot updateCategorySums]; // Category could have switched its noCatRep property.
         return;
     }
 
@@ -1487,7 +1487,7 @@ static BankingController *bankinControllerInstance;
         AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount *)cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent];
-        [Category.bankRoot updateCategorySums];
+        [BankingCategory.bankRoot updateCategorySums];
     } else {
         [self editBankUsers: nil];
     }
@@ -1499,7 +1499,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)deleteAccount: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat == nil) {
         return;
     }
@@ -1569,7 +1569,7 @@ static BankingController *bankinControllerInstance;
 - (void)updateStatusbar {
     LogEnter;
 
-    Category  *cat = [self currentSelection];
+    BankingCategory  *cat = [self currentSelection];
     ShortDate *fromDate = [timeSlicer lowerBounds];
     ShortDate *toDate = [timeSlicer upperBounds];
 
@@ -1741,7 +1741,7 @@ static BankingController *bankinControllerInstance;
 
                     // If a category is selected currently which has no child categories then move the
                     // selection to its parent instead.
-                    Category *category = [self currentSelection];
+                    BankingCategory *category = [self currentSelection];
                     if ([[category children] count] < 1) {
                         [categoryController setSelectedObject: category.parent];
                     }
@@ -1804,9 +1804,9 @@ static BankingController *bankinControllerInstance;
 
                     // If a bank account is currently selected then switch to the not-assigned category.
                     // Bankaccounts don't use rules for assigning transfers to them.
-                    Category *category = [self currentSelection];
+                    BankingCategory *category = [self currentSelection];
                     if ([category isBankAccount]) {
-                        [categoryController setSelectedObject: Category.nassRoot];
+                        [categoryController setSelectedObject: BankingCategory.nassRoot];
                     }
 
                     // Accounts cannot have rules for assignments in this view so hide them.
@@ -1859,7 +1859,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)export: (id)sender {
     LogEnter;
 
-    Category *cat;
+    BankingCategory *cat;
 
     cat = [self currentSelection];
     ExportController *controller = [ExportController controller];
@@ -1937,11 +1937,11 @@ static BankingController *bankinControllerInstance;
 - (BankAccount *)selectedBankAccount {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat == nil) {
         return nil;
     }
-    if ([cat isMemberOfClass: [Category class]]) {
+    if ([cat isMemberOfClass: [BankingCategory class]]) {
         return nil;
     }
 
@@ -2027,7 +2027,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (Category *)currentSelection {
+- (BankingCategory *)currentSelection {
     NSArray *sel = [categoryController selectedObjects];
     if (sel == nil || [sel count] != 1) {
         return nil;
@@ -2048,7 +2048,7 @@ static BankingController *bankinControllerInstance;
         }
 
         if (currentSection == categoryDefinitionController) {
-            Category *category = [item representedObject];
+            BankingCategory *category = [item representedObject];
             if ([category isBankAccount]) {
                 return NO;
             }
@@ -2062,7 +2062,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (BOOL)outlineView: (NSOutlineView *)ov writeItems: (NSArray *)items toPasteboard: (NSPasteboard *)pboard {
-    Category *cat;
+    BankingCategory *cat;
 
     cat = [items[0] representedObject];
     if (cat == nil) {
@@ -2074,7 +2074,7 @@ static BankingController *bankinControllerInstance;
     if ([cat isRoot]) {
         return NO;
     }
-    if (cat == [Category nassRoot]) {
+    if (cat == [BankingCategory nassRoot]) {
         return NO;
     }
     NSURL  *uri = [[cat objectID] URIRepresentation];
@@ -2094,7 +2094,7 @@ static BankingController *bankinControllerInstance;
     if (item == nil) {
         return NSDragOperationNone;
     }
-    Category *cat = (Category *)[item representedObject];
+    BankingCategory *cat = (BankingCategory *)[item representedObject];
     if (cat == nil) {
         return NSDragOperationNone;
     }
@@ -2115,18 +2115,18 @@ static BankingController *bankinControllerInstance;
         }
 
         NSDragOperation mask = [info draggingSourceOperationMask];
-        Category        *scat = [self currentSelection];
+        BankingCategory        *scat = [self currentSelection];
         if ([cat isRoot]) {
             return NSDragOperationNone;
         }
         // if not yet assigned: move
-        if (scat == [Category nassRoot]) {
+        if (scat == [BankingCategory nassRoot]) {
             return NSDragOperationMove;
         }
-        if (mask == NSDragOperationCopy && cat != [Category nassRoot]) {
+        if (mask == NSDragOperationCopy && cat != [BankingCategory nassRoot]) {
             return NSDragOperationCopy;
         }
-        if (mask == NSDragOperationGeneric && cat != [Category nassRoot]) {
+        if (mask == NSDragOperationGeneric && cat != [BankingCategory nassRoot]) {
             [splitCursor set];
             return NSDragOperationGeneric;
         }
@@ -2138,7 +2138,7 @@ static BankingController *bankinControllerInstance;
         NSData            *data = [pboard dataForType: type];
         NSURL             *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         NSManagedObjectID *moID = [[managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
-        Category          *scat = (Category *)[managedObjectContext objectWithID: moID];
+        BankingCategory          *scat = (BankingCategory *)[managedObjectContext objectWithID: moID];
         if ([scat checkMoveToCategory: cat] == NO) {
             return NSDragOperationNone;
         }
@@ -2147,7 +2147,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (BOOL)outlineView: (NSOutlineView *)outlineView acceptDrop: (id <NSDraggingInfo>)info item: (id)item childIndex: (NSInteger)childIndex {
-    Category     *targetCategory = (Category *)[item representedObject];
+    BankingCategory     *targetCategory = (BankingCategory *)[item representedObject];
     NSPasteboard *pboard = [info draggingPasteboard];
     NSString     *type = [pboard availableTypeFromArray: @[BankStatementDataType, CategoryDataType]];
     if (type == nil) {
@@ -2236,12 +2236,12 @@ static BankingController *bankinControllerInstance;
             }
         }
         // Update category values including rollup for all categories.
-        [Category updateBalancesAndSums];
+        [BankingCategory updateBalancesAndSums];
 
         [self.currentSelection updateAssignmentsForReportRange]; // Update displayed assignments.
 
         if (needBankRootUpdate) {
-            [[Category bankRoot] updateCategorySums];
+            [[BankingCategory bankRoot] updateCategorySums];
         }
     } else {
         NSURL             *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -2249,10 +2249,10 @@ static BankingController *bankinControllerInstance;
         if (moID == nil) {
             return NO;
         }
-        Category *scat = (Category *)[managedObjectContext objectWithID: moID];
+        BankingCategory *scat = (BankingCategory *)[managedObjectContext objectWithID: moID];
         [scat setValue: targetCategory forKey: @"parent"];
 
-        [[Category catRoot] updateCategorySums];
+        [[BankingCategory catRoot] updateCategorySums];
     }
 
     [self save];
@@ -2265,7 +2265,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
 
     // Update current section if the default is not active.
     if (currentSection != nil) {
@@ -2280,7 +2280,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    Category *cat = [item representedObject];
+    BankingCategory *cat = [item representedObject];
     if (cat == nil) {
         return;
     }
@@ -2508,7 +2508,7 @@ static BankingController *bankinControllerInstance;
     }
 
     if (idx == 0) {
-        Category *cat = [self currentSelection];
+        BankingCategory *cat = [self currentSelection];
         if (cat == nil || [cat accountNumber] == nil) {
             if ([item action] == @selector(enqueueRequest:)) {
                 return NO;
@@ -2630,7 +2630,7 @@ static BankingController *bankinControllerInstance;
 - (void)deleteCategory: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat == nil) {
         return;
     }
@@ -2661,7 +2661,7 @@ static BankingController *bankinControllerInstance;
         [stat remove];
     }
     [categoryController remove: cat];
-    [Category updateBalancesAndSums];
+    [BankingCategory updateBalancesAndSums];
 
     // workaround: NSTreeController issue: when an item is removed and the NSOutlineViewSelectionDidChange notification is sent,
     // the selectedObjects: message returns the wrong (the old) selection
@@ -2676,7 +2676,7 @@ static BankingController *bankinControllerInstance;
 - (void)addCategory: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat.isBankAccount) {
         return;
     }
@@ -2695,7 +2695,7 @@ static BankingController *bankinControllerInstance;
 - (void)insertCategory: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if ([cat isInsertable] == NO) {
         return;
     }
@@ -2738,7 +2738,7 @@ static BankingController *bankinControllerInstance;
     if (idx) {
         return;
     }
-    [Category setCatReportFrom: from to: to];
+    [BankingCategory setCatReportFrom: from to: to];
 
     // Update current section if the default is not active.
     if (currentSection != nil) {
@@ -2750,7 +2750,7 @@ static BankingController *bankinControllerInstance;
 
 - (void)controlTextDidBeginEditing: (NSNotification *)aNotification {
     if ([aNotification object] == accountsView) {
-        Category *cat = [self currentSelection];
+        BankingCategory *cat = [self currentSelection];
         accountsView.saveCatName = [cat name];
     }
 }
@@ -2758,7 +2758,7 @@ static BankingController *bankinControllerInstance;
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     // Category name changed
     if ([aNotification object] == accountsView) {
-        Category *cat = [self currentSelection];
+        BankingCategory *cat = [self currentSelection];
         if ([cat name] == nil) {
             [cat setValue: accountsView.saveCatName forKey: @"name"];
         }
@@ -2806,7 +2806,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)addStatement: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
     if (cat == nil) {
         return;
     }
@@ -2828,7 +2828,7 @@ static BankingController *bankinControllerInstance;
 - (IBAction)splitPurpose: (id)sender {
     LogEnter;
 
-    Category *cat = [self currentSelection];
+    BankingCategory *cat = [self currentSelection];
 
     PurposeSplitController *splitController = [[PurposeSplitController alloc] initWithAccount: (BankAccount *)cat];
     [NSApp runModalForWindow: [splitController window]];
@@ -2839,7 +2839,7 @@ static BankingController *bankinControllerInstance;
 /**
  * Takes the (localized) title of the given category and determines an icon for it from the default collection.
  */
-- (void)determineDefaultIconForCategory: (Category *)category {
+- (void)determineDefaultIconForCategory: (BankingCategory *)category {
     if (defaultIcons == nil) {
         NSMutableArray *entries = [NSMutableArray arrayWithCapacity: 100];
 
@@ -2948,17 +2948,17 @@ static BankingController *bankinControllerInstance;
 - (void)saveBankAccountItemsStates {
     LogEnter;
 
-    Category *category = [self currentSelection];
+    BankingCategory *category = [self currentSelection];
     if ([category isBankAccount]) {
         lastSelection = category;
-        [categoryController setSelectedObject: Category.nassRoot];
+        [categoryController setSelectedObject: BankingCategory.nassRoot];
     }
     bankAccountItemsExpandState = [NSMutableArray array];
     NSUInteger row, numberOfRows = [accountsView numberOfRows];
 
     for (row = 0; row < numberOfRows; row++) {
         id       item = [accountsView itemAtRow: row];
-        Category *category = [item representedObject];
+        BankingCategory *category = [item representedObject];
         if (![category isBankAccount]) {
             break;
         }
@@ -2977,10 +2977,10 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     NSUInteger row, numberOfRows = [accountsView numberOfRows];
-    for (Category *savedItem in bankAccountItemsExpandState) {
+    for (BankingCategory *savedItem in bankAccountItemsExpandState) {
         for (row = 0; row < numberOfRows; row++) {
             id       item = [accountsView itemAtRow: row];
-            Category *object = [item representedObject];
+            BankingCategory *object = [item representedObject];
             if ([object.name isEqualToString: savedItem.name]) {
                 [accountsView expandItem: item];
                 numberOfRows = [accountsView numberOfRows];
@@ -3005,7 +3005,7 @@ static BankingController *bankinControllerInstance;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     autoSyncRunning = YES;
-    [self synchronizeAccount: Category.bankRoot];
+    [self synchronizeAccount: BankingCategory.bankRoot];
 
     [defaults setObject: [NSDate date] forKey: @"lastSyncDate"];
 
@@ -3181,12 +3181,12 @@ static BankingController *bankinControllerInstance;
     }
 
     // Add default categories if there aren't any but the predefined ones.
-    if ([Category.catRoot.children count] == 1) {
-        [Category createDefaultCategories];
+    if ([BankingCategory.catRoot.children count] == 1) {
+        [BankingCategory createDefaultCategories];
     }
 
     // Check if there are any bank users or at least manual accounts.
-    if (BankUser.allUsers.count == 0 && [Category.bankRoot.children count] == 0) {
+    if (BankUser.allUsers.count == 0 && [BankingCategory.bankRoot.children count] == 0) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP804", nil),
                                   NSLocalizedString(@"AP151", nil),
                                   NSLocalizedString(@"AP3", nil),
@@ -3484,7 +3484,7 @@ static BankingController *bankinControllerInstance;
         if ([keyPath isEqualToString: @"showPreliminaryStatements"]) {
             if (currentSection != nil) {
                 // Update the reported assignments list.
-                Category *category = self.currentSelection;
+                BankingCategory *category = self.currentSelection;
                 [category invalidateCacheIncludeParents: YES recursive: YES];
                 [category updateAssignmentsForReportRange];
                 currentSection.selectedCategory = category;
@@ -3539,7 +3539,7 @@ static BankingController *bankinControllerInstance;
     }
 
     [MOAssistant.assistant clearAllData];
-    [Category recreateRoots];
+    [BankingCategory recreateRoots];
 
     LogLeave;
 }

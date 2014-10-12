@@ -22,7 +22,7 @@
 #import "GraphicsAdditions.h"
 #import "AttachmentImageView.h"
 #import "StatCatAssignment.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "TagView.h"
 #import "PreferenceController.h"
 

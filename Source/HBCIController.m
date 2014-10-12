@@ -1433,7 +1433,7 @@ static HBCIController *controller = nil;
     BankAccount            *bankNode = [BankAccount bankRootForCode: acc.bankCode];
 
     if (bankNode == nil) {
-        Category *root = [Category bankRoot];
+        BankingCategory *root = [BankingCategory bankRoot];
         if (root == nil) {
             return nil;
         }

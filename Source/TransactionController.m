@@ -18,7 +18,7 @@
  */
 
 #import "TransactionController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "Transfer.h"
 #import "BankStatement.h"
 #import "TransactionLimits.h"

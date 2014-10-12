@@ -19,7 +19,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankAccount.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
@@ -378,7 +378,7 @@ static NSDictionary *heightMappings;
     }
 }
 
-- (NSMenuItem *)createItemForAccountSelector: (Category *)account
+- (NSMenuItem *)createItemForAccountSelector: (BankingCategory *)account
                                  indentation: (NSUInteger)indent
 {
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
@@ -402,7 +402,7 @@ static NSDictionary *heightMappings;
     NSString *account2 = settings[@"assetGraph2"];
 
     // Create a top level item for all banks.
-    Category *category = [Category bankRoot];
+    BankingCategory *category = [BankingCategory bankRoot];
     NSMenuItem *item = [self createItemForAccountSelector: category indentation: 0];
     [sourceMenu1 addItem: item];
     if ([category.name isEqualToString: account1]) {
@@ -419,7 +419,7 @@ static NSDictionary *heightMappings;
 
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
-    for (Category *institute in institutes) {
+    for (BankingCategory *institute in institutes) {
         if (![institute isKindOfClass: [BankAccount class]]) {
             continue;
         }
@@ -847,8 +847,8 @@ static NSDictionary *heightMappings;
 - (IBAction)assetGraphChanged: (id)sender
 {
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    settings[@"assetGraph1"] = [(Category *)accountSelector1.selectedItem.representedObject name];
-    settings[@"assetGraph2"] = [(Category *)accountSelector2.selectedItem.representedObject name];
+    settings[@"assetGraph1"] = [(BankingCategory *)accountSelector1.selectedItem.representedObject name];
+    settings[@"assetGraph2"] = [(BankingCategory *)accountSelector2.selectedItem.representedObject name];
 }
 
 - (IBAction)percentValueChanged: (id)sender

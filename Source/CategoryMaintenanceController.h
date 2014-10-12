@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Category;
+@class BankingCategory;
 @class BWGradientBox;
 @class DoubleClickImageView;
 
@@ -32,8 +32,8 @@
 
 @private
     NSManagedObjectContext *moc;
-    Category               *category;
-    Category               *changedCategory;
+    BankingCategory               *category;
+    BankingCategory               *changedCategory;
     NSMutableArray         *iconCollection;
 }
 
@@ -43,7 +43,7 @@
 @property (strong) IBOutlet NSArrayController    *iconCollectionController;
 @property (strong) NSArray                       *iconCollection;
 
-- (id)initWithCategory: (Category *)aCategory;
+- (id)initWithCategory: (BankingCategory *)aCategory;
 - (IBAction)selectImage: (id)sender;
 
 - (IBAction)cancel: (id)sender;

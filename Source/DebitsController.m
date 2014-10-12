@@ -419,7 +419,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
     NSMenu *sourceMenu = [targetAccountSelector menu];
 
-    Category         *category = [Category bankRoot];
+    BankingCategory         *category = [BankingCategory bankRoot];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sortDescriptors = @[sortDescriptor];
     NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
@@ -427,7 +427,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
     NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    Category     *currentInstitute;
+    BankingCategory     *currentInstitute;
     NSInteger    selectedItem = 1; // By default the first entry after the first institute entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
@@ -437,7 +437,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
         NSEnumerator   *accountEnumerator = [accounts objectEnumerator];
-        Category       *currentAccount;
+        BankingCategory       *currentAccount;
 
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {

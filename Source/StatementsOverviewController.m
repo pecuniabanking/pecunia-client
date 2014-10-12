@@ -22,7 +22,7 @@
 #import "MessageLog.h"
 
 #import "MOAssistant.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "StatCatAssignment.h"
 #import "BankStatement.h"
 #import "BankStatementPrintView.h"
@@ -314,7 +314,7 @@ extern void *UserDefaultsBindingContext;
         [account updateAssignmentsForReportRange];
         [account updateStatementBalances];
     }
-    [[Category bankRoot] updateCategorySums];
+    [[BankingCategory bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
 }
 
@@ -426,7 +426,7 @@ extern void *UserDefaultsBindingContext;
 - (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action {
     LogEnter;
 
-    Category *category = assignment.category; // This is not the bank account for the statement, but the assigned category.
+    BankingCategory *category = assignment.category; // This is not the bank account for the statement, but the assigned category.
     BankAccount *account = assignment.statement.account;
     switch (action) {
         case MenuActionShowDetails:
@@ -525,13 +525,13 @@ extern void *UserDefaultsBindingContext;
     [printOp runOperation];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory
+- (void)setSelectedCategory: (BankingCategory *)newCategory
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
 
         BOOL editable = NO;
-        if (!newCategory.isBankAccount && newCategory != Category.nassRoot && newCategory != Category.catRoot) {
+        if (!newCategory.isBankAccount && newCategory != BankingCategory.nassRoot && newCategory != BankingCategory.catRoot) {
             editable = categoryAssignments.selectedObjects.count == 1;
         }
     }

@@ -21,7 +21,7 @@
 #import "DebitsListViewCell.h"
 #import "ShortDate.h"
 #import "Transfer.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 #import "BankAccount.h"
 

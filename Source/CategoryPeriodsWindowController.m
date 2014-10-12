@@ -225,7 +225,7 @@ extern void *UserDefaultsBindingContext;
         [self loadDataForIndex: rowIndex];
         rowValues = balances[rowIndex];
     }
-    Category   *cat = [[outline itemAtRow: rowIndex + 1] representedObject];
+    BankingCategory   *cat = [[outline itemAtRow: rowIndex + 1] representedObject];
     AmountCell *cell = valueGrid.cell;
     cell.currency = cat.currency;
 
@@ -435,7 +435,7 @@ extern void *UserDefaultsBindingContext;
 
 - (void)loadDataForIndex: (NSInteger)index
 {
-    Category *item = [[outline itemAtRow: index + 1] representedObject];
+    BankingCategory *item = [[outline itemAtRow: index + 1] representedObject];
 
     NSArray *nodeDates = nil;
     NSArray *nodeBalances = nil;
@@ -610,7 +610,7 @@ extern void *UserDefaultsBindingContext;
             break;
     }
 
-    [Category setCatReportFrom: fromDate to: toDate];
+    [BankingCategory setCatReportFrom: fromDate to: toDate];
 }
 
 #pragma mark -

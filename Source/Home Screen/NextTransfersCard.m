@@ -954,7 +954,7 @@ static NSFont *smallNumberFont;
     NSRect frame = ordersPopupList.frame;
     frame.origin = NSMakePoint(2, 2);
     if (values.count < 6) {
-        frame.size.height = MAX(values.count, 1) * 51;
+        frame.size.height = MAX(values.count, (unsigned)1) * 51;
     } else {
         frame.size.height = 5 * 51;
     }

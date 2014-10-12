@@ -23,7 +23,7 @@
 #import "MessageLog.h"
 
 #import "MOAssistant.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankAccount.h"
 #import "Keychain.h"
 #import "PecuniaError.h"

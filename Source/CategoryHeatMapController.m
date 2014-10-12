@@ -19,7 +19,7 @@
 
 #import "CategoryHeatMapController.h"
 #import "ShortDate.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "AnimationHelper.h"
 #import "NSColor+PecuniaAdditions.h"
 
@@ -1029,7 +1029,7 @@ static NSFont *smallNumberFont;
     [printOp runOperation];
 }
 
-- (void)setSelectedCategory: (Category *)theCategory
+- (void)setSelectedCategory: (BankingCategory *)theCategory
 {
     if (selectedCategory != theCategory) {
         for (NSView *view in heatMapView.subviews) {

@@ -58,7 +58,7 @@ typedef struct {
 @class CategoryReportingNode;
 @class StatCatAssignment;
 
-@interface Category : NSManagedObject {
+@interface BankingCategory : NSManagedObject {
 @private
     NSColor    *catColor;
     NSUInteger hiddenChildren; // Keep track of hidden child count to optimize handling.
@@ -68,7 +68,7 @@ typedef struct {
 @property (nonatomic, strong) NSString        *name;
 @property (nonatomic, strong) NSNumber        *isBankAcc;
 @property (nonatomic, strong) NSString        *currency;
-@property (nonatomic, strong) Category        *parent;
+@property (nonatomic, strong) BankingCategory        *parent;
 @property (nonatomic, strong) NSString        *localName;
 @property (nonatomic, strong) NSNumber        *isBalanceValid;
 @property (nonatomic, strong) NSDecimalNumber *catSum;
@@ -98,7 +98,7 @@ typedef struct {
 - (BOOL)isInsertable;
 - (BOOL)isNotAssignedCategory;
 - (BOOL)isCategoryRoot;
-- (BOOL)checkMoveToCategory: (Category *)cat;
+- (BOOL)checkMoveToCategory: (BankingCategory *)cat;
 - (BOOL)canSynchronize;
 
 - (id)children;
@@ -133,10 +133,10 @@ typedef struct {
                            ascending: (BOOL)ascending;
 - (NSUInteger)assignmentCountRecursive: (BOOL)recursive;
 
-+ (Category *)bankRoot;
-+ (Category *)catRoot;
-+ (Category *)nassRoot;
-+ (Category *)categoryForName: (NSString *)name;
++ (BankingCategory *)bankRoot;
++ (BankingCategory *)catRoot;
++ (BankingCategory *)nassRoot;
++ (BankingCategory *)categoryForName: (NSString *)name;
 + (void)updateBalancesAndSums;
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate;
 + (void)recreateRoots;

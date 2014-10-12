@@ -81,7 +81,7 @@
 - (id)initWithStatements: (NSArray *)assignmentsToPrint
                printInfo: (NSPrintInfo *)pi
                    title: (NSString *)aTitle
-                category: (Category *)category
+                category: (BankingCategory *)category
           additionalText: (NSString *)addition {
     NSRect frame = NSMakeRect(0, 0, pi.paperSize.width - pi.leftMargin - pi.rightMargin,
                               pi.paperSize.height - pi.topMargin - pi.bottomMargin);

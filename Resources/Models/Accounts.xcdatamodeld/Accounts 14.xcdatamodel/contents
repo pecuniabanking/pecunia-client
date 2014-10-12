@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6251" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AccountStatement" representedClassName="AccountStatement" syncable="YES">
         <attribute name="advertisement" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
@@ -123,7 +123,7 @@
         <relationship name="tanMethods" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TanMethod" inverseName="user" inverseEntity="TanMethod" indexed="YES" syncable="YES"/>
         <relationship name="transactionLimits" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TransactionLimits" inverseName="user" inverseEntity="TransactionLimits" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="Category" representedClassName="Category" syncable="YES">
+    <entity name="Category" representedClassName="BankingCategory" syncable="YES">
         <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
         <attribute name="catRepColor" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="catSum" optional="YES" transient="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
@@ -408,17 +408,17 @@
         <memberEntity name="TransferTemplate"/>
     </configuration>
     <elements>
-        <element name="AccountStatement" positionX="18" positionY="162" width="128" height="240"/>
+        <element name="AccountStatement" positionX="0" positionY="0" width="128" height="240"/>
         <element name="BankAccount" positionX="0" positionY="0" width="128" height="450"/>
+        <element name="Category" positionX="0" positionY="0" width="128" height="313"/>
         <element name="BankMessage" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="BankStatement" positionX="0" positionY="0" width="128" height="763"/>
+        <element name="BankStatement" positionX="0" positionY="0" width="128" height="765"/>
         <element name="BankUser" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="Category" positionX="0" positionY="0" width="128" height="315"/>
         <element name="CategoryBudget" positionX="0" positionY="0" width="128" height="90"/>
         <element name="CreditCardSettlement" positionX="0" positionY="0" width="128" height="255"/>
         <element name="CustomerMessage" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Info" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="SepaData" positionX="9" positionY="153" width="128" height="268"/>
+        <element name="SepaData" positionX="0" positionY="0" width="128" height="270"/>
         <element name="StandingOrder" positionX="0" positionY="0" width="128" height="495"/>
         <element name="StatCatAssignment" positionX="0" positionY="0" width="128" height="105"/>
         <element name="SupportedTransactionInfo" positionX="0" positionY="0" width="128" height="165"/>
@@ -426,8 +426,8 @@
         <element name="TanMedium" positionX="0" positionY="0" width="128" height="285"/>
         <element name="TanMethod" positionX="0" positionY="0" width="128" height="225"/>
         <element name="TransactionLimits" positionX="0" positionY="0" width="128" height="450"/>
-        <element name="Transfer" positionX="0" positionY="0" width="128" height="553"/>
-        <element name="TransferTemplate" positionX="0" positionY="0" width="128" height="30"/>
-        <element name="WordList" positionX="18" positionY="162" width="128" height="73"/>
+        <element name="Transfer" positionX="0" positionY="0" width="128" height="555"/>
+        <element name="TransferTemplate" positionX="0" positionY="0" width="128" height="330"/>
+        <element name="WordList" positionX="0" positionY="0" width="128" height="75"/>
     </elements>
 </model>

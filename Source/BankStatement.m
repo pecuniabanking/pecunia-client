@@ -20,7 +20,7 @@
 #import "MessageLog.h"
 
 #import "BankStatement.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
@@ -158,7 +158,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     StatCatAssignment *stat;
     NSString          *result = nil;
     for (stat in stats) {
-        Category *cat = stat.category;
+        BankingCategory *cat = stat.category;
         if (cat == nil) {
             continue;
         }
@@ -204,7 +204,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     StatCatAssignment *stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment"
                                                             inManagedObjectContext: context];
     stat.value = self.value;
-    stat.category = (Category *)account;
+    stat.category = (BankingCategory *)account;
     stat.statement = self;
 
     self.account = account;
@@ -216,7 +216,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         if (catCache == nil) {
             [BankStatement initCategoriesCache];
         }
-        for (Category *cat in catCache) {
+        for (BankingCategory *cat in catCache) {
             NSPredicate *pred = [NSPredicate predicateWithFormat: cat.rule];
             @try {
                 if ([pred evaluateWithObject: stat]) {
@@ -261,7 +261,6 @@ BOOL stringEqual(NSString *a, NSString *b) {
     // Examine purpose to see if we need to extract SEPA informations.
     NSDictionary *values = [SEPAMT94xPurposeParser parse: self.purpose];
     if (values.count > 0) {
-
         if (self.sepa == nil) {
             self.sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
                                                       inManagedObjectContext: context];
@@ -316,7 +315,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
                 amountRegEx = [NSRegularExpression regularExpressionWithPattern: @"([A-Za-z]*)([0-9][0-9.,]*)([A-Za-z]*)" options: 0 error: nil];
             }
             NSString *value = values[@"OAMT"];
-            NSArray *matches = [amountRegEx matchesInString: value options: 0 range: NSMakeRange(0, value.length)];
+            NSArray  *matches = [amountRegEx matchesInString: value options: 0 range: NSMakeRange(0, value.length)];
 
             NSDecimalNumber *amount;
             if (matches.count == 0) {
@@ -324,7 +323,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
             } else {
                 // If there's a match we always have 4 ranges: at 0 the full range + 3 capture groups.
                 NSTextCheckingResult *match = matches[0];
-                NSRange range = [match rangeAtIndex: 1];
+                NSRange              range = [match rangeAtIndex: 1];
                 if (range.length > 0) {
                     // Leading currency.
                     self.origCurrency = [value substringWithRange: range];
@@ -420,7 +419,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     if (stringEqualIgnoringMissing(self.remoteIBAN, stat.remoteIBAN) == NO) {
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -465,7 +464,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 }
 
 - (void)changeValueTo: (NSDecimalNumber *)val {
-    Category *ncat = [Category nassRoot];
+    BankingCategory *ncat = [BankingCategory nassRoot];
 
     self.value = val;
     NSMutableSet *stats = [self mutableSetValueForKey: @"assignments"];
@@ -483,7 +482,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
 - (BOOL)hasAssignment {
     StatCatAssignment *stat;
-    Category          *ncat = [Category nassRoot];
+    BankingCategory   *ncat = [BankingCategory nassRoot];
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     NSEnumerator      *iter = [stats objectEnumerator];
     while ((stat = [iter nextObject]) != nil) {
@@ -526,7 +525,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     BOOL assigned = NO;
     BOOL ncatNeedsRefresh = NO;
 
-    Category *ncat = Category.nassRoot;
+    BankingCategory *ncat = BankingCategory.nassRoot;
 
     NSSet *assignments = [self valueForKey: @"assignments"];
     for (StatCatAssignment *assignment in assignments) {
@@ -581,7 +580,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 }
 
 - (NSDecimalNumber *)residualAmount {
-    Category          *ncat = [Category nassRoot];
+    BankingCategory   *ncat = [BankingCategory nassRoot];
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     NSEnumerator      *iter = [stats objectEnumerator];
     StatCatAssignment *stat;
@@ -593,11 +592,11 @@ BOOL stringEqual(NSString *a, NSString *b) {
     return [NSDecimalNumber zero];
 }
 
-- (void)assignToCategory: (Category *)cat {
+- (void)assignToCategory: (BankingCategory *)cat {
     [self assignAmount: self.value toCategory: cat withInfo: nil];
 }
 
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo: (NSString *)info {
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (BankingCategory *)targetCategory withInfo: (NSString *)info {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     // First check if this statement is already assigned to the target category. If so add the given value to that category
@@ -653,7 +652,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     [self updateAssigned];
 
     [targetCategory invalidateBalance];
-    [Category.nassRoot invalidateBalance];
+    [BankingCategory.nassRoot invalidateBalance];
 }
 
 - (NSComparisonResult)compareValuta: (BankStatement *)stat {

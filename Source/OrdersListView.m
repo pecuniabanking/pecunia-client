@@ -21,7 +21,7 @@
 #import "OrdersListViewCell.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 #import "HBCIController.h"
 #import "BankAccount.h"

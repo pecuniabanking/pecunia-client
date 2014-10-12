@@ -18,7 +18,7 @@
  */
 
 #import "ExportController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankStatement.h"
 #import "ShortDate.h"
 #import "StatCatAssignment.h"
@@ -46,7 +46,7 @@ static ExportController *exportController = nil;
     return [defaults objectForKey: @"Exporter.fields"];
 }
 
-- (void)startExport: (Category *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to
+- (void)startExport: (BankingCategory *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to
 {
     NSSavePanel *sp;
     NSError     *error = nil;
@@ -107,7 +107,7 @@ static ExportController *exportController = nil;
 
         // addObjectsFromArray
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
-        for (Category *currentCategory in cats) {
+        for (BankingCategory *currentCategory in cats) {
             NSArray *stats = [currentCategory assignmentsFrom: from_Date to: to_Date withChildren: withChildren];
             stats = [stats sortedArrayUsingDescriptors: @[sd]];
             for (StatCatAssignment *stat in stats) {

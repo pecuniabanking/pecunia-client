@@ -151,12 +151,12 @@
 - (IBAction)accountStatements:(id)sender;
 
 - (void)statementsNotification: (NSNotification *)notification;
-- (Category *)getBankingRoot;
+- (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;
 - (BOOL)requestRunning;
 
-- (Category *)currentSelection;
+- (BankingCategory *)currentSelection;
 - (void)repairCategories;
 - (void)setRestart;
 - (void)syncAllAccounts;

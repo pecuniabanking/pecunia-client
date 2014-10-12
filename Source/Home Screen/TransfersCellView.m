@@ -19,7 +19,7 @@
 
 #import "TransfersCellView.h"
 #import "StatCatAssignment.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "NSColor+PecuniaAdditions.h"
 
 extern void *UserDefaultsBindingContext;

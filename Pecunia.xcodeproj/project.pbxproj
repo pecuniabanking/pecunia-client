@@ -211,7 +211,7 @@
 		27778876173CE22700430EBC /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
 		27778877173CE22700430EBC /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		27778878173CE22700430EBC /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
-		27778879173CE22700430EBC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		27778879173CE22700430EBC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
 		2777887A173CE22700430EBC /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
 		2777887B173CE22700430EBC /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
 		2777887C173CE22700430EBC /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
@@ -508,6 +508,10 @@
 		279BF27D15726BF0006C1B9A /* green-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */; };
 		279C166518E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
+		279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
+		279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
+		279F365319EAD01200CC8F87 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 279F365219EAD01200CC8F87 /* WordList.m */; };
+		279F365419EAD01200CC8F87 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 279F365219EAD01200CC8F87 /* WordList.m */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */; };
@@ -935,7 +939,7 @@
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
-		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
 		B1F8F8FB19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
 		B1F8F8FC19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
@@ -1239,6 +1243,10 @@
 		279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-slanted-stripes.png"; sourceTree = "<group>"; };
 		279C166318E8317600A4306F /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
+		279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; };
+		279F365119EAD01200CC8F87 /* WordList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordList.h; sourceTree = "<group>"; };
+		279F365219EAD01200CC8F87 /* WordList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordList.m; sourceTree = "<group>"; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
 		27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in@2x.png"; sourceTree = "<group>"; };
@@ -1354,6 +1362,7 @@
 		27E2353C168A228D0050276E /* csv@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "csv@2x.png"; sourceTree = "<group>"; };
 		27E2353D168A228D0050276E /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
 		27E2353E168A228D0050276E /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
+		27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 14.xcdatamodel"; sourceTree = "<group>"; };
 		27E2D28219167D30001D6E80 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
 		27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1698,8 +1707,8 @@
 		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		B1F459EA0F2E480700BAF4E8 /* BankInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankInfo.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1F527030C3C1D5800BE3DFC /* BankingCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingCategory.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1F527040C3C1D5800BE3DFC /* BankingCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingCategory.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteResourceManager.h; sourceTree = "<group>"; };
 		B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteResourceManager.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2325,6 +2334,7 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -2833,40 +2843,42 @@
 			children = (
 				B19CA9941950222E005B1125 /* AccountStatement.h */,
 				B19CA9951950222E005B1125 /* AccountStatement.m */,
-				B19CA99019410C04005B1125 /* SepaData.h */,
-				B19CA99119410C04005B1125 /* SepaData.m */,
-				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
-				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
-				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
-				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
-				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
-				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
-				B1F527030C3C1D5800BE3DFC /* Category.h */,
-				B1F527040C3C1D5800BE3DFC /* Category.m */,
 				B124F10F0C371384001065C2 /* BankAccount.h */,
 				B124F1100C371384001065C2 /* BankAccount.m */,
-				B1927D230C52B5CD00B4D390 /* Transfer.h */,
-				B1927D240C52B5CD00B4D390 /* Transfer.m */,
-				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
-				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
-				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
-				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
-				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
-				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
-				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
-				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
+				B1F527030C3C1D5800BE3DFC /* BankingCategory.h */,
+				B1F527040C3C1D5800BE3DFC /* BankingCategory.m */,
 				B17FE48A14CB586A00F6FAFE /* BankMessage.h */,
 				B17FE48B14CB586A00F6FAFE /* BankMessage.m */,
-				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
-				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
+				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
 				B17728FB1504C33F00256898 /* BankUser.h */,
 				B17728FC1504C33F00256898 /* BankUser.m */,
+				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
+				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
+				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
+				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
+				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
+				275B3C4C17E5D2F9006BBE8A /* Info.h */,
+				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
+				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
+				B19CA99019410C04005B1125 /* SepaData.h */,
+				B19CA99119410C04005B1125 /* SepaData.m */,
+				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
+				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
+				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
+				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
 				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
 				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 				27548B8E1705D98D00C4BF9B /* Tag.h */,
 				27548B8F1705D98E00C4BF9B /* Tag.m */,
-				275B3C4C17E5D2F9006BBE8A /* Info.h */,
-				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				B1927D230C52B5CD00B4D390 /* Transfer.h */,
+				B1927D240C52B5CD00B4D390 /* Transfer.m */,
+				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
+				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
+				279F365119EAD01200CC8F87 /* WordList.h */,
+				279F365219EAD01200CC8F87 /* WordList.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -2876,6 +2888,7 @@
 			children = (
 				B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */,
 				B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */,
+				279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */,
 				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
 				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
@@ -3552,7 +3565,7 @@
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
 				27778877173CE22700430EBC /* BankStatement.m in Sources */,
 				27778878173CE22700430EBC /* BankAccount.m in Sources */,
-				27778879173CE22700430EBC /* Category.m in Sources */,
+				27778879173CE22700430EBC /* BankingCategory.m in Sources */,
 				2777887A173CE22700430EBC /* Transfer.m in Sources */,
 				2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
@@ -3602,9 +3615,11 @@
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
+				279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
 				2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */,
+				279F365419EAD01200CC8F87 /* WordList.m in Sources */,
 				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
 				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
 				27BB3B83190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
@@ -3781,7 +3796,7 @@
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
-				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
+				B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */,
 				B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */,
 				2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
@@ -3831,9 +3846,11 @@
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
+				279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */,
+				279F365319EAD01200CC8F87 /* WordList.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				27BB3B82190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
@@ -4005,11 +4022,13 @@
 		277789C8173CE22700430EBC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4038,6 +4057,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4045,6 +4065,8 @@
 				PRODUCT_NAME = Pecunia;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4054,11 +4076,13 @@
 		277789C9173CE22700430EBC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4078,6 +4102,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4086,6 +4111,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4095,10 +4121,12 @@
 		277789CA173CE22700430EBC /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4117,6 +4145,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4124,6 +4153,7 @@
 				PRODUCT_NAME = Pecunia;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4132,11 +4162,13 @@
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4164,6 +4196,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4171,6 +4204,8 @@
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4180,11 +4215,13 @@
 		B14C0A890AAF71DB00CC41C4 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4203,6 +4240,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4210,6 +4248,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4219,11 +4258,13 @@
 		B14C0A8A0AAF71DB00CC41C4 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4242,6 +4283,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4249,6 +4291,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4337,21 +4380,22 @@
 			isa = XCVersionGroup;
 			children = (
 				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
+				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
 				B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */,
-				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
-				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
-				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,
 				273C80501912A056007E799E /* Accounts 11.xcdatamodel */,
+				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,
+				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
+				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
 				A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */,
-				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
-				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
-				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
-				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
-				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
-				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
+				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
+				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
+				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
+				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
+				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
+				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */;
+			currentVersion = 27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

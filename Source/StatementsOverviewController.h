@@ -30,7 +30,7 @@
 - (void)reload;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, weak) Category       *selectedCategory;
+@property (nonatomic, weak) BankingCategory       *selectedCategory;
 @property (nonatomic, strong) IBOutlet NSView *mainView;
 
 - (void)activate;
