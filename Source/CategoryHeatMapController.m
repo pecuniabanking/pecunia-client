@@ -865,7 +865,7 @@ static NSFont *smallNumberFont;
     NSRect frame = valuePopupList.frame;
     frame.origin = NSMakePoint(2, 2);
     if (currentAssignments.count < 6) {
-        frame.size.height = MAX(currentAssignments.count, 1) * 21;
+        frame.size.height = MAX(currentAssignments.count, 1U) * 21;
     } else {
         frame.size.height = 5 * 21;
     }

@@ -1022,7 +1022,7 @@ static ShortDate *endReportDate = nil;
 
     // Create root object if none exists.
     if (bankRootSingleton == nil) {
-        bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"BankingCategory" inManagedObjectContext: context];
+        bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
         [bankRootSingleton setValue: @"++bankroot" forKey: @"name"];
         [bankRootSingleton setValue: @YES forKey: @"isBankAcc"];
     }
@@ -1052,7 +1052,7 @@ static ShortDate *endReportDate = nil;
         return cats[0];
     }
     // create Category Root object
-    catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"BankingCategory" inManagedObjectContext: context];
+    catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
     [catRootSingleton setValue: @"++catroot" forKey: @"name"];
     [catRootSingleton setValue: @NO forKey: @"isBankAcc"];
     return catRootSingleton;
@@ -1074,7 +1074,7 @@ static ShortDate *endReportDate = nil;
     if ([cats count] > 0) {
         notAssignedRootSingleton = cats[0];
     } else {
-        BankingCategory *notAssignedRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"BankingCategory"
+        BankingCategory *notAssignedRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
                                                                                   inManagedObjectContext: context];
         [notAssignedRootSingleton setPrimitiveValue: @"++nassroot" forKey: @"name"];
         [notAssignedRootSingleton setValue: @NO forKey: @"isBankAcc"];
@@ -1087,7 +1087,7 @@ static ShortDate *endReportDate = nil;
     if (name.length > 0) {
         NSManagedObjectContext *context = [[MOAssistant assistant] context];
         NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription    *entity = [NSEntityDescription entityForName: @"BankingCategory" inManagedObjectContext: context];
+        NSEntityDescription    *entity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext: context];
         [fetchRequest setEntity: entity];
 
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
@@ -1140,7 +1140,7 @@ static ShortDate *endReportDate = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     BankingCategory        *root = [BankingCategory catRoot];
 
-    BankingCategory *cat = [NSEntityDescription insertNewObjectForEntityForName: @"BankingCategory" inManagedObjectContext: context];
+    BankingCategory *cat = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
     cat.name = name;
     cat.parent = root;
 
@@ -1185,7 +1185,7 @@ static ShortDate *endReportDate = nil;
         if (level > 0) {
             name = [name substringFromIndex: level];
         }
-        BankingCategory *child = [NSEntityDescription insertNewObjectForEntityForName: @"BankingCategory" inManagedObjectContext: context];
+        BankingCategory *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
         child.name = name;
         if (values.count > 1) {
             child.rule = values[1];

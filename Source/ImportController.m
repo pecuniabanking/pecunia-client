@@ -1239,7 +1239,7 @@
     willDisplayCell: (id)cell
      forTableColumn: (NSTableColumn *)tableColumn
                item: (id)item {
-    [cell setImage: [[item representedObject] icon]];
+    [cell setImage: [(FileEntry *)[item representedObject] icon]];
 }
 
 - (void)outlineViewSelectionDidChange: (NSNotification *)aNotification {
