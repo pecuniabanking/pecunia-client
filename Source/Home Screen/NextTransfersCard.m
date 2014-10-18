@@ -849,7 +849,7 @@ static NSFont *smallNumberFont;
 
     self = [super initWithFrame: frame];
     if (self) {
-        if (![NSBundle loadNibNamed: @"HomeScreenNextTransfers" owner: self]) {
+        if (![NSBundle.mainBundle loadNibNamed: @"HomeScreenNextTransfers" owner: self topLevelObjects: nil]) {
             LogError(@"Internal error: home screen next transfers view loading failed");
         }
 

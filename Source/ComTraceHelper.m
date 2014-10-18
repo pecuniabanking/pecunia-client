@@ -85,15 +85,15 @@
         [MessageLog.log sendLog];
         MessageLog.log.isComTraceActive = NO; // Must happen *after* sendLog, as it deletes the com trace file.
 
-        [SystemNotification showStickyMessage: NSLocalizedString(@"AP505", nil)
-                                    withTitle: NSLocalizedString(@"AP503", nil)];
+        [SystemNotification showMessage: NSLocalizedString(@"AP505", nil)
+                              withTitle: NSLocalizedString(@"AP503", nil)];
     } else {
         magnifyButton.toolTip = NSLocalizedString(@"AP126", nil);
         MessageLog.log.isComTraceActive = YES;
         [self startMagnifyAnimation];
 
-        [SystemNotification showStickyMessage: NSLocalizedString(@"AP504", nil)
-                                    withTitle: NSLocalizedString(@"AP503", nil)];
+        [SystemNotification showMessage: NSLocalizedString(@"AP504", nil)
+                              withTitle: NSLocalizedString(@"AP503", nil)];
     }
 }
 

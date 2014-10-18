@@ -301,7 +301,7 @@ double trend(double x) {
     titleLayer = [[CPTTextLayer alloc] init];
     titleAnnotation.contentLayer = titleLayer;
     titleAnnotation.rectAnchor = CPTRectAnchorLeft;
-    titleAnnotation.rotation = pi / 2;
+    titleAnnotation.rotation = M_PI / 2;
     [graph addAnnotation: titleAnnotation];
 }
 
