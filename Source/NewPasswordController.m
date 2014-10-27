@@ -71,7 +71,7 @@
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {
     if (aNotification.object == oldPasswordField) {
-        if ([MOAssistant.assistant checkDataPassword:[oldPasswordField stringValue]]) {
+        if ([MOAssistant.sharedAssistant checkDataPassword:[oldPasswordField stringValue]]) {
             [passwordField1 setEnabled:YES];
             [passwordField2 setEnabled:YES];
         }

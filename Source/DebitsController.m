@@ -331,7 +331,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
     NSArray *acceptedTypes = @[@(TransferTypeDebit), @(TransferTypeCollectiveDebit)];
 
-    pendingDebits.managedObjectContext = MOAssistant.assistant.context;
+    pendingDebits.managedObjectContext = MOAssistant.sharedAssistant.context;
     pendingDebits.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
                                      acceptedTypes, TransferChangeUnchanged];
 
@@ -342,10 +342,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     [pendingDebits bind: @"selectionIndexes" toObject: pendingDebitsListView withKeyPath: @"selectedRows" options: nil];
     [pendingDebitsListView bind: @"selectedRows" toObject: pendingDebits withKeyPath: @"selectionIndexes" options: nil];
 
-    finishedDebits.managedObjectContext = MOAssistant.assistant.context;
+    finishedDebits.managedObjectContext = MOAssistant.sharedAssistant.context;
     finishedDebits.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
 
-    [transactionController setManagedObjectContext: MOAssistant.assistant.context];
+    [transactionController setManagedObjectContext: MOAssistant.sharedAssistant.context];
 
     // Sort transfer list views by date (newest first).
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
@@ -675,7 +675,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == DebitReadyForUseDataType) {
         if ([transactionController finishCurrentTransferValidatingValue: NO]) {
@@ -728,7 +728,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == DebitReadyForUseDataType) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
@@ -818,7 +818,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return YES;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData  *data = [pasteboard dataForType: type];
     NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -885,7 +885,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     // A previous check has been performed already to ensure only one entry was dragged.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData            *data = [pasteboard dataForType: type];
     NSArray           *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -998,7 +998,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
         if (![context save: &error]) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
@@ -1072,7 +1072,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
                               NSLocalizedString(@"AP419", nil),
@@ -1189,7 +1189,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];

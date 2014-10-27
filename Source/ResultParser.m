@@ -159,7 +159,7 @@
             [stack addObject: obj];
         }
     } else if ([elementName isEqualToString: @"cdObject"]) {
-        NSManagedObjectContext *context = [[MOAssistant assistant] memContext];
+        NSManagedObjectContext *context = [[MOAssistant sharedAssistant] memContext];
         id                     obj = [NSEntityDescription insertNewObjectForEntityForName: currentType inManagedObjectContext: context];
         [stack addObject: obj];
     } else if ([elementName isEqualToString: @"dictionary"] || [currentType isEqualToString: @"dictionary"]) {

@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 @interface MessageLog : NSObject {
 }
 
-@property (nonatomic, assign) NSUInteger currentLevel;  // This is one of the CocoaLumberJack log levels, e.g. LOG_LEVEL_DEBUG.
 @property (nonatomic, assign) BOOL       isComTraceActive;
 @property (nonatomic, assign) BOOL       hasError;         // Set when either logError or logComTraceForLevel:format: was called with an error level.
 @property (nonatomic, strong) ResultWindowController *resultWindow;
@@ -71,3 +70,4 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 - (void)cleanUp;
 
 @end
+

@@ -44,7 +44,7 @@
 {
     self = [super initWithWindowNibName: @"TransferTemplates"];
     if (self != nil) {
-        context = MOAssistant.assistant.context;
+        context = MOAssistant.sharedAssistant.context;
     }
     return self;
 }

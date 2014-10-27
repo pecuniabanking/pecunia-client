@@ -215,7 +215,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     [tagsController setSortDescriptors: @[sd]];
     tagButton.bordered = NO;
 
-    tagsController.managedObjectContext = MOAssistant.assistant.context;
+    tagsController.managedObjectContext = MOAssistant.sharedAssistant.context;
     [tagsController prepareContent];
 
     tagViewPopup.datasource = tagsController;

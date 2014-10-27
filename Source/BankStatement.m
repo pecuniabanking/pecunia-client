@@ -197,7 +197,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         return;
     }
 
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     // Create new to-many relationship between the account and the statement (ourselve) and keep that in our
     // assignments set.
@@ -386,7 +386,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         }
     }
 
-    [self extractSEPADataUsingContext: MOAssistant.assistant.context];
+    [self extractSEPADataUsingContext: MOAssistant.sharedAssistant.context];
 }
 
 - (BOOL)matches: (BankStatement *)stat {
@@ -517,7 +517,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 }
 
 - (BOOL)updateAssigned {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSDecimalNumber *value = self.value;
 
@@ -597,7 +597,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 }
 
 - (void)assignAmount: (NSDecimalNumber *)value toCategory: (BankingCategory *)targetCategory withInfo: (NSString *)info {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     // First check if this statement is already assigned to the target category. If so add the given value to that category
     // or remove the assignment if the value is nil/zero.
@@ -661,8 +661,8 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
 + (void)initCategoriesCache {
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
 
     catCache = nil;
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"categories"];

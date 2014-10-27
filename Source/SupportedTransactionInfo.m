@@ -53,7 +53,7 @@
 + (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, type];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
@@ -74,7 +74,7 @@
 + (NSArray*)supportedTransactionsForAccount: (BankAccount*)account
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@", account];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
@@ -92,7 +92,7 @@
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames
 {
     NSError                     *error = nil;
-    NSManagedObjectContext      *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext      *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription         *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     
     NSPredicate    *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND account = %@", user, account];

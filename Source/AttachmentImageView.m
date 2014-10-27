@@ -300,7 +300,7 @@ static NSCursor *moveCursor;
 
     if (oldUrl != nil) {
         if ([oldUrl.scheme isEqual: @"attachment"]) {
-            NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+            NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.sharedAssistant.pecuniaFileURL.path];
             NSString *targetFileName;
             targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, oldUrl.host];
 
@@ -320,7 +320,7 @@ static NSCursor *moveCursor;
 
         NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
         NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, extension];
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.sharedAssistant.pecuniaFileURL.path];
         NSString *targetFileName = [targetFolder stringByAppendingString: uniqueFilenName];
 
         NSError *error = nil;
@@ -353,7 +353,7 @@ static NSCursor *moveCursor;
     NSURL *url = [NSURL URLWithString: reference];
 
     if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.sharedAssistant.pecuniaFileURL.path];
 
         NSString *targetFileName;
         if ([url.scheme isEqual: @"attachment"]) {
@@ -394,7 +394,7 @@ static NSCursor *moveCursor;
     reference = url.absoluteString;
 
     if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.sharedAssistant.pecuniaFileURL.path];
 
         NSString *targetFileName;
         NSString *tooltipFileName;

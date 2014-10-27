@@ -148,7 +148,7 @@
         [selectedCategory setValue: rule forKey: @"rule"];
 
         // save updates
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
         if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
@@ -181,7 +181,7 @@
     self.ruleChanged = NO;
 
     // save updates
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     if ([context save: &error] == NO) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -375,7 +375,7 @@
     [BankingCategory updateBalancesAndSums];
 
     NSError *error;
-    if (![MOAssistant.assistant.context save: &error]) {
+    if (![MOAssistant.sharedAssistant.context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
@@ -403,7 +403,7 @@
     [BankingCategory updateBalancesAndSums];
 
     NSError *error;
-    if (![MOAssistant.assistant.context save: &error]) {
+    if (![MOAssistant.sharedAssistant.context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;

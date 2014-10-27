@@ -526,7 +526,7 @@ static NSFont *smallNumberFont;
         };
 
         standingOrders = [[NSArrayController alloc] init];
-        standingOrders.managedObjectContext = MOAssistant.assistant.context;
+        standingOrders.managedObjectContext = MOAssistant.sharedAssistant.context;
         standingOrders.entityName = @"StandingOrder";
         standingOrders.automaticallyRearrangesObjects = YES;
 
@@ -860,7 +860,7 @@ static NSFont *smallNumberFont;
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
-                                                 object: MOAssistant.assistant.context];
+                                                 object: MOAssistant.sharedAssistant.context];
     }
 
     LogLeave;
@@ -908,7 +908,7 @@ static NSFont *smallNumberFont;
 
     //ordersPopupList.dataSource = self;
     ordersPopupList.delegate = self;
-    popoverDataController.managedObjectContext = MOAssistant.assistant.context;
+    popoverDataController.managedObjectContext = MOAssistant.sharedAssistant.context;
 
     LogLeave;
 }

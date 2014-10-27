@@ -119,7 +119,7 @@
 }
 
 - (void)readStatements {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     // fetch all existing statements for this account
     NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
@@ -138,7 +138,7 @@
 }
 
 - (void)removeAllStatements {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     for (AccountStatement *statement in statements) {
         [context deleteObject: statement];
@@ -182,7 +182,7 @@
  * If there's no statement yet everything is retrieved.
  */
 - (void)retrieveStatements {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     [spinner setHidden: NO];
     [spinner startAnimation: self];

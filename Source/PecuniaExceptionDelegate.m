@@ -41,7 +41,7 @@
     [PecuniaExceptionDelegate printStackTraceForException: exception];
 
     NSError *error;
-    if ([MOAssistant.assistant.context save: &error]) {
+    if ([MOAssistant.sharedAssistant.context save: &error]) {
         LogInfo(@"Successfully saved context.");
     } else {
         LogError(@"Failed to save context. Reason: %@", error.description);
@@ -56,7 +56,7 @@
 {
     // Serious trouble encountered. Try shutting down the context and stop Pecunia.
     // This was preceeded by the exceptionHandler:shouldLogException:mask: call, so we don't need to log anything here.
-    [MOAssistant.assistant shutdown];
+    [MOAssistant.sharedAssistant shutdown];
     exit(101);
 
     return NO; // Never reached.

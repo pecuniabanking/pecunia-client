@@ -35,7 +35,7 @@
 - (id)init
 {
     self = [super initWithWindowNibName: @"AccountCreate"];
-    moc = [[MOAssistant assistant] memContext];
+    moc = [[MOAssistant sharedAssistant] memContext];
 
     account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
     account.currency = @"EUR";
@@ -166,7 +166,7 @@
     if (![self check]) {
         return;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     BankUser *user = nil;
     int      idx = [dropDown indexOfSelectedItem];

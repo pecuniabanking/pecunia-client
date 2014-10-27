@@ -1154,7 +1154,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     return model;
 }
 
-+ (MOAssistant *)assistant {
++ (MOAssistant *)sharedAssistant {
     if (assistant) {
         return assistant;
     }

@@ -97,6 +97,6 @@
 - (NSManagedObjectModel *)model;
 - (NSManagedObjectContext *)memContext;
 
-+ (MOAssistant *)assistant;
++ (MOAssistant *)sharedAssistant;
 
 @end

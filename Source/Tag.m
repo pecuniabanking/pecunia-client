@@ -50,8 +50,8 @@
     NSError *error = nil;
 
     // First remove any existing tag.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
     NSFetchRequest         *request = [model fetchRequestTemplateForName: @"allTags"];
     NSArray                *existingTags = [context executeFetchRequest: request error: &error];
     for (Tag *tag in existingTags) {
@@ -75,7 +75,7 @@
 
 + (Tag *)createTagWithCaption: (NSString *)caption index: (NSUInteger)index
 {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     Tag                    *tag = [NSEntityDescription insertNewObjectForEntityForName: @"Tag" inManagedObjectContext: context];
     tag.order = @(index);
     tag.caption = caption;
@@ -87,8 +87,8 @@
 + (Tag *)tagWithCaption: (NSString *)caption
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
 
     NSDictionary   *substitution = @{@"caption": caption};
     NSFetchRequest *request = [model fetchRequestFromTemplateWithName: @"tagWithCaption"
@@ -107,8 +107,8 @@
 - (void)sortBefore: (Tag *)target
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
     NSFetchRequest         *request = [model fetchRequestTemplateForName: @"allTags"];
     NSArray                *tags = [context executeFetchRequest: request error: &error];
 

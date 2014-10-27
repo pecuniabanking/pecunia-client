@@ -120,7 +120,7 @@
     }
 
     // check if there is already an entry for the statement in tcat
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSMutableSet           *stats = [self.statement mutableSetValueForKey: @"assignments"];
 
     // if assignment already done, add value
@@ -180,7 +180,7 @@
     }
 
     // Check if there is already an entry for the statement in the target category.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSSet *assignments = [self.statement valueForKey: @"assignments"];
 
@@ -216,7 +216,7 @@
  * Removes a single assignment (the receiver) and updates its previously associated bank statement.
  */
 - (void)remove {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     BankStatement *stat = self.statement;
     if (stat.account == nil) {
@@ -237,7 +237,7 @@
  * Efficiently removes a list of assignments and updates their bank statements.
  */
 + (void)removeAssignments: (NSArray *)assignments {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSMutableSet *statements = [NSMutableSet set]; // Automatically removes duplicates.
 

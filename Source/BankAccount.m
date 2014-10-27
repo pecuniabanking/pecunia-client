@@ -62,7 +62,7 @@
 
 - (NSInteger)calcUnread {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -88,7 +88,7 @@
 }
 
 - (void)evaluateQueryResult: (BankQueryResult *)res {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -155,7 +155,7 @@
 }
 
 - (void)updateStandingOrders: (NSArray *)orders {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     StandingOrder          *stord;
     StandingOrder          *order;
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"StandingOrder" inManagedObjectContext: context];
@@ -182,7 +182,7 @@
 }
 
 - (int)updateFromQueryResult: (BankQueryResult *)result {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     BankStatement          *stat;
     NSDate                 *ltd = self.latestTransferDate;
     ShortDate              *currentDate = nil;
@@ -421,8 +421,8 @@
     BOOL    found = NO;
     NSError *error = nil;
 
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model   = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model   = [[MOAssistant sharedAssistant] model];
 
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"bankNodes"];
     NSArray        *nodes = [context executeFetchRequest: request error: &error];
@@ -465,7 +465,7 @@
     NSDate  *endDate = [[ShortDate dateWithDate: date] highDate];
     NSDate  *currentDate;
 
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -489,7 +489,7 @@
 - (void)copyStatement: (BankStatement *)stat {
     NSDate                 *startDate = [[ShortDate dateWithDate: stat.date] lowDate];
     NSDate                 *endDate = [[ShortDate dateWithDate: stat.date] highDate];
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSError                *error = nil;
 
     // first copy statement
@@ -566,7 +566,7 @@
     if ([self.isManual boolValue] == YES) {
         return;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -597,8 +597,8 @@
 }
 
 + (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 
     NSError      *error = nil;
     NSDictionary *subst = @{
@@ -618,8 +618,8 @@
 }
 
 + (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 
     NSError      *error = nil;
     NSDictionary *subst = @{
@@ -650,7 +650,7 @@
     NSError   *error = nil;
     NSInteger unread = 0;
 
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     if (context == nil) {
         return 0;
     }

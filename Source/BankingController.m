@@ -90,7 +90,7 @@
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
 
-#import "RemoteResourceManager.h"
+#import "Pecunia-Swift.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -270,7 +270,7 @@ static BankingController *bankinControllerInstance;
 
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
 
-    MOAssistant.assistant.mainWindow = mainWindow;
+    MOAssistant.sharedAssistant.mainWindow = mainWindow;
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(contextChanged)
                                                  name: @"contextDataChanged"
@@ -289,9 +289,7 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-
-    [RemoteResourceManager manager];
-
+    [RemoteResourceManager.manager addManagedFile: @"words.zip"];
     LogLeave;
 }
 
@@ -511,7 +509,7 @@ static BankingController *bankinControllerInstance;
 - (void)contextChanged {
     LogEnter;
 
-    managedObjectContext = MOAssistant.assistant.context;
+    managedObjectContext = MOAssistant.sharedAssistant.context;
     [self publishContext];
 
     LogLeave;
@@ -520,7 +518,7 @@ static BankingController *bankinControllerInstance;
 - (void)encryptionChanged {
     LogEnter;
 
-    [lockImage setHidden: !MOAssistant.assistant.encrypted];
+    [lockImage setHidden: !MOAssistant.sharedAssistant.encrypted];
 
     LogLeave;
 }
@@ -2319,7 +2317,7 @@ static BankingController *bankinControllerInstance;
 
                 } else {
                     if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
-                        NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+                        NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
                         path = [targetFolder stringByAppendingString: url.host];
                     }
                 }
@@ -3110,7 +3108,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     StatusBarController *sc = [StatusBarController controller];
-    MOAssistant         *assistant = [MOAssistant assistant];
+    MOAssistant         *assistant = [MOAssistant sharedAssistant];
 
     // Load context & model.
     @try {
@@ -3259,13 +3257,13 @@ static BankingController *bankinControllerInstance;
 
     dockIconController = nil;
 
-    if (managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
+    if (managedObjectContext && [MOAssistant sharedAssistant].isMaxIdleTimeExceeded == NO) {
         if (![self save]) {
             return;
         }
     }
 
-    [[MOAssistant assistant] shutdown];
+    [[MOAssistant sharedAssistant] shutdown];
     [WorkerThread finish];
 
     // if application shall restart, launch new task
@@ -3366,7 +3364,7 @@ static BankingController *bankinControllerInstance;
 - (BOOL)application: (NSApplication *)theApplication openFile: (NSString *)filename {
     LogEnter;
 
-    [[MOAssistant assistant] initDatafile: filename];
+    [[MOAssistant sharedAssistant] initDatafile: filename];
 
     LogLeave;
 
@@ -3538,7 +3536,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    [MOAssistant.assistant clearAllData];
+    [MOAssistant.sharedAssistant clearAllData];
     [BankingCategory recreateRoots];
 
     LogLeave;
@@ -3591,12 +3589,12 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    NSManagedObjectContext  *context = MOAssistant.assistant.context;
+    NSManagedObjectContext  *context = MOAssistant.sharedAssistant.context;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
 
     if (!migrated10) {
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
         NSError *error = nil;
         NSArray *bankUsers = BankUser.allUsers;

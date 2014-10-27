@@ -68,7 +68,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     NSData  *data = [pasteboard dataForType: type];
     NSArray *entries = [NSKeyedUnarchiver unarchiveObjectWithData: data];
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     NSManagedObjectID      *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: [entries lastObject]];
     if (objectId == nil) {
         return NSDragOperationNone;
@@ -111,7 +111,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 - (id)init {
     self = [super init];
     if (self != nil) {
-        managedObjectContext = MOAssistant.assistant.context;
+        managedObjectContext = MOAssistant.sharedAssistant.context;
 
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         weekDays = formatter.weekdaySymbols;
@@ -1013,7 +1013,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     NSData  *data = [pasteboard dataForType: type];
     NSArray *entries = [NSKeyedUnarchiver unarchiveObjectWithData: data];
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     NSManagedObjectID      *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: [entries lastObject]];
     if (objectId == nil) {
         return NO;

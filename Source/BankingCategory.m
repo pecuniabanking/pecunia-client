@@ -79,7 +79,7 @@ static ShortDate *endReportDate = nil;
             NSDecimalNumber *balance = [NSDecimalNumber zero];
 
             // Fetch all relevant statements.
-            NSManagedObjectContext *context = MOAssistant.assistant.context;
+            NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
             NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
             NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
@@ -409,7 +409,7 @@ static ShortDate *endReportDate = nil;
     }
 
     // Fetch all relevant statements.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
@@ -657,7 +657,7 @@ static ShortDate *endReportDate = nil;
 
     NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment"
-                                              inManagedObjectContext: MOAssistant.assistant.context];
+                                              inManagedObjectContext: MOAssistant.sharedAssistant.context];
     [fetchRequest setEntity: entity];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", categories];
@@ -685,7 +685,7 @@ static ShortDate *endReportDate = nil;
     }
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [MOAssistant.assistant.context executeFetchRequest: fetchRequest
+    NSArray *fetchedObjects = [MOAssistant.sharedAssistant.context executeFetchRequest: fetchRequest
                                                                            error: &error];
     return fetchedObjects;
 }
@@ -703,14 +703,14 @@ static ShortDate *endReportDate = nil;
 
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment"
-                                              inManagedObjectContext: MOAssistant.assistant.context];
+                                              inManagedObjectContext: MOAssistant.sharedAssistant.context];
     [request setEntity: entity];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", categories];
     [request setPredicate: predicate];
 
     NSError    *error = nil;
-    NSUInteger count = [MOAssistant.assistant.context countForFetchRequest: request error: &error];
+    NSUInteger count = [MOAssistant.sharedAssistant.context countForFetchRequest: request error: &error];
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -1006,8 +1006,8 @@ static ShortDate *endReportDate = nil;
     if (bankRootSingleton) {
         return bankRootSingleton;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model   = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model   = [[MOAssistant sharedAssistant] model];
 
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getBankingRoot"];
     NSArray        *cats = [context executeFetchRequest: request error: &error];
@@ -1034,8 +1034,8 @@ static ShortDate *endReportDate = nil;
     if (catRootSingleton) {
         return catRootSingleton;
     }
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel   *model   = MOAssistant.assistant.model;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model   = MOAssistant.sharedAssistant.model;
 
     if (context == nil) {
         return nil;
@@ -1063,8 +1063,8 @@ static ShortDate *endReportDate = nil;
     if (notAssignedRootSingleton) {
         return notAssignedRootSingleton;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model   = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model   = [[MOAssistant sharedAssistant] model];
 
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getNassRoot"];
     NSArray        *cats = [context executeFetchRequest: request error: &error];
@@ -1085,7 +1085,7 @@ static ShortDate *endReportDate = nil;
 
 + (BankingCategory *)categoryForName: (NSString *)name {
     if (name.length > 0) {
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
         NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription    *entity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext: context];
         [fetchRequest setEntity: entity];
@@ -1137,7 +1137,7 @@ static ShortDate *endReportDate = nil;
 }
 
 + (void)createCategoryWithName: (NSString *)name {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     BankingCategory        *root = [BankingCategory catRoot];
 
     BankingCategory *cat = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
@@ -1166,7 +1166,7 @@ static ShortDate *endReportDate = nil;
         return;
     }
     NSUInteger             lastLevel = 0;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     BankingCategory        *current = [BankingCategory nassRoot];
 
     for (NSUInteger i = lower; i <= upper; i++) {

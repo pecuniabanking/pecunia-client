@@ -31,8 +31,8 @@
 - (id)initWithAccount: (BankAccount *)acc statement: (BankStatement *)stat
 {
     self = [super initWithWindowNibName: @"BankStatementController"];
-    memContext = [[MOAssistant assistant] memContext];
-    context = [[MOAssistant assistant] context];
+    memContext = [[MOAssistant sharedAssistant] memContext];
+    context = [[MOAssistant sharedAssistant] context];
     account = acc;
     actionResult = 0;
 

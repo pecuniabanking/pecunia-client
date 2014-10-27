@@ -67,7 +67,7 @@ extern void *UserDefaultsBindingContext;
         balances = [NSMutableArray array];
         turnovers = [NSMutableArray array];
         selectedDates = [NSMutableArray array];
-        managedObjectContext = [[MOAssistant assistant] context];
+        managedObjectContext = [[MOAssistant sharedAssistant] context];
         sortIndex = 0;
     }
 

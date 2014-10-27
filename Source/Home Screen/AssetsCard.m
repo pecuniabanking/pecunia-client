@@ -772,7 +772,7 @@ double trend(double x) {
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
-                                                 object: MOAssistant.assistant.context];
+                                                 object: MOAssistant.sharedAssistant.context];
 
     }
 

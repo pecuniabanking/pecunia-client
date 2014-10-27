@@ -394,7 +394,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeOldStandard), @(TransferTypeEU),
                                @(TransferTypeOldStandardScheduled), @(TransferTypeSEPAScheduled),
                                @(TransferTypeSEPA), @(TransferTypeDebit)];
-    pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
+    pendingTransfers.managedObjectContext = MOAssistant.sharedAssistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
                                         acceptedTypes, TransferChangeUnchanged];
 
@@ -405,12 +405,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [pendingTransfers bind: @"selectionIndexes" toObject: pendingTransfersListView withKeyPath: @"selectedRows" options: nil];
     [pendingTransfersListView bind: @"selectedRows" toObject: pendingTransfers withKeyPath: @"selectionIndexes" options: nil];
 
-    finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
+    finishedTransfers.managedObjectContext = MOAssistant.sharedAssistant.context;
     finishedTransfersPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
     NSPredicate *filter = [NSPredicate predicateWithFormat: @"date >= %@ AND date <= %@", timeSlicer.lowerBounds.lowDate, timeSlicer.upperBounds.highDate];
     finishedTransfers.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[finishedTransfersPredicate, filter]];
 
-    [transactionController setManagedObjectContext: MOAssistant.assistant.context];
+    [transactionController setManagedObjectContext: MOAssistant.sharedAssistant.context];
 
     // Sort transfer list views by date (newest first).
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
@@ -892,7 +892,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (sender == transferTemplateListView) {
         if (type == TransferReadyForUseDataType) {
@@ -981,7 +981,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     NSError *error = nil;
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == TransferReadyForUseDataType) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
@@ -1075,7 +1075,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return YES;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData  *data = [pasteboard dataForType: type];
     NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -1145,7 +1145,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     // A previous check has been performed already to ensure only one entry was dragged.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData            *data = [pasteboard dataForType: type];
     NSArray           *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -1200,7 +1200,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                                         withType: [info[@"type"] intValue]
                               asTemplateWithName: templateName.stringValue];
         }
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
         NSError                *error = nil;
         if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
@@ -1300,7 +1300,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
         if (![context save: &error]) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
@@ -1445,7 +1445,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
                               NSLocalizedString(@"AP419", nil),
@@ -1617,7 +1617,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -1912,7 +1912,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSString *s = [textField stringValue];
         // check for lastest transfer with receiver name and extract account number, bank code, etc.
 
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: MOAssistant.assistant.context];
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: MOAssistant.sharedAssistant.context];
         NSFetchRequest      *request = [[NSFetchRequest alloc] init];
         [request setEntity: entityDescription];
 
@@ -1922,7 +1922,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSError     *error = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"remoteName = %@ AND type = %@", s, transactionController.currentTransfer.type];
         [request setPredicate: predicate];
-        NSArray *transfers = [MOAssistant.assistant.context executeFetchRequest: request error: &error];
+        NSArray *transfers = [MOAssistant.sharedAssistant.context executeFetchRequest: request error: &error];
         if (transfers.count > 1) {
             Transfer *transfer = transfers[1];
             transactionController.currentTransfer.remoteAccount = transfer.remoteAccount;

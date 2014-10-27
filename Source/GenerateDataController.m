@@ -215,7 +215,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
            purposeCodes: (NSArray *)purposeCodes
           sequenceTypes: (NSArray *)sequenceTypes {
     // Add transactions to each account of a bank.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     BankingCategory        *root = BankingCategory.bankRoot;
     for (BankAccount *bank in root.children) {
         NSArray *accounts = [bank.children allObjects];
@@ -413,7 +413,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 }
 
 - (void)createUsersAndAccounts: (NSMutableArray *)banks accounts: (NSMutableArray *)accounts {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     // Randomly change the order in the banks and accounts arrays
     // This avoids using a bank/account more than once.
@@ -495,7 +495,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 }
 
 - (void)addStandingOrders: (NSArray *)orders {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"dd.MM.yyyy";
@@ -589,11 +589,11 @@ static NSString *DemoDataKey = @"contains-demo-data";
         [self.progressIndicator setIndeterminate: YES];
         [self.progressIndicator startAnimation: self];
 
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
         // Before adding new data remove old data if requested.
         if (self.removeOldDataCheckBox.state == 1) {
-            [MOAssistant.assistant clearAllData];
+            [MOAssistant.sharedAssistant clearAllData];
             [BankingCategory recreateRoots];
             [BankingCategory createDefaultCategories];
         }

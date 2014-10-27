@@ -106,7 +106,7 @@ extern void *UserDefaultsBindingContext;
 
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
-    categoryAssignments.managedObjectContext = MOAssistant.assistant.context;
+    categoryAssignments.managedObjectContext = MOAssistant.sharedAssistant.context;
 }
 
 #pragma mark - Sorting and searching statements
@@ -235,7 +235,7 @@ extern void *UserDefaultsBindingContext;
         }
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];

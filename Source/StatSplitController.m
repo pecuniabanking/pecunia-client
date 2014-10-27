@@ -29,7 +29,7 @@
 {
     self = [super initWithWindowNibName: @"StatSplitController"];
     if (self != nil) {
-        managedObjectContext = [[MOAssistant assistant] context];
+        managedObjectContext = [[MOAssistant sharedAssistant] context];
         statement = stat;
     }
     return self;
