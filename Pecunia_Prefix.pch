@@ -3,13 +3,17 @@
 //
 
 #ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <Cocoa/Cocoa.h>
-    #import <Quartz/Quartz.h>
-    #import <QuartzCore/QuartzCore.h>
-    #import <Accelerate/Accelerate.h>
+@import Foundation;
+@import Cocoa;
+@import Quartz;
+@import QuartzCore;
+@import Accelerate;
+
+@import CocoaLumberjack;
+
     #import <mach/mach_time.h>
 
     #import "PXListView.h"
-    #import <CocoaLumberjack/CocoaLumberjack.h>
+
+    #import "Pecunia-Swift.h"
 #endif

@@ -20,8 +20,6 @@
 #import "PecuniaListView.h"
 #import "PXListView+UserInteraction.h"
 
-extern NSString *PecuniaWordsLoadedNotification;
-
 @interface PopoverAnimation : NSAnimation {
     @private
     NSRect    startRect;
@@ -104,7 +102,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 - (void)initDetailsWithNibName: (NSString *)nibName {
     [NSNotificationCenter.defaultCenter addObserver: self
                                            selector: @selector(updateVisibleCells)
-                                               name: PecuniaWordsLoadedNotification
+                                               name: WordMapping.pecuniaWordsLoadedNotification
                                              object: nil];
 
     detailsPopoverController = [[NSViewController alloc] initWithNibName: nibName bundle: nil];

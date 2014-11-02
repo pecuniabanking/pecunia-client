@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6251" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AccountStatement" representedClassName="AccountStatement" syncable="YES">
         <attribute name="advertisement" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
@@ -366,9 +366,9 @@
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="WordList" representedClassName="WordList" syncable="YES">
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="WordMapping" representedClassName="Pecunia.WordMapping" syncable="YES">
+        <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="value" attributeType="String" syncable="YES"/>
     </entity>
     <fetchRequest name="allBankAccounts" entity="BankAccount" predicateString="accountNumber != &quot;nil&quot;"/>
     <fetchRequest name="allTags" entity="Tag"/>
@@ -382,10 +382,7 @@
     <fetchRequest name="getRootNodes" entity="Category" predicateString="parent == nil"/>
     <fetchRequest name="statementsByAccount" entity="BankStatement" predicateString="fromBank.bankCode == $BCODE AND fromBank.accountNumber == $ACCNT"/>
     <fetchRequest name="tagWithCaption" entity="Tag" predicateString="caption == $caption"/>
-    <configuration name="Aux_Configuration">
-        <memberEntity name="WordList"/>
-    </configuration>
-    <configuration name="Main_Configuration">
+    <configuration name="MainConfiguration">
         <memberEntity name="AccountStatement"/>
         <memberEntity name="BankAccount"/>
         <memberEntity name="BankMessage"/>
@@ -407,13 +404,16 @@
         <memberEntity name="Transfer"/>
         <memberEntity name="TransferTemplate"/>
     </configuration>
+    <configuration name="SharedDataConfiguration">
+        <memberEntity name="WordMapping"/>
+    </configuration>
     <elements>
         <element name="AccountStatement" positionX="0" positionY="0" width="128" height="240"/>
         <element name="BankAccount" positionX="0" positionY="0" width="128" height="450"/>
-        <element name="Category" positionX="0" positionY="0" width="128" height="313"/>
         <element name="BankMessage" positionX="0" positionY="0" width="128" height="90"/>
         <element name="BankStatement" positionX="0" positionY="0" width="128" height="765"/>
         <element name="BankUser" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Category" positionX="0" positionY="0" width="128" height="313"/>
         <element name="CategoryBudget" positionX="0" positionY="0" width="128" height="90"/>
         <element name="CreditCardSettlement" positionX="0" positionY="0" width="128" height="255"/>
         <element name="CustomerMessage" positionX="0" positionY="0" width="128" height="150"/>
@@ -428,6 +428,6 @@
         <element name="TransactionLimits" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Transfer" positionX="0" positionY="0" width="128" height="555"/>
         <element name="TransferTemplate" positionX="0" positionY="0" width="128" height="330"/>
-        <element name="WordList" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="WordMapping" positionX="9" positionY="153" width="128" height="73"/>
     </elements>
 </model>

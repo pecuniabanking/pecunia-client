@@ -283,6 +283,10 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(homeScreenCardClicked:)
                                                  name: HomeScreenCardClickedNotification
                                                object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(resourceUpdated:)
+                                                 name: RemoteResourceManager.pecuniaResourcesUpdatedNotification
+                                               object: nil];
 
 #ifdef DEBUG
     [developerMenu setHidden: NO];
@@ -382,7 +386,7 @@ static BankingController *bankinControllerInstance;
     }
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"autoCasing"] == nil) {
-        [defaults setBool: YES forKey: @"autoCasing"];
+        [defaults setBool: NO forKey: @"autoCasing"];
     }
 
     if ([defaults objectForKey: @"restoreActivePage"] == nil) {
@@ -518,9 +522,16 @@ static BankingController *bankinControllerInstance;
 - (void)encryptionChanged {
     LogEnter;
 
-    [lockImage setHidden: !MOAssistant.sharedAssistant.encrypted];
+    [lockImage setHidden: !MOAssistant.sharedAssistant.isEncrypted];
 
     LogLeave;
+}
+
+- (void)resourceUpdated: (NSNotification *)notification {
+    NSArray *files = notification.object;
+    if ([files containsObject: @"words.zip"]) {
+        [WordMapping updateWordMappings];
+    }
 }
 
 #pragma mark - User actions
@@ -3124,7 +3135,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Open encrypted database
-    if ([assistant encrypted]) {
+    if (assistant.isEncrypted) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
         [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];

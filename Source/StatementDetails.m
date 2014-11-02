@@ -41,8 +41,7 @@
 #import "BankInfo.h"
 #import "HBCIController.h"
 
-extern void     *UserDefaultsBindingContext;
-extern NSString *PecuniaWordsLoadedNotification;
+extern void *UserDefaultsBindingContext;
 
 @interface DetailsViewStepperCell : NSStepperCell
 @end
@@ -202,7 +201,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     sepaInfoTextView.delegate = self;
     [NSNotificationCenter.defaultCenter addObserver: self
                                            selector: @selector(updateDisplayAfterLoading)
-                                               name: PecuniaWordsLoadedNotification
+                                               name: WordMapping.pecuniaWordsLoadedNotification
                                              object: nil];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

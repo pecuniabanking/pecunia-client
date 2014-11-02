@@ -101,6 +101,8 @@
 		2732F6AD186B202400809CF2 /* overview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6A9186B202300809CF2 /* overview@2x.png */; };
 		2732F6B0186B21E900809CF2 /* graph3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6AE186B21E900809CF2 /* graph3@2x.png */; };
 		2732F6B1186B21E900809CF2 /* graph3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6AE186B21E900809CF2 /* graph3@2x.png */; };
+		2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */; };
+		2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */; };
 		2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273657291559890E00E8ABDC /* TransferFormularView.m */; };
 		2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
 		2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD441514F6590066917C /* MBTableGridCell.m */; };
@@ -133,6 +135,30 @@
 		27535FFD186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
 		27535FFE186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
 		27548B901705D98E00C4BF9B /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 27548B8F1705D98E00C4BF9B /* Tag.m */; };
+		2758542319FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
+		2758542419FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
+		2759D89F1A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
+		2759D8A01A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
+		2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
+		2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
+		2759D8A31A0133FB002AE07E /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8951A0133FB002AE07E /* Double.swift */; };
+		2759D8A41A0133FB002AE07E /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8951A0133FB002AE07E /* Double.swift */; };
+		2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8971A0133FB002AE07E /* ExSwift.swift */; };
+		2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8971A0133FB002AE07E /* ExSwift.swift */; };
+		2759D8A71A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
+		2759D8A81A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
+		2759D8A91A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
+		2759D8AA1A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
+		2759D8AB1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
+		2759D8AC1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
+		2759D8AD1A0133FB002AE07E /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89B1A0133FB002AE07E /* NSArray.swift */; };
+		2759D8AE1A0133FB002AE07E /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89B1A0133FB002AE07E /* NSArray.swift */; };
+		2759D8AF1A0133FB002AE07E /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89C1A0133FB002AE07E /* Range.swift */; };
+		2759D8B01A0133FB002AE07E /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89C1A0133FB002AE07E /* Range.swift */; };
+		2759D8B11A0133FB002AE07E /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89D1A0133FB002AE07E /* Sequence.swift */; };
+		2759D8B21A0133FB002AE07E /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89D1A0133FB002AE07E /* Sequence.swift */; };
+		2759D8B31A0133FB002AE07E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89E1A0133FB002AE07E /* String.swift */; };
+		2759D8B41A0133FB002AE07E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89E1A0133FB002AE07E /* String.swift */; };
 		275AC7DE186B5BDC002E6BED /* graph4-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DA186B5BDC002E6BED /* graph4-active.png */; };
 		275AC7DF186B5BDC002E6BED /* graph4-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DA186B5BDC002E6BED /* graph4-active.png */; };
 		275AC7E0186B5BDC002E6BED /* graph4-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DB186B5BDC002E6BED /* graph4-active@2x.png */; };
@@ -504,8 +530,6 @@
 		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
 		279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
-		279F365319EAD01200CC8F87 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 279F365219EAD01200CC8F87 /* WordList.m */; };
-		279F365419EAD01200CC8F87 /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 279F365219EAD01200CC8F87 /* WordList.m */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */; };
@@ -1079,6 +1103,7 @@
 		2732F6A9186B202300809CF2 /* overview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overview@2x.png"; sourceTree = "<group>"; };
 		2732F6AE186B21E900809CF2 /* graph3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph3@2x.png"; sourceTree = "<group>"; };
 		27334AE614C20BF600268FD9 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+PecuniaAdditions.swift"; sourceTree = "<group>"; wrapsLines = 0; };
 		27365728155988F200E8ABDC /* TransferFormularView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferFormularView.h; sourceTree = "<group>"; };
 		273657291559890E00E8ABDC /* TransferFormularView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferFormularView.m; sourceTree = "<group>"; };
 		2736DD411514F6590066917C /* MBTableGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGrid.h; path = MBTableGrid/MBTableGrid.h; sourceTree = "<group>"; };
@@ -1118,6 +1143,19 @@
 		27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 9.xcdatamodel"; sourceTree = "<group>"; };
 		27548B8E1705D98D00C4BF9B /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; wrapsLines = 0; };
 		27548B8F1705D98E00C4BF9B /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; wrapsLines = 0; };
+		2758542219FFFB9100571251 /* WordMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordMapping.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		2759D8931A0133FB002AE07E /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		2759D8941A0133FB002AE07E /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		2759D8951A0133FB002AE07E /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		2759D8961A0133FB002AE07E /* ExSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExSwift.h; sourceTree = "<group>"; };
+		2759D8971A0133FB002AE07E /* ExSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExSwift.swift; sourceTree = "<group>"; };
+		2759D8981A0133FB002AE07E /* Float.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
+		2759D8991A0133FB002AE07E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2759D89A1A0133FB002AE07E /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		2759D89B1A0133FB002AE07E /* NSArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArray.swift; sourceTree = "<group>"; };
+		2759D89C1A0133FB002AE07E /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
+		2759D89D1A0133FB002AE07E /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		2759D89E1A0133FB002AE07E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		275AC7DA186B5BDC002E6BED /* graph4-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph4-active.png"; sourceTree = "<group>"; };
 		275AC7DB186B5BDC002E6BED /* graph4-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph4-active@2x.png"; sourceTree = "<group>"; };
 		275AC7DC186B5BDC002E6BED /* graph4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph4.png; sourceTree = "<group>"; };
@@ -1230,8 +1268,6 @@
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
 		279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		279F365119EAD01200CC8F87 /* WordList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordList.h; sourceTree = "<group>"; };
-		279F365219EAD01200CC8F87 /* WordList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordList.m; sourceTree = "<group>"; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
 		27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in@2x.png"; sourceTree = "<group>"; };
@@ -1849,6 +1885,26 @@
 			path = INAppStoreWindow;
 			sourceTree = "<group>";
 		};
+		2759D8921A0133FB002AE07E /* ExSwift */ = {
+			isa = PBXGroup;
+			children = (
+				2759D8931A0133FB002AE07E /* Array.swift */,
+				2759D8941A0133FB002AE07E /* Dictionary.swift */,
+				2759D8951A0133FB002AE07E /* Double.swift */,
+				2759D8961A0133FB002AE07E /* ExSwift.h */,
+				2759D8971A0133FB002AE07E /* ExSwift.swift */,
+				2759D8981A0133FB002AE07E /* Float.swift */,
+				2759D8991A0133FB002AE07E /* Info.plist */,
+				2759D89A1A0133FB002AE07E /* Int.swift */,
+				2759D89B1A0133FB002AE07E /* NSArray.swift */,
+				2759D89C1A0133FB002AE07E /* Range.swift */,
+				2759D89D1A0133FB002AE07E /* Sequence.swift */,
+				2759D89E1A0133FB002AE07E /* String.swift */,
+			);
+			name = ExSwift;
+			path = Submodules/ExSwift/ExSwift;
+			sourceTree = SOURCE_ROOT;
+		};
 		275C07DC1438777900D97415 /* PXListview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1912,6 +1968,7 @@
 				B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */,
 				B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
+				2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
 				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
@@ -2059,6 +2116,7 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				2759D8921A0133FB002AE07E /* ExSwift */,
 				27516818193B87C900FE942F /* YRK Spinning Indicator */,
 				27686E38193B5B320038067D /* JMModalOverlay */,
 				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
@@ -2843,8 +2901,7 @@
 				B1927D240C52B5CD00B4D390 /* Transfer.m */,
 				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
 				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
-				279F365119EAD01200CC8F87 /* WordList.h */,
-				279F365219EAD01200CC8F87 /* WordList.m */,
+				2758542219FFFB9100571251 /* WordMapping.swift */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -3132,6 +3189,7 @@
 				27516822193B932700FE942F /* check-mark@2x.png in Resources */,
 				2777899D173CE22700430EBC /* pdf.png in Resources */,
 				2777899E173CE22700430EBC /* pdf@2x.png in Resources */,
+				2759D8AA1A0133FB002AE07E /* Info.plist in Resources */,
 				277789A1173CE22700430EBC /* blue-slanted-stripes.png in Resources */,
 				277789A2173CE22700430EBC /* delete@2x.png in Resources */,
 				277789A3173CE22700430EBC /* edit@2x.png in Resources */,
@@ -3247,6 +3305,7 @@
 				B19330190EE1DA37003FEC97 /* Vespasian.icns in Resources */,
 				2732F6A0186B06CE00809CF2 /* home@2x.png in Resources */,
 				B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */,
+				2759D8A91A0133FB002AE07E /* Info.plist in Resources */,
 				274365B919BB35C400722380 /* disclosure-open.pdf in Resources */,
 				274365B519BB35C400722380 /* disclosure-clicked.pdf in Resources */,
 				2792F6D4181D369100093727 /* delete4.png in Resources */,
@@ -3548,6 +3607,7 @@
 				27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */,
 				27778886173CE22700430EBC /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				279C166618E8317600A4306F /* LockViewController.m in Sources */,
+				2759D8B01A0133FB002AE07E /* Range.swift in Sources */,
 				27778887173CE22700430EBC /* Country.m in Sources */,
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
@@ -3574,6 +3634,7 @@
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
+				2758542419FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
@@ -3583,8 +3644,8 @@
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
 				2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */,
-				279F365419EAD01200CC8F87 /* WordList.m in Sources */,
 				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
+				2759D8A01A0133FB002AE07E /* Array.swift in Sources */,
 				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
 				27BB3B83190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
 				277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */,
@@ -3607,6 +3668,7 @@
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
 				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
+				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
@@ -3640,6 +3702,7 @@
 				277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */,
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
 				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
+				2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
@@ -3656,6 +3719,7 @@
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
+				2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
@@ -3666,10 +3730,12 @@
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
+				2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
 				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
 				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
+				2759D8A41A0133FB002AE07E /* Double.swift in Sources */,
 				277788E6173CE22700430EBC /* CallbackHandler.m in Sources */,
 				277788E7173CE22700430EBC /* BWGradientBox.m in Sources */,
 				277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */,
@@ -3716,6 +3782,7 @@
 				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
 				2777890E173CE22700430EBC /* DebitsListView.m in Sources */,
 				2777890F173CE22700430EBC /* DebitsListViewCell.m in Sources */,
+				2759D8AE1A0133FB002AE07E /* NSArray.swift in Sources */,
 				27778910173CE22700430EBC /* DebitFormularView.m in Sources */,
 				27778911173CE22700430EBC /* CCSettlementList.m in Sources */,
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
@@ -3724,6 +3791,7 @@
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */,
+				2759D8B21A0133FB002AE07E /* Sequence.swift in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				B19CA99319410C04005B1125 /* SepaData.m in Sources */,
 				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
@@ -3740,7 +3808,9 @@
 				27A6F364178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160517B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEC17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				2759D8A81A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				2759D8AC1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100717D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4F17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
@@ -3774,6 +3844,7 @@
 				B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */,
 				B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				279C166518E8317600A4306F /* LockViewController.m in Sources */,
+				2759D8AF1A0133FB002AE07E /* Range.swift in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
@@ -3800,6 +3871,7 @@
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
+				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
@@ -3809,8 +3881,8 @@
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */,
-				279F365319EAD01200CC8F87 /* WordList.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
+				2759D89F1A0133FB002AE07E /* Array.swift in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				27BB3B82190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
@@ -3833,6 +3905,7 @@
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
+				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
 				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
@@ -3866,6 +3939,7 @@
 				275C07E91438779700D97415 /* PXListDocumentView.m in Sources */,
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
 				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
+				2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
 				275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */,
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
@@ -3882,6 +3956,7 @@
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
+				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
@@ -3892,10 +3967,12 @@
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
+				2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,
 				C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */,
+				2759D8A31A0133FB002AE07E /* Double.swift in Sources */,
 				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 				27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */,
 				27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */,
@@ -3942,6 +4019,7 @@
 				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
 				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,
 				27A3DA2516A1C99C00FD7335 /* DebitsListViewCell.m in Sources */,
+				2759D8AD1A0133FB002AE07E /* NSArray.swift in Sources */,
 				27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */,
 				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
@@ -3950,6 +4028,7 @@
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */,
+				2759D8B11A0133FB002AE07E /* Sequence.swift in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				B19CA99219410C04005B1125 /* SepaData.m in Sources */,
 				27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */,
@@ -3966,7 +4045,9 @@
 				27A6F363178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160417B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEB17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				2759D8A71A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				2759D8AB1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100617D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4E17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
@@ -4365,8 +4446,8 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
+				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
 				B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */,
 				273C80501912A056007E799E /* Accounts 11.xcdatamodel */,
 				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,

@@ -19,7 +19,6 @@
 
 let RemoteResourcePath = "http://www.pecuniabanking.de/downloads/resources/"
 let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
-let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
 
 @objc public class RemoteResourceManager : NSObject {
     private let mandatoryFiles = ["eu_all22.txt.zip"];
@@ -69,6 +68,10 @@ let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
         return Static.singleton!
     }
 
+    public class var pecuniaResourcesUpdatedNotification : String { // Class vars
+        return "PecuniaResourcesUpdatedNotification";
+    }
+
     public func addManagedFile(fileName: String) {
         logEnter();
         let backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
@@ -100,7 +103,7 @@ let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
     * the remote location (if it doesn't exist or is outdated).
     *
     * @param fileName Contains the pure file name without path information.
-    * @return true, if the file is up-to-date or could be updated successfully.
+    * @return true, if the file has been updated.
     */
     private func updateFile(fileName: String) -> Bool {
         let resourcePath = MOAssistant.sharedAssistant().resourcesDir;
@@ -143,7 +146,7 @@ let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
                     if fileInfo!["updated"] != nil {
                         let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as String));
                         if updateDate <= fileDate {
-                            return true;
+                            return false;
                         }
                     }
                 }
@@ -174,9 +177,11 @@ let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
     }
 
     private func updateFileAndNotify(fileName: String) {
-        let result = updateFile(fileName);
-        let notification = NSNotification(name: PecuniaResourcesUpdatedNotification, object: NSNumber(bool: result));
-        NSNotificationCenter.defaultCenter().postNotification(notification);
+        if updateFile(fileName) {
+            let notification = NSNotification(name: RemoteResourceManager.pecuniaResourcesUpdatedNotification,
+                object: [fileName]);
+            NSNotificationCenter.defaultCenter().postNotification(notification);
+        }
     }
 
     private func updateFiles() {
@@ -190,26 +195,27 @@ let PecuniaResourcesUpdatedNotification = "PecuniaResourcesUpdatedNotification"
         let today = ShortDate.currentDate();
 
         if (last == nil) || (last! < today) {
+            var updatedFiles : Array<String> = [];
             let fm = NSFileManager.defaultManager();
-            var files: Array<String>? = fm.contentsOfDirectoryAtPath(MOAssistant.sharedAssistant().resourcesDir,
-                                            error: &error) as? Array<String>;
+            var existingFiles: Array<String>? = fm.contentsOfDirectoryAtPath(MOAssistant.sharedAssistant().resourcesDir,
+                error: &error) as? Array<String>;
 
+            let files = existingFiles! | mandatoryFiles; // Union of all existing and mandatory files.
+
+            // Find a list of all files with potential updates
             // Ensure all mandatory files exist.
-            for fileName in mandatoryFiles {
-                if let index = find(files!, fileName) {
-                    files?.removeAtIndex(index);
-                    updateFile(fileName);
+            for fileName in files {
+                if updateFile(fileName) {
+                    updatedFiles.append(fileName);
                 }
             }
 
-            // Now update all remaining files.
-            for fileName in files! {
-                updateFile(fileName as String);
-            }
-
             defaults.setObject(today.lowDate(), forKey: "remoteFilesLastUpdate");
-            let notification = NSNotification(name: PecuniaResourcesUpdatedNotification, object: nil);
-            NSNotificationCenter.defaultCenter().postNotification(notification);
+            if updatedFiles.count > 0 {
+                let notification = NSNotification(name: RemoteResourceManager.pecuniaResourcesUpdatedNotification,
+                    object: updatedFiles);
+                NSNotificationCenter.defaultCenter().postNotification(notification);
+            }
         }
 
         logLeave();

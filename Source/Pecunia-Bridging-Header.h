@@ -19,11 +19,6 @@
 
 #pragma once
 
-// The (Swift) debugger doesn't like __weak (e.g. when printing variables in the debug view).
-// So disable __weak for Swift to make this work.
-#undef __weak
-#define __weak /* nothing */
-
 #import "AboutWindowController.h"
 #import "Account.h"
 #import "AccountDefController.h"
@@ -195,12 +190,15 @@
 #import "User.h"
 #import "ValueTransformers.h"
 #import "WaitViewController.h"
-#import "WordList.h"
 #import "WorkerThread.h"
 
 // 3rd party
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
+// Objective-Zip
+#import "ARCHelper.h"
 #import "ZipFile.h"
+#import "ZipReadStream.h"
 #import "ZipWriteStream.h"
 #import "ZipException.h"
+#import "FileInZipInfo.h"

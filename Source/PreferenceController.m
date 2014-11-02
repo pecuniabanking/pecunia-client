@@ -313,8 +313,8 @@ static NSDictionary *heightMappings;
         }
     }
     MOAssistant *assistant = [MOAssistant sharedAssistant];
-    encrypt = [assistant encrypted];
-    [self setValue: @([assistant encrypted]) forKey: @"encrypt"];
+    encrypt = assistant.isEncrypted;
+    [self setValue: @(assistant.isEncrypted) forKey: @"encrypt"];
     [dataFileField setStringValue: [assistant dataFilename]];
 
     // Select first tab.
@@ -541,7 +541,7 @@ static NSDictionary *heightMappings;
 
 - (IBAction)openFileLocation: (id)sender
 {
-    [[NSWorkspace sharedWorkspace] openURL: [MOAssistant sharedAssistant].dataDirURL];
+    [NSWorkspace.sharedWorkspace openURL: MOAssistant.sharedAssistant.dataDirURL];
 }
 
 - (IBAction)encryptData: (id)sender

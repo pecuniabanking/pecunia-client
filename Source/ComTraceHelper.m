@@ -65,7 +65,7 @@
     CGFloat contentsScale = NSScreen.mainScreen.backingScaleFactor;
     magnifyButton.layer.contentsScale = contentsScale;
 
-    NSSize size = [images[0] size];
+    NSSize size = [(NSImage *)images[0] size];
     NSRect bounds = NSMakeRect(0, 0, size.width, size.height);
     magnifyButton.layer.bounds = bounds;
 

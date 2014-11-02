@@ -56,7 +56,7 @@ static NSGradient *innerGradientSelected;
     NSRect             drawRect;
     SecurityMethod     secMethod;
 
-    secMethod = [[self objectValue] secMethod];
+    secMethod = [(SigningOption *)self.objectValue secMethod];
 
     if (innerGradient == nil) {
         [self setupDrawStructures];

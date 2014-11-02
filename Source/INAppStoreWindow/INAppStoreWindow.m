@@ -104,6 +104,11 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
     return gradient;
 }
 
+@interface NSView (AppKitDetails)
+  - (void)_addKnownSubview: (NSView *)subview;
+  - (void)_addKnownSubview:(NSView *)aView positioned:(NSWindowOrderingMode)place relativeTo:(NSView *)otherView;
+@end
+
 @interface INAppStoreWindowDelegateProxy : NSProxy <NSWindowDelegate>
 @property (nonatomic, assign) id<NSWindowDelegate> secondaryDelegate;
 @end
@@ -1012,15 +1017,21 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
     INTitlebarContainer *container = [[INTitlebarContainer alloc] initWithFrame:NSZeroRect];
     // Configure the view properties and add it as a subview of the theme frame
     NSView *firstSubview = [[[self themeFrameView] subviews] objectAtIndex:0];
-    [self _recalculateFrameForTitleBarContainer];
-    [[self themeFrameView] addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
-    #if __has_feature(objc_arc)
+
+    // ml:
+    if ([self.themeFrameView respondsToSelector: @selector(_addKnownSubview:positioned:relativeToX:)]) {
+        [self.themeFrameView _addKnownSubview: container positioned: NSWindowBelow relativeTo: firstSubview];
+    } else {
+        [[self themeFrameView] addSubview:container positioned:NSWindowBelow relativeTo:firstSubview];
+    }
+
+#if __has_feature(objc_arc)
     _titleBarContainer = container;
     self.titleBarView = [[INTitlebarView alloc] initWithFrame:NSZeroRect];
-    #else
+#else
     _titleBarContainer = [container autorelease];
     self.titleBarView = [[[INTitlebarView alloc] initWithFrame:NSZeroRect] autorelease];
-    #endif
+#endif
 }
 
 - (void)_hideTitleBarView:(BOOL)hidden
