@@ -3637,6 +3637,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    StatusBarController *sc = [StatusBarController controller];
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
     
@@ -3740,6 +3741,7 @@ static BankingController *bankinControllerInstance;
                             nil, nil
                             );
             for (BankUser *user in [BankUser allUsers]) {
+                [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP820", nil), user.name] removeAfter: 20];
                 [[HBCIController controller] updateSupportedTransactionsForUser: user];
             }
         }

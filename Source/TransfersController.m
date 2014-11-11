@@ -786,7 +786,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     BOOL canBeTerminated =  (type == TransferTypeOldStandard) ||
                             (type == TransferTypeOldStandardScheduled) ||
                             (type == TransferTypeSEPA) ||
-                            (type = TransferTypeSEPAScheduled);
+                            (type == TransferTypeSEPAScheduled);
     
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];

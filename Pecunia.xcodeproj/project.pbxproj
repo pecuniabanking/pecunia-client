@@ -421,7 +421,6 @@
 		277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		277789BD173CE22700430EBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
-		277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2778C24218140027003BF49D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24018140027003BF49D /* gear.png */; };
@@ -787,6 +786,9 @@
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
 		B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */; };
 		B1AB52290DD4F30900327122 /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
+		B1AEE1F41A0826FF001B3E64 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27B435C019E94EAE006FFF3A /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B1AEE1F51A0826FF001B3E64 /* pcsc-ctapi-wrapper.dylib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27B435C119E94EAE006FFF3A /* pcsc-ctapi-wrapper.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B1AEE22E1A0EB1B3001B3E64 /* HBCIServer.jar in Copy HBCIServer */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B1AFA837129479BA00B115A7 /* CategoryReporting.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA836129479BA00B115A7 /* CategoryReporting.xib */; };
 		B1AFA8811295C5D800B115A7 /* CategoryAnalysis.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
@@ -846,17 +848,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		277789C0173CE22700430EBC /* Copy Java */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = ..;
-			dstSubfolderSpec = 7;
-			files = (
-				277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */,
-			);
-			name = "Copy Java";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		277789C2173CE22700430EBC /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -892,6 +883,29 @@
 				2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1AEE1F31A0826D6001B3E64 /* Copy external libs */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = ..;
+			dstSubfolderSpec = 10;
+			files = (
+				B1AEE1F41A0826FF001B3E64 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
+				B1AEE1F51A0826FF001B3E64 /* pcsc-ctapi-wrapper.dylib in Copy external libs */,
+			);
+			name = "Copy external libs";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1AEE22D1A0EB18B001B3E64 /* Copy HBCIServer */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Java;
+			dstSubfolderSpec = 7;
+			files = (
+				B1AEE22E1A0EB1B3001B3E64 /* HBCIServer.jar in Copy HBCIServer */,
+			);
+			name = "Copy HBCIServer";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -2657,9 +2671,10 @@
 				27778873173CE22700430EBC /* Sources */,
 				2777891A173CE22700430EBC /* Resources */,
 				277789B7173CE22700430EBC /* Frameworks */,
-				277789C0173CE22700430EBC /* Copy Java */,
+				B1AEE1F31A0826D6001B3E64 /* Copy external libs */,
 				277789C2173CE22700430EBC /* Copy Frameworks */,
 				277789C6173CE22700430EBC /* ShellScript */,
+				B1AEE22D1A0EB18B001B3E64 /* Copy HBCIServer */,
 			);
 			buildRules = (
 			);
@@ -3168,7 +3183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nif [ $? -ne 0 ]; then\n  echo \"create plugins directory\"\n  mkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns/jre\"\nif [ $? -ne 0 ]; then\n  echo \"copy java runtime\"\n  unzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n";
+			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\ncodesign --entitlements /Users/emmi/Pecunia/Pecunia12/Resources/java.entitlements -s \"3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre/Contents/Home/bin/java\"\n\nfi\n";
 		};
 		B150A17115ADBCC80003DF5B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3689,7 +3704,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -3729,7 +3744,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -3768,7 +3783,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;

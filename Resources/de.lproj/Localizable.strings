@@ -412,6 +412,7 @@ AP816 = "Fehlerbereinigung";
 AP817 = "Erlaubte Geschäftsvorfälle wurden erfolgreich aktualisiert";
 AP818 = "Zwischensalden wurden erfolgreich aktualisiert";
 AP819 = "Umsätze wurden erfolgreich geprüft";
+AP820 = "Geschäftsvorfallsdaten für Bankkennung %@ werden aktualisiert";
 
 // Tags
 // AP850..AP949
