@@ -79,6 +79,7 @@
 @end
 
 @implementation PecuniaPopover
+
 - (IBAction)performClose: (id)sender {
     wantClose = YES;
     [super performClose: sender];

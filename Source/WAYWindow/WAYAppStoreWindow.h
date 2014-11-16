@@ -1,53 +1,34 @@
 //
-//  INAppStoreWindow.h
+//  WAYAppStoreWindow.h
+//  WAYAppStoreWindow
 //
-//  Copyright (c) 2011-2014 Indragie Karunaratne. All rights reserved.
-//  Copyright (c) 2014 Petroules Corporation. All rights reserved.
+//  Created by Raffael Hannemann on 15.11.14.
+//  Copyright (c) 2014 Raffael Hannemann. All rights reserved.
+//  Visit weAreYeah.com or follow @weareYeah for updates.
 //
-//  Licensed under the BSD 2-clause License. See LICENSE file distributed in the source
-//  code of this project.
+//  Licensed under the BSD License <http://www.opensource.org/licenses/bsd-license>
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+//  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+//  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+//  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+//  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+//  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+//  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
+
+// Please note: lots of the following code is copied from INAppStoreWindow by Indragie Karunaratne, et al.
 
 #import <Cocoa/Cocoa.h>
 
-/**
- Height of a small bottom bar of a window. Currently, this is 22 points.
- */
-APPKIT_EXTERN const NSInteger kINAppStoreWindowSmallBottomBarHeight;
-
-/**
- Height of a large bottom bar of a window. Currently, this is 32 points.
- */
-APPKIT_EXTERN const NSInteger kINAppStoreWindowLargeBottomBarHeight;
-
 @class INWindowButton;
 
-/**
- * Draws default style OS X window backgrounds and separators.
+/** This NSWindow subclass allows you to use create NSWindow that provide INAppStoreWindow like capabilities. The class switches between either WAYWindow or INAppStoreWindow at runtime based on the OS version. The way it is done is kind of experimental and currently only basic functionality of the original INAppStoreWindow is supported. Lots of INAppStoreWindow's properties probably do not work. Basically, only the functions that WAYWindow is implementing, are currently supported.
  */
-@interface INWindowBackgroundView : NSView
+@interface WAYAppStoreWindow : NSWindow
 
-@end
-
-/**
- Draws a default style OS X title bar.
- */
-@interface INTitlebarView : INWindowBackgroundView
-
-@end
-
-/**
- Draws a default style OS X bottom bar.
- */
-@interface INBottomBarView : INWindowBackgroundView
-
-@end
-
-/**
- Creates a window similar to the Mac App Store window, with centered traffic lights and an
- enlarged title bar. This does not handle creating the toolbar.
- */
-@interface INAppStoreWindow : NSWindow
+/** Note: The following properties are shamelessly copied from INAppStoreWindow. All credits to the author. We need to copy these properties here in order to get the same ivar layout in the class façade class. Please note that not all of the listed properties have an effect on OS X Yosemite, where WAYWindow will be used internally. */
 
 /**
  Prototype for a block used to implement custom drawing code for a window's title bar or bottom bar.
@@ -66,7 +47,7 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
 
 /**
  Container view for custom views added to the title bar.
-
+ 
  Add subviews to this view that you want to show in the title bar (e.g. buttons, a toolbar, etc.).
  This view can also be set if you want to use a different style title bar from the default one
  (textured, etc.).
@@ -213,7 +194,7 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
 
 /**
  Gradient used to draw the window's bottom bar, when the window is main.
-
+ 
  If this property is \c nil, the system gradient will be used.
  */
 @property (nonatomic, strong) NSGradient *bottomBarGradient;
@@ -221,21 +202,21 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
 /**
  Color of the separator line between a window's title bar and content area,
  when the window is main.
-
+ 
  If this property is \c nil, the default color will be used.
  */
 @property (nonatomic, strong) NSColor *baselineSeparatorColor;
 
 /**
  Color of the window's title text, when the window is main.
-
+ 
  If this property is \c nil, the default color will be used.
  */
 @property (nonatomic, strong) NSColor *titleTextColor;
 
 /**
  Drop shadow under the window's title text, when the window is main.
-
+ 
  If this property is \c nil, the default shadow will be used.
  */
 @property (nonatomic, strong) NSShadow *titleTextShadow;
@@ -249,7 +230,7 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
 
 /**
  Gradient used to draw the window's bottom bar, when the window is not main.
-
+ 
  If this property is \c nil, the system gradient will be used.
  */
 @property (nonatomic, strong) NSGradient *inactiveBottomBarGradient;
@@ -257,21 +238,21 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
 /**
  Color of the separator line between a window's title bar and content area,
  when the window is not main.
-
+ 
  If this property is \c nil, the default color will be used.
  */
 @property (nonatomic, strong) NSColor *inactiveBaselineSeparatorColor;
 
 /**
  Color of the window's title text, when the window is not main.
-
+ 
  If this property is \c nil, the default color will be used.
  */
 @property (nonatomic, strong) NSColor *inactiveTitleTextColor;
 
 /**
  Drop shadow under the window's title text, when the window is not main.
-
+ 
  If this property is \c nil, the default shadow will be used.
  */
 @property (nonatomic, strong) NSShadow *inactiveTitleTextShadow;
@@ -292,53 +273,38 @@ typedef void (^INAppStoreWindowBackgroundDrawingBlock)(BOOL drawsAsMainWindow, C
  */
 @property (nonatomic) BOOL drawsTitlePatternOverlay;
 
-/*!
- Default system gradient used to draw a window's title bar.
- @param drawsAsMainWindow \c YES to return the gradient used when the window is drawn in its main
- state, \c NO to return the color used when the window is inactive.
- 
- @note This gradient is identical to the one used by AppKit in OS X versions 10.7 through 10.9.
- For OS X 10.6 it is currently an approximation.
- */
-+ (NSGradient *)defaultTitleBarGradient:(BOOL)drawsAsMainWindow;
+@end
 
-/*!
- Default system gradient used to draw a window's bottom bar.
- @param drawsAsMainWindow \c YES to return the gradient used when the window is drawn in its main
- state, \c NO to return the color used when the window is inactive.
- */
-+ (NSGradient *)defaultBottomBarGradient:(BOOL)drawsAsMainWindow;
 
-/*!
- Default system color of the separator line between a window's title bar and content area.
- @param drawsAsMainWindow \c YES to return the color used when the window is drawn in its main
- state, \c NO to return the color used when the window is inactive.
- 
- @note This color may be an approximation and is subject to change at any time.
- */
-+ (NSColor *)defaultBaselineSeparatorColor:(BOOL)drawsAsMainWindow;
+@interface WAYAppStoreWindow (WAYWindowAdditionalInterfaces)
 
-/*!
- Default system color of a window's title text.
- @param drawsAsMainWindow \c YES to return the color used when the window is drawn in its main
- state, \c NO to return the color used when the window is inactive.
- 
- @note This color may be an approximation and is subject to change at any time.
- */
-+ (NSColor *)defaultTitleTextColor:(BOOL)drawsAsMainWindow;
+/// Returns YES, if the class supports vibrant appearances. Can be used to determine if running on OS X 10.10+
++ (BOOL) supportsVibrantAppearances;
+/// If set to YES, the title of the window will be hidden.
+@property (nonatomic) IBInspectable BOOL hidesTitle;
 
-/**
- Sets the height of the title bar. By default, this is set to the standard title bar height.
+/// Replaces the window's content view with an instance of NSVisualEffectView and applies the Vibrant Dark look. Transfers all subviews to the new content view.
+- (void) setContentViewAppearanceVibrantDark;
 
- @param adjustWindowFrame Whether to adjust the window frame in response to the change in
- the title bar height. By default, the window frame is adjusted when the title bar height
- is changed.
- */
-- (void)setTitleBarHeight:(CGFloat)titleBarHeight adjustWindowFrame:(BOOL)adjustWindowFrame;
+/// Replaces the window's content view with an instance of NSVisualEffectView and applies the Vibrant Light look. Transfers all subviews to the new content view.
+- (void) setContentViewAppearanceVibrantLight;
 
-/**
- Returns the height of the window's NSToolbar. If the window has no NSToolbar, or if it's not visible, returns 0.
- */
-- (CGFloat)toolbarHeight;
+/// Convenient method to set the NSAppearance of the window to NSAppearanceNameVibrantDark
+- (void) setVibrantDarkAppearance;
+
+/// Convenient method to set the NSAppearance of the window to NSAppearanceNameVibrantLight
+- (void) setVibrantLightAppearance;
+
+/// Convenient method to set the NSAppearance of the window to NSAppearanceNameVibrantAqua
+- (void) setAquaAppearance;
+
+/// Replaces a view of the window subview hierarchy with the specified view, and transfers all current subviews to the new one. The frame of the new view will be set to the frame of the old view, if flag is YES.
+- (void) replaceSubview: (NSView *) aView withView: (NSView *) newView resizing: (BOOL) flag;
+
+/// Replaces a view of the window subview hierarchy with a new view of the specified NSView class, and transfers all current subviews to the new one.
+- (NSView *) replaceSubview: (NSView *) aView withViewOfClass: (Class) newViewClass;
+
+/// Returns YES if the window is currently in full-screen.
+- (BOOL) isFullScreen;
 
 @end

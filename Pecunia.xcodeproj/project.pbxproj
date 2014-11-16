@@ -664,6 +664,10 @@
 		27E12E2F181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E12E30181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
+		27E225781A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
+		27E225791A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
+		27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
+		27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
 		27E23534168A16290050276E /* edit-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23532168A16290050276E /* edit-large.png */; };
 		27E23535168A16290050276E /* edit-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23533168A16290050276E /* edit-large@2x.png */; };
 		27E2353F168A228D0050276E /* csv.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353B168A228D0050276E /* csv.png */; };
@@ -1378,6 +1382,11 @@
 		27E11ECE178B14C500AD350A /* YahooStockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YahooStockData.m; path = "Home Screen/YahooStockData.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27E12E2E181430BA00D114E7 /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
+		27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
+		27E225761A18D78A007171BE /* WAYWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYWindow.h; path = WAYWindow/WAYWindow.h; sourceTree = "<group>"; };
+		27E225771A18D78A007171BE /* WAYWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYWindow.m; path = WAYWindow/WAYWindow.m; sourceTree = "<group>"; };
+		27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYAppStoreWindow.h; path = WAYWindow/WAYAppStoreWindow.h; sourceTree = "<group>"; };
+		27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYAppStoreWindow.m; path = WAYWindow/WAYAppStoreWindow.m; sourceTree = "<group>"; };
 		27E23532168A16290050276E /* edit-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large.png"; sourceTree = "<group>"; };
 		27E23533168A16290050276E /* edit-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large@2x.png"; sourceTree = "<group>"; };
 		27E2353B168A228D0050276E /* csv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = csv.png; sourceTree = "<group>"; };
@@ -1877,6 +1886,7 @@
 		27535FF2186DE337007400BA /* INAppStoreWindow */ = {
 			isa = PBXGroup;
 			children = (
+				27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */,
 				27535FF4186DE337007400BA /* INAppStoreWindow.h */,
 				27535FF5186DE337007400BA /* INAppStoreWindow.m */,
 				27535FF6186DE337007400BA /* INWindowButton.h */,
@@ -2126,6 +2136,7 @@
 				2706F2001556C3BE0011A20E /* OnOffButton */,
 				2736DD531514F6680066917C /* MBTableGrid */,
 				275C07DC1438777900D97415 /* PXListview */,
+				27E225751A18D778007171BE /* WAYWindow */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
 			);
@@ -2190,6 +2201,17 @@
 				27E11ECE178B14C500AD350A /* YahooStockData.m */,
 			);
 			name = "Home Screen";
+			sourceTree = "<group>";
+		};
+		27E225751A18D778007171BE /* WAYWindow */ = {
+			isa = PBXGroup;
+			children = (
+				27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */,
+				27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */,
+				27E225761A18D78A007171BE /* WAYWindow.h */,
+				27E225771A18D78A007171BE /* WAYWindow.m */,
+			);
+			name = WAYWindow;
 			sourceTree = "<group>";
 		};
 		27E5534E146ED854001DE9BE /* Models */ = {
@@ -3703,6 +3725,7 @@
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
 				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
+				27E225791A18D78A007171BE /* WAYWindow.m in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
@@ -3715,6 +3738,7 @@
 				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
+				27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
@@ -3940,6 +3964,7 @@
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
 				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
+				27E225781A18D78A007171BE /* WAYWindow.m in Sources */,
 				275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */,
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
@@ -3952,6 +3977,7 @@
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
+				27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,

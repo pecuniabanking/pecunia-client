@@ -18,11 +18,10 @@
  */
 
 #import "PXListView.h"
-#import "INAppStoreWindow.h"
 
 @class PecuniaListView;
 
-@interface DetailsView : NSView <LIPopoverFirstResponderStealingSuppression>
+@interface DetailsView : NSView
 
 @property (nonatomic, weak) id owner;
 @property (nonatomic, strong) id representedObject;

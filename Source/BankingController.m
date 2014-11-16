@@ -80,7 +80,7 @@
 
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
-#import "INAppStoreWindow.h"
+#import "WAYAppStoreWindow.h"
 #import "JMModalOverlay.h"
 #import "WaitViewController.h"
 
