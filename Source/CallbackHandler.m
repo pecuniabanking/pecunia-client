@@ -37,6 +37,7 @@
 #import "TanSigningOption.h"
 #import "NotificationWindowController.h"
 #import "TanWindow.h"
+#import "ChipcardHandler.h"
 
 static CallbackHandler *callbackHandler = nil;
 
@@ -233,6 +234,7 @@ static CallbackHandler *callbackHandler = nil;
     }
 }
 
+
 - (NSString *)callbackWithData: (CallbackData *)data
 {
     if ([data.command isEqualToString: @"password_load"]) {
@@ -285,6 +287,78 @@ static CallbackHandler *callbackHandler = nil;
     }
     if ([data.command isEqualToString: @"UserIDChanged"]) {
         [self userIDChanged: data];
+    }
+    if ([data.command isEqualToString:@"ctInit"]) {
+        NSString *res = [[ChipcardHandler handler] initializeChipcard:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctReadBankData"]) {
+        NSString *res = [[ChipcardHandler handler] readBankData:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctReadKeyData"]) {
+        NSString *res = [[ChipcardHandler handler] readKeyData:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctEnterPin"]) {
+        if ([[ChipcardHandler handler] enterPin:data.proposal]) {
+            return @"<ok>";
+        } else {
+            return @"<error>";
+        }
+    }
+    if ([data.command isEqualToString:@"ctSaveBankData"]) {
+        if ([[ChipcardHandler handler] saveBankData:data.proposal]) {
+            return @"<ok>";
+        } else {
+            return @"<error>";
+        }
+    }
+    if ([data.command isEqualToString:@"ctSaveSig"]) {
+        if ([[ChipcardHandler handler] saveSigId:data.proposal]) {
+            return @"<ok>";
+        } else {
+            return @"<error>";
+        }
+    }
+    if ([data.command isEqualToString:@"ctSign"]) {
+        NSString *res = [[ChipcardHandler handler] sign:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctEncrypt"]) {
+        NSString *res = [[ChipcardHandler handler] encrypt:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctDecrypt"]) {
+        NSString *res = [[ChipcardHandler handler] decrypt:data.proposal];
+        if (res == nil) {
+            return @"<error>";
+        } else {
+            return res;
+        }
+    }
+    if ([data.command isEqualToString:@"ctClose"]) {
+        [[ChipcardHandler handler] close];
     }
 
     return @"";

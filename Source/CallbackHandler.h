@@ -38,6 +38,7 @@
 @property (nonatomic, strong) NotificationWindowController *notificationController;
 
 
+
 - (void)startSession;
 - (NSString *)getPassword;
 - (void)finishPasswordEntry;

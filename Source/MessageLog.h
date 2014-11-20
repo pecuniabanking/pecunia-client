@@ -64,6 +64,7 @@ typedef enum {
 - (void)registerLogUI: (id<MessageLogUI>)ui;
 - (void)unregisterLogUI: (id<MessageLogUI>)ui;
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
+- (void)addFormat: (NSString *)format withLevel: (LogLevel)level, ...;
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;

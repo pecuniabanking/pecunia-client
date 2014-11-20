@@ -112,6 +112,15 @@
     }
 }
 
+- (void)addFormat: (NSString *)format withLevel: (LogLevel)level, ...
+{
+    va_list args;
+    va_start(args, level);
+    NSString *s = [[NSString alloc] initWithFormat:format arguments:args];
+    [self addMessage:s withLevel:level];
+}
+
+
 - (void)addMessageFromDict: (NSDictionary *)data
 {
     LogLevel level = (LogLevel)[data[@"level"] intValue];
