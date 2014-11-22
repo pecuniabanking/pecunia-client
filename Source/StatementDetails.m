@@ -120,6 +120,7 @@ extern void *UserDefaultsBindingContext;
 
 @property (weak) IBOutlet NSTextField *valueField;
 @property (weak) IBOutlet NSTextField *nassValueField;
+@property (weak) IBOutlet NSTextField *purposeTitle;
 
 @property (weak) IBOutlet AttachmentImageView *attachment1;
 @property (weak) IBOutlet AttachmentImageView *attachment2;
@@ -163,6 +164,8 @@ extern void *UserDefaultsBindingContext;
 
 @synthesize valueField;
 @synthesize nassValueField;
+@synthesize purposeTitle;
+
 @synthesize attachment1;
 @synthesize attachment2;
 @synthesize attachment3;
@@ -204,8 +207,9 @@ extern void *UserDefaultsBindingContext;
                                                name: WordMapping.pecuniaWordsLoadedNotification
                                              object: nil];
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
 
     purposeMapping = SEPAMT94xPurposeParser.purposeCodeMap;
 
@@ -230,10 +234,11 @@ extern void *UserDefaultsBindingContext;
     isReversalIndicator.image = [NSImage imageNamed: @"icon66-1" fromCollection: 1];
 
     [self updateValueColors];
+
 }
 
 - (void)updateDisplayAfterLoading {
-    [self updateCaseDependentText];
+    [self updateCaseDependentTextInDetails: self.sepaDetails];
 }
 
 - (void)updateValueColors {
@@ -425,13 +430,36 @@ extern void *UserDefaultsBindingContext;
 /**
  * Update text fields that depend on proper casing.
  */
-- (void)updateCaseDependentText {
+- (void)updateCaseDependentTextInDetails: (NSMutableDictionary *)details {
     StatCatAssignment *assignment = self.representedObject;
     BankStatement     *statement = assignment.statement;
-    NSString          *transactionText = statement.transactionText;
-    if (transactionText.length > 0) {
-        self.sepaDetails[@"PURP"] = transactionText.stringWithNaturalText;
+
+    BOOL isCreditCardStatement = statement.type.intValue == StatementType_CreditCard;
+    BOOL autoCasing = [NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"];
+
+    NSString *detailedPurpose = purposeMapping[statement.sepa.purposeCode]; // Covers unknown codes.
+    if (detailedPurpose.length > 0) {
+        details[@"PURP"] = detailedPurpose;
+    } else {
+        NSString *transactionText = statement.transactionText;
+        if (transactionText.length > 0) {
+            details[@"PURP"] = autoCasing ? transactionText.stringWithNaturalText : transactionText;
+        } else {
+            if (isCreditCardStatement) {
+                details[@"PURP"] = NSLocalizedString(@"AP131", nil);
+            } else {
+                details[@"PURP"] = NSLocalizedString(@"AP130", nil);
+            }
+        }
     }
+
+    if (statement.sepa.purpose != nil) {
+        details[@"description"] = statement.sepa.purpose;
+    } else {
+        details[@"description"] = statement.purpose == nil ? @"" : statement.purpose;
+    }
+
+    self.sepaDetails = details;
 }
 
 - (void)addDateField: (NSString *)name
@@ -480,27 +508,7 @@ extern void *UserDefaultsBindingContext;
     BOOL isCreditCardStatement = statement.type.intValue == StatementType_CreditCard;
 
     NSMutableDictionary *details = [NSMutableDictionary new];
-    NSString            *detailedPurpose = purposeMapping[statement.sepa.purposeCode]; // Covers unknown codes.
-    if (detailedPurpose.length > 0) {
-        details[@"PURP"] = detailedPurpose;
-    } else {
-        NSString *transactionText = statement.transactionText;
-        if (transactionText.length > 0) {
-            details[@"PURP"] = transactionText.stringWithNaturalText;
-        } else {
-            if (isCreditCardStatement) {
-                details[@"PURP"] = NSLocalizedString(@"AP131", nil);
-            } else {
-                details[@"PURP"] = NSLocalizedString(@"AP130", nil);
-            }
-        }
-    }
-
-    if (statement.sepa.purpose != nil) {
-        details[@"description"] = statement.sepa.purpose;
-    } else {
-        details[@"description"] = statement.purpose == nil ? @"" : statement.purpose;
-    }
+    [self updateCaseDependentTextInDetails: (NSMutableDictionary *)details];
 
     [verticalConstraintValueCurrency.animator setConstant: statement.isAssigned.boolValue ? 15: 39];
 
@@ -692,6 +700,12 @@ extern void *UserDefaultsBindingContext;
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateValueColors];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            [self updateCaseDependentTextInDetails: self.sepaDetails];
+            [purposeTitle display];
             return;
         }
 

@@ -21,26 +21,54 @@
 #import "WAYWindow.h"
 
 @interface WAYWindowDelegateProxy : NSProxy <NSWindowDelegate>
-@property (nonatomic, assign) id<NSWindowDelegate> secondaryDelegate;
-@property (nonatomic, assign) WAYWindow *owner;
-
-- (NSMethodSignature *)methodSignatureForSelector: (SEL)sel;
-- (void)forwardInvocation:(NSInvocation *)invocation;
-
+@property (nonatomic, weak) id<NSWindowDelegate> secondaryDelegate;
+@property (nonatomic, weak) id<NSWindowDelegate> firstDelegate;
 @end
 
+/** Since the window needs to update itself at specific events, e.g., windowDidResize:;, we need to set the window as its own delegate. To allow proper window delegates as usual, we need to make use of a proxy object, which forwards all method invovations first to the WAYWindow instance, and then to the real delegate. */
+#pragma mark - WAYWindowDelegateProxy
 @implementation WAYWindowDelegateProxy
 
-- (NSMethodSignature *)methodSignatureForSelector: (SEL)sel {
-    return [_owner methodSignatureForSelector: sel];
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+	NSMethodSignature *signature = [[self.firstDelegate class] instanceMethodSignatureForSelector:selector];
+	if (!signature) {
+		signature = [[self.secondaryDelegate class] instanceMethodSignatureForSelector:selector];
+		if (!signature) {
+			signature = [super methodSignatureForSelector:selector];
+		}
+	}
+	return signature;
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation {
-    [invocation invokeWithTarget: _owner];
+- (BOOL)respondsToSelector:(SEL)aSelector {
+	if (aSelector==@selector(windowDidResize:)) {
+		return YES;
+	} else if ([self.secondaryDelegate respondsToSelector:aSelector]) {
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+	if ([self.firstDelegate respondsToSelector:anInvocation.selector]) {
+		[anInvocation invokeWithTarget:self.firstDelegate];
+	}
+	if ([self.secondaryDelegate respondsToSelector:anInvocation.selector]) {
+		[anInvocation invokeWithTarget:self.secondaryDelegate];
+	}
+}
+
+- (BOOL)isKindOfClass:(Class)aClass {
+	if (self.secondaryDelegate) {
+		return [self.secondaryDelegate isKindOfClass:aClass];
+	}
+	return NO;
+}
 @end
 
+
+#pragma mark - WAYWindow
 @interface WAYWindow () <NSWindowDelegate>
 @property (strong) WAYWindowDelegateProxy* delegateProxy;
 @property (strong) NSArray* standardButtons;
@@ -67,20 +95,21 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
 	if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag])) {
-		[self setUp];
+		[self _setUp];
 	}
 	return self;
 }
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag screen:(NSScreen *)screen {
 	if ((self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag screen:screen])) {
-		[self setUp];
+		[self _setUp];
 	}
 	return self;
 }
 
 - (void) setDelegate:(id<NSWindowDelegate>)delegate {
 	[_delegateProxy setSecondaryDelegate:delegate];
+	[super setDelegate:nil];
 	[super setDelegate:_delegateProxy];
 }
 
@@ -90,7 +119,17 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 
 - (void) setFrame:(NSRect)frameRect display:(BOOL)flag {
 	[super setFrame:frameRect display:flag];
-	[self setNeedsLayout];
+	[self _setNeedsLayout];
+}
+
+- (void) restoreStateWithCoder:(NSCoder *)coder {
+	[super restoreStateWithCoder:coder];
+	[self _setNeedsLayout];
+}
+
+- (void) orderFront:(id)sender {
+	[super orderFront:sender];
+	[self _setNeedsLayout];
 }
 
 #pragma mark - Public
@@ -101,10 +140,15 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 
 - (void) setCenterTrafficLightButtons:(BOOL)centerTrafficLightButtons {
 	_centerTrafficLightButtons = centerTrafficLightButtons;
-	[self setNeedsLayout];
+	[self _setNeedsLayout];
 }
 
 - (void) setTitleBarHeight:(CGFloat)titleBarHeight {
+
+	titleBarHeight = MAX(titleBarHeight,[[self class] defaultTitleBarHeight]);
+	CGFloat delta = titleBarHeight - _titleBarHeight;
+	_titleBarHeight = titleBarHeight;
+	
 	if (_dummyTitlebarAccessoryViewController) {
 		[self removeTitlebarAccessoryViewControllerAtIndex:0];
 	}
@@ -113,6 +157,13 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 	_dummyTitlebarAccessoryViewController = [NSTitlebarAccessoryViewController new];
 	_dummyTitlebarAccessoryViewController.view = view;
 	[self addTitlebarAccessoryViewController:_dummyTitlebarAccessoryViewController];
+	
+	NSRect frame = self.frame;
+	frame.size.height += delta;
+	frame.origin.y -= delta;
+	
+	[self _setNeedsLayout];
+	[self setFrame:frame display:NO]; // NO is important.
 }
 
 - (void) setHidesTitle:(BOOL)hidesTitle {
@@ -162,7 +213,10 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 	[aView.subviews.copy enumerateObjectsUsingBlock:^(NSView *subview, NSUInteger idx, BOOL *stop) {
 		NSRect frame = subview.frame;
 		if (subview.constraints.count>0) {
-			NSLog(@"WARNING: [%@ %@] does not work yet with NSView instances, that use auto-layout.", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+			// Note: so far, constraint based contentView subviews are not supported yet
+			NSLog(@"WARNING: [%@ %@] does not work yet with NSView instances, that use auto-layout.",
+				  NSStringFromClass([self class]),
+				  NSStringFromSelector(_cmd));
 		}
 		[subview removeFromSuperview];
 		[newView addSubview:subview];
@@ -174,7 +228,7 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 	} else {
 		[aView.superview replaceSubview:aView with:newView];
 	}
-	[self setNeedsLayout];
+	[self _setNeedsLayout];
 }
 
 - (NSView *) replaceSubview:(NSView *)aView withViewOfClass:(Class)newViewClass {
@@ -185,9 +239,11 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 
 #pragma mark - Private
 
-- (void) setUp {
+- (void) _setUp {
 	_delegateProxy = [WAYWindowDelegateProxy alloc];
-    _delegateProxy.owner = self;
+	_delegateProxy.firstDelegate = self;
+	super.delegate = _delegateProxy;
+	
 	_standardButtons = @[[self standardWindowButton:NSWindowCloseButton],
 						 [self standardWindowButton:NSWindowMiniaturizeButton],
 						 [self standardWindowButton:NSWindowZoomButton]];
@@ -200,29 +256,33 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 	self.styleMask |= NSFullSizeContentViewWindowMask;
 	_trafficLightButtonsLeftMargin = kWAYWindowDefaultTrafficLightButtonsLeftMargin;
 	
+	self.hidesTitle = YES;
+	
 	[super setDelegate:self];
-	[self setNeedsLayout];
+	[self _setNeedsLayout];
 }
 
-- (void) setNeedsLayout {
+- (void) _setNeedsLayout {
 	[_standardButtons enumerateObjectsUsingBlock:^(NSButton *standardButton, NSUInteger idx, BOOL *stop) {
 		NSRect frame = standardButton.frame;
-		if (_centerTrafficLightButtons) frame.origin.y = NSHeight(standardButton.superview.frame)/2-NSHeight(standardButton.frame)/2;
-		else frame.origin.y = NSHeight(standardButton.superview.frame)-NSHeight(standardButton.frame)-kWAYWindowDefaultTrafficLightButtonsTopMargin;
+		if (_centerTrafficLightButtons)
+			frame.origin.y = NSHeight(standardButton.superview.frame)/2-NSHeight(standardButton.frame)/2;
+		else
+			frame.origin.y = NSHeight(standardButton.superview.frame)-NSHeight(standardButton.frame)-kWAYWindowDefaultTrafficLightButtonsTopMargin;
 		
 		frame.origin.x = _trafficLightButtonsLeftMargin +idx*(NSWidth(frame) + 6);
 		[standardButton setFrame:frame];
 	}];
 }
 
+- (void)setCenterFullScreenButton: (BOOL)value {
+
+}
+
 #pragma mark - NSWindow Delegate
 
 - (void) windowDidResize:(NSNotification *)notification {
-	[self setNeedsLayout];
-}
-
-- (void)setCenterFullScreenButton: (BOOL)center {
-    // Ignore. Just a dummy to make WAYAppStoreWindow working.
+	[self _setNeedsLayout];
 }
 
 @end

@@ -32,19 +32,19 @@
 /// Returns YES, if the class supports vibrant appearances. Can be used to determine if running on OS X 10.10+
 + (BOOL) supportsVibrantAppearances;
 
-/// Defines the window's titlebar height.
+/// Defines the window's titlebar height. Defaut: OS X default value.
 @property (nonatomic) IBInspectable CGFloat titleBarHeight;
 
 //// Returns the titlebar view of the window, which you can add arbitrary subviews to.
 @property (strong,readonly) NSView *titleBarView;
 
-/// If set to YES, the standard window button will be vertically centered.
+/// If set to YES, the standard window button will be vertically centered. Default: YES.
 @property (nonatomic) IBInspectable BOOL centerTrafficLightButtons;
 
-/// Defines the left margin of the standard window buttons
+/// Defines the left margin of the standard window buttons. Defaut: OS X default value.
 @property (nonatomic) IBInspectable CGFloat trafficLightButtonsLeftMargin;
 
-/// If set to YES, the title of the window will be hidden.
+/// If set to YES, the title of the window will be hidden. Default: YES.
 @property (nonatomic) IBInspectable BOOL hidesTitle;
 
 /// Replaces the window's content view with an instance of NSVisualEffectView and applies the Vibrant Dark look. Transfers all subviews to the new content view.
