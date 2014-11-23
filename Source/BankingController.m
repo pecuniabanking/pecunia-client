@@ -806,7 +806,9 @@ static BankingController *bankinControllerInstance;
 - (IBAction)enqueueRequest: (id)sender
 {
     if ((NSEvent.modifierFlags & NSAlternateKeyMask) != 0) {
-        [self synchronizeAccount: self.currentSelection];
+        if ([self.currentSelection isBankAccount]) {
+            [self synchronizeAccount: self.currentSelection];
+        }
     } else {
         [self synchronizeAccount: Category.bankRoot];
     }
@@ -2616,9 +2618,11 @@ static BankingController *bankinControllerInstance;
     if (idx == 0) {
         Category *cat = [self currentSelection];
         if (cat == nil || [cat accountNumber] == nil) {
+            /*
             if ([item action] == @selector(enqueueRequest:)) {
                 return NO;
             }
+            */
             if ([item action] == @selector(changeAccount:)) {
                 return NO;
             }

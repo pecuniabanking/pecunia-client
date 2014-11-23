@@ -1062,16 +1062,16 @@ NSString * escapeSpecial(NSString *s)
     
     BankQueryResult *result;
     
-    //[self startProgress];
-    
     result = resultList.firstObject;
     if (result == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     
     // if it's a chipcard account, notify user to make sure right chipcard is inserted
     BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
     if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     if (user.secMethod.intValue == SecMethod_DDV) {
@@ -1085,6 +1085,7 @@ NSString * escapeSpecial(NSString *s)
     // register user
     user = [self getBankUserForId:result.userId bankCode:result.bankCode];
     if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     
@@ -1119,7 +1120,6 @@ NSString * escapeSpecial(NSString *s)
         [cmd appendString: @"</accinfo>"];
     }
     [cmd appendString: @"</accinfolist></command>"];
-    //[self startProgress ];
     [bridge asyncCommand: cmd sender: self];
 }
 
@@ -1249,12 +1249,14 @@ NSString * escapeSpecial(NSString *s)
     
     BankQueryResult *result = resultList.firstObject;
     if (result == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     
     // if it's a chipcard account, notify user to make sure right chipcard is inserted
     BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
     if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     if (user.secMethod.intValue == SecMethod_DDV) {
@@ -1268,6 +1270,7 @@ NSString * escapeSpecial(NSString *s)
     // register user
     user = [self getBankUserForId:result.userId bankCode:result.bankCode];
     if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     
