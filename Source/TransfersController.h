@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 #import "Transfer.h"
 #import "TransfersListview.h"
 #import "TransferTemplatesListview.h"
@@ -36,12 +34,7 @@
 @class TimeSliceManager;
 @class ShadowedTextField;
 
-@interface TransferTemplateDragDestination : NSView
-{
-@private
-    BOOL     formularVisible;
-    NSString *currentDragDataType;
-}
+@interface TransferTemplateDragDestination : NSView <NSDraggingDestination>
 
 @property (nonatomic, weak) TransfersController *controller;
 

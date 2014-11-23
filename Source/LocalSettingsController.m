@@ -49,6 +49,7 @@
     return singleton;
 }
 
+#pragma GCC diagnostic ignored "-Wobjc-designated-initializers"
 - (id)init
 {
     return self;
@@ -70,7 +71,7 @@
  */
 - (id)valueForKey: (id)aKey
 {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
                                                          inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
@@ -113,7 +114,7 @@
 {
     [self willChangeValueForKey: aKey];
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
                                                          inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];

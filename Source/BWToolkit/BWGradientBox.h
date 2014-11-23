@@ -22,5 +22,5 @@
 @property (nonatomic, assign) BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 
 @property (nonatomic, assign) float cornerRadius;
-@property (nonatomic, strong) NSShadow *shadow;
+@property (copy) NSShadow *shadow;
 @end

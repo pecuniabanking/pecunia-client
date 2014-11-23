@@ -324,7 +324,7 @@
         importValues = [NSMutableArray arrayWithCapacity: 10];
         textFont = [NSFont fontWithName: @"AndaleMono" size: 11];
 
-        managedObjectContext = MOAssistant.assistant.context; // For the accounts list.
+        managedObjectContext = MOAssistant.sharedAssistant.context; // For the accounts list.
         fileNames = [NSMutableSet setWithCapacity: 10];
     }
     return self;
@@ -492,7 +492,7 @@
 
 - (void)updateSettingsController {
     NSError *error = nil;
-    NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath: MOAssistant.assistant.importerDir
+    NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath: MOAssistant.sharedAssistant.importerDir
                                                                        error: &error];
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -509,7 +509,7 @@
     if (names.count == 0) {
         // Create a default setting if none are stored yet.
         [names addObject: NSLocalizedString(@"AP621", nil)];
-        NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, NSLocalizedString(@"AP621", nil)];
+        NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.sharedAssistant.importerDir, NSLocalizedString(@"AP621", nil)];
         currentSettings = importSettingsController.content;
         currentSettings.fileName = fileName;
         currentSettings.isDirty = YES;
@@ -635,7 +635,7 @@
         return;
     }
 
-    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingName];
+    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.sharedAssistant.importerDir, settingName];
     currentSettings = [NSKeyedUnarchiver unarchiveObjectWithFile: fileName];
     if (currentSettings == nil) {
         LogWarning(@"Import settings file not found: %@", fileName);
@@ -922,7 +922,7 @@
     BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber
                                                 subNumber: currentSettings.accountSuffix
                                                  bankCode: currentSettings.bankCode];
-    NSManagedObjectContext *context = MOAssistant.assistant.memContext;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.memContext;
 
     BOOL customDateRange = processingSheet->dateRadioGroup.selectedColumn == 1;
     ShortDate *fromDate = [ShortDate dateWithDate: processingSheet->fromDatePicker.dateValue];
@@ -1107,7 +1107,7 @@
         if (returnCode == NSRunStoppedResponse) {
             [importSettingsController commitEditing];
 
-            NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingsNameField.stringValue];
+            NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.sharedAssistant.importerDir, settingsNameField.stringValue];
 
             // Check if file already exists and issue warning.
             if ([[NSFileManager defaultManager] fileExistsAtPath: fileName]) {
@@ -1165,7 +1165,7 @@
         return;
     }
 
-    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingName];
+    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.sharedAssistant.importerDir, settingName];
 
     int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", nil),
                                       NSLocalizedString(@"AP623", nil),
@@ -1239,7 +1239,7 @@
     willDisplayCell: (id)cell
      forTableColumn: (NSTableColumn *)tableColumn
                item: (id)item {
-    [cell setImage: [[item representedObject] icon]];
+    [cell setImage: [(FileEntry *)[item representedObject] icon]];
 }
 
 - (void)outlineViewSelectionDidChange: (NSNotification *)aNotification {

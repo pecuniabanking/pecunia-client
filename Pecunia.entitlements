@@ -16,5 +16,7 @@
 	<array>
 		<string>/private/var/run/pcscd.pub</string>
 	</array>
+	<key>com.apple.security.smartcard</key>
+	<true/>
 </dict>
 </plist>

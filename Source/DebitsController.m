@@ -50,8 +50,8 @@ extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
 
-NSString *const DebitPredefinedTemplateDataType = @"DebitPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
-NSString *const DebitDataType = @"DebitDataType"; // For dragging an existing debit (sent or not).
+NSString *const DebitPredefinedTemplateDataType = @"pecuina.DebitPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
+NSString *const DebitDataType = @"pecunia.DebitDataType"; // For dragging an existing debit (sent or not).
 extern NSString *DebitReadyForUseDataType;        // For dragging an edited transfer.
 
 @interface DeleteDebitTargetView : NSImageView
@@ -148,6 +148,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         location.x = 0;
         location.y = 0;
 
+        /* See AttachmentImageView.m how to do it now.
         [self dragImage: [self image]
                      at: location
                  offset: NSZeroSize
@@ -155,6 +156,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
              pasteboard: pasteBoard
                  source: self
               slideBack: YES];
+         */
     }
 }
 
@@ -329,7 +331,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
     NSArray *acceptedTypes = @[@(TransferTypeDebit), @(TransferTypeCollectiveDebit)];
 
-    pendingDebits.managedObjectContext = MOAssistant.assistant.context;
+    pendingDebits.managedObjectContext = MOAssistant.sharedAssistant.context;
     pendingDebits.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
                                      acceptedTypes, TransferChangeUnchanged];
 
@@ -340,10 +342,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     [pendingDebits bind: @"selectionIndexes" toObject: pendingDebitsListView withKeyPath: @"selectedRows" options: nil];
     [pendingDebitsListView bind: @"selectedRows" toObject: pendingDebits withKeyPath: @"selectionIndexes" options: nil];
 
-    finishedDebits.managedObjectContext = MOAssistant.assistant.context;
+    finishedDebits.managedObjectContext = MOAssistant.sharedAssistant.context;
     finishedDebits.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
 
-    [transactionController setManagedObjectContext: MOAssistant.assistant.context];
+    [transactionController setManagedObjectContext: MOAssistant.sharedAssistant.context];
 
     // Sort transfer list views by date (newest first).
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
@@ -417,7 +419,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
     NSMenu *sourceMenu = [targetAccountSelector menu];
 
-    Category         *category = [Category bankRoot];
+    BankingCategory         *category = [BankingCategory bankRoot];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sortDescriptors = @[sortDescriptor];
     NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
@@ -425,7 +427,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
     NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    Category     *currentInstitute;
+    BankingCategory     *currentInstitute;
     NSInteger    selectedItem = 1; // By default the first entry after the first institute entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
@@ -435,7 +437,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
         NSEnumerator   *accountEnumerator = [accounts objectEnumerator];
-        Category       *currentAccount;
+        BankingCategory       *currentAccount;
 
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
@@ -673,7 +675,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == DebitReadyForUseDataType) {
         if ([transactionController finishCurrentTransferValidatingValue: NO]) {
@@ -726,7 +728,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == DebitReadyForUseDataType) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
@@ -816,7 +818,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return YES;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData  *data = [pasteboard dataForType: type];
     NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -883,7 +885,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     // A previous check has been performed already to ensure only one entry was dragged.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSData            *data = [pasteboard dataForType: type];
     NSArray           *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -996,7 +998,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
         if (![context save: &error]) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
@@ -1070,7 +1072,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return;
     }
 
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
                               NSLocalizedString(@"AP419", nil),
@@ -1187,7 +1189,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];

@@ -28,7 +28,7 @@
 - (id)initWithAccount: (BankAccount *)acc
 {
     self = [super initWithWindowNibName: @"PurposeSplitWindow"];
-    context = [[MOAssistant assistant] context];
+    context = [[MOAssistant sharedAssistant] context];
     account = acc;
     processConvertedStats = YES;
     

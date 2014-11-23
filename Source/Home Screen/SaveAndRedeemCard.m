@@ -19,7 +19,7 @@
 
 #import <CorePlot/CorePlot.h>
 
-#import "Category.h"
+#import "BankingCategory.h"
 #import "ShortDate.h"
 #import "SaveAndRedeemCard.h"
 

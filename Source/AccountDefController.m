@@ -35,7 +35,7 @@
 - (id)init
 {
     self = [super initWithWindowNibName: @"AccountCreate"];
-    moc = [[MOAssistant assistant] memContext];
+    moc = [[MOAssistant sharedAssistant] memContext];
 
     account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
     account.currency = @"EUR";
@@ -166,7 +166,7 @@
     if (![self check]) {
         return;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     BankUser *user = nil;
     int      idx = [dropDown indexOfSelectedItem];
@@ -177,7 +177,7 @@
     // account is new - create entity in productive context
     BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode];
     if (bankRoot == nil) {
-        Category *root = [Category bankRoot];
+        BankingCategory *root = [BankingCategory bankRoot];
         if (root != nil) {
             // create root for bank
             bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: context];

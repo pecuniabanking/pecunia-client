@@ -18,7 +18,7 @@
  */
 
 #import "CategoryView.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 #import "BankingController.h"
 #import "HBCIController.h"
@@ -30,34 +30,33 @@
 
 @synthesize saveCatName;
 
-- (NSMenu *)menuForEvent: (NSEvent *)theEvent
-{
+- (NSMenu *)menuForEvent: (NSEvent *)theEvent {
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
-    int row = [self rowAtPoint: location];
+    int     row = [self rowAtPoint: location];
     if (row < 0) {
         return nil;
     }
     [self selectRowIndexes: [NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
 
-    NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Category Context menu"];
-    Category *category = [[self itemAtRow: row] representedObject];
+    NSMenu          *menu = [[NSMenu alloc] initWithTitle: @"Category Context menu"];
+    BankingCategory *category = [[self itemAtRow: row] representedObject];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
     titleAttributes[NSFontAttributeName] = [NSFont fontWithName: PreferenceController.mainFontNameMedium
-                                                      size: 14];
+                                                           size: 14];
     titleAttributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedRed: 0.177
-                                                                           green: 0.413
-                                                                            blue: 0.809
-                                                                           alpha: 1.000];
+                                                                                green: 0.413
+                                                                                 blue: 0.809
+                                                                                alpha: 1.000];
     if (category.isBankAccount) {
         BankAccount *account = (id)category;
-        NSMenuItem *item = [menu addItemWithTitle: @""
-                                           action: nil
-                                    keyEquivalent: @""];
+        NSMenuItem  *item = [menu addItemWithTitle: @""
+                                            action: nil
+                                     keyEquivalent: @""];
         item.attributedTitle = [[NSAttributedString alloc] initWithString: category.localName
                                                                attributes: titleAttributes];
 
-        if (category == Category.bankRoot) {
+        if (category == BankingCategory.bankRoot) {
             item = [menu addItemWithTitle: NSLocalizedString(@"AP228", nil)
                                    action: category.canSynchronize ? @selector(synchronizeAccount:) : nil
                             keyEquivalent: @""];
@@ -163,72 +162,69 @@
 - (void)synchronizeAccount: (id)sender {
     id item = [self itemAtRow: self.selectedRow];
     if ([self.delegate respondsToSelector: @selector(synchronizeAccount:)]) {
-        [(id)self.delegate synchronizeAccount: [item representedObject]];
+        [(id)self.delegate synchronizeAccount : [item representedObject]];
     }
 }
 
 - (void)editCategory: (id)sender {
     if ([self.delegate respondsToSelector: @selector(showProperties:)]) {
-        [(id)self.delegate showProperties: sender];
+        [(id)self.delegate showProperties : sender];
     }
 }
 
 - (void)startTransfer: (id)sender {
-    id item = [self itemAtRow: self.selectedRow];
+    id          item = [self itemAtRow: self.selectedRow];
     BankAccount *account = [item representedObject];
     if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
         if ([self.delegate respondsToSelector: @selector(startSepaTransfer:)]) {
-            [(id)self.delegate startSepaTransfer: sender];
+            [(id)self.delegate startSepaTransfer : sender];
         }
     } else {
         if ([self.delegate respondsToSelector: @selector(startInternalTransfer:)]) {
-            [(id)self.delegate startInternalTransfer: sender];
+            [(id)self.delegate startInternalTransfer : sender];
         }
     }
 }
 
 - (void)getCreditCardSettlements: (id)sender {
     if ([self.delegate respondsToSelector: @selector(creditCardSettlements:)]) {
-        [(id)self.delegate creditCardSettlements: sender];
+        [(id)self.delegate creditCardSettlements : sender];
     }
 }
 
 - (void)createAccount: (id)sender {
     if ([self.delegate respondsToSelector: @selector(addAccount:)]) {
-        [(id)self.delegate addAccount: sender];
+        [(id)self.delegate addAccount : sender];
     }
 }
 
 - (void)deleteAccount: (id)sender {
     if ([self.delegate respondsToSelector: @selector(deleteAccount:)]) {
-        [(id)self.delegate deleteAccount: sender];
+        [(id)self.delegate deleteAccount : sender];
     }
 }
 
 - (void)createCategory: (id)sender {
     if ([self.delegate respondsToSelector: @selector(insertCategory:)]) {
-        [(id)self.delegate insertCategory: sender];
+        [(id)self.delegate insertCategory : sender];
     }
 }
 
 - (void)deleteCategory: (id)sender {
     if ([self.delegate respondsToSelector: @selector(deleteCategory:)]) {
-        [(id)self.delegate deleteCategory: sender];
+        [(id)self.delegate deleteCategory : sender];
     }
 }
 
-- (void)editSelectedCell
-{
+- (void)editSelectedCell {
     [self editColumn: 0 row: [self selectedRow] withEvent: nil select: YES];
 }
 
-- (void)highlightSelectionInClipRect: (NSRect)rect
-{
+- (void)highlightSelectionInClipRect: (NSRect)rect {
     // Stop the outline from drawing a selection background. We do that in the image cell.
 }
 
-- (void)cancelOperation: (id)sender
-{
+- (void)cancelOperation: (id)sender {
     if ([self currentEditor] != nil) {
         [self abortEditing];
         [[self window] makeFirstResponder: self];

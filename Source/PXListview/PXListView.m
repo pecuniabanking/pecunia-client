@@ -78,7 +78,8 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	_reusableCells = nil;
 	_visibleCells = nil;
 	_selectedRows = nil;
-	
+
+    free(_cellYOffsets);
 }
 
 #pragma mark -
@@ -485,15 +486,17 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (NSRect)contentViewRect
 {
+    /*
 	NSRect frame = [self frame];
 	NSSize frameSize = NSMakeSize(NSWidth(frame), NSHeight(frame));
 	BOOL hasVertScroller = NSHeight(frame) < _totalHeight;
-	NSSize availableSize = [[self class] contentSizeForFrameSize:frameSize
+    NSSize availableSize = [[self class] contentSizeForFrameSize:frameSize
 										   hasHorizontalScroller:NO
 											 hasVerticalScroller:hasVertScroller
-													  borderType:[self borderType]];
-	
-	return NSMakeRect(0.0f, 0.0f, availableSize.width, availableSize.height);
+                            borderType:[self borderType]];
+	*/
+    //return NSMakeRect(0.0f, 0.0f, availableSize.width, availableSize.height);
+    return NSMakeRect(0, 0, self.contentSize.width, self.contentSize.height);
 }
 
 - (NSRect)rectOfRow:(NSUInteger)row

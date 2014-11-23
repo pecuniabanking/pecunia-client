@@ -602,7 +602,7 @@
 - (NSImage *)_cellSelectionCursorImage
 {
 	NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(20, 20)];
-	[image setFlipped:YES];
+    //[image setFlipped:YES];
 	[image lockFocus];
 	
 	NSRect horizontalInner = NSMakeRect(7.0, 2.0, 2.0, 12.0);

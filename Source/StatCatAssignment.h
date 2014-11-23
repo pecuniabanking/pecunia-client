@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Category;
+@class BankingCategory;
 @class BankStatement;
 
 @interface StatCatAssignment : NSManagedObject {
@@ -27,14 +27,14 @@
 
 @property (nonatomic) NSString                *userInfo;
 @property (nonatomic, strong) NSDecimalNumber *value;
-@property (nonatomic) Category                *category;
+@property (nonatomic) BankingCategory                *category;
 @property (nonatomic, strong) BankStatement   *statement;
 
 - (NSString *)stringForFields: (NSArray *)fields
            usingDateFormatter: (NSDateFormatter *)dateFormatter
               numberFormatter: (NSNumberFormatter *)numberFormatter;
-- (void)moveToCategory: (Category *)targetCategory;
-- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo:(NSString*)info;
+- (void)moveToCategory: (BankingCategory *)targetCategory;
+- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (BankingCategory *)tcat withInfo:(NSString*)info;
 - (void)remove;
 
 + (void)removeAssignments: (NSArray *)assignments;
@@ -46,7 +46,7 @@
 
 @interface StatCatAssignment (CoreDataGeneratedPrimitiveAccessors)
 
-- (Category *)primitiveCategory;
-- (void)setPrimitiveCategory: (Category *)value;
+- (BankingCategory *)primitiveCategory;
+- (void)setPrimitiveCategory: (BankingCategory *)value;
 
 @end

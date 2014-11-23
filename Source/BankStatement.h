@@ -21,7 +21,7 @@
 
 @class BankAccount;
 @class ClassificationContext;
-@class Category;
+@class BankingCategory;
 @class StatCatAssignment;
 @class SepaData;
 
@@ -38,8 +38,8 @@ typedef enum {
 
 - (NSComparisonResult)compareValuta: (BankStatement *)stat;
 
-- (void)assignToCategory: (Category *)cat;
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo:(NSString *)info;
+- (void)assignToCategory: (BankingCategory *)cat;
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (BankingCategory *)targetCategory withInfo:(NSString *)info;
 - (BOOL)updateAssigned;
 - (BOOL)hasAssignment;
 - (NSDecimalNumber *)residualAmount;

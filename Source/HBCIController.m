@@ -150,7 +150,7 @@ static HBCIController *controller = nil;
 - (PecuniaError *)initalizeHBCI
 {
     PecuniaError *error = nil;
-    NSString     *ppDir = [[MOAssistant assistant] passportDirectory];
+    NSString     *ppDir = [[MOAssistant sharedAssistant] passportDirectory];
     NSString     *bundlePath = [[NSBundle mainBundle] bundlePath];
     NSString     *libPath = [bundlePath stringByAppendingString: @"/Contents/"];
 
@@ -336,7 +336,7 @@ static HBCIController *controller = nil;
 
 - (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, tt];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
@@ -357,7 +357,7 @@ static HBCIController *controller = nil;
 
 - (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND type = %d", user, tt];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
@@ -434,7 +434,7 @@ static HBCIController *controller = nil;
 
 - (TransactionLimits *)getLimitsForJob: (NSString *)jobName account: (BankAccount *)account
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     TransactionLimits      *limits = nil;
 
     if (account == nil) {
@@ -1323,7 +1323,7 @@ static HBCIController *controller = nil;
 - (PecuniaError *)sendStandingOrders: (NSArray *)orders
 {
     PecuniaError           *err = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     NSMutableDictionary *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
 
@@ -1429,11 +1429,11 @@ static HBCIController *controller = nil;
 
 - (BankAccount *)getBankNodeWithAccount: (Account *)acc inAccounts: (NSMutableArray *)bankAccounts
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     BankAccount            *bankNode = [BankAccount bankRootForCode: acc.bankCode];
 
     if (bankNode == nil) {
-        Category *root = [Category bankRoot];
+        BankingCategory *root = [BankingCategory bankRoot];
         if (root == nil) {
             return nil;
         }
@@ -1454,8 +1454,8 @@ static HBCIController *controller = nil;
 
 - (void)updateBankAccounts: (NSArray *)hbciAccounts forUser: (BankUser *)user
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSManagedObjectModel   *model = [[MOAssistant assistant] model];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
     NSError                *error = nil;
     BOOL                   found;
 
@@ -1551,7 +1551,7 @@ static HBCIController *controller = nil;
 - (PecuniaError*)clearLimitsForUser:(BankUser*)user
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"TransactionLimits" inManagedObjectContext: context];
     
     NSPredicate    *predicate = [NSPredicate predicateWithFormat: @"user = %@", user];
@@ -2038,7 +2038,7 @@ static HBCIController *controller = nil;
     NSError  *error = nil;
     
     if (bankCode != nil) {
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
         NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
         NSFetchRequest         *request = [[NSFetchRequest alloc] init];
         [request setEntity: entityDescription];

@@ -19,7 +19,7 @@
 
 #import "PecuniaSectionItem.h"
 
-@class Category;
+@class BankingCategory;
 @class StatementsListView;
 @class TimeSliceManager;
 
@@ -28,7 +28,7 @@
 @interface CategoryDefWindowController : NSObject <PecuniaSectionItem>
 
 @property (nonatomic, strong) TimeSliceManager *timeSliceManager;
-@property (nonatomic, weak) Category           *selectedCategory;
+@property (nonatomic, weak) BankingCategory           *selectedCategory;
 @property bool                                 hideAssignedValues;
 
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context;

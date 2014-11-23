@@ -17,14 +17,14 @@
  * 02110-1301  USA
  */
 
-@class Category;
+@class BankingCategory;
 
 @interface BankStatementPrintView : NSView
 
 - (id)initWithStatements: (NSArray *)assignmentsToPrint
                printInfo: (NSPrintInfo *)pi
                    title: (NSString *)aTitle
-                category: (Category *)category
+                category: (BankingCategory *)category
           additionalText: (NSString *)addition;
 
 @end

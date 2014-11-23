@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,7 +22,7 @@
 #import "GraphicsAdditions.h"
 #import "NSView+PecuniaAdditions.h"
 
-NSString *const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
+NSString *const TransferReadyForUseDataType = @"pecunia.TransferReadyForUseDataType";
 
 @implementation TransferFormularView
 
@@ -42,8 +42,7 @@ NSString *const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
     return self;
 }
 
-#pragma mark -
-#pragma mark Drag and drop
+#pragma mark - Drag and drop
 
 // The formular as drag source.
 - (void)mouseDragged: (NSEvent *)theEvent
@@ -53,21 +52,44 @@ NSString *const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
         if (NSPointInRect(viewPoint,  draggingArea)) {
             [[NSCursor closedHandCursor] set];
 
-            NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
-            [pasteBoard setString: @"transfer-ready" forType: TransferReadyForUseDataType];
-
             NSImageView *imageView = (NSImageView *)[self printViewForLayerBackedView];
 
-            [self dragImage: [imageView image]
-                         at: NSMakePoint(0, 0)
-                     offset: NSZeroSize
-                      event: theEvent
-                 pasteboard: pasteBoard
-                     source: self
-                  slideBack: YES];
+            NSPasteboardItem *pbItem = [NSPasteboardItem new];
+            [pbItem setDataProvider: self forTypes: @[TransferReadyForUseDataType]];
+
+            NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter: pbItem];
+
+            [dragItem setDraggingFrame: self.bounds contents: imageView.image];
+            NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems: @[dragItem]
+                                                                               event: theEvent
+                                                                              source: self];
+            draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+            draggingSession.draggingFormation = NSDraggingFormationNone;
         }
     } else {
         [super mouseDragged: theEvent];
+    }
+}
+
+- (void)pasteboard: (NSPasteboard *)sender item: (NSPasteboardItem *)item provideDataForType: (NSString *)type
+{
+    if ([type compare: TransferReadyForUseDataType] == NSOrderedSame ) {
+        [sender setString: @"transfer-ready" forType: TransferReadyForUseDataType];
+    }
+}
+
+- (NSDragOperation)       draggingSession: (NSDraggingSession *)session
+    sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
+{
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationDelete;
+            break;
+
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationDelete | NSDragOperationMove;
+            break;
     }
 }
 
@@ -82,12 +104,11 @@ NSString *const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
     [[NSCursor arrowCursor] set];
 }
 
-#pragma mark -
-#pragma mark Drawing
+#pragma mark - Drawing
 
 // Shared objects.
-static NSShadow *borderShadow = nil;
-static NSShadow *smallShadow = nil;
+static NSShadow *borderShadow;
+static NSShadow *smallShadow;
 static NSImage  *stripes;
 
 #define TOP_PANE_HEIGHT 100

@@ -31,8 +31,8 @@
 - (id)initWithAccount: (BankAccount *)acc statement: (BankStatement *)stat
 {
     self = [super initWithWindowNibName: @"BankStatementController"];
-    memContext = [[MOAssistant assistant] memContext];
-    context = [[MOAssistant assistant] context];
+    memContext = [[MOAssistant sharedAssistant] memContext];
+    context = [[MOAssistant sharedAssistant] context];
     account = acc;
     actionResult = 0;
 
@@ -145,14 +145,14 @@
 
     if (lastStatement) {
         account.balance = lastStatement.saldo;
-        [[Category bankRoot] updateCategorySums];
+        [[BankingCategory bankRoot] updateCategorySums];
     }
 
     // Manually assign to a category. Doesn't affect automatic assignments based on rules.
-    Category *cat = [self getSelectedCategory];
+    BankingCategory *cat = [self getSelectedCategory];
     if (cat != nil) {
         [newStatement assignToCategory: cat];
-        [Category updateBalancesAndSums];
+        [BankingCategory updateBalancesAndSums];
     }
 
     // save updates
@@ -307,7 +307,7 @@
     [self updateSaldo];
 }
 
-- (Category *)getSelectedCategory
+- (BankingCategory *)getSelectedCategory
 {
     NSString *catString = categoryBox.stringValue;
     if (catString == nil || catString.length == 0) {
@@ -315,7 +315,7 @@
     }
     
     NSArray *categories = [categoriesController arrangedObjects];
-    for (Category *cat in categories) {
+    for (BankingCategory *cat in categories) {
         if ([cat.localName isEqualToString:catString]) {
             return cat;
         }
@@ -354,7 +354,7 @@
                                          NSLocalizedString(@"AP4", nil),
                                          NSLocalizedString(@"AP3", nil), nil, catString);
             if (result == NSAlertAlternateReturn) {
-                [Category createCategoryWithName:catString];
+                [BankingCategory createCategoryWithName:catString];
                 return YES;
             }
             return NO;

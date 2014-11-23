@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Category;
+@class BankingCategory;
 
 @interface CategoryReportingNode : NSObject {
 }
@@ -28,6 +28,6 @@
 @property (nonatomic, strong) NSMutableSet        *children;
 @property (nonatomic, strong) NSMutableDictionary *values;
 @property (nonatomic, strong) NSMutableDictionary *periodValues;
-@property (nonatomic, weak) Category *category;
+@property (nonatomic, weak) BankingCategory *category;
 
 @end

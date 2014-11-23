@@ -18,7 +18,7 @@
  */
 
 #import "CategoryMaintenanceController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "MOAssistant.h"
 #import "NSDictionary+PecuniaAdditions.h"
 
@@ -137,11 +137,11 @@ extern NSString *const CategoryKey;
 @synthesize iconCollectionController;
 @synthesize iconCollection;
 
-- (id)initWithCategory: (Category *)aCategory
+- (id)initWithCategory: (BankingCategory *)aCategory
 {
     self = [super initWithWindowNibName: @"CategoryMaintenance"];
     if (self != nil) {
-        moc = MOAssistant.assistant.memContext;
+        moc = MOAssistant.sharedAssistant.memContext;
 
         category = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: moc];
 
@@ -181,7 +181,7 @@ extern NSString *const CategoryKey;
                                                   inDirectory: subfolder];
             } else {
                 if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
-                    NSDictionary *parameters = [NSDictionary dictionaryForUrlParameters: url];
+                    NSDictionary *parameters = [NSDictionary dictForUrlParameters: url];
                     NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
                     path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
                                                            ofType: url.host.pathExtension
@@ -189,7 +189,7 @@ extern NSString *const CategoryKey;
 
                 } else {
                     if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
-                        NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+                        NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
                         path = [targetFolder stringByAppendingString: url.host];
                     }
                 }
@@ -280,7 +280,7 @@ extern NSString *const CategoryKey;
     [categoryIcon removeObserver: self forKeyPath: @"image"];
 
     [categoryController commitEditing];
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     // Take changes over.
     changedCategory.localName = category.localName;
@@ -292,7 +292,7 @@ extern NSString *const CategoryKey;
     NSImage *image = categoryIcon.image;
 
     // Path to the data bundle image folder.
-    NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+    NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
     if (image != nil && image.name != nil) {
         if (![image.name isEqualToString: category.iconName]) {
             // Remove a previously copied image if there's one referenced.

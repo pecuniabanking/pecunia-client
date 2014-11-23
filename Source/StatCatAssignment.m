@@ -20,7 +20,7 @@
 #import "MessageLog.h"
 
 #import "StatCatAssignment.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
@@ -100,9 +100,9 @@
     return res;
 }
 
-- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo: (NSString *)info {
+- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (BankingCategory *)tcat withInfo: (NSString *)info {
     StatCatAssignment *stat;
-    Category          *scat = self.category;
+    BankingCategory          *scat = self.category;
 
     if (amount == nil) {
         return;
@@ -120,7 +120,7 @@
     }
 
     // check if there is already an entry for the statement in tcat
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSMutableSet           *stats = [self.statement mutableSetValueForKey: @"assignments"];
 
     // if assignment already done, add value
@@ -171,16 +171,16 @@
     [tcat invalidateBalance];
 }
 
-- (void)moveToCategory: (Category *)targetCategory {
-    Category *nassRoot = Category.nassRoot;
-    Category *sourceCategory = self.category;
+- (void)moveToCategory: (BankingCategory *)targetCategory {
+    BankingCategory *nassRoot = BankingCategory.nassRoot;
+    BankingCategory *sourceCategory = self.category;
 
     if (targetCategory == sourceCategory) {
         return;
     }
 
     // Check if there is already an entry for the statement in the target category.
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSSet *assignments = [self.statement valueForKey: @"assignments"];
 
@@ -216,7 +216,7 @@
  * Removes a single assignment (the receiver) and updates its previously associated bank statement.
  */
 - (void)remove {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     BankStatement *stat = self.statement;
     if (stat.account == nil) {
@@ -237,7 +237,7 @@
  * Efficiently removes a list of assignments and updates their bank statements.
  */
 + (void)removeAssignments: (NSArray *)assignments {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     NSMutableSet *statements = [NSMutableSet set]; // Automatically removes duplicates.
 
@@ -261,14 +261,14 @@
     return [self.statement valueForKey: key];
 }
 
-- (Category *)category {
+- (BankingCategory *)category {
     [self willAccessValueForKey: @"category"];
-    Category *result = [self primitiveCategory];
+    BankingCategory *result = [self primitiveCategory];
     [self didAccessValueForKey: @"category"];
     return result;
 }
 
-- (void)setCategory: (Category *)value {
+- (void)setCategory: (BankingCategory *)value {
     if ([self primitiveCategory] != value) {
         [[self primitiveCategory] invalidateBalance];
         [[self primitiveCategory] invalidateCacheIncludeParents: YES recursive: NO];

@@ -44,14 +44,14 @@
 @class CategoryHeatMapController;
 @class BSSelectWindowController;
 
-@class INAppStoreWindow;
+@class WAYAppStoreWindow;
 @class JMModalOverlay;
 @class WaitViewController;
 
 @interface BankingController : NSObject
 {
 @private
-    IBOutlet INAppStoreWindow *mainWindow;
+    IBOutlet WAYAppStoreWindow *mainWindow;
 
     IBOutlet EDSideBar             *sidebar;
     IBOutlet NSTabView             *mainTabView;
@@ -151,12 +151,12 @@
 - (IBAction)accountStatements:(id)sender;
 
 - (void)statementsNotification: (NSNotification *)notification;
-- (Category *)getBankingRoot;
+- (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;
 - (BOOL)requestRunning;
 
-- (Category *)currentSelection;
+- (BankingCategory *)currentSelection;
 - (void)repairCategories;
 - (void)setRestart;
 - (void)syncAllAccounts;

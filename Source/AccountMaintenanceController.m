@@ -38,7 +38,7 @@ extern NSString *const CategoryKey;
 - (id)initWithAccount: (BankAccount *)acc
 {
     self = [super initWithWindowNibName: @"AccountMaintenance"];
-    moc = MOAssistant.assistant.memContext;
+    moc = MOAssistant.sharedAssistant.memContext;
 
     account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
 
@@ -96,7 +96,7 @@ extern NSString *const CategoryKey;
         }
     } else {
         // no manual account
-        [usersController setManagedObjectContext:[[MOAssistant assistant] context]];
+        [usersController setManagedObjectContext:[[MOAssistant sharedAssistant] context]];
         NSSet *users = [changedAccount mutableSetValueForKey:@"users"];
         if ([users count] > 0) {
             [usersController setContent:[users allObjects]];
@@ -151,7 +151,7 @@ extern NSString *const CategoryKey;
     if (![self check]) {
         return;
     }
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     // update common data
     changedAccount.iban = account.iban;
@@ -174,7 +174,7 @@ extern NSString *const CategoryKey;
         }
         if ([changedAccount.balance compare: account.balance] != NSOrderedSame) {
             [changedAccount updateBalanceWithValue:account.balance];
-            [[Category bankRoot] updateCategorySums];
+            [[BankingCategory bankRoot] updateCategorySums];
         }
     } else {
         changedAccount.accountSuffix = account.accountSuffix;

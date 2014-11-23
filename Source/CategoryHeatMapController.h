@@ -80,7 +80,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet NSView *mainView;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) BankingCategory *selectedCategory;
 
 - (void)activate;
 - (void)deactivate;

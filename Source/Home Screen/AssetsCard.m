@@ -19,7 +19,7 @@
 
 #import <CorePlot/CorePlot.h>
 
-#import "Category.h"
+#import "BankingCategory.h"
 #import "ShortDate.h"
 #import "AssetsCard.h"
 
@@ -73,7 +73,7 @@ extern void *UserDefaultsBindingContext;
     NSPoint lastMouseDown;
 }
 
-@property (nonatomic, strong) Category *category;
+@property (nonatomic, strong) BankingCategory *category;
 
 @property NSInteger tag;
 
@@ -84,7 +84,7 @@ extern void *UserDefaultsBindingContext;
 @synthesize category;
 @synthesize tag;
 
-- (id)initWithFrame: (NSRect)frame category: (Category *)aCategory {
+- (id)initWithFrame: (NSRect)frame category: (BankingCategory *)aCategory {
     LogEnter;
 
     self = [super initWithFrame: frame];
@@ -571,7 +571,7 @@ double trend(double x) {
     LogLeave;
 }
 
-- (void)setCategory: (Category *)value {
+- (void)setCategory: (BankingCategory *)value {
     category = value;
     [self loadData];
 }
@@ -772,7 +772,7 @@ double trend(double x) {
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
-                                                 object: MOAssistant.assistant.context];
+                                                 object: MOAssistant.sharedAssistant.context];
 
     }
 
@@ -820,7 +820,7 @@ double trend(double x) {
     AssetGraph *graph;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    Category                *category = [Category categoryForName: settings[@"assetGraph1"]];
+    BankingCategory                *category = [BankingCategory categoryForName: settings[@"assetGraph1"]];
     if (category != nil) {
         graph = [self viewWithTag: 1];
         if (graph == nil) {
@@ -833,7 +833,7 @@ double trend(double x) {
         }
     }
 
-    category = [Category categoryForName: settings[@"assetGraph2"]];
+    category = [BankingCategory categoryForName: settings[@"assetGraph2"]];
     if (category != nil) {
         graph = [self viewWithTag: 2];
         if (graph == nil) {
@@ -878,7 +878,7 @@ double trend(double x) {
     // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
     [super mouseDown: theEvent];
 
-    Category *category;
+    BankingCategory *category;
     for (NSView *child in self.subviews) {
         if ([child isKindOfClass: AssetGraph.class]) {
             AssetGraph *graph = (id)child;

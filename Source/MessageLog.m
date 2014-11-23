@@ -21,10 +21,6 @@
 
 #import "MessageLog.h"
 
-#import "DDLog.h"
-#import "DDTTYLogger.h"
-#import "DDFileLogger.h"
-
 #import "ZipFile.h"
 #import "ZipWriteStream.h"
 #import "ZipException.h"
@@ -32,6 +28,8 @@
 #import "LaunchParameters.h"
 #import "HBCIController.h"
 #import "ResultWindowController.h"
+
+#import "Pecunia-Swift.h"
 
 #define LOG_FLAG_COM_TRACE (1 << 5)
 
@@ -64,7 +62,6 @@
 
 @implementation MessageLog
 
-@synthesize currentLevel;
 @synthesize isComTraceActive;
 @synthesize resultWindow;
 
@@ -72,13 +69,18 @@
     self = [super init];
     if (self != nil) {
         // Default log level is info, unless we are debugging or got a custom log level.
+        // As long as we have this and MessageLog.swift separated we also have to set the log level there.
 #ifdef DEBUG
         // Logging to console only for debug builds. Otherwise use the log file only.
         logLevel = LOG_LEVEL_DEBUG;
         [DDLog addLogger: DDTTYLogger.sharedInstance];
         DDTTYLogger.sharedInstance.colorsEnabled = YES;
+
+        // Swift.
+        DDLog.logLevel = DDLogLevelDebug;
 #else
         logLevel = LOG_LEVEL_INFO;
+        DDLog.logLevel = DDLogLevelInfo;
 #endif
 
         // The file logger is always active.
@@ -89,6 +91,7 @@
 
         if (LaunchParameters.parameters.customLogLevel > -1) {
             logLevel = LaunchParameters.parameters.customLogLevel;
+            DDLog.logLevel = LaunchParameters.parameters.customLogLevel;
         }
 
         fileLogger.doNotReuseLogFiles = YES; // Start with a new log file at each application launch.
@@ -245,112 +248,112 @@
     return _messageLog;
 }
 
-- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
+- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     self.hasError = YES;
     if ((logLevel & LOG_FLAG_ERROR) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog log: LOG_ASYNC_ERROR
-             level: logLevel
-              flag: LOG_FLAG_ERROR
-           context: 0
-              file: file
-          function: function
-              line: line
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Error] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_ERROR
+               level: logLevel
+                flag: LOG_FLAG_ERROR
+             context: 0
+                file: file
+            function: function
+                line: line
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Error] %@", format]
+                args: args];
     }
 }
 
-- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
+- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     if ((logLevel & LOG_FLAG_WARN) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog log: LOG_ASYNC_WARN
-             level: logLevel
-              flag: LOG_FLAG_WARN
-           context: 0
-              file: file
-          function: function
-              line: line
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Warning] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_WARN
+               level: logLevel
+                flag: LOG_FLAG_WARN
+             context: 0
+                file: file
+            function: function
+                line: line
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Warning] %@", format]
+                args: args];
     }
 }
 
-- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
+- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     if ((logLevel & LOG_FLAG_INFO) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog log: LOG_ASYNC_INFO
-             level: logLevel
-              flag: LOG_FLAG_INFO
-           context: 0
-              file: file
-          function: function
-              line: line
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Info] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_INFO
+               level: logLevel
+                flag: LOG_FLAG_INFO
+             context: 0
+                file: file
+            function: function
+                line: line
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Info] %@", format]
+                args: args];
     }
 }
 
-- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
+- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     if ((logLevel & LOG_FLAG_DEBUG) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog log: LOG_ASYNC_DEBUG
-             level: logLevel
-              flag: LOG_FLAG_DEBUG
-           context: 0
-              file: file
-          function: function
-              line: line
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Debug] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_DEBUG
+               level: logLevel
+                flag: LOG_FLAG_DEBUG
+             context: 0
+                file: file
+            function: function
+                line: line
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Debug] %@", format]
+                args: args];
     }
 }
 
-- (void)logDebug: (NSString *)format, ... {
-    if ((logLevel & LOG_FLAG_WARN) != 0) {
+- (void)logDebug: (NSString *)format, ...{
+    if ((logLevel & LOG_FLAG_DEBUG) != 0) {
         va_list args;
         va_start(args, format);
 
-        [DDLog log: LOG_ASYNC_DEBUG
-             level: logLevel
-              flag: LOG_FLAG_DEBUG
-           context: 0
-              file: NULL
-          function: NULL
-              line: 0
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Debug] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_DEBUG
+               level: logLevel
+                flag: LOG_FLAG_DEBUG
+             context: 0
+                file: NULL
+            function: NULL
+                line: 0
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Debug] %@", format]
+                args: args];
     }
 }
 
-- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ... {
+- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     if ((logLevel & LOG_FLAG_VERBOSE) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog log: LOG_ASYNC_VERBOSE
-             level: logLevel
-              flag: LOG_FLAG_VERBOSE
-           context: 0
-              file: file
-          function: function
-              line: line
-               tag:  nil
-            format: [NSString stringWithFormat: @"[Verbose] %@", format]
-              args: args];
+        [DDLog   log: LOG_ASYNC_VERBOSE
+               level: logLevel
+                flag: LOG_FLAG_VERBOSE
+             context: 0
+                file: file
+            function: function
+                line: line
+                 tag:  nil
+              format: [NSString stringWithFormat: @"[Verbose] %@", format]
+                args: args];
     }
 }
 
@@ -358,10 +361,10 @@
  * Logs a communication trace message with the given level. For com traces we don't filter by log level, as we want
  * all messages logged at the moment. Communication traces are enabled only on demand, so this is ok.
  */
-- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ... {
+- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...{
     if (level == HBCILogError) {
         self.hasError = YES;
-        [self.resultWindow addMessage:format];
+        [self.resultWindow addMessage: format];
     }
 
     if (isComTraceActive) {
@@ -401,16 +404,16 @@
                 break;
         }
 
-        [DDLog log: YES
-             level: ddLevel
-              flag: LOG_FLAG_COM_TRACE
-           context: 0
-              file: NULL
-          function: NULL
-              line: 0
-               tag:  nil
-            format: comTraceFormat
-              args: args];
+        [DDLog   log: YES
+               level: ddLevel
+                flag: LOG_FLAG_COM_TRACE
+             context: 0
+                file: NULL
+            function: NULL
+                line: 0
+                 tag:  nil
+              format: comTraceFormat
+                args: args];
     }
 }
 
@@ -546,3 +549,7 @@
 }
 
 @end
+
+void logEnter() {
+    [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__];
+}

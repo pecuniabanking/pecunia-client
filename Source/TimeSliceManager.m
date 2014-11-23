@@ -19,7 +19,7 @@
 
 #import "TimeSliceManager.h"
 #import "ShortDate.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 @interface NSObject (TimeSliceManager)
 

@@ -18,7 +18,6 @@
  */
 
 #import "LaunchParameters.h"
-#import "DDLog.h" // For internal log levels.
 
 static NSString *extensionPackage = @".pecuniadata";
 
@@ -51,12 +50,12 @@ static LaunchParameters *parameters = nil;
     customLogLevel = -1;
     parameter = [arguments objectForKey: @"loglevel"]; // "-loglevel (off, error, warning, info, debug, verbose)"
     if (parameter.length > 0) {
-        NSDictionary *stringToNumber = @{@"off": @LOG_LEVEL_OFF,
-                                         @"error": @LOG_LEVEL_ERROR,
-                                         @"warning": @LOG_LEVEL_WARN,
-                                         @"info": @LOG_LEVEL_INFO,
-                                         @"debug": @LOG_LEVEL_DEBUG,
-                                         @"verbose": @LOG_LEVEL_VERBOSE};
+        NSDictionary *stringToNumber = @{@"off": @(LOG_LEVEL_OFF),
+                                         @"error": @(LOG_LEVEL_ERROR),
+                                         @"warning": @(LOG_LEVEL_WARN),
+                                         @"info": @(LOG_LEVEL_INFO),
+                                         @"debug": @(LOG_LEVEL_DEBUG),
+                                         @"verbose": @(LOG_LEVEL_VERBOSE)};
         NSNumber *number = [stringToNumber objectForKey: parameter.lowercaseString];
         if (number) {
             customLogLevel = number.intValue;

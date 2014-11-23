@@ -19,7 +19,7 @@
 
 #import "CategoryHeatMapController.h"
 #import "ShortDate.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "AnimationHelper.h"
 #import "NSColor+PecuniaAdditions.h"
 
@@ -865,7 +865,7 @@ static NSFont *smallNumberFont;
     NSRect frame = valuePopupList.frame;
     frame.origin = NSMakePoint(2, 2);
     if (currentAssignments.count < 6) {
-        frame.size.height = MAX(currentAssignments.count, 1) * 21;
+        frame.size.height = MAX(currentAssignments.count, 1U) * 21;
     } else {
         frame.size.height = 5 * 21;
     }
@@ -1029,7 +1029,7 @@ static NSFont *smallNumberFont;
     [printOp runOperation];
 }
 
-- (void)setSelectedCategory: (Category *)theCategory
+- (void)setSelectedCategory: (BankingCategory *)theCategory
 {
     if (selectedCategory != theCategory) {
         for (NSView *view in heatMapView.subviews) {

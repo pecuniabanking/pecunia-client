@@ -20,8 +20,6 @@
 #import "PecuniaListView.h"
 #import "PXListView+UserInteraction.h"
 
-extern NSString *PecuniaWordsLoadedNotification;
-
 @interface PopoverAnimation : NSAnimation {
     @private
     NSRect    startRect;
@@ -81,6 +79,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 @end
 
 @implementation PecuniaPopover
+
 - (IBAction)performClose: (id)sender {
     wantClose = YES;
     [super performClose: sender];
@@ -104,7 +103,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 - (void)initDetailsWithNibName: (NSString *)nibName {
     [NSNotificationCenter.defaultCenter addObserver: self
                                            selector: @selector(updateVisibleCells)
-                                               name: PecuniaWordsLoadedNotification
+                                               name: WordMapping.pecuniaWordsLoadedNotification
                                              object: nil];
 
     detailsPopoverController = [[NSViewController alloc] initWithNibName: nibName bundle: nil];
@@ -132,9 +131,9 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     if (!detailsPopover->wantClose) {
         // Lets see if the mouse is over the popover ...
-        NSPoint globalLocation = NSEvent.mouseLocation;
-        NSPoint windowLocation = [popover.contentViewController.view.window convertScreenToBase: globalLocation];
-        NSPoint viewLocation = [popover.contentViewController.view convertPoint: windowLocation fromView: nil];
+        NSRect globalLocation = NSMakeRect(NSEvent.mouseLocation.x, NSEvent.mouseLocation.y, 0, 0);
+        NSRect windowLocation = [popover.contentViewController.view.window convertRectFromScreen: globalLocation];
+        NSPoint viewLocation = [popover.contentViewController.view convertPoint: windowLocation.origin fromView: nil];
         if (NSPointInRect(viewLocation, [popover.contentViewController.view bounds]) ) {
             allowClose = NO;
         }

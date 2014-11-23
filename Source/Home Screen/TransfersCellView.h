@@ -20,7 +20,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class BankStatement;
-@class Category;
+@class BankingCategory;
 
 @interface TransfersCellView : NSTableCellView
 {
@@ -28,7 +28,7 @@
 }
 
 @property (strong) BankStatement *statement;
-@property (strong) Category *category;
+@property (strong) BankingCategory *category;
 
 @end
 

@@ -24,7 +24,7 @@
 
 #import "ValueTransformers.h"
 #import "PreferenceController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "StatCatAssignment.h"
 
 #import "BankStatement.h"
@@ -81,7 +81,7 @@ extern NSDictionary    *whiteAttributes;
                                                          queue: nil
                                                     usingBlock:
          ^(NSNotification *notifictation) {
-            Category *category = (notifictation.userInfo)[CategoryKey];
+            BankingCategory *category = (notifictation.userInfo)[CategoryKey];
             categoryColor = category.categoryColor;
             [self setNeedsDisplay: YES];
         }

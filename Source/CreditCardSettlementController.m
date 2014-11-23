@@ -94,7 +94,7 @@
 
 - (void)readSettlements
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     // fetch all existing settlements for this account
     NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
@@ -118,7 +118,7 @@
 
 - (void)update
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     int                    oldNum = [settlements count];
     int                    newNum = 0;
 

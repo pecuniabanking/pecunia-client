@@ -17,8 +17,7 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-#import "Category.h"
+#import "BankingCategory.h"
 
 @class BankQueryResult;
 @class BankStatement;
@@ -36,7 +35,7 @@ typedef enum {
 } BankAccountType;
 
 
-@interface BankAccount : Category<NSCopying> {
+@interface BankAccount : BankingCategory<NSCopying> {
     NSDate           *newLatestTransferDate;
     NSArray          *dbStatements;
     NSInteger        unread;

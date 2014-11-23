@@ -14,12 +14,8 @@
 - (void)bwDrawPixelThickLineAtPosition:(int)posInPixels withInset:(int)insetInPixels inRect:(NSRect)aRect inView:(NSView *)view horizontal:(BOOL)isHorizontal flip:(BOOL)shouldFlip
 {
 	// Convert the given rectangle from points to pixels
-    if ([view respondsToSelector:@selector(convertRectToBacking:)]) {
-        aRect = [view convertRectToBacking:aRect];
-    } else {
-        aRect = [view convertRectToBase:aRect];
-    }
-	
+    aRect = [view convertRectToBacking:aRect];
+
 	// Round up the rect's values to integers
 	aRect = NSIntegralRect(aRect);
 	
@@ -39,11 +35,7 @@
 	NSSize sizeInPixels = aRect.size;
 	
 	// Convert the rect back to points for drawing
-    if ([view respondsToSelector:@selector(convertRectFromBacking:)]) {
-        aRect = [view convertRectFromBacking:aRect];
-    } else {
-        aRect = [view convertRectFromBase:aRect];
-    }
+    aRect = [view convertRectFromBacking:aRect];
 	
 	// Flip the position so it's at the other side of the rect
 	if (shouldFlip)

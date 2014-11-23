@@ -71,6 +71,9 @@ static NSGradient *blackGradient;
                 imageLocation.y = (cellFrame.size.height - self.image.size.height) / 2;
                 cellFrame.size.width -= self.image.size.width + 4;
                 break;
+
+            default:
+                break;
         }
         if (imageLocation.x > 0) {
             NSRect targetRect;

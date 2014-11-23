@@ -25,7 +25,7 @@
 
 @class ShortDate;
 @class PecuniaGraphHost;
-@class Category;
+@class BankingCategory;
 
 @interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource,
 CPTBarPlotDelegate, CPTAnimationDelegate>
@@ -78,7 +78,7 @@ CPTBarPlotDelegate, CPTAnimationDelegate>
     NSArrayController *spendingsPlotRadialOffsets;
 }
 
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) BankingCategory *selectedCategory;
 
 - (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to;
 

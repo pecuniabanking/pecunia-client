@@ -55,13 +55,13 @@
         if (pendingPosition > 0) {
             if (self.isVertical) {
                 NSRect frame = [self.subviews[0] frame];
-                if (![self.subviews[1] isHidden]) {
+                if (![(NSView *)self.subviews[1] isHidden]) {
                     frame.size.width = pendingPosition;
                 }
                 [self.subviews[0] setFrame: frame];
 
                 frame = [self.subviews[1] frame];
-                if ([self.subviews[0] isHidden]) {
+                if ([(NSView *)self.subviews[0] isHidden]) {
                     frame.size.width = totalSize.width;
                     frame.origin.x = 0;
                 } else {
@@ -71,13 +71,13 @@
                 [self.subviews[1] setFrame: frame];
             } else {
                 NSRect frame = [self.subviews[0] frame];
-                if (![self.subviews[1] isHidden]) {
+                if (![(NSView *)self.subviews[1] isHidden]) {
                     frame.size.height = pendingPosition;
                 }
                 [self.subviews[0] setFrame: frame];
 
                 frame = [self.subviews[1] frame];
-                if ([self.subviews[0] isHidden]) {
+                if ([(NSView *)self.subviews[0] isHidden]) {
                     frame.size.height = totalSize.height;
                     frame.origin.y = 0;
                 } else {
@@ -92,7 +92,7 @@
             NSUInteger variableIndex = fixedIndex == 0 ? 1 : 0;
             NSSize     fixedSize = [self.subviews[fixedIndex] frame].size;
 
-            if ([self.subviews[fixedIndex] isHidden]) {
+            if ([(NSView *)self.subviews[fixedIndex] isHidden]) {
                 fixedSize = NSZeroSize;
             }
 

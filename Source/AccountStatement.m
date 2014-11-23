@@ -68,7 +68,7 @@
     }
 
     // Insert temporary account + category assignments for the print view to work with.
-    NSManagedObjectContext *context = MOAssistant.assistant.memContext;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.memContext;
     NSMutableArray         *stats = [NSMutableArray array];
 
     BankAccount *account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"

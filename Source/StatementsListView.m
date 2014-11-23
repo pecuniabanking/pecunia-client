@@ -192,7 +192,7 @@ extern void *UserDefaultsBindingContext;
     cell.representedObject = assignment;
 
     if (self.showAssignedIndicators) {
-        bool activate = assignment.category != nil && assignment.category != Category.nassRoot;
+        bool activate = assignment.category != nil && assignment.category != BankingCategory.nassRoot;
         [cell showActivator: YES markActive: activate];
     } else {
         [cell showActivator: NO markActive: NO];

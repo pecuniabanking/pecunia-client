@@ -166,10 +166,11 @@
     // Each prefix must start on its own line in the first position. At least that's the specification.
     // Some banks have their own interpretation (including splitting prefixes over 2 lines), so we have to cater for that.
     NSArray *matches = [sepaRegex matchesInString: text options: 0 range: NSMakeRange(0, text.length)];
-    if (matches.count == 0 || [matches[0] range].location > 0) {
+    if (matches.count == 0 || [(NSTextCheckingResult *)matches[0] range].location > 0) {
         // No (known) prefix or some text before the first prefix.
         // Add everything (up to the first match) to SVWZ (unchanged).
-        [purpose appendString: (matches.count == 0) ? text : [text substringWithRange: NSMakeRange(0, [matches[0] range].location)]];
+        [purpose appendString: (matches.count == 0) ? text : [text substringWithRange:
+          NSMakeRange(0, [(NSTextCheckingResult *)matches[0] range].location)]];
     }
 
     for (NSUInteger i = 0; i < matches.count; ++i) {

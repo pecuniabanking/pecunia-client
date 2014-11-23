@@ -19,7 +19,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "Category.h"
+#import "BankingCategory.h"
 #import "BankAccount.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
@@ -312,9 +312,9 @@ static NSDictionary *heightMappings;
             [fieldController addObject: item];
         }
     }
-    MOAssistant *assistant = [MOAssistant assistant];
-    encrypt = [assistant encrypted];
-    [self setValue: @([assistant encrypted]) forKey: @"encrypt"];
+    MOAssistant *assistant = [MOAssistant sharedAssistant];
+    encrypt = assistant.isEncrypted;
+    [self setValue: @(assistant.isEncrypted) forKey: @"encrypt"];
     [dataFileField setStringValue: [assistant dataFilename]];
 
     // Select first tab.
@@ -378,7 +378,7 @@ static NSDictionary *heightMappings;
     }
 }
 
-- (NSMenuItem *)createItemForAccountSelector: (Category *)account
+- (NSMenuItem *)createItemForAccountSelector: (BankingCategory *)account
                                  indentation: (NSUInteger)indent
 {
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
@@ -402,7 +402,7 @@ static NSDictionary *heightMappings;
     NSString *account2 = settings[@"assetGraph2"];
 
     // Create a top level item for all banks.
-    Category *category = [Category bankRoot];
+    BankingCategory *category = [BankingCategory bankRoot];
     NSMenuItem *item = [self createItemForAccountSelector: category indentation: 0];
     [sourceMenu1 addItem: item];
     if ([category.name isEqualToString: account1]) {
@@ -419,7 +419,7 @@ static NSDictionary *heightMappings;
 
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
-    for (Category *institute in institutes) {
+    for (BankingCategory *institute in institutes) {
         if (![institute isKindOfClass: [BankAccount class]]) {
             continue;
         }
@@ -507,7 +507,7 @@ static NSDictionary *heightMappings;
     }
     NSString *newPassword = [pwController result];
     
-    if ([MOAssistant.assistant changePassword:newPassword]) {
+    if ([MOAssistant.sharedAssistant changePassword:newPassword]) {
         // was the old password in key store?
         NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
         if (passwd) {
@@ -524,24 +524,24 @@ static NSDictionary *heightMappings;
 
 - (IBAction)changeFileLocation: (id)sender
 {
-    MOAssistant *assistant = [MOAssistant assistant];
+    MOAssistant *assistant = [MOAssistant sharedAssistant];
     [assistant relocate];
 }
 
 - (IBAction)useFileLocation:(id)sender
 {
-    [[MOAssistant assistant] useExistingDataFile:nil];
+    [[MOAssistant sharedAssistant] useExistingDataFile:nil];
 }
 
 
 - (IBAction)restoreFileLocation: (id)sender
 {
-    [[MOAssistant assistant] relocateToStandard];
+    [[MOAssistant sharedAssistant] relocateToStandard];
 }
 
 - (IBAction)openFileLocation: (id)sender
 {
-    [[NSWorkspace sharedWorkspace] openURL: [MOAssistant assistant].dataDirURL];
+    [NSWorkspace.sharedWorkspace openURL: MOAssistant.sharedAssistant.dataDirURL];
 }
 
 - (IBAction)encryptData: (id)sender
@@ -583,7 +583,7 @@ static NSDictionary *heightMappings;
                                   NSLocalizedString(@"AP3", nil),
                                   nil);
         if (res == NSAlertAlternateReturn) {
-            MOAssistant *assistant = [MOAssistant assistant];
+            MOAssistant *assistant = [MOAssistant sharedAssistant];
 
             BOOL           passwordOk = NO;
             PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
@@ -638,7 +638,7 @@ static NSDictionary *heightMappings;
     if (code == 0) {
         // now create
         NSError *error = nil;
-        MOAssistant *assistant = [MOAssistant assistant];
+        MOAssistant *assistant = [MOAssistant sharedAssistant];
         [assistant.context save:&error];
         if (error) {
             NSAlert *alert = [NSAlert alertWithError: error];
@@ -847,8 +847,8 @@ static NSDictionary *heightMappings;
 - (IBAction)assetGraphChanged: (id)sender
 {
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    settings[@"assetGraph1"] = [(Category *)accountSelector1.selectedItem.representedObject name];
-    settings[@"assetGraph2"] = [(Category *)accountSelector2.selectedItem.representedObject name];
+    settings[@"assetGraph1"] = [(BankingCategory *)accountSelector1.selectedItem.representedObject name];
+    settings[@"assetGraph2"] = [(BankingCategory *)accountSelector2.selectedItem.representedObject name];
 }
 
 - (IBAction)percentValueChanged: (id)sender

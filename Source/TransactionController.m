@@ -18,7 +18,7 @@
  */
 
 #import "TransactionController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "Transfer.h"
 #import "BankStatement.h"
 #import "TransactionLimits.h"
@@ -174,7 +174,7 @@
 }
 
 - (BOOL)newTransferOfType: (TransferType)type {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     // Save any previous change.
     if ([context  hasChanges]) {
@@ -199,7 +199,7 @@
 
 - (BOOL)editExistingTransfer: (Transfer *)transfer {
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     // Save any previous change.
     if ([context  hasChanges]) {
@@ -346,7 +346,7 @@
 }
 
 - (void)cancelCurrentTransfer {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     [context deleteObject: currentTransfer];
     currentTransfer = nil;
@@ -370,7 +370,7 @@
     }
 
     NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];

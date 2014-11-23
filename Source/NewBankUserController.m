@@ -48,7 +48,7 @@
     self = [super initWithWindowNibName: @"BankUser"];
     bankController = con;
     bankUsers = [[BankUser allUsers] mutableCopy];
-    context = [[MOAssistant assistant] context];
+    context = [[MOAssistant sharedAssistant] context];
     triedFirst = NO;
     return self;
 }

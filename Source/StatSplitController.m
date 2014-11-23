@@ -21,7 +21,7 @@
 #import "MOAssistant.h"
 #import "BankStatement.h"
 #import "StatCatAssignment.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 @implementation StatSplitController
 
@@ -29,7 +29,7 @@
 {
     self = [super initWithWindowNibName: @"StatSplitController"];
     if (self != nil) {
-        managedObjectContext = [[MOAssistant assistant] context];
+        managedObjectContext = [[MOAssistant sharedAssistant] context];
         statement = stat;
     }
     return self;
@@ -96,10 +96,10 @@
 
             [statement updateAssigned];
             [self setValue: statement.nassValue forKey: @"residualAmount"];
-            Category *cat = stat.category;
+            BankingCategory *cat = stat.category;
             if (cat !=  nil) {
                 [cat invalidateBalance];
-                [Category updateBalancesAndSums];
+                [BankingCategory updateBalancesAndSums];
             }
         }
     }
@@ -110,10 +110,10 @@
     NSArray *sel = [splitStatController selectedObjects];
     if (sel && [sel count] == 1) {
         StatCatAssignment *stat = sel[0];
-        Category *cat = stat.category;
+        BankingCategory *cat = stat.category;
         if (cat !=  nil) {
             [cat invalidateBalance];
-            [Category updateBalancesAndSums];
+            [BankingCategory updateBalancesAndSums];
         }
     }
 }

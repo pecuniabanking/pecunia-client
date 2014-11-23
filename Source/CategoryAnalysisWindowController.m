@@ -1749,7 +1749,7 @@ double mainTrend(double x)
     CGFloat horizontalCenter = frame.size.width / 2;
     CGFloat verticalCenter = frame.size.height / 2;
 
-    NSPoint mousePosition = [mainHostView.window convertScreenToBase: [NSEvent mouseLocation]];
+    NSPoint mousePosition = [mainHostView.window convertRectFromScreen: NSMakeRect(NSEvent.mouseLocation.x, NSEvent.mouseLocation.y, 0, 0)].origin;
     mousePosition = [mainHostView convertPoint: mousePosition fromView: nil];
 
     CPTPlot *plot = [mainGraph plotAtIndex: 0];
@@ -2575,7 +2575,7 @@ double mainTrend(double x)
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory
+- (void)setSelectedCategory: (BankingCategory *)newCategory
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;

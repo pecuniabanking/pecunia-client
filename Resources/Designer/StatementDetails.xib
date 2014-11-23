@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSViewController">
@@ -152,7 +152,7 @@ Line 3</string>
                         <binding destination="-2" name="toolTip" keyPath="view.sepaDetails.PURP" id="vEW-dl-wcu"/>
                     </connections>
                 </textField>
-                <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XbG-6n-Cx7">
+                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XbG-6n-Cx7">
                     <rect key="frame" x="18" y="507" width="402" height="5"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="sdk-tT-ZU2"/>
@@ -806,7 +806,7 @@ Line 3</string>
                         <binding destination="-2" name="hidden" keyPath="view.representedObject.statement.isAssigned.boolValue" id="xAh-fF-VoW"/>
                     </connections>
                 </textField>
-                <button toolTip="Tags aus der Bibliothek hinzufügen" translatesAutoresizingMaskIntoConstraints="NO" id="u3S-a1-eBQ">
+                <button toolTip="Tags aus der Bibliothek hinzufügen" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u3S-a1-eBQ">
                     <rect key="frame" x="399" y="317" width="15" height="17"/>
                     <buttonCell key="cell" type="square" title="+" bezelStyle="shadowlessSquare" imagePosition="overlaps" alignment="right" imageScaling="proportionallyDown" inset="2" id="zs7-p2-pbZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1296,6 +1296,7 @@ Line 3</string>
                 <outlet property="manualIndicator" destination="Y9e-x7-k8R" id="ylk-53-eCL"/>
                 <outlet property="nassValueField" destination="uzi-YS-vKj" id="HtG-mT-t38"/>
                 <outlet property="notesTextView" destination="K6c-5A-tNh" id="1jH-Xl-744"/>
+                <outlet property="purposeTitle" destination="c3d-EU-JPc" id="HR9-Rp-6qp"/>
                 <outlet property="sepaInfoTextView" destination="7XJ-6g-QrA" id="4Cc-GM-Loa"/>
                 <outlet property="sequenceTypeImage" destination="CVN-a9-xwb" id="Ykl-gP-1Uz"/>
                 <outlet property="statementTags" destination="NhK-1M-IZ8" id="FCT-vz-VGI"/>

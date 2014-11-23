@@ -30,6 +30,8 @@
 		270CA2F61900359E00DCF0DB /* font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2EE1900359E00DCF0DB /* font-increase@2x.png */; };
 		2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
 		2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
+		271394D819FD16F30099FB27 /* ShortDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271394D719FD16F30099FB27 /* ShortDate.swift */; };
+		271394D919FD16F30099FB27 /* ShortDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271394D719FD16F30099FB27 /* ShortDate.swift */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		271861541971846000229978 /* settled.png in Resources */ = {isa = PBXBuildFile; fileRef = 271861521971846000229978 /* settled.png */; };
@@ -99,6 +101,8 @@
 		2732F6AD186B202400809CF2 /* overview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6A9186B202300809CF2 /* overview@2x.png */; };
 		2732F6B0186B21E900809CF2 /* graph3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6AE186B21E900809CF2 /* graph3@2x.png */; };
 		2732F6B1186B21E900809CF2 /* graph3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732F6AE186B21E900809CF2 /* graph3@2x.png */; };
+		2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */; };
+		2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */; };
 		2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273657291559890E00E8ABDC /* TransferFormularView.m */; };
 		2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
 		2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD441514F6590066917C /* MBTableGridCell.m */; };
@@ -131,6 +135,30 @@
 		27535FFD186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
 		27535FFE186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
 		27548B901705D98E00C4BF9B /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 27548B8F1705D98E00C4BF9B /* Tag.m */; };
+		2758542319FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
+		2758542419FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
+		2759D89F1A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
+		2759D8A01A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
+		2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
+		2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
+		2759D8A31A0133FB002AE07E /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8951A0133FB002AE07E /* Double.swift */; };
+		2759D8A41A0133FB002AE07E /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8951A0133FB002AE07E /* Double.swift */; };
+		2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8971A0133FB002AE07E /* ExSwift.swift */; };
+		2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8971A0133FB002AE07E /* ExSwift.swift */; };
+		2759D8A71A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
+		2759D8A81A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
+		2759D8A91A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
+		2759D8AA1A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
+		2759D8AB1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
+		2759D8AC1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
+		2759D8AD1A0133FB002AE07E /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89B1A0133FB002AE07E /* NSArray.swift */; };
+		2759D8AE1A0133FB002AE07E /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89B1A0133FB002AE07E /* NSArray.swift */; };
+		2759D8AF1A0133FB002AE07E /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89C1A0133FB002AE07E /* Range.swift */; };
+		2759D8B01A0133FB002AE07E /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89C1A0133FB002AE07E /* Range.swift */; };
+		2759D8B11A0133FB002AE07E /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89D1A0133FB002AE07E /* Sequence.swift */; };
+		2759D8B21A0133FB002AE07E /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89D1A0133FB002AE07E /* Sequence.swift */; };
+		2759D8B31A0133FB002AE07E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89E1A0133FB002AE07E /* String.swift */; };
+		2759D8B41A0133FB002AE07E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89E1A0133FB002AE07E /* String.swift */; };
 		275AC7DE186B5BDC002E6BED /* graph4-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DA186B5BDC002E6BED /* graph4-active.png */; };
 		275AC7DF186B5BDC002E6BED /* graph4-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DA186B5BDC002E6BED /* graph4-active.png */; };
 		275AC7E0186B5BDC002E6BED /* graph4-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 275AC7DB186B5BDC002E6BED /* graph4-active@2x.png */; };
@@ -211,7 +239,7 @@
 		27778876173CE22700430EBC /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
 		27778877173CE22700430EBC /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		27778878173CE22700430EBC /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
-		27778879173CE22700430EBC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		27778879173CE22700430EBC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
 		2777887A173CE22700430EBC /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
 		2777887B173CE22700430EBC /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
 		2777887C173CE22700430EBC /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
@@ -455,22 +483,12 @@
 		2778C24518140027003BF49D /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24118140027003BF49D /* gear@2x.png */; };
 		2778C24918140984003BF49D /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2778C24818140984003BF49D /* ClickableImageView.m */; };
 		2778C24A18140984003BF49D /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2778C24818140984003BF49D /* ClickableImageView.m */; };
+		277CBA2C19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; };
+		277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; };
 		277D1A701799B26900C0E4DF /* closed-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6E1799B26900C0E4DF /* closed-sign.png */; };
 		277D1A711799B26900C0E4DF /* closed-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6E1799B26900C0E4DF /* closed-sign.png */; };
 		277D1A721799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
 		277D1A731799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
-		2784D448197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */; };
-		2784D449197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */; };
-		2784D44A197A6CB300A40249 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43E197A6CB300A40249 /* DDASLLogCapture.m */; };
-		2784D44B197A6CB300A40249 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D43E197A6CB300A40249 /* DDASLLogCapture.m */; };
-		2784D44C197A6CB300A40249 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D440197A6CB300A40249 /* DDASLLogger.m */; };
-		2784D44D197A6CB300A40249 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D440197A6CB300A40249 /* DDASLLogger.m */; };
-		2784D44E197A6CB300A40249 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D442197A6CB300A40249 /* DDFileLogger.m */; };
-		2784D44F197A6CB300A40249 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D442197A6CB300A40249 /* DDFileLogger.m */; };
-		2784D450197A6CB300A40249 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D444197A6CB300A40249 /* DDLog.m */; };
-		2784D451197A6CB300A40249 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D444197A6CB300A40249 /* DDLog.m */; };
-		2784D452197A6CB300A40249 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D447197A6CB300A40249 /* DDTTYLogger.m */; };
-		2784D453197A6CB300A40249 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2784D447197A6CB300A40249 /* DDTTYLogger.m */; };
 		2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
@@ -502,12 +520,16 @@
 		2794FF6C1972D5BA000B69EC /* new-small-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2794FF681972D5BA000B69EC /* new-small-white@2x.png */; };
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
 		2795F20F17071DE6003AC74D /* TagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795F20E17071DE6003AC74D /* TagView.m */; };
+		2797E22319F2863B00CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2797E22419F2864200CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		279918121711E97400C1AC3D /* ColorPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 279918111711E97400C1AC3D /* ColorPopup.m */; };
 		279A785D1539D8EB00443854 /* TransfersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListView.m */; };
 		279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListViewCell.m */; };
 		279BF27D15726BF0006C1B9A /* green-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */; };
 		279C166518E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
+		279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
+		279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */; };
@@ -587,6 +609,8 @@
 		27C202FD16E3894100D696BF /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FB16E3894100D696BF /* reset.png */; };
 		27C202FE16E3894100D696BF /* reset@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FC16E3894100D696BF /* reset@2x.png */; };
 		27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C3B78815E37CD9008B8DB3 /* refresh.png */; };
+		27C49E9E19F2774B001087D3 /* MessageLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C49E9D19F2774B001087D3 /* MessageLog.swift */; };
+		27C49E9F19F2774B001087D3 /* MessageLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C49E9D19F2774B001087D3 /* MessageLog.swift */; };
 		27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */; };
 		27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */; };
 		27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */; };
@@ -640,6 +664,10 @@
 		27E12E2F181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E12E30181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
+		27E225781A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
+		27E225791A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
+		27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
+		27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
 		27E23534168A16290050276E /* edit-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23532168A16290050276E /* edit-large.png */; };
 		27E23535168A16290050276E /* edit-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23533168A16290050276E /* edit-large@2x.png */; };
 		27E2353F168A228D0050276E /* csv.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353B168A228D0050276E /* csv.png */; };
@@ -935,9 +963,7 @@
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
-		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
-		B1F8F8FB19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
-		B1F8F8FC19AFDFA30046638B /* RemoteResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */; };
+		B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
 		B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6601124FC61B00C54A0E /* TransferTemplate.m */; };
@@ -958,6 +984,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */,
+				2797E22419F2864200CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -994,6 +1021,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2797E22319F2863B00CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */,
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -1028,6 +1056,7 @@
 		270CA2EE1900359E00DCF0DB /* font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-increase@2x.png"; sourceTree = "<group>"; };
 		2711AA69191FB2FB0042A604 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathematics.h; sourceTree = "<group>"; wrapsLines = 0; };
 		2711AA6A191FB2FB0042A604 /* Mathematics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mathematics.m; sourceTree = "<group>"; wrapsLines = 0; };
+		271394D719FD16F30099FB27 /* ShortDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortDate.swift; sourceTree = "<group>"; };
 		27150D9E140ABDAC000841E2 /* RoundedSidebar.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedSidebar.h; sourceTree = "<group>"; tabWidth = 4; };
 		27150D9F140ABDAC000841E2 /* RoundedSidebar.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedSidebar.m; sourceTree = "<group>"; tabWidth = 4; };
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
@@ -1078,6 +1107,7 @@
 		2732F6A9186B202300809CF2 /* overview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overview@2x.png"; sourceTree = "<group>"; };
 		2732F6AE186B21E900809CF2 /* graph3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph3@2x.png"; sourceTree = "<group>"; };
 		27334AE614C20BF600268FD9 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+PecuniaAdditions.swift"; sourceTree = "<group>"; wrapsLines = 0; };
 		27365728155988F200E8ABDC /* TransferFormularView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferFormularView.h; sourceTree = "<group>"; };
 		273657291559890E00E8ABDC /* TransferFormularView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferFormularView.m; sourceTree = "<group>"; };
 		2736DD411514F6590066917C /* MBTableGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGrid.h; path = MBTableGrid/MBTableGrid.h; sourceTree = "<group>"; };
@@ -1117,6 +1147,19 @@
 		27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 9.xcdatamodel"; sourceTree = "<group>"; };
 		27548B8E1705D98D00C4BF9B /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; wrapsLines = 0; };
 		27548B8F1705D98E00C4BF9B /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; wrapsLines = 0; };
+		2758542219FFFB9100571251 /* WordMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordMapping.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		2759D8931A0133FB002AE07E /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		2759D8941A0133FB002AE07E /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		2759D8951A0133FB002AE07E /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		2759D8961A0133FB002AE07E /* ExSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExSwift.h; sourceTree = "<group>"; };
+		2759D8971A0133FB002AE07E /* ExSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExSwift.swift; sourceTree = "<group>"; };
+		2759D8981A0133FB002AE07E /* Float.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
+		2759D8991A0133FB002AE07E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2759D89A1A0133FB002AE07E /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		2759D89B1A0133FB002AE07E /* NSArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArray.swift; sourceTree = "<group>"; };
+		2759D89C1A0133FB002AE07E /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
+		2759D89D1A0133FB002AE07E /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		2759D89E1A0133FB002AE07E /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		275AC7DA186B5BDC002E6BED /* graph4-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph4-active.png"; sourceTree = "<group>"; };
 		275AC7DB186B5BDC002E6BED /* graph4-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph4-active@2x.png"; sourceTree = "<group>"; };
 		275AC7DC186B5BDC002E6BED /* graph4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph4.png; sourceTree = "<group>"; };
@@ -1186,21 +1229,9 @@
 		2778C24118140027003BF49D /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 		2778C24718140984003BF49D /* ClickableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickableImageView.h; sourceTree = "<group>"; };
 		2778C24818140984003BF49D /* ClickableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickableImageView.m; sourceTree = "<group>"; };
+		277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Frameworks/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
-		2784D43B197A6CB300A40249 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
-		2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
-		2784D43D197A6CB300A40249 /* DDASLLogCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogCapture.h; sourceTree = "<group>"; };
-		2784D43E197A6CB300A40249 /* DDASLLogCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogCapture.m; sourceTree = "<group>"; };
-		2784D43F197A6CB300A40249 /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
-		2784D440197A6CB300A40249 /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
-		2784D441197A6CB300A40249 /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
-		2784D442197A6CB300A40249 /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
-		2784D443197A6CB300A40249 /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
-		2784D444197A6CB300A40249 /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
-		2784D445197A6CB300A40249 /* DDLog+LOGV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
-		2784D446197A6CB300A40249 /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
-		2784D447197A6CB300A40249 /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1239,6 +1270,8 @@
 		279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-slanted-stripes.png"; sourceTree = "<group>"; };
 		279C166318E8317600A4306F /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
+		279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
 		27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in@2x.png"; sourceTree = "<group>"; };
@@ -1296,6 +1329,7 @@
 		27C202FB16E3894100D696BF /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
 		27C202FC16E3894100D696BF /* reset@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset@2x.png"; sourceTree = "<group>"; };
 		27C3B78815E37CD9008B8DB3 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		27C49E9D19F2774B001087D3 /* MessageLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageLog.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		27C5B15B18B0C59B004BB3C3 /* PecuniaExceptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaExceptionDelegate.h; sourceTree = "<group>"; };
 		27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaExceptionDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
@@ -1348,12 +1382,18 @@
 		27E11ECE178B14C500AD350A /* YahooStockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YahooStockData.m; path = "Home Screen/YahooStockData.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27E12E2E181430BA00D114E7 /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
+		27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
+		27E225761A18D78A007171BE /* WAYWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYWindow.h; path = WAYWindow/WAYWindow.h; sourceTree = "<group>"; };
+		27E225771A18D78A007171BE /* WAYWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYWindow.m; path = WAYWindow/WAYWindow.m; sourceTree = "<group>"; };
+		27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYAppStoreWindow.h; path = WAYWindow/WAYAppStoreWindow.h; sourceTree = "<group>"; };
+		27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYAppStoreWindow.m; path = WAYWindow/WAYAppStoreWindow.m; sourceTree = "<group>"; };
 		27E23532168A16290050276E /* edit-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large.png"; sourceTree = "<group>"; };
 		27E23533168A16290050276E /* edit-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large@2x.png"; sourceTree = "<group>"; };
 		27E2353B168A228D0050276E /* csv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = csv.png; sourceTree = "<group>"; };
 		27E2353C168A228D0050276E /* csv@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "csv@2x.png"; sourceTree = "<group>"; };
 		27E2353D168A228D0050276E /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
 		27E2353E168A228D0050276E /* pdf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pdf@2x.png"; sourceTree = "<group>"; };
+		27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 14.xcdatamodel"; sourceTree = "<group>"; };
 		27E2D28219167D30001D6E80 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
 		27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1698,10 +1738,8 @@
 		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		B1F459EA0F2E480700BAF4E8 /* BankInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankInfo.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteResourceManager.h; sourceTree = "<group>"; };
-		B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteResourceManager.m; sourceTree = "<group>"; wrapsLines = 0; };
+		B1F527030C3C1D5800BE3DFC /* BankingCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingCategory.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1F527040C3C1D5800BE3DFC /* BankingCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingCategory.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitData.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1726,6 +1764,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27E844E819E1740A0026464E /* Quartz.framework in Frameworks */,
+				277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
@@ -1741,6 +1780,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27E844E719E173FD0026464E /* Quartz.framework in Frameworks */,
+				277CBA2C19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
 				27E2D28319167D30001D6E80 /* Accelerate.framework in Frameworks */,
 				27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */,
@@ -1757,6 +1797,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */,
 				27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */,
@@ -1845,6 +1886,7 @@
 		27535FF2186DE337007400BA /* INAppStoreWindow */ = {
 			isa = PBXGroup;
 			children = (
+				27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */,
 				27535FF4186DE337007400BA /* INAppStoreWindow.h */,
 				27535FF5186DE337007400BA /* INAppStoreWindow.m */,
 				27535FF6186DE337007400BA /* INWindowButton.h */,
@@ -1852,6 +1894,26 @@
 			);
 			path = INAppStoreWindow;
 			sourceTree = "<group>";
+		};
+		2759D8921A0133FB002AE07E /* ExSwift */ = {
+			isa = PBXGroup;
+			children = (
+				2759D8931A0133FB002AE07E /* Array.swift */,
+				2759D8941A0133FB002AE07E /* Dictionary.swift */,
+				2759D8951A0133FB002AE07E /* Double.swift */,
+				2759D8961A0133FB002AE07E /* ExSwift.h */,
+				2759D8971A0133FB002AE07E /* ExSwift.swift */,
+				2759D8981A0133FB002AE07E /* Float.swift */,
+				2759D8991A0133FB002AE07E /* Info.plist */,
+				2759D89A1A0133FB002AE07E /* Int.swift */,
+				2759D89B1A0133FB002AE07E /* NSArray.swift */,
+				2759D89C1A0133FB002AE07E /* Range.swift */,
+				2759D89D1A0133FB002AE07E /* Sequence.swift */,
+				2759D89E1A0133FB002AE07E /* String.swift */,
+			);
+			name = ExSwift;
+			path = Submodules/ExSwift/ExSwift;
+			sourceTree = SOURCE_ROOT;
 		};
 		275C07DC1438777900D97415 /* PXListview */ = {
 			isa = PBXGroup;
@@ -1916,6 +1978,7 @@
 				B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */,
 				B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
+				2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
 				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
@@ -2063,16 +2126,17 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				2759D8921A0133FB002AE07E /* ExSwift */,
 				27516818193B87C900FE942F /* YRK Spinning Indicator */,
 				27686E38193B5B320038067D /* JMModalOverlay */,
 				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
-				27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2732F697186ADEC100809CF2 /* EDSideBar */,
 				27535FF2186DE337007400BA /* INAppStoreWindow */,
 				2706F2001556C3BE0011A20E /* OnOffButton */,
 				2736DD531514F6680066917C /* MBTableGrid */,
 				275C07DC1438777900D97415 /* PXListview */,
+				27E225751A18D778007171BE /* WAYWindow */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
 			);
@@ -2094,26 +2158,6 @@
 				27D240E9145302A900EDC8C7 /* done.mp3 */,
 			);
 			name = Sounds;
-			sourceTree = "<group>";
-		};
-		27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */ = {
-			isa = PBXGroup;
-			children = (
-				2784D43B197A6CB300A40249 /* DDAbstractDatabaseLogger.h */,
-				2784D43C197A6CB300A40249 /* DDAbstractDatabaseLogger.m */,
-				2784D43D197A6CB300A40249 /* DDASLLogCapture.h */,
-				2784D43E197A6CB300A40249 /* DDASLLogCapture.m */,
-				2784D43F197A6CB300A40249 /* DDASLLogger.h */,
-				2784D440197A6CB300A40249 /* DDASLLogger.m */,
-				2784D441197A6CB300A40249 /* DDFileLogger.h */,
-				2784D442197A6CB300A40249 /* DDFileLogger.m */,
-				2784D443197A6CB300A40249 /* DDLog.h */,
-				2784D444197A6CB300A40249 /* DDLog.m */,
-				2784D445197A6CB300A40249 /* DDLog+LOGV.h */,
-				2784D446197A6CB300A40249 /* DDTTYLogger.h */,
-				2784D447197A6CB300A40249 /* DDTTYLogger.m */,
-			);
-			path = CocoaLumberJack;
 			sourceTree = "<group>";
 		};
 		27DD4AFB150B6F84006C2370 /* BWToolkit */ = {
@@ -2157,6 +2201,17 @@
 				27E11ECE178B14C500AD350A /* YahooStockData.m */,
 			);
 			name = "Home Screen";
+			sourceTree = "<group>";
+		};
+		27E225751A18D778007171BE /* WAYWindow */ = {
+			isa = PBXGroup;
+			children = (
+				27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */,
+				27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */,
+				27E225761A18D78A007171BE /* WAYWindow.h */,
+				27E225771A18D78A007171BE /* WAYWindow.m */,
+			);
+			name = WAYWindow;
 			sourceTree = "<group>";
 		};
 		27E5534E146ED854001DE9BE /* Models */ = {
@@ -2325,6 +2380,7 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -2833,40 +2889,41 @@
 			children = (
 				B19CA9941950222E005B1125 /* AccountStatement.h */,
 				B19CA9951950222E005B1125 /* AccountStatement.m */,
-				B19CA99019410C04005B1125 /* SepaData.h */,
-				B19CA99119410C04005B1125 /* SepaData.m */,
-				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
-				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
-				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
-				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
-				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
-				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
-				B1F527030C3C1D5800BE3DFC /* Category.h */,
-				B1F527040C3C1D5800BE3DFC /* Category.m */,
 				B124F10F0C371384001065C2 /* BankAccount.h */,
 				B124F1100C371384001065C2 /* BankAccount.m */,
-				B1927D230C52B5CD00B4D390 /* Transfer.h */,
-				B1927D240C52B5CD00B4D390 /* Transfer.m */,
-				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
-				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
-				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
-				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
-				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
-				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
-				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
-				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
+				B1F527030C3C1D5800BE3DFC /* BankingCategory.h */,
+				B1F527040C3C1D5800BE3DFC /* BankingCategory.m */,
 				B17FE48A14CB586A00F6FAFE /* BankMessage.h */,
 				B17FE48B14CB586A00F6FAFE /* BankMessage.m */,
-				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
-				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
+				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
 				B17728FB1504C33F00256898 /* BankUser.h */,
 				B17728FC1504C33F00256898 /* BankUser.m */,
+				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
+				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
+				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
+				B17FE44314CA091E00F6FAFE /* CustomerMessage.h */,
+				B17FE44414CA091E00F6FAFE /* CustomerMessage.m */,
+				275B3C4C17E5D2F9006BBE8A /* Info.h */,
+				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
+				27EA7D551816ED25000D9B30 /* LocalSettingsController.m */,
+				B19CA99019410C04005B1125 /* SepaData.h */,
+				B19CA99119410C04005B1125 /* SepaData.m */,
+				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
+				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
+				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
+				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
 				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
 				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 				27548B8E1705D98D00C4BF9B /* Tag.h */,
 				27548B8F1705D98E00C4BF9B /* Tag.m */,
-				275B3C4C17E5D2F9006BBE8A /* Info.h */,
-				275B3C4D17E5D2F9006BBE8A /* Info.m */,
+				B1927D230C52B5CD00B4D390 /* Transfer.h */,
+				B1927D240C52B5CD00B4D390 /* Transfer.m */,
+				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
+				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
+				2758542219FFFB9100571251 /* WordMapping.swift */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -2874,8 +2931,7 @@
 		B1FE0DD610658759005B3800 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				B1F8F8F919AFDFA30046638B /* RemoteResourceManager.h */,
-				B1F8F8FA19AFDFA30046638B /* RemoteResourceManager.m */,
+				279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */,
 				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
 				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
@@ -2888,6 +2944,7 @@
 				B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */,
 				B137BF4512D5004C00D0394C /* MessageLog.h */,
 				B137BF4612D5004C00D0394C /* MessageLog.m */,
+				27C49E9D19F2774B001087D3 /* MessageLog.swift */,
 				B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */,
 				B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */,
 				2701A849165E827F00A9A1C7 /* SystemNotification.h */,
@@ -2899,20 +2956,21 @@
 		B1FE0DD81065885D005B3800 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
+				2711AA69191FB2FB0042A604 /* Mathematics.h */,
+				2711AA6A191FB2FB0042A604 /* Mathematics.m */,
+				2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */,
+				2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */,
 				B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */,
 				B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */,
-				B132F91D0F96594000263F3B /* ShortDate.h */,
-				B132F91E0F96594000263F3B /* ShortDate.m */,
+				27C5B15B18B0C59B004BB3C3 /* PecuniaExceptionDelegate.h */,
+				27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */,
 				B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */,
 				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
 				B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */,
 				B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */,
-				27C5B15B18B0C59B004BB3C3 /* PecuniaExceptionDelegate.h */,
-				27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */,
-				2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */,
-				2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */,
-				2711AA69191FB2FB0042A604 /* Mathematics.h */,
-				2711AA6A191FB2FB0042A604 /* Mathematics.m */,
+				B132F91D0F96594000263F3B /* ShortDate.h */,
+				B132F91E0F96594000263F3B /* ShortDate.m */,
+				271394D719FD16F30099FB27 /* ShortDate.swift */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -3153,6 +3211,7 @@
 				27516822193B932700FE942F /* check-mark@2x.png in Resources */,
 				2777899D173CE22700430EBC /* pdf.png in Resources */,
 				2777899E173CE22700430EBC /* pdf@2x.png in Resources */,
+				2759D8AA1A0133FB002AE07E /* Info.plist in Resources */,
 				277789A1173CE22700430EBC /* blue-slanted-stripes.png in Resources */,
 				277789A2173CE22700430EBC /* delete@2x.png in Resources */,
 				277789A3173CE22700430EBC /* edit@2x.png in Resources */,
@@ -3268,6 +3327,7 @@
 				B19330190EE1DA37003FEC97 /* Vespasian.icns in Resources */,
 				2732F6A0186B06CE00809CF2 /* home@2x.png in Resources */,
 				B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */,
+				2759D8A91A0133FB002AE07E /* Info.plist in Resources */,
 				274365B919BB35C400722380 /* disclosure-open.pdf in Resources */,
 				274365B519BB35C400722380 /* disclosure-clicked.pdf in Resources */,
 				2792F6D4181D369100093727 /* delete4.png in Resources */,
@@ -3552,7 +3612,7 @@
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
 				27778877173CE22700430EBC /* BankStatement.m in Sources */,
 				27778878173CE22700430EBC /* BankAccount.m in Sources */,
-				27778879173CE22700430EBC /* Category.m in Sources */,
+				27778879173CE22700430EBC /* BankingCategory.m in Sources */,
 				2777887A173CE22700430EBC /* Transfer.m in Sources */,
 				2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
@@ -3569,6 +3629,7 @@
 				27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */,
 				27778886173CE22700430EBC /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				279C166618E8317600A4306F /* LockViewController.m in Sources */,
+				2759D8B01A0133FB002AE07E /* Range.swift in Sources */,
 				27778887173CE22700430EBC /* Country.m in Sources */,
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
@@ -3590,26 +3651,28 @@
 				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
 				27778898173CE22700430EBC /* BankQueryResult.m in Sources */,
-				B1F8F8FC19AFDFA30046638B /* RemoteResourceManager.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
+				2758542419FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
-				2784D451197A6CB300A40249 /* DDLog.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
+				279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
 				2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
+				2759D8A01A0133FB002AE07E /* Array.swift in Sources */,
 				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
 				27BB3B83190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
 				277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */,
 				277788A6173CE22700430EBC /* PurposeSplitData.m in Sources */,
+				27C49E9F19F2774B001087D3 /* MessageLog.swift in Sources */,
 				277788A7173CE22700430EBC /* TransferTemplate.m in Sources */,
 				277788A8173CE22700430EBC /* TransferTemplateController.m in Sources */,
 				277788A9173CE22700430EBC /* BankStatementPrintView.m in Sources */,
@@ -3627,6 +3690,7 @@
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
 				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
+				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
@@ -3639,6 +3703,7 @@
 				277788BF173CE22700430EBC /* HBCIError.m in Sources */,
 				277788C0173CE22700430EBC /* LogParser.m in Sources */,
 				27686E4B193B5E860038067D /* WaitViewController.m in Sources */,
+				271394D919FD16F30099FB27 /* ShortDate.swift in Sources */,
 				277788C1173CE22700430EBC /* ResultParser.m in Sources */,
 				277788C2173CE22700430EBC /* TanMethodListController.m in Sources */,
 				27686E42193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
@@ -3659,6 +3724,8 @@
 				277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */,
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
 				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
+				2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
+				27E225791A18D78A007171BE /* WAYWindow.m in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
@@ -3671,11 +3738,12 @@
 				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
+				27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
-				2784D453197A6CB300A40249 /* DDTTYLogger.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
+				2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
@@ -3686,10 +3754,12 @@
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
+				2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
 				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
 				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
+				2759D8A41A0133FB002AE07E /* Double.swift in Sources */,
 				277788E6173CE22700430EBC /* CallbackHandler.m in Sources */,
 				277788E7173CE22700430EBC /* BWGradientBox.m in Sources */,
 				277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */,
@@ -3709,7 +3779,6 @@
 				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
 				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
-				2784D44D197A6CB300A40249 /* DDASLLogger.m in Sources */,
 				277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */,
 				277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */,
 				277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */,
@@ -3719,12 +3788,9 @@
 				277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */,
 				277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */,
 				277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */,
-				2784D44F197A6CB300A40249 /* DDFileLogger.m in Sources */,
 				27778900173CE22700430EBC /* TanWindow.m in Sources */,
 				27778901173CE22700430EBC /* 102.xcmappingmodel in Sources */,
-				2784D449197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
 				27778902173CE22700430EBC /* TransferPrintView.m in Sources */,
-				2784D44B197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */,
 				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
@@ -3740,6 +3806,7 @@
 				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
 				2777890E173CE22700430EBC /* DebitsListView.m in Sources */,
 				2777890F173CE22700430EBC /* DebitsListViewCell.m in Sources */,
+				2759D8AE1A0133FB002AE07E /* NSArray.swift in Sources */,
 				27778910173CE22700430EBC /* DebitFormularView.m in Sources */,
 				27778911173CE22700430EBC /* CCSettlementList.m in Sources */,
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
@@ -3748,6 +3815,7 @@
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */,
+				2759D8B21A0133FB002AE07E /* Sequence.swift in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				B19CA99319410C04005B1125 /* SepaData.m in Sources */,
 				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
@@ -3764,7 +3832,9 @@
 				27A6F364178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160517B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEC17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				2759D8A81A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				2759D8AC1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100717D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4F17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
@@ -3781,7 +3851,7 @@
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
-				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
+				B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */,
 				B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */,
 				2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
@@ -3798,6 +3868,7 @@
 				B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */,
 				B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				279C166518E8317600A4306F /* LockViewController.m in Sources */,
+				2759D8AF1A0133FB002AE07E /* Range.swift in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
@@ -3819,26 +3890,28 @@
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */,
-				B1F8F8FB19AFDFA30046638B /* RemoteResourceManager.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
+				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
-				2784D450197A6CB300A40249 /* DDLog.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
+				279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
+				2759D89F1A0133FB002AE07E /* Array.swift in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				27BB3B82190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
 				B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */,
+				27C49E9E19F2774B001087D3 /* MessageLog.swift in Sources */,
 				B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */,
 				B1FB660F124FC89500C54A0E /* TransferTemplateController.m in Sources */,
 				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
@@ -3856,6 +3929,7 @@
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
+				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
 				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
@@ -3868,6 +3942,7 @@
 				B14D4C6C13DB600400843BE6 /* HBCIError.m in Sources */,
 				B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */,
 				27686E4A193B5E860038067D /* WaitViewController.m in Sources */,
+				271394D819FD16F30099FB27 /* ShortDate.swift in Sources */,
 				B14D4C6E13DB600400843BE6 /* ResultParser.m in Sources */,
 				B14D4C7313DB608D00843BE6 /* TanMethodListController.m in Sources */,
 				27686E41193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
@@ -3888,6 +3963,8 @@
 				275C07E91438779700D97415 /* PXListDocumentView.m in Sources */,
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
 				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
+				2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
+				27E225781A18D78A007171BE /* WAYWindow.m in Sources */,
 				275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */,
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
@@ -3900,11 +3977,12 @@
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
+				27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
-				2784D452197A6CB300A40249 /* DDTTYLogger.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
+				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
@@ -3915,10 +3993,12 @@
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
+				2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,
 				C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */,
+				2759D8A31A0133FB002AE07E /* Double.swift in Sources */,
 				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 				27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */,
 				27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */,
@@ -3938,7 +4018,6 @@
 				2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */,
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,
-				2784D44C197A6CB300A40249 /* DDASLLogger.m in Sources */,
 				27E662B615A09BDA002F9277 /* TransferTemplatesListView.m in Sources */,
 				27E662B715A09BDA002F9277 /* TransferTemplateListViewCell.m in Sources */,
 				B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */,
@@ -3948,12 +4027,9 @@
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
-				2784D44E197A6CB300A40249 /* DDFileLogger.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
-				2784D448197A6CB300A40249 /* DDAbstractDatabaseLogger.m in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
-				2784D44A197A6CB300A40249 /* DDASLLogCapture.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
@@ -3969,6 +4045,7 @@
 				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
 				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,
 				27A3DA2516A1C99C00FD7335 /* DebitsListViewCell.m in Sources */,
+				2759D8AD1A0133FB002AE07E /* NSArray.swift in Sources */,
 				27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */,
 				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
@@ -3977,6 +4054,7 @@
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */,
+				2759D8B11A0133FB002AE07E /* Sequence.swift in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				B19CA99219410C04005B1125 /* SepaData.m in Sources */,
 				27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */,
@@ -3993,7 +4071,9 @@
 				27A6F363178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160417B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEB17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				2759D8A71A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				2759D8AB1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100617D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4E17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
@@ -4005,12 +4085,17 @@
 		277789C8173CE22700430EBC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4038,13 +4123,17 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4054,12 +4143,17 @@
 		277789C9173CE22700430EBC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
@@ -4078,14 +4172,17 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4095,11 +4192,16 @@
 		277789CA173CE22700430EBC /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
@@ -4117,13 +4219,16 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4132,12 +4237,17 @@
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4164,13 +4274,21 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_CFLAGS = (
+					"-D",
+					"DEBUG=1",
+				);
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4180,12 +4298,17 @@
 		B14C0A890AAF71DB00CC41C4 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
@@ -4203,13 +4326,17 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_CFLAGS = "";
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4219,12 +4346,17 @@
 		B14C0A8A0AAF71DB00CC41C4 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/Frameworks";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
@@ -4242,13 +4374,17 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_CFLAGS = "";
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_LDFLAGS = "-lz";
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4336,22 +4472,23 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
 				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
 				B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */,
-				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
-				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
-				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,
 				273C80501912A056007E799E /* Accounts 11.xcdatamodel */,
+				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,
+				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
+				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
 				A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */,
-				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
-				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
-				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
-				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
-				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
-				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
+				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
+				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
+				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
+				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
+				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
+				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */;
+			currentVersion = 27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
+        <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferenceController">
             <connections>
                 <outlet property="accountSelector1" destination="fwl-pw-rdI" id="HLp-xG-sRw"/>
                 <outlet property="accountSelector2" destination="f6h-h3-ePx" id="xGV-pz-ysy"/>
-                <outlet property="colorContainer" destination="942" id="1042"/>
                 <outlet property="colorListView" destination="1043" id="1047"/>
                 <outlet property="contentView" destination="6" id="857"/>
                 <outlet property="dataFileField" destination="1084" id="1140"/>
@@ -18,9 +18,7 @@
                 <outlet property="expRadioMatrix" destination="781" id="854"/>
                 <outlet property="fieldController" destination="54" id="69"/>
                 <outlet property="fieldTable" destination="48" id="70"/>
-                <outlet property="interestRateField" destination="gvG-Fy-1NM" id="Ys4-xM-wxK"/>
                 <outlet property="loanField" destination="jrp-Aw-YNa" id="OCB-aN-Snc"/>
-                <outlet property="localSettingsController" destination="y4m-7I-EEV" id="cb9-zi-xDE"/>
                 <outlet property="lookupButton1" destination="1381" id="1400"/>
                 <outlet property="lookupButton2" destination="1383" id="1401"/>
                 <outlet property="lookupButton3" destination="1385" id="1402"/>
@@ -451,7 +449,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="uUg-87-6Io">
-                                            <rect key="frame" x="7" y="111.00000820920505" width="490" height="26"/>
+                                            <rect key="frame" x="7" y="111.00000789898405" width="490" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Annuitätendarlehen" id="ajw-Sj-2dp">
                                                 <font key="font" metaFont="systemBold"/>
@@ -647,14 +645,14 @@
                                                 <action selector="loanDateChanged:" target="-2" id="kJf-Jl-fta"/>
                                             </connections>
                                         </popUpButton>
-                                        <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="Era-q2-K0K">
+                                        <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="Era-q2-K0K">
                                             <rect key="frame" x="9" y="230" width="486" height="5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="GjE-oO-E0j">
+                                        <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="GjE-oO-E0j">
                                             <rect key="frame" x="19" y="143" width="486" height="5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -907,20 +905,10 @@
                                     <rect key="frame" x="10" y="7" width="504" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button id="898">
-                                            <rect key="frame" x="22" y="271" width="460" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Neue Umsätze farbig hinterlegen (anstatt Icon)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="899">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <binding destination="88" name="value" keyPath="values.markNewStatements" id="900"/>
-                                            </connections>
-                                        </button>
                                         <button id="902">
                                             <rect key="frame" x="22" y="243" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <string key="toolTip">Noch nicht zu einer Kategorie zugeordnete Umsätze werden standardmäßig mit einer Schraffur markiert. Alternativ kann man auch einen farbigen Hintergrund verwenden. Die dafür genutzte Farbe kann man in den Farbeinstellungen anpassen.</string>
                                             <buttonCell key="cell" type="check" title="Nicht zugeordnete Umsätze farbig hinterlegen (anstatt Schraffur)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="905">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -929,7 +917,7 @@
                                                 <binding destination="88" name="value" keyPath="values.markNAStatements" id="906"/>
                                             </connections>
                                         </button>
-                                        <button id="910">
+                                        <button toolTip="Neben jeder Kategorie wird in einem kleinen Rechteck die eingestellte Kategorienfarbe dargestellt." id="910">
                                             <rect key="frame" x="22" y="215" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Farben der Kategorien im Kategorienbaum anzeigen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="911">
@@ -943,7 +931,7 @@
                                         <button id="915">
                                             <rect key="frame" x="22" y="187" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <string key="toolTip">Bestimmte Bankdaten kommen oft komplett in Großschreibung, was u.U. schwer zu lesen ist. Die automatische Groß-/Kleinschreibung kompensiert dies (zumindest partiell).</string>
+                                            <string key="toolTip">Überweisungen kommen oft in schwer lesbarer Form (z.B. nur Großbuchstaben). Diese Automatik verwendet eine wordlistenbasierte Heuristik, um die richtige Schreibweise zu verwenden. Dazu wird eine zusätzliche Datei benötigt, die Pecunia automatisch herunterlädt.</string>
                                             <buttonCell key="cell" type="check" title="Automatische Groß-/Kleinschreibung in Listen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="916">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -952,10 +940,9 @@
                                                 <binding destination="88" name="value" keyPath="values.autoCasing" id="935"/>
                                             </connections>
                                         </button>
-                                        <button id="920">
+                                        <button toolTip="Wenn Listen nach Datum sortiert sind kann man mit dieser Option für jeden Tag eine Kopfzeile anzeigen lassen." id="920">
                                             <rect key="frame" x="22" y="159" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <string key="toolTip">Bestimmte Bankdaten kommen oft komplett in Großschreibung, was u.U. schwer zu lesen ist. Die automatische Groß-/Kleinschreibung kompensiert dies (zumindest partiell).</string>
                                             <buttonCell key="cell" type="check" title="Kopfzeilen in Listen anzeigen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="921">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -964,10 +951,9 @@
                                                 <binding destination="88" name="value" keyPath="values.showHeadersInLists" id="934"/>
                                             </connections>
                                         </button>
-                                        <button id="924">
+                                        <button toolTip="Für Konten können automatisch Zwischensalden für jede Transaktion errechnet und angezeigt werden." id="924">
                                             <rect key="frame" x="22" y="132" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <string key="toolTip">Bestimmte Bankdaten kommen oft komplett in Großschreibung, was u.U. schwer zu lesen ist. Die automatische Groß-/Kleinschreibung kompensiert dies (zumindest partiell).</string>
                                             <buttonCell key="cell" type="check" title="Salden in Listen anzeigen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="925">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -979,7 +965,7 @@
                                         <button id="936">
                                             <rect key="frame" x="22" y="105" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <string key="toolTip">Bestimmte Bankdaten kommen oft komplett in Großschreibung, was u.U. schwer zu lesen ist. Die automatische Groß-/Kleinschreibung kompensiert dies (zumindest partiell).</string>
+                                            <string key="toolTip">Konten und Kategorien können über ihre Eigenschaften versteckt werden und verschwinden dann aus der Anzeige. Mit dieser Einstellung können diese jedoch (halb durchsichtig) dennoch angezeigt werden.</string>
                                             <buttonCell key="cell" type="check" title="Versteckte Konten + Kategorien anzeigen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="937">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -1029,22 +1015,35 @@
                                                 </binding>
                                             </connections>
                                         </stepper>
-                                        <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="zK6-eW-Z7k">
+                                        <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="zK6-eW-Z7k">
                                             <rect key="frame" x="24" y="63" width="456" height="5"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
-                                        <button toolTip="Zeige noch nicht abgeschlossene Buchungen in der Umsatzliste" id="Uee-wc-ZeT">
+                                        <button id="Uee-wc-ZeT">
                                             <rect key="frame" x="22" y="78" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <string key="toolTip">Zeige noch nicht abgeschlossene Buchungen in der Umsatzliste. Da vorläufige Buchungen noch nirgends berücksichtigt sind (z.B. beim Saldo) haben sie eine rein informelle Funktion. Man kann diese auch nicht einer Kategorie zuordnen oder Notizen oder Tags hinzufügen.</string>
                                             <buttonCell key="cell" type="check" title="Vorläufige Buchungen anzeigen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="m3e-lF-OdW">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
                                                 <binding destination="88" name="value" keyPath="values.showPreliminaryStatements" id="MlO-Vf-O4t"/>
+                                            </connections>
+                                        </button>
+                                        <button id="898">
+                                            <rect key="frame" x="22" y="271" width="460" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                            <string key="toolTip">Neue Umsätze können entweder mit einem Icon oder, alternativ, mit einem farbigen Hintergrund gekennzeichnet werden. Die dafür genutzte Farbe kann man in den Farbeinstellungen anpassen.</string>
+                                            <buttonCell key="cell" type="check" title="Neue Umsätze farbig hinterlegen (anstatt Icon)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="899">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="88" name="value" keyPath="values.markNewStatements" id="900"/>
                                             </connections>
                                         </button>
                                     </subviews>

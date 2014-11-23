@@ -526,7 +526,7 @@ static NSFont *smallNumberFont;
         };
 
         standingOrders = [[NSArrayController alloc] init];
-        standingOrders.managedObjectContext = MOAssistant.assistant.context;
+        standingOrders.managedObjectContext = MOAssistant.sharedAssistant.context;
         standingOrders.entityName = @"StandingOrder";
         standingOrders.automaticallyRearrangesObjects = YES;
 
@@ -649,6 +649,9 @@ static NSFont *smallNumberFont;
             }
 
             break;
+
+        default:
+            break;
     }
 
     switch (event.momentumPhase) {
@@ -673,6 +676,9 @@ static NSFont *smallNumberFont;
             break;
 
         case NSEventPhaseEnded:
+            break;
+
+        default:
             break;
     }
 }
@@ -810,8 +816,6 @@ static NSFont *smallNumberFont;
 }
 
 - (void)resizeWithOldSuperviewSize: (NSSize)oldSize {
-    LogEnter;
-
     NSRect frame = self.bounds;
     frame.origin.x = frame.size.width - contentWidth + 15;
     frame.size.width = contentWidth - 50;
@@ -821,7 +825,6 @@ static NSFont *smallNumberFont;
         calendar.frame = frame;
         frame.origin.y -= CALENDAR_HEIGHT;
     }
-    LogLeave;
 }
 
 @end
@@ -857,7 +860,7 @@ static NSFont *smallNumberFont;
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
-                                                 object: MOAssistant.assistant.context];
+                                                 object: MOAssistant.sharedAssistant.context];
     }
 
     LogLeave;
@@ -905,7 +908,7 @@ static NSFont *smallNumberFont;
 
     //ordersPopupList.dataSource = self;
     ordersPopupList.delegate = self;
-    popoverDataController.managedObjectContext = MOAssistant.assistant.context;
+    popoverDataController.managedObjectContext = MOAssistant.sharedAssistant.context;
 
     LogLeave;
 }
@@ -951,7 +954,7 @@ static NSFont *smallNumberFont;
     NSRect frame = ordersPopupList.frame;
     frame.origin = NSMakePoint(2, 2);
     if (values.count < 6) {
-        frame.size.height = MAX(values.count, 1) * 51;
+        frame.size.height = MAX(values.count, (unsigned)1) * 51;
     } else {
         frame.size.height = 5 * 51;
     }

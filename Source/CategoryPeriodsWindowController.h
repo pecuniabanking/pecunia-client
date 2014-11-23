@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "Category.h"
+#import "BankingCategory.h"
 #import "PecuniaSectionItem.h"
 
 @class ShortDate;
@@ -75,7 +75,7 @@
 - (void)connectScrollViews: (SynchronousScrollView *)other;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) BankingCategory *selectedCategory;
 
 - (NSView *)mainView;
 - (void)activate;

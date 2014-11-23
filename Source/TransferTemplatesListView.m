@@ -21,7 +21,7 @@
 #import "TransferTemplateListViewCell.h"
 #import "Transfer.h"
 #import "TransferTemplate.h"
-#import "Category.h"
+#import "BankingCategory.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
@@ -41,9 +41,10 @@ extern NSString *StatementRemoteBankCodeKey;
 extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
-NSString        *TemplateNameKey = @"TemplateNameKey";
 
-NSString *TransferTemplateDataType = @"TransferTemplateDataType";
+NSString *TemplateNameKey = @"TemplateNameKey";
+
+NSString *TransferTemplateDataType = @"pecunia.TransferTemplateDataType";
 
 extern NSString *TransferDataType;
 extern NSString *TransferReadyForUseDataType;
@@ -59,24 +60,21 @@ extern NSString *TransferReadyForUseDataType;
 @synthesize owner;
 @synthesize dataSource;
 
-- (id)initWithCoder: (NSCoder *)decoder
-{
+- (id)initWithCoder: (NSCoder *)decoder {
     self = [super initWithCoder: decoder];
     if (self != nil) {
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 
     [self setDelegate: self];
     [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType]];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
@@ -98,8 +96,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
     withKeyPath: (NSString *)keyPath
-        options: (NSDictionary *)options
-{
+        options: (NSDictionary *)options {
     if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
@@ -129,8 +126,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if (context == DataSourceBindingContext) {
         [self reloadData];
     } else {
@@ -140,14 +136,12 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 #pragma mark - PXListViewDelegate protocol implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
-{
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView {
 #pragma unused(aListView)
     return [dataSource count];
 }
 
-- (id)formatValue: (id)value
-{
+- (id)formatValue: (id)value {
     if (value == nil || [value isKindOfClass: [NSNull class]]) {
         value = @"";
     }
@@ -157,20 +151,21 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 #define CELL_HEIGHT 55
 
-- (void)fillCell: (TransferTemplateListViewCell *)cell forRow: (NSUInteger)row
-{
+- (void)fillCell: (TransferTemplateListViewCell *)cell forRow: (NSUInteger)row {
     TransferTemplate *template = dataSource[row];
 
-    NSDictionary *details = @{StatementIndexKey: @((int)row),
-                              TemplateNameKey: [self formatValue: template.name],
-                              StatementRemoteNameKey: [self formatValue: template.remoteName],
-                              StatementPurposeKey: [self formatValue: template.purpose],
-                              StatementRemoteBankCodeKey: [self formatValue: template.remoteBankCode],
-                              StatementRemoteIBANKey: [self formatValue: template.remoteIBAN],
-                              StatementRemoteBICKey: [self formatValue: template.remoteBIC],
-                              StatementRemoteAccountKey: [self formatValue: template.remoteAccount],
-                              StatementRemoteBankNameKey: [self formatValue: template.remoteBankName],
-                              StatementTypeKey: template.type};
+    NSDictionary *details = @{
+        StatementIndexKey: @((int)row),
+        TemplateNameKey: [self formatValue: template.name],
+        StatementRemoteNameKey: [self formatValue: template.remoteName],
+        StatementPurposeKey: [self formatValue: template.purpose],
+        StatementRemoteBankCodeKey: [self formatValue: template.remoteBankCode],
+        StatementRemoteIBANKey: [self formatValue: template.remoteIBAN],
+        StatementRemoteBICKey: [self formatValue: template.remoteBIC],
+        StatementRemoteAccountKey: [self formatValue: template.remoteAccount],
+        StatementRemoteBankNameKey: [self formatValue: template.remoteBankName],
+        StatementTypeKey: template.type
+    };
 
     [cell setDetails: details];
 
@@ -184,8 +179,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  * to avoid creating potentially many cells. This way we can have many entries but still only as many
  * cells as fit in the window.
  */
-- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
-{
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row {
     TransferTemplateListViewCell *cell = (TransferTemplateListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"transfer-template-cell"];
 
     if (!cell) {
@@ -198,18 +192,15 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     return cell;
 }
 
-- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
-{
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging {
     return CELL_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
-{
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row {
     return NSMakeRange(0, CELL_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification {
     // Also let every entry check its selection state, in case internal states must be updated.
     NSArray *cells = [self visibleCells];
     for (TransferTemplateListViewCell *cell in cells) {
@@ -217,8 +208,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
 }
 
-- (void)listView: (PXListView *)aListView rowDoubleClicked: (NSUInteger)rowIndex
-{
+- (void)listView: (PXListView *)aListView rowDoubleClicked: (NSUInteger)rowIndex {
     TransferTemplate *template = dataSource[rowIndex];
     [owner startTransferFromTemplate: template];
 }
@@ -226,8 +216,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 /**
  * Triggered when KVO notifies us about changes.
  */
-- (void)updateVisibleCells
-{
+- (void)updateVisibleCells {
     NSArray *cells = [self visibleCells];
     for (TransferTemplateListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
@@ -239,8 +228,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
     toPasteboard: (NSPasteboard *)dragPasteboard
-       slideBack: (BOOL *)slideBack
-{
+       slideBack: (BOOL *)slideBack {
     *slideBack = YES;
     NSMutableArray *draggedTemplates = [NSMutableArray arrayWithCapacity: 5];
 
@@ -263,13 +251,11 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 }
 
 // The listview as drag source.
-- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag
-{
+- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag {
     return flag ? NSDragOperationMove : NSDragOperationNone;
 }
 
-- (BOOL)ignoreModifierKeysWhileDragging
-{
+- (BOOL)ignoreModifierKeysWhileDragging {
     return YES;
 }
 
@@ -278,8 +264,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (NSDragOperation)listView: (PXListView *)aListView
                validateDrop: (id<NSDraggingInfo>)sender
                 proposedRow: (NSUInteger)row
-      proposedDropHighlight: (NSUInteger)highlight
-{
+      proposedDropHighlight: (NSUInteger)highlight {
     if (sender.draggingSource == self) {
         [[NSCursor arrowCursor] set];
         return NSDragOperationNone;
@@ -297,8 +282,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (BOOL) listView: (PXListView *)aListView
        acceptDrop: (id<NSDraggingInfo>)info
               row: (NSUInteger)row
-    dropHighlight: (NSUInteger)highlight
-{
+    dropHighlight: (NSUInteger)highlight {
     if (info.draggingSource == self) {
         return NO;
     }
@@ -307,8 +291,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     return YES;
 }
 
-- (void)draggingExited: (id <NSDraggingInfo>)info
-{
+- (void)draggingExited: (id <NSDraggingInfo>)info {
     [[NSCursor arrowCursor] set];
     [super draggingExited: info];
 }
@@ -316,13 +299,11 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 #pragma mark -
 #pragma mark Keyboard handling
 
-- (void)deleteToBeginningOfLine: (id)sender
-{
+- (void)deleteToBeginningOfLine: (id)sender {
     [owner deleteSelectionFrom: self];
 }
 
-- (void)deleteForward: (id)sender
-{
+- (void)deleteForward: (id)sender {
     [owner deleteSelectionFrom: self];
 }
 

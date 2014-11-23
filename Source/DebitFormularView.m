@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,7 +22,7 @@
 #import "GraphicsAdditions.h"
 #import "NSView+PecuniaAdditions.h"
 
-NSString *const DebitReadyForUseDataType = @"DebitReadyForUseDataType";
+NSString *const DebitReadyForUseDataType = @"pecunia.DebitReadyForUseDataType";
 
 @implementation DebitFormularView
 
@@ -32,8 +32,7 @@ NSString *const DebitReadyForUseDataType = @"DebitReadyForUseDataType";
 @synthesize icon;
 @synthesize controller;
 
-- (id)initWithFrame: (NSRect)frameRect
-{
+- (id)initWithFrame: (NSRect)frameRect {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         bottomArea = 60;
@@ -42,12 +41,15 @@ NSString *const DebitReadyForUseDataType = @"DebitReadyForUseDataType";
     return self;
 }
 
-#pragma mark -
-#pragma mark Drag and drop
+#pragma mark - Drag and drop
+
+// Temprarily disable deprection warning for dragImage:at:offset:event:pasteboard:source:slidBack.
+// This code must be reworked anyway.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 // The formular as drag source.
-- (void)mouseDragged: (NSEvent *)theEvent
-{
+- (void)mouseDragged: (NSEvent *)theEvent {
     if (draggable) {
         NSPoint viewPoint = [self convertPoint: [theEvent locationInWindow] fromView: nil];
         if (NSPointInRect(viewPoint,  draggingArea)) {
@@ -71,14 +73,14 @@ NSString *const DebitReadyForUseDataType = @"DebitReadyForUseDataType";
     }
 }
 
+#pragma clang diagnostic pop
+
 // The formular as drag target.
-- (NSDragOperation)draggingEntered: (id<NSDraggingInfo>)sender
-{
+- (NSDragOperation)draggingEntered: (id<NSDraggingInfo>)sender {
     return NSDragOperationNone;
 }
 
-- (void)draggingExited: (id<NSDraggingInfo>)sender
-{
+- (void)draggingExited: (id<NSDraggingInfo>)sender {
     [[NSCursor arrowCursor] set];
 }
 
@@ -92,8 +94,7 @@ static NSImage  *stripes;
 
 #define TOP_PANE_HEIGHT 100
 
-- (void)drawRect: (NSRect)rect
-{
+- (void)drawRect: (NSRect)rect {
     [NSGraphicsContext saveGraphicsState];
 
     // Initialize shared objects.

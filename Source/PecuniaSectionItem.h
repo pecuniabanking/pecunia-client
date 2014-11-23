@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-@class Category;
+@class BankingCategory;
 @class ShortDate;
 
 @protocol PecuniaSectionItem
@@ -29,7 +29,7 @@
 
 @required
 
-@property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, weak) BankingCategory *selectedCategory;
 @property (nonatomic, strong) NSView *mainView;
 
 - (void)print;

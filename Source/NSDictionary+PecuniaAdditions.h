@@ -21,9 +21,9 @@
 
 @interface NSDictionary (PecuniaAdditions)
 
-+ (NSDictionary *)dictionaryForXMLData: (NSData *)data error: (NSError **)error;
-+ (NSDictionary *)dictionaryForXMLString: (NSString *)string error: (NSError **)error;
-+ (NSDictionary *)dictionaryForUrlParameters: (NSURL *)url;
++ (NSDictionary *)dictForXMLData: (NSData *)data error: (NSError **)error;
++ (NSDictionary *)dictForXMLString: (NSString *)string error: (NSError **)error;
++ (NSDictionary *)dictForUrlParameters: (NSURL *)url;
 
 - (NSString *)textForKey: (NSString *)key;
 - (NSDictionary *)dictionaryFromPath: (NSArray *)path;

@@ -476,6 +476,7 @@
                 <outlet property="delegate" destination="-2" id="182"/>
                 <outlet property="initialFirstResponder" destination="21" id="179"/>
             </connections>
+            <point key="canvasLocation" x="172.5" y="127"/>
         </window>
         <objectController mode="entity" entityName="BankAccount" editable="NO" automaticallyPreparesContent="YES" id="101" userLabel="Account">
             <declaredKeys>

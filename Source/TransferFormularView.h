@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,9 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @class TransfersController;
 
-@interface TransferFormularView : NSView {
-}
+@interface TransferFormularView : NSView <NSDraggingSource, NSPasteboardItemDataProvider>
 
 @property (nonatomic, assign) BOOL              draggable;
 @property (nonatomic, strong) NSImage           *icon;

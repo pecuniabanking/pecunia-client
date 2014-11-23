@@ -18,7 +18,7 @@
  */
 
 #import "CategoryRepWindowController.h"
-#import "Category.h"
+#import "BankingCategory.h"
 #import "NSOutlineView+PecuniaAdditions.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
@@ -929,7 +929,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
         NSDecimalNumber *zero = [NSDecimalNumber zero];
 
-        for (Category *childCategory in children) {
+        for (BankingCategory *childCategory in children) {
             if ([childCategory.isHidden boolValue] || [childCategory.noCatRep boolValue]) {
                 continue;
             }
@@ -1369,7 +1369,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                            delegate: self];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory {
+- (void)setSelectedCategory: (BankingCategory *)newCategory {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
         [self updateValues];

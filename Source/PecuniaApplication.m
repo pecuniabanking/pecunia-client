@@ -33,7 +33,7 @@ static void signalHandler(int sig, siginfo_t *info, void *context)
     [PecuniaExceptionDelegate printStackTraceForException: nil];
 
     NSError *error;
-    if ([MOAssistant.assistant.context save: &error]) {
+    if ([MOAssistant.sharedAssistant.context save: &error]) {
         LogInfo(@"Successfully saved context.");
     } else {
         LogError(@"Failed to save context. Reason: %@", error.description);

@@ -61,7 +61,7 @@ static NSMutableDictionary *users = nil;
 }
 
 - (void)updateTanMethods: (NSArray *)methods {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSMutableSet           *oldMethods = [[self tanMethods] copy];
     NSEntityDescription    *entity = [NSEntityDescription entityForName: @"TanMethod" inManagedObjectContext: context];
     NSArray                *attributeKeys = [[entity attributesByName] allKeys];
@@ -87,7 +87,7 @@ static NSMutableDictionary *users = nil;
 }
 
 - (void)updateTanMedia: (NSArray *)media {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSMutableSet           *oldMedia = [[self tanMedia] copy];
     NSEntityDescription    *entity = [NSEntityDescription entityForName: @"TanMedium" inManagedObjectContext: context];
     NSArray                *attributeKeys = [[entity attributesByName] allKeys];
@@ -355,7 +355,7 @@ static NSMutableDictionary *users = nil;
 
 + (NSArray *)allUsers {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -383,7 +383,7 @@ static NSMutableDictionary *users = nil;
 
     NSArray *bankUsers = [users objectForKey: userId];
     if (bankUsers == nil) {
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
         NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
         NSFetchRequest         *request = [[NSFetchRequest alloc] init];
         [request setEntity: entityDescription];
@@ -415,7 +415,7 @@ static NSMutableDictionary *users = nil;
 }
 
 + (void)removeUser: (BankUser *)user {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (user.userId != nil) {
         [users removeObjectForKey: user.userId];
