@@ -149,10 +149,10 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 
 	static dispatch_once_t oncePredicate;
 	dispatch_once(&oncePredicate, ^{
-		NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithData:[[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer]];
+        NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer options: NSDataBase64DecodingIgnoreUnknownCharacters]];
 		NSImage *image = [[NSImage alloc] initWithSize:rep.size];
 		[image addRepresentation:rep];
-		[image addRepresentation:[[NSBitmapImageRep alloc] initWithData:[[NSData alloc] initWithBase64Encoding:INWindowBackgroundPatternOverlayLayer2x]]];
+		[image addRepresentation:[[NSBitmapImageRep alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:INWindowBackgroundPatternOverlayLayer2x options: NSDataBase64DecodingIgnoreUnknownCharacters]]];
 
 		noiseColor = [NSColor colorWithPatternImage:image];
 	});
@@ -536,13 +536,15 @@ NS_INLINE void INApplyClippingPathInCurrentContext(CGPathRef path) {
 		return;
 	}
 
-	NSPoint where = [window convertBaseToScreen:theEvent.locationInWindow];
+    NSRect rect = NSMakeRect(theEvent.locationInWindow.x, theEvent.locationInWindow.y, 0, 0);
+	NSPoint where = [window convertRectToScreen: rect].origin;
 	NSPoint origin = window.frame.origin;
 	CGFloat deltaX = 0.0;
 	CGFloat deltaY = 0.0;
 	while ((theEvent = [NSApp nextEventMatchingMask:NSLeftMouseDownMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:YES]) && (theEvent.type != NSLeftMouseUp)) {
 		@autoreleasepool {
-			NSPoint now = [window convertBaseToScreen:theEvent.locationInWindow];
+            rect = NSMakeRect(theEvent.locationInWindow.x, theEvent.locationInWindow.y, 0, 0);
+			NSPoint now = [window convertRectToScreen: rect].origin;
 			deltaX += now.x - where.x;
 			deltaY += now.y - where.y;
 			if (fabs(deltaX) >= _mouseDragDetectionThreshold || fabs(deltaY) >= _mouseDragDetectionThreshold) {

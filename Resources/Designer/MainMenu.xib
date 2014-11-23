@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="mcmain" animationBehavior="default" id="21" userLabel="Main" customClass="WAYAppStoreWindow">
+        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="21" userLabel="Main" customClass="WAYAppStoreWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="148" y="114" width="1200" height="700"/>
@@ -24,29 +24,29 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tabView type="noTabsNoBorder" initialItem="394" id="393">
-                        <rect key="frame" x="100" y="20" width="1100" height="680"/>
+                        <rect key="frame" x="100" y="20" width="1100" height="640"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="Konten + Kategorien" identifier="1" id="394" userLabel="Tab View Item (Konten)">
                                 <view key="view" id="396" customClass="MainBackgroundView">
-                                    <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1100" height="640"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <splitView identifier="mainVerticalSplitter" autosaveName="" dividerStyle="thin" vertical="YES" id="6321" userLabel="Main Vertical Splitter" customClass="PecuniaSplitView">
-                                            <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1100" height="640"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <customView id="6322">
-                                                    <rect key="frame" x="0.0" y="0.0" width="338" height="680"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="338" height="640"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <customView id="5998" userLabel="Main Navigation Bar" customClass="RoundedOuterShadowView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="338" height="650"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="338" height="610"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="0.0" verticalLineScroll="20" verticalPageScroll="0.0" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="280" customClass="SynchronousScrollView">
-                                                                    <rect key="frame" x="20" y="50" width="298" height="580"/>
+                                                                    <rect key="frame" x="20" y="50" width="298" height="540"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="WcI-He-wNN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="298" height="580"/>
@@ -143,11 +143,11 @@
                                                     </subviews>
                                                 </customView>
                                                 <customView id="6323">
-                                                    <rect key="frame" x="339" y="0.0" width="761" height="680"/>
+                                                    <rect key="frame" x="339" y="0.0" width="761" height="640"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" id="6002">
-                                                            <rect key="frame" x="572" y="656" width="120" height="17"/>
+                                                            <rect key="frame" x="572" y="616" width="120" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Letzter Umsatz am" usesSingleLineMode="YES" id="6003">
                                                                 <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -163,7 +163,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="573">
-                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
+                                                            <rect key="frame" x="178" y="616" width="198" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="iban" usesSingleLineMode="YES" id="3405">
                                                                 <font key="font" size="13" name="HelveticaNeue-Bold"/>
@@ -190,7 +190,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="iL7-B7-Esb">
-                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
+                                                            <rect key="frame" x="136" y="616" width="38" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="IBAN:" usesSingleLineMode="YES" id="FiZ-uQ-gTs">
                                                                 <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -211,7 +211,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="cBW-1J-fam">
-                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
+                                                            <rect key="frame" x="178" y="616" width="198" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Kontonummer" usesSingleLineMode="YES" id="sme-f3-gp6">
                                                                 <font key="font" size="13" name="HelveticaNeue-Bold"/>
@@ -238,7 +238,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="8O0-fc-4lv">
-                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
+                                                            <rect key="frame" x="136" y="616" width="38" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Konto:" usesSingleLineMode="YES" id="bTv-fK-iza">
                                                                 <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -269,7 +269,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="gbg-XW-nBA">
-                                                            <rect key="frame" x="417" y="656" width="151" height="17"/>
+                                                            <rect key="frame" x="417" y="616" width="151" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="bic" usesSingleLineMode="YES" id="bmq-6H-jeQ">
                                                                 <font key="font" size="13" name="HelveticaNeue-Bold"/>
@@ -296,7 +296,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="L9r-fR-5jU">
-                                                            <rect key="frame" x="380" y="656" width="33" height="17"/>
+                                                            <rect key="frame" x="380" y="616" width="33" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BIC:" usesSingleLineMode="YES" id="9oT-lB-AI5">
                                                                 <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -317,7 +317,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="577">
-                                                            <rect key="frame" x="11" y="656" width="121" height="17"/>
+                                                            <rect key="frame" x="11" y="616" width="121" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Postbank" usesSingleLineMode="YES" id="3408">
                                                                 <font key="font" size="13" name="HelveticaNeue-Bold"/>
@@ -337,7 +337,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="4746">
-                                                            <rect key="frame" x="696" y="656" width="53" height="17"/>
+                                                            <rect key="frame" x="696" y="616" width="53" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Date" usesSingleLineMode="YES" id="4747">
                                                                 <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="short" id="4755"/>
@@ -362,7 +362,7 @@ IA
                                                             </connections>
                                                         </textField>
                                                         <customView id="lwF-Qy-Ve8" userLabel="Section Placeholder">
-                                                            <rect key="frame" x="0.0" y="0.0" width="761" height="650"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="761" height="610"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </customView>
                                                     </subviews>
@@ -420,11 +420,11 @@ IA
                         </textFieldCell>
                     </textField>
                     <customView id="B96-no-ost" customClass="EDSideBar">
-                        <rect key="frame" x="0.0" y="20" width="100" height="680"/>
+                        <rect key="frame" x="0.0" y="20" width="100" height="640"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         <subviews>
                             <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" id="hbf-EK-ccc" userLabel="Refresh Button">
-                                <rect key="frame" x="52" y="659" width="20" height="20"/>
+                                <rect key="frame" x="52" y="619" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -436,7 +436,7 @@ IA
                                 </connections>
                             </button>
                             <button id="4Zn-pj-CrH" userLabel="Donate Button">
-                                <rect key="frame" x="75" y="659" width="20" height="20"/>
+                                <rect key="frame" x="75" y="619" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <string key="toolTip">Für Pecunia spenden.
 Unterstütze die Entwicklung!</string>
@@ -1142,12 +1142,12 @@ CA
             </connections>
         </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="6577" userLabel="Shared User Defaults Controller"/>
-        <customView id="auX-7g-19I" userLabel="Com Trace Controls" customClass="ComTraceHelper">
+        <customView wantsLayer="YES" id="auX-7g-19I" userLabel="Com Trace Controls" customClass="ComTraceHelper">
             <rect key="frame" x="0.0" y="0.0" width="65" height="32"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button wantsLayer="YES" id="40V-Vf-9Rp">
-                    <rect key="frame" x="9" y="10" width="22" height="22"/>
+                <button id="40V-Vf-9Rp">
+                    <rect key="frame" x="9" y="11" width="19" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="magnify" imagePosition="only" alignment="center" inset="2" id="Dtb-uP-hBR">
                         <behavior key="behavior" lightByContents="YES"/>

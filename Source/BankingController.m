@@ -81,6 +81,7 @@
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
 #import "WAYAppStoreWindow.h"
+#import "INAppStoreWindow.h" // Just for the class test on restore of window content.
 #import "JMModalOverlay.h"
 #import "WaitViewController.h"
 
@@ -219,7 +220,7 @@ static BankingController *bankinControllerInstance;
     mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
     [mainWindow.titleBarView addSubview: comTracePanel];
-    NSRect frame = comTracePanel.bounds;
+    NSRect frame = comTracePanel.frame;
     frame.origin.x = NSWidth(mainWindow.titleBarView.bounds) - NSWidth(frame);
     comTracePanel.frame = frame;
 
@@ -3102,7 +3103,21 @@ static BankingController *bankinControllerInstance;
 - (void)applicationWillFinishLaunching: (NSNotification *)notification {
     LogEnter;
 
-    // Display main window
+    // Display main window after restoring its size.
+    // Need to manually handle storing the size and position because of problems
+    // with the increased title bar.
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *s = [userDefaults stringForKey: @"mcmain"];
+    if (s != nil) {
+        [mainWindow setFrame: NSRectFromString(s) display: NO];
+    }
+
+    // Adjust size of the content views (sidebar and tabview) depending on the used main window class.
+    if ([mainWindow isKindOfClass: [INAppStoreWindow class]]) {
+        [mainTabView setFrameSize: NSMakeSize(NSWidth(mainTabView.frame), NSHeight(mainTabView.frame) + 40)];
+        [sidebar setFrameSize: NSMakeSize(NSWidth(sidebar.frame), NSHeight(sidebar.frame) + 40)];
+    }
+
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
 
@@ -3172,10 +3187,6 @@ static BankingController *bankinControllerInstance;
 
     [mainVSplit restorePosition];
 
-    // Display main window.
-    [mainWindow display];
-    [mainWindow makeKeyAndOrderFront: self];
-
     [self checkForAutoSync];
 
     // Add default tags if there are none yet.
@@ -3228,6 +3239,9 @@ static BankingController *bankinControllerInstance;
     MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
     [LocalSettingsController.sharedSettings setInteger: sidebar.selectedIndex forKey: @"activePage"];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject: NSStringFromRect(mainWindow.frame) forKey: @"mcmain"];
 
     [currentSection deactivate];
     [accountsView saveState];
