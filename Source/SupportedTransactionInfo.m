@@ -146,7 +146,7 @@
             if ([supportedJobNames containsObject: @"TermUebSEPA"]) {
                 info.allowsDated = @YES;
             }
-            if ([supportedJobNames containsObject: @"MulitUebSEPA"]) {
+            if ([supportedJobNames containsObject: @"MultiUebSEPA"]) {
                 info.allowsCollective = @YES;
             }
         }

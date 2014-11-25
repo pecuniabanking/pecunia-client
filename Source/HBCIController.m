@@ -565,6 +565,7 @@ static HBCIController *controller = nil;
         [self appendTag: @"currency" withValue: transfer.currency to: cmd];
         [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
         [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
+        [self appendTag: @"currency" withValue:transfer.currency to:cmd];
         [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE": [transfer.remoteCountry uppercaseString] to: cmd];
 
         [self appendTag: @"value" withValue: [[transfer.value outboundNumber] stringValue] to: cmd];

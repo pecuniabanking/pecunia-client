@@ -275,7 +275,7 @@
 {
     NSDate *date = [(NSDatePicker *)sender dateValue];
     if (sender == dateField) {
-        [valutaField setDateValue: date];
+        currentStatement.valutaDate = date;
     }
 
     if (lastDate == nil && [[ShortDate dateWithDate: date] compare: [ShortDate dateWithDate: lastStatement.date]] != NSOrderedAscending) {
