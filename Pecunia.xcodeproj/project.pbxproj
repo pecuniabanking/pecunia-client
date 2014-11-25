@@ -728,7 +728,6 @@
 		27E8460E19E17D300026464E /* StatementDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B119E17D2F0026464E /* StatementDetails.xib */; };
 		27E8461019E17D300026464E /* StatementsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B219E17D2F0026464E /* StatementsListViewCell.xib */; };
 		27E8461219E17D300026464E /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B319E17D2F0026464E /* StatementsOverview.xib */; };
-		27E8461419E17D300026464E /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B419E17D2F0026464E /* StatSplitController.xib */; };
 		27E8461619E17D300026464E /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B519E17D2F0026464E /* TagRuleEditor.xib */; };
 		27E8461819E17D300026464E /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B619E17D2F0026464E /* TanMediaWindow.xib */; };
 		27E8461A19E17D300026464E /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B719E17D2F0026464E /* TanMethods.xib */; };
@@ -781,7 +780,6 @@
 		27E8465319E181280026464E /* StatementDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B119E17D2F0026464E /* StatementDetails.xib */; };
 		27E8465419E181280026464E /* StatementsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B219E17D2F0026464E /* StatementsListViewCell.xib */; };
 		27E8465519E181280026464E /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B319E17D2F0026464E /* StatementsOverview.xib */; };
-		27E8465619E181280026464E /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B419E17D2F0026464E /* StatSplitController.xib */; };
 		27E8465719E181280026464E /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B519E17D2F0026464E /* TagRuleEditor.xib */; };
 		27E8465819E181280026464E /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B619E17D2F0026464E /* TanMediaWindow.xib */; };
 		27E8465919E181280026464E /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B719E17D2F0026464E /* TanMethods.xib */; };
@@ -940,6 +938,8 @@
 		B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A1377311B6FD9400622D6C /* AccountDefController.m */; };
 		B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
 		B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A59495113165BC00FD8CB8 /* StatSplitController.m */; };
+		B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
+		B1A6AA211A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
 		B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
@@ -1449,7 +1449,6 @@
 		27E845B119E17D2F0026464E /* StatementDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatementDetails.xib; sourceTree = "<group>"; };
 		27E845B219E17D2F0026464E /* StatementsListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatementsListViewCell.xib; sourceTree = "<group>"; };
 		27E845B319E17D2F0026464E /* StatementsOverview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatementsOverview.xib; sourceTree = "<group>"; };
-		27E845B419E17D2F0026464E /* StatSplitController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatSplitController.xib; sourceTree = "<group>"; };
 		27E845B519E17D2F0026464E /* TagRuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagRuleEditor.xib; sourceTree = "<group>"; };
 		27E845B619E17D2F0026464E /* TanMediaWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanMediaWindow.xib; sourceTree = "<group>"; };
 		27E845B719E17D2F0026464E /* TanMethods.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanMethods.xib; sourceTree = "<group>"; };
@@ -1700,6 +1699,7 @@
 		B1A5940D112A8D8500FD8CB8 /* TransferResult.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferResult.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59494113165BC00FD8CB8 /* StatSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59495113165BC00FD8CB8 /* StatSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatSplitController.xib; sourceTree = "<group>"; };
 		B1A6E8330FC890E400566C55 /* PasswordWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordWindow.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6E8340FC890E400566C55 /* PasswordWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordWindow.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA6335140990EF00ADE1D0 /* ImportSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportSettings.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2272,7 +2272,7 @@
 				27E845B119E17D2F0026464E /* StatementDetails.xib */,
 				27E845B219E17D2F0026464E /* StatementsListViewCell.xib */,
 				27E845B319E17D2F0026464E /* StatementsOverview.xib */,
-				27E845B419E17D2F0026464E /* StatSplitController.xib */,
+				B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */,
 				27E845B519E17D2F0026464E /* TagRuleEditor.xib */,
 				27E845B619E17D2F0026464E /* TanMediaWindow.xib */,
 				27E845B719E17D2F0026464E /* TanMethods.xib */,
@@ -3207,6 +3207,7 @@
 				2777899B173CE22700430EBC /* csv.png in Resources */,
 				272F6E731955D72300096734 /* sequence-type-repeat@2x.png in Resources */,
 				2794FF6A1972D5BA000B69EC /* new-small-white.png in Resources */,
+				B1A6AA211A251D8B00141C39 /* StatSplitController.xib in Resources */,
 				2777899C173CE22700430EBC /* csv@2x.png in Resources */,
 				27516822193B932700FE942F /* check-mark@2x.png in Resources */,
 				2777899D173CE22700430EBC /* pdf.png in Resources */,
@@ -3293,7 +3294,6 @@
 				27E8465319E181280026464E /* StatementDetails.xib in Resources */,
 				27E8465419E181280026464E /* StatementsListViewCell.xib in Resources */,
 				27E8465519E181280026464E /* StatementsOverview.xib in Resources */,
-				27E8465619E181280026464E /* StatSplitController.xib in Resources */,
 				27E8465719E181280026464E /* TagRuleEditor.xib in Resources */,
 				27E8465819E181280026464E /* TanMediaWindow.xib in Resources */,
 				27E8465919E181280026464E /* TanMethods.xib in Resources */,
@@ -3315,7 +3315,6 @@
 				271AD6B518E85741005BE90D /* key@2x.png in Resources */,
 				27E845F619E17D300026464E /* LockView.xib in Resources */,
 				27E8462619E17D300026464E /* WaitView.xib in Resources */,
-				27E8461419E17D300026464E /* StatSplitController.xib in Resources */,
 				275AC7F7186B6405002E6BED /* graph3-active.png in Resources */,
 				2794FF631972D201000B69EC /* new-small.png in Resources */,
 				B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */,
@@ -3348,6 +3347,7 @@
 				27E845C819E17D2F0026464E /* AssignmentController.xib in Resources */,
 				27DF7E1819C49AF7009E2101 /* zoom-in@2x.png in Resources */,
 				27E8460819E17D300026464E /* PurposeSplitWindow.xib in Resources */,
+				B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */,
 				272722701871CE7E00215DFB /* donate-active@2x.png in Resources */,
 				272F6E6E1955D72300096734 /* sequence-type-end@2x.png in Resources */,
 				27E8461A19E17D300026464E /* TanMethods.xib in Resources */,
