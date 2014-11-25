@@ -1273,38 +1273,15 @@ static BankingController *bankinControllerInstance;
         return;
     }
     BankAccount *account = (BankAccount *)category;
-    [account updateSupportedTransactions];
-
-    /*
-       NSDictionary *details = @{@"title": account.name,
-                              @"message": NSLocalizedString(@"AP818", nil),
-                              @"details": NSLocalizedString(@"AP820", nil)};
-       [waitViewController startWaiting: details];
-
-       // Run maintenance in a background block.
-       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableDictionary *details = [NSMutableDictionary new];
-        details[@"title"] = account.name;
-        details[@"message"] = NSLocalizedString(@"AP823", nil);
-        @try {
-            [account updateSupportedTransactions];
-            details[@"details"] = NSLocalizedString(@"AP817", nil);
-        }
-        @catch (NSException *exception) {
-            LogError(@"Error while updating supported transactions:\n%@", exception.debugDescription);
-
-            details[@"details"] = NSLocalizedString(@"AP824", nil);
-            details[@"failed"] = @YES;
-        }
-        @finally {
-            // Run clean up on main thread.
-            [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
-        }
-       });
-
-       waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
-       [waitOverlay showInWindow: mainWindow];
-     */
+    BOOL success = [account updateSupportedTransactions];
+    if (success) {
+        NSRunAlertPanel(NSLocalizedString(@"AP836", nil),
+                        NSLocalizedString(@"AP837", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+    }
+    
+    [self save];
+ 
     LogLeave;
 }
 

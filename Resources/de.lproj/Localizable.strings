@@ -472,6 +472,8 @@ AP832 = "Auszug %i/%i für den %@ bis %@";
 AP833 = "Kontoauszüge löschen";
 AP834 = "Lade Kontoauszug (falls verfügbar): %i/%i";
 AP835 = "Bankinformationen:\n";
+AP836 = "Fehlerbereinigung";
+AP837 = "Erlaubte Geschäftsvorfälle wurden erfolgreich aktualisiert";
 
 // Tags
 // AP850..AP949

@@ -75,7 +75,7 @@ typedef enum {
 // correction functions
 - (void)updateStatementBalances;
 - (void)doMaintenance;
-- (void)updateSupportedTransactions;
+- (BOOL)updateSupportedTransactions;
 
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
