@@ -49,7 +49,7 @@ bool DDV_readBankData(unsigned char idx,HBCI_BankData *entry)
         trim(entry->userid,30);
 
         for (int j=0;j<4;j++) {
-            unsigned char ch=rawData[20+j];
+            //unsigned char ch=rawData[20+j];
             unsigned char nibble;
                 
             nibble=(rawData[20+j]>>4)&0x0F;

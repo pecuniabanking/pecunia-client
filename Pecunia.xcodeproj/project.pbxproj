@@ -940,6 +940,59 @@
 		B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A59495113165BC00FD8CB8 /* StatSplitController.m */; };
 		B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
 		B1A6AA211A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
+		B1A6AA491A2672C400141C39 /* atr.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA241A2672C400141C39 /* atr.m */; };
+		B1A6AA4A1A2672C400141C39 /* atr.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA241A2672C400141C39 /* atr.m */; };
+		B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA261A2672C400141C39 /* bcs.m */; };
+		B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA261A2672C400141C39 /* bcs.m */; };
+		B1A6AA4D1A2672C400141C39 /* ChipcardHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA281A2672C400141C39 /* ChipcardHandler.m */; };
+		B1A6AA4E1A2672C400141C39 /* ChipcardHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA281A2672C400141C39 /* ChipcardHandler.m */; };
+		B1A6AA511A2672C400141C39 /* ctapi-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */; };
+		B1A6AA521A2672C400141C39 /* ctapi-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */; };
+		B1A6AA531A2672C400141C39 /* ddv_decrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */; };
+		B1A6AA541A2672C400141C39 /* ddv_decrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */; };
+		B1A6AA551A2672C400141C39 /* ddv_encrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */; };
+		B1A6AA561A2672C400141C39 /* ddv_encrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */; };
+		B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2F1A2672C400141C39 /* ddv_pins.m */; };
+		B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2F1A2672C400141C39 /* ddv_pins.m */; };
+		B1A6AA591A2672C400141C39 /* ddv_readbankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */; };
+		B1A6AA5A1A2672C400141C39 /* ddv_readbankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */; };
+		B1A6AA5B1A2672C400141C39 /* ddv_readkeydata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */; };
+		B1A6AA5C1A2672C400141C39 /* ddv_readkeydata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */; };
+		B1A6AA5D1A2672C400141C39 /* ddv_readsigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA321A2672C400141C39 /* ddv_readsigid.m */; };
+		B1A6AA5E1A2672C400141C39 /* ddv_readsigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA321A2672C400141C39 /* ddv_readsigid.m */; };
+		B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA331A2672C400141C39 /* ddv_signdata.m */; };
+		B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA331A2672C400141C39 /* ddv_signdata.m */; };
+		B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */; };
+		B1A6AA621A2672C400141C39 /* ddv_writebankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */; };
+		B1A6AA631A2672C400141C39 /* ddv_writesigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA351A2672C400141C39 /* ddv_writesigid.m */; };
+		B1A6AA641A2672C400141C39 /* ddv_writesigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA351A2672C400141C39 /* ddv_writesigid.m */; };
+		B1A6AA651A2672C400141C39 /* get_challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA371A2672C400141C39 /* get_challenge.m */; };
+		B1A6AA661A2672C400141C39 /* get_challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA371A2672C400141C39 /* get_challenge.m */; };
+		B1A6AA671A2672C400141C39 /* get_keyinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA381A2672C400141C39 /* get_keyinfo.m */; };
+		B1A6AA681A2672C400141C39 /* get_keyinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA381A2672C400141C39 /* get_keyinfo.m */; };
+		B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA391A2672C400141C39 /* hbci_cardtype.m */; };
+		B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA391A2672C400141C39 /* hbci_cardtype.m */; };
+		B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */; };
+		B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */; };
+		B1A6AA6D1A2672C400141C39 /* modify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3C1A2672C400141C39 /* modify_pin.m */; };
+		B1A6AA6E1A2672C400141C39 /* modify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3C1A2672C400141C39 /* modify_pin.m */; };
+		B1A6AA6F1A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */; };
+		B1A6AA701A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */; };
+		B1A6AA711A2672C400141C39 /* put_data.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3E1A2672C400141C39 /* put_data.m */; };
+		B1A6AA721A2672C400141C39 /* put_data.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3E1A2672C400141C39 /* put_data.m */; };
+		B1A6AA731A2672C400141C39 /* read_binary.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3F1A2672C400141C39 /* read_binary.m */; };
+		B1A6AA741A2672C400141C39 /* read_binary.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3F1A2672C400141C39 /* read_binary.m */; };
+		B1A6AA751A2672C400141C39 /* read_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA401A2672C400141C39 /* read_record.m */; };
+		B1A6AA761A2672C400141C39 /* read_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA401A2672C400141C39 /* read_record.m */; };
+		B1A6AA771A2672C400141C39 /* select_file.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA431A2672C400141C39 /* select_file.m */; };
+		B1A6AA781A2672C400141C39 /* select_file.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA431A2672C400141C39 /* select_file.m */; };
+		B1A6AA791A2672C400141C39 /* tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA461A2672C400141C39 /* tools.m */; };
+		B1A6AA7A1A2672C400141C39 /* tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA461A2672C400141C39 /* tools.m */; };
+		B1A6AA7B1A2672C400141C39 /* verify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA471A2672C400141C39 /* verify_pin.m */; };
+		B1A6AA7C1A2672C400141C39 /* verify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA471A2672C400141C39 /* verify_pin.m */; };
+		B1A6AA7D1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
+		B1A6AA7E1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
+		B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1A6AA7F1A26750500141C39 /* PCSC.framework */; };
 		B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
@@ -1700,6 +1753,44 @@
 		B1A59494113165BC00FD8CB8 /* StatSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59495113165BC00FD8CB8 /* StatSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatSplitController.xib; sourceTree = "<group>"; };
+		B1A6AA231A2672C400141C39 /* atr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atr.h; sourceTree = "<group>"; };
+		B1A6AA241A2672C400141C39 /* atr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = atr.m; sourceTree = "<group>"; };
+		B1A6AA251A2672C400141C39 /* bcs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bcs.h; sourceTree = "<group>"; };
+		B1A6AA261A2672C400141C39 /* bcs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bcs.m; sourceTree = "<group>"; };
+		B1A6AA271A2672C400141C39 /* ChipcardHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipcardHandler.h; sourceTree = "<group>"; };
+		B1A6AA281A2672C400141C39 /* ChipcardHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipcardHandler.m; sourceTree = "<group>"; };
+		B1A6AA291A2672C400141C39 /* ColumnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnInfo.h; sourceTree = "<group>"; };
+		B1A6AA2B1A2672C400141C39 /* ctapi-tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ctapi-tools.h"; sourceTree = "<group>"; };
+		B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ctapi-tools.m"; sourceTree = "<group>"; };
+		B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_decrypt.m; sourceTree = "<group>"; };
+		B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_encrypt.m; sourceTree = "<group>"; };
+		B1A6AA2F1A2672C400141C39 /* ddv_pins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_pins.m; sourceTree = "<group>"; };
+		B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readbankdata.m; sourceTree = "<group>"; };
+		B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readkeydata.m; sourceTree = "<group>"; };
+		B1A6AA321A2672C400141C39 /* ddv_readsigid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readsigid.m; sourceTree = "<group>"; };
+		B1A6AA331A2672C400141C39 /* ddv_signdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_signdata.m; sourceTree = "<group>"; };
+		B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_writebankdata.m; sourceTree = "<group>"; };
+		B1A6AA351A2672C400141C39 /* ddv_writesigid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_writesigid.m; sourceTree = "<group>"; };
+		B1A6AA361A2672C400141C39 /* ddvcard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ddvcard.h; sourceTree = "<group>"; };
+		B1A6AA371A2672C400141C39 /* get_challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = get_challenge.m; sourceTree = "<group>"; };
+		B1A6AA381A2672C400141C39 /* get_keyinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = get_keyinfo.m; sourceTree = "<group>"; };
+		B1A6AA391A2672C400141C39 /* hbci_cardtype.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hbci_cardtype.m; sourceTree = "<group>"; };
+		B1A6AA3A1A2672C400141C39 /* hbci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hbci.h; sourceTree = "<group>"; };
+		B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = internal_authenticate.m; sourceTree = "<group>"; };
+		B1A6AA3C1A2672C400141C39 /* modify_pin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = modify_pin.m; sourceTree = "<group>"; };
+		B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "pcsc-ctapi-wrapper.m"; sourceTree = "<group>"; };
+		B1A6AA3E1A2672C400141C39 /* put_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = put_data.m; sourceTree = "<group>"; };
+		B1A6AA3F1A2672C400141C39 /* read_binary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = read_binary.m; sourceTree = "<group>"; };
+		B1A6AA401A2672C400141C39 /* read_record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = read_record.m; sourceTree = "<group>"; };
+		B1A6AA411A2672C400141C39 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		B1A6AA421A2672C400141C39 /* seccos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seccos.h; sourceTree = "<group>"; };
+		B1A6AA431A2672C400141C39 /* select_file.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = select_file.m; sourceTree = "<group>"; };
+		B1A6AA441A2672C400141C39 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
+		B1A6AA451A2672C400141C39 /* tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tools.h; sourceTree = "<group>"; };
+		B1A6AA461A2672C400141C39 /* tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tools.m; sourceTree = "<group>"; };
+		B1A6AA471A2672C400141C39 /* verify_pin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = verify_pin.m; sourceTree = "<group>"; };
+		B1A6AA481A2672C400141C39 /* write_record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = write_record.m; sourceTree = "<group>"; };
+		B1A6AA7F1A26750500141C39 /* PCSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCSC.framework; path = System/Library/Frameworks/PCSC.framework; sourceTree = SDKROOT; };
 		B1A6E8330FC890E400566C55 /* PasswordWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordWindow.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6E8340FC890E400566C55 /* PasswordWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordWindow.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA6335140990EF00ADE1D0 /* ImportSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportSettings.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1763,6 +1854,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */,
 				27E844E819E1740A0026464E /* Quartz.framework in Frameworks */,
 				277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
@@ -1808,6 +1900,7 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1A6AA7F1A26750500141C39 /* PCSC.framework */,
 				27E2D28219167D30001D6E80 /* Accelerate.framework */,
 				B1872EFC163DD7B7003A8C14 /* Security.framework */,
 				27334AE614C20BF600268FD9 /* Quartz.framework */,
@@ -2505,6 +2598,7 @@
 		B17B294613E35BF900739E7A /* HBCI4Java */ = {
 			isa = PBXGroup;
 			children = (
+				B1A6AA221A26722E00141C39 /* Chipcards */,
 				B17B296A13E366C800739E7A /* Dialogs */,
 				B14D4C6613DB600400843BE6 /* HBCIError.h */,
 				B14D4C6713DB600400843BE6 /* HBCIError.m */,
@@ -2720,6 +2814,50 @@
 				27DF7E0F19C49A54009E2101 /* zoom-out@2x.png */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		B1A6AA221A26722E00141C39 /* Chipcards */ = {
+			isa = PBXGroup;
+			children = (
+				B1A6AA231A2672C400141C39 /* atr.h */,
+				B1A6AA241A2672C400141C39 /* atr.m */,
+				B1A6AA251A2672C400141C39 /* bcs.h */,
+				B1A6AA261A2672C400141C39 /* bcs.m */,
+				B1A6AA271A2672C400141C39 /* ChipcardHandler.h */,
+				B1A6AA281A2672C400141C39 /* ChipcardHandler.m */,
+				B1A6AA291A2672C400141C39 /* ColumnInfo.h */,
+				B1A6AA2B1A2672C400141C39 /* ctapi-tools.h */,
+				B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */,
+				B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */,
+				B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */,
+				B1A6AA2F1A2672C400141C39 /* ddv_pins.m */,
+				B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */,
+				B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */,
+				B1A6AA321A2672C400141C39 /* ddv_readsigid.m */,
+				B1A6AA331A2672C400141C39 /* ddv_signdata.m */,
+				B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */,
+				B1A6AA351A2672C400141C39 /* ddv_writesigid.m */,
+				B1A6AA361A2672C400141C39 /* ddvcard.h */,
+				B1A6AA371A2672C400141C39 /* get_challenge.m */,
+				B1A6AA381A2672C400141C39 /* get_keyinfo.m */,
+				B1A6AA391A2672C400141C39 /* hbci_cardtype.m */,
+				B1A6AA3A1A2672C400141C39 /* hbci.h */,
+				B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */,
+				B1A6AA3C1A2672C400141C39 /* modify_pin.m */,
+				B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */,
+				B1A6AA3E1A2672C400141C39 /* put_data.m */,
+				B1A6AA3F1A2672C400141C39 /* read_binary.m */,
+				B1A6AA401A2672C400141C39 /* read_record.m */,
+				B1A6AA411A2672C400141C39 /* reader.h */,
+				B1A6AA421A2672C400141C39 /* seccos.h */,
+				B1A6AA431A2672C400141C39 /* select_file.m */,
+				B1A6AA441A2672C400141C39 /* test.h */,
+				B1A6AA451A2672C400141C39 /* tools.h */,
+				B1A6AA461A2672C400141C39 /* tools.m */,
+				B1A6AA471A2672C400141C39 /* verify_pin.m */,
+				B1A6AA481A2672C400141C39 /* write_record.m */,
+			);
+			name = Chipcards;
 			sourceTree = "<group>";
 		};
 		B1C7B189130B10BF0091CD72 /* MainWindow */ = {
@@ -3605,8 +3743,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1A6AA721A2672C400141C39 /* put_data.m in Sources */,
 				27778874173CE22700430EBC /* main.m in Sources */,
 				27778875173CE22700430EBC /* BankingController.m in Sources */,
+				B1A6AA5E1A2672C400141C39 /* ddv_readsigid.m in Sources */,
 				2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
@@ -3621,6 +3761,7 @@
 				27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				2777887D173CE22700430EBC /* PreferenceController.m in Sources */,
 				27778880173CE22700430EBC /* MOAssistant.m in Sources */,
+				B1A6AA641A2672C400141C39 /* ddv_writesigid.m in Sources */,
 				27778881173CE22700430EBC /* CategoryView.m in Sources */,
 				27778882173CE22700430EBC /* CategoryDefWindowController.m in Sources */,
 				27778883173CE22700430EBC /* ExportController.m in Sources */,
@@ -3641,27 +3782,37 @@
 				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
+				B1A6AA781A2672C400141C39 /* select_file.m in Sources */,
 				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
 				27778891173CE22700430EBC /* StatusBarController.m in Sources */,
 				27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
 				27778893173CE22700430EBC /* PasswordWindow.m in Sources */,
+				B1A6AA5A1A2672C400141C39 /* ddv_readbankdata.m in Sources */,
 				27778894173CE22700430EBC /* MCEMTableView.m in Sources */,
 				27778895173CE22700430EBC /* TanMethod.m in Sources */,
+				B1A6AA6E1A2672C400141C39 /* modify_pin.m in Sources */,
 				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
+				B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */,
+				B1A6AA4A1A2672C400141C39 /* atr.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
 				27778898173CE22700430EBC /* BankQueryResult.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
+				B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */,
+				B1A6AA701A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
 				2758542419FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
+				B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
+				B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
+				B1A6AA741A2672C400141C39 /* read_binary.m in Sources */,
 				279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
@@ -3683,10 +3834,12 @@
 				277788AE173CE22700430EBC /* MessageLog.m in Sources */,
 				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
 				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
+				B1A6AA541A2672C400141C39 /* ddv_decrypt.m in Sources */,
 				277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */,
 				277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */,
 				277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */,
 				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
+				B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
 				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
@@ -3700,6 +3853,7 @@
 				277788BD173CE22700430EBC /* CallbackData.m in Sources */,
 				2788D7B718421195000B59AF /* PecuniaSplitView.m in Sources */,
 				277788BE173CE22700430EBC /* CallbackParser.m in Sources */,
+				B1A6AA561A2672C400141C39 /* ddv_encrypt.m in Sources */,
 				277788BF173CE22700430EBC /* HBCIError.m in Sources */,
 				277788C0173CE22700430EBC /* LogParser.m in Sources */,
 				27686E4B193B5E860038067D /* WaitViewController.m in Sources */,
@@ -3741,6 +3895,7 @@
 				27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
+				B1A6AA621A2672C400141C39 /* ddv_writebankdata.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */,
@@ -3750,15 +3905,18 @@
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
+				B1A6AA681A2672C400141C39 /* get_keyinfo.m in Sources */,
 				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
+				B1A6AA761A2672C400141C39 /* read_record.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
 				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
 				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
+				B1A6AA7C1A2672C400141C39 /* verify_pin.m in Sources */,
 				2759D8A41A0133FB002AE07E /* Double.swift in Sources */,
 				277788E6173CE22700430EBC /* CallbackHandler.m in Sources */,
 				277788E7173CE22700430EBC /* BWGradientBox.m in Sources */,
@@ -3768,6 +3926,7 @@
 				277788EB173CE22700430EBC /* MBTableGridContentView.m in Sources */,
 				278EC8231915251D005091E8 /* ShadowedTextField.m in Sources */,
 				277788EC173CE22700430EBC /* MBTableGridHeaderCell.m in Sources */,
+				B1A6AA7A1A2672C400141C39 /* tools.m in Sources */,
 				277788ED173CE22700430EBC /* MBTableGridHeaderView.m in Sources */,
 				277788EE173CE22700430EBC /* SynchronousScrollView.m in Sources */,
 				277788EF173CE22700430EBC /* TransfersBackgroundView.m in Sources */,
@@ -3775,6 +3934,9 @@
 				27320ADB17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */,
 				277788F1173CE22700430EBC /* TransfersListViewCell.m in Sources */,
 				277788F2173CE22700430EBC /* BankingController+Tabs.m in Sources */,
+				B1A6AA7E1A2672C400141C39 /* write_record.m in Sources */,
+				B1A6AA521A2672C400141C39 /* ctapi-tools.m in Sources */,
+				B1A6AA5C1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */,
 				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
@@ -3786,6 +3948,7 @@
 				277788FB173CE22700430EBC /* SigningOptionsViewCell.m in Sources */,
 				277788FC173CE22700430EBC /* SigningOptionsController.m in Sources */,
 				277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */,
+				B1A6AA4E1A2672C400141C39 /* ChipcardHandler.m in Sources */,
 				277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */,
 				277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */,
 				27778900173CE22700430EBC /* TanWindow.m in Sources */,
@@ -3802,6 +3965,7 @@
 				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7718BA3EFB002CBE06 /* zip.c in Sources */,
 				2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */,
+				B1A6AA661A2672C400141C39 /* get_challenge.m in Sources */,
 				2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
 				2777890E173CE22700430EBC /* DebitsListView.m in Sources */,
@@ -3844,8 +4008,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1A6AA711A2672C400141C39 /* put_data.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */,
+				B1A6AA5D1A2672C400141C39 /* ddv_readsigid.m in Sources */,
 				2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
@@ -3860,6 +4026,7 @@
 				27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				B17074870D55104000FBF186 /* PreferenceController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
+				B1A6AA631A2672C400141C39 /* ddv_writesigid.m in Sources */,
 				B14D6DEF0DEC9C9100C2B220 /* CategoryView.m in Sources */,
 				B1029E120E3FA1D700CC681B /* CategoryDefWindowController.m in Sources */,
 				B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */,
@@ -3880,27 +4047,37 @@
 				B132F91F0F96594000263F3B /* ShortDate.m in Sources */,
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
+				B1A6AA771A2672C400141C39 /* select_file.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
 				B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */,
 				27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
+				B1A6AA591A2672C400141C39 /* ddv_readbankdata.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
+				B1A6AA6D1A2672C400141C39 /* modify_pin.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
+				B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */,
+				B1A6AA491A2672C400141C39 /* atr.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
+				B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */,
+				B1A6AA6F1A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
 				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
+				B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
+				B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
+				B1A6AA731A2672C400141C39 /* read_binary.m in Sources */,
 				279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
@@ -3922,10 +4099,12 @@
 				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
 				B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */,
 				B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */,
+				B1A6AA531A2672C400141C39 /* ddv_decrypt.m in Sources */,
 				B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */,
 				B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */,
 				B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */,
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
+				B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
@@ -3939,6 +4118,7 @@
 				B14D4C6413DB5FC200843BE6 /* CallbackData.m in Sources */,
 				2788D7B618421195000B59AF /* PecuniaSplitView.m in Sources */,
 				B14D4C6513DB5FC200843BE6 /* CallbackParser.m in Sources */,
+				B1A6AA551A2672C400141C39 /* ddv_encrypt.m in Sources */,
 				B14D4C6C13DB600400843BE6 /* HBCIError.m in Sources */,
 				B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */,
 				27686E4A193B5E860038067D /* WaitViewController.m in Sources */,
@@ -3980,6 +4160,7 @@
 				27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
+				B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
 				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
@@ -3989,15 +4170,18 @@
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
+				B1A6AA671A2672C400141C39 /* get_keyinfo.m in Sources */,
 				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
+				B1A6AA751A2672C400141C39 /* read_record.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,
 				C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */,
+				B1A6AA7B1A2672C400141C39 /* verify_pin.m in Sources */,
 				2759D8A31A0133FB002AE07E /* Double.swift in Sources */,
 				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 				27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */,
@@ -4007,6 +4191,7 @@
 				2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */,
 				278EC8221915251D005091E8 /* ShadowedTextField.m in Sources */,
 				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
+				B1A6AA791A2672C400141C39 /* tools.m in Sources */,
 				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
 				2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */,
 				27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */,
@@ -4014,6 +4199,9 @@
 				27320ADA17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */,
 				279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */,
 				27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */,
+				B1A6AA7D1A2672C400141C39 /* write_record.m in Sources */,
+				B1A6AA511A2672C400141C39 /* ctapi-tools.m in Sources */,
+				B1A6AA5B1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				2706F2091556C3BE0011A20E /* OnOffSwitchControl.m in Sources */,
 				2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */,
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
@@ -4025,6 +4213,7 @@
 				B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */,
 				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
+				B1A6AA4D1A2672C400141C39 /* ChipcardHandler.m in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
@@ -4041,6 +4230,7 @@
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7618BA3EFB002CBE06 /* zip.c in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,
+				B1A6AA651A2672C400141C39 /* get_challenge.m in Sources */,
 				270C1A0F168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
 				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,

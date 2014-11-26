@@ -84,6 +84,6 @@ extern IS8 CT_init(IU16 ctn, IU16 pn);
 extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *lenr, IU8 *response);
 extern IS8 CT_close(IU16 ctn);
 
-#define CC_LOG(format, ...) [MessageLog.log addFormat: format withLevel: LogLevel_Debug, ##__VA_ARGS__]
+#define CC_LOG(format, ...) [MessageLog.log logError: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
 
 #endif

@@ -25,7 +25,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#define __COREFOUNDATION_CFPLUGINCOM__
 #include <stdio.h>
 #include <stdlib.h>
 #include <PCSC/wintypes.h>		// provided by pcsc-lite
@@ -269,7 +268,8 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 							rv = SCardDisconnect(hCard, SCARD_UNPOWER_CARD);
 							CC_LOG(@"  Disconnect: %s",pcsc_stringify_error(rv));
 							ConnectCard();
-							dwZero = 0, dwState, dwProtocol, dwAtrSize = sizeof(pbAtr);
+                            dwZero = 0;
+                            dwAtrSize = sizeof(pbAtr);
 							rv = SCardStatus(hCard, NULL, &dwZero, &dwState, &dwProtocol, pbAtr, &dwAtrSize);
 							if (rv != SCARD_S_SUCCESS)
 								CC_LOG(@"SCardState (II.) not successfull with error %lX (%s) at %s:%d",rv, pcsc_stringify_error(rv), __FILE__,__LINE__);
