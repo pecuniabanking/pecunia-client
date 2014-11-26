@@ -582,9 +582,6 @@ static ShortDate *endReportDate = nil;
 }
 
 - (BOOL)isRequestable {
-    if (![self isBankAccount]) {
-        return NO;
-    }
     return ![BankingController.controller requestRunning];
 }
 
