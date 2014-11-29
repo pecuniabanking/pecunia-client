@@ -23,7 +23,6 @@
 #define _CTAPI_TOOLS_H
 
 #include <stdlib.h>
-#import "MessageLog.h"
 
 // sad and dad
 #define CTAPI_SAD      ((unsigned char)0x02)
@@ -63,7 +62,6 @@ typedef struct CTAPI_MapChar2String {
 extern const CTAPI_MapInt2String CTAPI_statusMsgs[];
 extern const CTAPI_MapChar2String CTAPI_errorMsgs[];
 
-void               CTAPI_log(const char *msg);
 bool               CTAPI_initCTAPI(unsigned short int portnum,unsigned short int ctnum);
 unsigned short int CTAPI_performWithCT(const char *name,unsigned short int lenIn,unsigned char *command,unsigned short int *lenOut,unsigned char *response);
 unsigned short int CTAPI_performWithCard(const char *name,unsigned short int lenIn,unsigned char *command,unsigned short int *lenOut,unsigned char *response);
@@ -83,7 +81,5 @@ typedef unsigned short IU16;
 extern IS8 CT_init(IU16 ctn, IU16 pn);
 extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *lenr, IU8 *response);
 extern IS8 CT_close(IU16 ctn);
-
-#define CC_LOG(format, ...) [MessageLog.log logError: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
 
 #endif

@@ -32,11 +32,11 @@ void analyzeATR(unsigned char *atr,size_t len)
     unsigned char t0=atr[1];
     
     if (ts==0x3F)
-        CTAPI_log("ATR: using inverse coding convention");
+        LogDebug(@"ATR: using inverse coding convention");
     else if (ts==0x3B)
-        CTAPI_log("ATR: using direct coding convention");
+        LogDebug(@"ATR: using direct coding convention");
     else
-        CTAPI_log("ATR: unknown coding convention!");
+        LogWarning(@"ATR: unknown coding convention!");
     
     int           posi=1;
     unsigned char t=atr[posi];
@@ -44,26 +44,22 @@ void analyzeATR(unsigned char *atr,size_t len)
     
     while (t&0xF0) {
         if (t&0x10) {
-            sprintf(temp,"TA%i present",idx);
-            CTAPI_log(temp);
+            LogDebug(@"TA%i present",idx);
             posi++;
         }
 
         if (t&0x20) {
-            sprintf(temp,"TB%i present",idx);
-            CTAPI_log(temp);
+            LogDebug(@"TB%i present",idx);
             posi++;
         }
 
         if (t&0x40) {
-            sprintf(temp,"TC%i present",idx);
-            CTAPI_log(temp);
+            LogDebug(@"TC%i present",idx);
             posi++;
         }
 
         if (t&0x80) {
-            sprintf(temp,"TD%i present",idx);
-            CTAPI_log(temp);
+            LogDebug(@"TD%i present",idx);
             posi++;
             t=atr[posi];
         } else {
@@ -80,5 +76,5 @@ void analyzeATR(unsigned char *atr,size_t len)
         unsigned char ch=atr[posi+1+i];
         sprintf(temp+strlen(temp),"%c",(ch<0x20)?'.':ch);
     }
-    CTAPI_log(temp);
+    LogDebug(@"%s", temp);
 }

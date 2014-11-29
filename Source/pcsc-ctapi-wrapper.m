@@ -61,24 +61,24 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 	DWORD dwReaders;
 	int nbReaders;
 	
-	CC_LOG(@"CT_init: Called (ctn %d, pn %d)", ctn, pn);
+	LogInfo(@"CT_init: Called (ctn %d, pn %d)", ctn, pn);
 	
 	// Handling the case one card terminal has already been opened:
 	if (myCtn != -1)
 	{
-		CC_LOG(@"CT_init: Card terminal has already been opened. Closing at first.");
+		LogDebug(@"CT_init: Card terminal has already been opened. Closing at first.");
 		
 		// Simulatneous operations on more than one terminal is curently not supported:
 		if (ctn != myCtn)
 		{
-			CC_LOG(@"CT_init: Opening more than one card terminal at once not supported.");
+			LogDebug(@"CT_init: Opening more than one card terminal at once not supported.");
 			return CTAPI_ERR_CT;
 		}
 		
 		// Closing terminal:
 		if (CT_close(myCtn) != CTAPI_OK)
 		{
-			CC_LOG(@"CT_init: Failed to close previously opened card terminal.");
+			LogError(@"CT_init: Failed to close previously opened card terminal.");
 			return CTAPI_ERR_CT;
 		}
 	}
@@ -87,7 +87,7 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 	rv = SCardEstablishContext(SCARD_SCOPE_SYSTEM, NULL, NULL, &hContext);
 	if(rv != SCARD_S_SUCCESS)
 	{
-		CC_LOG(@"CT_init: SCardEstablishContext failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
+		LogError(@"CT_init: SCardEstablishContext failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
 		return(CTAPI_ERR_CT);
 	}
 	
@@ -95,7 +95,7 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 	rv = SCardListReaders(hContext, NULL, NULL, &dwReaders);
 	if(rv != SCARD_S_SUCCESS)
 	{
-		CC_LOG(@"CT_init: SCardListReaders failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
+		LogError(@"CT_init: SCardListReaders failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
 		return(CTAPI_ERR_CT);
 	}
 	
@@ -103,7 +103,7 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
     szReaders = calloc(sizeof(char), dwReaders);
 	if(szReaders == NULL)
 	{
-		CC_LOG(@"CT_init: Out of memory");
+		LogError(@"CT_init: Out of memory");
 		return(CTAPI_ERR_MEMORY);
 	}
 	
@@ -111,7 +111,7 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 	rv = SCardListReaders(hContext, NULL, szReaders, &dwReaders);
 	if(rv != SCARD_S_SUCCESS)
 	{
-		CC_LOG(@"CT_init: SCardListReaders failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
+		LogError(@"CT_init: SCardListReaders failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
 		return(CTAPI_ERR_CT);
 	}
 	
@@ -122,13 +122,13 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 	ptr = szReaders;
 	if (*ptr == '\0') {
 		// no readers found?
-		CC_LOG(@"CT_init: No readers found");
+		LogInfo(@"CT_init: No readers found");
 		return(CTAPI_ERR_CT);
 	} else {
 		// as long as we did not reach end of multi-reader list
 		while(*ptr != '\0')
   	    {
-			CC_LOG(@"CT_init: processing \"%s\", counter=%d",ptr,nbReaders);
+			LogDebug(@"CT_init: processing \"%s\", counter=%d",ptr,nbReaders);
 			nbReaders++;
 			if (nbReaders == pn) break;
 			ptr += strlen(ptr)+1;
@@ -141,7 +141,7 @@ extern IS8 CT_init(IU16 ctn, IU16 pn)
 		szReaders = temp;
 	}
 	
-	CC_LOG(@"CT_init: selected reader: \"%s\"",szReaders);
+	LogDebug(@"CT_init: selected reader: \"%s\"",szReaders);
  	
 	bConnected = false;
 	myCtn = ctn;
@@ -154,17 +154,17 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 	long rv;
     NSMutableString *logString = [NSMutableString string];
 	
-	CC_LOG(@"CT_data: Called (ctn %d, dad %d, sad %d, lenc %d, lenr %d)", ctn, *dad, *sad, lenc, *lenr);
+	LogVerbose(@"CT_data: Called (ctn %d, dad %d, sad %d, lenc %d, lenr %d)", ctn, *dad, *sad, lenc, *lenr);
     [logString appendString:@"Command: "];
     for(int i=0; i<lenc; i++) [logString appendFormat:@"%02X ", command[i]];
-	CC_LOG(logString);
+	LogVerbose(logString);
 	
 	// check parameters
 	if((ctn != myCtn) || (dad == NULL) || (sad == NULL) || (command == NULL)
 	   || (lenr == NULL) || (response == NULL) || (lenc < 4) || (*lenr < 2)
 	   || (*sad != 2))
 	{
-		CC_LOG(@"CT_data: Invalid parameters");
+		LogError(@"CT_data: Invalid parameters");
 		return(CTAPI_ERR_INVALID);
 	}
 	
@@ -181,7 +181,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 						// reset CT
 						if(command[2] == 0x00)
 						{
-							CC_LOG(@"CT_data: reset CT - no action");
+							LogDebug(@"CT_data: reset CT - no action");
 							// not needed, just return OK
 							*lenr = 2;
 							response[0] = 0x90;
@@ -196,7 +196,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 							rv = SCardReconnect(hCard, SCARD_SHARE_EXCLUSIVE, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1, SCARD_RESET_CARD, &dwActiveProtocol);
 							if(rv != SCARD_S_SUCCESS)
 							{
-								CC_LOG(@"CT_data: SCardReconnect failed (0x%08lX) (%s)",
+								LogError(@"CT_data: SCardReconnect failed (0x%08lX) (%s)",
 											  rv,pcsc_stringify_error(rv));
 								return(CTAPI_ERR_CT);
 							}
@@ -209,12 +209,12 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 								rv = SCardStatus(hCard, NULL, &dwZero, &dwZero, &dwProtocol, pbAtr, &dwAtrSize);
 								if(rv != SCARD_S_SUCCESS)
 								{
-									CC_LOG(@"CT_data: SCardStatus failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
+									LogError(@"CT_data: SCardStatus failed (0x%08lX) (%s)", rv, pcsc_stringify_error(rv));
 									return(CTAPI_ERR_CT);
 								}
 								if(2 + dwAtrSize > *lenr)
 								{
-									CC_LOG(@"CT_data: ERR at %s:%d",__FILE__,__LINE__);
+									LogError(@"CT_data: ERR at %s:%d",__FILE__,__LINE__);
 									return(CTAPI_ERR_MEMORY);
 								}
 								else
@@ -225,19 +225,19 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 									response[dwAtrSize+1] = 0x00;
 									*sad = *dad;
 									*dad = 0x02;
-									CC_LOG(@"CT_data: return 0x9000 at %s:%d",__FILE__,__LINE__);
+                                    LogDebug(@"CT_data: return 0x9000"); // at %s:%d",__FILE__,__LINE__);
 									return(CTAPI_OK);
 								}
 							}
 							else if(command[3] == 0x02)
 							{
 								// return HB
-								CC_LOG(@"CT_data: Historical bytes not supported");
+								LogWarning(@"CT_data: Historical bytes not supported");
 								return(CTAPI_ERR_INVALID);
 							}
 							else 
 							{
-								CC_LOG(@"CT_data: dummy result at %s:%d",__FILE__,__LINE__);
+                                LogDebug(@"CT_data: dummy result"); // at %s:%d",__FILE__,__LINE__);
 								// return nothing
 								*lenr = 2;
 								response[0] = 0x90;
@@ -251,7 +251,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 						// request ICC
 						if(!bConnected && !ConnectCard())
 						{
-							CC_LOG(@"CT_data: ERR: card not connect or cannot connect to card.");
+							LogError(@"CT_data: ERR: card not inserted or cannot connect to card.");
 							*lenr = 2;
 							response[0] = 0x62;
 							response[1] = 0x00;
@@ -264,15 +264,15 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 						DWORD dwZero = 0, dwState, dwProtocol, dwAtrSize = sizeof(pbAtr);
 						rv = SCardStatus(hCard, NULL, &dwZero, &dwState, &dwProtocol, pbAtr, &dwAtrSize);
 						if (rv != SCARD_S_SUCCESS) {
-							CC_LOG(@"SCardState not successfull with error %lX (%s) at %s:%d",rv, pcsc_stringify_error(rv), __FILE__,__LINE__);
+							LogWarning(@"SCardState not successfull with error %lX (%s) at %s:%d",rv, pcsc_stringify_error(rv), __FILE__,__LINE__);
 							rv = SCardDisconnect(hCard, SCARD_UNPOWER_CARD);
-							CC_LOG(@"  Disconnect: %s",pcsc_stringify_error(rv));
+							LogDebug(@"  Disconnect: %s",pcsc_stringify_error(rv));
 							ConnectCard();
                             dwZero = 0;
                             dwAtrSize = sizeof(pbAtr);
 							rv = SCardStatus(hCard, NULL, &dwZero, &dwState, &dwProtocol, pbAtr, &dwAtrSize);
 							if (rv != SCARD_S_SUCCESS)
-								CC_LOG(@"SCardState (II.) not successfull with error %lX (%s) at %s:%d",rv, pcsc_stringify_error(rv), __FILE__,__LINE__);
+								LogWarning(@"SCardState (II.) not successfull with error %lX (%s) at %s:%d",rv, pcsc_stringify_error(rv), __FILE__,__LINE__);
 						}
 						
 						// card present?
@@ -282,12 +282,12 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 							{
 								if(2 + dwAtrSize > *lenr)
 								{
-									CC_LOG(@"CT_data: ERR at %s:%d",__FILE__,__LINE__);
+									LogError(@"CT_data: ERR at %s:%d",__FILE__,__LINE__);
 									return(CTAPI_ERR_MEMORY);
 								}
 								else
 								{
-									CC_LOG(@"CT_data: result\n  atr: %p\n  state:%lX\n  Proto:%lX\n   at %s:%d\n",response, dwState, dwProtocol, __FILE__,__LINE__);
+									LogVerbose(@"CT_data: result\n  atr: %p\n  state:%lX\n  Proto:%lX\n   at %s:%d\n",response, dwState, dwProtocol, __FILE__,__LINE__);
 									*lenr = dwAtrSize + 2;
 									memcpy(response, pbAtr, dwAtrSize);
 									response[dwAtrSize] = 0x90;
@@ -300,12 +300,12 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 							else if(command[3] == 0x02)
 							{
 								// return HB
-								CC_LOG(@"CT_data: Historical bytes not supported");
+								LogError(@"CT_data: Historical bytes not supported");
 								return(CTAPI_ERR_INVALID);
 							}
 							else
 							{
-								CC_LOG(@"CT_data: dummy result at %s:%d",__FILE__,__LINE__);
+								LogVerbose(@"CT_data: dummy result at %s:%d",__FILE__,__LINE__);
 								*lenr = 2;
 								response[0] = 0x90;
 								response[1] = 0x00;
@@ -316,7 +316,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 						}
 						else
 						{
-							CC_LOG(@"CT_data: dummy result at %s:%d",__FILE__,__LINE__);
+							LogVerbose(@"CT_data: dummy result at %s:%d",__FILE__,__LINE__);
 							*lenr = 2;
 							response[0] = 0x62;
 							response[1] = 0x00;
@@ -328,7 +328,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
                     }
                         
                     case 0x15: {
-						CC_LOG(@"CT_data: eject");
+						LogDebug(@"CT_data: eject");
 						// eject ICC
 						if(bConnected)
 							SCardDisconnect(hCard, SCARD_UNPOWER_CARD);
@@ -354,7 +354,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 			// command goes to card
 			if(!bConnected && !ConnectCard())
 			{
-				CC_LOG(@"CT_data: ERR: no card. at %s:%d",__FILE__,__LINE__);
+				LogInfo(@"CT_data: ERR: no card. at %s:%d",__FILE__,__LINE__);
 				*lenr = 2;
 				response[0] = 0x62;
 				response[1] = 0x00;
@@ -363,14 +363,14 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 				return(CTAPI_OK);
 			}
 			
-			CC_LOG(@"CT_data: Sending command to card terminal");
+			LogVerbose(@"CT_data: Sending command to card terminal");
 			
 			SCARD_IO_REQUEST pioRecvPci;
 			DWORD dwRecvLength = *lenr, dwInpLength = lenc;
 			rv = SCardTransmit(hCard, SCARD_PCI_T1, command, dwInpLength, &pioRecvPci, response, &dwRecvLength);
 			if(rv != SCARD_S_SUCCESS)
 			{
-				CC_LOG(@"CT_data: SCardTransmit failed (0x%08lx) (%s)",
+				LogError(@"CT_data: SCardTransmit failed (0x%08lx) (%s)",
 							  rv, pcsc_stringify_error(rv));
 				return(CTAPI_ERR_INVALID);
 			}
@@ -378,7 +378,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
             NSMutableString *logString = [NSMutableString string];
             [logString appendString:@"CT_data: Received answer:\t"];
             for(int i=0; i<(int)dwRecvLength; i++) [logString appendFormat: @"%02X ", response[i]];
-            CC_LOG(logString);
+            LogVerbose(logString);
 			
 			*lenr = dwRecvLength;
 			*sad = *dad;
@@ -386,14 +386,14 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 			return(CTAPI_OK);
 	};
 	
-	CC_LOG(@"CT_data: Request not handled");
+	LogError(@"CT_data: Request not handled");
 	return(CTAPI_ERR_INVALID);
 }
 
 
 extern IS8 CT_close(IU16 ctn)
 {
-	CC_LOG(@"CT_close: Called (ctn %d)",
+	LogInfo(@"CT_close: Called (ctn %d)",
 				  ctn);
 	
 	if(ctn == myCtn)
@@ -417,7 +417,7 @@ static bool ConnectCard()
 {
 	DWORD dwActiveProtocol = -1;
 	long rv;
-	CC_LOG(@"ConnectCard()");
+    LogEnter;
     
     int  tries = 0;
     
@@ -452,7 +452,7 @@ static bool ConnectCard()
 		return(false);
 	}
 */
-    CC_LOG(@": false (%s)",pcsc_stringify_error(rv));
+    LogError(@": false (%s)",pcsc_stringify_error(rv));
     bConnected = false;
     return(false);
     
@@ -461,20 +461,20 @@ static bool ConnectCard()
 
 static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *lenr, IU8 *response)
 {
-	CC_LOG(@"CT_data: PERFORM VERIFICATION");
+	LogEnter;
 	
 	// Currently only the pinpad is supported:
 	if (command[3] != 0x00)
 	{
 		if (command[3] == 0x01)
-			CC_LOG(@"CT_data: Biometric verification is not supported.");
+			LogError(@"CT_data: Biometric verification is not supported.");
 		else
-			CC_LOG(@"CT_data: Unknown command qualifier.");
+			LogError(@"CT_data: Unknown command qualifier.");
 		return CTAPI_ERR_INVALID;
 	}
 	if ((lenc < 5) || (lenc < 5+command[4]))
 	{
-		CC_LOG(@"CT_data: Invalid command length.");
+		LogError(@"CT_data: Invalid command length.");
 		return CTAPI_ERR_INVALID;
 	}
 	
@@ -491,7 +491,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 			case 0x52:		// Command-to-perform
 				if ((bCommandToPerform) || (pData[1] < 2))
 				{
-					CC_LOG(@"CT_data: Invalid command.");
+					LogError(@"CT_data: Invalid command.");
 					return CTAPI_ERR_INVALID;
 				}
 				bCommandToPerform = true;
@@ -502,7 +502,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 				// PIN encoding currently only supports BCD:
 				if (pData[2] & 0x0F)
 				{
-					CC_LOG(@"CT_data: Requested PIN encoding not supported.");
+					LogError(@"CT_data: Requested PIN encoding not supported.");
 					return CTAPI_ERR_INVALID;
 				}
 				
@@ -510,7 +510,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 				nPinInsertPos = pData[3];
 				if ((nPinInsertPos < 6) || (nPinInsertPos > 0x0F))
 				{
-					CC_LOG(@"CT_data: PIN insertion position not supported.");
+					LogError(@"CT_data: PIN insertion position not supported.");
 					return CTAPI_ERR_INVALID;
 				}
 				nPinInsertPos -= 6;		// New position starts at first byte after "Lc"
@@ -520,7 +520,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 				pPinApdu = pData+4;
 				if (nPinApduLength < 5)
 				{
-					CC_LOG(@"CT_data: Requested ICC command not supported.");
+					LogError(@"CT_data: Requested ICC command not supported.");
 					return CTAPI_ERR_INVALID;
 				}
 				
@@ -528,13 +528,13 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 				nPinBlockSize = nPinApduLength-5-nPinInsertPos;
 				if (nPinInsertPos > 0x0F)
 				{
-					CC_LOG(@"CT_data: PIN block size can't be guessed.");
+					LogError(@"CT_data: PIN block size can't be guessed.");
 					return CTAPI_ERR_INVALID;
 				}
 				break;
 				
 			default:
-				CC_LOG(@"CT_data: DO %" PRIX8 " not handled.", pData[0]);
+				LogError(@"CT_data: DO %" PRIX8 " not handled.", pData[0]);
 				break;
 		}
 		
@@ -543,19 +543,19 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 	}
 	if (nSize)
 	{
-		CC_LOG(@"CT_data: Invalid command length.");
+		LogError(@"CT_data: Invalid command length.");
 		return CTAPI_ERR_INVALID;
 	}
 	if (!bCommandToPerform)		// "Command-to-perform" is mandatory
 	{
-		CC_LOG(@"CT_data: Command-to-perform missing.");
+		LogError(@"CT_data: Command-to-perform missing.");
 		return CTAPI_ERR_INVALID;
 	}
 	
 	// Requesting ICC:
 	if ((!bConnected) && (!ConnectCard()))
 	{
-		CC_LOG(@"CT_data: Cannot connect to card.");
+		LogError(@"CT_data: Cannot connect to card.");
 		return CTAPI_ERR_INVALID;
 	}
 	
@@ -569,7 +569,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 	nResult = SCardControl(hCard, CM_IOCTL_GET_FEATURE_REQUEST, NULL, 0, aOutput, sizeof(aOutput), &nBytesReturned);
 	if (nResult != SCARD_S_SUCCESS)
 	{
-		CC_LOG(@"CT_data: SCardControl(CM_IOCTL_GET_FEATURE_REQUEST) failed. (0x%08lx) (%s)", nResult, pcsc_stringify_error(nResult));
+		LogError(@"CT_data: SCardControl(CM_IOCTL_GET_FEATURE_REQUEST) failed. (0x%08lx) (%s)", nResult, pcsc_stringify_error(nResult));
 		return CTAPI_ERR_INVALID;
 	}
 	nPos = 0;
@@ -578,7 +578,7 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 	{
 		if ((nBytesReturned-nPos < 6) || (aOutput[nPos+1] != 4))
 		{
-			CC_LOG(@"CT_data: SCardControl(CM_IOCTL_GET_FEATURE_REQUEST) returned unrecognized data.");
+			LogError(@"CT_data: SCardControl(CM_IOCTL_GET_FEATURE_REQUEST) returned unrecognized data.");
 			return CTAPI_ERR_INVALID;
 		}
 		if (aOutput[nPos] == FEATURE_VERIFY_PIN_DIRECT)
@@ -590,10 +590,10 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 	}
 	if (!bControlCodeSet)
 	{
-		CC_LOG(@"CT_data: Direct pin verification feature is not supported.");
+		LogError(@"CT_data: Direct pin verification feature is not supported.");
 		return CTAPI_ERR_INVALID;
 	}
-	CC_LOG(@"CT_data: Control code for FEATURE_VERIFY_PIN_DIRECT is %lu", dwControlCode);
+	LogDebug(@"CT_data: Control code for FEATURE_VERIFY_PIN_DIRECT is %lu", dwControlCode);
 	
 	// Defining structure for PIN verification:
 	PIN_VERIFY_STRUCTURE *pPVS = (PIN_VERIFY_STRUCTURE *)alloca(sizeof(PIN_VERIFY_STRUCTURE)+nPinApduLength);
@@ -620,12 +620,12 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 						   aOutput, sizeof(aOutput), &nBytesReturned);
 	if (nResult != SCARD_S_SUCCESS)
 	{
-		CC_LOG(@"CT_data: SCardControl failed. (0x%08lx) (%s)", nResult, pcsc_stringify_error(nResult));
+		LogError(@"CT_data: SCardControl failed. (0x%08lx) (%s)", nResult, pcsc_stringify_error(nResult));
 		return CTAPI_ERR_INVALID;
 	}
 	if (nBytesReturned != 2)
 	{
-		CC_LOG(@"CT_data: Unexpected data output.");
+		LogError(@"CT_data: Unexpected data output.");
 		return CTAPI_ERR_INVALID;
 	}
 	if (aOutput[0] == 0x64)
@@ -633,21 +633,21 @@ static IS8 PerformVerification(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *com
 		switch (aOutput[1])
 		{
 			case 0x00:
-				CC_LOG(@"CT_data: Operation timed out.");
+				LogWarning(@"CT_data: Operation timed out.");
 				break;
 			case 0x01:
-				CC_LOG(@"CT_data: Operation canceled.");
+				LogDebug(@"CT_data: Operation canceled.");
 				break;
 			case 0x03:
-				CC_LOG(@"CT_data: PIN entered is too short or too long.");
+				LogError(@"CT_data: PIN entered is too short or too long.");
 				aOutput[1] = 0x01;		// Mapping for CT-API
 				break;
 		}
 	}
 	else if ((aOutput[0] == 0x6B) && (aOutput[1] == 0x80))
-		CC_LOG(@"CT_data: Invalid parameter.");
+		LogError(@"CT_data: Invalid parameter.");
 	else
-		CC_LOG(@"CT_data: Result = (%" PRIu8 ", %" PRIu8 ")", aOutput[0], aOutput[1]);
+		LogVerbose(@"CT_data: Result = (%" PRIu8 ", %" PRIu8 ")", aOutput[0], aOutput[1]);
 	
 	// Returning response:
 	*lenr = 2;

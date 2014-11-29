@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "ctapi-tools.h"
 
+#import "MessageLog.h"
 
 const CTAPI_MapInt2String CTAPI_statusMsgs[]=
 {
@@ -103,11 +104,6 @@ unsigned short int ctnum;
 
 CTAPI_ERROR     CTAPI_error;
 
-void CTAPI_log(const char *msg)
-{
-    CC_LOG(@"%s",msg);
-}
-
 unsigned short int extractStatus(unsigned short int len,unsigned char *response)
 {
     return (((unsigned short int)response[len-2])<<8) + (((unsigned short int)response[len-1])&(unsigned char)0xFF);
@@ -172,7 +168,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
       lenOut_local = MIN_LOCAL_RESPONSE_BUFFER_SIZE;
         response_local = calloc(sizeof(char), lenOut_local);
       if (response_local==NULL) {
-        CTAPI_log("Alloc of local response buffer failed. Out of memory. Aborting!");
+        LogDebug(@"Alloc of local response buffer failed. Out of memory. Aborting!");
         return 0;
       }
     }
@@ -181,7 +177,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
       lenOut_local = *lenOut;
       response_local = calloc(sizeof(char), lenOut_local);
       if (response_local==NULL) {
-        CTAPI_log("Realloc of local response buffer failed. Out of memory. Aborting!");
+        LogDebug(@"Realloc of local response buffer failed. Out of memory. Aborting!");
         return 0;
       }
     }
@@ -192,7 +188,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
         sprintf(temp," %02X",command[i]);
         strcat(logmsg,temp);
     }
-    CTAPI_log(logmsg);
+    LogVerbose(@"%s", logmsg);
     
     memcpy(CTAPI_error.request,command,lenIn);
     CTAPI_error.reqLen=lenIn;
@@ -207,7 +203,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
             break;
         
         sprintf(logmsg,"%s: %i (%s)",name,err,CTAPI_getErrorString(err));
-        CTAPI_log(logmsg);
+        LogError(@"%s", logmsg);
     }
 
     if (lenOut_return < (*lenOut)) {
@@ -215,7 +211,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
     }
     memcpy(response,response_local, *lenOut);
     if (err!=0) {
-        CTAPI_log("aborting");
+        LogError(@"aborting");
         return 0;
     }
     
@@ -224,7 +220,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
         sprintf(temp," %02X",response[i]);
         strcat(logmsg,temp);
     }
-    CTAPI_log(logmsg);
+    LogVerbose(@"%s", logmsg);
     
     memcpy(CTAPI_error.response,response,*lenOut);
     CTAPI_error.resLen=*lenOut;
@@ -234,7 +230,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
 
     char *msg=CTAPI_getStatusString(status);
     sprintf(logmsg,"%s: %s",name,msg);
-    CTAPI_log(logmsg);
+    LogVerbose(@"%s", logmsg);
     
     free(msg);
     return status;
@@ -259,16 +255,15 @@ bool CTAPI_initCTAPI(unsigned short int portnum,unsigned short int _ctnum)
 
 bool CTAPI_closeCTAPI()
 {
-    char logmsg[300];
+    //char logmsg[300];
     
     // closing CTAPI lib
     signed char err=CT_close(ctnum);
     if (err!=0) {
-        sprintf(logmsg,"CT_close: %i (%s)",err,CTAPI_getErrorString(err));
-        CTAPI_log(logmsg);
+        LogError(@"CT_close: %i (%s)",err,CTAPI_getErrorString(err));
         return false;
     }
     
-    CTAPI_log("closing CTAPI ok");
+    LogInfo(@"closing CTAPI ok");
     return true;
 }

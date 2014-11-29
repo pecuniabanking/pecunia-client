@@ -31,7 +31,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
     *dataLen=0;
     
     if (HBCI_cardtype==HBCI_CARD_TYPE_DDV_0) {
-        CTAPI_log("reading ddv-0 keys");
+        LogDebug(@"reading ddv-0 keys");
         
         if (SECCOS_selectSubFile(SECCOS_SELECT_RET_NOTHING,0x0013)) {
             unsigned char *buffer=calloc(sizeof(char), 16);
@@ -73,7 +73,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
             free(buffer);
         }
     } else if (HBCI_cardtype==HBCI_CARD_TYPE_DDV_1) {
-        CTAPI_log("reading ddv-1 keys");
+        LogDebug(@"reading ddv-1 keys");
         
         unsigned char *buffer=calloc(sizeof(char), 300);
         size_t        len;
@@ -106,7 +106,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
         
         free(buffer);
     } else if (HBCI_cardtype==HBCI_CARD_TYPE_RSA) {
-        CTAPI_log("reading rsa keys");
+        LogDebug(@"reading rsa keys");
     }
     
     return ret;

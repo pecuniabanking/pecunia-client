@@ -28,7 +28,7 @@ bool DDV_verifyHBCIPin_1(bool usebio)
 {
     bool ret=false;
     
-    CTAPI_log("verifying PIN via ct-keypad");
+    LogDebug(@"verifying PIN via ct-keypad");
     if (SECCOS_verifyPin_2(NULL,0,0,SECCOS_PIN_CODING_F2P,1,SECCOS_PWD_TYPE_DF,usebio)) {
         ret=true;
     }
@@ -40,7 +40,7 @@ bool DDV_verifyHBCIPin_2(unsigned char *pin)
 {
     bool ret=false;
     
-    CTAPI_log("verifying PIN via pc-keyboard");
+    LogDebug(@"verifying PIN via pc-keyboard");
     if (SECCOS_verifyPin_1(1,SECCOS_PWD_TYPE_DF,SECCOS_PIN_CODING_F2P,strlen((const char*)pin),pin)) {
         ret=true;
     }
