@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,6 +27,14 @@
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
 
+// A simple descentant to store our image name (NSImage.name doesn't accept our "names").
+@interface LibraryImage : NSImage
+@property (copy) NSString *privatePath;
+@end
+
+@implementation LibraryImage
+@end
+
 // A simple descendant to send mouse click actions and accept dragged image files.
 @interface DoubleClickImageView : NSImageView
 {
@@ -40,42 +48,41 @@ extern NSString *const CategoryKey;
 
 @synthesize controller;
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     // Eat this event to prevent the image view from doing so which would result in no
     // mouseUp event.
 }
 
-- (void)mouseUp: (NSEvent *)theEvent
-{
+- (void)mouseUp: (NSEvent *)theEvent {
     NSPoint point = [self convertPoint: theEvent.locationInWindow fromView: nil];
     if (NSPointInRect(point, self.bounds) && [[self target] respondsToSelector: [self action]]) {
         [NSApp sendAction: [self action] to: [self target] from: self];
     }
 }
 
-- (void)resetCursorRects
-{
+- (void)resetCursorRects {
     [super resetCursorRects];
     [self addCursorRect: [self bounds] cursor: [NSCursor pointingHandCursor]];
 }
 
-- (void)concludeDragOperation: (id <NSDraggingInfo>)sender
-{
+- (void)concludeDragOperation: (id <NSDraggingInfo>)sender {
     // Read image path for later processing.
     // Temporarily remove the associated action to prevent NSImageView to trigger it.
     SEL action = self.action;
     self.action = nil;
 
+    // Convert image to a LibraryImage.
     NSString *path = [[sender draggingPasteboard] propertyListForType: @"NSFilenamesPboardType"][0];
     [super concludeDragOperation: sender];
+    LibraryImage *newImage = [[LibraryImage alloc] initWithContentsOfFile: path];
+    newImage.privatePath = path;
     self.action = action;
-    self.image.name = path;
+    self.image = newImage;
 }
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+#pragma mark -
 
 @interface LibraryIconView : NSBox
 {
@@ -84,16 +91,14 @@ extern NSString *const CategoryKey;
 
 @implementation LibraryIconView
 
-- (id)initWithFrame: (NSRect)frameRect
-{
+- (id)initWithFrame: (NSRect)frameRect {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
     }
     return self;
 }
 
-- (NSView *)hitTest: (NSPoint)aPoint
-{
+- (NSView *)hitTest: (NSPoint)aPoint {
     // Don't allow any mouse clicks for subviews in this NSBox (necessary for making this box selectable).
     if (NSPointInRect(aPoint, [self convertRect: [self bounds] toView: [self superview]])) {
         return self;
@@ -102,8 +107,7 @@ extern NSString *const CategoryKey;
     }
 }
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     [super mouseDown: theEvent];
 
     if ([theEvent clickCount] > 1) {
@@ -113,21 +117,44 @@ extern NSString *const CategoryKey;
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+#pragma mark -
 
 @interface ImageLibraryPopup : NSView
 @end
 
 @implementation ImageLibraryPopup
 
-- (void)cancelOperation: (id)sender
-{
+- (void)cancelOperation: (id)sender {
     [NSApp sendAction: @selector(cancelImage:) to: nil from: self];
 }
 
 @end
 
-//----------------------------------------------------------------------------------------------------------------------
+#pragma mark -
+
+@interface CategoryMaintenanceController ()
+{
+    IBOutlet NSObjectController *categoryController;
+    IBOutlet BWGradientBox      *topGradient;
+    IBOutlet BWGradientBox      *backgroundGradient;
+    IBOutlet NSPopover          *imageLibraryPopover;
+
+    BankingCategory *category;
+    BankingCategory *changedCategory;
+    NSMutableArray  *iconCollection;
+
+    NSManagedObjectContext *moc;
+}
+
+@property (strong) IBOutlet DoubleClickImageView *categoryIcon;
+@property (strong) IBOutlet NSImageView          *smallCategoryIcon;
+@property (strong) IBOutlet NSView               *imageLibraryPopup;
+@property (strong) IBOutlet NSArrayController    *iconCollectionController;
+@property (strong) NSArray                       *iconCollection;
+
+@property (assign) NSUInteger currentCollection;
+
+@end
 
 @implementation CategoryMaintenanceController
 
@@ -136,14 +163,14 @@ extern NSString *const CategoryKey;
 @synthesize imageLibraryPopup;
 @synthesize iconCollectionController;
 @synthesize iconCollection;
+@synthesize currentCollection;
 
-- (id)initWithCategory: (BankingCategory *)aCategory
-{
+- (id)initWithCategory: (BankingCategory *)aCategory {
     self = [super initWithWindowNibName: @"CategoryMaintenance"];
     if (self != nil) {
-        moc = MOAssistant.sharedAssistant.memContext;
-
-        category = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: moc];
+        moc = MOAssistant.sharedAssistant.memContext; // Referenced by the xib.
+        category = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
+                                                 inManagedObjectContext: moc];
 
         changedCategory = aCategory;
         category.name = aCategory.name;
@@ -152,12 +179,13 @@ extern NSString *const CategoryKey;
         category.iconName = aCategory.iconName;
         category.isHidden = aCategory.isHidden;
         category.noCatRep = aCategory.noCatRep;
+
+        currentCollection = 1;
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     // Manually set up properties which cannot be set via user defined runtime attributes
     // (Color type is not available pre 10.7).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
@@ -182,7 +210,7 @@ extern NSString *const CategoryKey;
             } else {
                 if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
                     NSDictionary *parameters = [NSDictionary dictForUrlParameters: url];
-                    NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
+                    NSString     *subfolder = [@"Collections/" stringByAppendingString : parameters[@"c"]];
                     path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
                                                            ofType: url.host.pathExtension
                                                       inDirectory: subfolder];
@@ -197,8 +225,9 @@ extern NSString *const CategoryKey;
         }
 
         // Might leave the image at nil if the path is wrong or the image could not be loaded.
-        categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
-        categoryIcon.image.name = category.iconName;
+        LibraryImage *image = [[LibraryImage alloc] initWithContentsOfFile: path];
+        image.privatePath = category.iconName;
+        categoryIcon.image = image;
     }
 
     // Set up the icon collection with all icons in our (first) internal collection.
@@ -206,20 +235,18 @@ extern NSString *const CategoryKey;
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
 
     for (NSString *path in paths) {
-        NSImage  *image = [[NSImage alloc] initWithContentsOfFile: path];
-        image.name = [path lastPathComponent];
+        LibraryImage *image = [[LibraryImage alloc] initWithContentsOfFile: path];
+        image.privatePath = [path lastPathComponent];
         [iconCollectionController addObject: @{@"icon": image}];
     }
 }
 
-#pragma mark -
-#pragma mark KVO handling
+#pragma mark - KVO handling
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if ([keyPath isEqualToString: @"image"]) {
         smallCategoryIcon.image = categoryIcon.image;
         return;
@@ -227,23 +254,19 @@ extern NSString *const CategoryKey;
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-- (void)openImageLibrary
-{
+- (void)openImageLibrary {
     if (!imageLibraryPopover.shown) {
         [imageLibraryPopover showRelativeToRect: categoryIcon.bounds ofView: categoryIcon preferredEdge: NSMinYEdge];
     }
 }
 
-#pragma mark -
-#pragma mark Event handling
+#pragma mark - Event handling
 
-- (IBAction)selectImage: (id)sender
-{
+- (IBAction)selectImage: (id)sender {
     [self openImageLibrary];
 }
 
-- (IBAction)acceptImage: (id)sender
-{
+- (IBAction)acceptImage: (id)sender {
     [imageLibraryPopover performClose: sender];
 
     NSArray *selection = iconCollectionController.selectedObjects;
@@ -252,13 +275,11 @@ extern NSString *const CategoryKey;
     }
 }
 
-- (IBAction)cancelImage: (id)sender
-{
+- (IBAction)cancelImage: (id)sender {
     [imageLibraryPopover performClose: sender];
 }
 
-- (IBAction)cancel: (id)sender
-{
+- (IBAction)cancel: (id)sender {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
@@ -271,8 +292,7 @@ extern NSString *const CategoryKey;
     [NSApp stopModalWithCode: 0];
 }
 
-- (IBAction)ok: (id)sender
-{
+- (IBAction)ok: (id)sender {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
@@ -289,12 +309,12 @@ extern NSString *const CategoryKey;
     changedCategory.isHidden = category.isHidden;
     changedCategory.noCatRep = category.noCatRep;
 
-    NSImage *image = categoryIcon.image;
+    LibraryImage *image = (LibraryImage*)categoryIcon.image;
 
     // Path to the data bundle image folder.
     NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
-    if (image != nil && image.name != nil) {
-        if (![image.name isEqualToString: category.iconName]) {
+    if (image != nil && image.privatePath != nil) {
+        if (![image.privatePath isEqualToString: category.iconName]) {
             // Remove a previously copied image if there's one referenced.
             NSURL *oldUrl = [NSURL URLWithString: category.iconName];
             if (oldUrl != nil) {
@@ -307,12 +327,12 @@ extern NSString *const CategoryKey;
                 }
             }
 
-            if ([image.name isAbsolutePath]) {
+            if ([image.privatePath isAbsolutePath]) {
                 // An icon located somewhere else in the file system. In order to avoid the need for
                 // security bookmarks and other trouble (like unavailable network drives etc.) we copy
                 // the icon to our data bundle (like we do for attachments).
                 NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-                NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, image.name.pathExtension];
+                NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, image.privatePath.pathExtension];
                 NSString *targetFileName = [targetFolder stringByAppendingString: uniqueFilenName];
 
                 NSError *error = nil;
@@ -320,16 +340,18 @@ extern NSString *const CategoryKey;
                     NSAlert *alert = [NSAlert alertWithError: error];
                     [alert runModal];
                 }
-                if (error == nil && ![NSFileManager.defaultManager copyItemAtPath: image.name toPath: targetFileName error: &error]) {
+                if (error == nil && ![NSFileManager.defaultManager copyItemAtPath: image.privatePath
+                                                                           toPath: targetFileName
+                                                                            error: &error]) {
                     NSAlert *alert = [NSAlert alertWithError: error];
                     [alert runModal];
                 }
 
-                changedCategory.iconName = [@"image://" stringByAppendingString: uniqueFilenName];
+                changedCategory.iconName = [@"image://" stringByAppendingString : uniqueFilenName];
             } else {
                 // A library icon was selected. Construct the relative path. Parameter c refers to the
                 // collection number.
-                changedCategory.iconName = [NSString stringWithFormat: @"collection://%@?c=%i", image.name, 1];
+                changedCategory.iconName = [NSString stringWithFormat: @"collection://%@?c=%lu", image.privatePath, currentCollection];
             }
         }
     } else {
@@ -343,13 +365,11 @@ extern NSString *const CategoryKey;
         changedCategory.iconName = @""; // An empty string denotes a category without icon.
     }
 
-    NSDictionary *info = @{CategoryKey: changedCategory};
     [NSNotificationCenter.defaultCenter postNotificationName: CategoryColorNotification
                                                       object: self
-                                                    userInfo: info];
+                                                    userInfo: @{CategoryKey: changedCategory}];
     [self close];
 
-    // save all
     NSError *error = nil;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -360,8 +380,7 @@ extern NSString *const CategoryKey;
     [NSApp stopModalWithCode: 1];
 }
 
-- (IBAction)removeIcon: (id)sender
-{
+- (IBAction)removeIcon: (id)sender {
     categoryIcon.image = nil;
     smallCategoryIcon.image = nil;
 }

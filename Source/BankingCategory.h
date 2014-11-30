@@ -68,7 +68,7 @@ typedef struct {
 @property (nonatomic, strong) NSString        *name;
 @property (nonatomic, strong) NSNumber        *isBankAcc;
 @property (nonatomic, strong) NSString        *currency;
-@property (nonatomic, strong) BankingCategory        *parent;
+@property (nonatomic, strong) BankingCategory *parent;
 @property (nonatomic, strong) NSString        *localName;
 @property (nonatomic, strong) NSNumber        *isBalanceValid;
 @property (nonatomic, strong) NSDecimalNumber *catSum;

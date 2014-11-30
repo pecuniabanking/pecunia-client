@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,31 +17,11 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @class BankingCategory;
 @class BWGradientBox;
 @class DoubleClickImageView;
 
 @interface CategoryMaintenanceController : NSWindowController <NSImageDelegate>
-{
-    IBOutlet NSObjectController *categoryController;
-    IBOutlet BWGradientBox      *topGradient;
-    IBOutlet BWGradientBox      *backgroundGradient;
-    IBOutlet NSPopover          *imageLibraryPopover;
-
-@private
-    NSManagedObjectContext *moc;
-    BankingCategory               *category;
-    BankingCategory               *changedCategory;
-    NSMutableArray         *iconCollection;
-}
-
-@property (strong) IBOutlet DoubleClickImageView *categoryIcon;
-@property (strong) IBOutlet NSImageView          *smallCategoryIcon;
-@property (strong) IBOutlet NSView               *imageLibraryPopup;
-@property (strong) IBOutlet NSArrayController    *iconCollectionController;
-@property (strong) NSArray                       *iconCollection;
 
 - (id)initWithCategory: (BankingCategory *)aCategory;
 - (IBAction)selectImage: (id)sender;
