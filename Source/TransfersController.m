@@ -712,8 +712,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [titleText setStringValue: NSLocalizedString(@"AP441", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
             transferFormular.icon = [NSImage imageNamed: @"sepa-transfer-icon.png"];
-            remoteAccountKey = @"selection.remoteAccount";
-            remoteBankCodeKey = @"selection.remoteBankCode";
+            remoteAccountKey = @"selection.remoteIBAN";
+            remoteBankCodeKey = @"selection.remoteBIC";
             break;
 
 
