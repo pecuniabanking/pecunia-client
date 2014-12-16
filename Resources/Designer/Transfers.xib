@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TransfersController">
@@ -63,6 +63,7 @@
                 <outlet property="transferEUImage" destination="609" id="618"/>
                 <outlet property="transferFormular" destination="369" id="512"/>
                 <outlet property="transferInternalImage" destination="607" id="613"/>
+                <outlet property="transferInternalSEPAImage" destination="sff-V8-95b" id="yU1-Xz-jfI"/>
                 <outlet property="transferNormalImage" destination="605" id="614"/>
                 <outlet property="transferSEPAImage" destination="611" id="617"/>
                 <outlet property="transferTab" destination="315" id="661"/>
@@ -153,7 +154,7 @@
                                                     <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <searchField verticalHuggingPriority="750" id="513">
+                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" id="513">
                                                 <rect key="frame" x="345" y="372" width="136" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="514">
@@ -335,19 +336,14 @@
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-internal-preview" id="608"/>
                         </imageView>
                         <imageView tag="1" id="605" customClass="DragImageView">
-                            <rect key="frame" x="150" y="594" width="211" height="145"/>
+                            <rect key="frame" x="127" y="594" width="211" height="145"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-normal-preview" id="606"/>
                         </imageView>
                         <imageView tag="2" id="609" customClass="DragImageView">
-                            <rect key="frame" x="280" y="594" width="211" height="145"/>
+                            <rect key="frame" x="239" y="594" width="211" height="145"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-eu-preview" id="610"/>
-                        </imageView>
-                        <imageView tag="3" id="611" customClass="DragImageView">
-                            <rect key="frame" x="410" y="594" width="211" height="145"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-sepa-preview" id="612"/>
                         </imageView>
                         <imageView wantsLayer="YES" id="619" userLabel="Waste Basket" customClass="DeleteTransferTargetView">
                             <rect key="frame" x="667" y="629" width="59" height="75"/>
@@ -367,6 +363,16 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <imageView tag="3" id="611" customClass="DragImageView">
+                            <rect key="frame" x="346" y="594" width="211" height="145"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-sepa-preview" id="612"/>
+                        </imageView>
+                        <imageView tag="5" id="sff-V8-95b" customClass="DragImageView">
+                            <rect key="frame" x="458" y="594" width="211" height="145"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-sepa-internal-preview" id="07j-Iy-ki7"/>
+                        </imageView>
                     </subviews>
                 </customView>
             </subviews>
@@ -1302,8 +1308,8 @@ Gw
         </customView>
     </objects>
     <resources>
-        <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
-        <image name="NSRightFacingTriangleTemplate" width="9" height="9"/>
+        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
         <image name="basket" width="59" height="75"/>
         <image name="calendar" width="22" height="22"/>
         <image name="delete2" width="16" height="16"/>
@@ -1312,6 +1318,7 @@ Gw
         <image name="transfer-eu-preview" width="211" height="145"/>
         <image name="transfer-internal-preview" width="211" height="145"/>
         <image name="transfer-normal-preview" width="211" height="145"/>
+        <image name="transfer-sepa-internal-preview" width="211" height="145"/>
         <image name="transfer-sepa-preview" width="211" height="145"/>
     </resources>
 </document>

@@ -234,7 +234,10 @@ static HBCIController *controller = nil;
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
         BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)]];
         if (info) {
-            return info.bic;
+            // ToDo: check compatibility with other banks,
+            // ING-Diba doesn't accept BIC with branch code
+            // it is optional according to ISO 9362
+            return [info.bic substringToIndex:8];
         } else {
             return nil;
         }
@@ -328,6 +331,8 @@ static HBCIController *controller = nil;
 
         case TransferTypeSEPAScheduled: return @"TermUebSEPA"; break;
 
+        case TransferTypeSEPAInternal: return @"UmbSEPA"; break;
+
         default:
             // collective transfers are handled special, only derive job names for supported jobs
             return nil;
@@ -394,6 +399,8 @@ static HBCIController *controller = nil;
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
 
         case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
+
+        case TransferTypeSEPAInternal: transactionType = TransActionType_TransferSEPAInternal; break;
             
         default: return NO; // default is needed because of OLD transfer types which are not supported any longer
             
@@ -673,6 +680,9 @@ static HBCIController *controller = nil;
 
                 case TransferTypeSEPA:
                     type = @"sepa";
+                    break;
+                case TransferTypeSEPAInternal:
+                    type = @"sepaInternal";
                     break;
 
                 case TransferTypeEU:

@@ -319,6 +319,7 @@ AP437 = "Gebührenschlüssel";
 AP438 = "Entgeld und Buchungsreferenz";
 AP439 = "Entgeld und Buchungsreferenz (Ausland)";
 AP440 = "Abrechnungsperiode";
+AP441 = "SEPA-Umbuchung";
 
 // Standing orders
 // AP450..AP499
