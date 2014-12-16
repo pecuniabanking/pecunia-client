@@ -144,6 +144,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         case 4:
             return TransferTypeDebit;
+            
+        case 5:
+            return TransferTypeSEPAInternal;
 
         default:
             return TransferTypeOldStandard;
@@ -460,6 +463,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferEUImage setFrameCenterRotation: -10];
     transferSEPAImage.controller = self;
     [transferSEPAImage setFrameCenterRotation: -10];
+    transferInternalSEPAImage.controller = self;
+    [transferInternalSEPAImage setFrameCenterRotation: -10];
     transferDebitImage.controller = self;
     [transferDebitImage setFrameCenterRotation: -10];
 
@@ -486,7 +491,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 }
 
 - (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account {
-    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName]action: nil keyEquivalent: @""];
     item.representedObject = account;
 
     return item;
@@ -702,6 +707,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
+        
+        case TransferTypeSEPAInternal:
+            [titleText setStringValue: NSLocalizedString(@"AP441", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            transferFormular.icon = [NSImage imageNamed: @"sepa-transfer-icon.png"];
+            remoteAccountKey = @"selection.remoteAccount";
+            remoteBankCodeKey = @"selection.remoteBankCode";
+            break;
+
 
         case TransferTypeDebit:
             [titleText setStringValue: NSLocalizedString(@"AP407", nil)];
@@ -719,7 +733,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             return NO; // Not needed as individual transfer template type.
     }
 
-    BOOL isInternal = (type == TransferTypeInternal);
+    BOOL isInternal = (type == TransferTypeInternal || type == TransferTypeSEPAInternal);
     [targetAccountSelector setHidden: !isInternal];
     [receiverComboBox setHidden: isInternal];
     [accountText setHidden: isInternal];

@@ -331,6 +331,8 @@ static HBCIController *controller = nil;
 
         case TransferTypeSEPAScheduled: return @"TermUebSEPA"; break;
 
+        case TransferTypeSEPAInternal: return @"UmbSEPA"; break;
+
         default:
             // collective transfers are handled special, only derive job names for supported jobs
             return nil;
@@ -397,6 +399,8 @@ static HBCIController *controller = nil;
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
 
         case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
+
+        case TransferTypeSEPAInternal: transactionType = TransActionType_TransferSEPAInternal; break;
             
         default: return NO; // default is needed because of OLD transfer types which are not supported any longer
             
@@ -676,6 +680,9 @@ static HBCIController *controller = nil;
 
                 case TransferTypeSEPA:
                     type = @"sepa";
+                    break;
+                case TransferTypeSEPAInternal:
+                    type = @"sepaInternal";
                     break;
 
                 case TransferTypeEU:
