@@ -824,7 +824,6 @@
 		27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
 		27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
-		2AD4BF891A3ED7CE00CA1D28 /* transfer-sepa-internal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AD4BF881A3ED7CE00CA1D28 /* transfer-sepa-internal-preview.png */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
@@ -1547,7 +1546,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; wrapsLines = 0; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		2AD4BF881A3ED7CE00CA1D28 /* transfer-sepa-internal-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-sepa-internal-preview.png"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pecunia_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2640,7 +2638,6 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				2AD4BF881A3ED7CE00CA1D28 /* transfer-sepa-internal-preview.png */,
 				276D9C9418CB79ED002BEDA8 /* Magnify */,
 				27649721167D2A73006770A9 /* Collections */,
 				27AA567B186C3E9100B113E7 /* assign.png */,
@@ -3490,7 +3487,6 @@
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
 				27E845E419E17D300026464E /* DebitsListViewCell.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit.png in Resources */,
-				2AD4BF891A3ED7CE00CA1D28 /* transfer-sepa-internal-preview.png in Resources */,
 				27AA569B186C562300B113E7 /* send2-active@2x.png in Resources */,
 				276D9C9D18CB79FF002BEDA8 /* magnify-busy2.png in Resources */,
 				276B5EFB194DAC1F00B12400 /* gray-hatch2.png in Resources */,
