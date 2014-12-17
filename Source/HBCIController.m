@@ -234,7 +234,12 @@ static HBCIController *controller = nil;
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
         BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)]];
         if (info) {
-            return info.bic;
+            // ToDo: check compatibility with other banks,
+            // ING-Diba doesn't accept BIC with branch code
+            // it is optional according to ISO 9362
+            NSString *tmpbic = info.bic;
+            tmpbic = [info.bic substringToIndex:8];
+            return [tmpbic stringByAppendingString:@"XXX"];
         } else {
             return nil;
         }
