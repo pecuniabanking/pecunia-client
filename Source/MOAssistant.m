@@ -956,7 +956,10 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     }
 
     LogInfo(@"Adding shared store from %@", sharedDataURL);
-    [storeOptions removeObjectForKey: NSSQLitePragmasOption];
+    NSDictionary *pragmaOptions = @{
+        @"synchronous": @"OFF", @"journal_mode": @"OFF"
+    };
+    storeOptions[NSSQLitePragmasOption] = pragmaOptions;
     [coordinator addPersistentStoreWithType: NSSQLiteStoreType
                               configuration: @"SharedDataConfiguration"
                                         URL: sharedDataURL

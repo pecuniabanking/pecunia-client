@@ -338,7 +338,7 @@ extern void *UserDefaultsBindingContext;
 - (NSDragOperation)listView: (PXListView *)aListView
                validateDrop: (id<NSDraggingInfo>)sender
                 proposedRow: (NSUInteger)row
-      proposedDropHighlight: (NSUInteger)highlight
+      proposedDropHighlight: (PXListViewDropHighlight)highlight
 {
     if (sender.draggingSource == self) {
         [[NSCursor arrowCursor] set];
@@ -357,7 +357,7 @@ extern void *UserDefaultsBindingContext;
 - (BOOL) listView: (PXListView *)aListView
        acceptDrop: (id<NSDraggingInfo>)info
               row: (NSUInteger)row
-    dropHighlight: (NSUInteger)highlight
+    dropHighlight: (PXListViewDropHighlight)highlight
 {
     if (info.draggingSource == self) {
         return NO;

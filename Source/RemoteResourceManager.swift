@@ -21,7 +21,7 @@ let RemoteResourcePath = "http://www.pecuniabanking.de/downloads/resources/"
 let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
 
 @objc public class RemoteResourceManager : NSObject {
-    private let mandatoryFiles = ["eu_all22.txt.zip"];
+    private let mandatoryFiles = ["eu_all_mfi.zip"];
     private var downloadableFiles : Array<Dictionary<String, String>>?
 
     private struct Static {
@@ -87,25 +87,24 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         let assistant = MOAssistant.sharedAssistant();
         let targetPath = assistant.resourcesDir + "/" + fileName;
 
-        var error : NSError?;
-        fm.removeItemAtPath(targetPath, error: &error);
-        if error != nil {
-            NSAlert(error: error!).runModal();
-            logLeave();
-            return false;
+        if fm.fileExistsAtPath(targetPath) {
+            var error : NSError?;
+            fm.removeItemAtPath(targetPath, error: &error);
+            if error != nil {
+                NSAlert(error: error!).runModal();
+                logLeave();
+                return false;
+            }
         }
         logLeave();
         return true;
     }
-    
+
     /**
-    * Typically triggered in a background thread to check and eventually update the given file from
-    * the remote location (if it doesn't exist or is outdated).
-    *
-    * @param fileName Contains the pure file name without path information.
-    * @return true, if the file has been updated.
-    */
-    private func updateFile(fileName: String) -> Bool {
+     * Checks if the given file would need an update, which requires that it must be one of
+     * the downloadable files (but not necessarily be managed).
+     */
+    public func fileNeedsUpdate(fileName: String) -> Bool {
         let resourcePath = MOAssistant.sharedAssistant().resourcesDir;
         let fm = NSFileManager.defaultManager();
         var dateFormatter = NSDateFormatter();
@@ -126,7 +125,55 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             return false;
         }
 
-        if fileInfo!["name"] as String != fileName {
+        let targetPath = resourcePath + "/" + fileName;
+        if fm.fileExistsAtPath(targetPath) {
+            // File exists already. Check if it is older than the last update date.
+            var error: NSError?;
+            var fileAttrs: NSDictionary? = fm.attributesOfItemAtPath(targetPath, error: &error);
+            if fileAttrs != nil {
+                var date: NSDate? = fileAttrs!.fileModificationDate();
+                if (date == nil) {
+                    date = fileAttrs!.fileCreationDate();
+                }
+                if date != nil {
+                    let fileDate = ShortDate(date: date);
+                    if fileInfo!["updated"] != nil {
+                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as String));
+                        if updateDate <= fileDate {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Typically triggered in a background thread to check and eventually update the given file from
+     * the remote location (if it doesn't exist or is outdated).
+     *
+     * @param fileName Contains the pure file name without path information.
+     * @return true, if the file has been updated.
+     */
+    private func updateFile(fileName: String) -> Bool {
+        let resourcePath = MOAssistant.sharedAssistant().resourcesDir;
+        let fm = NSFileManager.defaultManager();
+        var dateFormatter = NSDateFormatter();
+        dateFormatter.dateFormat = "yyyy-MM-dd";
+
+        // Check that the given file is one of the remote files we can download.
+        var fileInfo: Dictionary<String, AnyObject>? = nil;
+        if downloadableFiles != nil {
+            for info in downloadableFiles! {
+                if info["name"] == fileName {
+                    fileInfo = info;
+                    break;
+                }
+            }
+        }
+
+        if (fileInfo == nil) {
             logWarning("File %@ is not a remote resource file", arguments: fileName);
             return false;
         }
@@ -191,12 +238,20 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         var error: NSError?;
         let defaults = NSUserDefaults.standardUserDefaults();
         let lastUpdated = defaults.objectForKey("remoteFilesLastUpdate") as NSDate?;
-        let last: ShortDate? = nil //(lastUpdated != nil) ? ShortDate(date: lastUpdated!) : nil;
+        var last: ShortDate? = (lastUpdated != nil) ? ShortDate(date: lastUpdated!) : nil;
         let today = ShortDate.currentDate();
+
+        // Ignore last update date if any of the mandatory files is missing.
+        let fm = NSFileManager.defaultManager();
+        for fileName in mandatoryFiles {
+            if !fm.fileExistsAtPath(MOAssistant.sharedAssistant().resourcesDir + "/" + fileName) {
+                last = nil;
+                break;
+            }
+        }
 
         if (last == nil) || (last! < today) {
             var updatedFiles : Array<String> = [];
-            let fm = NSFileManager.defaultManager();
             var existingFiles: Array<String>? = fm.contentsOfDirectoryAtPath(MOAssistant.sharedAssistant().resourcesDir,
                 error: &error) as? Array<String>;
 
@@ -205,7 +260,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             // Find a list of all files with potential updates
             // Ensure all mandatory files exist.
             for fileName in files {
-                if updateFile(fileName) {
+                if !fileName.hasPrefix(".") && updateFile(fileName) {
                     updatedFiles.append(fileName);
                 }
             }

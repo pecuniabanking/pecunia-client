@@ -3,13 +3,13 @@
 //
 
 #ifdef __OBJC__
-@import Foundation;
-@import Cocoa;
-@import Quartz;
-@import QuartzCore;
-@import Accelerate;
+    #import <Foundation/Foundation.h>
+    #import <Cocoa/Cocoa.h>
+    #import <Quartz/Quartz.h>
+    #import <QuartzCore/QuartzCore.h>
+    #import <Accelerate/Accelerate.h>
 
-@import CocoaLumberjack;
+    #import <CocoaLumberJack/CocoaLumberjack.h>
 
     #import <mach/mach_time.h>
 

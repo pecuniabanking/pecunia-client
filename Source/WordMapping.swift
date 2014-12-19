@@ -21,7 +21,7 @@ import Foundation
 import CoreData
 
 // Number of entries in one batch of a dispatch_apply invocation.
-let wordsLoadStride : UInt = 500000;
+let wordsLoadStride : UInt = 50000;
 
 @objc public class WordMapping: NSManagedObject {
 
@@ -44,7 +44,7 @@ let wordsLoadStride : UInt = 500000;
             request.includesSubentities = false;
 
             let count = MOAssistant.sharedAssistant().context.countForFetchRequest(request, error: nil);
-            Static.mappingsAvailable = count != NSNotFound;
+            Static.mappingsAvailable = count > 0;
         }
         return Static.mappingsAvailable!;
     }
@@ -82,7 +82,7 @@ let wordsLoadStride : UInt = 500000;
                 text = nil;
 
                 // Convert to lower case and decompose diacritics (e.g. umlauts).
-                // Split work into blocks of WORDS_LOAD_STRIDE size and iterate in parallel over them.
+                // Split work into blocks of wordsLoadStride size and iterate in parallel over them.
                 let lineCount = UInt(lines!.count);
                 var blockCount = lineCount / wordsLoadStride;
                 if lineCount % wordsLoadStride != 0 {
@@ -108,7 +108,6 @@ let wordsLoadStride : UInt = 500000;
                                 inManagedObjectContext: context) as WordMapping;
                             mapping.key = key;
                             mapping.value = lines![Int(i)];
-
                         }
 
                         var error: NSError?;
@@ -116,17 +115,13 @@ let wordsLoadStride : UInt = 500000;
                             let alert = NSAlert(error: error!);
                             alert.runModal();
                         }
-                        
-
                     }
-
                 );
             }
 
             Static.mappingsAvailable = true;
             let notification = NSNotification(name: pecuniaWordsLoadedNotification(), object: nil);
             NSNotificationCenter.defaultCenter().postNotification(notification);
-
         }
 
         logDebug("Word list loading done in: %.2fs", arguments: Mathematics.timeDifferenceSince(startTime) / 1000000000);

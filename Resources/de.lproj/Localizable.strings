@@ -766,7 +766,17 @@ AP1550 = "\nDieser Umsatz ist noch vorläufig (noch nicht gebucht und nicht im S
 AP1551 = "Banküberweisung";
 AP1552 = "Kreditkartenumsatz";
 
+// Resource handling
+// AP1700..AP1799
+AP1700 = "Automatische Groß-/Kleinschreibung";
+AP1701 = "Wenn Sie die automatische Groß-/Kleinschreibung deaktiveren können nicht mehr benötigte Daten gelöscht und somit Speicherplatz gespart werden. Sollten Sie jedoch diese Option wieder aktivieren, müssten diese Daten erneut heruntergeladen und in die Datenbank importiert werden.\n\nWollen Sie diese Daten löschen oder behalten?";
+AP1702 = "Daten löschen";
+AP1703 = "Daten behalten";
+AP1704 = "Für die automatische Groß-/Kleinschreibung werden lexikalische Daten benötigt, die zunächst heruntergeladen und in die Datenbank importiert werden müssen. Das kann etwas dauern (abhängig von Download- und Computergeschwindigkeit. Während dieser Zeit können Sie Pecunia nicht beenden. Die Anzeige wird außerdem erst dann korrekt, wenn der Import abgeschlossen ist.\n\nWollen Sie diese Daten jetzt importieren?";
+AP1705 = "Daten importieren";
+AP1706 = "Option deaktivert lassen";
+
 // Use a new block of IDs for the next set of strings!
-// AP1700..AP1749
+// AP1800..AP1849
 
 

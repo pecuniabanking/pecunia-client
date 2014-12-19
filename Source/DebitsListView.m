@@ -319,7 +319,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (NSDragOperation)listView: (PXListView *)aListView
                validateDrop: (id<NSDraggingInfo>)sender
                 proposedRow: (NSUInteger)row
-      proposedDropHighlight: (NSUInteger)highlight
+      proposedDropHighlight: (PXListViewDropHighlight)highlight
 {
     if (sender.draggingSource == self) {
         [[NSCursor arrowCursor] set];
@@ -338,7 +338,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (BOOL) listView: (PXListView *)aListView
        acceptDrop: (id<NSDraggingInfo>)info
               row: (NSUInteger)row
-    dropHighlight: (NSUInteger)highlight
+    dropHighlight: (PXListViewDropHighlight)highlight
 {
     if (info.draggingSource == self) {
         return NO;

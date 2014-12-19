@@ -120,6 +120,7 @@ static BankingController *bankinControllerInstance;
     BOOL requestRunning;
     BOOL statementsBound;
     BOOL autoSyncRunning;
+    BOOL autoCasingUpdateRunning;
 
     NSCursor *splitCursor;
     NSImage  *moneyImage;
@@ -232,6 +233,7 @@ static BankingController *bankinControllerInstance;
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
 
     NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
     accountsView.rowHeight = floor(font.pointSize) + 7;
@@ -294,7 +296,10 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    [RemoteResourceManager.manager addManagedFile: @"words.zip"];
+    RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
+    if ([userDefaults boolForKey: @"autoCasing"]) {
+        [resourceManager addManagedFile: @"words.zip"];
+    }
     LogLeave;
 }
 
@@ -3528,6 +3533,49 @@ static BankingController *bankinControllerInstance;
                 [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
                 [cell setAttributedTitle: title];
             }
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"autoCasing"] && !autoCasingUpdateRunning) {
+            autoCasingUpdateRunning = YES;
+            if ([NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]) {
+                // User switched auto casing on. Start downloading the word data file
+                // if it needs to be updated.
+                if ([RemoteResourceManager.manager fileNeedsUpdate: @"words.zip"]) {
+                    NSAlert *alert = [NSAlert new];
+                    alert.alertStyle = NSWarningAlertStyle;
+                    alert.messageText = NSLocalizedString(@"AP1700", nil);
+                    alert.informativeText = NSLocalizedString(@"AP1704", nil);
+                    [alert addButtonWithTitle: NSLocalizedString(@"AP1705", nil)];
+                    [alert addButtonWithTitle: NSLocalizedString(@"AP1706", nil)];
+                    [alert beginSheetModalForWindow: mainWindow completionHandler: ^(NSModalResponse returnCode) {
+                        if (returnCode == NSAlertFirstButtonReturn) {
+                            [RemoteResourceManager.manager addManagedFile: @"words.zip"];
+                        } else {
+                            [NSUserDefaults.standardUserDefaults setBool: NO forKey: @"autoCasing"];
+                        }
+                    }];
+                } else {
+                    [RemoteResourceManager.manager addManagedFile: @"words.zip"];
+                }
+            } else {
+                // User switched off auto casing. Ask for deleting data.
+                if ([WordMapping wordMappingsAvailable]) {
+                    NSAlert *alert = [NSAlert new];
+                    alert.alertStyle = NSWarningAlertStyle;
+                    alert.messageText = NSLocalizedString(@"AP1700", nil);
+                    alert.informativeText = NSLocalizedString(@"AP1701", nil);
+                    [alert addButtonWithTitle: NSLocalizedString(@"AP1703", nil)];
+                    [alert addButtonWithTitle: NSLocalizedString(@"AP1702", nil)];
+                    [alert beginSheetModalForWindow: mainWindow completionHandler: ^(NSModalResponse returnCode) {
+                        if (returnCode == NSAlertSecondButtonReturn) {
+                            [RemoteResourceManager.manager removeManagedFile: @"words.zip"];
+                            [WordMapping removeWordMappings];
+                        }
+                    }];
+                }
+            }
+            autoCasingUpdateRunning = NO;
             return;
         }
 
