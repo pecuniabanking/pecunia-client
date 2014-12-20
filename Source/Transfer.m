@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -135,15 +135,15 @@
 - (void)copyFromTransfer: (Transfer *)other withLimits: (TransactionLimits *)limits
 {
     NSString   *s;
-    NSUInteger maxLen = limits.maxLenRemoteName * limits.maxLinesRemoteName;
+    NSUInteger maxLen = (limits != nil) ? limits.maxLenRemoteName * limits.maxLinesRemoteName : 65535;
     s = other.remoteName;
     if (s.length > maxLen) {
         s = [s substringToIndex: maxLen];
     }
     self.remoteName = s;
 
-    maxLen = [limits maxLenPurpose];
-    int num = [limits maxLinesPurpose];
+    maxLen = (limits != nil) ? limits.maxLenPurpose : 65535;
+    int num = (limits != nil) ? limits.maxLinesPurpose : 65535;
 
     s = other.purpose1;
     if (s.length > maxLen) {

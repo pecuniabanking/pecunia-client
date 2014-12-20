@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,6 +24,8 @@
 #import "BankingCategory.h"
 
 #import "BankAccount.h"
+
+#import "PXListView+UserInteraction.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
@@ -61,8 +63,7 @@ extern void *UserDefaultsBindingContext;
 @synthesize owner;
 @synthesize dataSource;
 
-- (id)initWithCoder: (NSCoder *)decoder
-{
+- (id)initWithCoder: (NSCoder *)decoder {
     self = [super initWithCoder: decoder];
     if (self != nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
@@ -73,8 +74,7 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 
     [self setDelegate: self];
@@ -88,8 +88,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
@@ -118,8 +117,7 @@ extern void *UserDefaultsBindingContext;
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
     withKeyPath: (NSString *)keyPath
-        options: (NSDictionary *)options
-{
+        options: (NSDictionary *)options {
     if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
@@ -155,8 +153,7 @@ extern void *UserDefaultsBindingContext;
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     // Coalesce many notifications into one.
     if (context == UserDefaultsBindingContext) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -196,16 +193,14 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - PXListViewDelegate protocol implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
-{
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView {
     pendingReload = NO;
 
 #pragma unused(aListView)
     return [dataSource count];
 }
 
-- (id)safeAndFormattedValue: (id)value
-{
+- (id)safeAndFormattedValue: (id)value {
     if (value == nil || [value isKindOfClass: [NSNull class]]) {
         value = @"";
     } else {
@@ -219,8 +214,7 @@ extern void *UserDefaultsBindingContext;
 
 #define CELL_HEIGHT 55
 
-- (void)fillCell: (TransfersListViewCell *)cell forRow: (NSUInteger)row
-{
+- (void)fillCell: (TransfersListViewCell *)cell forRow: (NSUInteger)row {
     Transfer *transfer = dataSource[row];
 
     NSDate *date = transfer.valutaDate;
@@ -228,19 +222,21 @@ extern void *UserDefaultsBindingContext;
         date = transfer.date;
     }
     NSColor      *color = [transfer.account categoryColor];
-    NSDictionary *details = @{StatementIndexKey: @((int)row),
-                              StatementDateKey: [self safeAndFormattedValue: date],
-                              StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
-                              StatementPurposeKey: [self safeAndFormattedValue: transfer.purpose],
-                              StatementValueKey: [self safeAndFormattedValue: transfer.value],
-                              StatementCurrencyKey: [self safeAndFormattedValue: transfer.currency],
-                              StatementRemoteBankNameKey: [self safeAndFormattedValue: transfer.remoteBankName],
-                              StatementRemoteBankCodeKey: [self safeAndFormattedValue: transfer.remoteBankCode],
-                              StatementRemoteIBANKey: [self safeAndFormattedValue: transfer.remoteIBAN],
-                              StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
-                              StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
-                              StatementTypeKey: [self safeAndFormattedValue: transfer.type],
-                              StatementColorKey: (color != nil) ? color : [NSNull null]};
+    NSDictionary *details = @{
+        StatementIndexKey: @((int)row),
+        StatementDateKey: [self safeAndFormattedValue: date],
+        StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
+        StatementPurposeKey: [self safeAndFormattedValue: transfer.purpose],
+        StatementValueKey: [self safeAndFormattedValue: transfer.value],
+        StatementCurrencyKey: [self safeAndFormattedValue: transfer.currency],
+        StatementRemoteBankNameKey: [self safeAndFormattedValue: transfer.remoteBankName],
+        StatementRemoteBankCodeKey: [self safeAndFormattedValue: transfer.remoteBankCode],
+        StatementRemoteIBANKey: [self safeAndFormattedValue: transfer.remoteIBAN],
+        StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
+        StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
+        StatementTypeKey: [self safeAndFormattedValue: transfer.type],
+        StatementColorKey: (color != nil) ? color : [NSNull null]
+    };
 
     [cell setDetails: details];
 
@@ -249,8 +245,7 @@ extern void *UserDefaultsBindingContext;
     [cell setFrame: frame];
 }
 
-- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
-{
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row {
     TransfersListViewCell *cell = (TransfersListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"transfer-cell"];
 
     if (!cell) {
@@ -263,18 +258,15 @@ extern void *UserDefaultsBindingContext;
     return cell;
 }
 
-- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
-{
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging {
     return CELL_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
-{
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row {
     return NSMakeRange(0, CELL_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification {
     // Also let every entry check its selection state, in case internal states must be updated.
     NSArray *cells = [self visibleCells];
     for (TransfersListViewCell *cell in cells) {
@@ -285,8 +277,7 @@ extern void *UserDefaultsBindingContext;
 /**
  * Triggered when KVO notifies us about changes.
  */
-- (void)updateVisibleCells
-{
+- (void)updateVisibleCells {
     pendingRefresh = NO;
     NSArray *cells = [self visibleCells];
     for (TransfersListViewCell *cell in cells) {
@@ -294,13 +285,11 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-#pragma mark -
-#pragma mark Drag'n drop
+#pragma mark - Drag'n drop
 
 - (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
     toPasteboard: (NSPasteboard *)dragPasteboard
-       slideBack: (BOOL *)slideBack
-{
+       slideBack: (BOOL *)slideBack {
     *slideBack = YES;
     NSMutableArray *draggedTransfers = [NSMutableArray arrayWithCapacity: 5];
 
@@ -323,13 +312,11 @@ extern void *UserDefaultsBindingContext;
 }
 
 // The listview as drag source.
-- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag
-{
+- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag {
     return flag ? NSDragOperationMove : NSDragOperationNone;
 }
 
-- (BOOL)ignoreModifierKeysWhileDragging
-{
+- (BOOL)ignoreModifierKeysWhileDragging {
     return YES;
 }
 
@@ -338,8 +325,7 @@ extern void *UserDefaultsBindingContext;
 - (NSDragOperation)listView: (PXListView *)aListView
                validateDrop: (id<NSDraggingInfo>)sender
                 proposedRow: (NSUInteger)row
-      proposedDropHighlight: (PXListViewDropHighlight)highlight
-{
+      proposedDropHighlight: (PXListViewDropHighlight)highlight {
     if (sender.draggingSource == self) {
         [[NSCursor arrowCursor] set];
         return NSDragOperationNone;
@@ -357,8 +343,7 @@ extern void *UserDefaultsBindingContext;
 - (BOOL) listView: (PXListView *)aListView
        acceptDrop: (id<NSDraggingInfo>)info
               row: (NSUInteger)row
-    dropHighlight: (PXListViewDropHighlight)highlight
-{
+    dropHighlight: (PXListViewDropHighlight)highlight {
     if (info.draggingSource == self) {
         return NO;
     }
@@ -367,23 +352,30 @@ extern void *UserDefaultsBindingContext;
     return YES;
 }
 
-- (void)draggingExited: (id <NSDraggingInfo>)info
-{
+- (void)draggingExited: (id <NSDraggingInfo>)info {
     [[NSCursor arrowCursor] set];
     [super draggingExited: info];
 }
 
-#pragma mark -
-#pragma mark Keyboard handling
+#pragma mark - Keyboard handling
 
-- (void)deleteToBeginningOfLine: (id)sender
-{
+- (void)deleteToBeginningOfLine: (id)sender {
     [owner deleteSelectionFrom: self];
 }
 
-- (void)deleteForward: (id)sender
-{
+- (void)deleteForward: (id)sender {
     [owner deleteSelectionFrom: self];
+}
+
+#pragma mark - Mouse handling
+
+- (void)handleMouseDown: (NSEvent *)theEvent inCell: (PXListViewCell *)theCell {
+    [super handleMouseDown: theEvent inCell: theCell];
+
+    if (theEvent.clickCount > 1) {
+        Transfer *transfer = dataSource[theCell.row];
+        [owner transferActivated: transfer];
+    }
 }
 
 @end

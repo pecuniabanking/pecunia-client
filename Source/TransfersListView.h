@@ -29,6 +29,7 @@
 - (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info;
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template;
 - (void)deleteSelectionFrom: (id)sender;
+- (void)transferActivated: (Transfer *)transfer;
 
 @end
 

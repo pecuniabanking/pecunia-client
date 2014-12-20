@@ -17,7 +17,7 @@
 * 02110-1301  USA
 */
 
-// Based largely on y Gist created by Ullrich Schäfer.
+// Based largely on a Gist created by Ullrich Schäfer.
 
 // Bitmasks are a bit tricky in swift
 // See http://natecook.com/blog/2014/07/swift-options-bitmask-generator/

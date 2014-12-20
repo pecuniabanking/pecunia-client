@@ -529,22 +529,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // use current selection if no bank account is given
     if (selectedAccount == nil) {
         BankingController *controller = [BankingController controller];
-        BankingCategory          *cat = [controller currentSelection];
+        BankingCategory   *cat = [controller currentSelection];
         if (cat != nil && [cat isBankAccount] == YES) {
             selectedAccount = (BankAccount *)cat;
         }
     }
 
-    BankingCategory         *category = [BankingCategory bankRoot];
+    BankingCategory  *category = [BankingCategory bankRoot];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
     NSArray          *sortDescriptors = @[sortDescriptor];
     NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
 
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
-    NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    BankingCategory     *currentInstitute;
-    NSInteger    selectedItem = -1; // By default no entry is selected.
+    NSEnumerator    *institutesEnumerator = [institutes objectEnumerator];
+    BankingCategory *currentInstitute;
+    NSInteger       selectedItem = -1; // By default no entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
@@ -1095,7 +1095,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-    if (![self prepareTransferOfType: [[transfer valueForKey: @"type"] intValue]]) {
+    if (![self prepareTransferOfType: transfer.type.intValue]) {
         return NO;
     }
 
@@ -1165,8 +1165,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return result;
     }
 
-    Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-    BOOL     result;
+    return [self startEditingTransfer: (Transfer *)[context objectWithID: objectId]];
+}
+
+- (BOOL)startEditingTransfer: (Transfer *)transfer {
+    BOOL result;
     if (transfer.isSent.intValue == 1) {
         // If this transfer was already sent then create a new transfer from this one.
         result = [transactionController newTransferFromExistingTransfer: transfer];
@@ -1174,7 +1177,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         result = [transactionController editExistingTransfer: transfer];
         [pendingTransfers prepareContent];
     }
+
     if (result) {
+        [rightPane showFormular];
         [self prepareSourceAccountSelector: transfer.account forTransferType: transfer.type.intValue];
     }
     return result;
@@ -1625,8 +1630,25 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-#pragma mark -
-#pragma mark Search/Filtering
+- (void)transferActivated: (Transfer *)transfer {
+    if (![self prepareTransferOfType: transfer.type.intValue]) {
+        return;
+    }
+
+    BOOL isScheduled = (transfer.type.intValue == TransferTypeOldStandardScheduled || transfer.type.intValue == TransferTypeSEPAScheduled);
+
+    if (isScheduled) {
+        executeAtDateRadioButton.state = NSOnState;
+        executeImmediatelyRadioButton.state = NSOffState;
+    } else {
+        executeAtDateRadioButton.state = NSOffState;
+        executeImmediatelyRadioButton.state = NSOnState;
+    }
+
+    [self startEditingTransfer: transfer];
+}
+
+#pragma mark - Search/Filtering
 
 - (IBAction)filterStatements: (id)sender {
     NSString *searchString = [sender stringValue];
