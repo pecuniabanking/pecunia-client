@@ -434,6 +434,8 @@ extern void *UserDefaultsBindingContext;
 
 - (void)awakeFromNib
 {
+    helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+
     [topView.window useOptimizedDrawing: YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary   *values = [userDefaults dictionaryForKey: @"categoryAnalysis"];

@@ -1299,6 +1299,7 @@ Gw
                     </textFieldCell>
                 </textField>
             </subviews>
+            <point key="canvasLocation" x="1196.5" y="482"/>
         </customView>
     </objects>
     <resources>

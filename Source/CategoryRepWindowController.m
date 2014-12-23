@@ -150,6 +150,8 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 @synthesize mainView;
 
 - (void)awakeFromNib {
+    helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+
     earningsExplosionIndex = NSNotFound;
     spendingsExplosionIndex = NSNotFound;
 
