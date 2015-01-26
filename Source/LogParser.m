@@ -50,7 +50,12 @@
 {
     if ([elementName isEqualToString: @"log"]) {
         [parser setDelegate: parent];
-        [[MessageLog log] addMessage: currentValue withLevel: level];
+        @try {
+            [[MessageLog log] addMessage: currentValue withLevel: level];
+        }
+        @catch (NSException *exception) {
+            LogError(@"An exception during message logging occured: %@", exception.description);
+        }
         //[self autorelease ]; don't autorelease here but where the parser is allocated or the analyizer will report a leak.
         return;
     }

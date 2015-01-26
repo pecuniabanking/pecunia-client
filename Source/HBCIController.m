@@ -855,6 +855,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (PecuniaError *)addBankUser: (BankUser *)user
 {
+    LogEnter;
+    
     PecuniaError    *error = nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addUser\">"];
 
@@ -931,6 +933,7 @@ NSString * escapeSpecial(NSString *s)
             return error;
         }
     }
+    LogLeave;
     return nil;
 }
 
@@ -1056,6 +1059,8 @@ NSString * escapeSpecial(NSString *s)
 // get all statements for one BankUser
 - (void)getUserStatements: (NSArray*)resultList
 {
+    LogEnter;
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStatements\"><accinfolist type=\"list\">"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"y-MM-dd";
@@ -1121,10 +1126,12 @@ NSString * escapeSpecial(NSString *s)
     }
     [cmd appendString: @"</accinfolist></command>"];
     [bridge asyncCommand: cmd sender: self];
+    LogLeave;
 }
 
 - (void)getStatements: (NSArray *)resultList
 {
+    LogEnter;
     // organize statements by user
     bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
     for (BankQueryResult *result in resultList) {
@@ -1143,10 +1150,12 @@ NSString * escapeSpecial(NSString *s)
         [self startProgress];
         [self getUserStatements:bankQueryResultsByUser[currentUserId]];
     }
+    LogLeave;
  }
 
 - (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err
 {
+    LogEnter;
     NSArray *queryResults = bankQueryResultsByUser[currentUserId];
     
     if (err == nil && result != nil) {
@@ -1241,10 +1250,13 @@ NSString * escapeSpecial(NSString *s)
         [[NSNotificationCenter defaultCenter] postNotification: notification];
         [self stopProgress];
     }
+    LogLeave;
 }
 
 - (void)getUserStandingOrders: (NSArray*)resultList
 {
+    LogEnter;
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">"];
     
     BankQueryResult *result = resultList.firstObject;
@@ -1289,10 +1301,13 @@ NSString * escapeSpecial(NSString *s)
     }
     [cmd appendString: @"</accinfolist></command>"];
     [bridge asyncCommand: cmd sender: self];
+    LogLeave;
 }
 
 - (void)getStandingOrders: (NSArray *)resultList
 {
+    LogEnter;
+    
     // organize statements by user
     bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
     for (BankQueryResult *result in resultList) {
@@ -1311,6 +1326,7 @@ NSString * escapeSpecial(NSString *s)
         [self startProgress];
         [self getUserStandingOrders:bankQueryResultsByUser[currentUserId]];
     }
+    LogLeave;
 }
 
 - (void)prepareCommand: (NSMutableString *)cmd forStandingOrder: (StandingOrder *)stord user: (BankUser *)user
@@ -1492,6 +1508,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (void)updateBankAccounts: (NSArray *)hbciAccounts forUser: (BankUser *)user
 {
+    LogEnter;
+    
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSManagedObjectModel   *model = [[MOAssistant assistant] model];
     NSError                *error = nil;
@@ -1591,6 +1609,7 @@ NSString * escapeSpecial(NSString *s)
         [alert runModal];
         return;
     }
+    LogLeave;
 }
 
 - (PecuniaError*)clearLimitsForUser:(BankUser*)user
@@ -1618,6 +1637,7 @@ NSString * escapeSpecial(NSString *s)
 
 - (PecuniaError *)updateSupportedTransactionsForAccounts: (NSArray *)accounts user: (BankUser *)user
 {
+    LogEnter;
     PecuniaError *error = nil;
 
     for (Account *acc in accounts) {
@@ -1631,11 +1651,13 @@ NSString * escapeSpecial(NSString *s)
             return error;
         }
     }
+    LogLeave;
     return nil;
 }
 
 - (PecuniaError*)updateSupportedTransactionsForUser:(BankUser *)user
 {
+    LogEnter;
     PecuniaError *error = nil;
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
@@ -1657,11 +1679,14 @@ NSString * escapeSpecial(NSString *s)
     if (error) {
         return error;
     }
+    LogLeave;
     return nil;
 }
 
 - (PecuniaError *)updateBankDataForUser: (BankUser *)user
 {
+    LogEnter;
+    
     PecuniaError *error = nil;
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
@@ -1705,6 +1730,7 @@ NSString * escapeSpecial(NSString *s)
             return error;
         }
     }
+    LogLeave;
     return nil;
 }
 
@@ -1847,6 +1873,7 @@ NSString * escapeSpecial(NSString *s)
 
 - (PecuniaError *)updateTanMethodsForUser: (BankUser *)user
 {
+    LogEnter;
     PecuniaError *error = nil;
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
@@ -1862,6 +1889,7 @@ NSString * escapeSpecial(NSString *s)
         return error;
     }
     [user updateTanMethods: methods];
+    LogLeave;
     return nil;
 }
 
@@ -1901,6 +1929,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (PecuniaError *)updateTanMediaForUser: (BankUser *)user
 {
+    LogEnter;
+    
     PecuniaError *error = nil;
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
@@ -1922,6 +1952,7 @@ NSString * escapeSpecial(NSString *s)
     }
     [user updateTanMedia: mediaList.mediaList];
     user.tanMediaFetched = @YES;
+    LogLeave;
     return nil;
 }
 
@@ -1943,6 +1974,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (BOOL)registerBankUser: (BankUser *)user error: (PecuniaError **)error
 {
+    LogEnter;
+    
     if (user.isRegistered) {
         return YES;
     }
@@ -2029,6 +2062,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (void)bankMessageReceived: (NSNotification *)notification
 {
+    LogEnter;
+    
     NSDictionary *info = notification.object;
     NSString *bankCode = info[@"bankCode"];
     NSString *title = nil;
@@ -2051,7 +2086,9 @@ NSString * escapeSpecial(NSString *s)
         
         BankUser *user = bankUsers[0];
         title = NSLocalizedString(@"AP502", "");
-        title = [title stringByAppendingString:user.bankName];
+        if (user.bankName != nil) {
+            title = [title stringByAppendingString:user.bankName];
+        }
     }
     NSString *message = info[@"message"];
     if (message != nil) {
@@ -2060,6 +2097,7 @@ NSString * escapeSpecial(NSString *s)
                                      context: @"BankMessage"];
 
     }
+    LogLeave;
 }
 
 @end

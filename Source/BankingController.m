@@ -1005,6 +1005,8 @@ static BankingController *bankinControllerInstance;
 
 - (void)statementsFinalizeNotification: (NSNotification *)notification
 {
+    LogEnter;
+    
     StatusBarController *sc = [StatusBarController controller];
     NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -1038,6 +1040,7 @@ static BankingController *bankinControllerInstance;
             [doneSound play];
         }
     }
+    LogLeave;
 }
 
 - (void)requestFinished: (NSArray *)resultList

@@ -93,6 +93,8 @@
 
 - (void)evaluateQueryResult: (BankQueryResult *)res
 {
+    LogEnter;
+    
     NSError       *error = nil;
     BankStatement *stat;
     //	ShortDate *lastTransferDate;
@@ -144,10 +146,13 @@
             }
         }
     }
+    LogLeave;
 }
 
 - (void)updateStandingOrders: (NSArray *)orders
 {
+    LogEnter;
+    
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     StandingOrder          *stord;
     StandingOrder          *order;
@@ -172,10 +177,13 @@
             order.lastExecDate = [[ShortDate dateWithYear: 2999 month: 12 day: 31] lowDate];
         }
     }
+    LogLeave;
 }
 
 - (int)updateFromQueryResult: (BankQueryResult *)result
 {
+    LogEnter;
+    
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     BankStatement          *stat;
     NSDate                 *ltd = self.latestTransferDate;
@@ -319,6 +327,7 @@
 
     self.latestTransferDate = ltd;
     [self  calcUnread];
+    LogLeave;
     return [newStatements count];
 }
 

@@ -127,6 +127,8 @@
 
 - (void)getData: (NSNotification *)aNotification
 {
+    LogEnter;
+    
     NSData *data = [aNotification userInfo][NSFileHandleNotificationDataItem];
     // If the length of the data is zero, then the task is basically over - there is nothing
     // more to get from the handle so we may as well shut down.
@@ -161,7 +163,12 @@
         }
 
         if (length > offset) {
-            [self parse: [asyncString substringWithRange: NSMakeRange(offset, length - offset)]];
+            @try {
+                [self parse: [asyncString substringWithRange: NSMakeRange(offset, length - offset)]];
+            }
+            @catch (NSException *exception) {
+                LogError(@"Exception during result parsing: %@", exception.description);
+            }
         }
         [asyncString setString: @""];
 
@@ -172,7 +179,12 @@
             }
             [[CallbackHandler handler] finishPasswordEntry];
             //running = NO;
-            [asyncSender asyncCommandCompletedWithResult: result error: err];
+            @try {
+                [asyncSender asyncCommandCompletedWithResult: result error: err];
+            }
+            @catch (NSException *exception) {
+                LogError(@"Exception during AsyncCompletion: %@", exception.description);
+            }
             [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
         } else {[[aNotification object] readInBackgroundAndNotify]; }
@@ -181,10 +193,13 @@
             [[aNotification object] readInBackgroundAndNotify];
         }
     }
+    LogLeave;
 }
 
 - (void)receive
 {
+    LogEnter;
+    
     NSMutableString *cmd = [[NSMutableString alloc] init];
 
     while (resultExists == NO) {
@@ -215,6 +230,7 @@
         }
         [cmd setString: @""];
     }
+    LogLeave;
 }
 
 - (void)parser: (NSXMLParser *)parser didStartElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName attributes: (NSDictionary *)attributeDict
@@ -239,6 +255,8 @@
 
 - (id)syncCommand: (NSString *)cmd error: (PecuniaError **)err
 {
+    LogEnter;
+    
     result = nil; error = nil; resultExists = NO;
 
     // HBCIServer is not running
@@ -265,11 +283,13 @@
         *err = [error toPecuniaError];
         return nil;
     }
+    LogLeave;
     return result;
 }
 
 - (void)asyncCommand: (NSString *)cmd sender: (id)sender
 {
+    LogEnter;
     result = nil; error = nil; resultExists = NO;
 
     // HBCIServer is not running
@@ -286,6 +306,7 @@
     [[inPipe fileHandleForReading] readInBackgroundAndNotify];
     asyncSender = sender;
     running = YES;
+    LogLeave;
 }
 
 @end
