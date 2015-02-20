@@ -493,7 +493,12 @@ static ShortDate *endReportDate = nil;
     if ([n isEqualToString: @"++nassroot"]) {
         return NSLocalizedString(@"AP12", nil);
     }
-    return n;
+    if (n==nil) {
+		return @"";
+	} else {
+		return n;
+	}
+
 }
 
 /**
