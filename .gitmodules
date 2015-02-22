@@ -1,3 +1,6 @@
 [submodule "Submodules/ExSwift"]
 	path = Submodules/ExSwift
 	url = https://github.com/pNre/ExSwift
+[submodule "Submodules/IBANtools"]
+	path = Submodules/IBANtools
+	url = https://github.com/mike-lischke/IBANTools
