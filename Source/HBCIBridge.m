@@ -152,13 +152,23 @@
         NSUInteger offset = 0;
         NSUInteger length = [asyncString length];
         while (r.location != NSNotFound) {
-            [self parse: [asyncString substringWithRange: NSMakeRange(offset, r.location - offset + 1)]];
+            @try {
+                [self parse: [asyncString substringWithRange: NSMakeRange(offset, r.location - offset + 1)]];
+            }
+            @catch (NSException *exception) {
+                LogError(@"Exception during result parsing: %@", exception.description);
+            }
             offset = r.location + 3;
             r = [asyncString rangeOfString: @">\n.<" options: 0 range: NSMakeRange(offset, length - offset)];
         }
 
         if (length > offset) {
-            [self parse: [asyncString substringWithRange: NSMakeRange(offset, length - offset)]];
+            @try {
+                [self parse: [asyncString substringWithRange: NSMakeRange(offset, length - offset)]];
+            }
+            @catch (NSException *exception) {
+                LogError(@"Exception during result parsing: %@", exception.description);
+            }
         }
         [asyncString setString: @""];
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BankStatementController">
@@ -91,41 +91,6 @@
                             <rect key="frame" x="1" y="1" width="544" height="295"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="110">
-                                    <rect key="frame" x="115" y="52" width="411" height="72"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <clipView key="contentView" id="e2P-eG-ot0">
-                                        <rect key="frame" x="1" y="1" width="409" height="70"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="113">
-                                                <rect key="frame" x="0.0" y="0.0" width="409" height="70"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <size key="minSize" width="409" height="70"/>
-                                                <size key="maxSize" width="805" height="10000000"/>
-                                                <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <size key="minSize" width="409" height="70"/>
-                                                <size key="maxSize" width="805" height="10000000"/>
-                                                <connections>
-                                                    <binding destination="1" name="value" keyPath="selection.purpose" id="159"/>
-                                                </connections>
-                                            </textView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </clipView>
-                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="112">
-                                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </scroller>
-                                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="111">
-                                        <rect key="frame" x="394" y="1" width="16" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </scroller>
-                                    <connections>
-                                        <outlet property="nextKeyView" destination="21" id="176"/>
-                                    </connections>
-                                </scrollView>
                                 <textField verticalHuggingPriority="750" id="27">
                                     <rect key="frame" x="115" y="207" width="124" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -229,7 +194,7 @@
                                     <connections>
                                         <binding destination="1" name="value" keyPath="selection.value" id="92"/>
                                         <outlet property="delegate" destination="-2" id="137"/>
-                                        <outlet property="nextKeyView" destination="110" id="175"/>
+                                        <outlet property="nextKeyView" destination="L5i-Q9-gqY" id="t27-ZC-VAe"/>
                                     </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="49">
@@ -376,7 +341,7 @@
                                 <comboBox verticalHuggingPriority="750" id="8cs-QE-8MN">
                                     <rect key="frame" x="115" y="20" width="269" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="1l5-SQ-eGS" customClass="PecuniaComboBoxCell">
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="1l5-SQ-eGS">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -385,8 +350,22 @@
                                         <binding destination="200" name="content" keyPath="arrangedObjects" id="6fu-5c-sh1"/>
                                         <binding destination="200" name="contentValues" keyPath="arrangedObjects.localName" previousBinding="6fu-5c-sh1" id="PPG-AS-tdV"/>
                                         <outlet property="delegate" destination="-2" id="eGi-k3-NiD"/>
+                                        <outlet property="nextKeyView" destination="21" id="Yhq-Qs-wdh"/>
                                     </connections>
                                 </comboBox>
+                                <textField verticalHuggingPriority="750" id="L5i-Q9-gqY">
+                                    <rect key="frame" x="115" y="52" width="411" height="72"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="oVd-Kx-p7W">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="1" name="value" keyPath="selection.purpose" id="QuG-j0-J1K"/>
+                                        <outlet property="nextKeyView" destination="8cs-QE-8MN" id="BRf-6T-HUr"/>
+                                    </connections>
+                                </textField>
                             </subviews>
                         </view>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>

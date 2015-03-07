@@ -168,6 +168,13 @@ static NSMutableDictionary *users = nil;
                     [options addObject: option];
                     added = YES;
                 }
+                if ([method.identifier containsString:@"push"] && [medium.category isEqualToString:@"A"] && [medium.name containsString: @"push"]) {
+                    option.tanMediumName = medium.name;
+                    option.tanMediumCategory = medium.category;
+                    [options addObject: option];
+                    added = YES;
+                }
+                
                 if (added == YES) {
                     option = [[SigningOption alloc] init];
                     option.secMethod = SecMethod_PinTan;

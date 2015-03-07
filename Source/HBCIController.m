@@ -2102,7 +2102,9 @@ static HBCIController *controller = nil;
         
         BankUser *user = bankUsers[0];
         title = NSLocalizedString(@"AP502", "");
-        title = [title stringByAppendingString:user.bankName];
+        if (user.bankName != nil) {
+            title = [title stringByAppendingString:user.bankName];
+        }
     }
     NSString *message = info[@"message"];
     if (message != nil) {

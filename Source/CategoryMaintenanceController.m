@@ -21,7 +21,7 @@
 #import "BankingCategory.h"
 #import "MOAssistant.h"
 #import "NSDictionary+PecuniaAdditions.h"
-
+#import "MessageLog.h"
 #import "BWGradientBox.h"
 
 extern NSString *const CategoryColorNotification;
@@ -235,8 +235,14 @@ extern NSString *const CategoryKey;
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
 
     for (NSString *path in paths) {
-        LibraryImage *image = [[LibraryImage alloc] initWithContentsOfFile: path];
-        image.privatePath = [path lastPathComponent];
+        NSString *name = [path lastPathComponent];
+        NSImage  *image = [NSImage imageNamed:name];
+        if (image == nil) {
+            image = [[NSImage alloc] initWithContentsOfFile: path];
+            if ([image setName:name] == NO) {
+                LogError(@"Error: image name %@ could not be set", name);
+            }
+        }
         [iconCollectionController addObject: @{@"icon": image}];
     }
 }
