@@ -29,8 +29,6 @@
 #import "HBCIController.h"
 #import "ResultWindowController.h"
 
-#import "Pecunia-Swift.h"
-
 #define LOG_FLAG_COM_TRACE (1 << 5)
 
 // A log file manager to implement own file names.

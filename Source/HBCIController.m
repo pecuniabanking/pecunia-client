@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -711,46 +711,6 @@ static HBCIController *controller = nil;
         }
     }
     return allSent;
-}
-
-- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode
-{
-    PecuniaError *error = nil;
-
-    if (bankCode == nil || accountNumber == nil) {
-        return YES;
-    }
-    NSString *cmd = [NSString stringWithFormat: @"<command name=\"checkAccount\"><bankCode>%@</bankCode><accountNumber>%@</accountNumber></command>", bankCode, accountNumber];
-    NSNumber *result = [bridge syncCommand: cmd error: &error];
-    if (error != nil) {
-        // A command error should not block the process. We just can't have an account validation then.
-        LogWarning(@"Error checking account %@, bankCode %@", accountNumber, bankCode);
-        return YES;
-    }
-    if (result != nil) {
-        return result.boolValue;
-    } else {
-        return NO;
-    }
-}
-
-- (BOOL)checkIBAN: (NSString *)iban
-{
-    PecuniaError *error = nil;
-
-    if (iban == nil) {
-        return YES;
-    }
-    NSString *cmd = [NSString stringWithFormat: @"<command name=\"checkAccount\"><iban>%@</iban></command>", iban];
-    NSNumber *result = [bridge syncCommand: cmd error: &error];
-    if (error) {
-        // Bei Fehlern sollte die Prüfung nicht die Buchung verhindern
-        LogWarning(@"Error checking iban %@", iban);
-        return YES;
-    }
-    if (result) {
-        return [result boolValue];
-    } else {return NO; }
 }
 
 - (PecuniaError *)addBankUser: (BankUser *)user

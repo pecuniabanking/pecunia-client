@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -237,10 +237,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     if (text.length == 0) {
         return NO;
     }
-    if ([ibanRE matchesInString: text options: 0 range: NSMakeRange(0, text.length)].count == 1) {
-        return YES;
-    }
-    return NO;
+    return [IBANtools isValidIBAN: text];
 }
 
 + (BOOL)isValidBIC: (NSString *)text {
@@ -396,7 +393,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     if ([d1 isEqual: d2] == NO) {
         return NO;
     }
-    if (abs([self.value doubleValue] - [stat.value doubleValue]) > 0.001) {
+    if (fabs([self.value doubleValue] - [stat.value doubleValue]) > 0.001) {
         return NO;
     }
 

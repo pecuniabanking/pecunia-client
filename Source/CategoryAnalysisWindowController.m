@@ -1854,7 +1854,7 @@ double mainTrend(double x)
         NSDecimal snapPoint[2] = {0, 0};
         snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
         CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
-        if (abs(targetPoint.x - actualLocation) <= barWidth / 2) {
+        if (fabs(targetPoint.x - actualLocation) <= barWidth / 2) {
             actualLocation = targetPoint.x;
             timePoint = timePointAtIndex;
             dateHit = YES;
@@ -1864,7 +1864,7 @@ double mainTrend(double x)
                 timePointAtIndex = round(timePoints[index + 1]);
                 snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
                 targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
-                if (abs(targetPoint.x - actualLocation) <= barWidth) {
+                if (fabs(targetPoint.x - actualLocation) <= barWidth) {
                     actualLocation = targetPoint.x;
                     timePoint = timePointAtIndex;
                     dateHit = YES;

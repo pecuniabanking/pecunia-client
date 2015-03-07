@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,8 +22,8 @@
 @interface DateAndValutaCell : NSTextFieldCell {
 }
 
-@property (nonatomic, strong) NSDate          *valuta;
-@property (nonatomic, strong) NSDateFormatter *formatter;
+@property (strong) NSDate          *valuta;
+@property (strong) NSDateFormatter *formatter;
 
 
 @end

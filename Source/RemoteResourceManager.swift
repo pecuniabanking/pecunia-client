@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -138,7 +138,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 if date != nil {
                     let fileDate = ShortDate(date: date);
                     if fileInfo!["updated"] != nil {
-                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as String));
+                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as! String));
                         if updateDate <= fileDate {
                             return false;
                         }
@@ -191,7 +191,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 if date != nil {
                     let fileDate = ShortDate(date: date);
                     if fileInfo!["updated"] != nil {
-                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as String));
+                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as! String));
                         if updateDate <= fileDate {
                             return false;
                         }
@@ -237,8 +237,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         // first check if we already did this today
         var error: NSError?;
         let defaults = NSUserDefaults.standardUserDefaults();
-        let lastUpdated = defaults.objectForKey("remoteFilesLastUpdate") as NSDate?;
-        var last: ShortDate? = (lastUpdated != nil) ? ShortDate(date: lastUpdated!) : nil;
+        let lastUpdated = defaults.objectForKey("remoteFilesLastUpdate") as? NSDate;
+        var last: ShortDate? = (lastUpdated != nil) ? ShortDate(date: lastUpdated) : nil;
         let today = ShortDate.currentDate();
 
         // Ignore last update date if any of the mandatory files is missing.

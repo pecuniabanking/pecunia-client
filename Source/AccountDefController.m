@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -316,11 +316,7 @@
 
 
     // check IBAN
-    BOOL       res;
-    id<HBCIBackend> hbciController = [HBCIController controller];
-
-
-    if (![hbciController checkIBAN: account.iban]) {
+    if (![IBANtools isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
@@ -328,8 +324,11 @@
     }
 
     // check account number
-    res = [hbciController checkAccount: account.accountNumber forBank: account.bankCode];
-    if (res == NO) {
+    BOOL valid = [IBANtools isValidAccount: account.accountNumber
+                            bankCode: account.bankCode
+                        countryCode: @"DE"
+                            forIBAN: NO];
+    if (!valid) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP60", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);

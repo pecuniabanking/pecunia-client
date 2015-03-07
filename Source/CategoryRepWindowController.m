@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1042,12 +1042,12 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     // Compute the radii of the pie charts based on the total values they represent and
     // change them with an animation. Do this last so we have our new values in the charts then already.
-    float sum = abs(spendings) + abs(earnings);
+    float sum = fabs(spendings) + fabs(earnings);
     float spendingsShare;
     float earningsShare;
     if (sum > 0) {
-        spendingsShare = abs(spendings) / sum;
-        earningsShare = abs(earnings) / sum;
+        spendingsShare = fabs(spendings) / sum;
+        earningsShare = fabs(earnings) / sum;
     } else {
         spendingsShare = 0;
         earningsShare = 0;

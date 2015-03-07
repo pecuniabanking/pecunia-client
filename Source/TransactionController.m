@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -414,7 +414,6 @@
  * Returns YES if all entries are ok, otherwise NO.
  */
 - (BOOL)validateCurrentTransferValidatingValue: (BOOL)valueValidation {
-    BOOL         res;
     TransferType activeType = transferType;
     if (currentTransfer.valutaDate != nil) {
         switch (activeType) {
@@ -469,7 +468,7 @@
         currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
-        if ([[HBCIController controller] checkIBAN: currentTransfer.remoteIBAN] == NO) {
+        if (![IBANtools isValidIBAN: currentTransfer.remoteIBAN]) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP70", nil),
                             NSLocalizedString(@"AP61", nil), nil, nil);
@@ -561,8 +560,7 @@
 
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
-            res = [[HBCIController controller] checkIBAN: currentTransfer.remoteIBAN];
-            if (!res) {
+            if (![IBANtools isValidIBAN: currentTransfer.remoteIBAN]) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
@@ -570,22 +568,20 @@
             }
             break;
 
-        default:
+        default: {
             // TODO: is it still necessary to limit account check to those countries?
-            if ([currentTransfer.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
-                [currentTransfer.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
-                [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
-                [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-                res = [[HBCIController controller] checkAccount: currentTransfer.remoteAccount
-                                                        forBank: currentTransfer.remoteBankCode];
+            bool valid = [IBANtools isValidAccount: currentTransfer.remoteAccount
+                                          bankCode: currentTransfer.remoteBankCode
+                                       countryCode: currentTransfer.remoteCountry
+                                           forIBAN: false];
 
-                if (!res) {
-                    NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                    NSLocalizedString(@"AP60", nil),
-                                    NSLocalizedString(@"AP61", nil), nil, nil);
-                    return NO;
-                }
+            if (!valid) {
+                NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                NSLocalizedString(@"AP60", nil),
+                                NSLocalizedString(@"AP61", nil), nil, nil);
+                return NO;
             }
+        }
     }
     return YES;
 }

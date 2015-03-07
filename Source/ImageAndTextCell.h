@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,11 +30,11 @@
 {
 }
 
-@property (nonatomic, strong) NSColor           *swatchColor;
-@property (nonatomic, strong) NSImage           *image;
-@property (nonatomic, strong) NSString          *currency;
-@property (nonatomic, strong) NSDecimalNumber   *amount;
-@property (nonatomic, strong) NSNumberFormatter *amountFormatter; // TODO: why not using the cell's formatter?
+@property (strong) NSColor           *swatchColor;
+@property (strong) NSImage           *image;
+@property (strong) NSString          *currency;
+@property (strong) NSDecimalNumber   *amount;
+@property (strong) NSNumberFormatter *amountFormatter; // TODO: why not using the cell's formatter?
 
 - (void)setValues: (NSDecimalNumber *)aAmount
          currency: (NSString *)aCurrency

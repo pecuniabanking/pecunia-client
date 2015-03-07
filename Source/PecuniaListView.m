@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -258,7 +258,7 @@
             if (positionAnimation != nil) {
                 [positionAnimation stopAnimation];
             }
-            if (abs(NSMinY(detailsPopover.positioningRect) - NSMinY(rect)) < NSHeight([self rectOfRow: self.selectedRow forDragging: YES])) {
+            if (fabs(NSMinY(detailsPopover.positioningRect) - NSMinY(rect)) < NSHeight([self rectOfRow: self.selectedRow forDragging: YES])) {
                 animate = NO;
             }
             if (animate) {

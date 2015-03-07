@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -89,7 +89,7 @@
                 return NO;
             }
 
-            if ([[HBCIController controller] checkIBAN: template.remoteIBAN] == NO) {
+            if (![IBANtools isValidIBAN: template.remoteIBAN]) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
@@ -113,18 +113,15 @@
                 return NO;
             }
 
-            if ([template.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
-                [template.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
-                [template.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
-                [template.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-                int res = [[HBCIController controller] checkAccount: template.remoteAccount
-                                                        forBank: template.remoteBankCode];
-                if (res == NO) {
-                    NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                    NSLocalizedString(@"AP60", nil),
-                                    NSLocalizedString(@"AP61", nil), nil, nil);
-                    return NO;
-                }
+            BOOL valid = [IBANtools isValidAccount: template.remoteAccount
+                                          bankCode: template.remoteBankCode
+                                       countryCode: template.remoteCountry
+                                           forIBAN: NO];
+            if (!valid) {
+                NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                NSLocalizedString(@"AP60", nil),
+                                NSLocalizedString(@"AP61", nil), nil, nil);
+                return NO;
             }
             break;
     }

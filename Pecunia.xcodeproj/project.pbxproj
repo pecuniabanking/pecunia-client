@@ -798,6 +798,9 @@
 		27EEDF64178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
 		27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
 		27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
+		27F5911B1AA38214005FA793 /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591181AA38214005FA793 /* Converter.swift */; };
+		27F5911C1AA38214005FA793 /* DEAccountCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591191AA38214005FA793 /* DEAccountCheck.swift */; };
+		27F5911D1AA38214005FA793 /* DERules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F5911A1AA38214005FA793 /* DERules.swift */; };
 		27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
 		27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6318BA3EFB002CBE06 /* unzip.c */; };
@@ -1181,6 +1184,7 @@
 		27465177159B795E00D774FE /* shield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shield.png; sourceTree = "<group>"; };
 		2747C58F1944750C0089A7C9 /* PecuniaListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaListView.h; sourceTree = "<group>"; };
 		2747C5901944750C0089A7C9 /* PecuniaListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaListView.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 15.xcdatamodel"; sourceTree = "<group>"; };
 		274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedOuterShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedOuterShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
 		274DE2B213F992A50009EB77 /* MainBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MainBackgroundView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1515,6 +1519,9 @@
 		27EEDF62178B1E8F00FFE365 /* StockCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StockCard.m; path = "Home Screen/StockCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27F2A414197BFA65002E6CA6 /* TagRuleEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagRuleEditorController.h; sourceTree = "<group>"; };
 		27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagRuleEditorController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27F591181AA38214005FA793 /* Converter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Converter.swift; path = Submodules/IBANtools/Source/Converter.swift; sourceTree = SOURCE_ROOT; };
+		27F591191AA38214005FA793 /* DEAccountCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DEAccountCheck.swift; path = Submodules/IBANtools/Source/DEAccountCheck.swift; sourceTree = SOURCE_ROOT; };
+		27F5911A1AA38214005FA793 /* DERules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DERules.swift; path = Submodules/IBANtools/Source/DERules.swift; sourceTree = SOURCE_ROOT; };
 		27F69B6018BA3EFB002CBE06 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		27F69B6118BA3EFB002CBE06 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		27F69B6218BA3EFB002CBE06 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1543,6 +1550,7 @@
 		27FD0DA5184120AE0047911C /* StatementsOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsOverviewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		27FEE78F1AA31F4E00EEE9FB /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = Submodules/IBANtools/Resources; sourceTree = SOURCE_ROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; wrapsLines = 0; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -2214,17 +2222,18 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
-				2759D8921A0133FB002AE07E /* ExSwift */,
-				27516818193B87C900FE942F /* YRK Spinning Indicator */,
-				27686E38193B5B320038067D /* JMModalOverlay */,
-				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2732F697186ADEC100809CF2 /* EDSideBar */,
+				2759D8921A0133FB002AE07E /* ExSwift */,
+				27FEE78E1AA31F2100EEE9FB /* IBANtools */,
 				27535FF2186DE337007400BA /* INAppStoreWindow */,
-				2706F2001556C3BE0011A20E /* OnOffButton */,
+				27686E38193B5B320038067D /* JMModalOverlay */,
 				2736DD531514F6680066917C /* MBTableGrid */,
+				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
+				2706F2001556C3BE0011A20E /* OnOffButton */,
 				275C07DC1438777900D97415 /* PXListview */,
 				27E225751A18D778007171BE /* WAYWindow */,
+				27516818193B87C900FE942F /* YRK Spinning Indicator */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
 			);
@@ -2446,6 +2455,17 @@
 				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
 			);
 			name = Sections;
+			sourceTree = "<group>";
+		};
+		27FEE78E1AA31F2100EEE9FB /* IBANtools */ = {
+			isa = PBXGroup;
+			children = (
+				27F591181AA38214005FA793 /* Converter.swift */,
+				27F591191AA38214005FA793 /* DEAccountCheck.swift */,
+				27F5911A1AA38214005FA793 /* DERules.swift */,
+				27FEE78F1AA31F4E00EEE9FB /* Resources */,
+			);
+			name = IBANtools;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
@@ -3159,7 +3179,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
@@ -4032,6 +4052,7 @@
 				2759D8AF1A0133FB002AE07E /* Range.swift in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
+				27F5911D1AA38214005FA793 /* DERules.swift in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
 				B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */,
 				27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */,
@@ -4040,6 +4061,7 @@
 				27535FFB186DE337007400BA /* INAppStoreWindow.m in Sources */,
 				B132F91F0F96594000263F3B /* ShortDate.m in Sources */,
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
+				27F5911B1AA38214005FA793 /* Converter.swift in Sources */,
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
 				B1A6AA771A2672C400141C39 /* select_file.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
@@ -4060,6 +4082,7 @@
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */,
+				27F5911C1AA38214005FA793 /* DEAccountCheck.swift in Sources */,
 				B1A6AA6F1A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
@@ -4659,6 +4682,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
 				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
 				B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */,
@@ -4675,7 +4699,7 @@
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */;
+			currentVersion = 27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

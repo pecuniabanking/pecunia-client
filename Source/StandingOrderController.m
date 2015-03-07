@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -557,7 +557,6 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 }
 
 - (BOOL)checkOrder: (StandingOrder *)stord {
-    BOOL     res;
     NSNumber *value;
 
     // avoid rounding issues
@@ -605,8 +604,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         return NO;
     }
 
-    res = [[HBCIController controller] checkIBAN: stord.remoteIBAN];
-    if (!res) {
+    if (![IBANtools isValidIBAN: stord.remoteIBAN]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);

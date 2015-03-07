@@ -325,7 +325,6 @@
 
 - (BOOL)check
 {
-    BOOL res;
     if (currentStatement.value == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP57", nil),
@@ -333,11 +332,13 @@
         return NO;
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
-        res = [[HBCIController controller] checkAccount: currentStatement.remoteAccount
-                                            forBank: currentStatement.remoteBankCode];
+        BOOL valid = [IBANtools isValidAccount: currentStatement.remoteAccount
+                                      bankCode: currentStatement.remoteBankCode
+                                   countryCode: @"DE"
+                                       forIBAN: NO];
 
 
-        if (res == NO) {
+        if (!valid) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP60", nil),
                             NSLocalizedString(@"AP61", nil), nil, nil);

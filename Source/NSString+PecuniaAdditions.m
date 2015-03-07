@@ -25,8 +25,6 @@
 #import "FileInZipInfo.h"
 #import "ZipReadStream.h"
 
-#import "Pecunia-Swift.h"
-
 @implementation NSString (PecuniaAdditions)
 
 static NSData *receivedTmpData = nil;
