@@ -245,7 +245,7 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
                     _selectionAnchor = clickedRow;
                 } else {
                     NSRange range = NSMakeRange((clickedRow < _selectionAnchor) ? clickedRow : _selectionAnchor,
-                                                abs(clickedRow - _selectionAnchor) + 1);
+                                                labs(clickedRow - _selectionAnchor) + 1);
                     clickedIndexSet = [NSIndexSet indexSetWithIndexesInRange: range];
                 }
                 [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];

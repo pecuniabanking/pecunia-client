@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -493,12 +493,7 @@ static ShortDate *endReportDate = nil;
     if ([n isEqualToString: @"++nassroot"]) {
         return NSLocalizedString(@"AP12", nil);
     }
-    if (n==nil) {
-		return @"";
-	} else {
-		return n;
-	}
-
+    return n == nil ? @"" : n;
 }
 
 /**
@@ -522,8 +517,7 @@ static ShortDate *endReportDate = nil;
         }
     }
     // Check also the new name so it doesn't use our special syntax to denote such elements.
-    NSRange r = [name rangeOfString: @"++"];
-    if (r.location == 0) {
+    if ([name hasPrefix: @"++"]) {
         return;
     }
     [self setValue: name forKey: @"name"];
@@ -550,8 +544,7 @@ static ShortDate *endReportDate = nil;
     }
     NSString *n = [self primitiveValueForKey: @"name"];
     if (n != nil) {
-        NSRange r = [n rangeOfString: @"++"];
-        if (r.location == 0) {
+        if ([n hasPrefix: @"++"]) {
             return NO;
         }
     }
@@ -564,8 +557,7 @@ static ShortDate *endReportDate = nil;
     }
     NSString *n = [self primitiveValueForKey: @"name"];
     if (n != nil) {
-        NSRange r = [n rangeOfString: @"++"];
-        if (r.location == 0) {
+        if ([n hasPrefix: @"++"]) {
             return NO;
         }
     }

@@ -91,8 +91,6 @@
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
 
-#import "Pecunia-Swift.h"
-
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
 NSString *const CategoryDataType = @"pecunia.CategoryDataType";

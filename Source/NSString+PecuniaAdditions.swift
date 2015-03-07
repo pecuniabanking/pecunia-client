@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2014, Pecunia Project. All rights reserved.
+* Copyright (c) 2014, 2015 Pecunia Project. All rights reserved.
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License as
@@ -45,19 +45,19 @@ extension NSString {
                 if tag == NSLinguisticTagOtherWhitespace {
                     // Copy over any whitespace.
                     if result.length > 0 {
-                        result.appendString(item);
+                        result.appendString(item as String);
                     }
                 } else {
                     // Not a whitespace. See if that is a known word.
                     // TODO: needs localization.
                     let key = item.stringWithNormalizedGermanChars().lowercaseString;
-                    let predicate = NSPredicate(format: "key = '\(key)'");
+                    let predicate = NSPredicate(format: "wordKey = '\(key)'");
                     request.predicate = predicate;
                     let mappings = context.executeFetchRequest(request, error: nil);
 
                     if (mappings != nil && mappings!.count > 0) {
-                        let mapping = mappings![0] as WordMapping;
-                        let word: NSString = mapping.value;
+                        let mapping = mappings![0] as! WordMapping;
+                        let word: NSString = mapping.translated;
 
                         // If the original word contains lower case characters then it was probably
                         // already in true case. We only use the lookup then for replacing diacritics/sharp-s.
@@ -72,11 +72,11 @@ extension NSString {
                                 result.appendString(firstLetter.capitalizedString);
                                 result.appendString(word.substringFromIndex(1));
                             } else {
-                                result.appendString(word);
+                                result.appendString(word as String);
                             }
                         }
                     } else {
-                        result.appendString(item);
+                        result.appendString(item as String);
                     }
                 }
             }

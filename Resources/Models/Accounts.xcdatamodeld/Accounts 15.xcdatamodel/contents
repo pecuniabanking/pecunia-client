@@ -367,8 +367,8 @@
         <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="WordMapping" representedClassName="Pecunia.WordMapping" syncable="YES">
-        <attribute name="key" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="value" attributeType="String" syncable="YES"/>
+        <attribute name="translated" attributeType="String" syncable="YES"/>
+        <attribute name="wordKey" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
     <fetchRequest name="allBankAccounts" entity="BankAccount" predicateString="accountNumber != &quot;nil&quot;"/>
     <fetchRequest name="allTags" entity="Tag"/>

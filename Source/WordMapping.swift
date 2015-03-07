@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2014, Pecunia Project. All rights reserved.
+* Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License as
@@ -21,32 +21,30 @@ import Foundation
 import CoreData
 
 // Number of entries in one batch of a dispatch_apply invocation.
-let wordsLoadStride : UInt = 50000;
+let wordsLoadStride : Int = 50000;
 
 @objc public class WordMapping: NSManagedObject {
 
-    @NSManaged var value: String
-    @NSManaged var key: String
+    @NSManaged var wordKey: String
+    @NSManaged var translated: String
 
-    private struct Static {
-        static var mappingsAvailable : Bool?;
-    }
+    static private var mappingsAvailable : Bool?;
 
     public class func pecuniaWordsLoadedNotification() -> String {
         return "PecuniaWordsLoadedNotification";
     }
 
     public class var wordMappingsAvailable : Bool {
-        if Static.mappingsAvailable == nil {
+        if mappingsAvailable == nil {
             var request = NSFetchRequest();
             request.entity = NSEntityDescription.entityForName("WordMapping",
                 inManagedObjectContext: MOAssistant.sharedAssistant().context);
             request.includesSubentities = false;
 
             let count = MOAssistant.sharedAssistant().context.countForFetchRequest(request, error: nil);
-            Static.mappingsAvailable = count > 0;
+            mappingsAvailable = count > 0;
         }
-        return Static.mappingsAvailable!;
+        return mappingsAvailable!;
     }
 
     /**
@@ -83,21 +81,21 @@ let wordsLoadStride : UInt = 50000;
 
                 // Convert to lower case and decompose diacritics (e.g. umlauts).
                 // Split work into blocks of wordsLoadStride size and iterate in parallel over them.
-                let lineCount = UInt(lines!.count);
+                let lineCount = lines!.count;
                 var blockCount = lineCount / wordsLoadStride;
                 if lineCount % wordsLoadStride != 0 {
                     ++blockCount; // One more (incomplete) block for the remainder.
                 }
 
                 // Create an own managed context for each block, so we don't get into concurrency issues.
-                dispatch_apply(blockCount, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0),
-                    {
+                dispatch_apply(blockCount, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), { index in
+
                         // Create a local managed context for this thread.
                         let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
                         var context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
                         context.persistentStoreCoordinator = coordinator;
 
-                        let start = $0 * wordsLoadStride; // $0 is the passed-in block index for the particular task (thread).
+                        let start = index * wordsLoadStride;
                         var end = start + wordsLoadStride;
                         if (end > lineCount) {
                             end = lineCount;
@@ -105,9 +103,9 @@ let wordsLoadStride : UInt = 50000;
                         for (var i = start; i < end; ++i) {
                             let key = lines![Int(i)].stringWithNormalizedGermanChars().lowercaseString;
                             var mapping = NSEntityDescription.insertNewObjectForEntityForName("WordMapping",
-                                inManagedObjectContext: context) as WordMapping;
-                            mapping.key = key;
-                            mapping.value = lines![Int(i)];
+                                inManagedObjectContext: context) as! WordMapping;
+                            mapping.wordKey = key;
+                            mapping.translated = lines![Int(i)] as String;
                         }
 
                         var error: NSError?;
@@ -119,7 +117,7 @@ let wordsLoadStride : UInt = 50000;
                 );
             }
 
-            Static.mappingsAvailable = true;
+            mappingsAvailable = true;
             let notification = NSNotification(name: pecuniaWordsLoadedNotification(), object: nil);
             NSNotificationCenter.defaultCenter().postNotification(notification);
         }
@@ -135,7 +133,7 @@ let wordsLoadStride : UInt = 50000;
     public class func removeWordMappings() {
         logDebug("Clearing word list");
 
-        Static.mappingsAvailable = false;
+        mappingsAvailable = false;
         
         let startTime = Mathematics.beginTimeMeasure();
 
@@ -151,7 +149,7 @@ let wordsLoadStride : UInt = 50000;
         let mappings = context.executeFetchRequest(allMappings, error: &error);
         if mappings != nil {
             for mapping in mappings! {
-                context.deleteObject(mapping as WordMapping);
+                context.deleteObject(mapping as! WordMapping);
             }
             context.save(&error);
         }
