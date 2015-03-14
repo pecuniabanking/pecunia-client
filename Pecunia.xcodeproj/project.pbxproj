@@ -137,6 +137,11 @@
 		27548B901705D98E00C4BF9B /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 27548B8F1705D98E00C4BF9B /* Tag.m */; };
 		2758542319FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
 		2758542419FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
+		27593DA31AB458A20009A91E /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591181AA38214005FA793 /* Converter.swift */; };
+		27593DA41AB458A40009A91E /* DEAccountCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591191AA38214005FA793 /* DEAccountCheck.swift */; };
+		27593DA51AB458A70009A91E /* DERules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F5911A1AA38214005FA793 /* DERules.swift */; };
+		27593DA61AB458AD0009A91E /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 27FEE78F1AA31F4E00EEE9FB /* Resources */; };
+		27593DA71AB458AD0009A91E /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 27FEE78F1AA31F4E00EEE9FB /* Resources */; };
 		2759D89F1A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
 		2759D8A01A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
 		2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
@@ -3183,7 +3188,7 @@
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
-						DevelopmentTeam = JY3Q678PYA;
+						DevelopmentTeam = 4P379L9Y2H;
 					};
 					8D1107260486CEB800E47090 = {
 						DevelopmentTeam = 4P379L9Y2H;
@@ -3240,6 +3245,7 @@
 				2777892A173CE22700430EBC /* CountryInfo.txt in Resources */,
 				272F6E601955C5BF00096734 /* sequence-type-repeat.png in Resources */,
 				27DF7E1719C49AF7009E2101 /* zoom-in.png in Resources */,
+				27593DA71AB458AD0009A91E /* Resources in Resources */,
 				27AA5680186C3E9100B113E7 /* assign-active@2x.png in Resources */,
 				272722711871CE7E00215DFB /* donate-active@2x.png in Resources */,
 				27DF7E1919C49AF7009E2101 /* zoom-in@2x.png in Resources */,
@@ -3530,6 +3536,7 @@
 				2732F6AC186B202400809CF2 /* overview@2x.png in Resources */,
 				2732F6A3186B084B00809CF2 /* home-active.png in Resources */,
 				276D9C9F18CB79FF002BEDA8 /* magnify-busy2@2x.png in Resources */,
+				27593DA61AB458AD0009A91E /* Resources in Resources */,
 				27AA5659186C330A00B113E7 /* graph3.png in Resources */,
 				27E8460C19E17D300026464E /* SigningOptions.xib in Resources */,
 				275CF077181420F40035EBEC /* disclose.png in Resources */,
@@ -3787,6 +3794,7 @@
 				2759D8B01A0133FB002AE07E /* Range.swift in Sources */,
 				27778887173CE22700430EBC /* Country.m in Sources */,
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
+				27593DA51AB458A70009A91E /* DERules.swift in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
 				2777888A173CE22700430EBC /* BankInfo.m in Sources */,
 				27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */,
@@ -3795,6 +3803,7 @@
 				27535FFC186DE337007400BA /* INAppStoreWindow.m in Sources */,
 				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
+				27593DA31AB458A20009A91E /* Converter.swift in Sources */,
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
 				B1A6AA781A2672C400141C39 /* select_file.m in Sources */,
 				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
@@ -3815,6 +3824,7 @@
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */,
+				27593DA41AB458A40009A91E /* DEAccountCheck.swift in Sources */,
 				B1A6AA701A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
