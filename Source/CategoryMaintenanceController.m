@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -235,15 +235,15 @@ extern NSString *const CategoryKey;
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
 
     for (NSString *path in paths) {
-        NSString *name = [path lastPathComponent];
-        NSImage  *image = [NSImage imageNamed:name];
-        if (image == nil) {
-            image = [[NSImage alloc] initWithContentsOfFile: path];
-            if ([image setName:name] == NO) {
-                LogError(@"Error: image name %@ could not be set", name);
-            }
+        LibraryImage *image = [[LibraryImage alloc] initByReferencingFile: path];
+        if (image != nil) {
+            image.privatePath = [path lastPathComponent];
+            [iconCollectionController addObject: @{@"icon": image}];
         }
-        [iconCollectionController addObject: @{@"icon": image}];
+    }
+
+    if ([iconCollectionController.arrangedObjects count] > 0) {
+        iconCollectionController.selectionIndex = 0;
     }
 }
 
