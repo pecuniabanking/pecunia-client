@@ -47,8 +47,6 @@
 }
 
 - (void)startMagnifyAnimation {
-    //magnifyButton.wantsLayer = YES;
-
     NSMutableArray *images = [NSMutableArray array];
     [images addObject: [NSImage imageNamed: @"magnify"]];
     [images addObject: [NSImage imageNamed: @"magnify-busy1"]];
@@ -58,18 +56,17 @@
 
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath: @"contents"];
     [animation setCalculationMode: kCAAnimationDiscrete];
-    [animation setDuration: 4.0f];
+    [animation setDuration: 3.0f];
     [animation setRepeatCount: 100000000];
     [animation setValues: images];
 
     CGFloat contentsScale = NSScreen.mainScreen.backingScaleFactor;
     magnifyButton.layer.contentsScale = contentsScale;
 
+    // Need to set the size here, not upfront.
     NSSize size = [(NSImage *)images[0] size];
-    NSRect bounds = NSMakeRect(0, 0, size.width, size.height);
-    magnifyButton.layer.bounds = bounds;
+    magnifyButton.layer.frame = NSMakeRect(1, 0, size.width, size.height);
 
-    magnifyButton.layer.position = NSMakePoint(NSMinX(magnifyButton.frame) + 1, NSMinY(magnifyButton.frame));
     magnifyButton.image = nil;
     [magnifyButton.layer addAnimation: animation forKey: @"contents"];
 }
@@ -77,8 +74,7 @@
 - (IBAction)toggleComTrace: (id)sender {
     if (MessageLog.log.isComTraceActive) {
         [magnifyButton.layer removeAllAnimations];
-        magnifyButton.layer.bounds = magnifyButton.bounds;
-        magnifyButton.layer.position = NSMakePoint(NSMinX(magnifyButton.frame), NSMinY(magnifyButton.frame));
+        magnifyButton.layer.frame = magnifyButton.frame;
         magnifyButton.image = [NSImage imageNamed: @"magnify"];
         magnifyButton.toolTip = NSLocalizedString(@"AP125", nil);
 

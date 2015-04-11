@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -453,15 +453,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     bankCode.delegate = self;
 
     transferInternalImage.controller = self;
-    [transferInternalImage setFrameCenterRotation: -10];
-    transferNormalImage.controller = self;
-    [transferNormalImage setFrameCenterRotation: -10];
-    transferEUImage.controller = self;
-    [transferEUImage setFrameCenterRotation: -10];
+    //[transferInternalImage setFrameCenterRotation: -10];
     transferSEPAImage.controller = self;
-    [transferSEPAImage setFrameCenterRotation: -10];
-    transferDebitImage.controller = self;
-    [transferDebitImage setFrameCenterRotation: -10];
+    //[transferSEPAImage setFrameCenterRotation: -10];
 
     transferDeleteImage.controller = self;
 
@@ -764,7 +758,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         (type == TransferTypeSEPA) ||
         (type == TransferTypeSEPAScheduled);
 
-    [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
     [executeAtDateRadioButton setHidden: !canBeTerminated];

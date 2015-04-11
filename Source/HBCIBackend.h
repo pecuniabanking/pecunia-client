@@ -27,7 +27,7 @@
 #define PecuniaStatementsFinalizeNotification @"PecuniaStatementsFinalizeNotification"
 #define PecuniaInstituteMessageNotification   @"PecuniaInstMessageNotification"
 
-@class BankInfo;
+@class InstituteInfo;
 @class TransactionLimits;
 @class BankUser;
 @class BankAccount;
@@ -47,11 +47,13 @@
 
 // Information Methods
 - (NSArray *)supportedVersions;
-- (BankInfo *)infoForBankCode: (NSString *)bankCode;
+- (InstituteInfo *)infoForBankCode: (NSString *)bankCode;
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
+
 - (NSString *)bankNameForCode: (NSString *)bankCode;
 - (NSString *)bankNameForIBAN: (NSString *)iban;
 - (NSString *)bicForIBAN: (NSString*)iban;
+
 - (BankParameter *)getBankParameterForUser: (BankUser *)user;
 - (NSDictionary *)countries;
 

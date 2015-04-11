@@ -48,6 +48,12 @@ typedef NS_ENUM (NSInteger, CPTPlotCachePrecision) {
 
 /** @brief @optional Gets a range of plot data for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
+ *
+ *  For fields where the @link CPTPlot::plotSpace plotSpace @endlink scale type is #CPTScaleTypeCategory,
+ *  this method should return an array of NSString objects containing the category names. Otherwise, it should
+ *  return an array of NSNumber objects holding the data values. For any scale type, include instances of NSNull
+ *  in the array to indicate missing values.
+ *
  *  @param plot The plot.
  *  @param fieldEnum The field index.
  *  @param indexRange The range of the data indexes of interest.
@@ -57,12 +63,18 @@ typedef NS_ENUM (NSInteger, CPTPlotCachePrecision) {
 
 /** @brief @optional Gets a plot data value for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
+ *
+ *  For fields where the @link CPTPlot::plotSpace plotSpace @endlink scale type is #CPTScaleTypeCategory,
+ *  this method should return an NSString containing the category name. Otherwise, it should return an
+ *  NSNumber holding the data value. For any scale type, return @nil or an instance of NSNull to indicate
+ *  missing values.
+ *
  *  @param plot The plot.
  *  @param fieldEnum The field index.
  *  @param idx The data index of interest.
  *  @return A data point.
  **/
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx;
+-(id)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx;
 
 /** @brief @optional Gets a range of plot data for the given plot and field.
  *  Implement one and only one of the optional methods in this section.
@@ -293,6 +305,8 @@ typedef NS_ENUM (NSInteger, CPTPlotCachePrecision) {
 -(void)relabel;
 -(void)relabelIndexRange:(NSRange)indexRange;
 -(void)repositionAllLabelAnnotations;
+-(void)reloadDataLabels;
+-(void)reloadDataLabelsInIndexRange:(NSRange)indexRange;
 /// @}
 
 /// @name Data Loading
@@ -303,6 +317,8 @@ typedef NS_ENUM (NSInteger, CPTPlotCachePrecision) {
 -(void)reloadDataInIndexRange:(NSRange)indexRange;
 -(void)insertDataAtIndex:(NSUInteger)idx numberOfRecords:(NSUInteger)numberOfRecords;
 -(void)deleteDataInIndexRange:(NSRange)indexRange;
+-(void)reloadPlotData;
+-(void)reloadPlotDataInIndexRange:(NSRange)indexRange;
 /// @}
 
 /// @name Plot Data
@@ -355,6 +371,7 @@ typedef NS_ENUM (NSInteger, CPTPlotCachePrecision) {
 -(NSUInteger)numberOfFields;
 -(NSArray *)fieldIdentifiers;
 -(NSArray *)fieldIdentifiersForCoordinate:(CPTCoordinate)coord;
+-(CPTCoordinate)coordinateForFieldIdentifier:(NSUInteger)field;
 /// @}
 
 /// @name Data Labels

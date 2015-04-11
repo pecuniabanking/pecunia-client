@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -115,9 +115,6 @@ typedef enum {
 @property (nonatomic, strong) BankAccount *account;
 @property (nonatomic, strong) SepaData    *sepa;
 @property (nonatomic, strong) NSSet       *tags;
-
-+ (BOOL)isValidIBAN: (NSString *)text;
-+ (BOOL)isValidBIC: (NSString *)text;
 
 @end
 

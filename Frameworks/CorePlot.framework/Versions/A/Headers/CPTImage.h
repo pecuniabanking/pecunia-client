@@ -1,3 +1,4 @@
+#import "CPTDefinitions.h"
 #import "CPTPlatformSpecificDefines.h"
 
 @interface CPTImage : NSObject<NSCoding, NSCopying>
@@ -6,6 +7,7 @@
 @property (nonatomic, readwrite, assign) CGImageRef image;
 @property (nonatomic, readwrite, assign) CGFloat scale;
 @property (nonatomic, readwrite, assign, getter = isTiled) BOOL tiled;
+@property (nonatomic, readwrite, assign) CPTEdgeInsets edgeInsets;
 @property (nonatomic, readwrite, assign) BOOL tileAnchoredToContext;
 @property (nonatomic, readonly, getter = isOpaque) BOOL opaque;
 
@@ -22,16 +24,30 @@
 
 /// @name Initialization
 /// @{
--(instancetype)initWithNativeImage:(CPTNativeImage *)anImage;
 -(instancetype)initWithContentsOfFile:(NSString *)path;
--(instancetype)initWithCGImage:(CGImageRef)anImage scale:(CGFloat)newScale;
+-(instancetype)initWithCGImage:(CGImageRef)anImage scale:(CGFloat)newScale NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithCGImage:(CGImageRef)anImage;
--(instancetype)initForPNGFile:(NSString *)path;
+-(instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 /// @}
 
 /// @name Drawing
 /// @{
 -(void)drawInRect:(CGRect)rect inContext:(CGContextRef)context;
+/// @}
+
+@end
+
+#pragma mark -
+
+/** @category CPTImage(CPTPlatformSpecificImageExtensions)
+ *  @brief Platform-specific extensions to CPTImage.
+ **/
+@interface CPTImage(CPTPlatformSpecificImageExtensions)
+
+/// @name Initialization
+/// @{
+-(instancetype)initWithNativeImage:(CPTNativeImage *)anImage;
+-(instancetype)initForPNGFile:(NSString *)path;
 /// @}
 
 @end

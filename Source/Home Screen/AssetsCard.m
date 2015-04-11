@@ -133,8 +133,8 @@ extern void *UserDefaultsBindingContext;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO;
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(35)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(35)];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -172,7 +172,7 @@ double trend(double x) {
 
         linePlot.dataLineStyle = nil;
         linePlot.interpolation = CPTScatterPlotInterpolationStepped;
-        linePlot.areaBaseValue = CPTDecimalFromInt(0);
+        linePlot.areaBaseValue = @(0);
 
         linePlot.delegate = self;
         linePlot.dataSource = self;
@@ -193,7 +193,7 @@ double trend(double x) {
 
         linePlot.dataLineStyle = nil;
         linePlot.interpolation = CPTScatterPlotInterpolationStepped;
-        linePlot.areaBaseValue = CPTDecimalFromInt(0);
+        linePlot.areaBaseValue = @(0);
 
         linePlot.delegate = self;
         linePlot.dataSource = self;
@@ -214,7 +214,7 @@ double trend(double x) {
 
         linePlot.interpolation = CPTScatterPlotInterpolationLinear;
         linePlot.areaFill = nil;
-        linePlot.areaBaseValue = CPTDecimalFromInt(0);
+        linePlot.areaBaseValue = @(0);
         linePlot.delegate = self;
         linePlot.identifier = @"regressionPlot";
 
@@ -334,8 +334,8 @@ double trend(double x) {
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
     int from = [self distanceFromDate: referenceDate toDate: fromDate];
@@ -343,7 +343,7 @@ double trend(double x) {
     if (to - from < tickCount) {
         to = from + 8;
     }
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(from) length: CPTDecimalFromInt(to - from)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: @(from) length: @(to - from)];
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
@@ -426,17 +426,15 @@ double trend(double x) {
     // Apply new interval length and minor ticks now only if they lead to equal or less labels.
     // Otherwise do it after the animation.
     // This is necessary to avoid a potentially large intermittent number of labels during animation.
-    NSDecimal newInterval = CPTDecimalFromFloat(interval);
-    NSDecimal oldInterval = y.majorIntervalLength;
-    if (NSDecimalCompare(&oldInterval, &newInterval) == NSOrderedAscending) {
-        y.majorIntervalLength = newInterval;
+    if ([y.majorIntervalLength compare: @(interval)] == NSOrderedAscending) {
+        y.majorIntervalLength = @(interval);
         newMainYInterval = -1;
     } else {
         newMainYInterval = interval; // Keep this temporarily in this ivar. It is applied at the end of the animation.
     }
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue.decimalValue
-                                                           length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue
+                                                           length: [roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue]];
 
     if (rangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
@@ -676,7 +674,7 @@ double trend(double x) {
             CPTXYAxisSet *axisSet = (id)graph.axisSet;
             CPTXYAxis    *y = axisSet.yAxis;
 
-            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.majorIntervalLength = @(newMainYInterval);
             newMainYInterval = 0;
         }
     }
@@ -697,7 +695,7 @@ double trend(double x) {
             CPTXYAxisSet *axisSet = (id)graph.axisSet;
             CPTXYAxis    *y = axisSet.yAxis;
 
-            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.majorIntervalLength = @(newMainYInterval);
             newMainYInterval = 0;
         }
     }

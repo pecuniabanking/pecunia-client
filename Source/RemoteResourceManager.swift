@@ -21,7 +21,7 @@ let RemoteResourcePath = "http://www.pecuniabanking.de/downloads/resources/"
 let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
 
 @objc public class RemoteResourceManager : NSObject {
-    private let mandatoryFiles = ["eu_all_mfi.zip"];
+    private let mandatoryFiles = ["eu_all_mfi.zip", "bank_codes.zip", "fints_institute.zip", "mappings.zip"];
     private var downloadableFiles : Array<Dictionary<String, String>>?
 
     private struct Static {

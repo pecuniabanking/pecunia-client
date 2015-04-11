@@ -21,7 +21,6 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankUser.h"
-#import "BankInfo.h"
 #import "HBCIController.h"
 #import "BankingController.h"
 
@@ -107,7 +106,7 @@
     if (idx > 0) {
         account.bankName = user.bankName;
         account.bankCode = user.bankCode;
-        BankInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode];
+        InstituteInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode];
         if (info) {
             account.bic = info.bic;
             account.bankName = info.name;
@@ -295,6 +294,17 @@
 
 - (BOOL)check
 {
+    // Default currency.
+    if ([account.currency isEqual: @""]) {
+        account.currency = @"EUR";
+    }
+
+
+    // For manual accounts we don't need a valid account number, bank code or IBAN.
+    if (dropDown.indexOfSelectedItem == 0) {
+        return YES;
+    }
+
     if (account.accountNumber == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP55", nil),
@@ -309,13 +319,6 @@
         return NO;
     }
 
-    // default currency
-    if ([account.currency isEqual: @""]) {
-        account.currency = @"EUR";
-    }
-
-
-    // check IBAN
     if (![IBANtools isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
@@ -323,11 +326,10 @@
         return NO;
     }
 
-    // check account number
     BOOL valid = [IBANtools isValidAccount: account.accountNumber
-                            bankCode: account.bankCode
-                        countryCode: @"DE"
-                            forIBAN: NO];
+                                  bankCode: account.bankCode
+                               countryCode: @"DE"
+                                   forIBAN: NO];
     if (!valid) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP60", nil),

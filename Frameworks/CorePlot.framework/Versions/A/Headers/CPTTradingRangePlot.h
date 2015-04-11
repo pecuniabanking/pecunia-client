@@ -238,6 +238,7 @@ typedef NS_ENUM (NSInteger, CPTTradingRangePlotField) {
 @property (nonatomic, readwrite, assign) CGFloat barWidth;    // In view coordinates
 @property (nonatomic, readwrite, assign) CGFloat stickLength; // In view coordinates
 @property (nonatomic, readwrite, assign) CGFloat barCornerRadius;
+@property (nonatomic, readwrite, assign) BOOL showBarBorder;
 /// @}
 
 /// @name Drawing
@@ -247,6 +248,14 @@ typedef NS_ENUM (NSInteger, CPTTradingRangePlotField) {
 @property (nonatomic, readwrite, copy) CPTLineStyle *decreaseLineStyle;
 @property (nonatomic, readwrite, copy) CPTFill *increaseFill;
 @property (nonatomic, readwrite, copy) CPTFill *decreaseFill;
+/// @}
+
+/// @name Bar Style
+/// @{
+-(void)reloadBarFills;
+-(void)reloadBarFillsInIndexRange:(NSRange)indexRange;
+-(void)reloadBarLineStyles;
+-(void)reloadBarLineStylesInIndexRange:(NSRange)indexRange;
 /// @}
 
 @end

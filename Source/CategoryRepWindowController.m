@@ -293,7 +293,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     // Ranges are set later.
     [pieChartGraph addPlotSpace: barPlotSpace];
-    CPTPlotRange *range = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: CPTDecimalFromFloat(40)];
+    CPTPlotRange *range = [CPTPlotRange plotRangeWithLocation: @(0) length: @(40)];
     barPlotSpace.globalXRange = range;
     barPlotSpace.xRange = range;
 
@@ -306,16 +306,16 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     earningsMiniPlot.lineStyle = barLineStyle;
 
     earningsMiniPlot.barsAreHorizontal = NO;
-    earningsMiniPlot.barWidth = CPTDecimalFromDouble(1);
+    earningsMiniPlot.barWidth = @(1);
     earningsMiniPlot.barCornerRadius = 0;
     earningsMiniPlot.barWidthsAreInViewCoordinates = NO;
     earningsMiniPlot.alignsPointsToPixels = YES;
 
     // Fill pattern is set on backing store change.
 
-    earningsMiniPlot.baseValue = CPTDecimalFromFloat(0.0f);
+    earningsMiniPlot.baseValue = @(0.0f);
     earningsMiniPlot.dataSource = self;
-    earningsMiniPlot.barOffset = CPTDecimalFromFloat(4);
+    earningsMiniPlot.barOffset = @(4);
     earningsMiniPlot.identifier = @EARNINGS_SMALL_PLOT_ID;
     [pieChartGraph addPlot: earningsMiniPlot toPlotSpace: barPlotSpace];
 
@@ -333,7 +333,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     spendingsMiniPlot.lineStyle = barLineStyle;
 
     spendingsMiniPlot.barsAreHorizontal = NO;
-    spendingsMiniPlot.barWidth = CPTDecimalFromDouble(1);
+    spendingsMiniPlot.barWidth = @(1);
     spendingsMiniPlot.barCornerRadius = 0;
     spendingsMiniPlot.barWidthsAreInViewCoordinates = NO;
     spendingsMiniPlot.alignsPointsToPixels = YES;
@@ -344,9 +344,9 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     earningsMiniPlot.fill = [CPTFill fillWithImage: image];
     spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
 
-    spendingsMiniPlot.baseValue = CPTDecimalFromFloat(0);
+    spendingsMiniPlot.baseValue = @(0);
     spendingsMiniPlot.dataSource = self;
-    spendingsMiniPlot.barOffset = CPTDecimalFromFloat(24);
+    spendingsMiniPlot.barOffset = @(24);
     spendingsMiniPlot.identifier = @SPENDINGS_SMALL_PLOT_ID;
     [pieChartGraph addPlot: spendingsMiniPlot toPlotSpace: barPlotSpace];
 
@@ -391,13 +391,13 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     y.axisLineCapMax = lineCap;
 
     x.preferredNumberOfMajorTicks = 22;
-    y.orthogonalCoordinateDecimal = CPTDecimalFromFloat(offset);
-    y.gridLinesRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(offset - 0.5)
-                                                    length: CPTDecimalFromFloat(14.25)];
-    x.visibleRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(offset)
-                                                  length: CPTDecimalFromFloat(14)];
-    x.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(offset)
-                                                      length: CPTDecimalFromFloat(14.75)];
+    y.orthogonalPosition = @(offset);
+    y.gridLinesRange = [CPTPlotRange plotRangeWithLocation: @(offset - 0.5)
+                                                    length: @(14.25)];
+    x.visibleRange = [CPTPlotRange plotRangeWithLocation: @(offset)
+                                                  length: @(14)];
+    x.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: @(offset)
+                                                      length: @(14.75)];
 }
 
 - (void)setupMiniPlotAxes {
@@ -417,7 +417,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     CPTAxisTitle *title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP16", nil) textStyle: titleStyle];
     x1.axisTitle = title;
     x1.titleOffset = -180;
-    x1.titleLocation = CPTDecimalFromFloat(15);
+    x1.titleLocation = @(15);
 
     CPTXYAxis *y1 = axisSet.yAxis;
     y1.plotSpace = earningsMiniPlot.plotSpace;
@@ -431,7 +431,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP17", nil) textStyle: titleStyle];
     x2.axisTitle = title;
     x2.titleOffset = -180;
-    x2.titleLocation = CPTDecimalFromFloat(36);
+    x2.titleLocation = @(36);
 
     CPTXYAxis *y2 = [[CPTXYAxis alloc] init];
     y2.coordinate = CPTCoordinateY;
@@ -1022,8 +1022,8 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     // Make the range 5 times larger than the largest value in the array
     // to compress the plot to 20% of the total height of the graph.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                           length: CPTDecimalFromFloat(5 * tipValue)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(5 * tipValue)];
     barPlotSpace.globalYRange = plotRange;
     barPlotSpace.yRange = plotRange;
 
@@ -1033,8 +1033,8 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
     barPlotSpace = (CPTXYPlotSpace *)spendingsMiniPlot.plotSpace;
 
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                             length: CPTDecimalFromFloat(5 * tipValue)];
+    plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                             length: @(5 * tipValue)];
     barPlotSpace.globalYRange = plotRange;
     barPlotSpace.yRange = plotRange;
 
@@ -1090,13 +1090,13 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     // plots in the lower area of the graph and have a constant grid line interval.
     CPTXYAxis *x = (axisSet.axes)[0];
     CPTXYAxis *y = (axisSet.axes)[1];
-    y.majorIntervalLength = CPTDecimalFromFloat(0.16 * range);
-    x.gridLinesRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                    length: CPTDecimalFromFloat(1.18 * range)];
-    y.visibleRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                  length: CPTDecimalFromFloat(1.18 * range)];
-    y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                      length: CPTDecimalFromFloat(1.27 * range)];
+    y.majorIntervalLength = @(0.16 * range);
+    x.gridLinesRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                    length: @(1.18 * range)];
+    y.visibleRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                  length: @(1.18 * range)];
+    y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                      length: @(1.27 * range)];
 
     // Spendings plot axes.
     if (sortedSpendingValues.count > 0) {
@@ -1108,13 +1108,13 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     x = (axisSet.axes)[2];
     y = (axisSet.axes)[3];
-    y.majorIntervalLength = CPTDecimalFromFloat(0.16 * range);
-    x.gridLinesRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                    length: CPTDecimalFromFloat(1.18 * range)];
-    y.visibleRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                  length: CPTDecimalFromFloat(1.18 * range)];
-    y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
-                                                      length: CPTDecimalFromFloat(1.27 * range)];
+    y.majorIntervalLength = @(0.16 * range);
+    x.gridLinesRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                    length: @(1.18 * range)];
+    y.visibleRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                  length: @(1.18 * range)];
+    y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                      length: @(1.27 * range)];
 
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,7 +22,6 @@
 #import "HBCIController.h"
 #import "PecuniaError.h"
 #import "BankParameter.h"
-#import "BankInfo.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankSetupInfo.h"
@@ -155,7 +154,7 @@
 
         if (step == 2) {
             // look if we have bank infos
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -200,10 +199,10 @@
 
         if (step == 1) {
             // get bank infos
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.hbciVersion;
-                currentUser.bankURL = bi.host;
+                currentUser.bankURL = bi.hostURL;
                 if (currentUser.hbciVersion == nil || currentUser.bankURL == nil) {
                     step = 4;
                 }
@@ -337,7 +336,7 @@
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
+            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];

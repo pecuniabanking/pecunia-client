@@ -3,6 +3,7 @@
 
 /// @file
 
+@class CPTLimitBand;
 @class CPTLineStyle;
 @class CPTPlotSymbol;
 @class CPTScatterPlot;
@@ -31,6 +32,16 @@ typedef NS_ENUM (NSInteger, CPTScatterPlotInterpolation) {
     CPTScatterPlotInterpolationStepped,   ///< Steps beginning at data point.
     CPTScatterPlotInterpolationHistogram, ///< Steps centered at data point.
     CPTScatterPlotInterpolationCurved     ///< Bezier curve interpolation.
+};
+
+/**
+ *  @brief Enumeration of scatter plot histogram style options
+ **/
+typedef NS_ENUM (NSInteger, CPTScatterPlotHistogramOption) {
+    CPTScatterPlotHistogramNormal,     ///< Standard histogram.
+    CPTScatterPlotHistogramSkipFirst,  ///< Skip the first step of the histogram.
+    CPTScatterPlotHistogramSkipSecond, ///< Skip the second step of the histogram.
+    CPTScatterPlotHistogramOptionCount ///< The number of histogram options available.
 };
 
 #pragma mark -
@@ -219,9 +230,15 @@ typedef NS_ENUM (NSInteger, CPTScatterPlotInterpolation) {
 
 /// @name Appearance
 /// @{
-@property (nonatomic, readwrite) NSDecimal areaBaseValue;
-@property (nonatomic, readwrite) NSDecimal areaBaseValue2;
+@property (nonatomic, readwrite, strong) NSNumber *areaBaseValue;
+@property (nonatomic, readwrite, strong) NSNumber *areaBaseValue2;
 @property (nonatomic, readwrite, assign) CPTScatterPlotInterpolation interpolation;
+@property (nonatomic, readwrite, assign) CPTScatterPlotHistogramOption histogramOption;
+/// @}
+
+/// @name Area Fill Bands
+/// @{
+@property (nonatomic, readonly) NSArray *areaFillBands;
 /// @}
 
 /// @name Drawing
@@ -230,6 +247,11 @@ typedef NS_ENUM (NSInteger, CPTScatterPlotInterpolation) {
 @property (nonatomic, readwrite, copy) CPTPlotSymbol *plotSymbol;
 @property (nonatomic, readwrite, copy) CPTFill *areaFill;
 @property (nonatomic, readwrite, copy) CPTFill *areaFill2;
+/// @}
+
+/// @name Data Line
+/// @{
+@property (nonatomic, readonly) CGPathRef newDataLinePath;
 /// @}
 
 /// @name User Interaction
@@ -248,6 +270,14 @@ typedef NS_ENUM (NSInteger, CPTScatterPlotInterpolation) {
 /// @name Plot Symbols
 /// @{
 -(CPTPlotSymbol *)plotSymbolForRecordIndex:(NSUInteger)idx;
+-(void)reloadPlotSymbols;
+-(void)reloadPlotSymbolsInIndexRange:(NSRange)indexRange;
+/// @}
+
+/// @name Area Fill Bands
+/// @{
+-(void)addAreaFillBand:(CPTLimitBand *)limitBand;
+-(void)removeAreaFillBand:(CPTLimitBand *)limitBand;
 /// @}
 
 @end

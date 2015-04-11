@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -81,7 +81,6 @@
     IBOutlet NSTextField   *purpose3;
     IBOutlet NSTextField   *purpose4;
 
-    IBOutlet NSTextField  *executionText;
     IBOutlet NSButton     *executeImmediatelyRadioButton;
     IBOutlet NSTextField  *executeImmediatelyText;
     IBOutlet NSTextField  *executeAtDateLabel;
@@ -102,10 +101,7 @@
     IBOutlet NSTextField *templateName;
 
     IBOutlet DragImageView            *transferInternalImage;
-    IBOutlet DragImageView            *transferNormalImage;
-    IBOutlet DragImageView            *transferEUImage;
     IBOutlet DragImageView            *transferSEPAImage;
-    IBOutlet DragImageView            *transferDebitImage;
     IBOutlet DeleteTransferTargetView *transferDeleteImage;
     IBOutlet TimeSliceManager         *timeSlicer;
 

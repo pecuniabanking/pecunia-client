@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -149,8 +149,8 @@ typedef enum {
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO;
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(35)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(35)];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -222,7 +222,7 @@ typedef enum {
     linePlot.interpolation = CPTScatterPlotInterpolationLinear;
 
     linePlot.areaFill = positiveGradientFill;
-    linePlot.areaBaseValue = CPTDecimalFromInt(0);
+    linePlot.areaBaseValue = @(0);
 
     linePlot.delegate = self;
     linePlot.dataSource = self;
@@ -589,8 +589,8 @@ typedef enum {
             }
 
             CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-            CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(marketOpenTime)
-                                                                   length: CPTDecimalFromDouble(marketCloseTime - marketOpenTime)];
+            CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(marketOpenTime)
+                                                                   length: @(marketCloseTime - marketOpenTime)];
             plotSpace.globalXRange = plotRange;
             plotSpace.xRange = plotRange;
 
@@ -629,8 +629,8 @@ typedef enum {
                 }
 
                 min *= 0.999; // Make min a small amount smaller to have a little offset from the base line.
-                CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(min)
-                                                                       length: CPTDecimalFromDouble(max - min)];
+                CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(min)
+                                                                       length: @(max - min)];
                 plotSpace.globalYRange = plotRange;
                 plotSpace.yRange = plotRange;
                 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -101,8 +101,7 @@ extern void *UserDefaultsBindingContext;
         NSNumber *location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 100);
         parameters[@"plotXLocation"] = location;
 
-        NSNumber *range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
-        parameters[@"plotXRange"] = range;
+        parameters[@"plotXRange"] = plotSpace.xRange.length;
     } else {
         // Real scroll wheel events always have a y delta != 0.
         parameters[@"type"] = @"plotScale";
@@ -197,8 +196,7 @@ extern void *UserDefaultsBindingContext;
     NSNumber *location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / self.hostedGraph.bounds.size.width);
     parameters[@"plotXLocation"] = location;
 
-    NSNumber *range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
-    parameters[@"plotXRange"] = range;
+    parameters[@"plotXRange"] = plotSpace.xRange.length;
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
@@ -238,8 +236,7 @@ extern void *UserDefaultsBindingContext;
         NSNumber *location = @(selector.range.locationDouble + plotSpace.xRange.lengthDouble * distance / 100);
         parameters[@"plotXLocation"] = location;
 
-        NSNumber *range = @(CPTDecimalDoubleValue(selector.range.length));
-        parameters[@"plotXRange"] = range;
+        parameters[@"plotXRange"] = selector.range.length;
     } else {
         parameters[@"type"] = @"plotScale";
 
@@ -353,6 +350,8 @@ extern void *UserDefaultsBindingContext;
     CPTTextLayer  *valueInfoLayer;
     CPTLimitBand  *selectionBand;
 
+    CPTFunctionDataSource *plotDataSource;
+
     ColumnLayoutCorePlotLayer *infoLayer; // Content layer of the info annotation.
 
     ShortDate *referenceDate;             // The date at which the time points start.
@@ -394,6 +393,8 @@ extern void *UserDefaultsBindingContext;
     float newMainYInterval;
 
     NSMutableDictionary *statistics;     // All values are NSNumber.
+
+    CGFloat factors[3]; // Set by the trend factors computation.
 }
 
 @end
@@ -449,8 +450,9 @@ extern void *UserDefaultsBindingContext;
     [self setupTurnoversGraph];
 
     // Help text.
-    NSBundle           *mainBundle = [NSBundle mainBundle];
-    NSString           *path = [mainBundle pathForResource: @"category-analysis-help" ofType: @"rtf"];
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSString *path = [mainBundle pathForResource: @"category-analysis-help" ofType: @"rtf"];
+
     NSAttributedString *text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
     NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
@@ -479,8 +481,7 @@ extern void *UserDefaultsBindingContext;
     [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 }
 
-#pragma mark -
-#pragma mark KVO
+#pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
@@ -504,12 +505,12 @@ extern void *UserDefaultsBindingContext;
 
     for (CPTPlot *plot in mainGraph.allPlots) {
         if ([plot isKindOfClass: [CPTBarPlot class]]) {
-            ((CPTBarPlot *)plot).barWidth = CPTDecimalFromFloat(value);
+            ((CPTBarPlot *)plot).barWidth = @(value);
         }
     }
     for (CPTPlot *plot in turnoversGraph.allPlots) {
         if ([plot isKindOfClass: [CPTBarPlot class]]) {
-            ((CPTBarPlot *)plot).barWidth = CPTDecimalFromFloat(value);
+            ((CPTBarPlot *)plot).barWidth = @(value);
         }
     }
 }
@@ -573,8 +574,8 @@ extern void *UserDefaultsBindingContext;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(100)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(100)];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -852,7 +853,7 @@ extern void *UserDefaultsBindingContext;
     linePlot.interpolation = CPTScatterPlotInterpolationStepped;
 
     linePlot.areaFill = fill;
-    linePlot.areaBaseValue = CPTDecimalFromInt(0);
+    linePlot.areaBaseValue = @(0);
 
     linePlot.delegate = self;
     if (flag) {
@@ -867,10 +868,10 @@ extern void *UserDefaultsBindingContext;
     CPTBarPlot *barPlot = [[CPTBarPlot alloc] init];
     barPlot.barBasesVary = NO;
     barPlot.barWidthsAreInViewCoordinates = YES;
-    barPlot.barWidth = CPTDecimalFromFloat(barWidth);
+    barPlot.barWidth = @(barWidth);
     barPlot.barCornerRadius = 3.0f;
     barPlot.barsAreHorizontal = NO;
-    barPlot.baseValue = CPTDecimalFromInt(0);
+    barPlot.baseValue = @(0);
     barPlot.alignsPointsToPixels = YES;
 
     if (withBorder) {
@@ -1152,11 +1153,6 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (NSDecimal)distanceAsDecimalFromDate: (ShortDate *)from toDate: (ShortDate *)to
-{
-    return CPTDecimalFromInt([self distanceFromDate: from toDate: to]);
-}
-
 /**
  * Determines the number of units between two dates, depending on the grouping interval.
  */
@@ -1185,23 +1181,11 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-static CGFloat factors[3];
-
-double mainTrend(double x)
-{
-    return factors[0] + x * factors[1] + x * x * factors[2]; // Square trend function.
-}
-
 /**
  * Updates the vertical plotrange of the main graph and must only be called with data loaded.
  */
 - (void)updateVerticalMainGraphRange
 {
-    CPTScatterPlot        *mainRegressionPlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"mainRegressionPlot"];
-    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: mainRegressionPlot
-                                                                        withFunction: mainTrend];
-    plotDataSource.resolution = 10;
-    
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
     NSUInteger startIndex = 0;
@@ -1273,18 +1257,17 @@ double mainTrend(double x)
     // Apply new interval length and minor ticks now only if they lead to equal or less labels.
     // Otherwise do it after the animation.
     // This is necessary to avoid a potentially large intermittent number of labels during animation.
-    NSDecimal newInterval = CPTDecimalFromFloat(interval);
-    NSDecimal oldInterval = y.majorIntervalLength;
-    if (NSDecimalCompare(&oldInterval, &newInterval) == NSOrderedAscending) {
-        y.majorIntervalLength = newInterval;
+    NSNumber *oldInterval = y.majorIntervalLength;
+    if ([oldInterval compare: @(interval)] == NSOrderedAscending) {
+        y.majorIntervalLength = @(interval);
         y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
         newMainYInterval = -1;
     } else {
         newMainYInterval = interval; // Keep this temporarily in this ivar. It is applied at the end of the animation.
     }
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue.decimalValue
-                                                           length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue
+                                                           length: [roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue]];
 
     [CPTAnimation animate: plotSpace
                  property: @"globalYRange"
@@ -1319,13 +1302,13 @@ double mainTrend(double x)
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)];
+    int fromPoint = [self distanceFromDate: referenceDate toDate: fromDate];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: @(fromPoint)
+                                                    length: @([self distanceFromDate: referenceDate toDate: toDate] - fromPoint)];
 
     CPTXYAxisSet *axisSet = (id)mainGraph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
@@ -1393,17 +1376,17 @@ double mainTrend(double x)
     CPTXYPlotSpace *plotSpace = (id)turnoversGraph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)];
+    int fromPoint = [self distanceFromDate: referenceDate toDate: fromDate];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: @(fromPoint)
+                                                    length: @([self distanceFromDate: referenceDate toDate: toDate] - fromPoint)];
 
     CPTXYAxisSet *axisSet = (id)turnoversGraph.axisSet;
 
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0) length: [roundedMaxTurnovers decimalValue]];
+    plotRange = [CPTPlotRange plotRangeWithLocation: @(0) length: roundedMaxTurnovers];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -1412,7 +1395,7 @@ double mainTrend(double x)
     y.visibleRange = plotRange;
 
     float interval = [self intervalFromRange: roundedMaxTurnovers forTurnovers: YES];
-    y.majorIntervalLength = CPTDecimalFromFloat(interval);
+    y.majorIntervalLength = @(interval);
     y.minorTicksPerInterval = 0;
 }
 
@@ -1436,16 +1419,16 @@ double mainTrend(double x)
     CPTXYPlotSpace *plotSpace = (id)selectionGraph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0)
-                                                           length: CPTDecimalFromInt(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
     plotSpace.xRange = plotRange;
 
     CPTXYAxisSet *axisSet = (id)selectionGraph.axisSet;
 
     // Vertical range.
-    plotRange = [CPTPlotRange plotRangeWithLocation: roundedTotalMinValue.decimalValue
-                                             length: [[roundedTotalMaxValue decimalNumberBySubtracting: roundedTotalMinValue] decimalValue]];
+    plotRange = [CPTPlotRange plotRangeWithLocation: roundedTotalMinValue
+                                             length: [roundedTotalMaxValue decimalNumberBySubtracting: roundedTotalMinValue]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -1621,8 +1604,7 @@ double mainTrend(double x)
 
 - (void)applyRangeLocationToPlotSpace: (CPTXYPlotSpace *)space location: (NSNumber *)location range: (NSNumber *)range
 {
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble([location doubleValue])
-                                                           length: CPTDecimalFromDouble([range doubleValue])];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: location length: range];
     space.xRange = plotRange;
 }
 
@@ -1936,11 +1918,8 @@ double mainTrend(double x)
 {
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
-    NSDecimal fromPoint = plotSpace.xRange.location;
-    fromDate = [self dateByAddingUnits: referenceDate count: CPTDecimalIntValue(fromPoint)];
-
-    NSDecimal toPoint = plotSpace.xRange.end;
-    toDate = [self dateByAddingUnits: referenceDate count: CPTDecimalIntValue(toPoint)];
+    fromDate = [self dateByAddingUnits: referenceDate count: plotSpace.xRange.location.intValue];
+    toDate = [self dateByAddingUnits: referenceDate count: plotSpace.xRange.end.intValue];
 }
 
 /**
@@ -2062,7 +2041,7 @@ double mainTrend(double x)
             CPTXYAxisSet *axisSet = (id)mainGraph.axisSet;
             CPTXYAxis    *y = axisSet.yAxis;
 
-            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.majorIntervalLength = @(newMainYInterval);
             y.minorTicksPerInterval = [self minorTicksFromInterval: newMainYInterval];
             newMainYInterval = 0;
         }
@@ -2078,7 +2057,7 @@ double mainTrend(double x)
             CPTXYAxisSet *axisSet = (id)mainGraph.axisSet;
             CPTXYAxis    *y = axisSet.yAxis;
 
-            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.majorIntervalLength = @(newMainYInterval);
             y.minorTicksPerInterval = [self minorTicksFromInterval: newMainYInterval];
             newMainYInterval = 0;
         }
@@ -2344,6 +2323,8 @@ double mainTrend(double x)
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
 
+    plotDataSource = nil;
+
     [self reloadData];
 
     mainGraph.defaultPlotSpace.allowsUserInteraction = rawCount > 0;
@@ -2359,6 +2340,14 @@ double mainTrend(double x)
     [self updateSelectionDisplay];
 
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
+
+    CPTScatterPlot *mainRegressionPlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"mainRegressionPlot"];
+    plotDataSource = [CPTFunctionDataSource dataSourceForPlot: mainRegressionPlot
+                                                    withBlock: ^double(double x) {
+                                                        // Square trend function.
+                                                        return factors[0] + x * factors[1] + x * x * factors[2];
+                                                    }];
+    plotDataSource.resolution = 10;
 }
 
 - (void)showInfoComponents

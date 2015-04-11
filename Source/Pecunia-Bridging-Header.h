@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,7 +33,6 @@
 #import "BSSelectWindowController.h"
 #import "BankAccount.h"
 #import "BankDetailsParser.h"
-#import "BankInfo.h"
 #import "BankingCategory.h"
 #import "BankMessage.h"
 #import "BankParameter.h"

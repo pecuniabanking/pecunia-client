@@ -19,7 +19,6 @@
 
 #import "HBCIController.h"
 
-#import "BankInfo.h"
 #import "PecuniaError.h"
 #import "BankQueryResult.h"
 #import "BankStatement.h"
@@ -164,23 +163,14 @@ static HBCIController *controller = nil;
     return error;
 }
 
-- (BankInfo *)infoForBankCode: (NSString *)bankCode
+- (InstituteInfo *)infoForBankCode: (NSString *)bankCode
 {
-    PecuniaError *error = nil;
-
-    if (bankCode == nil) {
+    NSDictionary *bicInfo = [IBANtools bicForBankCode: bankCode countryCode: @"de"];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
         return nil;
     }
-    
-    BankInfo *info = bankInfo[bankCode];
-    if (info == nil) {
-        NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankInfo\"><bankCode>%@</bankCode></command>", bankCode];
-        info = [bridge syncCommand: cmd error: &error];
-        if (error == nil && info) {
-            bankInfo[bankCode] = info;
-        } else {return nil; }
-    }
-    return info;
+    return [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
 }
 
 - (BankParameter *)getBankParameterForUser: (BankUser *)user
@@ -214,32 +204,34 @@ static HBCIController *controller = nil;
 
 - (NSString *)bankNameForCode: (NSString *)bankCode
 {
-    BankInfo *info = [self infoForBankCode: bankCode];
-    if (info == nil || info.name == nil) {
+    NSDictionary *bicInfo = [IBANtools bicForBankCode: bankCode countryCode: @"de"];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC) {
         return NSLocalizedString(@"AP13", nil);
     }
-    return info.name;
+    InstituteInfo *info = [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
+    return info.name.length > 0 ? info.name : NSLocalizedString(@"AP13", nil);
 }
 
 - (NSString *)bankNameForIBAN: (NSString *)iban
 {
-    if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)]];
+    NSDictionary *bicInfo = [IBANtools bicForIBAN: iban];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC) {
+        return NSLocalizedString(@"AP13", nil);
     }
-    return NSLocalizedString(@"AP13", nil);
+    InstituteInfo *info = [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
+    return info.name.length > 0 ? info.name : NSLocalizedString(@"AP13", nil);
 }
 
 - (NSString *)bicForIBAN: (NSString*)iban
 {
-    if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)]];
-        if (info) {
-            return info.bic;
-        } else {
-            return nil;
-        }
+    NSDictionary *bicInfo = [IBANtools bicForIBAN: iban];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC) {
+        return nil;
     }
-    return nil;
+    return bicInfo[@"bic"];
 }
 
 - (NSArray *)getAccountsForUser: (BankUser *)user

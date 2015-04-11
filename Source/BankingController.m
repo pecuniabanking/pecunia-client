@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -80,8 +80,6 @@
 
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
-#import "WAYAppStoreWindow.h"
-#import "INAppStoreWindow.h" // Just for the class test on restore of window content.
 #import "JMModalOverlay.h"
 #import "WaitViewController.h"
 
@@ -216,16 +214,7 @@ static BankingController *bankinControllerInstance;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
 
-    mainWindow.centerFullScreenButton = NO;
-    mainWindow.titleBarHeight = 40.0;
-    [mainWindow.titleBarView addSubview: comTracePanel];
-    NSRect frame = comTracePanel.frame;
-    frame.origin.x = NSWidth(mainWindow.titleBarView.bounds) - NSWidth(frame);
-    comTracePanel.frame = frame;
-
     [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
-
-    comTracePanel.autoresizingMask = NSViewMinXMargin;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
@@ -3111,12 +3100,6 @@ static BankingController *bankinControllerInstance;
         [mainWindow setFrame: NSRectFromString(s) display: NO];
     }
 
-    // Adjust size of the content views (sidebar and tabview) depending on the used main window class.
-    if ([mainWindow isKindOfClass: [INAppStoreWindow class]]) {
-        [mainTabView setFrameSize: NSMakeSize(NSWidth(mainTabView.frame), NSHeight(mainTabView.frame) + 40)];
-        [sidebar setFrameSize: NSMakeSize(NSWidth(sidebar.frame), NSHeight(sidebar.frame) + 40)];
-    }
-
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
 
@@ -3175,6 +3158,8 @@ static BankingController *bankinControllerInstance;
     [sc clearMessage];
 
     [mainWindow.contentView setHidden: NO];
+
+    //sidebar.hidden = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey: @"restoreActivePage"]) {

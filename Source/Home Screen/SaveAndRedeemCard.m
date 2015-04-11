@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -218,8 +218,8 @@ extern void *UserDefaultsBindingContext;
     plotSpace.allowsMomentum = YES;
     plotSpace.delegate = self;
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(100000)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(100000)];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -262,7 +262,7 @@ extern void *UserDefaultsBindingContext;
     plot.barBasesVary = NO;
     plot.barCornerRadius = 3.0f;
     plot.barsAreHorizontal = NO;
-    plot.barWidth = CPTDecimalFromFloat(0.65);
+    plot.barWidth = @(0.65);
 
     [graph addPlot: plot];
 
@@ -284,7 +284,7 @@ extern void *UserDefaultsBindingContext;
     plot.barBasesVary = NO;
     plot.barCornerRadius = 3.0f;
     plot.barsAreHorizontal = NO;
-    plot.barWidth = CPTDecimalFromFloat(0.9);
+    plot.barWidth = @(0.9);
 
     [graph addPlot: plot];
 }
@@ -412,8 +412,8 @@ extern void *UserDefaultsBindingContext;
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(-0.5)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(-0.5)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
     float from = [self distanceFromDate: referenceDate toDate: fromDate];
@@ -421,7 +421,7 @@ extern void *UserDefaultsBindingContext;
     if (flag && (to - from < tickCount)) {
         to = from + tickCount;
     }
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(from - 0.5) length: CPTDecimalFromFloat(to - from)];
+    plotRange = [CPTPlotRange plotRangeWithLocation: @(from - 0.5) length: @(to - from)];
     plotSpace.xRange = plotRange;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
@@ -484,9 +484,9 @@ extern void *UserDefaultsBindingContext;
         interval = [self intervalFromRange: maxAbsolute];
     }
 
-    y.majorIntervalLength = CPTDecimalFromFloat(interval);
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedMin.decimalValue
-                                                           length: [[roundedMax decimalNumberBySubtracting: roundedMin] decimalValue]];
+    y.majorIntervalLength = @(interval);
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedMin
+                                                           length: [roundedMax decimalNumberBySubtracting: roundedMin]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 }
@@ -837,7 +837,7 @@ extern void *UserDefaultsBindingContext;
             indicatorAnimation.canceled = YES;
            }
          */
-        indicatorLine.orthogonalCoordinateDecimal = CPTDecimalFromFloat(index);
+        indicatorLine.orthogonalPosition = @(index);
 
         if (currentGrouping == NSCalendarUnitMonth) {
             if (index < numberOfMonths) {
@@ -935,8 +935,8 @@ extern void *UserDefaultsBindingContext;
 
     // We are still in year coordinates.
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
-    CPTPlotRange   *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(lastInfoTimePoint - 0.5)
-                                                             length: CPTDecimalFromFloat(1)];
+    CPTPlotRange   *plotRange = [CPTPlotRange plotRangeWithLocation: @(lastInfoTimePoint - 0.5)
+                                                             length: @(1)];
 
     lastInfoTimePoint *= 12; // Convert to month index.
                              // Make the bar fill the entire width.
@@ -946,8 +946,8 @@ extern void *UserDefaultsBindingContext;
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
     [CPTAnimation animate: plot
                  property: @"barWidth"
-              fromDecimal: plot.barWidth
-                toDecimal: CPTDecimalFromCGFloat(1)
+                     from: plot.barWidth.floatValue
+                       to: 1
                  duration: ANIMATION_TIME
                 withDelay: 0
            animationCurve: CPTAnimationCurveCubicInOut
@@ -956,8 +956,8 @@ extern void *UserDefaultsBindingContext;
     plot = (id)[graph plotWithIdentifier : @"rawDebtValues"];
     [CPTAnimation animate: plot
                  property: @"barWidth"
-              fromDecimal: plot.barWidth
-                toDecimal: CPTDecimalFromCGFloat(1)
+                     from: plot.barWidth.floatValue
+                       to: 1
                  duration: ANIMATION_TIME
                 withDelay: 0
            animationCurve: CPTAnimationCurveCubicInOut
@@ -980,10 +980,10 @@ extern void *UserDefaultsBindingContext;
  */
 - (void)finishSwitchToMonthMode {
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
-    plot.barWidth = CPTDecimalFromCGFloat(0.75);
+    plot.barWidth = @(0.75);
 
     plot = (id)[graph plotWithIdentifier : @"rawDebtValues"];
-    plot.barWidth = CPTDecimalFromCGFloat(0.75);
+    plot.barWidth = @(0.75);
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
@@ -1021,8 +1021,8 @@ extern void *UserDefaultsBindingContext;
     if (to - from < 10) {
         to = from + 10;
     }
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(from - 0.5)
-                                                           length: CPTDecimalFromFloat(to - from)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(from - 0.5)
+                                                           length: @(to - from)];
     zoomOutAnimation = [CPTAnimation animate: plotSpace
                                     property: @"xRange"
                                fromPlotRange: plotSpace.xRange
@@ -1415,8 +1415,8 @@ extern void *UserDefaultsBindingContext;
     plotSpace.allowsMomentum = YES;
     plotSpace.delegate = self;
 
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(10000)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(0)
+                                                           length: @(10000)];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 
@@ -1453,7 +1453,7 @@ extern void *UserDefaultsBindingContext;
     plot.barCornerRadius = 3.0;
     plot.barBaseCornerRadius = 3.0;
     plot.barsAreHorizontal = NO;
-    plot.barWidth = CPTDecimalFromFloat(0.65);
+    plot.barWidth = @(0.65);
 
     [graph addPlot: plot];
 
@@ -1470,7 +1470,7 @@ extern void *UserDefaultsBindingContext;
     plot.barCornerRadius = 5.0;
     plot.barBaseCornerRadius = 5.0;
     plot.barsAreHorizontal = NO;
-    plot.barWidth = CPTDecimalFromFloat(0.9);
+    plot.barWidth = @(0.9);
 
     [graph addPlot: plot];
 }
@@ -1571,8 +1571,8 @@ extern void *UserDefaultsBindingContext;
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     // Horizontal range.
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(-0.5)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: @(-0.5)
+                                                           length: @(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
     float from = [self distanceFromDate: referenceDate toDate: fromDate];
@@ -1580,7 +1580,7 @@ extern void *UserDefaultsBindingContext;
     if (flag && (to - from < tickCount)) {
         to = from + tickCount;
     }
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(from - 0.5) length: CPTDecimalFromFloat(to - from)];
+    plotRange = [CPTPlotRange plotRangeWithLocation: @(from - 0.5) length: @(to - from)];
     plotSpace.xRange = plotRange;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
@@ -1643,9 +1643,9 @@ extern void *UserDefaultsBindingContext;
         interval = [self intervalFromRange: maxAbsolute];
     }
 
-    y.majorIntervalLength = CPTDecimalFromFloat(interval);
-    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedMin.decimalValue
-                                                           length: [[roundedMax decimalNumberBySubtracting: roundedMin] decimalValue]];
+    y.majorIntervalLength = @(interval);
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedMin
+                                                           length: [roundedMax decimalNumberBySubtracting: roundedMin]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
 }
@@ -1937,7 +1937,7 @@ extern void *UserDefaultsBindingContext;
            }
          */
 
-        indicatorLine.orthogonalCoordinateDecimal = CPTDecimalFromFloat(index);
+        indicatorLine.orthogonalPosition = @(index);
     }
 }
 
@@ -1979,8 +1979,8 @@ extern void *UserDefaultsBindingContext;
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
     [CPTAnimation animate: plot
                  property: @"barWidth"
-              fromDecimal: plot.barWidth
-                toDecimal: CPTDecimalFromCGFloat(1)
+                     from: plot.barWidth.floatValue
+                       to: 1
                  duration: ANIMATION_TIME
                 withDelay: 0
            animationCurve: CPTAnimationCurveCubicInOut
@@ -1989,8 +1989,8 @@ extern void *UserDefaultsBindingContext;
     plot = (id)[graph plotWithIdentifier : @"rawRedemptionPlot"];
     [CPTAnimation animate: plot
                  property: @"barWidth"
-              fromDecimal: plot.barWidth
-                toDecimal: CPTDecimalFromCGFloat(1)
+                     from: plot.barWidth.floatValue
+                       to: 1
                  duration: ANIMATION_TIME
                 withDelay: 0
            animationCurve: CPTAnimationCurveCubicInOut
@@ -2003,10 +2003,10 @@ extern void *UserDefaultsBindingContext;
 - (void)finishSwitchToMonthMode {
     ++peerUpdateCount;
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
-    plot.barWidth = CPTDecimalFromFloat(0.65);
+    plot.barWidth = @(0.65);
 
     plot = (id)[graph plotWithIdentifier : @"rawRedemptionPlot"];
-    plot.barWidth = CPTDecimalFromFloat(0.9);
+    plot.barWidth = @(0.9);
 
     [self updateGraphUsingMinimalTickCount: YES];
     [self updateVerticalGraphRange];

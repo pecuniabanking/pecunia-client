@@ -27,7 +27,6 @@
 #import "HBCIController.h"
 #import "Country.h"
 #import "TransferTemplate.h"
-#import "BankInfo.h"
 
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
@@ -91,16 +90,23 @@
     for (TransferTemplate *template in templateController.arrangedObjects) {
         switch (template.type.intValue) {
             case TransferTypeOldStandard:
-            {
-                template.type = @(TransferTypeSEPA);
-                BankInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
-                template.remoteBIC = info.bic;
-                break;
-            }
             case TransferTypeOldStandardScheduled:
             {
-                template.type = @(TransferTypeSEPAScheduled);
-                BankInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                if (template.type.intValue == TransferTypeOldStandard) {
+                    template.type = @(TransferTypeSEPA);
+                } else {
+                    template.type = @(TransferTypeSEPAScheduled);
+                }
+
+                InstituteInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                NSDictionary *ibanResult = [IBANtools convertToIBAN: template.remoteAccount
+                                                           bankCode: template.remoteBankCode
+                                                        countryCode: @"de"
+                                                    validateAccount: YES];
+                if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
+                    [ibanResult[@"result"] intValue] == IBANToolsResultOK) {
+                    template.remoteIBAN = ibanResult[@"iban"];
+                }
                 template.remoteBIC = info.bic;
                 break;
             }

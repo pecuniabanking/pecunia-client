@@ -1,3 +1,76 @@
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#import <CorePlot_iOS/CPTAnimation.h>
+#import <CorePlot_iOS/CPTAnimationOperation.h>
+#import <CorePlot_iOS/CPTAnimationPeriod.h>
+#import <CorePlot_iOS/CPTAnnotation.h>
+#import <CorePlot_iOS/CPTAnnotationHostLayer.h>
+#import <CorePlot_iOS/CPTAxis.h>
+#import <CorePlot_iOS/CPTAxisLabel.h>
+#import <CorePlot_iOS/CPTAxisSet.h>
+#import <CorePlot_iOS/CPTAxisTitle.h>
+#import <CorePlot_iOS/CPTBarPlot.h>
+#import <CorePlot_iOS/CPTBorderedLayer.h>
+#import <CorePlot_iOS/CPTCalendarFormatter.h>
+#import <CorePlot_iOS/CPTColor.h>
+#import <CorePlot_iOS/CPTColorSpace.h>
+#import <CorePlot_iOS/CPTConstraints.h>
+#import <CorePlot_iOS/CPTDefinitions.h>
+#import <CorePlot_iOS/CPTExceptions.h>
+#import <CorePlot_iOS/CPTFill.h>
+#import <CorePlot_iOS/CPTFunctionDataSource.h>
+#import <CorePlot_iOS/CPTGradient.h>
+#import <CorePlot_iOS/CPTGraph.h>
+#import <CorePlot_iOS/CPTGraphHostingView.h>
+#import <CorePlot_iOS/CPTImage.h>
+#import <CorePlot_iOS/CPTLayer.h>
+#import <CorePlot_iOS/CPTLayerAnnotation.h>
+#import <CorePlot_iOS/CPTLegend.h>
+#import <CorePlot_iOS/CPTLegendEntry.h>
+#import <CorePlot_iOS/CPTLimitBand.h>
+#import <CorePlot_iOS/CPTLineCap.h>
+#import <CorePlot_iOS/CPTLineStyle.h>
+#import <CorePlot_iOS/CPTMutableLineStyle.h>
+#import <CorePlot_iOS/CPTMutableNumericData+TypeConversion.h>
+#import <CorePlot_iOS/CPTMutableNumericData.h>
+#import <CorePlot_iOS/CPTMutablePlotRange.h>
+#import <CorePlot_iOS/CPTMutableShadow.h>
+#import <CorePlot_iOS/CPTMutableTextStyle.h>
+#import <CorePlot_iOS/CPTNumericData+TypeConversion.h>
+#import <CorePlot_iOS/CPTNumericData.h>
+#import <CorePlot_iOS/CPTNumericDataType.h>
+#import <CorePlot_iOS/CPTPathExtensions.h>
+#import <CorePlot_iOS/CPTPieChart.h>
+#import <CorePlot_iOS/CPTPlatformSpecificCategories.h>
+#import <CorePlot_iOS/CPTPlatformSpecificDefines.h>
+#import <CorePlot_iOS/CPTPlatformSpecificFunctions.h>
+#import <CorePlot_iOS/CPTPlot.h>
+#import <CorePlot_iOS/CPTPlotArea.h>
+#import <CorePlot_iOS/CPTPlotAreaFrame.h>
+#import <CorePlot_iOS/CPTPlotRange.h>
+#import <CorePlot_iOS/CPTPlotSpace.h>
+#import <CorePlot_iOS/CPTPlotSpaceAnnotation.h>
+#import <CorePlot_iOS/CPTPlotSymbol.h>
+#import <CorePlot_iOS/CPTRangePlot.h>
+#import <CorePlot_iOS/CPTResponder.h>
+#import <CorePlot_iOS/CPTScatterPlot.h>
+#import <CorePlot_iOS/CPTShadow.h>
+#import <CorePlot_iOS/CPTTextLayer.h>
+#import <CorePlot_iOS/CPTTextStyle.h>
+#import <CorePlot_iOS/CPTTheme.h>
+#import <CorePlot_iOS/CPTTimeFormatter.h>
+#import <CorePlot_iOS/CPTTradingRangePlot.h>
+#import <CorePlot_iOS/CPTUtilities.h>
+#import <CorePlot_iOS/CPTXYAxis.h>
+#import <CorePlot_iOS/CPTXYAxisSet.h>
+#import <CorePlot_iOS/CPTXYGraph.h>
+#import <CorePlot_iOS/CPTXYPlotSpace.h>
+
+#else
+
 #import <Cocoa/Cocoa.h>
 
 #import <CorePlot/CPTAnimation.h>
@@ -22,6 +95,7 @@
 #import <CorePlot/CPTFunctionDataSource.h>
 #import <CorePlot/CPTGradient.h>
 #import <CorePlot/CPTGraph.h>
+#import <CorePlot/CPTGraphHostingView.h>
 #import <CorePlot/CPTImage.h>
 #import <CorePlot/CPTLayer.h>
 #import <CorePlot/CPTLayerAnnotation.h>
@@ -31,19 +105,19 @@
 #import <CorePlot/CPTLineCap.h>
 #import <CorePlot/CPTLineStyle.h>
 #import <CorePlot/CPTMutableLineStyle.h>
-#import <CorePlot/CPTMutableNumericData.h>
 #import <CorePlot/CPTMutableNumericData+TypeConversion.h>
+#import <CorePlot/CPTMutableNumericData.h>
 #import <CorePlot/CPTMutablePlotRange.h>
 #import <CorePlot/CPTMutableShadow.h>
 #import <CorePlot/CPTMutableTextStyle.h>
-#import <CorePlot/CPTNumericDataType.h>
-#import <CorePlot/CPTNumericData.h>
 #import <CorePlot/CPTNumericData+TypeConversion.h>
+#import <CorePlot/CPTNumericData.h>
+#import <CorePlot/CPTNumericDataType.h>
+#import <CorePlot/CPTPathExtensions.h>
 #import <CorePlot/CPTPieChart.h>
+#import <CorePlot/CPTPlatformSpecificCategories.h>
 #import <CorePlot/CPTPlatformSpecificDefines.h>
 #import <CorePlot/CPTPlatformSpecificFunctions.h>
-#import <CorePlot/CPTPlatformSpecificCategories.h>
-#import <CorePlot/CPTPathExtensions.h>
 #import <CorePlot/CPTPlot.h>
 #import <CorePlot/CPTPlotArea.h>
 #import <CorePlot/CPTPlotAreaFrame.h>
@@ -57,12 +131,12 @@
 #import <CorePlot/CPTShadow.h>
 #import <CorePlot/CPTTextLayer.h>
 #import <CorePlot/CPTTextStyle.h>
-#import <CorePlot/CPTTradingRangePlot.h>
 #import <CorePlot/CPTTheme.h>
 #import <CorePlot/CPTTimeFormatter.h>
+#import <CorePlot/CPTTradingRangePlot.h>
 #import <CorePlot/CPTUtilities.h>
 #import <CorePlot/CPTXYAxis.h>
 #import <CorePlot/CPTXYAxisSet.h>
 #import <CorePlot/CPTXYGraph.h>
 #import <CorePlot/CPTXYPlotSpace.h>
-#import <CorePlot/CPTGraphHostingView.h>
+#endif

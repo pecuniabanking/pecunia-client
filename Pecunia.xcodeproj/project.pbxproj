@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -43,6 +43,10 @@
 		271AD6B418E85741005BE90D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B118E85741005BE90D /* key.png */; };
 		271AD6B518E85741005BE90D /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B218E85741005BE90D /* key@2x.png */; };
 		271AD6B618E85741005BE90D /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B218E85741005BE90D /* key@2x.png */; };
+		2720D2CF1AC8048900B86AD0 /* de in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CD1AC8048900B86AD0 /* de */; };
+		2720D2D01AC8048900B86AD0 /* de in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CD1AC8048900B86AD0 /* de */; };
+		2720D2D11AC8048900B86AD0 /* eu_all_mfi.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */; };
+		2720D2D21AC8048900B86AD0 /* eu_all_mfi.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */; };
 		2722DE8115B2F03300503E95 /* templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 2722DE8015B2F03300503E95 /* templates.png */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
@@ -130,18 +134,12 @@
 		27516820193B932700FE942F /* check-mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2751681D193B932700FE942F /* check-mark.png */; };
 		27516821193B932700FE942F /* check-mark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2751681E193B932700FE942F /* check-mark@2x.png */; };
 		27516822193B932700FE942F /* check-mark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2751681E193B932700FE942F /* check-mark@2x.png */; };
-		27535FFB186DE337007400BA /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF5186DE337007400BA /* INAppStoreWindow.m */; };
-		27535FFC186DE337007400BA /* INAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF5186DE337007400BA /* INAppStoreWindow.m */; };
-		27535FFD186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
-		27535FFE186DE337007400BA /* INWindowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27535FF7186DE337007400BA /* INWindowButton.m */; };
 		27548B901705D98E00C4BF9B /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 27548B8F1705D98E00C4BF9B /* Tag.m */; };
 		2758542319FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
 		2758542419FFFB9100571251 /* WordMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2758542219FFFB9100571251 /* WordMapping.swift */; };
 		27593DA31AB458A20009A91E /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591181AA38214005FA793 /* Converter.swift */; };
 		27593DA41AB458A40009A91E /* DEAccountCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591191AA38214005FA793 /* DEAccountCheck.swift */; };
 		27593DA51AB458A70009A91E /* DERules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F5911A1AA38214005FA793 /* DERules.swift */; };
-		27593DA61AB458AD0009A91E /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 27FEE78F1AA31F4E00EEE9FB /* Resources */; };
-		27593DA71AB458AD0009A91E /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 27FEE78F1AA31F4E00EEE9FB /* Resources */; };
 		2759D89F1A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
 		2759D8A01A0133FB002AE07E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8931A0133FB002AE07E /* Array.swift */; };
 		2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8941A0133FB002AE07E /* Dictionary.swift */; };
@@ -259,7 +257,6 @@
 		27778887173CE22700430EBC /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		27778888173CE22700430EBC /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
-		2777888A173CE22700430EBC /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		2777888B173CE22700430EBC /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */; };
 		2777888D173CE22700430EBC /* ShortDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F91E0F96594000263F3B /* ShortDate.m */; };
@@ -669,10 +666,6 @@
 		27E12E2F181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E12E30181430BA00D114E7 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E12E2E181430BA00D114E7 /* calendar@2x.png */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
-		27E225781A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
-		27E225791A18D78A007171BE /* WAYWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E225771A18D78A007171BE /* WAYWindow.m */; };
-		27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
-		27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */; };
 		27E23534168A16290050276E /* edit-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23532168A16290050276E /* edit-large.png */; };
 		27E23535168A16290050276E /* edit-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23533168A16290050276E /* edit-large@2x.png */; };
 		27E2353F168A228D0050276E /* csv.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353B168A228D0050276E /* csv.png */; };
@@ -1021,7 +1014,6 @@
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
-		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
@@ -1123,6 +1115,8 @@
 		2719CD83160F5B45004B37C0 /* donate2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = donate2.jpg; sourceTree = "<group>"; };
 		271AD6B118E85741005BE90D /* key.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key.png; sourceTree = "<group>"; };
 		271AD6B218E85741005BE90D /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
+		2720D2CD1AC8048900B86AD0 /* de */ = {isa = PBXFileReference; lastKnownFileType = folder; name = de; path = Submodules/IBANtools/Resources/de; sourceTree = SOURCE_ROOT; };
+		2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = eu_all_mfi.txt; path = Submodules/IBANtools/Resources/eu_all_mfi.txt; sourceTree = SOURCE_ROOT; };
 		2722DE8015B2F03300503E95 /* templates.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = templates.png; sourceTree = "<group>"; };
 		2723289B1551A4D500B9683B /* transfer-debit-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-debit-preview.png"; sourceTree = "<group>"; };
 		2723289C1551A4D500B9683B /* transfer-eu-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-eu-preview.png"; sourceTree = "<group>"; };
@@ -1198,10 +1192,6 @@
 		2751681A193B87D500FE942F /* YRKSpinningProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YRKSpinningProgressIndicator.m; path = "YRK Spinning Indicator/YRKSpinningProgressIndicator.m"; sourceTree = "<group>"; };
 		2751681D193B932700FE942F /* check-mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark.png"; sourceTree = "<group>"; };
 		2751681E193B932700FE942F /* check-mark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark@2x.png"; sourceTree = "<group>"; };
-		27535FF4186DE337007400BA /* INAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindow.h; sourceTree = "<group>"; };
-		27535FF5186DE337007400BA /* INAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INAppStoreWindow.m; sourceTree = "<group>"; wrapsLines = 0; };
-		27535FF6186DE337007400BA /* INWindowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INWindowButton.h; sourceTree = "<group>"; };
-		27535FF7186DE337007400BA /* INWindowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INWindowButton.m; sourceTree = "<group>"; };
 		27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 9.xcdatamodel"; sourceTree = "<group>"; };
 		27548B8E1705D98D00C4BF9B /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; wrapsLines = 0; };
 		27548B8F1705D98E00C4BF9B /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -1440,11 +1430,6 @@
 		27E11ECE178B14C500AD350A /* YahooStockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YahooStockData.m; path = "Home Screen/YahooStockData.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27E12E2E181430BA00D114E7 /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
-		27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INAppStoreWindowCompatibility.h; sourceTree = "<group>"; };
-		27E225761A18D78A007171BE /* WAYWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYWindow.h; path = WAYWindow/WAYWindow.h; sourceTree = "<group>"; };
-		27E225771A18D78A007171BE /* WAYWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYWindow.m; path = WAYWindow/WAYWindow.m; sourceTree = "<group>"; };
-		27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAYAppStoreWindow.h; path = WAYWindow/WAYAppStoreWindow.h; sourceTree = "<group>"; };
-		27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAYAppStoreWindow.m; path = WAYWindow/WAYAppStoreWindow.m; sourceTree = "<group>"; };
 		27E23532168A16290050276E /* edit-large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large.png"; sourceTree = "<group>"; };
 		27E23533168A16290050276E /* edit-large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-large@2x.png"; sourceTree = "<group>"; };
 		27E2353B168A228D0050276E /* csv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = csv.png; sourceTree = "<group>"; };
@@ -1555,7 +1540,6 @@
 		27FD0DA5184120AE0047911C /* StatementsOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsOverviewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		27FEE78F1AA31F4E00EEE9FB /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = Submodules/IBANtools/Resources; sourceTree = SOURCE_ROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; wrapsLines = 0; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -1835,8 +1819,6 @@
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountMaintenanceController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		B1F459EA0F2E480700BAF4E8 /* BankInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankInfo.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F527030C3C1D5800BE3DFC /* BankingCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingCategory.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1F527040C3C1D5800BE3DFC /* BankingCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingCategory.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1982,18 +1964,6 @@
 				2751681A193B87D500FE942F /* YRKSpinningProgressIndicator.m */,
 			);
 			name = "YRK Spinning Indicator";
-			sourceTree = "<group>";
-		};
-		27535FF2186DE337007400BA /* INAppStoreWindow */ = {
-			isa = PBXGroup;
-			children = (
-				27E225741A18CF90007171BE /* INAppStoreWindowCompatibility.h */,
-				27535FF4186DE337007400BA /* INAppStoreWindow.h */,
-				27535FF5186DE337007400BA /* INAppStoreWindow.m */,
-				27535FF6186DE337007400BA /* INWindowButton.h */,
-				27535FF7186DE337007400BA /* INWindowButton.m */,
-			);
-			path = INAppStoreWindow;
 			sourceTree = "<group>";
 		};
 		2759D8921A0133FB002AE07E /* ExSwift */ = {
@@ -2231,13 +2201,11 @@
 				2732F697186ADEC100809CF2 /* EDSideBar */,
 				2759D8921A0133FB002AE07E /* ExSwift */,
 				27FEE78E1AA31F2100EEE9FB /* IBANtools */,
-				27535FF2186DE337007400BA /* INAppStoreWindow */,
 				27686E38193B5B320038067D /* JMModalOverlay */,
 				2736DD531514F6680066917C /* MBTableGrid */,
 				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
 				2706F2001556C3BE0011A20E /* OnOffButton */,
 				275C07DC1438777900D97415 /* PXListview */,
-				27E225751A18D778007171BE /* WAYWindow */,
 				27516818193B87C900FE942F /* YRK Spinning Indicator */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
@@ -2303,17 +2271,6 @@
 				27E11ECE178B14C500AD350A /* YahooStockData.m */,
 			);
 			name = "Home Screen";
-			sourceTree = "<group>";
-		};
-		27E225751A18D778007171BE /* WAYWindow */ = {
-			isa = PBXGroup;
-			children = (
-				27E2257A1A18E4DD007171BE /* WAYAppStoreWindow.h */,
-				27E2257B1A18E4DD007171BE /* WAYAppStoreWindow.m */,
-				27E225761A18D78A007171BE /* WAYWindow.h */,
-				27E225771A18D78A007171BE /* WAYWindow.m */,
-			);
-			name = WAYWindow;
 			sourceTree = "<group>";
 		};
 		27E5534E146ED854001DE9BE /* Models */ = {
@@ -2465,10 +2422,11 @@
 		27FEE78E1AA31F2100EEE9FB /* IBANtools */ = {
 			isa = PBXGroup;
 			children = (
+				2720D2CD1AC8048900B86AD0 /* de */,
+				2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */,
 				27F591181AA38214005FA793 /* Converter.swift */,
 				27F591191AA38214005FA793 /* DEAccountCheck.swift */,
 				27F5911A1AA38214005FA793 /* DERules.swift */,
-				27FEE78F1AA31F4E00EEE9FB /* Resources */,
 			);
 			name = IBANtools;
 			sourceTree = "<group>";
@@ -2538,8 +2496,6 @@
 				B14D4D2A13DCA0E000843BE6 /* User.m */,
 				B1014AEC101643C800ABA1FF /* TanMethod.h */,
 				B1014AED101643C800ABA1FF /* TanMethod.m */,
-				B1F459EA0F2E480700BAF4E8 /* BankInfo.h */,
-				B1F459EB0F2E480700BAF4E8 /* BankInfo.m */,
 				B12A496910BDD23D002CC63E /* Account.h */,
 				B12A496A10BDD23D002CC63E /* Account.m */,
 				B14EBCFB1031FAC700020A26 /* BankQueryResult.h */,
@@ -3196,7 +3152,7 @@
 				};
 			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -3245,9 +3201,9 @@
 				2777892A173CE22700430EBC /* CountryInfo.txt in Resources */,
 				272F6E601955C5BF00096734 /* sequence-type-repeat.png in Resources */,
 				27DF7E1719C49AF7009E2101 /* zoom-in.png in Resources */,
-				27593DA71AB458AD0009A91E /* Resources in Resources */,
 				27AA5680186C3E9100B113E7 /* assign-active@2x.png in Resources */,
 				272722711871CE7E00215DFB /* donate-active@2x.png in Resources */,
+				2720D2D21AC8048900B86AD0 /* eu_all_mfi.txt in Resources */,
 				27DF7E1919C49AF7009E2101 /* zoom-in@2x.png in Resources */,
 				272F6E6F1955D72300096734 /* sequence-type-end@2x.png in Resources */,
 				27AA5682186C3E9100B113E7 /* assign.png in Resources */,
@@ -3301,6 +3257,7 @@
 				27A3C0C817FF15D800FCF8BF /* time-zoom-in@2x.png in Resources */,
 				275AC7F2186B62BD002E6BED /* overview-active.png in Resources */,
 				276D9C9018CB6BD0002BEDA8 /* magnify.png in Resources */,
+				2720D2D01AC8048900B86AD0 /* de in Resources */,
 				2794FF6C1972D5BA000B69EC /* new-small-white@2x.png in Resources */,
 				27AA5688186C439F00B113E7 /* favorite.png in Resources */,
 				27AA569A186C562300B113E7 /* send2-active.png in Resources */,
@@ -3517,6 +3474,7 @@
 				276D9C9D18CB79FF002BEDA8 /* magnify-busy2.png in Resources */,
 				276B5EFB194DAC1F00B12400 /* gray-hatch2.png in Resources */,
 				27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */,
+				2720D2CF1AC8048900B86AD0 /* de in Resources */,
 				B134357212EB7FDF006C4687 /* split-cursor.png in Resources */,
 				B138AC4A1391946E0026BEE2 /* money_18.png in Resources */,
 				B138AC4B1391946E0026BEE2 /* money_sync_18.png in Resources */,
@@ -3536,7 +3494,6 @@
 				2732F6AC186B202400809CF2 /* overview@2x.png in Resources */,
 				2732F6A3186B084B00809CF2 /* home-active.png in Resources */,
 				276D9C9F18CB79FF002BEDA8 /* magnify-busy2@2x.png in Resources */,
-				27593DA61AB458AD0009A91E /* Resources in Resources */,
 				27AA5659186C330A00B113E7 /* graph3.png in Resources */,
 				27E8460C19E17D300026464E /* SigningOptions.xib in Resources */,
 				275CF077181420F40035EBEC /* disclose.png in Resources */,
@@ -3574,6 +3531,7 @@
 				276D9C8F18CB6BD0002BEDA8 /* magnify.png in Resources */,
 				2794FF6B1972D5BA000B69EC /* new-small-white@2x.png in Resources */,
 				27AA5687186C439F00B113E7 /* favorite.png in Resources */,
+				2720D2D11AC8048900B86AD0 /* eu_all_mfi.txt in Resources */,
 				27E8460619E17D300026464E /* Preferences.xib in Resources */,
 				27E845EE19E17D300026464E /* HomeScreenNextTransfers.xib in Resources */,
 				27E8462019E17D300026464E /* TransfersListViewCell.xib in Resources */,
@@ -3796,11 +3754,9 @@
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27593DA51AB458A70009A91E /* DERules.swift in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
-				2777888A173CE22700430EBC /* BankInfo.m in Sources */,
 				27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				2777888B173CE22700430EBC /* Keychain.m in Sources */,
 				2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */,
-				27535FFC186DE337007400BA /* INAppStoreWindow.m in Sources */,
 				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
 				27593DA31AB458A20009A91E /* Converter.swift in Sources */,
@@ -3903,7 +3859,6 @@
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
 				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
-				27E225791A18D78A007171BE /* WAYWindow.m in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
@@ -3916,7 +3871,6 @@
 				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
-				27E2257D1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B1A6AA621A2672C400141C39 /* ddv_writebankdata.m in Sources */,
@@ -3930,7 +3884,6 @@
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
 				B1A6AA681A2672C400141C39 /* get_keyinfo.m in Sources */,
-				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B1A6AA761A2672C400141C39 /* read_record.m in Sources */,
@@ -4064,11 +4017,9 @@
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				27F5911D1AA38214005FA793 /* DERules.swift in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
-				B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */,
 				27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */,
 				B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */,
-				27535FFB186DE337007400BA /* INAppStoreWindow.m in Sources */,
 				B132F91F0F96594000263F3B /* ShortDate.m in Sources */,
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
 				27F5911B1AA38214005FA793 /* Converter.swift in Sources */,
@@ -4171,7 +4122,6 @@
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
 				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				2735D6D71A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
-				27E225781A18D78A007171BE /* WAYWindow.m in Sources */,
 				275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */,
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
@@ -4184,7 +4134,6 @@
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
-				27E2257C1A18E4DD007171BE /* WAYAppStoreWindow.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */,
@@ -4198,7 +4147,6 @@
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
 				B1A6AA671A2672C400141C39 /* get_keyinfo.m in Sources */,
-				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B1A6AA751A2672C400141C39 /* read_record.m in Sources */,

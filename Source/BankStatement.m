@@ -233,24 +233,6 @@ BOOL stringEqual(NSString *a, NSString *b) {
     [self updateAssigned];
 }
 
-+ (BOOL)isValidIBAN: (NSString *)text {
-    if (text.length == 0) {
-        return NO;
-    }
-    return [IBANtools isValidIBAN: text];
-}
-
-+ (BOOL)isValidBIC: (NSString *)text {
-    if (text.length == 0) {
-        return NO;
-    }
-
-    if ([bicRE matchesInString: text options: 0 range: NSMakeRange(0, text.length)].count == 1) {
-        return YES;
-    }
-    return NO;
-}
-
 /**
  * extract MT940 SEPA data
  */
@@ -269,10 +251,10 @@ BOOL stringEqual(NSString *a, NSString *b) {
             sepaDateFormatter.dateFormat = @"yyyy-MM-dd";
         }
 
-        if ([BankStatement isValidIBAN: values[@"IBAN"]] && ![BankStatement isValidIBAN: self.remoteIBAN]) {
+        if ([IBANtools isValidIBAN: values[@"IBAN"]] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
             self.remoteIBAN = values[@"IBAN"];
         }
-        if ([BankStatement isValidBIC: values[@"BIC"]] && ![BankStatement isValidBIC: self.remoteBIC]) {
+        if ([IBANtools isValidBIC: values[@"BIC"]] && ![IBANtools isValidBIC: self.remoteBIC]) {
             self.remoteBIC = values[@"BIC"];
         }
         self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.

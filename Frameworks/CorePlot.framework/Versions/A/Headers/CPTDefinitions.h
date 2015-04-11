@@ -130,16 +130,17 @@ typedef NS_ENUM (NSInteger, CPTScaleType) {
     CPTScaleTypeLog,      ///< Logarithmic axis scale
     CPTScaleTypeAngular,  ///< Angular axis scale (not implemented)
     CPTScaleTypeDateTime, ///< Date/time axis scale (not implemented)
-    CPTScaleTypeCategory  ///< Category axis scale (not implemented)
+    CPTScaleTypeCategory  ///< Category axis scale
 };
 
 /**
  *  @brief Enumeration of axis coordinates
  **/
 typedef NS_ENUM (NSInteger, CPTCoordinate) {
-    CPTCoordinateX = 0, ///< X axis
-    CPTCoordinateY = 1, ///< Y axis
-    CPTCoordinateZ = 2  ///< Z axis
+    CPTCoordinateX    = 0,           ///< X axis
+    CPTCoordinateY    = 1,           ///< Y axis
+    CPTCoordinateZ    = 2,           ///< Z axis
+    CPTCoordinateNone = NSIntegerMax ///< Invalid coordinate value
 };
 
 /**
@@ -188,3 +189,16 @@ typedef NS_ENUM (NSInteger, CPTAlignment) {
     CPTAlignmentMiddle, ///< Align vertically to the middle.
     CPTAlignmentBottom  ///< Align vertically to the bottom.
 };
+
+/**
+ *  @brief Edge inset distances for stretchable images.
+ **/
+typedef struct _CPTEdgeInsets {
+    CGFloat top;    ///< The top inset.
+    CGFloat left;   ///< The left inset.
+    CGFloat bottom; ///< The bottom inset.
+    CGFloat right;  ///< The right inset.
+}
+CPTEdgeInsets;
+
+extern const CPTEdgeInsets CPTEdgeInsetsZero; ///< Defines a set of stretchable image edge insets where all of the values are zero (@num{0}).

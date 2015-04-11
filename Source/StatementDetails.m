@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,7 +38,6 @@
 #import "NSImage+PecuniaAdditions.h"
 
 #import "MOAssistant.h"
-#import "BankInfo.h"
 #import "HBCIController.h"
 
 extern void *UserDefaultsBindingContext;

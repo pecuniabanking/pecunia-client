@@ -164,6 +164,25 @@ extern NSString *const CPTPlotSpaceDisplacementKey;
 
 @property (nonatomic, readonly) NSUInteger numberOfCoordinates;
 
+/// @name Categorical Data
+/// @{
+-(void)addCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate;
+-(void)removeCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate;
+-(void)insertCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate atIndex:(NSUInteger)idx;
+-(void)setCategories:(NSArray *)newCategories forCoordinate:(CPTCoordinate)coordinate;
+-(void)removeAllCategories;
+
+-(NSArray *)categoriesForCoordinate:(CPTCoordinate)coordinate;
+-(NSString *)categoryForCoordinate:(CPTCoordinate)coordinate atIndex:(NSUInteger)idx;
+-(NSUInteger)indexOfCategory:(NSString *)category forCoordinate:(CPTCoordinate)coordinate;
+/// @}
+
+/// @name Initialization
+/// @{
+-(instancetype)init NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+/// @}
+
 @end
 
 #pragma mark -
@@ -175,14 +194,17 @@ extern NSString *const CPTPlotSpaceDisplacementKey;
 
 /// @name Coordinate Space Conversions
 /// @{
+-(CGPoint)plotAreaViewPointForPlotPoint:(NSArray *)plotPoint;
 -(CGPoint)plotAreaViewPointForPlotPoint:(NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count;
 -(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(double *)plotPoint numberOfCoordinates:(NSUInteger)count;
 
+-(NSArray *)plotPointForPlotAreaViewPoint:(CGPoint)point;
 -(void)plotPoint:(NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forPlotAreaViewPoint:(CGPoint)point;
 -(void)doublePrecisionPlotPoint:(double *)plotPoint numberOfCoordinates:(NSUInteger)count forPlotAreaViewPoint:(CGPoint)point;
 
 -(CGPoint)plotAreaViewPointForEvent:(CPTNativeEvent *)event;
 
+-(NSArray *)plotPointForEvent:(CPTNativeEvent *)event;
 -(void)plotPoint:(NSDecimal *)plotPoint numberOfCoordinates:(NSUInteger)count forEvent:(CPTNativeEvent *)event;
 -(void)doublePrecisionPlotPoint:(double *)plotPoint numberOfCoordinates:(NSUInteger)count forEvent:(CPTNativeEvent *)event;
 /// @}

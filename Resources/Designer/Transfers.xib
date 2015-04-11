@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TransfersController">
@@ -60,10 +60,8 @@
                 <outlet property="titleText" destination="376" id="520"/>
                 <outlet property="transactionController" destination="95" id="218"/>
                 <outlet property="transferDeleteImage" destination="619" id="621"/>
-                <outlet property="transferEUImage" destination="609" id="618"/>
                 <outlet property="transferFormular" destination="369" id="512"/>
                 <outlet property="transferInternalImage" destination="607" id="613"/>
-                <outlet property="transferNormalImage" destination="605" id="614"/>
                 <outlet property="transferSEPAImage" destination="611" id="617"/>
                 <outlet property="transferTab" destination="315" id="661"/>
                 <outlet property="transferTemplateListView" destination="632" id="640"/>
@@ -330,24 +328,9 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView id="607" customClass="DragImageView">
-                            <rect key="frame" x="20" y="594" width="211" height="145"/>
+                            <rect key="frame" x="127" y="594" width="211" height="145"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-internal-preview" id="608"/>
-                        </imageView>
-                        <imageView tag="1" id="605" customClass="DragImageView">
-                            <rect key="frame" x="150" y="594" width="211" height="145"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-normal-preview" id="606"/>
-                        </imageView>
-                        <imageView tag="2" id="609" customClass="DragImageView">
-                            <rect key="frame" x="280" y="594" width="211" height="145"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-eu-preview" id="610"/>
-                        </imageView>
-                        <imageView tag="3" id="611" customClass="DragImageView">
-                            <rect key="frame" x="410" y="594" width="211" height="145"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-sepa-preview" id="612"/>
                         </imageView>
                         <imageView wantsLayer="YES" id="619" userLabel="Waste Basket" customClass="DeleteTransferTargetView">
                             <rect key="frame" x="667" y="629" width="59" height="75"/>
@@ -367,6 +350,11 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <imageView tag="3" id="611" customClass="DragImageView">
+                            <rect key="frame" x="376" y="594" width="211" height="145"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="transfer-sepa-preview" id="612"/>
+                        </imageView>
                     </subviews>
                 </customView>
             </subviews>
@@ -1103,9 +1091,10 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="54" rowSizeStyle="automatic" viewBased="YES" id="IY8-Sc-cdp">
+                                <rect key="frame" x="0.0" y="0.0" width="465" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <tableViewGridLines key="gridStyleMask" dashed="YES"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
@@ -1310,9 +1299,7 @@ Gw
         <image name="delete2" width="16" height="16"/>
         <image name="shield" width="24" height="24"/>
         <image name="templates" width="95" height="64"/>
-        <image name="transfer-eu-preview" width="211" height="145"/>
         <image name="transfer-internal-preview" width="211" height="145"/>
-        <image name="transfer-normal-preview" width="211" height="145"/>
         <image name="transfer-sepa-preview" width="211" height="145"/>
     </resources>
 </document>
