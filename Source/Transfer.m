@@ -137,7 +137,7 @@
     NSString   *s;
     NSUInteger maxLen = limits.maxLenRemoteName * limits.maxLinesRemoteName;
     s = other.remoteName;
-    if (s.length > maxLen) {
+    if (maxLen > 0 && s.length > maxLen) {
         s = [s substringToIndex: maxLen];
     }
     self.remoteName = s;
@@ -146,12 +146,12 @@
     int num = [limits maxLinesPurpose];
 
     s = other.purpose1;
-    if (s.length > maxLen) {
+    if (maxLen > 0 && s.length > maxLen) {
         s = [s substringToIndex: maxLen];
     }
     self.purpose1 = s;
 
-    if (num > 1) {
+    if (num == 0 || num > 1) {
         s = other.purpose2;
         if (s.length > maxLen) {
             s = [s substringToIndex: maxLen];
@@ -159,7 +159,7 @@
         self.purpose2 = s;
     }
 
-    if (num > 2) {
+    if (num == 0 || num > 2) {
         s = other.purpose3;
         if (s.length > maxLen) {
             s = [s substringToIndex: maxLen];
@@ -167,7 +167,7 @@
         self.purpose3 = s;
     }
 
-    if (num > 3) {
+    if (num == 0 || num > 3) {
         s = other.purpose4;
         if (s.length > maxLen) {
             s = [s substringToIndex: maxLen];

@@ -172,7 +172,7 @@ static NSMutableDictionary *users = nil;
                     [options addObject: option];
                     added = YES;
                 }
-                if ([method.identifier containsString:@"push"] && [medium.category isEqualToString:@"A"] && [medium.name containsString: @"push"]) {
+                if (([method.identifier rangeOfString:@"push"].location != NSNotFound) && [medium.category isEqualToString:@"A"] && ([medium.name rangeOfString: @"push"].location != NSNotFound)) {
                     option.tanMediumName = medium.name;
                     option.tanMediumCategory = medium.category;
                     [options addObject: option];

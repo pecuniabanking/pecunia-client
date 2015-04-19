@@ -1692,6 +1692,7 @@ NSString * escapeSpecial(NSString *s)
         return error;
     }
 
+    [self startProgress];
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateUserData\">"];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd];
@@ -1700,6 +1701,7 @@ NSString * escapeSpecial(NSString *s)
 
     // communicate with bank to update bank parameters
     User *usr = [bridge syncCommand: cmd error: &error];
+    [self stopProgress];
     if (error) {
         return error;
     }

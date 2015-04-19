@@ -91,13 +91,13 @@
 
 - (void)updateLimits
 {
-    limits = [[HBCIController controller] limitsForType: transferType account: account country: selectedCountry];
+    limits = [[HBCIController controller] limitsForType: currentTransfer.type.intValue account: account country: selectedCountry];
 }
 
 - (void)prepareTransfer
 {
     // Update limits.
-    if (transferType != TransferTypeEU) {
+    if (currentTransfer.type.intValue != TransferTypeEU) {
         selectedCountry = nil;
         [self updateLimits];
         currentTransfer.remoteCountry = account.country;
@@ -129,7 +129,7 @@
     }
 
     // set default values
-    if (transferType == TransferTypeOldStandardScheduled) {
+    if (currentTransfer.type.intValue == TransferTypeOldStandardScheduled) {
         int setupTime;
         if (limits) {
             setupTime = [limits minSetupTime];
@@ -165,9 +165,8 @@
     }
 
     account = nil;
-    transferType = type;
     currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
-    currentTransfer.type = @((int)transferType);
+    currentTransfer.type = @((int)type);
     currentTransfer.changeState = TransferChangeNew;
     [self prepareTransfer];
     [currentTransferController setContent: currentTransfer];
@@ -189,10 +188,9 @@
         }
     }
 
-    transferType = [transfer.type intValue];
     account = transfer.account;
 
-    if (transferType == TransferTypeEU) {
+    if (transfer.type.intValue == TransferTypeEU) {
         [self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
     }
 
@@ -211,14 +209,12 @@
         return NO;
     }
 
-    transferType = [transfer.type intValue];
     account = transfer.account;
-
-    if (transferType == TransferTypeEU) {
+    
+    if (transfer.type.intValue == TransferTypeEU) {
         [self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
     }
 
-    [self prepareTransfer];
     [currentTransfer copyFromTransfer: transfer withLimits: limits];
     currentTransfer.changeState = TransferChangeNew;
 
@@ -241,9 +237,6 @@
         return NO;
     }
 
-    transferType = [template.type intValue];
-
-    [self prepareTransfer];
     [currentTransfer copyFromTemplate: template withLimits: nil];
     currentTransfer.changeState = TransferChangeNew;
 
@@ -389,14 +382,17 @@
 {
     BOOL         res;
     NSNumber     *value;
-    TransferType activeType = transferType;
+    TransferType transferType;
+    
     if (currentTransfer.valutaDate != nil) {
-        switch (activeType) {
-            case TransferTypeOldStandard: activeType = TransferTypeOldStandardScheduled; break;
-            case TransferTypeSEPA: activeType = TransferTypeSEPAScheduled; break;
+        switch (currentTransfer.type.intValue) {
+            case TransferTypeOldStandard: currentTransfer.type = @(TransferTypeOldStandardScheduled); break;
+            case TransferTypeSEPA: currentTransfer.type = @(TransferTypeSEPAScheduled); break;
             default: break;
         }
     }
+    
+    transferType = currentTransfer.type.intValue;
 
     if (![self validateCharacters: currentTransfer.purpose1]) {
         return NO;
@@ -421,7 +417,7 @@
         return NO;
     }
     // do not check remote account for EU transfers, instead IBAN
-    if (activeType != TransferTypeEU && activeType != TransferTypeSEPA && activeType != TransferTypeSEPAScheduled) {
+    if (transferType != TransferTypeEU && transferType != TransferTypeSEPA && transferType != TransferTypeSEPAScheduled) {
         if (currentTransfer.remoteAccount == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP55", nil),
@@ -451,7 +447,7 @@
 
     }
 
-    if (activeType == TransferTypeOldStandard || activeType == TransferTypeOldStandardScheduled) {
+    if (transferType == TransferTypeOldStandard || transferType == TransferTypeOldStandardScheduled) {
         if (currentTransfer.remoteBankCode == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP56", nil),
@@ -460,7 +456,7 @@
         }
     }
 
-    if (activeType == TransferTypeSEPA || activeType == TransferTypeSEPAScheduled) {
+    if (transferType == TransferTypeSEPA || transferType == TransferTypeSEPAScheduled) {
         if (currentTransfer.remoteBIC == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP69", nil),
@@ -508,7 +504,7 @@
         }
     }
 
-    if (activeType == TransferTypeEU) {
+    if (transferType == TransferTypeEU) {
         currentTransfer.currency = [currentTransfer.currency uppercaseString];
         NSString *foreignCurr = [[[countryController selectedObjects] lastObject] currency];
         NSString *curr = currentTransfer.currency;
@@ -537,7 +533,7 @@
 
 
     // Verify account/bank information.
-    switch (activeType)
+    switch (transferType)
     {
         case TransferTypeEU:
             break;

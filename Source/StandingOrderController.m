@@ -579,6 +579,8 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
     BOOL     res;
     NSNumber *value;
+    
+    [orderController commitEditing];
 
     // avoid rounding issues
     stord.value = [stord.value rounded];
