@@ -1021,7 +1021,7 @@ static HBCIController *controller = nil;
     }
     
     // if it's a chipcard account, notify user to make sure right chipcard is inserted
-    BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+    BankUser *user = [BankUser userWithId: result.account.userId bankCode: result.account.bankCode];
     if (user == nil) {
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
@@ -1035,24 +1035,20 @@ static HBCIController *controller = nil;
     }
     
     // register user
-    user = [self getBankUserForId:result.userId bankCode:result.bankCode];
+    user = [self getBankUserForId: result.account.userId bankCode: result.account.bankCode];
     if (user == nil) {
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
     
     for (result in resultList) {
-        [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber];
-        [self appendTag: @"subNumber" withValue: result.accountSubnumber to: cmd];
+        [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>",
+         result.account.bankCode, result.account.accountNumber];
+        [self appendTag: @"subNumber" withValue: result.account.accountSuffix to: cmd];
         
         NSInteger maxStatDays = 0;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey: @"limitStatsAge"]) {
+        if ([NSUserDefaults.standardUserDefaults boolForKey: @"limitStatsAge"]) {
             maxStatDays = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxStatDays"];
-            /* do not restrict horizon to 90 days by default any more (too many complaints)
-             if (maxStatDays == 0) {
-             maxStatDays = 90;
-             }
-             */
         }
         
         if (result.account.latestTransferDate == nil && maxStatDays > 0) {
@@ -1080,10 +1076,10 @@ static HBCIController *controller = nil;
     // organize statements by user
     bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
     for (BankQueryResult *result in resultList) {
-        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey:result.userId];
+        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey: result.account.userId];
         if (accountResults == nil) {
             accountResults = [NSMutableArray arrayWithCapacity:10];
-            [bankQueryResultsByUser setObject:accountResults forKey:result.userId];
+            [bankQueryResultsByUser setObject: accountResults forKey: result.account.userId];
         }
         [accountResults addObject:result];
     }
@@ -1209,7 +1205,7 @@ static HBCIController *controller = nil;
     }
     
     // if it's a chipcard account, notify user to make sure right chipcard is inserted
-    BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+    BankUser *user = [BankUser userWithId: result.account.userId bankCode: result.account.bankCode];
     if (user == nil) {
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
@@ -1223,7 +1219,7 @@ static HBCIController *controller = nil;
     }
     
     // register user
-    user = [self getBankUserForId:result.userId bankCode:result.bankCode];
+    user = [self getBankUserForId: result.account.userId bankCode: result.account.bankCode];
     if (user == nil) {
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
@@ -1231,9 +1227,9 @@ static HBCIController *controller = nil;
     
     for (result in resultList) {
         [cmd appendString: @"<accinfo>"];
-        [self appendTag: @"bankCode" withValue: result.bankCode to: cmd];
-        [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd];
-        [self appendTag: @"subNumber" withValue: result.accountSubnumber to: cmd];
+        [self appendTag: @"bankCode" withValue: result.account.bankCode to: cmd];
+        [self appendTag: @"accountNumber" withValue: result.account.accountNumber to: cmd];
+        [self appendTag: @"subNumber" withValue: result.account.accountSuffix to: cmd];
         [self appendTag: @"userId" withValue: user.userId to: cmd];
         [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
         [self appendTag: @"iban" withValue: result.account.iban to: cmd];
@@ -1251,10 +1247,10 @@ static HBCIController *controller = nil;
     // organize statements by user
     bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
     for (BankQueryResult *result in resultList) {
-        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey:result.userId];
+        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey: result.account.userId];
         if (accountResults == nil) {
             accountResults = [NSMutableArray arrayWithCapacity:10];
-            [bankQueryResultsByUser setObject:accountResults forKey:result.userId];
+            [bankQueryResultsByUser setObject:accountResults forKey: result.account.userId];
         }
         [accountResults addObject:result];
     }

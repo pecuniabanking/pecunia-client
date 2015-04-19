@@ -497,6 +497,9 @@
 		277D1A711799B26900C0E4DF /* closed-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6E1799B26900C0E4DF /* closed-sign.png */; };
 		277D1A721799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
 		277D1A731799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
+		27820B4C1AE3C811001505E4 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */; };
+		27820B4F1AE3C996001505E4 /* PluginRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27820B4E1AE3C996001505E4 /* PluginRegistry.swift */; };
+		27820B501AE3C996001505E4 /* PluginRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27820B4E1AE3C996001505E4 /* PluginRegistry.swift */; };
 		2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
@@ -1289,6 +1292,8 @@
 		277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Frameworks/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
+		27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginRegistry.swift; sourceTree = "<group>"; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1870,6 +1875,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27820B4C1AE3C811001505E4 /* JavaScriptCore.framework in Frameworks */,
 				27E844E719E173FD0026464E /* Quartz.framework in Frameworks */,
 				277CBA2C19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
 				27E2D28319167D30001D6E80 /* Accelerate.framework in Frameworks */,
@@ -1888,6 +1894,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */,
 				277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */,
 				27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
@@ -2071,6 +2078,14 @@
 				276D9C8B18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m */,
 			);
 			name = "AppKit categories";
+			sourceTree = "<group>";
+		};
+		27820B4D1AE3C963001505E4 /* Scripting */ = {
+			isa = PBXGroup;
+			children = (
+				27820B4E1AE3C996001505E4 /* PluginRegistry.swift */,
+			);
+			name = Scripting;
 			sourceTree = "<group>";
 		};
 		2792CB31148404E2006A510A /* Animation */ = {
@@ -2549,6 +2564,7 @@
 				B14C61B8115AB4A9009324A6 /* Migration */,
 				B137BE7812D32F3B00D0394C /* Printing */,
 				272454641871F81E00AF9042 /* Recognition */,
+				27820B4D1AE3C963001505E4 /* Scripting */,
 				B1FE0DD610658759005B3800 /* Service */,
 				B1FE0DCB106583F8005B3800 /* Windows + Views */,
 			);
@@ -3933,6 +3949,7 @@
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
 				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
 				277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */,
+				27820B501AE3C996001505E4 /* PluginRegistry.swift in Sources */,
 				277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */,
 				277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */,
 				277788FA173CE22700430EBC /* SigningOption.m in Sources */,
@@ -4199,6 +4216,7 @@
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,
 				27E662B615A09BDA002F9277 /* TransferTemplatesListView.m in Sources */,
+				27820B4F1AE3C996001505E4 /* PluginRegistry.swift in Sources */,
 				27E662B715A09BDA002F9277 /* TransferTemplateListViewCell.m in Sources */,
 				B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */,
 				B183586215CDC064003B93ED /* SigningOption.m in Sources */,

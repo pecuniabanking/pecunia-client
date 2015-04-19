@@ -728,11 +728,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         }
 
         if (account.userId != nil) {
-            BankQueryResult *result = [[BankQueryResult alloc] init];
-            result.accountNumber = account.accountNumber;
-            result.accountSubnumber = account.accountSuffix;
-            result.bankCode = account.bankCode;
-            result.userId = account.userId;
+            BankQueryResult *result = [BankQueryResult new];
             result.account = account;
             result.type = BankQueryType_StandingOrder;
             [accountList addObject: result];

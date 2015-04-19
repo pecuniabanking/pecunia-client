@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,15 +21,10 @@
 
 @implementation BankQueryResult
 
-@synthesize accountNumber;
-@synthesize accountSubnumber;
-@synthesize bankCode;
-@synthesize currency;
 @synthesize balance;
 @synthesize oldBalance;
 @synthesize statements;
 @synthesize account;
-@synthesize userId;
 @synthesize standingOrders;
 @synthesize isImport;
 @synthesize ccNumber;
@@ -38,10 +33,13 @@
 
 - (BOOL)isEqual:(BankQueryResult*)result
 {
-    if ([accountNumber isEqualToString:result.accountNumber] && [bankCode isEqualToString:result.bankCode]) {
-        return (accountSubnumber == nil && result.accountSubnumber == nil) ||
-        (accountSubnumber != nil && result.accountSubnumber != nil && [accountSubnumber isEqualToString:result.accountSubnumber]);
+    if ([account.accountNumber isEqualToString: result.account.accountNumber] &&
+        [account.bankCode isEqualToString: result.account.bankCode]) {
+        return (account.accountSuffix == nil && result.account.accountSuffix == nil) ||
+        (account.accountSuffix != nil && result.account.accountSuffix != nil &&
+         [account.accountSuffix isEqualToString: result.account.accountSuffix]);
     }
+
     return NO;
 }
 

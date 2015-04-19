@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -61,6 +61,7 @@
 @synthesize pecuniaFileURL;
 @synthesize dataFilename;
 @synthesize dataDirURL;
+@synthesize scriptingDir;
 
 @synthesize mainWindow;
 @synthesize isMaxIdleTimeExceeded;
@@ -83,6 +84,7 @@ static NSString *lDir = @"~/Library/Application Support/Pecunia/Data";
 static NSString *pDir = @"~/Library/Application Support/Pecunia/Passports";
 static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
+static NSString *sDir = @"~/Library/Application Support/Pecunia/Scripts";
 
 - (id)init {
     self = [super init];
@@ -422,8 +424,17 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
             @throw error;
         }
     }
+
     // Make it a full URL to the store.
     sharedDataURL = [sharedDataURL URLByAppendingPathComponent: @"shared.sqlite"];
+
+    scriptingDir = [sDir stringByExpandingTildeInPath];
+    if (![fm fileExistsAtPath: scriptingDir]) {
+        [fm createDirectoryAtPath: scriptingDir withIntermediateDirectories: YES attributes: nil error: &error];
+        if (error) {
+            @throw error;
+        }
+    }
 
     // Temporary Directory
     tempDir = NSTemporaryDirectory();
@@ -445,6 +456,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     LogInfo(@"Pecunia file URL: %@", pecuniaFileURL);
     LogInfo(@"Passport dir: %@", passportDirectory);
     LogInfo(@"Import/Export dir: %@", importerDir);
+    LogInfo(@"Scripting dir: %@", scriptingDir);
     LogInfo(@"Temp dir: %@", tempDir);
 
     LogLeave;

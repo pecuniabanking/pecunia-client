@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,11 +30,6 @@ typedef enum {
 }
 
 @property (assign) BankQueryType type;
-@property (copy) NSString        *accountNumber;
-@property (copy) NSString        *accountSubnumber;
-@property (copy) NSString        *bankCode;
-@property (copy) NSString        *currency;
-@property (copy) NSString        *userId;
 @property (copy) NSString        *ccNumber;
 @property (copy) NSDate          *lastSettleDate;
 @property (copy) NSDecimalNumber *balance;
@@ -43,7 +38,5 @@ typedef enum {
 @property (copy) NSMutableArray  *standingOrders;
 @property (weak) BankAccount     *account;
 @property (assign) BOOL          isImport;
-
-
 
 @end
