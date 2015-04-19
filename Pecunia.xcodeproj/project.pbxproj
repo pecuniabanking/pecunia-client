@@ -28,6 +28,12 @@
 		270CA2F41900359E00DCF0DB /* font-increase.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2ED1900359E00DCF0DB /* font-increase.png */; };
 		270CA2F51900359E00DCF0DB /* font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2EE1900359E00DCF0DB /* font-increase@2x.png */; };
 		270CA2F61900359E00DCF0DB /* font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2EE1900359E00DCF0DB /* font-increase@2x.png */; };
+		270ED6CA1AE3C50E001D3B8C /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C71AE3C50E001D3B8C /* Bool.swift */; };
+		270ED6CB1AE3C50E001D3B8C /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C71AE3C50E001D3B8C /* Bool.swift */; };
+		270ED6CC1AE3C50E001D3B8C /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C81AE3C50E001D3B8C /* Character.swift */; };
+		270ED6CD1AE3C50E001D3B8C /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C81AE3C50E001D3B8C /* Character.swift */; };
+		270ED6CE1AE3C50E001D3B8C /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C91AE3C50E001D3B8C /* NSDate.swift */; };
+		270ED6CF1AE3C50E001D3B8C /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED6C91AE3C50E001D3B8C /* NSDate.swift */; };
 		2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
 		2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
 		271394D819FD16F30099FB27 /* ShortDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271394D719FD16F30099FB27 /* ShortDate.swift */; };
@@ -1103,6 +1109,9 @@
 		270CA2EC1900359E00DCF0DB /* font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-decrease@2x.png"; sourceTree = "<group>"; };
 		270CA2ED1900359E00DCF0DB /* font-increase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-increase.png"; sourceTree = "<group>"; };
 		270CA2EE1900359E00DCF0DB /* font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-increase@2x.png"; sourceTree = "<group>"; };
+		270ED6C71AE3C50E001D3B8C /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
+		270ED6C81AE3C50E001D3B8C /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		270ED6C91AE3C50E001D3B8C /* NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate.swift; sourceTree = "<group>"; };
 		2711AA69191FB2FB0042A604 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathematics.h; sourceTree = "<group>"; wrapsLines = 0; };
 		2711AA6A191FB2FB0042A604 /* Mathematics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mathematics.m; sourceTree = "<group>"; wrapsLines = 0; };
 		271394D719FD16F30099FB27 /* ShortDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortDate.swift; sourceTree = "<group>"; };
@@ -1970,6 +1979,8 @@
 			isa = PBXGroup;
 			children = (
 				2759D8931A0133FB002AE07E /* Array.swift */,
+				270ED6C71AE3C50E001D3B8C /* Bool.swift */,
+				270ED6C81AE3C50E001D3B8C /* Character.swift */,
 				2759D8941A0133FB002AE07E /* Dictionary.swift */,
 				2759D8951A0133FB002AE07E /* Double.swift */,
 				2759D8961A0133FB002AE07E /* ExSwift.h */,
@@ -1978,6 +1989,7 @@
 				2759D8991A0133FB002AE07E /* Info.plist */,
 				2759D89A1A0133FB002AE07E /* Int.swift */,
 				2759D89B1A0133FB002AE07E /* NSArray.swift */,
+				270ED6C91AE3C50E001D3B8C /* NSDate.swift */,
 				2759D89C1A0133FB002AE07E /* Range.swift */,
 				2759D89D1A0133FB002AE07E /* Sequence.swift */,
 				2759D89E1A0133FB002AE07E /* String.swift */,
@@ -3789,6 +3801,7 @@
 				B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
+				270ED6CF1AE3C50E001D3B8C /* NSDate.swift in Sources */,
 				B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
@@ -3863,6 +3876,7 @@
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
 				27686E40193B5B3E0038067D /* JMModalOverlay.m in Sources */,
+				270ED6CD1AE3C50E001D3B8C /* Character.swift in Sources */,
 				277788D3173CE22700430EBC /* RoundedOuterShadowView.m in Sources */,
 				277788D4173CE22700430EBC /* ValueTransformers.m in Sources */,
 				277788D5173CE22700430EBC /* Accounts.xcdatamodeld in Sources */,
@@ -3952,6 +3966,7 @@
 				27778911173CE22700430EBC /* CCSettlementList.m in Sources */,
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
+				270ED6CB1AE3C50E001D3B8C /* Bool.swift in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */,
@@ -4052,6 +4067,7 @@
 				B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
+				270ED6CE1AE3C50E001D3B8C /* NSDate.swift in Sources */,
 				B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
@@ -4126,6 +4142,7 @@
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
 				27686E3F193B5B3E0038067D /* JMModalOverlay.m in Sources */,
+				270ED6CC1AE3C50E001D3B8C /* Character.swift in Sources */,
 				274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */,
 				2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */,
 				27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */,
@@ -4215,6 +4232,7 @@
 				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
+				270ED6CA1AE3C50E001D3B8C /* Bool.swift in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
 				2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */,
