@@ -949,6 +949,10 @@ NSString * escapeSpecial(NSString *s)
     if (secMethod == SecMethod_PinTan) {
         [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
     } else {
+        if (user.chipCardId == nil) {
+            // allow deletion if chipCardId is empty
+            return YES;
+        }
         [self appendTag: @"passportType" withValue: @"DDV" to: cmd];
         [self appendTag: @"chipCardId" withValue: user.chipCardId to: cmd];
     }

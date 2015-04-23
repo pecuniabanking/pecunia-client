@@ -172,6 +172,15 @@
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // create user
+            // first check if user with same userid already exists
+            if ([BankUser existsUserWithId:currentUser.userId]) {
+                NSRunAlertPanel(NSLocalizedString(@"AP822", nil),
+                                NSLocalizedString(@"AP821", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil,
+                                currentUser.userId);
+                return;
+            }
+            
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
@@ -223,6 +232,15 @@
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // Create User
+            // first check if user with same userid already exists
+            if ([BankUser existsUserWithId:currentUser.userId]) {
+                NSRunAlertPanel(NSLocalizedString(@"AP822", nil),
+                                NSLocalizedString(@"AP821", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil,
+                                currentUser.userId);
+                return;
+            }
+
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {

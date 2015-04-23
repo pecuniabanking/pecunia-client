@@ -413,6 +413,8 @@ AP817 = "Erlaubte Geschäftsvorfälle wurden erfolgreich aktualisiert";
 AP818 = "Zwischensalden wurden erfolgreich aktualisiert";
 AP819 = "Umsätze wurden erfolgreich geprüft";
 AP820 = "Geschäftsvorfallsdaten für Bankkennung %@ werden aktualisiert";
+AP821 = "Eine Bankkennung mit der Benutzerkennung %@ existiert bereits. Bitte löschen Sie zuerst die alte Bankkennung";
+AP822 = "Bankkennung existiert bereits";
 
 // Tags
 // AP850..AP949
