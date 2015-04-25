@@ -30,7 +30,6 @@
 @synthesize ccNumber;
 @synthesize lastSettleDate;
 
-
 - (BOOL)isEqual:(BankQueryResult*)result
 {
     if ([account.accountNumber isEqualToString: result.account.accountNumber] &&
@@ -41,6 +40,14 @@
     }
 
     return NO;
+}
+
+- (void)setBankCode: (NSString *)bankCode {
+    account.bankCode = bankCode;
+}
+
+- (void)setAccountNumber: (NSString *)accountNumber {
+    account.accountNumber = accountNumber;
 }
 
 @end
