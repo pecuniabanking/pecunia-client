@@ -415,13 +415,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     }
 
     // Bundle folder for shared pecunia data.
-    sharedDataURL = [dataDirURL URLByAppendingPathComponent: @"shared.pecuniadata"];
-    if (![fm fileExistsAtPath: sharedDataURL.path]) {
-        [fm createDirectoryAtPath: sharedDataURL.path withIntermediateDirectories: YES attributes: nil error: &error];
-        if (error) {
-            @throw error;
-        }
-    }
+    sharedDataURL = [NSURL fileURLWithPath: defaultDataDir];
     // Make it a full URL to the store.
     sharedDataURL = [sharedDataURL URLByAppendingPathComponent: @"shared.sqlite"];
 

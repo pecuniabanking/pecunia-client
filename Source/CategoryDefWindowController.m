@@ -497,6 +497,40 @@
     [self calculateCatAssignPredicate];
 }
 
+- (NSCompoundPredicate *)wrapNotPredicates:(NSCompoundPredicate *)predicate
+{
+    BOOL modified = NO;
+    NSMutableArray *newSubs = [NSMutableArray array];
+    for (NSPredicate *sub in predicate.subpredicates) {
+        if ([sub class] == [NSCompoundPredicate class]) {
+            NSCompoundPredicate *new = [self wrapNotPredicates:(NSCompoundPredicate *)sub];
+            if (new != nil) {
+                [newSubs addObject:new];
+                modified = YES;
+            } else {
+                [newSubs addObject:sub];
+            }
+        } else {
+            [newSubs addObject:sub];
+        }
+    }
+    
+    // now check for not-predicate
+    if (predicate.compoundPredicateType == NSNotPredicateType && predicate.subpredicates.count <= 1) {
+        // now we have to wrap
+        NSCompoundPredicate *wrap = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: modified?newSubs:predicate.subpredicates];
+        NSCompoundPredicate *result = [[NSCompoundPredicate alloc] initWithType: NSNotPredicateType subpredicates: @[wrap]];
+        return result;
+    } else {
+        if (modified) {
+            NSCompoundPredicate *result = [[NSCompoundPredicate alloc] initWithType: predicate.compoundPredicateType subpredicates: newSubs];
+            return result;
+        } else {
+            return nil;
+        }
+    }
+}
+
 - (void)setSelectedCategory: (BankingCategory *)newCategory
 {
     if (selectedCategory != newCategory) {
@@ -521,7 +555,9 @@
             NSCompoundPredicate *comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
             pred = comp;
         }
-        predicateEditor.objectValue = pred;
+        
+        NSCompoundPredicate *compoundPredicate = [self wrapNotPredicates:(NSCompoundPredicate*)pred];
+        [predicateEditor setObjectValue: compoundPredicate==nil?pred:compoundPredicate];
         [self calculateCatAssignPredicate];
         self.ruleChanged = NO;
     }

@@ -32,7 +32,6 @@
     IBOutlet NSArrayController *countryController;
     BankAccount       *account;
     TransactionLimits *limits;
-    TransferType      transferType;
     NSString          *selectedCountry;
     NSArray           *internalAccounts;
     NSDictionary      *selCountryInfo;

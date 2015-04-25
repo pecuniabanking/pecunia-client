@@ -558,6 +558,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
 - (BOOL)checkOrder: (StandingOrder *)stord {
     NSNumber *value;
+    
+    [orderController commitEditing];
 
     // avoid rounding issues
     stord.value = [stord.value rounded];
