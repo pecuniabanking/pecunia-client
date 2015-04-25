@@ -289,8 +289,10 @@ static BankingController *bankinControllerInstance;
     }
 
     [PluginRegistry startup];
-    id<BankingPlugin> plugin = [PluginRegistry pluginForName: @"DKBCreditCard-PecuniaPlugin"];
-    NSString *description = [plugin pluginDescription];
+    id<BankingPlugin> plugin = [PluginRegistry pluginForName: @"DKBCreditCard"];
+    //NSString *description = [plugin pluginDescription];
+    NSArray *statements = [plugin getStatements: nil to: nil];
+    BankQueryResult *r1 = statements[0];
     
     LogLeave;
 }

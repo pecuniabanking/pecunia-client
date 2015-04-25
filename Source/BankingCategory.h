@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -81,6 +81,8 @@ typedef struct {
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 @property (nonatomic, strong) NSArray *reportedAssignments; // assignments between start and end report date
 
+@property (nonatomic, strong) NSString        *accountNumber; // Actually defined on BankAccount.
+
 - (void)recomputeInvalidBalances;
 - (void)invalidateBalance;
 - (void)updateCategorySums;
@@ -89,7 +91,6 @@ typedef struct {
 - (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive;
 - (void)updateAssignmentsForReportRange;
 
-- (NSString *)accountNumber;
 - (BOOL)isRoot;
 - (BOOL)isBankAccount;
 - (BOOL)isBankingRoot;

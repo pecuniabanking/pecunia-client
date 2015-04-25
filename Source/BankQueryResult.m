@@ -19,7 +19,7 @@
 
 #import "BankQueryResult.h"
 
-@implementation BankQueryResult
+@implementation BankQueryResultO
 
 @synthesize balance;
 @synthesize oldBalance;
@@ -30,7 +30,7 @@
 @synthesize ccNumber;
 @synthesize lastSettleDate;
 
-- (BOOL)isEqual:(BankQueryResult*)result
+- (BOOL)isEqual:(BankQueryResultO*)result
 {
     if ([account.accountNumber isEqualToString: result.account.accountNumber] &&
         [account.bankCode isEqualToString: result.account.bankCode]) {

@@ -51,7 +51,6 @@ typedef enum {
 @property (nonatomic, strong) NSString        *iban;
 @property (nonatomic, strong) NSString        *userId;
 @property (nonatomic, strong) NSString        *customerId;
-@property (nonatomic, strong) NSString        *accountNumber;
 @property (nonatomic, strong) NSString        *owner;
 @property (nonatomic, strong) NSNumber        *uid;
 @property (nonatomic, strong) NSNumber        *type;

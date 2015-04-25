@@ -22,14 +22,14 @@
 typedef enum {
     BankQueryType_BankStatement = 0,
     BankQueryType_StandingOrder,
-} BankQueryType;
+} BankQueryTypeO;
 
 @class BankAccount;
 
-@interface BankQueryResult : NSObject {
+@interface BankQueryResultO : NSObject {
 }
 
-@property (assign) BankQueryType type;
+@property (assign) BankQueryTypeO type;
 @property (copy) NSString        *ccNumber;
 @property (copy) NSDate          *lastSettleDate;
 @property (copy) NSDecimalNumber *balance;

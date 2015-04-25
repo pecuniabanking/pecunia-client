@@ -1136,8 +1136,8 @@ static HBCIController *controller = nil;
                 // calculate balances
                 for (idx = [iResult.statements count] - 1; idx >= 0; idx--) {
                     BankStatement *stat = [iResult.statements objectAtIndex:idx];
-                    stat.saldo = res.balance;
-                    res.balance = [res.balance decimalNumberBySubtracting: stat.value];
+                    stat.saldo = [NSDecimalNumber decimalNumberWithDecimal: res.balance.decimalValue];
+                    res.balance = [stat.saldo decimalNumberBySubtracting: stat.value];
                 }
             } else {
                 // Standard Statements

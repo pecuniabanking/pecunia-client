@@ -803,6 +803,8 @@
 		27EEC8E016F4C9630000A1A9 /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
 		27EEDF63178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
 		27EEDF64178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
+		27F1F0401AEBE656000495CC /* BankQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F1F03F1AEBE656000495CC /* BankQueryResult.swift */; };
+		27F1F0411AEBE656000495CC /* BankQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F1F03F1AEBE656000495CC /* BankQueryResult.swift */; };
 		27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
 		27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */; };
 		27F5911B1AA38214005FA793 /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F591181AA38214005FA793 /* Converter.swift */; };
@@ -1521,6 +1523,7 @@
 		27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button@2x.png"; sourceTree = "<group>"; };
 		27EEDF61178B1E8F00FFE365 /* StockCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StockCard.h; path = "Home Screen/StockCard.h"; sourceTree = "<group>"; };
 		27EEDF62178B1E8F00FFE365 /* StockCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StockCard.m; path = "Home Screen/StockCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
+		27F1F03F1AEBE656000495CC /* BankQueryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankQueryResult.swift; sourceTree = "<group>"; };
 		27F2A414197BFA65002E6CA6 /* TagRuleEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagRuleEditorController.h; sourceTree = "<group>"; };
 		27F2A415197BFA65002E6CA6 /* TagRuleEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagRuleEditorController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27F591181AA38214005FA793 /* Converter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Converter.swift; path = Submodules/IBANtools/Source/Converter.swift; sourceTree = SOURCE_ROOT; };
@@ -2549,6 +2552,7 @@
 				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
 				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
 				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
+				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
 			);
 			name = HBCIBackend;
 			sourceTree = "<group>";
@@ -2603,26 +2607,26 @@
 			children = (
 				B1A6AA221A26722E00141C39 /* Chipcards */,
 				B17B296A13E366C800739E7A /* Dialogs */,
-				B14D4C6613DB600400843BE6 /* HBCIError.h */,
-				B14D4C6713DB600400843BE6 /* HBCIError.m */,
-				B14D4CD813DB712A00843BE6 /* Passport.h */,
-				B14D4CD913DB712A00843BE6 /* Passport.m */,
-				B14D4D2213DC5F6E00843BE6 /* HBCIController.h */,
-				B14D4D2313DC5F6E00843BE6 /* HBCIController.m */,
-				B14D4C6813DB600400843BE6 /* LogParser.h */,
-				B14D4C6913DB600400843BE6 /* LogParser.m */,
-				B14D4C6A13DB600400843BE6 /* ResultParser.h */,
-				B14D4C6B13DB600400843BE6 /* ResultParser.m */,
+				B1B41C8A14005B5B00BEEC8F /* BankParameter.h */,
+				B1B41C8B14005B5B00BEEC8F /* BankParameter.m */,
 				B14D4C6013DB5FC200843BE6 /* CallbackData.h */,
 				B14D4C6113DB5FC200843BE6 /* CallbackData.m */,
+				C13152AF150A0B260037958E /* CallbackHandler.h */,
+				C13152B0150A0B260037958E /* CallbackHandler.m */,
 				B14D4C6213DB5FC200843BE6 /* CallbackParser.h */,
 				B14D4C6313DB5FC200843BE6 /* CallbackParser.m */,
 				B14D4C5D13DB5F3200843BE6 /* HBCIBridge.h */,
 				B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */,
-				B1B41C8A14005B5B00BEEC8F /* BankParameter.h */,
-				B1B41C8B14005B5B00BEEC8F /* BankParameter.m */,
-				C13152AF150A0B260037958E /* CallbackHandler.h */,
-				C13152B0150A0B260037958E /* CallbackHandler.m */,
+				B14D4D2213DC5F6E00843BE6 /* HBCIController.h */,
+				B14D4D2313DC5F6E00843BE6 /* HBCIController.m */,
+				B14D4C6613DB600400843BE6 /* HBCIError.h */,
+				B14D4C6713DB600400843BE6 /* HBCIError.m */,
+				B14D4C6813DB600400843BE6 /* LogParser.h */,
+				B14D4C6913DB600400843BE6 /* LogParser.m */,
+				B14D4CD813DB712A00843BE6 /* Passport.h */,
+				B14D4CD913DB712A00843BE6 /* Passport.m */,
+				B14D4C6A13DB600400843BE6 /* ResultParser.h */,
+				B14D4C6B13DB600400843BE6 /* ResultParser.m */,
 			);
 			name = HBCI4Java;
 			sourceTree = "<group>";
@@ -3800,6 +3804,7 @@
 				27778895173CE22700430EBC /* TanMethod.m in Sources */,
 				B1A6AA6E1A2672C400141C39 /* modify_pin.m in Sources */,
 				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
+				27F1F0411AEBE656000495CC /* BankQueryResult.swift in Sources */,
 				B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */,
 				B1A6AA4A1A2672C400141C39 /* atr.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
@@ -4067,6 +4072,7 @@
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
 				B1A6AA6D1A2672C400141C39 /* modify_pin.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
+				27F1F0401AEBE656000495CC /* BankQueryResult.swift in Sources */,
 				B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */,
 				B1A6AA491A2672C400141C39 /* atr.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,

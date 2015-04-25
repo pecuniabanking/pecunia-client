@@ -60,7 +60,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-loglevel info"
+            argument = "-loglevel verbose"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

@@ -53,13 +53,19 @@ import JavaScriptCore
                     var error: NSError?;
                     if let script = NSString(contentsOfFile: scriptingPath + "/" + name, encoding: NSUTF8StringEncoding, error: &error) {
                         let context = JSContext();
+                        prepareContext(context);
+
                         context.evaluateScript(script as String);
+                        let foundJSError = context.objectForKeyedSubscript("JSError").toBool();
 
                         // Check validity of the plugin.
-                        let pluginNameFunction: JSValue = context.objectForKeyedSubscript("pluginName");
-                        let result = pluginNameFunction.callWithArguments([]).toString();
-                        if result.hasSuffix("-PecuniaPlugin") {
-                            plugins[result] = context;
+                        if !foundJSError {
+                            let pluginNameFunction: JSValue = context.objectForKeyedSubscript("pluginName");
+                            let result = pluginNameFunction.callWithArguments([]).toString();
+                            if result.hasSuffix("-PecuniaPlugin") {
+                                let key = result.substringToIndex(advance(result.endIndex, -count("-PecuniaPlugin")));
+                                plugins[key] = context;
+                            }
                         }
                     }
                 }
@@ -76,6 +82,47 @@ import JavaScriptCore
         }
         return nil;
     }
+
+    /// Prepares the given context so it can be used with our JS plugins, injecting functions
+    /// to read HTML data or log output, setting an error handler etc.
+    private class func prepareContext(context: JSContext) -> Void {
+
+        context.setObject(false, forKeyedSubscript: "JSError");
+        context.exceptionHandler = { context, exception in
+            logError("JS Error: %@", arguments: exception);
+            context.setObject(true, forKeyedSubscript: "JSError");
+        }
+
+        // Install our HTML read function, which can then be used from JS
+        // to load an html page.
+        var htmlFromUrl : @objc_block (String!) -> String = {
+            (urlString : String!) -> String in
+
+            let url = NSURL(string: urlString);
+            var error: NSError?;
+            let html = NSString(contentsOfURL: url!, encoding: NSUTF8StringEncoding, error: &error)
+
+            if (error != nil) {
+                logError("Couldn't retrieve content at URL: \(urlString). The error is: \(error?.localizedDescription)");
+                return "";
+            } else {
+                return html! as String;
+            }
+        }
+        context.setObject(unsafeBitCast(htmlFromUrl, AnyObject.self), forKeyedSubscript: "htmlFromUrl")
+
+        // Similar for logging.
+        let logErrorFunction: @objc_block (String!) -> Void = { logError($0); };
+        context.setObject(unsafeBitCast(logErrorFunction, AnyObject.self), forKeyedSubscript: "logError")
+        let logWarningFunction: @objc_block (String!) -> Void = { logWarning($0); };
+        context.setObject(unsafeBitCast(logWarningFunction, AnyObject.self), forKeyedSubscript: "logWarning")
+        let logInfoFunction: @objc_block (String!) -> Void = { logInfo($0); };
+        context.setObject(unsafeBitCast(logInfoFunction, AnyObject.self), forKeyedSubscript: "logInfo")
+        let logDebugFunction: @objc_block (String!) -> Void = { logDebug($0); };
+        context.setObject(unsafeBitCast(logDebugFunction, AnyObject.self), forKeyedSubscript: "logDebug")
+        let logVerboseFunction: @objc_block (String!) -> Void = { logVerbose($0); };
+        context.setObject(unsafeBitCast(logVerboseFunction, AnyObject.self), forKeyedSubscript: "logVerbose")
+    }
 }
 
 @objc private class BankingPluginImpl: NSObject, BankingPlugin {
@@ -83,6 +130,7 @@ import JavaScriptCore
     private var context: JSContext;
 
     init(_ context: JSContext) {
+        context.setObject(BankQueryResult.self, forKeyedSubscript: "BankQueryResult")
         self.context = context;
         super.init();
     }
@@ -101,7 +149,17 @@ import JavaScriptCore
     }
 
     @objc func getStatements(from: ShortDate?, to: ShortDate?) -> [BankQueryResult] {
-        return [];
+        var fromDate: NSDate = NSDate();
+        if from != nil {
+            fromDate = from!.lowDate();
+        }
+        var toDate: NSDate = NSDate();
+        if to != nil {
+            toDate = to!.lowDate();
+        }
+
+        let pluginNameFunction: JSValue = context.objectForKeyedSubscript("getStatements");
+        return pluginNameFunction.callWithArguments([fromDate, toDate]).toArray() as! [BankQueryResult];
     }
 
 }

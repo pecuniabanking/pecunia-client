@@ -196,7 +196,7 @@
 
     result.oldBalance = self.balance;
     if (result.balance) {
-        self.balance = result.balance;
+        self.balance = [NSDecimalNumber decimalNumberWithDecimal: result.balance.decimalValue];
     }
     if (result.statements == nil) {
         return 0;
