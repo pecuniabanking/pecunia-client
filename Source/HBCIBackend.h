@@ -48,6 +48,7 @@
 // Information Methods
 - (NSArray *)supportedVersions;
 - (InstituteInfo *)infoForBankCode: (NSString *)bankCode;
+- (InstituteInfo *)infoForIBAN: (NSString *)iban;
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
 
 - (NSString *)bankNameForCode: (NSString *)bankCode;
