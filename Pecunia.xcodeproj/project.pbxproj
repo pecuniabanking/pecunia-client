@@ -276,7 +276,6 @@
 		27778895173CE22700430EBC /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
 		27778896173CE22700430EBC /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
 		27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
-		27778898173CE22700430EBC /* BankQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B14EBCFC1031FAC700020A26 /* BankQueryResult.m */; };
 		27778899173CE22700430EBC /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
 		2777889B173CE22700430EBC /* NewPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A4D4E10C869F0002CC63E /* NewPasswordController.m */; };
 		2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
@@ -891,7 +890,6 @@
 		B14D4D2413DC5F6E00843BE6 /* HBCIController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2313DC5F6E00843BE6 /* HBCIController.m */; };
 		B14D4D2B13DCA0E000843BE6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2A13DCA0E000843BE6 /* User.m */; };
 		B14D6DEF0DEC9C9100C2B220 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */; };
-		B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B14EBCFC1031FAC700020A26 /* BankQueryResult.m */; };
 		B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
 		B165B51F0D340C5800447DD8 /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
@@ -1653,8 +1651,6 @@
 		B14D4D2A13DCA0E000843BE6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14D6DED0DEC9C9100C2B220 /* CategoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryView.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14EBCFB1031FAC700020A26 /* BankQueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankQueryResult.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14EBCFC1031FAC700020A26 /* BankQueryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankQueryResult.m; sourceTree = "<group>"; tabWidth = 4; };
 		B152B5121025FE2400EE06D6 /* MCEMBorderedView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMBorderedView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMBorderedView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B155D92C0BFD04B300904051 /* TransactionController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2523,8 +2519,6 @@
 				B17B294613E35BF900739E7A /* HBCI4Java */,
 				B12A496910BDD23D002CC63E /* Account.h */,
 				B12A496A10BDD23D002CC63E /* Account.m */,
-				B14EBCFB1031FAC700020A26 /* BankQueryResult.h */,
-				B14EBCFC1031FAC700020A26 /* BankQueryResult.m */,
 				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
 				B17728AE1502D0D300256898 /* BankSetupInfo.h */,
 				B17728AF1502D0D300256898 /* BankSetupInfo.m */,
@@ -3808,7 +3802,6 @@
 				B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */,
 				B1A6AA4A1A2672C400141C39 /* atr.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
-				27778898173CE22700430EBC /* BankQueryResult.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
@@ -4076,7 +4069,6 @@
 				B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */,
 				B1A6AA491A2672C400141C39 /* atr.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
-				B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,

@@ -20,7 +20,6 @@
 #import "HBCIController.h"
 
 #import "PecuniaError.h"
-#import "BankQueryResult.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
@@ -1177,10 +1176,10 @@ static HBCIController *controller = nil;
         currentUserId = keys[0];
         NSArray *results = bankQueryResultsByUser[currentUserId];
         switch (((BankQueryResult*)results.firstObject).type) {
-            case BankQueryType_BankStatement:
+            case BankQueryTypeBankStatementType:
                 [self performSelector:@selector(getUserStatements:) withObject:results afterDelay:0.0];
                 break;
-            case BankQueryType_StandingOrder:
+            case BankQueryTypeStandingOrderType:
                 [self performSelector:@selector(getUserStandingOrders:) withObject:results afterDelay:0.0];
                 break;
                 

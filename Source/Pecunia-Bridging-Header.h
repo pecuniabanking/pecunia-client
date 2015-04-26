@@ -36,7 +36,6 @@
 #import "BankingCategory.h"
 #import "BankMessage.h"
 #import "BankParameter.h"
-#import "BankQueryResult.h"
 #import "BankSetupInfo.h"
 #import "BankStatement.h"
 #import "BankStatementController.h"

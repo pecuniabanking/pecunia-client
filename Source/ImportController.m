@@ -24,7 +24,6 @@
 #import "ImportSettings.h"
 #import "BankStatement.h"
 #import "NSDecimalNumber+PecuniaAdditions.h"
-#import "BankQueryResult.h"
 #import "BankAccount.h"
 #import "ShortDate.h"
 

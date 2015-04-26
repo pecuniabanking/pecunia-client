@@ -28,10 +28,10 @@ import JavaScriptCore
 /// Define JS protocol for the result class so we can use it in our JS plugins.
 @objc protocol BankQueryResultJSExport : JSExport {
     var type: BankQueryType { get set };
-    var ccNumber: String { get set };
-    var lastSettleDate: NSDate { get set };
-    var balance: NSNumber { get set };
-    var oldBalance: NSNumber { get set };
+    var ccNumber: String? { get set };
+    var lastSettleDate: NSDate? { get set };
+    var balance: NSNumber? { get set };
+    var oldBalance: NSNumber? { get set };
     var statements: [BankStatement] { get set };
     var standingOrders: [StandingOrder] { get set };
     var account: BankAccount? { get set };
@@ -42,20 +42,19 @@ import JavaScriptCore
 
 @objc public class BankQueryResult: NSObject, BankQueryResultJSExport {
     dynamic var type: BankQueryType = .BankStatementType;
-    dynamic var ccNumber: String = "";
-    dynamic var lastSettleDate: NSDate = NSDate();
-    dynamic var balance: NSNumber = NSDecimalNumber.zero();
-    dynamic var oldBalance: NSNumber = NSDecimalNumber.zero();
+    dynamic var ccNumber: String?;
+    dynamic var lastSettleDate: NSDate?;
+    dynamic var balance: NSNumber?;
+    dynamic var oldBalance: NSNumber?;
     dynamic var statements: [BankStatement] = [];
     dynamic var standingOrders: [StandingOrder] = [];
     dynamic var account: BankAccount?;
     dynamic var isImport: Bool = false;
 
-    // These 2 values can be set from outside (notably via KVC from the XML result parser),
-    // are actually totally useless, since we have them already in the account member.
-    // Can probably go when we remove XML parsing.
-    private var bankCode: String = "";
-    private var accountNumber: String = "";
+    // These values are set by the XML parser and can go when we removed that parser.
+    var bankCode: String = "";
+    var accountNumber: String = "";
+    var accountSuffix: String?;
 
     override init() {
         super.init();
@@ -68,27 +67,18 @@ import JavaScriptCore
         return BankQueryResult();
     }
 
+    /// Only used to find a specific result in the HBCIController. Can go when we reworked result
+    /// handling there.
     public override func isEqual(object: AnyObject?) -> Bool {
-        if object != nil && account != nil {
-            if let other = object! as? BankQueryResult {
-                if account!.accountNumber() == other.account!.accountNumber() &&
-                    account!.bankCode == other.account!.bankCode {
-                        return (account!.accountSuffix == nil && other.account!.accountSuffix == nil) ||
-                            (account!.accountSuffix != nil && other.account!.accountSuffix != nil &&
-                                account!.accountSuffix == other.account!.accountSuffix);
-                }
+        if let other = object! as? BankQueryResult { // In this specific context is the other object always valid with only an account set.
+            if accountNumber == other.account!.accountNumber() && bankCode == other.account!.bankCode {
+                    return (accountSuffix == nil && other.account!.accountSuffix == nil) ||
+                        (accountSuffix != nil && other.account!.accountSuffix != nil &&
+                            accountSuffix == other.account!.accountSuffix);
             }
         }
 
         return false;
     }
 
-    func setBankCode(bankCode: String) -> Void {
-        self.bankCode = bankCode;
-    }
-
-    func setAccountNumber(accountNumber: String) -> Void {
-        self.accountNumber = accountNumber;
-    }
-    
 }

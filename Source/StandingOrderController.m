@@ -23,7 +23,6 @@
 #import "HBCIController.h"
 #import "BankAccount.h"
 #import "TransactionLimits.h"
-#import "BankQueryResult.h"
 #import "MCEMTableView.h"
 #import "AmountCell.h"
 #import "PecuniaError.h"
@@ -730,7 +729,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         if (account.userId != nil) {
             BankQueryResult *result = [BankQueryResult new];
             result.account = account;
-            result.type = BankQueryType_StandingOrder;
+            result.type = BankQueryTypeStandingOrderType;
             [accountList addObject: result];
 
             // remove orders for this account

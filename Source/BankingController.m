@@ -37,7 +37,6 @@
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
 #import "DonationMessageController.h"
-#import "BankQueryResult.h"
 #import "CategoryView.h"
 #import "HBCIController.h"
 #import "StatCatAssignment.h"
