@@ -168,7 +168,7 @@ static NSMutableDictionary *users = nil;
                     [options addObject: option];
                     added = YES;
                 }
-                if ([method.identifier containsString:@"push"] && [medium.category isEqualToString:@"A"] && [medium.name containsString: @"push"]) {
+                if (([method.identifier rangeOfString:@"push"].location != NSNotFound) && [medium.category isEqualToString:@"A"] && ([medium.name rangeOfString: @"push"].location != NSNotFound)) {
                     option.tanMediumName = medium.name;
                     option.tanMediumCategory = medium.category;
                     [options addObject: option];
@@ -419,6 +419,24 @@ static NSMutableDictionary *users = nil;
     }
     // No user found. Take the last one we have.
     return bankUsers.lastObject;
+}
+
++ (BOOL)existsUserWithId:(NSString *)userId
+{
+    NSError *error = nil;
+    
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId = %@", userId];
+    [request setPredicate: predicate];
+    NSArray *bankUsers = [context executeFetchRequest: request error: &error];
+    if (error) {
+        LogWarning(error.localizedDescription);
+        return NO;
+    }
+    return bankUsers.count > 0;
 }
 
 + (void)removeUser: (BankUser *)user {

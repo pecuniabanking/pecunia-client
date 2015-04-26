@@ -70,6 +70,7 @@
 
 + (NSArray *)allUsers;
 + (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode;
++ (BOOL)existsUserWithId:(NSString *)userId;
 + (void)removeUser:(BankUser*)user;
 
 @end
