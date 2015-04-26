@@ -81,8 +81,6 @@ typedef struct {
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 @property (nonatomic, strong) NSArray *reportedAssignments; // assignments between start and end report date
 
-@property (nonatomic, strong) NSString        *accountNumber; // Actually defined on BankAccount.
-
 - (void)recomputeInvalidBalances;
 - (void)invalidateBalance;
 - (void)updateCategorySums;
@@ -91,6 +89,7 @@ typedef struct {
 - (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive;
 - (void)updateAssignmentsForReportRange;
 
+- (NSString *)accountNumber;
 - (BOOL)isRoot;
 - (BOOL)isBankAccount;
 - (BOOL)isBankingRoot;

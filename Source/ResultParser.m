@@ -150,14 +150,22 @@
         NSMutableArray *list = [NSMutableArray arrayWithCapacity: 10];
         [stack addObject: list];
     } else if ([elementName isEqualToString: @"object"]) {
-        id obj;
-        id class = objc_getClass([currentType UTF8String]);
+        // Should only be BankQueryResult. Loading class from string no longer works since this class
+        // is now Swift code.
+        /*
+        id class = NSClassFromString(currentType);
         if (class == nil) {
             LogError(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
         } else {
-            obj = [[class alloc] init];
-            [stack addObject: obj];
+            [stack addObject: [class new]];
         }
+         */
+        if ([currentType isEqualToString: @"BankQueryResult"]) {
+            [stack addObject: [BankQueryResult new]];
+        } else {
+            LogError(@"Result parser: couldn't find class \"%@\"", currentType);
+        }
+
     } else if ([elementName isEqualToString: @"cdObject"]) {
         NSManagedObjectContext *context = [[MOAssistant sharedAssistant] memContext];
         id                     obj = [NSEntityDescription insertNewObjectForEntityForName: currentType inManagedObjectContext: context];

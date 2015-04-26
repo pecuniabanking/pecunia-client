@@ -2517,44 +2517,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B12A497E10BDD242002CC63E /* HBCIBackend */ = {
+		B12A497E10BDD242002CC63E /* Banking Backend */ = {
 			isa = PBXGroup;
 			children = (
 				B17B294613E35BF900739E7A /* HBCI4Java */,
-				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
-				B14D4D2913DCA0E000843BE6 /* User.h */,
-				B14D4D2A13DCA0E000843BE6 /* User.m */,
-				B1014AEC101643C800ABA1FF /* TanMethod.h */,
-				B1014AED101643C800ABA1FF /* TanMethod.m */,
 				B12A496910BDD23D002CC63E /* Account.h */,
 				B12A496A10BDD23D002CC63E /* Account.m */,
 				B14EBCFB1031FAC700020A26 /* BankQueryResult.h */,
 				B14EBCFC1031FAC700020A26 /* BankQueryResult.m */,
-				B17072D30D4BD35D00FBF186 /* TransactionLimits.h */,
-				B17072D40D4BD35D00FBF186 /* TransactionLimits.m */,
-				B189782C0ECF47CA00D20503 /* Country.h */,
-				B189782D0ECF47CA00D20503 /* Country.m */,
-				B1A5940C112A8D8500FD8CB8 /* TransferResult.h */,
-				B1A5940D112A8D8500FD8CB8 /* TransferResult.m */,
+				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
 				B17728AE1502D0D300256898 /* BankSetupInfo.h */,
 				B17728AF1502D0D300256898 /* BankSetupInfo.m */,
-				B17728D51504ABC700256898 /* TanMedium.h */,
-				B17728D61504ABC700256898 /* TanMedium.m */,
+				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
+				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
+				B189782C0ECF47CA00D20503 /* Country.h */,
+				B189782D0ECF47CA00D20503 /* Country.m */,
+				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
+				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
+				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
+				B183586015CDC064003B93ED /* SigningOption.h */,
+				B183586115CDC064003B93ED /* SigningOption.m */,
 				B17728EE1504B14500256898 /* TanMediaList.h */,
 				B17728EF1504B14500256898 /* TanMediaList.m */,
+				B17728D51504ABC700256898 /* TanMedium.h */,
+				B17728D61504ABC700256898 /* TanMedium.m */,
+				B1014AEC101643C800ABA1FF /* TanMethod.h */,
+				B1014AED101643C800ABA1FF /* TanMethod.m */,
 				B17729121504C9B200256898 /* TanMethodOld.h */,
 				B17729131504C9B200256898 /* TanMethodOld.m */,
 				B1EC7B251508077100813E1A /* TanSigningOption.h */,
 				B1EC7B261508077100813E1A /* TanSigningOption.m */,
-				B183586015CDC064003B93ED /* SigningOption.h */,
-				B183586115CDC064003B93ED /* SigningOption.m */,
-				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
-				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
-				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
-				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
-				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
+				B17072D30D4BD35D00FBF186 /* TransactionLimits.h */,
+				B17072D40D4BD35D00FBF186 /* TransactionLimits.m */,
+				B1A5940C112A8D8500FD8CB8 /* TransferResult.h */,
+				B1A5940D112A8D8500FD8CB8 /* TransferResult.m */,
+				B14D4D2913DCA0E000843BE6 /* User.h */,
+				B14D4D2A13DCA0E000843BE6 /* User.m */,
 			);
-			name = HBCIBackend;
+			name = "Banking Backend";
 			sourceTree = "<group>";
 		};
 		B136AACF0FCF1BF5007A643F /* Classes */ = {
@@ -2564,7 +2564,7 @@
 				B1FE0DD81065885D005B3800 /* Basic */,
 				B1FE0DCD106585DC005B3800 /* Core Data */,
 				B1FE0DC8106583A3005B3800 /* Extensions */,
-				B12A497E10BDD242002CC63E /* HBCIBackend */,
+				B12A497E10BDD242002CC63E /* Banking Backend */,
 				B14C61B8115AB4A9009324A6 /* Migration */,
 				B137BE7812D32F3B00D0394C /* Printing */,
 				272454641871F81E00AF9042 /* Recognition */,

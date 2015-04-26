@@ -203,7 +203,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
             break;
         
         sprintf(logmsg,"%s: %i (%s)",name,err,CTAPI_getErrorString(err));
-        LogError(@"%s", logmsg);
+        LogDebug(@"%s", logmsg);
     }
 
     if (lenOut_return < (*lenOut)) {
@@ -211,7 +211,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
     }
     memcpy(response,response_local, *lenOut);
     if (err!=0) {
-        LogError(@"aborting");
+        LogDebug(@"aborting");
         return 0;
     }
     

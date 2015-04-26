@@ -41,28 +41,23 @@ import JavaScriptCore
 }
 
 @objc public class BankQueryResult: NSObject, BankQueryResultJSExport {
-    dynamic var type: BankQueryType;
-    dynamic var ccNumber: String;
-    dynamic var lastSettleDate: NSDate;
-    dynamic var balance: NSNumber;
-    dynamic var oldBalance: NSNumber;
-    dynamic var statements: [BankStatement];
-    dynamic var standingOrders: [StandingOrder];
+    dynamic var type: BankQueryType = .BankStatementType;
+    dynamic var ccNumber: String = "";
+    dynamic var lastSettleDate: NSDate = NSDate();
+    dynamic var balance: NSNumber = NSDecimalNumber.zero();
+    dynamic var oldBalance: NSNumber = NSDecimalNumber.zero();
+    dynamic var statements: [BankStatement] = [];
+    dynamic var standingOrders: [StandingOrder] = [];
     dynamic var account: BankAccount?;
-    dynamic var isImport: Bool;
+    dynamic var isImport: Bool = false;
+
+    // These 2 values can be set from outside (notably via KVC from the XML result parser),
+    // are actually totally useless, since we have them already in the account member.
+    // Can probably go when we remove XML parsing.
+    private var bankCode: String = "";
+    private var accountNumber: String = "";
 
     override init() {
-        self.type = .BankStatementType;
-        ccNumber = "";
-
-        lastSettleDate = NSDate();
-        balance = NSDecimalNumber.zero();
-        oldBalance = NSDecimalNumber.zero();
-        statements = [];
-        standingOrders = [];
-        account = nil;
-        isImport = false;
-
         super.init();
     }
 
@@ -76,7 +71,7 @@ import JavaScriptCore
     public override func isEqual(object: AnyObject?) -> Bool {
         if object != nil && account != nil {
             if let other = object! as? BankQueryResult {
-                if account!.accountNumber == other.account!.accountNumber &&
+                if account!.accountNumber() == other.account!.accountNumber() &&
                     account!.bankCode == other.account!.bankCode {
                         return (account!.accountSuffix == nil && other.account!.accountSuffix == nil) ||
                             (account!.accountSuffix != nil && other.account!.accountSuffix != nil &&
@@ -89,11 +84,11 @@ import JavaScriptCore
     }
 
     func setBankCode(bankCode: String) -> Void {
-        account!.bankCode = bankCode;
+        self.bankCode = bankCode;
     }
 
     func setAccountNumber(accountNumber: String) -> Void {
-        account!.accountNumber = accountNumber;
+        self.accountNumber = accountNumber;
     }
     
 }
