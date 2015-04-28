@@ -135,7 +135,7 @@
             [self insertInContext: context user: user account: account type: TransactionType_TransferEU jobName: jobName];
         }
 
-        if ([jobName isEqualToString:@"UebSEPA"]) {
+        if ([jobName isEqualToString:@"UebSEPA"] || [jobName isEqualToString:@"TermUebSEPA"]) {
             SupportedTransactionInfo *info = [self insertInContext: context
                                                               user: user
                                                            account: account
@@ -161,6 +161,10 @@
 
         if ([jobName isEqualToString:@"Umb"]) {
             [self insertInContext: context user: user account: account type: TransactionType_TransferInternal jobName: jobName];
+        }
+
+        if ([jobName isEqualToString:@"UmbSEPA"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferInternalSEPA  jobName: jobName];
         }
 
         if ([jobName isEqualToString:@"DauerSEPANew"]) {

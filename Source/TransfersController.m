@@ -134,7 +134,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (TransferType)typeFromTag {
     switch (self.tag) {
         case 0:
-            return TransferTypeInternal;
+            return TransferTypeInternalSEPA;
 
         case 2:
             return TransferTypeEU;
@@ -391,7 +391,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)awakeFromNib {
     [[mainView window] setInitialFirstResponder: receiverComboBox];
 
-    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeOldStandard), @(TransferTypeEU),
+    NSArray *acceptedTypes = @[@(TransferTypeInternalSEPA), @(TransferTypeOldStandard), @(TransferTypeEU),
                                @(TransferTypeOldStandardScheduled), @(TransferTypeSEPAScheduled),
                                @(TransferTypeSEPA), @(TransferTypeDebit)];
     pendingTransfers.managedObjectContext = MOAssistant.sharedAssistant.context;
@@ -605,7 +605,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  * An attempt is made to keep the currently selected account still selected.
  */
 - (void)updateTargetAccountSelector {
-    if (transactionController.currentTransfer.type.intValue != TransferTypeInternal) {
+    if (transactionController.currentTransfer.type.intValue != TransferTypeInternalSEPA) {
         return;
     }
 
@@ -658,6 +658,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSString *remoteBankCodeKey;
     switch (type) {
         case TransferTypeInternal:
+        case TransferTypeInternalSEPA:
             [titleText setStringValue: NSLocalizedString(@"AP403", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP408", nil)];
             transferFormular.icon = [NSImage imageNamed: @"internal-transfer-icon.png"];
@@ -713,7 +714,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             return NO; // Not needed as individual transfer template type.
     }
 
-    BOOL isInternal = (type == TransferTypeInternal);
+    BOOL isInternal = (type == TransferTypeInternalSEPA);
     [targetAccountSelector setHidden: !isInternal];
     [receiverComboBox setHidden: isInternal];
     [accountText setHidden: isInternal];
@@ -1531,7 +1532,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 }
 
 - (IBAction)targetAccountChanged: (id)sender {
-    if (![self editingInProgress] || transactionController.currentTransfer.type.intValue != TransferTypeInternal) {
+    if (![self editingInProgress] || transactionController.currentTransfer.type.intValue != TransferTypeInternalSEPA) {
         return;
     }
 
@@ -1540,7 +1541,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     transactionController.currentTransfer.remoteAccount = account.accountNumber;
     transactionController.currentTransfer.remoteBankCode = account.bankCode;
     transactionController.currentTransfer.remoteBankName = account.bankName;
-
+    transactionController.currentTransfer.remoteIBAN = account.iban;
+    transactionController.currentTransfer.remoteBIC = account.bic;
 }
 
 - (IBAction)executionTimeChanged: (id)sender {
@@ -1703,13 +1705,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 #pragma mark - Other application logic
 
 - (void)updateLimits {
-    BOOL isSEPAorEU = [transactionController.currentTransfer isSEPAorEU];
+    
+    //BOOL isSEPAorEU = [transactionController.currentTransfer isSEPAorEU];
 
     // currentTransfer must be valid
     limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
                                                 account: transactionController.currentTransfer.account
                                                 country: transactionController.currentTransfer.remoteCountry];
 
+    /*
     [purpose2 setHidden: (limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0) || isSEPAorEU];
     [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || isSEPAorEU];
     [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || isSEPAorEU];
@@ -1739,6 +1743,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             transactionController.currentTransfer.purpose4 = nil;
         }
     }
+     */
 
     // Check if scheduling is allowed.
     // At the moment possible for old standard and SEPA transfers.

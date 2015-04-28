@@ -1964,7 +1964,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (IBAction)startInternalTransfer: (id)sender {
-    [self startTransferOfType: TransferTypeInternal fromAccount: self.selectedBankAccount statement: nil];
+    [self startTransferOfType: TransferTypeInternalSEPA fromAccount: self.selectedBankAccount statement: nil];
 }
 
 - (IBAction)startEuTransfer: (id)sender {

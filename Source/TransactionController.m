@@ -563,6 +563,7 @@
 
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
+        case TransferTypeInternalSEPA:
             if (![IBANtools isValidIBAN: currentTransfer.remoteIBAN]) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
