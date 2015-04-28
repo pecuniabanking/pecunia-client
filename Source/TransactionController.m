@@ -88,17 +88,18 @@
 - (void)checkTemplates {
     // Convert old style of templates.
     for (TransferTemplate *template in templateController.arrangedObjects) {
-        switch (template.type.intValue) {
-            case TransferTypeOldStandard:
-            case TransferTypeOldStandardScheduled:
+        if (template.type.intValue == TransferTypeOldStandard
+            || template.type.intValue == TransferTypeOldStandardScheduled
+            || template.remoteIBAN == nil) { // Try again if a previous conversion failed.
             {
                 if (template.type.intValue == TransferTypeOldStandard) {
                     template.type = @(TransferTypeSEPA);
-                } else {
+                }
+
+                if (template.type.intValue == TransferTypeOldStandardScheduled) {
                     template.type = @(TransferTypeSEPAScheduled);
                 }
 
-                InstituteInfo *info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
                 NSDictionary *ibanResult = [IBANtools convertToIBAN: template.remoteAccount
                                                            bankCode: template.remoteBankCode
                                                         countryCode: @"de"
@@ -107,8 +108,22 @@
                     [ibanResult[@"result"] intValue] == IBANToolsResultOK) {
                     template.remoteIBAN = ibanResult[@"iban"];
                 }
+            }
+        }
+
+        if (template.remoteBIC == nil || template.remoteBankName == nil) {
+            InstituteInfo *info = nil;
+            if (template.remoteIBAN != nil) {
+                info = [HBCIController.controller infoForIBAN: template.remoteIBAN];
+            } else {
+                if (template.remoteBankCode != nil) {
+                    info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                }
+            }
+
+            if (info != nil) {
                 template.remoteBIC = info.bic;
-                break;
+                template.remoteBankName  = info.name;
             }
         }
     }

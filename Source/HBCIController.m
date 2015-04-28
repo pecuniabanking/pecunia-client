@@ -165,7 +165,25 @@ static HBCIController *controller = nil;
 
 - (InstituteInfo *)infoForBankCode: (NSString *)bankCode
 {
+    if (bankCode == nil) {
+        return nil;
+    }
+
     NSDictionary *bicInfo = [IBANtools bicForBankCode: bankCode countryCode: @"de"];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
+        return nil;
+    }
+    return [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
+}
+
+- (InstituteInfo *)infoForIBAN: (NSString *)iban
+{
+    if (iban == nil) {
+        return nil;
+    }
+
+    NSDictionary *bicInfo = [IBANtools bicForIBAN: iban];
     IBANToolsResult result = [bicInfo[@"result"] intValue];
     if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
         return nil;
