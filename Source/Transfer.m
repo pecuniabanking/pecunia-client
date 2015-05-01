@@ -191,7 +191,7 @@
 - (BOOL)isSEPAorEU
 {
     TransferType type = [self.type intValue];
-    return self.isSEPA || type == TransferTypeEU;
+    return self.isSEPA || type == TransferTypeEU || type == TransferTypeInternalSEPA;
 }
 
 - (void)setJobId: (unsigned int)jid

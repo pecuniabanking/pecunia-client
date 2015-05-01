@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
@@ -38,9 +38,6 @@
                 <outlet property="pendingTransfers" destination="311" id="312"/>
                 <outlet property="pendingTransfersListView" destination="304" id="310"/>
                 <outlet property="purpose1" destination="492" id="666"/>
-                <outlet property="purpose2" destination="556" id="668"/>
-                <outlet property="purpose3" destination="558" id="670"/>
-                <outlet property="purpose4" destination="559" id="672"/>
                 <outlet property="queueItButton" destination="399" id="510"/>
                 <outlet property="receiverComboBox" destination="515" id="517"/>
                 <outlet property="receiverText" destination="403" id="521"/>
@@ -359,7 +356,6 @@
                 </customView>
             </subviews>
             <connections>
-                <outlet property="placeholderText" destination="mfy-4l-oti" id="inE-0D-B0g"/>
                 <outlet property="rightPane" destination="46" id="332"/>
             </connections>
         </view>
@@ -836,9 +832,9 @@
                     </connections>
                 </comboBox>
                 <textField verticalHuggingPriority="750" tag="40" id="492" userLabel="Purpose 1">
-                    <rect key="frame" x="63" y="132" width="270" height="24"/>
+                    <rect key="frame" x="63" y="103" width="542" height="53"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(1)" drawsBackground="YES" usesSingleLineMode="YES" id="493">
+                    <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesSingleLineMode="YES" id="493">
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -850,61 +846,6 @@
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="667"/>
-                        <outlet property="nextKeyView" destination="556" id="FqA-IV-obd"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" tag="41" id="556" userLabel="Purpose 2">
-                    <rect key="frame" x="335" y="132" width="270" height="24"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(2)" drawsBackground="YES" usesSingleLineMode="YES" id="557">
-                        <font key="font" size="13" name="HelveticaNeue"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="94" name="value" keyPath="selection.purpose2" id="730">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">(2)</string>
-                            </dictionary>
-                        </binding>
-                        <outlet property="delegate" destination="-2" id="669"/>
-                        <outlet property="nextKeyView" destination="558" id="yQe-8m-Nbn"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" tag="42" id="558" userLabel="Purpose 3">
-                    <rect key="frame" x="63" y="106" width="270" height="24"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(3)" drawsBackground="YES" usesSingleLineMode="YES" id="561">
-                        <font key="font" size="13" name="HelveticaNeue"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="94" name="value" keyPath="selection.purpose3" id="731">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">(3)</string>
-                            </dictionary>
-                        </binding>
-                        <outlet property="delegate" destination="-2" id="671"/>
-                        <outlet property="nextKeyView" destination="559" id="vPW-xj-kXd"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" tag="43" id="559" userLabel="Purpose 4">
-                    <rect key="frame" x="335" y="106" width="270" height="24"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(4)" drawsBackground="YES" usesSingleLineMode="YES" id="560">
-                        <font key="font" size="13" name="HelveticaNeue"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="94" name="value" keyPath="selection.purpose4" id="732">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">(4)</string>
-                            </dictionary>
-                        </binding>
-                        <outlet property="delegate" destination="-2" id="673"/>
-                        <outlet property="nextKeyView" destination="429" id="K4R-zn-y7A"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="679">

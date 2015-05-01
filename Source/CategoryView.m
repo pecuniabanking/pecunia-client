@@ -90,7 +90,7 @@
 
                 // Check if the account supports SEPA transfers or at least internal transfers.
                 BOOL flag = [[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]
-                    || [[HBCIController controller] isTransferSupported: TransferTypeInternal forAccount: account];
+                    || [[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account];
                 if (!flag) {
                     [item setAction: nil];
                 }

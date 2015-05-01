@@ -82,6 +82,7 @@
     switch (template.type.intValue) {
         case TransferTypeEU:
         case TransferTypeSEPA:
+        case TransferTypeInternalSEPA:
             if (template.remoteIBAN == nil) {
                 NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                                 NSLocalizedString(@"AP68", nil),

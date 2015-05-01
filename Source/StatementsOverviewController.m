@@ -468,8 +468,8 @@ extern void *UserDefaultsBindingContext;
                                                       fromAccount: account
                                                         statement: assignment.statement];
             } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternal forAccount: account]) {
-                    [BankingController.controller startTransferOfType: TransferTypeInternal
+                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                    [BankingController.controller startTransferOfType: TransferTypeInternalSEPA
                                                           fromAccount: account
                                                             statement: assignment.statement];
                 }
@@ -480,8 +480,8 @@ extern void *UserDefaultsBindingContext;
             if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
                 [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
             } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternal forAccount: account]) {
-                    [BankingController.controller createTemplateOfType: TransferTypeInternal fromStatement: assignment.statement];
+                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                    [BankingController.controller createTemplateOfType: TransferTypeInternalSEPA fromStatement: assignment.statement];
                 }
             }
             break;

@@ -164,7 +164,25 @@ static HBCIController *controller = nil;
 
 - (InstituteInfo *)infoForBankCode: (NSString *)bankCode
 {
+    if (bankCode == nil) {
+        return nil;
+    }
+
     NSDictionary *bicInfo = [IBANtools bicForBankCode: bankCode countryCode: @"de"];
+    IBANToolsResult result = [bicInfo[@"result"] intValue];
+    if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
+        return nil;
+    }
+    return [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
+}
+
+- (InstituteInfo *)infoForIBAN: (NSString *)iban
+{
+    if (iban == nil) {
+        return nil;
+    }
+
+    NSDictionary *bicInfo = [IBANtools bicForIBAN: iban];
     IBANToolsResult result = [bicInfo[@"result"] intValue];
     if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
         return nil;
@@ -311,7 +329,7 @@ static HBCIController *controller = nil;
 
         case TransferTypeOldStandardScheduled: return @"TermUeb"; break;
 
-        case TransferTypeInternal: return @"Umb"; break;
+        case TransferTypeInternalSEPA: return @"Umb"; break;
 
         case TransferTypeEU: return @"UebForeign"; break;
 
@@ -378,7 +396,7 @@ static HBCIController *controller = nil;
 
         case TransferTypeOldStandardScheduled: transactionType = TransactionType_TransferDated; break;
 
-        case TransferTypeInternal: transactionType = TransactionType_TransferInternal; break;
+        case TransferTypeInternalSEPA: transactionType = TransactionType_TransferInternalSEPA; break;
 
         case TransferTypeCollectiveCreditSEPA: transactionType = TransactionType_TransferCollectiveCreditSEPA; break;
             
@@ -654,7 +672,7 @@ static HBCIController *controller = nil;
                     type = @"dated";
                     break;
 
-                case TransferTypeInternal:
+                case TransferTypeInternalSEPA:
                     type = @"internal";
                     break;
 
@@ -678,6 +696,11 @@ static HBCIController *controller = nil;
                     LogError(@"Collective transfer must be sent with 'sendCollectiveTransfer'");
                     continue;
                     break;
+                    
+                default:
+                    // not supported
+                    LogError(@"Transfer %d type not supported any longer", tt);
+                    return false;
             }
 
             [self appendTag: @"type" withValue: type to: cmd];
