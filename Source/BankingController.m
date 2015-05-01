@@ -1940,10 +1940,6 @@ static BankingController *bankinControllerInstance;
     return (BankAccount *)cat;
 }
 
-- (IBAction)startLocalTransfer: (id)sender {
-    [self startTransferOfType: TransferTypeOldStandard fromAccount: self.selectedBankAccount statement: nil];
-}
-
 - (IBAction)donate: (id)sender {
     LogEnter;
 
@@ -1965,10 +1961,6 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)startInternalTransfer: (id)sender {
     [self startTransferOfType: TransferTypeInternalSEPA fromAccount: self.selectedBankAccount statement: nil];
-}
-
-- (IBAction)startEuTransfer: (id)sender {
-    [self startTransferOfType: TransferTypeEU fromAccount: self.selectedBankAccount statement: nil];
 }
 
 - (IBAction)startSepaTransfer: (id)sender {
