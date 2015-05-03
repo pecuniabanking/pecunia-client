@@ -1,0 +1,435 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED4EA1AF4DD0400978925 /* AppDelegate.swift */; };
+		270ED4ED1AF4DD0400978925 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EC1AF4DD0400978925 /* Images.xcassets */; };
+		270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EE1AF4DD0400978925 /* MainMenu.xib */; };
+		270ED4FC1AF4DD0400978925 /* PecuniaPluginTesterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED4FB1AF4DD0400978925 /* PecuniaPluginTesterTests.swift */; };
+		276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */; };
+		27812CCF1AF5044100458619 /* debug-helper.js in Resources */ = {isa = PBXBuildFile; fileRef = 27812CCE1AF5044100458619 /* debug-helper.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		270ED4F61AF4DD0400978925 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 270ED4DD1AF4DD0400978925 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 270ED4E41AF4DD0400978925;
+			remoteInfo = PecuniaPluginTester;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		270ED4E51AF4DD0400978925 /* PecuniaPluginTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PecuniaPluginTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		270ED4E91AF4DD0400978925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		270ED4EA1AF4DD0400978925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		270ED4EC1AF4DD0400978925 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		270ED4EF1AF4DD0400978925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		270ED4F51AF4DD0400978925 /* PecuniaPluginTesterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PecuniaPluginTesterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		270ED4FA1AF4DD0400978925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		270ED4FB1AF4DD0400978925 /* PecuniaPluginTesterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PecuniaPluginTesterTests.swift; sourceTree = "<group>"; };
+		276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+PecuniaAdditions.h"; path = "../../Source/NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
+		276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+PecuniaAdditions.m"; path = "../../Source/NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; };
+		276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PecuniaPlugingTester-Bridging-Header.h"; path = "../PecuniaPlugingTester-Bridging-Header.h"; sourceTree = "<group>"; };
+		27812CCE1AF5044100458619 /* debug-helper.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "debug-helper.js"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		270ED4E21AF4DD0400978925 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		270ED4F21AF4DD0400978925 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		270ED4DC1AF4DD0400978925 = {
+			isa = PBXGroup;
+			children = (
+				276ABD861AF65A610041DC23 /* Classes */,
+				270ED4E71AF4DD0400978925 /* PecuniaPluginTester */,
+				270ED4F81AF4DD0400978925 /* PecuniaPluginTesterTests */,
+				270ED4E61AF4DD0400978925 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		270ED4E61AF4DD0400978925 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				270ED4E51AF4DD0400978925 /* PecuniaPluginTester.app */,
+				270ED4F51AF4DD0400978925 /* PecuniaPluginTesterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		270ED4E71AF4DD0400978925 /* PecuniaPluginTester */ = {
+			isa = PBXGroup;
+			children = (
+				270ED4EA1AF4DD0400978925 /* AppDelegate.swift */,
+				270ED4EC1AF4DD0400978925 /* Images.xcassets */,
+				270ED4EE1AF4DD0400978925 /* MainMenu.xib */,
+				27812CCE1AF5044100458619 /* debug-helper.js */,
+				270ED4E81AF4DD0400978925 /* Supporting Files */,
+			);
+			path = PecuniaPluginTester;
+			sourceTree = "<group>";
+		};
+		270ED4E81AF4DD0400978925 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				270ED4E91AF4DD0400978925 /* Info.plist */,
+				276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		270ED4F81AF4DD0400978925 /* PecuniaPluginTesterTests */ = {
+			isa = PBXGroup;
+			children = (
+				270ED4FB1AF4DD0400978925 /* PecuniaPluginTesterTests.swift */,
+				270ED4F91AF4DD0400978925 /* Supporting Files */,
+			);
+			path = PecuniaPluginTesterTests;
+			sourceTree = "<group>";
+		};
+		270ED4F91AF4DD0400978925 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				270ED4FA1AF4DD0400978925 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		276ABD861AF65A610041DC23 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */,
+				276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		270ED4E41AF4DD0400978925 /* PecuniaPluginTester */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 270ED4FF1AF4DD0400978925 /* Build configuration list for PBXNativeTarget "PecuniaPluginTester" */;
+			buildPhases = (
+				270ED4E11AF4DD0400978925 /* Sources */,
+				270ED4E21AF4DD0400978925 /* Frameworks */,
+				270ED4E31AF4DD0400978925 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PecuniaPluginTester;
+			productName = PecuniaPluginTester;
+			productReference = 270ED4E51AF4DD0400978925 /* PecuniaPluginTester.app */;
+			productType = "com.apple.product-type.application";
+		};
+		270ED4F41AF4DD0400978925 /* PecuniaPluginTesterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 270ED5021AF4DD0400978925 /* Build configuration list for PBXNativeTarget "PecuniaPluginTesterTests" */;
+			buildPhases = (
+				270ED4F11AF4DD0400978925 /* Sources */,
+				270ED4F21AF4DD0400978925 /* Frameworks */,
+				270ED4F31AF4DD0400978925 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				270ED4F71AF4DD0400978925 /* PBXTargetDependency */,
+			);
+			name = PecuniaPluginTesterTests;
+			productName = PecuniaPluginTesterTests;
+			productReference = 270ED4F51AF4DD0400978925 /* PecuniaPluginTesterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		270ED4DD1AF4DD0400978925 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Pecunia Team";
+				TargetAttributes = {
+					270ED4E41AF4DD0400978925 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+					270ED4F41AF4DD0400978925 = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 270ED4E41AF4DD0400978925;
+					};
+				};
+			};
+			buildConfigurationList = 270ED4E01AF4DD0400978925 /* Build configuration list for PBXProject "PecuniaPluginTester" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 270ED4DC1AF4DD0400978925;
+			productRefGroup = 270ED4E61AF4DD0400978925 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				270ED4E41AF4DD0400978925 /* PecuniaPluginTester */,
+				270ED4F41AF4DD0400978925 /* PecuniaPluginTesterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		270ED4E31AF4DD0400978925 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				270ED4ED1AF4DD0400978925 /* Images.xcassets in Resources */,
+				27812CCF1AF5044100458619 /* debug-helper.js in Resources */,
+				270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		270ED4F31AF4DD0400978925 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		270ED4E11AF4DD0400978925 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */,
+				270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		270ED4F11AF4DD0400978925 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				270ED4FC1AF4DD0400978925 /* PecuniaPluginTesterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		270ED4F71AF4DD0400978925 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 270ED4E41AF4DD0400978925 /* PecuniaPluginTester */;
+			targetProxy = 270ED4F61AF4DD0400978925 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		270ED4EE1AF4DD0400978925 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				270ED4EF1AF4DD0400978925 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		270ED4FD1AF4DD0400978925 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "PecuniaPlugingTester-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		270ED4FE1AF4DD0400978925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "PecuniaPlugingTester-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		270ED5001AF4DD0400978925 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		270ED5011AF4DD0400978925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		270ED5031AF4DD0400978925 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PecuniaPluginTesterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PecuniaPluginTester.app/Contents/MacOS/PecuniaPluginTester";
+			};
+			name = Debug;
+		};
+		270ED5041AF4DD0400978925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PecuniaPluginTesterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PecuniaPluginTester.app/Contents/MacOS/PecuniaPluginTester";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		270ED4E01AF4DD0400978925 /* Build configuration list for PBXProject "PecuniaPluginTester" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				270ED4FD1AF4DD0400978925 /* Debug */,
+				270ED4FE1AF4DD0400978925 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		270ED4FF1AF4DD0400978925 /* Build configuration list for PBXNativeTarget "PecuniaPluginTester" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				270ED5001AF4DD0400978925 /* Debug */,
+				270ED5011AF4DD0400978925 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		270ED5021AF4DD0400978925 /* Build configuration list for PBXNativeTarget "PecuniaPluginTesterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				270ED5031AF4DD0400978925 /* Debug */,
+				270ED5041AF4DD0400978925 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 270ED4DD1AF4DD0400978925 /* Project object */;
+}

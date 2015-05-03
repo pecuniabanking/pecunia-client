@@ -158,8 +158,9 @@ import JavaScriptCore
             toDate = to!.lowDate();
         }
 
+
         let pluginNameFunction: JSValue = context.objectForKeyedSubscript("getStatements");
-        return pluginNameFunction.callWithArguments([fromDate, toDate]).toArray() as! [BankQueryResult];
+        return []; //return pluginNameFunction.callWithArguments([fromDate, toDate]).toArray() as! [BankQueryResult];
     }
 
 }
