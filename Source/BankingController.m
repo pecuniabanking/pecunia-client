@@ -2454,7 +2454,7 @@ static BankingController *bankinControllerInstance;
 - (BOOL)validateMenuItem: (NSMenuItem *)item {
     int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
 
-    if (idx != 0) {
+    if (idx != 0 || currentSectionIndex != 0) {
         if ([item action] == @selector(export:)) {
             return NO;
         }
@@ -2508,7 +2508,7 @@ static BankingController *bankinControllerInstance;
         }
     }
 
-    if (idx == 0) {
+    if (idx == 0 && currentSectionIndex == 0) {
         BankingCategory *cat = [self currentSelection];
         if (cat == nil || [cat accountNumber] == nil) {
             if ([item action] == @selector(showProperties:)) {
