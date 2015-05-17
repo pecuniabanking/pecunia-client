@@ -21,37 +21,39 @@ import Cocoa;
 import WebKit;
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
+class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLogger {
 
   @IBOutlet weak var window: NSWindow!;
   @IBOutlet weak var pluginFileTextField: NSTextField!;
   @IBOutlet var logTextView: NSTextView!;
 
-  @IBOutlet weak var functionNamesTableView: NSTableView!;
   @IBOutlet weak var variablesTableView: NSTableView!;
 
   @IBOutlet weak var detailsTextField: NSTextField!;
   @IBOutlet weak var userNameTextField: NSTextField!;
   @IBOutlet weak var passwordTextField: NSTextField!;
 
-  private let view = WebView();
-  private var redirecting = false;
-  private var jsScriptFile = "";
+  private var context: PluginContext? = nil;
 
-  private var functionNames: [String] = [];
+  private var redirecting = false;
+
   private var variables: [[String: String]] = [];
 
   func applicationDidFinishLaunching(aNotification: NSNotification) {
-    view.frameLoadDelegate = self;
-    view.hostWindow = window;
 
     let defaults = NSUserDefaults.standardUserDefaults();
     if let name = defaults.stringForKey("pptScriptPath") {
       pluginFileTextField.stringValue = name;
     }
 
-    // To get an initial DOM.
-    view.mainFrame.loadHTMLString("<p></p>", baseURL: NSURL(string: "http://localhost"));
+    if let user = defaults.stringForKey("pptLoginUser") {
+      userNameTextField.stringValue = user;
+    }
+
+    if let password = defaults.stringForKey("pptLoginPassword") {
+      passwordTextField.stringValue = password;
+    }
+
     logIntern("Ready");
   }
 
@@ -61,11 +63,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
 
   @IBAction func selectScriptFile(sender: AnyObject) {
     let panel = NSOpenPanel();
-    panel.title = "Select Plugin File (*.xml)";
+    panel.title = "Select Plugin File (*.js)";
     panel.canChooseDirectories = false;
     panel.canChooseFiles = true;
     panel.allowsMultipleSelection = false;
-    panel.allowedFileTypes = ["xml"];
+    panel.allowedFileTypes = ["js"];
 
     let runResult = panel.runModal();
     if runResult == NSModalResponseOK && panel.URL != nil {
@@ -78,19 +80,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
 
   @IBAction func close(sender: AnyObject) {
     NSApplication.sharedApplication().terminate(self);
-  }
-
-  func printDescription(context: JSContext) {
-    let value: JSValue = context.objectForKeyedSubscript("screenW");
-    println(value);
-
-    let function: JSValue = context.objectForKeyedSubscript("description");
-    println(function.callWithArguments([]).toString());
-  }
-
-  override func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
-    delay seconds: NSTimeInterval, fireDate date: NSDate!, forFrame frame: WebFrame!) {
-      //redirecting = true;
   }
 
   override func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
@@ -116,152 +105,60 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
 */
       // After loading a webpage the entire JS context is cleared and filled with data from the
       // webpage, hence we have to reload everything again.
-      prepareContext();
-
-      if count(jsScriptFile) > 0 {
-        var path = pluginFileTextField.stringValue.stringByDeletingLastPathComponent;
-        path = path.stringByAppendingPathComponent(jsScriptFile);
-        //jsScriptFile = "";
-        if let script = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) {
-          let parseResult = view.stringByEvaluatingJavaScriptFromString(script);
-          if parseResult != "true" {
-            logIntern("Error: parsing the script failed");
-          }
-        } else {
-          logIntern("Error: couldn't load script file from: " + path);
-        }
-      }
-
-      updateFunctionNames(view.mainFrame.javaScriptContext);
-      updateVariables(view.mainFrame.javaScriptContext);
+      updateVariables();
 
       //let html = view.stringByEvaluatingJavaScriptFromString("document.documentElement.outerHTML");
       //logIntern(html);
     }
   }
 
-  /// MARK: - Setup
-  private func prepareContext() {
-
-    let context = view.mainFrame.javaScriptContext;
-
-    context.setObject(false, forKeyedSubscript: "JSError");
-    context.exceptionHandler = { context, exception in
-      self.logIntern("JS Error: " + exception.toString());
-      context.setObject(true, forKeyedSubscript: "JSError");
-    }
-
-    // Similar for logging.
-    let logErrorFunction: @objc_block (String!) -> Void = { self.logError($0); };
-    context.setObject(unsafeBitCast(logErrorFunction, AnyObject.self), forKeyedSubscript: "logError");
-    let logWarningFunction: @objc_block (String!) -> Void = { self.logWarning($0); };
-    context.setObject(unsafeBitCast(logWarningFunction, AnyObject.self), forKeyedSubscript: "logWarning");
-    let logInfoFunction: @objc_block (String!) -> Void = { self.logInfo($0); };
-    context.setObject(unsafeBitCast(logInfoFunction, AnyObject.self), forKeyedSubscript: "logInfo");
-    let logDebugFunction: @objc_block (String!) -> Void = { self.logDebug($0); };
-    context.setObject(unsafeBitCast(logDebugFunction, AnyObject.self), forKeyedSubscript: "logDebug");
-    let logVerboseFunction: @objc_block (String!) -> Void = { self.logVerbose($0); };
-    context.setObject(unsafeBitCast(logVerboseFunction, AnyObject.self), forKeyedSubscript: "logVerbose");
-
-    let bundle = NSBundle(forClass: AppDelegate.self);
-    if let scriptPath = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
-      if let script = String(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding, error: nil) {
-        view.stringByEvaluatingJavaScriptFromString(script);
-      }
-    }
-  }
-
-  /// MARK: - Log Functions
+  // MARK: - Logging
 
   private let logFont = NSFont(name: "LucidaConsole", size: 13);
 
-  private func logError(message: String) {
+  @objc func logError(message: String) -> Void {
     let text = String(format: "[Error] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.redColor()]));
-  }
+  };
 
-  private func logWarning(message: String) {
+  @objc func logWarning(message: String) -> Void {
     let text = String(format: "[Warning] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(red: 0.95, green: 0.75, blue: 0, alpha: 1)]));
-  }
-  
-  private func logInfo(message: String) {
+  };
+
+  @objc func logInfo(message: String) -> Void {
     let text = String(format: "[Info] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!]));
-  }
-  
-  private func logDebug(message: String) {
+  };
+
+  @objc func logDebug(message: String) -> Void {
     let text = String(format: "[Debug] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.darkGrayColor()]));
-  }
-  
-  private func logVerbose(message: String) {
+  };
+
+  @objc func logVerbose(message: String) -> Void {
     let text = String(format: "[Verbose] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.grayColor()]));
-  }
+  };
 
-  private func logIntern(message: String) {
-    let text = String(format: "%@\n", message);
+  func logIntern(message: String) -> Void {
+    let text = String(format: "==> %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.grayColor()]));
-  }
-
+  };
+  
   // MARK: - Application Logic
-
-  // Updates display for current functions in the context.
-  private func updateFunctionNames(context: JSContext) {
-    let scriptFunction: JSValue = context.objectForKeyedSubscript("getFunctionNames");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: getFunctionNames() not found");
-      return;
-    }
-
-    let result = scriptFunction.callWithArguments([]);
-    if let names = result.toArray() {
-      functionNames.removeAll(keepCapacity: true);
-      for name in names as! [String] {
-        functionNames.append(name);
-      }
-    } else {
-      logIntern("Error: getFunctionNames() returned undefined result");
-    }
-
-    functionNamesTableView.reloadData();
-  }
 
   // Updates display for all global vars in the context (vars defined on global level, not in functions
   // objects etc.).
-  private func updateVariables(context: JSContext) {
-    let scriptFunction: JSValue = context.objectForKeyedSubscript("getVariables");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: getVariables() not found");
-      return;
-    }
-
-    let result = scriptFunction.callWithArguments([]);
-    if let values = result.toArray() {
-      variables.removeAll(keepCapacity: true);
-      for variable in values as! [String] {
-        let parts = (variable as NSString).componentsSeparatedByString(":") as! [String];
-        var entries = [String: String]();
-        if parts.count > 0 {
-          entries["name"] = parts[0];
-        }
-        if parts.count > 1 {
-          entries["type"] = parts[1];
-        }
-        if parts.count > 2 {
-          entries["value"] = parts[2];
-        }
-        variables.append(entries);
-      }
-    } else {
-      logIntern("Error: getVariables() returned undefined result");
+  private func updateVariables() {
+    if context != nil {
+      variables = context!.getVariables();
     }
 
     variablesTableView.reloadData();
@@ -276,94 +173,58 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
   @IBAction func loadScript(sender: AnyObject) {
     logIntern("Loading script...");
 
-    if let xml = String(contentsOfFile: pluginFileTextField.stringValue, encoding: NSUTF8StringEncoding, error: nil) {
-
-      var error: NSError?;
-      let details = NSDictionary.dictForXMLString(xml, error: &error);
-      if error != nil {
-        detailsTextField.stringValue = "nothing loaded yet";
-        logIntern("Error: parsing the plugin xml failed:\n" + error!.localizedDescription);
-        return;
-      }
-
-      let context = view.mainFrame.javaScriptContext;
-
-      if let plugin = details["plugin"] as? NSDictionary {
-        var text = "";
-        if let name = plugin["name"] as? NSString {
-          if !name.hasPrefix("pecunia.plugin.") {
-            logIntern("Warning: plugin name doesn't contain 'pecunia.plugin.' prefix and will not be accepted");
-          }
-          text = name as! String;
-        } else {
-          logIntern("Error: descriptor not valid, plugin name attribute not set");
-          detailsTextField.stringValue = "missing name";
-          return;
-        }
-
-        var descriptionText = "";
-        if let entry = plugin["description"] as? NSDictionary {
-          if let description = entry["text"] as? NSString {
-            descriptionText = description.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-          }
-        }
-
-        if count(descriptionText) == 0 {
-          logIntern("Warning: plugin description not found");
-          text += ", <description not found>";
-        } else {
-          text += ", " + descriptionText;
-        }
-
-        detailsTextField.stringValue = text;
-
-        if let name = plugin["name"] as? NSString {
-          if !name.hasPrefix("pecunia.plugin.") {
-            logIntern("Warning: plugin name doesn't contain 'pecunia.plugin.' prefix and will not be accepted");
-          }
-          text = name as! String;
-        } else {
-          logIntern("Error: descriptor not valid, plugin name attribute not set");
-          detailsTextField.stringValue = "missing name";
-          return;
-        }
-
-        // Finally get the initial url to navigate too and trigger script loading.
-        if let entry = plugin["script"] as? NSDictionary {
-          jsScriptFile = entry["name"] as! String;
-        } else {
-          logIntern("Error: descriptor not valid, script file not set");
-          return;
-        }
-
-        if let value = plugin["initialUrl"] as? NSString {
-          if let url = NSURL(string: value as! String) {
-            view.mainFrame.loadRequest(NSURLRequest(URL: url));
-          } else {
-            logIntern("Error: initialUrl attribute not a valid URL");
-            return;
-          }
-        } else {
-          logIntern("Error: descriptor not valid, initialUrl attribute not set");
-          return;
-        }
-
-      } else {
-        logIntern("Error: plugin descriptor not valid, missing <plugin></plugin> block");
-        detailsTextField.stringValue = "wrong descriptor format";
-        return;
-      }
-    } else {
-      logIntern("Error: could not load plugin descriptor file.")
+    context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self, hostWindow: window);
+    if context == nil {
+      detailsTextField.stringValue = "Loading failed";
+      logError("Loading plugin script failed.");
+      return;
     }
 
-    logIntern("Loading succesfully done");
+    context?.navigateTo("http://localhost");
+    let bundle = NSBundle(forClass: AppDelegate.self);
+    if let scriptPath = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
+      if let script = String(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding, error: nil) {
+        context?.addDebugScript(script);
+      }
+    }
+
+    var text: String;
+    let (name, author, description, homePage, license, version) = context!.pluginInfo();
+
+    if count(name) == 0 || name == "undefined" {
+      logIntern("Plugin name missing or empty");
+      text = "<plugin name not found>";
+    } else {
+      if !name.hasPrefix("pecunia.plugin.") {
+        logIntern("Warning: plugin name doesn't contain 'pecunia.plugin.' prefix and will not be recognized");
+      }
+      text = name;
+    }
+
+    if count(description) == 0 || description == "undefined" {
+      logIntern("Warning: plugin description not found");
+      text += ", <description not found>";
+    } else {
+      text += ", " + description.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
+    }
+
+    detailsTextField.stringValue = text;
+    updateVariables();
   }
 
-  @IBAction func logIn(sender: AnyObject) {
-    let context = view.mainFrame.javaScriptContext;
 
-    let scriptFunction: JSValue = context.objectForKeyedSubscript("logIn");
+  @IBAction func logIn(sender: AnyObject) {
+
+    if context == nil {
+      logError("Load plugin first");
+      return;
+    }
+
+    let defaults = NSUserDefaults.standardUserDefaults();
+    defaults.setObject(userNameTextField.stringValue, forKey: "pptLoginUser");
+    defaults.setObject(passwordTextField.stringValue, forKey: "pptLoginPassword");
+
+    let scriptFunction: JSValue = context!.getFunction("logIn");
     if scriptFunction.isUndefined() {
       logIntern("Error: logIn() not found");
       return;
@@ -372,36 +233,48 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
     let result = scriptFunction.callWithArguments([userNameTextField.stringValue, passwordTextField.stringValue]);
 
     if result.toBool() {
-      logIntern("Login successfull");
+      logIntern("Login process successfully started");
     } else {
-      logIntern("Login failed");
+      logIntern("Login process setup failed");
     }
+
+    updateVariables();
   }
 
   @IBAction func logOut(sender: AnyObject) {
-    let context = view.mainFrame.javaScriptContext;
-
-    let scriptFunction: JSValue = context.objectForKeyedSubscript("logIn");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: logIn() not found");
+    if context == nil {
+      logError("Load plugin first");
       return;
     }
 
-    let result = scriptFunction.callWithArguments([userNameTextField.stringValue, passwordTextField.stringValue]);
+    let scriptFunction: JSValue = context!.getFunction("logOut");
+    if scriptFunction.isUndefined() {
+      logIntern("Error: logOut() not found");
+      return;
+    }
+
+    let result = scriptFunction.callWithArguments([]);
 
     if result.toBool() {
-      logIntern("Login successfull");
+      logIntern("Logout process successfully started");
     } else {
-      logIntern("Login failed");
+      logIntern("Logout process setup failed");
     }
+
+    updateVariables();
   }
 
   @IBAction func getStatements(sender: AnyObject) {
-    let context = view.mainFrame.javaScriptContext;
+    /*
+    if context == nil {
+    logError("Load plugin first");
+    return;
+    }
+
 
     let scriptFunction: JSValue = context.objectForKeyedSubscript("getStatements");
     if scriptFunction.isUndefined() {
-      logIntern("Error: getStatements() not found");
+      log(-1, message: "Error: getStatements() not found");
       return;
     }
 
@@ -421,27 +294,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource {
     let result = scriptFunction.callWithArguments([fromDate, toDate]);
 
     if !result.isUndefined() {
-      logIntern("Successfully received statements");
+      log(-1, message: "Successfully received statements");
     } else {
-      logIntern("Getting statements failed");
+      log(-1, message: "Getting statements failed");
+    }
+*/
+    updateVariables();
+  }
+
+  @IBAction func dumpHTML(sender: AnyObject) {
+    if context != nil {
+      let html = context!.getCurrentHTML();
+      logIntern(html);
     }
   }
 
-  /// MARK: Data Source Code
+  /// MARK: TableView delegate functions
 
   func numberOfRowsInTableView(tableView: NSTableView) -> Int
   {
-    if tableView == functionNamesTableView {
-      return functionNames.count;
-    }
     return variables.count;
   }
 
   func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-    if tableView == functionNamesTableView {
-      return functionNames[row];
-    }
-
     return variables[row][tableColumn!.identifier];
   }
 

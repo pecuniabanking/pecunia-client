@@ -3,71 +3,120 @@
 //
 // Plugin to read DKB credit card statements from the DKB website (www.dkb.de).
 
+var name = "pecunia.plugin.dkbvisa";
+var author = "Mike Lischke";
+var description = "DKB Kreditkartenkonto"; // Short string for plugin selection.
+var homePage = "http://pecuniabanking.de";
+var license = "CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de";
+var version = "1.0";
+
+var currentState = 0; // Used in the callback to determine what to do next (state machine).
+var userName = "";
+var thePassword = "";
+
 function logIn(user, password) {
 	if (user == "") {
-		logError("Login: user name empty");
+		Logger.logError("Login: user name empty");
 		return false;
 	}
 	
-	logInfo("Logging in user: " + user);
-	
-	var	formLogin = document.forms["login"];
-	logDebug("Login form: " + formLogin);
-
-	document.getElementsByName("j_username")[0].value = user;
-	document.getElementsByName("j_password")[0].value = password;
-	//var submitLogin = document.evaluate("//input[@id='buttonlogin']", formLogin, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-	var submitLogin = document.getElementById("buttonlogin");
-	logDebug(submitLogin);
-
-	logDebug("Sending login form...");
-	try {
-		submitLogin.click();
-	} catch(err) {
-		throw "Problems while logging in:\n" + err;
-	};
+	Logger.logInfo("Logging in user: " + user);
+	userName = user;
+	thePassword = password;
+	currentState = 1;
+	webClient.callback = navigationCallback;
+	webClient.navigateTo("https://banking.dkb.de");
 	
 	return true;
 }
 
-function getStatements(from, to) { // Parameters are dates.
-	logDebug(from.toString());
-	logDebug(to.toString());
+function logOut() {
+	Logger.logInfo("Starting log out...");
+	currentState = 99;
+	userName = "";
+	thePassword = "";
+	webClient.navigateTo("https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.infobar.logout-button&$event=logout");
+	
+	return true;
+}
+
+// Cache variables to allow for async loading.
+var numbers;
+var startFrom;
+var endAt;
+
+function getStatements(from, to, creditCardNumbers) { // 2 dates and an array of strings.
+	numbers = creditCardNumbers;
+	startFrom = from;
+	endAt = to;
+	
+	Logger.logDebug(from.toString());
+	Logger.logDebug(to.toString());
 	
 	var result = [];
 	return result;
 }
 
-/* Works but not sure we need jQuery at all.
-(function() {
-	logDebug("Loading jQuery...");
+// Called when a new page is loaded in the webclient.
+function navigationCallback() {
+	switch (currentState) {
+		case 1:
+		try {
+			var LoginURL = webClient.URL;
+			Logger.logDebug("At URL: " + LoginURL + ", triggering login process");
+			if (LoginURL.indexOf("/portal") !== -1) {
+				Logger.debug("Running new portal login");
+				/*
+				var formLogin = pageLogin.getFirstByXPath("//form[@class='anmeldung']");
+				Logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name);
+				formLogin.getFirstByXPath("//input[@maxlength='16']").setValueAttribute(ResponseLogin);
+				formLogin.getFirstByXPath("//input[@type='password']").setValueAttribute(ResponsePasswort);
+				var submitLogin = formLogin.getInputByValue("Anmelden");
+				*/
+
+			} else if (LoginURL.indexOf("/dkb") !== -1) {
+				Logger.logDebug("Running old standard login");
+				var formLogin = webClient.getFormByName("login");
+
+				Logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name);
+				formLogin.getInputByName("j_username").valueAttribute = userName;
+				formLogin.getInputByName("j_password").valueAttribute = thePassword;
+				var submitLogin = formLogin.getElementById("buttonlogin");
+				Logger.logDebug("submit button: " + submitLogin + ", id: " + submitLogin.id);
+
+			} else if (LoginURL.indexOf("wartung") !== -1) {
+				HibiscusScripting_DKBVisa_checkResponse(pageLoginXML, pageLogin, "Login", monitor);
+
+			} else {
+				throw "Invalid login URL. Please inform the developers.";
+			};
+
+			currentState = 2;
+			submitLogin.click();
+			Logger.logInfo("Login process triggered");
+
+		} catch (err) {
+			throw "An error occured while setting up login form (see log). \nThe error is: " + err;
+
+		};
+		break; // End of state 1.
+		
+		case 2: // Logged in, now collect statements.
+			collectStatements();
+			break;
+			
+		case 99:
+			Logger.logInfo("Log out done");
+			// Fall through;
+		default:
+			currentState = 0;
+			webClient.callback = null; // Unregister ourselve. We are done.
+	}	
+}
+
+// Collects
+function collectStatements() {
 	
-    var startingTime = new Date().getTime();
-    // Load the script
-    var script = document.createElement("SCRIPT");
-    script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
-    script.type = 'text/javascript';
-    document.getElementsByTagName("head")[0].appendChild(script);
-
-    // Poll for jQuery to come into existance
-    var checkReady = function(callback) {
-        if (window.jQuery) {
-            callback(jQuery);
-        }
-        else {
-            window.setTimeout(function() { checkReady(callback); }, 20);
-        }
-    };
-
-    // Start polling...
-    checkReady(function($) {
-        $(function() {
-            var endingTime = new Date().getTime();
-            var tookTime = endingTime - startingTime;
-            logDebug("jQuery is loaded, after " + tookTime + " milliseconds!");
-        });
-    });
-})();
-*/
+}
 
 true; // Return flag to indicate if parsing the file was successfull.

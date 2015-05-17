@@ -20,20 +20,6 @@
                ReferencedContainer = "container:PecuniaPluginTester.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "270ED4F41AF4DD0400978925"
-               BuildableName = "PecuniaPluginTesterTests.xctest"
-               BlueprintName = "PecuniaPluginTesterTests"
-               ReferencedContainer = "container:PecuniaPluginTester.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "270ED4F41AF4DD0400978925"
-               BuildableName = "PecuniaPluginTesterTests.xctest"
-               BlueprintName = "PecuniaPluginTesterTests"
-               ReferencedContainer = "container:PecuniaPluginTester.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

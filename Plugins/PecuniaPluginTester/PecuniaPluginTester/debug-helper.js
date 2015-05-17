@@ -34,8 +34,9 @@ function getElementNames(maxRecursion) { // Max recursion depth.
     }
   }
 
-  for (var element in document) {
-    enumerate(element, document[element], 0);
+  var doc = webView.document;
+  for (var element in doc) {
+    enumerate(element, doc[element], 0);
   }
 
   return result;
@@ -45,30 +46,19 @@ function getElementNames(maxRecursion) { // Max recursion depth.
 // Functions defined with no explicit owner (like this one here) are considered top level
 // functions and can be found on the defaultView object.
 function getFunctionNames() {
+	return [];
   var result = [];
 
   var view = document["defaultView"];
+  if (view == null)
+    return result;
+
   for (var element in view) {
     if (typeof view[element] == 'function') {
-      //logDebug(name);
+      Logger.logVerbose(name);
       result.push(element);
     }
   }
 
   return result;
 }
-
-function getVariables() {
-  var result = [];
-
-  for (var element in window) {
-    var o = window[element];
-    if (typeof o == 'boolean' || typeof o == 'number' || typeof o == 'string' || typeof o == 'symbol') {
-      //logDebug(name);
-      result.push(element + ":" + typeof o + ":" + o);
-    }
-  }
-
-  return result;
-}
-

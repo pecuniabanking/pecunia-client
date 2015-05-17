@@ -1293,7 +1293,7 @@
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
 		27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginRegistry.swift; sourceTree = "<group>"; };
+		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginRegistry.swift; path = ../Plugins/Source/PluginRegistry.swift; sourceTree = "<group>"; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2079,12 +2079,12 @@
 			name = "AppKit categories";
 			sourceTree = "<group>";
 		};
-		27820B4D1AE3C963001505E4 /* Scripting */ = {
+		27820B4D1AE3C963001505E4 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
 				27820B4E1AE3C996001505E4 /* PluginRegistry.swift */,
 			);
-			name = Scripting;
+			name = Plugins;
 			sourceTree = "<group>";
 		};
 		2792CB31148404E2006A510A /* Animation */ = {
@@ -2555,14 +2555,14 @@
 			isa = PBXGroup;
 			children = (
 				27CC732314A09DDD0082495C /* 3rd Party */,
+				B12A497E10BDD242002CC63E /* Banking Backend */,
 				B1FE0DD81065885D005B3800 /* Basic */,
 				B1FE0DCD106585DC005B3800 /* Core Data */,
 				B1FE0DC8106583A3005B3800 /* Extensions */,
-				B12A497E10BDD242002CC63E /* Banking Backend */,
 				B14C61B8115AB4A9009324A6 /* Migration */,
+				27820B4D1AE3C963001505E4 /* Plugins */,
 				B137BE7812D32F3B00D0394C /* Printing */,
 				272454641871F81E00AF9042 /* Recognition */,
-				27820B4D1AE3C963001505E4 /* Scripting */,
 				B1FE0DD610658759005B3800 /* Service */,
 				B1FE0DCB106583F8005B3800 /* Windows + Views */,
 			);
