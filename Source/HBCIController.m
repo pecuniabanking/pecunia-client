@@ -178,7 +178,7 @@ static HBCIController *controller = nil;
 
 - (InstituteInfo *)infoForIBAN: (NSString *)iban
 {
-    if (iban == nil) {
+    if (iban == nil || iban.length == 0) {
         return nil;
     }
 
