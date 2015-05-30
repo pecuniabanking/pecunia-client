@@ -21,29 +21,44 @@ import Cocoa;
 import WebKit;
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLogger {
+class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLogger, NSFilePresenter {
 
   @IBOutlet weak var window: NSWindow!;
   @IBOutlet weak var pluginFileTextField: NSTextField!;
   @IBOutlet var logTextView: NSTextView!;
-
-  @IBOutlet weak var variablesTableView: NSTableView!;
+  @IBOutlet weak var autoLoadCheckbox: NSButton!
 
   @IBOutlet weak var detailsTextField: NSTextField!;
   @IBOutlet weak var userNameTextField: NSTextField!;
   @IBOutlet weak var passwordTextField: NSTextField!;
+  @IBOutlet weak var fromDatePicker: NSDatePicker!
+  @IBOutlet weak var toDatePicker: NSDatePicker!
+  @IBOutlet weak var accountsTextField: NSTextField!
+  @IBOutlet weak var logLevelSelector: NSPopUpButton!
 
   private var context: PluginContext? = nil;
+  private var webBrowser: NSWindow? = nil;
 
   private var redirecting = false;
-
-  private var variables: [[String: String]] = [];
+  private var lastChangeDate: NSDate? = nil;
 
   func applicationDidFinishLaunching(aNotification: NSNotification) {
 
+    toDatePicker.dateValue = NSDate();
+
     let defaults = NSUserDefaults.standardUserDefaults();
+
+    // Initialize webInspector.
+    defaults.setBool(true, forKey: "WebKitDeveloperExtras");
+    defaults.synchronize();
+
     if let name = defaults.stringForKey("pptScriptPath") {
       pluginFileTextField.stringValue = name;
+
+      var error: NSError?;
+      if let attributes = NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue, error: &error) {
+        lastChangeDate = attributes[NSFileModificationDate] as! NSDate?;
+      }
     }
 
     if let user = defaults.stringForKey("pptLoginUser") {
@@ -54,14 +69,43 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       passwordTextField.stringValue = password;
     }
 
+    if let fromDate: AnyObject = defaults.objectForKey("pptFromDate") where fromDate.isKindOfClass(NSDate) {
+      fromDatePicker.dateValue = fromDate as! NSDate;
+    }
+
+    if let toDate: AnyObject = defaults.objectForKey("pptToDate")  where toDate.isKindOfClass(NSDate) {
+      toDatePicker.dateValue = toDate as! NSDate;
+    }
+
+    if let accounts = defaults.stringForKey("pptAccounts") {
+      accountsTextField.stringValue = accounts;
+    }
+
+    if let logLevel: AnyObject = defaults.objectForKey("pptLogLevel") {
+      logLevelSelector.selectItemAtIndex((logLevel as! NSNumber).integerValue);
+    } else {
+      logLevelSelector.selectItemAtIndex(3);
+    }
+
+    if defaults.boolForKey("pptAutoLoad") {
+      autoLoadCheckbox.state = NSOnState;
+      if NSFileManager.defaultManager().fileExistsAtPath(pluginFileTextField.stringValue) {
+        loadScript(self);
+        NSFileCoordinator.addFilePresenter(self);
+      }
+    }
+
     logIntern("Ready");
   }
 
   func applicationWillTerminate(aNotification: NSNotification) {
     // Insert code here to tear down your application
+    NSFileCoordinator.removeFilePresenter(self);
   }
 
   @IBAction func selectScriptFile(sender: AnyObject) {
+    NSFileCoordinator.removeFilePresenter(self);
+
     let panel = NSOpenPanel();
     panel.title = "Select Plugin File (*.js)";
     panel.canChooseDirectories = false;
@@ -75,6 +119,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
       let defaults = NSUserDefaults.standardUserDefaults();
       defaults.setObject(panel.URL!.path!, forKey: "pptScriptPath");
+
+      NSFileCoordinator.addFilePresenter(self);
     }
   }
 
@@ -82,34 +128,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     NSApplication.sharedApplication().terminate(self);
   }
 
-  override func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-    logIntern("Info: navigating to: " + sender.mainFrameURL);
-    
-    if redirecting {
-      redirecting = false;
-      return;
+  // MARK: - File Presenter protocol
+
+  var presentedItemURL: NSURL? {
+    return NSURL(fileURLWithPath: pluginFileTextField.stringValue);
+  }
+
+  var operationQueue = NSOperationQueue();
+  var presentedItemOperationQueue: NSOperationQueue {
+    return operationQueue;
+  }
+
+  var pendingRefresh: dispatch_cancelable_block_t? = nil;
+
+  func presentedItemDidChange() {
+    var error: NSError?;
+    if let attributes = NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue, error: &error) {
+      let date = attributes[NSFileModificationDate] as! NSDate?;
+      if lastChangeDate != nil && lastChangeDate == date {
+        return;
+      }
+      lastChangeDate = date;
     }
 
-    if sender.mainFrame == frame {
-
-      /*
-      view.stringByEvaluatingJavaScriptFromString("function description() {var element = document.evaluate( \"//input[@maxlength='16']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ); return element.singleNodeValue.textContent;}");
-
-      var function: JSValue = context.objectForKeyedSubscript("description");
-      logIntern(function.callWithArguments([]).toString());
-
-      view.stringByEvaluatingJavaScriptFromString("function description2() {var formLogin = document.evaluate(\"//form[@name='login']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ); return formLogin;}");
-
-      function = context.objectForKeyedSubscript("description2");
-      logIntern(function.callWithArguments([]).toString());
-*/
-      // After loading a webpage the entire JS context is cleared and filled with data from the
-      // webpage, hence we have to reload everything again.
-      updateVariables();
-
-      //let html = view.stringByEvaluatingJavaScriptFromString("document.documentElement.outerHTML");
-      //logIntern(html);
-    }
+    dispatch_async(dispatch_get_main_queue(), {
+      self.pendingRefresh = nil;
+      self.logIntern("Reloading plugin");
+      self.loadScript(self);
+    });
   }
 
   // MARK: - Logging
@@ -123,64 +169,80 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   };
 
   @objc func logWarning(message: String) -> Void {
+    if logLevelSelector.indexOfSelectedItem < 1 {
+      return;
+    }
+
     let text = String(format: "[Warning] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(red: 0.95, green: 0.75, blue: 0, alpha: 1)]));
   };
 
   @objc func logInfo(message: String) -> Void {
+    if logLevelSelector.indexOfSelectedItem < 2 {
+      return;
+    }
+
     let text = String(format: "[Info] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!]));
   };
 
   @objc func logDebug(message: String) -> Void {
+    if logLevelSelector.indexOfSelectedItem < 3 {
+      return;
+    }
+
     let text = String(format: "[Debug] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.darkGrayColor()]));
   };
 
   @objc func logVerbose(message: String) -> Void {
+    if logLevelSelector.indexOfSelectedItem < 4 {
+      return;
+    }
+
     let text = String(format: "[Verbose] %@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.grayColor()]));
   };
 
   func logIntern(message: String) -> Void {
-    let text = String(format: "==> %@\n", message);
+    let text = String(format: "%@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.grayColor()]));
+      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(calibratedRed: 0.3, green: 0.75, blue: 0.3, alpha: 1)]));
   };
-  
-  // MARK: - Application Logic
 
-  // Updates display for all global vars in the context (vars defined on global level, not in functions
-  // objects etc.).
-  private func updateVariables() {
-    if context != nil {
-      variables = context!.getVariables();
-    }
-
-    variablesTableView.reloadData();
-  }
-  
   // MARK: - User Interaction
 
   @IBAction func clearLog(sender: AnyObject) {
     logTextView.string = "";
   }
 
+  @IBAction func logLevelChanged(sender: AnyObject) {
+    let defaults = NSUserDefaults.standardUserDefaults();
+    defaults.setInteger(logLevelSelector.indexOfSelectedItem, forKey: "pptLogLevel");
+  }
+
   @IBAction func loadScript(sender: AnyObject) {
     logIntern("Loading script...");
 
-    context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self, hostWindow: window);
+    if webBrowser == nil {
+      let frame = NSRect(x: 0, y: 0, width: 900, height: 900);
+      webBrowser = NSWindow(contentRect: frame, styleMask: NSTitledWindowMask | NSClosableWindowMask
+        | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask,
+        backing: .Buffered, defer: false);
+      webBrowser?.releasedWhenClosed = false;
+    }
+
+    context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self, hostWindow: webBrowser!);
     if context == nil {
       detailsTextField.stringValue = "Loading failed";
       logError("Loading plugin script failed.");
       return;
     }
 
-    context?.navigateTo("http://localhost");
     let bundle = NSBundle(forClass: AppDelegate.self);
     if let scriptPath = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
       if let script = String(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding, error: nil) {
@@ -209,97 +271,54 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
 
     detailsTextField.stringValue = text;
-    updateVariables();
+
+    logIntern("Loading done");
   }
 
-
-  @IBAction func logIn(sender: AnyObject) {
-
-    if context == nil {
-      logError("Load plugin first");
-      return;
-    }
-
-    let defaults = NSUserDefaults.standardUserDefaults();
-    defaults.setObject(userNameTextField.stringValue, forKey: "pptLoginUser");
-    defaults.setObject(passwordTextField.stringValue, forKey: "pptLoginPassword");
-
-    let scriptFunction: JSValue = context!.getFunction("logIn");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: logIn() not found");
-      return;
-    }
-
-    let result = scriptFunction.callWithArguments([userNameTextField.stringValue, passwordTextField.stringValue]);
-
-    if result.toBool() {
-      logIntern("Login process successfully started");
-    } else {
-      logIntern("Login process setup failed");
-    }
-
-    updateVariables();
-  }
-
-  @IBAction func logOut(sender: AnyObject) {
-    if context == nil {
-      logError("Load plugin first");
-      return;
-    }
-
-    let scriptFunction: JSValue = context!.getFunction("logOut");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: logOut() not found");
-      return;
-    }
-
-    let result = scriptFunction.callWithArguments([]);
-
-    if result.toBool() {
-      logIntern("Logout process successfully started");
-    } else {
-      logIntern("Logout process setup failed");
-    }
-
-    updateVariables();
-  }
 
   @IBAction func getStatements(sender: AnyObject) {
-    /*
     if context == nil {
-    logError("Load plugin first");
-    return;
-    }
-
-
-    let scriptFunction: JSValue = context.objectForKeyedSubscript("getStatements");
-    if scriptFunction.isUndefined() {
-      log(-1, message: "Error: getStatements() not found");
+      logError("Plugin not loaded");
       return;
     }
 
-    var fromDate: NSDate = NSDate();
-    /*
-    if from != nil {
-    fromDate = from!.lowDate();
-    }
-    */
-    var toDate: NSDate = NSDate();
-    /*
-    if to != nil {
-    toDate = to!.lowDate();
-    }
-    */
+    let user = userNameTextField.stringValue;
+    let password = passwordTextField.stringValue;
+    let fromDate = fromDatePicker.dateValue;
+    let toDate = toDatePicker.dateValue;
+    let accountString = accountsTextField.stringValue;
 
-    let result = scriptFunction.callWithArguments([fromDate, toDate]);
+    let defaults = NSUserDefaults.standardUserDefaults();
+    defaults.setObject(user, forKey: "pptLoginUser");
+    defaults.setObject(password, forKey: "pptLoginPassword");
+    defaults.setObject(fromDate, forKey: "pptFromDate");
+    defaults.setObject(toDate, forKey: "pptToDate");
+    defaults.setObject(accountString, forKey: "pptAccounts");
 
-    if !result.isUndefined() {
-      log(-1, message: "Successfully received statements");
+    var accounts = accountString.componentsSeparatedByString(",");
+    if count(accounts) == 0 {
+      logError("No accounts specified");
+      return;
+    }
+
+    for (var i = 0; i < count(accounts); i++) {
+      accounts[i] = String(filter(accounts[i]) { $0 != " " });
+    }
+
+    let scriptFunction: JSValue = context!.getFunction("getStatements");
+    if scriptFunction.isUndefined() {
+      logIntern("Error: getStatements() not found in plugin");
+      return;
+    }
+
+    let result = scriptFunction.callWithArguments([user, password, fromDate, toDate, accounts]);
+
+    if result.toBool() {
+      logIntern("Process successfully started");
     } else {
-      log(-1, message: "Getting statements failed");
+      logIntern("Process setup failed");
     }
-*/
-    updateVariables();
+
   }
 
   @IBAction func dumpHTML(sender: AnyObject) {
@@ -309,15 +328,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
   }
 
-  /// MARK: TableView delegate functions
-
-  func numberOfRowsInTableView(tableView: NSTableView) -> Int
-  {
-    return variables.count;
+  @IBAction func showBrowser(sender: AnyObject) {
+    if webBrowser != nil {
+      webBrowser!.orderFrontRegardless();
+    } else {
+      logError("Plugin not loaded");
+    }
   }
-
-  func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-    return variables[row][tableColumn!.identifier];
+  
+  @IBAction func autoLoadChanged(sender: AnyObject) {
+    let defaults = NSUserDefaults.standardUserDefaults();
+    if autoLoadCheckbox.state == NSOnState {
+      defaults.setBool(true, forKey: "pptAutoLoad");
+      NSFileCoordinator.addFilePresenter(self);
+    } else {
+      defaults.setBool(false, forKey: "pptAutoLoad");
+      NSFileCoordinator.removeFilePresenter(self);
+    }
   }
 
 }

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<plugin name="pecunia.plugin.dkbvisa" version="1.0.0" initialUrl="https://banking.dkb.de">
-	<description>DKB Kreditkartenkonto</description>
-	<homepage>http://pecuniabanking.de</homepage>
-	<url></url>
-	<license>CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de</license>
-	<script name="dkb.js" />
-</plugin>

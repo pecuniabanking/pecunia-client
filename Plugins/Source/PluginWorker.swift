@@ -1,59 +1,27 @@
 /**
-* Copyright (c) 2015, Pecunia Project. All rights reserved.
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License as
-* published by the Free Software Foundation; version 2 of the
-* License.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-* 02110-1301  USA
-*/
+ * Copyright (c) 2015, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 // Contains the implementation needed to run JS code.
-// Certain JS protocols are modeled after HTMLUnit.
 
 import Foundation
 import WebKit
 import AppKit
-
-internal enum XPathResult: Int {
-    case ANY_TYPE = 0                     // The type of the result depends on the expression specified
-                                          // by the first parameter of the evaluate method.
-    case NUMBER_TYPE = 1                  // The result is a number. Use the numberValue property to get
-                                          // the value of the result.
-    case STRING_TYPE = 2                  // The result is a string. Use the stringValue property to get
-                                          // the value of the result.
-    case BOOLEAN_TYPE = 3                 // The result is a boolean. Use the booleanValue property to
-                                          // get the value of the result.
-    case UNORDERED_NODE_ITERATOR_TYPE = 4 // The result contains all nodes that match the expression,
-                                          // but not necessarily in the same order as they appear in the
-                                          // document hierarchy. Use the iterateNext method to get the
-                                          // matching nodes.
-    case ORDERED_NODE_ITERATOR_TYPE = 5   // The result contains all nodes that match the expression,
-                                          // in the same order as they appear in the document hierarchy.
-                                          // Use the iterateNext method to get the matching nodes.
-    case UNORDERED_NODE_SNAPSHOT_TYPE = 6 // The result contains snapshots for all nodes that match the
-                                          // expression, but not necessarily in the same order as they
-                                          // appear in the document hierarchy. Use the snapshotItem method
-                                          // to get the matching nodes.
-    case ORDERED_NODE_SNAPSHOT_TYPE = 7   // The result contains snapshots for all nodes that match the
-                                          // expression, in the same order as they appear in the document
-                                          // hierarchy. Use the snapshotItem method to get the matching nodes.
-    case ANY_UNORDERED_NODE_TYPE = 8      // The result is a node that matches the expression. The result
-                                          // node is not necessarily the first matching node in the document
-                                          // hierarchy. Use the singleNodeValue property to get the matching node.
-    case FIRST_ORDERED_NODE_TYPE = 9      // The result is the first node in the document hierarchy that
-                                          // matches the expression. Use the singleNodeValue property to
-                                          // get the matching node.
-};
 
 @objc protocol JSLogger : JSExport {
     func logError(message: String) -> Void;
@@ -72,145 +40,34 @@ internal enum XPathResult: Int {
                   // and other elements apart.
 }
 
-@objc protocol WebInputJSExport : WebElementJSExport {
-}
-
-@objc protocol WebFormJSExport : JSExport {
-    func getInputByName(name: String) -> WebInputJSExport;
-    func getFirstByXPath(path: String) -> WebElementJSExport;
-    func getElementById(id: String) -> WebElementJSExport;
-}
-
-@objc protocol WebPageJSExport : JSExport {
-
-}
-
-// JS protocols for certain WebKit classes we want to be usable in JS.
-@objc protocol WebViewJSExport : JSExport {
-
-    func navigateTo(location: String) -> String;
-    func getFirstByXPath(path: String) -> JSValue;
-    func getFormByName(path: String) -> WebFormJSExport;
-
-    var URL: String { get };
-    var callback: JSValue { get set };
-}
-
-class WebElement: NSObject, WebElementJSExport {
-    private let jsElement: JSValue;
-
-    var valueAttribute: JSValue {
-        get {
-            if jsElement.isUndefined() {
-                return JSValue(undefinedInContext: jsElement.context);
-            }
-            return jsElement.valueForProperty("value");
-        }
-        set {
-            if !jsElement.isUndefined() {
-                jsElement.setValue(newValue, forProperty: "value");
-            }
-        }
-    }
-
-    var name: JSValue {
-        get {
-            if jsElement.isUndefined() {
-                return JSValue(undefinedInContext: jsElement.context);
-            }
-            return jsElement.valueForProperty("name");
-        }
-
-        set {
-            if !jsElement.isUndefined() {
-                jsElement.setValue(newValue, forProperty: "name");
-            }
-        }
-    }
-
-    var id: JSValue {
-        get {
-            if jsElement.isUndefined() {
-                return JSValue(undefinedInContext: jsElement.context);
-            }
-            return jsElement.valueForProperty("id");
-        }
-
-        set {
-            if !jsElement.isUndefined() {
-                jsElement.setValue(newValue, forProperty: "id");
-            }
-        }
-    }
-
-    init(_ element: JSValue) {
-        jsElement = element;
-        super.init();
-    }
-
-    func click() {
-        jsElement.invokeMethod("click", withArguments: []);
-    }
-}
-
-class WebInput: WebElement, WebInputJSExport {
-    override init(_ input: JSValue) {
-        super.init(input);
-    }
-}
-
-class WebForm: WebElement, WebFormJSExport {
-    func getInputByName(name: String) -> WebInputJSExport {
-        return WebInput(jsElement.valueForProperty("elements").valueForProperty(name));
-    }
-
-    func getFirstByXPath(path: String) -> WebElementJSExport {
-        let context = jsElement.context;
-        let document = context.objectForKeyedSubscript("document");
-        let result = document.invokeMethod("evaluate", withArguments: [path, jsElement,
-            JSValue(nullInContext: context), XPathResult.FIRST_ORDERED_NODE_TYPE.rawValue, JSValue(nullInContext: context)]);
-        let node = result.valueForProperty("singleNodeValue");
-        return WebElement(node);
-    }
-
-    func getElementById(id: String) -> WebElementJSExport {
-        let context = jsElement.context;
-        let document = context.objectForKeyedSubscript("document");
-        return WebElement(document.invokeMethod("getElementById", withArguments: [id]));
-    }
-}
-
 class WebClient: WebView, WebViewJSExport {
-    var plugin: PluginContext?;
-
-    func navigateTo(location: String) -> String {
-        if plugin == nil {
-            return "Plugin not set on WebView";
-        }
-
-        return plugin!.navigateTo(location);
-    }
-
-    func getFirstByXPath(path: String) -> JSValue {
-        let context = mainFrame.javaScriptContext;
-        let document = context.objectForKeyedSubscript("document");
-        let test = document.toArray();
-        let result = document.invokeMethod("evaluate", withArguments: [path, document,
-            JSValue(nullInContext: context), XPathResult.FIRST_ORDERED_NODE_TYPE.rawValue, JSValue(nullInContext: context)]);
-        return result.valueForProperty("singleNodeValue");
-    }
-
-    func getFormByName(name: String) -> WebFormJSExport {
-        let context = mainFrame.javaScriptContext;
-        let form = context.objectForKeyedSubscript("document").valueForProperty("forms").valueForProperty(name);
-        return WebForm(form);
-    }
+    private var redirecting: Bool = false;
 
     var URL: String {
-        return mainFrameURL;
+        get {
+            return mainFrameURL;
+        }
+        set {
+            redirecting = false;
+            if let url = NSURL(string: newValue) {
+                mainFrame.loadRequest(NSURLRequest(URL: url));
+            }
+        }
     }
 
     var callback: JSValue = JSValue();
+
+    func resultsArrived(results: JSValue) -> Void {
+        if let entries = results.toArray() as? [[String: AnyObject]] {
+            for entry in entries {
+                let account = entry["account"] as! String;
+                let statements = entry["statements"] as! [[String: String]];
+                for statement in statements {
+                    
+                }
+            }
+        }
+    }
 }
 
 class PluginContext : NSObject {
@@ -219,12 +76,10 @@ class PluginContext : NSObject {
                                         // WebView's context is recreated on loading a new page,
                                         // stopping so any running JS code.
     private var jsLogger: JSLogger;
-    private var redirecting: Bool;
     private var debugScript: String = "";
 
-    init?(pluginFile: String, logger: JSLogger, hostWindow: NSWindow) { // Expects the plugin script to return "true" as last line.
+    init?(pluginFile: String, logger: JSLogger, hostWindow: NSWindow) {
         jsLogger = logger;
-        redirecting = false;
         webClient = WebClient();
 
         workContext = JSContext();
@@ -243,14 +98,13 @@ class PluginContext : NSObject {
             return nil;
         }
 
-        webClient.plugin = self;
         webClient.frameLoadDelegate = self;
         webClient.hostWindow = hostWindow;
+        hostWindow.contentView = webClient;
     }
 
     init?(script: String, logger: JSLogger, hostWindow: NSWindow) {
         jsLogger = logger;
-        redirecting = false;
         webClient = WebClient();
 
         workContext = JSContext();
@@ -263,9 +117,9 @@ class PluginContext : NSObject {
             return nil;
         }
 
-        webClient.plugin = self;
         webClient.frameLoadDelegate = self;
         webClient.hostWindow = hostWindow;
+        hostWindow.contentView = webClient;
     }
 
     // MARK: - Setup
@@ -277,28 +131,43 @@ class PluginContext : NSObject {
             workContext.setObject(true, forKeyedSubscript: "JSError");
         }
 
-        workContext.setObject(jsLogger.self, forKeyedSubscript: "Logger");
-        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "Logger");
+        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger");
+        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger");
+
+        // Export Webkit to the work context, so that plugins can use it to work with data/the DOM
+        // from the web client.
+        workContext.setObject(DOMNodeList.self, forKeyedSubscript: "DOMNodeList");
+        workContext.setObject(DOMCSSStyleDeclaration.self, forKeyedSubscript: "DOMCSSStyleDeclaration");
+        workContext.setObject(DOMCSSRuleList.self, forKeyedSubscript: "DOMCSSRuleList");
+        workContext.setObject(DOMNamedNodeMap.self, forKeyedSubscript: "DOMNamedNodeMap");
+        workContext.setObject(DOMNode.self, forKeyedSubscript: "DOMNode");
+        workContext.setObject(DOMAttr.self, forKeyedSubscript: "DOMAttr");
+        workContext.setObject(DOMElement.self, forKeyedSubscript: "DOMElement");
+        workContext.setObject(DOMHTMLCollection.self, forKeyedSubscript: "DOMHTMLCollection");
+        workContext.setObject(DOMHTMLElement.self, forKeyedSubscript: "DOMHTMLElement");
+        workContext.setObject(DOMDocumentType.self, forKeyedSubscript: "DOMDocumentType");
+        workContext.setObject(DOMHTMLFormElement.self, forKeyedSubscript: "DOMHTMLFormElement");
+        workContext.setObject(DOMHTMLInputElement.self, forKeyedSubscript: "DOMHTMLInputElement");
+        workContext.setObject(DOMHTMLButtonElement.self, forKeyedSubscript: "DOMHTMLButtonElement");
+        workContext.setObject(DOMHTMLAnchorElement.self, forKeyedSubscript: "DOMHTMLAnchorElement");
+        workContext.setObject(DOMHTMLOptionElement.self, forKeyedSubscript: "DOMHTMLOptionElement");
+        workContext.setObject(DOMHTMLOptionsCollection.self, forKeyedSubscript: "DOMHTMLOptionsCollection");
+        workContext.setObject(DOMHTMLSelectElement.self, forKeyedSubscript: "DOMHTMLSelectElement");
+        workContext.setObject(DOMImplementation.self, forKeyedSubscript: "DOMImplementation");
+        workContext.setObject(DOMStyleSheetList.self, forKeyedSubscript: "DOMStyleSheetList");
+        workContext.setObject(DOMDocumentFragment.self, forKeyedSubscript: "DOMDocumentFragment");
+        workContext.setObject(DOMCharacterData.self, forKeyedSubscript: "DOMCharacterData");
+        workContext.setObject(DOMText.self, forKeyedSubscript: "DOMText");
+        workContext.setObject(DOMComment.self, forKeyedSubscript: "DOMComment");
+        workContext.setObject(DOMCDATASection.self, forKeyedSubscript: "DOMCDATASection");
+        workContext.setObject(DOMProcessingInstruction.self, forKeyedSubscript: "DOMProcessingInstruction");
+        workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference");
+        workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument");
+        workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame");
         workContext.setObject(webClient.self, forKeyedSubscript: "webClient");
-        workContext.setObject(WebForm.self, forKeyedSubscript: "WebForm");
-        workContext.setObject(WebInput.self, forKeyedSubscript: "WebInput");
-        workContext.setObject(WebElement.self, forKeyedSubscript: "WebElement");
     }
 
     // MARK: - Plugin Logic
-
-    // Starts (async) navigation to the given location.
-    // Returns an error message if something went wrong, otherwise OK.
-    func navigateTo(location: String) -> String {
-        if let url = NSURL(string: location) {
-            redirecting = false;
-
-            webClient.mainFrame.loadRequest(NSURLRequest(URL: url));
-            return "OK";
-
-        }
-        return "Invalid URL";
-    }
 
     // Allows to add any additional script to the plugin context.
     func addScript(script: String) {
@@ -328,98 +197,56 @@ class PluginContext : NSObject {
         return workContext.objectForKeyedSubscript(name);
     }
 
-    // Only works when a debug script with that function is loaded.
-    func getVariables() -> [[String: String]] {
-        let context = webClient.mainFrame.javaScriptContext;
-        var function = context.objectForKeyedSubscript("getVariables");
-        if function.isUndefined() {
-            context.evaluateScript(
-                "function getVariables() {\n" +
-                    "  var result = [];\n" +
-                    "  for (var element in document) {\n" +
-                    "    try { var o = document[element];\n" +
-                    "      if (typeof o != 'function' && typeof o != 'object') {\n" +
-                    "        result.push([element, '' + typeof o, '' + o]);\n" +
-                    "      }\n" +
-                    "    } catch(e) { /* Very likely a security issue. Ignore this member. */ };\n" +
-                    "  }\n" +
-                    "  return result;\n" +
-                "}");
-            function = context.objectForKeyedSubscript("getVariables");
-        }
-
-        var variables: [[String: String]] = [];
-        let result = function.callWithArguments([]);
-        if var values = result.toArray() {
-            values.sort({ ($0[0] as! String).lowercaseString < ($1[0] as! String).lowercaseString });
-            for variable in values as! [[String]] {
-                var entries = [String: String]();
-                if variable.count > 0 {
-                    entries["name"] = variable[0];
-                }
-                if variable.count > 1 {
-                    entries["type"] = variable[1];
-                }
-                if variable.count > 2 {
-                    entries["value"] = variable[2];
-                }
-                variables.append(entries);
-            }
-        } else {
-            jsLogger.logError("getVariables() returned undefined result");
-        }
-        return variables;
-    }
-
-    // Returns the outer HTML text.
+    // Returns the outer body HTML text.
     func getCurrentHTML() -> String {
-        return webClient.stringByEvaluatingJavaScriptFromString("document.getElementsByTagName('html')[0].outerHTML");
+        return webClient.mainFrame.document.body.outerHTML;
     }
 
+    
     // MARK: - webView delegate methods.
 
-    override func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("==> Start loading");
-        redirecting = false; // Gets set when we get redirected while processing the provisional frame.
+    internal override func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Start loading");
+        webClient.redirecting = false; // Gets set when we get redirected while processing the provisional frame.
     }
 
-    override func webView(sender: WebView!, didReceiveServerRedirectForProvisionalLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("==> Received server redirect for frame");
+    internal override func webView(sender: WebView!, didReceiveServerRedirectForProvisionalLoadForFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Received server redirect for frame");
     }
 
-    override func webView(sender: WebView!, didCommitLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("==> Committed load for frame");
+    internal override func webView(sender: WebView!, didCommitLoadForFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Committed load for frame");
     }
 
-    override func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
+    internal override func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
         delay seconds: NSTimeInterval, fireDate date: NSDate!, forFrame frame: WebFrame!) {
-            jsLogger.logVerbose("==> Performing client redirection...");
-            redirecting = true;
+            jsLogger.logVerbose("(*) Performing client redirection...");
+            webClient.redirecting = true;
     }
 
-    override func webView(sender: WebView!, didCreateJavaScriptContext context: JSContext, forFrame: WebFrame!) {
-        jsLogger.logVerbose("==> JS create");
+    internal override func webView(sender: WebView!, didCreateJavaScriptContext context: JSContext, forFrame: WebFrame!) {
+        jsLogger.logVerbose("(*) JS create");
     }
-    
-    override func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-        jsLogger.logDebug("==> Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString!);
-        if redirecting {
-            redirecting = false;
+
+    internal override func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString!);
+        if webClient.redirecting {
+            webClient.redirecting = false;
             return;
         }
-        
+
         if !webClient.callback.isUndefined() && !webClient.callback.isNull() {
-            jsLogger.logVerbose("==>   Calling callback...");
-            webClient.callback.callWithArguments([]);
+            jsLogger.logVerbose("(*) Calling callback...");
+            webClient.callback.callWithArguments([false]);
         }
     }
 
-    override func webView(sender: WebView!, willCloseFrame frame: WebFrame!) {
-        jsLogger.logVerbose("==> Closing frame...");
+    internal override func webView(sender: WebView!, willCloseFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Closing frame...");
     }
 
-    override func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
-        jsLogger.logError("Navigating to webpage failed with error \(error.localizedDescription)")
+    internal override func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
+        jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
 }
 
