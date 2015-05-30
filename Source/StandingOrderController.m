@@ -714,7 +714,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             }
         }
     }
-    NSMutableArray *accountList = [NSMutableArray arrayWithCapacity: 10];
+    NSMutableArray *accountList = [NSMutableArray new];
     NSSet          *candidates = [BankingCategory.bankRoot allCategories];
     for (BankingCategory *currentAccount in candidates) {
         if (![currentAccount isKindOfClass: [BankAccount class]]) {
@@ -729,10 +729,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         }
 
         if (account.userId != nil) {
-            BankQueryResult *result = [BankQueryResult new];
-            result.account = account;
-            result.type = BankQueryTypeStandingOrderType;
-            [accountList addObject: result];
+            [accountList addObject: account];
 
             // remove orders for this account
             NSSet *orders = [account mutableSetValueForKey: @"standingOrders"];
@@ -741,6 +738,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             }
         }
     }
+    
     if (accountList.count > 0) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];

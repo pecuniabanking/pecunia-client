@@ -45,7 +45,19 @@
 
 static HBCIController *controller = nil;
 
-@implementation HBCIController (private)
+@interface HBCIController () {
+    HBCIBridge          *bridge;
+    NSMutableDictionary *bankInfo;
+    NSMutableDictionary *countries;
+
+    NSMutableDictionary *userList; // Temporary storage when retrieving new statements.
+    BOOL                retrieveStandingOrders; // Flag to indicate what we are currently retrieving
+                                                // (statements or standing orders).
+}
+
+@end
+
+@implementation HBCIController (Private)
 
 - (id)init
 {
@@ -76,7 +88,7 @@ static HBCIController *controller = nil;
 + (id<HBCIBackend>)controller
 {
     if (controller == nil) {
-        controller = [[HBCIController alloc] init];
+        controller = [HBCIController new];
     }
     return controller;
 }
@@ -1031,59 +1043,135 @@ static HBCIController *controller = nil;
     return result;
 }
 
-// get all statements for one BankUser
-- (void)getUserStatements: (NSArray*)resultList
-{
+- (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err {
+
+    // Statement/standing order retrieval doesn't set the account a query result is for (TODO)
+    // so we use the original accounts list to do the assignments, assuming that the results
+    // are in the same order as the accounts for which they had been requested.
+    if (err == nil && result != nil) {
+        NSUInteger currentAccount = 0;
+        NSArray *accounts = userList[userList.allKeys[0]];
+        if (accounts.count != [result count]) {
+            LogWarning(@"asyncCommandCompletedWithResult: account list size and result list size differ.");
+        }
+
+        for (BankQueryResult *queryResult in result) {
+            if (currentAccount < accounts.count) {
+                queryResult.account = accounts[currentAccount++];
+            }
+
+            if (queryResult.ccNumber != nil) {
+                // Credit Card Statements, balance field is filled with current account balance.
+                // Check if order needs to be reversed.
+                if (queryResult.statements.count > 0) {
+                    BankStatement *first = queryResult.statements.firstObject;
+                    BankStatement *last = queryResult.statements.lastObject;
+
+                    if ([first.date compare: last.date] == NSOrderedDescending) {
+                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: queryResult.statements.count];
+                        for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
+                            [statements addObject: queryResult.statements[i]];
+                        }
+                        queryResult.statements = statements;
+                    }
+                }
+
+                // Calculate balances.
+                for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
+                    BankStatement *statement = queryResult.statements[i];
+                    statement.saldo = [NSDecimalNumber decimalNumberWithDecimal: queryResult.balance.decimalValue];
+                    queryResult.balance = [statement.saldo decimalNumberBySubtracting: statement.value];
+                }
+            } else {
+                // Standard Statements.
+                // Saldo of the last statement which is not preliminary becomes the current saldo.
+                NSInteger i = queryResult.statements.count - 1;
+                while (i >= 0) {
+                    BankStatement *statement = queryResult.statements[i];
+                    if (!statement.isPreliminary.boolValue) {
+                        queryResult.balance = statement.saldo;
+                        break;
+                    }
+                    --i;
+                }
+
+            }
+        }
+    }
+
+    if (err) {
+        [err logMessage];
+    } else {
+        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: result];
+        [[NSNotificationCenter defaultCenter] postNotification: notification];
+    }
+
+    // Done with this user, continue with next one.
+    NSString *userId = userList.allKeys[0];
+    [userList removeObjectForKey: userId];
+
+    if (userList.count > 0) {
+        userId = userList.allKeys[0];
+
+        // Delay execution to next run loop, so we can finish the task at hand properly first.
+        if (retrieveStandingOrders) {
+            [self performSelector: @selector(getUserStandingOrders:) withObject: userList[userId] afterDelay: 0.0];
+        } else {
+            [self performSelector: @selector(getUserStatements:) withObject: userList[userId] afterDelay: 0.0];
+        }
+    } else {
+        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification object: nil];
+        [[NSNotificationCenter defaultCenter] postNotification: notification];
+        [self stopProgress];
+    }
+}
+
+/**
+ * Triggers retrieval of statements for all accounts for a given user (all accounts have the same user id).
+ */
+- (void)getUserStatements: (NSArray *)accounts {
+    if (accounts.count == 0) {
+        [self asyncCommandCompletedWithResult: nil error: nil];
+        return;
+    }
+
+    BankAccount *account = accounts.firstObject;
+    BankUser *user = [self getBankUserForId: account.userId bankCode: account.bankCode];
+    if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error: nil];
+        return;
+    }
+
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStatements\"><accinfolist type=\"list\">"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"y-MM-dd";
     
-    BankQueryResult *result;
-    
-    result = resultList.firstObject;
-    if (result == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
-        return;
-    }
-    
-    // if it's a chipcard account, notify user to make sure right chipcard is inserted
-    BankUser *user = [BankUser userWithId: result.account.userId bankCode: result.account.bankCode];
-    if (user == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
-        return;
-    }
+    // If it's a chipcard user show info box to ensure the right chipcard is inserted.
     if (user.secMethod.intValue == SecMethod_DDV) {
-        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
-                        NSLocalizedString(@"AP350", @""),
-                        NSLocalizedString(@"AP1", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP357", nil),
+                        NSLocalizedString(@"AP350", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil, user.userId
                         );
     }
     
-    // register user
-    user = [self getBankUserForId: result.account.userId bankCode: result.account.bankCode];
-    if (user == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
-        return;
-    }
-    
-    for (result in resultList) {
+    for (account in accounts) {
         [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>",
-         result.account.bankCode, result.account.accountNumber];
-        [self appendTag: @"subNumber" withValue: result.account.accountSuffix to: cmd];
-        
+         account.bankCode, account.accountNumber];
+        [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
+
         NSInteger maxStatDays = 0;
         if ([NSUserDefaults.standardUserDefaults boolForKey: @"limitStatsAge"]) {
             maxStatDays = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxStatDays"];
         }
-        
-        if (result.account.latestTransferDate == nil && maxStatDays > 0) {
-            result.account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]];
+
+        if (account.latestTransferDate == nil && maxStatDays > 0) {
+            account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: NSDate.date];
         }
-        
-        if (result.account.latestTransferDate != nil) {
+
+        if (account.latestTransferDate != nil) {
             NSString *fromString = nil;
-            NSDate   *fromDate = [[NSDate alloc] initWithTimeInterval: -605000 sinceDate: result.account.latestTransferDate];
+            NSDate   *fromDate = [[NSDate alloc] initWithTimeInterval: -605000 sinceDate: account.latestTransferDate];
             fromString = [dateFormatter stringFromDate: fromDate];
             if (fromString) {
                 [cmd appendFormat: @"<fromDate>%@</fromDate>", fromString];
@@ -1097,169 +1185,73 @@ static HBCIController *controller = nil;
     [bridge asyncCommand: cmd sender: self];
 }
 
-- (void)getStatements: (NSArray *)resultList
-{
-    // organize statements by user
-    bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
-    for (BankQueryResult *result in resultList) {
-        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey: result.account.userId];
-        if (accountResults == nil) {
-            accountResults = [NSMutableArray arrayWithCapacity:10];
-            [bankQueryResultsByUser setObject: accountResults forKey: result.account.userId];
+- (void)getStatements: (NSArray *)accounts {
+    if (userList.count > 0 || accounts.count == 0) {
+        return; // We are currently retrieving statements or there's nothing to get for.
+    }
+
+    retrieveStandingOrders = NO;
+
+    // Organize accounts by user in order to get all statements for all accounts of a given user.
+    userList = [NSMutableDictionary new];
+    for (BankAccount *account in accounts) {
+        NSMutableArray *accountsPerUser = userList[account.userId];
+        if (accountsPerUser == nil) {
+            accountsPerUser = [NSMutableArray new];
+            userList[account.userId] = accountsPerUser;
         }
-        [accountResults addObject:result];
+        [accountsPerUser addObject: account];
     }
     
-    // now start asynchronous queries with first user
-    NSArray *keys = [bankQueryResultsByUser allKeys];
-    if (keys.count > 0) {
-        currentUserId = keys[0];
-        [self startProgress];
-        [self getUserStatements:bankQueryResultsByUser[currentUserId]];
-    }
+    // Now start asynchronous queries with first user. Send requests to the appropriate
+    // plugin or down the normal HBCI road.
+    [self startProgress];
+
+    NSString *userId = userList.allKeys[0];
+    [self getUserStatements: userList[userId]];
  }
 
-- (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err
+- (void)getUserStandingOrders: (NSArray*)accounts
 {
-    NSArray *queryResults = bankQueryResultsByUser[currentUserId];
-    
-    if (err == nil && result != nil) {
-        for (BankQueryResult *res in result) {
-            // find corresponding incoming structure
-
-            BankQueryResult *iResult;
-            NSUInteger idx = [queryResults indexOfObject:res];
-            if (idx == NSNotFound) {
-                continue;
-            }
-            iResult = queryResults[idx];
-            
-            if (res.ccNumber != nil) {
-                // Credit Card Statements, balance field is filled with current account balance
-                iResult.balance = res.balance;
-                iResult.ccNumber = res.ccNumber;
-                iResult.lastSettleDate = res.lastSettleDate;
-                
-                // check if order needs to be reversed
-                int idx;
-                
-                if (res.statements.count > 0) {
-                    BankStatement *stat1 = res.statements.firstObject;
-                    BankStatement *stat2 = res.statements.lastObject;
-                    
-                    if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
-                        // reverse order
-                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
-                        for (idx = [res.statements count] - 1; idx >= 0; idx--) {
-                            [statements addObject: res.statements[idx]];
-                        }
-                        iResult.statements = statements;
-                    } else {
-                        iResult.statements = res.statements;
-                    }
-                }
-                
-                // calculate balances
-                for (idx = [iResult.statements count] - 1; idx >= 0; idx--) {
-                    BankStatement *stat = [iResult.statements objectAtIndex:idx];
-                    stat.saldo = [NSDecimalNumber decimalNumberWithDecimal: res.balance.decimalValue];
-                    res.balance = [stat.saldo decimalNumberBySubtracting: stat.value];
-                }
-            } else {
-                // Standard Statements
-                // saldo of the last statement which is not preliminary is current saldo
-                int idx = [res.statements count] - 1;
-                while (idx >= 0) {
-                    BankStatement *stat = (res.statements)[idx];
-                    if (stat.isPreliminary.boolValue == NO) {
-                        iResult.balance = stat.saldo;
-                        iResult.statements = res.statements;
-                        break;
-                    }
-                    idx--;
-                }
-                if (idx < 0 && res.balance != nil) {
-                    iResult.balance = res.balance;
-                }
-            }
-
-            if ([res.standingOrders count] > 0) {
-                iResult.standingOrders = res.standingOrders;
-            }
-        }
+    if (accounts.count == 0) {
+        [self asyncCommandCompletedWithResult: nil error: nil];
+        return;
     }
 
-    if (err) {
-        [err logMessage];
-    } else {
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: queryResults];
-        [[NSNotificationCenter defaultCenter] postNotification: notification];
+    BankAccount *account = accounts.firstObject;
+    BankUser *user = [self getBankUserForId: account.userId bankCode: account.bankCode];
+    if (user == nil) {
+        [self asyncCommandCompletedWithResult:nil error: nil];
+        return;
     }
-    
-    // continue with next user
-    [bankQueryResultsByUser removeObjectForKey:currentUserId];
-    NSArray *keys = [bankQueryResultsByUser allKeys];
-    if (keys.count > 0) {
-        currentUserId = keys[0];
-        NSArray *results = bankQueryResultsByUser[currentUserId];
-        switch (((BankQueryResult*)results.firstObject).type) {
-            case BankQueryTypeBankStatementType:
-                [self performSelector:@selector(getUserStatements:) withObject:results afterDelay:0.0];
-                break;
-            case BankQueryTypeStandingOrderType:
-                [self performSelector:@selector(getUserStandingOrders:) withObject:results afterDelay:0.0];
-                break;
-                
-            default:
-                break;
-        }
-    } else {
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification object: nil];
-        [[NSNotificationCenter defaultCenter] postNotification: notification];
-        [self stopProgress];
-    }
-}
 
-- (void)getUserStandingOrders: (NSArray*)resultList
-{
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">"];
     
-    BankQueryResult *result = resultList.firstObject;
-    if (result == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
-        return;
-    }
-    
-    // if it's a chipcard account, notify user to make sure right chipcard is inserted
-    BankUser *user = [BankUser userWithId: result.account.userId bankCode: result.account.bankCode];
-    if (user == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
-        return;
-    }
+    // If it's a chipcard user show info box to ensure the right chipcard is inserted.
     if (user.secMethod.intValue == SecMethod_DDV) {
-        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
-                        NSLocalizedString(@"AP350", @""),
-                        NSLocalizedString(@"AP1", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP357", nil),
+                        NSLocalizedString(@"AP350", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil, user.userId
                         );
     }
     
-    // register user
-    user = [self getBankUserForId: result.account.userId bankCode: result.account.bankCode];
+    // Eegister user.
+    user = [self getBankUserForId: account.userId bankCode: account.bankCode];
     if (user == nil) {
-        [self asyncCommandCompletedWithResult:nil error:nil];
+        [self asyncCommandCompletedWithResult: nil error: nil];
         return;
     }
     
-    for (result in resultList) {
+    for (account in accounts) {
         [cmd appendString: @"<accinfo>"];
-        [self appendTag: @"bankCode" withValue: result.account.bankCode to: cmd];
-        [self appendTag: @"accountNumber" withValue: result.account.accountNumber to: cmd];
-        [self appendTag: @"subNumber" withValue: result.account.accountSuffix to: cmd];
+        [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
+        [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
+        [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
         [self appendTag: @"userId" withValue: user.userId to: cmd];
         [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
-        [self appendTag: @"iban" withValue: result.account.iban to: cmd];
-        [self appendTag: @"bic" withValue: result.account.bic to: cmd];
+        [self appendTag: @"iban" withValue: account.iban to: cmd];
+        [self appendTag: @"bic" withValue: account.bic to: cmd];
         [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
         [self appendTag: @"isSEPA" withValue: @"yes" to: cmd];
         [cmd appendString: @"</accinfo>"];
@@ -1268,26 +1260,31 @@ static HBCIController *controller = nil;
     [bridge asyncCommand: cmd sender: self];
 }
 
-- (void)getStandingOrders: (NSArray *)resultList
+- (void)getStandingOrders: (NSArray *)accounts
 {
-    // organize statements by user
-    bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
-    for (BankQueryResult *result in resultList) {
-        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey: result.account.userId];
-        if (accountResults == nil) {
-            accountResults = [NSMutableArray arrayWithCapacity:10];
-            [bankQueryResultsByUser setObject:accountResults forKey: result.account.userId];
+    if (userList.count > 0 || accounts.count == 0) {
+        return; // We are currently retrieving statements or there's nothing to get for.
+    }
+
+    retrieveStandingOrders = YES;
+
+    // Organize accounts by user in order to get all statements for all accounts of a given user.
+    userList = [NSMutableDictionary new];
+    for (BankAccount *account in accounts) {
+        NSMutableArray *accountsPerUser = userList[account.userId];
+        if (accountsPerUser == nil) {
+            accountsPerUser = [NSMutableArray new];
+            userList[account.userId] = accountsPerUser;
         }
-        [accountResults addObject:result];
+        [accountsPerUser addObject: account];
     }
-    
-    // now start asynchronous queries with first user
-    NSArray *keys = [bankQueryResultsByUser allKeys];
-    if (keys.count > 0) {
-        currentUserId = keys[0];
-        [self startProgress];
-        [self getUserStandingOrders:bankQueryResultsByUser[currentUserId]];
-    }
+
+    // Now start asynchronous queries with first user. Send requests to the appropriate
+    // plugin or down the normal HBCI road.
+    [self startProgress];
+
+    NSString *userId = userList.allKeys[0];
+    [self getUserStandingOrders: userList[userId]];
 }
 
 - (void)prepareCommand: (NSMutableString *)cmd forStandingOrder: (StandingOrder *)stord user: (BankUser *)user

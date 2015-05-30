@@ -17,21 +17,12 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
 #import "HBCIBackend.h"
 
-@class HBCIBridge;
 @class PecuniaError;
 @class SigningOption;
 
 @interface HBCIController : NSObject <HBCIBackend> {
-    HBCIBridge               *bridge;
-    NSMutableDictionary      *bankInfo;
-    NSMutableDictionary      *countries;
-    NSArray                  *bankQueryResults;
-    NSMutableDictionary      *bankQueryResultsByUser;
-    NSString                 *currentUserId;
-    int                      currentQuery;
 }
 
 - (void)readCountryInfos;

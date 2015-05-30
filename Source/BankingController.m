@@ -926,7 +926,7 @@ static BankingController *bankinControllerInstance;
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
 
-    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+    if ([defaults boolForKey: @"manualTransactionCheck"] && selectWindowController == nil) {
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
 
@@ -938,7 +938,7 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(statementsFinalizeNotification:)
                                                  name: PecuniaStatementsFinalizeNotification
                                                object: nil];
-    [[HBCIController controller] getStatements: resultList];
+    [[HBCIController controller] getStatements: selectedAccounts];
 
     LogLeave;
 }
