@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -49,7 +49,9 @@
     IBOutlet NSPredicateEditorRowTemplate *numberMatchRowTemplate;
 
     TimeSliceManager *timeSliceManager;
-    BOOL             awaking;
+
+    BOOL awaking;
+    BOOL updating;
 }
 
 @property (strong) IBOutlet NSSplitView *splitter;
@@ -293,7 +295,7 @@
 
     compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds];
     pred = [timeSliceManager predicateForField: @"date"];
-    pred2 = [NSPredicate predicateWithFormat: @"(statement.isPreliminary = 0)"];
+    pred2 = [NSPredicate predicateWithFormat: @"(statement.isPreliminary = 0) || (statement.isPreliminary = nil)"];
     compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred, pred2]];
 
     // set new fetch predicate
@@ -344,6 +346,10 @@
 
 - (void)ruleEditorRowsDidChange: (NSNotification *)notification
 {
+    if (updating) {
+        return;
+    }
+
     self.ruleChanged = YES;
     [self calculateCatAssignPredicate];
 }
@@ -557,8 +563,10 @@
         }
         
         NSCompoundPredicate *compoundPredicate = [self wrapNotPredicates:(NSCompoundPredicate*)pred];
-        [predicateEditor setObjectValue: compoundPredicate==nil?pred:compoundPredicate];
+        updating = YES;
+        [predicateEditor setObjectValue: compoundPredicate == nil ? pred : compoundPredicate];
         [self calculateCatAssignPredicate];
+        updating = NO;
         self.ruleChanged = NO;
     }
 }
