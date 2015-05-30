@@ -52,6 +52,7 @@
 @dynamic isStandingOrderSupported;
 @dynamic accountSuffix;
 @dynamic users;
+@dynamic plugin;
 
 @synthesize dbStatements;
 @synthesize unread;

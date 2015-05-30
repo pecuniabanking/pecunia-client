@@ -61,7 +61,7 @@
 @synthesize pecuniaFileURL;
 @synthesize dataFilename;
 @synthesize dataDirURL;
-@synthesize scriptingDir;
+@synthesize pluginDir;
 
 @synthesize mainWindow;
 @synthesize isMaxIdleTimeExceeded;
@@ -84,7 +84,7 @@ static NSString *lDir = @"~/Library/Application Support/Pecunia/Data";
 static NSString *pDir = @"~/Library/Application Support/Pecunia/Passports";
 static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
-static NSString *sDir = @"~/Library/Application Support/Pecunia/Scripts";
+static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
 - (id)init {
     self = [super init];
@@ -422,9 +422,9 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Scripts";
     // Make it a full URL to the store.
     sharedDataURL = [sharedDataURL URLByAppendingPathComponent: @"shared.sqlite"];
 
-    scriptingDir = [sDir stringByExpandingTildeInPath];
-    if (![fm fileExistsAtPath: scriptingDir]) {
-        [fm createDirectoryAtPath: scriptingDir withIntermediateDirectories: YES attributes: nil error: &error];
+    pluginDir = [sDir stringByExpandingTildeInPath];
+    if (![fm fileExistsAtPath: pluginDir]) {
+        [fm createDirectoryAtPath: pluginDir withIntermediateDirectories: YES attributes: nil error: &error];
         if (error) {
             @throw error;
         }
@@ -450,7 +450,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Scripts";
     LogInfo(@"Pecunia file URL: %@", pecuniaFileURL);
     LogInfo(@"Passport dir: %@", passportDirectory);
     LogInfo(@"Import/Export dir: %@", importerDir);
-    LogInfo(@"Scripting dir: %@", scriptingDir);
+    LogInfo(@"Plugin dir: %@", pluginDir);
     LogInfo(@"Temp dir: %@", tempDir);
 
     LogLeave;

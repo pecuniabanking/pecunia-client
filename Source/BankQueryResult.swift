@@ -25,22 +25,7 @@ import JavaScriptCore
     case StandingOrderType;
 }
 
-/// Define JS protocol for the result class so we can use it in our JS plugins.
-@objc protocol BankQueryResultJSExport : JSExport {
-    var type: BankQueryType { get set };
-    var ccNumber: String? { get set };
-    var lastSettleDate: NSDate? { get set };
-    var balance: NSNumber? { get set };
-    var oldBalance: NSNumber? { get set };
-    var statements: [BankStatement] { get set };
-    var standingOrders: [StandingOrder] { get set };
-    var account: BankAccount? { get set };
-    var isImport: Bool { get set };
-
-    static func create() -> BankQueryResult;
-}
-
-@objc public class BankQueryResult: NSObject, BankQueryResultJSExport {
+@objc public class BankQueryResult: NSObject {
     dynamic var type: BankQueryType = .BankStatementType;
     dynamic var ccNumber: String?;
     dynamic var lastSettleDate: NSDate?;

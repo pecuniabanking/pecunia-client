@@ -17,150 +17,95 @@
 * 02110-1301  USA
 */
 
-import Foundation
-import JavaScriptCore
+import Foundation;
 
-@objc public protocol BankingPlugin {
-    func pluginDescription() -> String;
+@objc public class PluginRegistry : NSObject, JSLogger {
 
-    func login(account: BankAccount, password: String) -> Bool;
-    func logoff() -> Bool;
-
-    func getStatements(from: ShortDate?, to: ShortDate?) -> [BankQueryResult];
-}
-
-@objc public class PluginRegistry {
-
-    private static var plugins: [String: JSContext] = [:];
+    private var plugins: [String: (String, PluginContext)] = [:];
+    private static var registry: PluginRegistry?;
 
     public class func startup() {
+        registry = PluginRegistry();
+        registry!.setup();
+    }
+
+    private func setup() {
         logDebug("Starting up plugin registry");
 
-        let scriptingPath = MOAssistant.sharedAssistant().scriptingDir;
+        let pluginPath = MOAssistant.sharedAssistant().pluginDir;
         let fileManager = NSFileManager.defaultManager();
 
+        // For standard plugins (non-existing, out-of-date) checks.
+        let defaultPluginPaths = NSBundle.mainBundle().pathsForResourcesOfType("js", inDirectory: "Plugins") as! [String];
+
         var isDir: ObjCBool = false;
-        if fileManager.fileExistsAtPath(scriptingPath, isDirectory: &isDir) && isDir {
-            if let contents = fileManager.contentsOfDirectoryAtPath(scriptingPath, error: nil) {
-                logDebug("Found %i files in scripts folder", arguments: contents.count);
+        if fileManager.fileExistsAtPath(pluginPath, isDirectory: &isDir) && isDir {
+            if var contents = fileManager.contentsOfDirectoryAtPath(pluginPath, error: nil) as? [String] {
+                // First check if any of the default plugins is missing and copy it to the target plugin folder if so.
+                var needRescan = false;
+                var error: NSError?;
+                for defaultPluginPath in defaultPluginPaths {
+                    if !contents.contains(defaultPluginPath.lastPathComponent) {
+                        needRescan = true;
+                        if (!fileManager.copyItemAtPath(defaultPluginPath,
+                            toPath: pluginPath + "/" + defaultPluginPath.lastPathComponent, error: &error)) {
+                                NSAlert(error: error!).runModal();
+                        }
+                    } else {
+                        // TODO: check last modified date and if the default is newer ask user + copy.
+                    }
+                }
+
+                // Re-read folder content if we copied files.
+                if needRescan {
+                    contents = fileManager.contentsOfDirectoryAtPath(pluginPath, error: nil) as! [String];
+                }
 
                 for entry in contents {
-                    let name = entry as! String;
-                    if !name.hasSuffix(".js") {
+                    if !entry.hasSuffix(".js") {
                         continue;
                     }
 
-                    var error: NSError?;
-                    if let script = NSString(contentsOfFile: scriptingPath + "/" + name, encoding: NSUTF8StringEncoding, error: &error) {
-                        let context = JSContext();
-                        prepareContext(context);
-
-                        context.evaluateScript(script as String);
-                        let foundJSError = context.objectForKeyedSubscript("JSError").toBool();
-
-                        // Check validity of the plugin.
-                        if !foundJSError {
-                            let pluginNameFunction: JSValue = context.objectForKeyedSubscript("pluginName");
-                            let result = pluginNameFunction.callWithArguments([]).toString();
-                            if result.hasSuffix("-PecuniaPlugin") {
-                                let key = result.substringToIndex(advance(result.endIndex, -count("-PecuniaPlugin")));
-                                plugins[key] = context;
+                    if let context = PluginContext(pluginFile: pluginPath + "/" + entry, logger: PluginRegistry.registry!, hostWindow: nil) {
+                        let (name, _, description, _, _, _) = context.pluginInfo();
+                        if name.hasPrefix("pecunia.plugin.") {
+                            if plugins[name] != nil {
+                                logWarning("Duplicate plugin name found: \(name)");
                             }
+                            plugins[name] = (description, context);
+                            logInfo("Successfully loaded plugin: \(name) (\(description))");
                         }
                     }
                 }
-                logDebug("Found %i valid plugins", arguments: plugins.count);
+                logDebug("Found \(count(plugins)) valid plugins");
             }
         }
 
         logDebug("Done loading scripts in plugin registry");
     }
 
-    public class func pluginForName(name: String) -> BankingPlugin? {
+    public func getStatements(fromPlugin name: String, accounts: [BankAccount]) -> Void {
         if let context = plugins[name] {
-            return BankingPluginImpl(context);
         }
-        return nil;
     }
 
-    /// Prepares the given context so it can be used with our JS plugins, injecting functions
-    /// to read HTML data or log output, setting an error handler etc.
-    private class func prepareContext(context: JSContext) -> Void {
+    func logError(message: String) -> Void {
+        DDLog.doLog(DDLogFlag.Error, message: message, function: nil, file: nil, line: -1, arguments: []);
+    };
 
-        context.setObject(false, forKeyedSubscript: "JSError");
-        context.exceptionHandler = { context, exception in
-            logError("JS Error: %@", arguments: exception);
-            context.setObject(true, forKeyedSubscript: "JSError");
-        }
+    func logWarning(message: String) -> Void {
+        DDLog.doLog(DDLogFlag.Warning, message: message, function: nil, file: nil, line: -1, arguments: []);
+    };
 
-        // Install our HTML read function, which can then be used from JS
-        // to load an html page.
-        var htmlFromUrl : @objc_block (String!) -> String = {
-            (urlString : String!) -> String in
+    func logInfo(message: String) -> Void {
+        DDLog.doLog(DDLogFlag.Info, message: message, function: nil, file: nil, line: -1, arguments: []);
+    };
 
-            let url = NSURL(string: urlString);
-            var error: NSError?;
-            let html = NSString(contentsOfURL: url!, encoding: NSUTF8StringEncoding, error: &error)
+    func logDebug(message: String) -> Void {
+        DDLog.doLog(DDLogFlag.Debug, message: message, function: nil, file: nil, line: -1, arguments: []);
+    };
 
-            if (error != nil) {
-                logError("Couldn't retrieve content at URL: \(urlString). The error is: \(error?.localizedDescription)");
-                return "";
-            } else {
-                return html! as String;
-            }
-        }
-        context.setObject(unsafeBitCast(htmlFromUrl, AnyObject.self), forKeyedSubscript: "htmlFromUrl")
-
-        // Similar for logging.
-        let logErrorFunction: @objc_block (String!) -> Void = { logError($0); };
-        context.setObject(unsafeBitCast(logErrorFunction, AnyObject.self), forKeyedSubscript: "logError")
-        let logWarningFunction: @objc_block (String!) -> Void = { logWarning($0); };
-        context.setObject(unsafeBitCast(logWarningFunction, AnyObject.self), forKeyedSubscript: "logWarning")
-        let logInfoFunction: @objc_block (String!) -> Void = { logInfo($0); };
-        context.setObject(unsafeBitCast(logInfoFunction, AnyObject.self), forKeyedSubscript: "logInfo")
-        let logDebugFunction: @objc_block (String!) -> Void = { logDebug($0); };
-        context.setObject(unsafeBitCast(logDebugFunction, AnyObject.self), forKeyedSubscript: "logDebug")
-        let logVerboseFunction: @objc_block (String!) -> Void = { logVerbose($0); };
-        context.setObject(unsafeBitCast(logVerboseFunction, AnyObject.self), forKeyedSubscript: "logVerbose")
-    }
-}
-
-@objc private class BankingPluginImpl: NSObject, BankingPlugin {
-
-    private var context: JSContext;
-
-    init(_ context: JSContext) {
-        context.setObject(BankQueryResult.self, forKeyedSubscript: "BankQueryResult")
-        self.context = context;
-        super.init();
-    }
-
-    @objc func pluginDescription() -> String {
-        let pluginNameFunction: JSValue = context.objectForKeyedSubscript("description");
-        return pluginNameFunction.callWithArguments([]).toString();
-    }
-
-    @objc func login(account: BankAccount, password: String) -> Bool {
-        return false;
-    }
-
-    @objc func logoff() -> Bool {
-        return false;
-    }
-
-    @objc func getStatements(from: ShortDate?, to: ShortDate?) -> [BankQueryResult] {
-        var fromDate: NSDate = NSDate();
-        if from != nil {
-            fromDate = from!.lowDate();
-        }
-        var toDate: NSDate = NSDate();
-        if to != nil {
-            toDate = to!.lowDate();
-        }
-
-
-        let pluginNameFunction: JSValue = context.objectForKeyedSubscript("getStatements");
-        return []; //return pluginNameFunction.callWithArguments([fromDate, toDate]).toArray() as! [BankQueryResult];
-    }
-
+    func logVerbose(message: String) -> Void {
+        DDLog.doLog(DDLogFlag.Verbose, message: message, function: nil, file: nil, line: -1, arguments: []);
+    };
 }

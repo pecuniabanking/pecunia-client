@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2014, Pecunia Project. All rights reserved.
+* Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License as
@@ -58,8 +58,7 @@ extension DDLog {
         }
     }
 
-    class func doLog(flag: DDLogFlag, message: String, function: String?, file: String?, line: Int32, arguments: [CVarArgType])
-    {
+    class func doLog(flag: DDLogFlag, message: String, function: String?, file: String?, line: Int32, arguments: [CVarArgType]) {
         let level: DDLogLevel = DDLog.logLevel
         let async: Bool = (level != DDLogLevel.Error) && DDLog.logAsync
 

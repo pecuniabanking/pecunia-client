@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -64,6 +64,7 @@ typedef enum {
 @property (nonatomic, strong) NSString        *accountSuffix;
 @property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
+@property (nonatomic, strong) NSString        *plugin;
 
 - (void)evaluateQueryResult: (BankQueryResult *)res;
 - (int)updateFromQueryResult: (BankQueryResult *)result;

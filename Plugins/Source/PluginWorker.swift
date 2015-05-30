@@ -31,15 +31,6 @@ import AppKit
     func logVerbose(message: String) -> Void;
 }
 
-@objc protocol WebElementJSExport : JSExport {
-    var valueAttribute: JSValue { get set };
-    var name: JSValue { get set };
-    var id: JSValue { get set };
-
-    func click(); // Should probably be on WebInputJSExport, but atm I don't know how to tell an input
-                  // and other elements apart.
-}
-
 class WebClient: WebView, WebViewJSExport {
     private var redirecting: Bool = false;
 
@@ -78,7 +69,7 @@ class PluginContext : NSObject {
     private var jsLogger: JSLogger;
     private var debugScript: String = "";
 
-    init?(pluginFile: String, logger: JSLogger, hostWindow: NSWindow) {
+    init?(pluginFile: String, logger: JSLogger, hostWindow: NSWindow?) {
         jsLogger = logger;
         webClient = WebClient();
 
@@ -100,7 +91,9 @@ class PluginContext : NSObject {
 
         webClient.frameLoadDelegate = self;
         webClient.hostWindow = hostWindow;
-        hostWindow.contentView = webClient;
+        if hostWindow != nil {
+            hostWindow!.contentView = webClient;
+        }
     }
 
     init?(script: String, logger: JSLogger, hostWindow: NSWindow) {

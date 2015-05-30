@@ -564,6 +564,8 @@
 		27A659CB1604D8D200C737E8 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C81604D8D200C737E8 /* delete.png */; };
 		27A6F363178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */; };
 		27A6F364178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */; };
+		27A85F8B1B1A09420017D863 /* dkb.js in Copy Pecunia Plugins */ = {isa = PBXBuildFile; fileRef = 27A85F871B1A07F70017D863 /* dkb.js */; };
+		27A85F8D1B1A096A0017D863 /* dkb.js in Copy Pecunia Plugins */ = {isa = PBXBuildFile; fileRef = 27A85F871B1A07F70017D863 /* dkb.js */; };
 		27AA5659186C330A00B113E7 /* graph3.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA5658186C330A00B113E7 /* graph3.png */; };
 		27AA565A186C330A00B113E7 /* graph3.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA5658186C330A00B113E7 /* graph3.png */; };
 		27AA5665186C389900B113E7 /* distribution-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA5661186C389900B113E7 /* distribution-active.png */; };
@@ -1055,6 +1057,28 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Plugins;
+			dstSubfolderSpec = 7;
+			files = (
+				27A85F8B1B1A09420017D863 /* dkb.js in Copy Pecunia Plugins */,
+			);
+			name = "Copy Pecunia Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27A85F8C1B1A095D0017D863 /* Copy Pecunia Plugins */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Plugins;
+			dstSubfolderSpec = 7;
+			files = (
+				27A85F8D1B1A096A0017D863 /* dkb.js in Copy Pecunia Plugins */,
+			);
+			name = "Copy Pecunia Plugins";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27E844DD19E173510026464E /* Copy external libs */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1300,7 +1324,7 @@
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
 		27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginRegistry.swift; path = ../Plugins/Source/PluginRegistry.swift; sourceTree = "<group>"; };
+		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginRegistry.swift; path = ../Plugins/Source/PluginRegistry.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1363,6 +1387,8 @@
 		27A659C81604D8D200C737E8 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		27A6F361178DCCD60015327B /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; wrapsLines = 0; };
+		27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 16.xcdatamodel"; sourceTree = "<group>"; };
+		27A85F871B1A07F70017D863 /* dkb.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = dkb.js; path = Plugins/dkb.js; sourceTree = "<group>"; };
 		27AA5658186C330A00B113E7 /* graph3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph3.png; sourceTree = "<group>"; };
 		27AA5661186C389900B113E7 /* distribution-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "distribution-active.png"; sourceTree = "<group>"; };
 		27AA5662186C389900B113E7 /* distribution-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "distribution-active@2x.png"; sourceTree = "<group>"; };
@@ -2133,6 +2159,14 @@
 			name = Debits;
 			sourceTree = "<group>";
 		};
+		27A85F861B1A07D20017D863 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				27A85F871B1A07F70017D863 /* dkb.js */,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
 		27BB3B7F190D4A6F006F15CB /* Orders */ = {
 			isa = PBXGroup;
 			children = (
@@ -2471,6 +2505,7 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				27A85F861B1A07D20017D863 /* Plugins */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -3135,6 +3170,7 @@
 			buildPhases = (
 				27778873173CE22700430EBC /* Sources */,
 				2777891A173CE22700430EBC /* Resources */,
+				27A85F8C1B1A095D0017D863 /* Copy Pecunia Plugins */,
 				277789B7173CE22700430EBC /* Frameworks */,
 				277789C2173CE22700430EBC /* Copy Frameworks */,
 				27E8466019E1815D0026464E /* Copy external libs */,
@@ -3157,6 +3193,7 @@
 				27F975DD1956DBBD00FF9DA0 /* Check duplicate localizable strings */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D1107290486CEB800E47090 /* Resources */,
+				27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
 				27E844DD19E173510026464E /* Copy external libs */,
@@ -4692,6 +4729,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */,
 				27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
 				27756FA719BB6CE0001A72AF /* Accounts 13.xcdatamodel */,
@@ -4709,7 +4747,7 @@
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */;
+			currentVersion = 27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

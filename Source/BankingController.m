@@ -288,10 +288,6 @@ static BankingController *bankinControllerInstance;
     }
 
     [PluginRegistry startup];
-    id<BankingPlugin> plugin = [PluginRegistry pluginForName: @"DKBCreditCard"];
-    //NSString *description = [plugin pluginDescription];
-    NSArray *statements = [plugin getStatements: nil to: nil];
-    //BankQueryResult *r1 = statements[0];
     
     LogLeave;
 }
@@ -3766,7 +3762,21 @@ static BankingController *bankinControllerInstance;
         settings[@"Migrated112"] = @YES;
     }
 
+    if (![settings boolForKey: @"Migrated120"]) {
 
+        // Update plugin settings for old style DKB Visa bank users.
+        for (BankUser *user in BankUser.allUsers) {
+            if ([user.bankCode  isEqual: @"12030000"]) {
+                for (BankAccount *account in user.accounts) {
+                    if (account.plugin.length == 0 && account.accountNumber.length == 16) {
+                        account.plugin = @"pecunia.plugin.dkbvisa";
+                    }
+                }
+            }
+        }
+
+        settings[@"Migrated120"] = @YES;
+    }
 
     LogLeave;
 }
