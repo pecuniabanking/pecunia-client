@@ -98,7 +98,7 @@
     if (code != 0) {
         [currentUserController remove: self];
     }
-    [[self window] makeKeyAndOrderFront: self];
+    [MOAssistant.sharedAssistant.memContext reset];
 }
 
 - (void)getBankSetupInfo {
@@ -148,7 +148,7 @@
 
         if (step == 1) {
             [self startProgressWithMessage: NSLocalizedString(@"AP212", nil)];
-            [self performSelector: @selector(getBankSetupInfo) withObject: nil afterDelay: 0];
+            [self getBankSetupInfo];
             return;
         }
 
@@ -173,6 +173,19 @@
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
+            
+            // copy from temp user to real user
+            BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+            NSEntityDescription *entity = [currentUser entity];
+            NSArray             *attributeKeys = [[entity attributesByName] allKeys];
+            NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
+            [newUser setValuesForKeysWithDictionary: attributeValues];
+            
+            currentUser = newUser;
+            [currentUserController setManagedObjectContext:context];
+            [currentUserController setContent: currentUser];
+            
+            // now we work with the real user
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
@@ -184,6 +197,7 @@
 
                 [userSheet orderOut: sender];
                 [NSApp endSheet: userSheet returnCode: 0];
+                return;
             }
         }
         if (step >= 3 && currentUser.hbciVersion == nil) {
@@ -233,6 +247,19 @@
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
+            
+            // copy from temp user to real user
+            BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+            NSEntityDescription *entity = [currentUser entity];
+            NSArray             *attributeKeys = [[entity attributesByName] allKeys];
+            NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
+            [newUser setValuesForKeysWithDictionary: attributeValues];
+            
+            currentUser = newUser;
+            [currentUserController setManagedObjectContext:context];
+            [currentUserController setContent: currentUser];
+            
+            // now we work with the real user
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
@@ -288,15 +315,6 @@
             [user setpreferredSigningOption: option];
         }
     }
-}
-
-- (void)endSheet: (id)sender {
-    [currentUserController commitEditing];
-    if ([self check] == NO) {
-        return;
-    }
-    [userSheet orderOut: sender];
-    [NSApp endSheet: userSheet returnCode: 0];
 }
 
 - (BOOL)windowShouldClose: (id)sender {
@@ -426,11 +444,8 @@
 #pragma mark IB action section
 
 - (IBAction)close: (id)sender {
-    [[self window] orderOut: self];
-}
-
-- (IBAction)add: (id)sender {
-    [[self window] close];
+    [self.window close];
+    [NSApp stopModalWithCode:1];
 }
 
 - (IBAction)allSettings: (id)sender {
@@ -606,7 +621,8 @@
 }
 
 - (IBAction)addEntry: (id)sender {
-    BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+    BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: MOAssistant.sharedAssistant.memContext];
+    [currentUserController setManagedObjectContext:MOAssistant.sharedAssistant.memContext];
     [currentUserController setContent: user];
 
     step = 0;

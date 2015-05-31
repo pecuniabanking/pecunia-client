@@ -402,6 +402,14 @@ static NSMutableDictionary *users = nil;
             return nil;
         }
         if ([bankUsers count] == 0) {
+            // check if the user is just created
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BankUser"];
+            bankUsers = [MOAssistant.sharedAssistant.memContext executeFetchRequest: request error: &error];
+            if (error == nil && bankUsers != nil && bankUsers.count > 0) {
+                return bankUsers.lastObject;
+            }
+            
+            // not found
             NSRunAlertPanel(NSLocalizedString(@"AP201", nil),
                             NSLocalizedString(@"AP202", nil),
                             NSLocalizedString(@"AP1", nil),

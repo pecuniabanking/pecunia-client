@@ -114,9 +114,6 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     // create default directories if necessary
     [self checkPaths];
 
-    // migrate old stores
-    [self migrate10];
-
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(startIdle) name: NSApplicationDidResignActiveNotification object: nil];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(stopIdle) name: NSApplicationDidBecomeActiveNotification object: nil];
 

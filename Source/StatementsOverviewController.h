@@ -28,6 +28,7 @@
 - (void)markSelectedStatementsUnread;
 - (void)clearStatementFilter;
 - (void)reload;
+- (void)removeSelection;
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) BankingCategory       *selectedCategory;

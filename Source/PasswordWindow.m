@@ -53,13 +53,10 @@
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-    //	[self close];
     result = [inputField stringValue];
     if ([result length] == 0) {
         NSBeep();
     } else {
-        //active = NO;
-        //[self closeWindow ];
         [NSApp stopModalWithCode: 0];
     }
 }
@@ -98,9 +95,11 @@
 {
     if (active) {
         result = [inputField stringValue];
-        if ([result length] == 0) {
-            [NSApp stopModalWithCode: 1];
-        } else {[NSApp stopModalWithCode: 0]; }
+        if ([NSApp modalWindow] == self.window) {
+            if ([result length] == 0) {
+                [NSApp stopModalWithCode: 1];
+            } else {[NSApp stopModalWithCode: 0]; }
+        }
         active = NO;
     }
 }

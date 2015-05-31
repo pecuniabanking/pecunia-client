@@ -1111,11 +1111,8 @@ static BankingController *bankinControllerInstance;
 - (IBAction)editBankUsers: (id)sender {
     LogEnter;
 
-    if (bankUserController == nil) {
-        bankUserController = [[NewBankUserController alloc] initForController: self];
-    }
-
-    [[bankUserController window] makeKeyAndOrderFront: self];
+    NewBankUserController * controller = [[NewBankUserController alloc] initForController: self];
+    [NSApp runModalForWindow: controller.window];
 
     LogLeave;
 }
@@ -2091,6 +2088,7 @@ static BankingController *bankinControllerInstance;
     if (cat == nil) {
         return NSDragOperationNone;
     }
+
     [[NSCursor arrowCursor] set];
 
     NSString *type = [pboard availableTypeFromArray: @[BankStatementDataType, CategoryDataType]];
@@ -2112,6 +2110,7 @@ static BankingController *bankinControllerInstance;
         if ([cat isRoot]) {
             return NSDragOperationNone;
         }
+        
         // if not yet assigned: move
         if (scat == [BankingCategory nassRoot]) {
             return NSDragOperationMove;
@@ -2230,8 +2229,9 @@ static BankingController *bankinControllerInstance;
         }
         // Update category values including rollup for all categories.
         [BankingCategory updateBalancesAndSums];
-
-        [self.currentSelection updateAssignmentsForReportRange]; // Update displayed assignments.
+        
+        // remove selection in statementsListView after item was dropped
+        [overviewController removeSelection];
 
         if (needBankRootUpdate) {
             [[BankingCategory bankRoot] updateCategorySums];
