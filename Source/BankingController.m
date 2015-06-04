@@ -1313,7 +1313,7 @@ static BankingController *bankinControllerInstance;
     [self save];
 
     [self updateUnread];
-    [accountsView setNeedsDisplay: YES];
+    [rightPane setNeedsDisplay: YES];
 
     LogLeave;
 }
