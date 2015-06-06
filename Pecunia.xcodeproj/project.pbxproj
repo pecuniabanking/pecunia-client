@@ -265,7 +265,6 @@
 		27778887173CE22700430EBC /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		27778888173CE22700430EBC /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
-		2777888B173CE22700430EBC /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */; };
 		2777888D173CE22700430EBC /* ShortDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F91E0F96594000263F3B /* ShortDate.m */; };
 		2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
@@ -273,7 +272,7 @@
 		27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
 		27778891173CE22700430EBC /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
 		27778892173CE22700430EBC /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
-		27778893173CE22700430EBC /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
+		27778893173CE22700430EBC /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		27778894173CE22700430EBC /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
 		27778895173CE22700430EBC /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
 		27778896173CE22700430EBC /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
@@ -733,7 +732,7 @@
 		27E845FE19E17D300026464E /* NotificationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845A919E17D2F0026464E /* NotificationWindow.xib */; };
 		27E8460019E17D300026464E /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AA19E17D2F0026464E /* Orders.xib */; };
 		27E8460219E17D300026464E /* OrdersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AB19E17D2F0026464E /* OrdersListViewCell.xib */; };
-		27E8460419E17D300026464E /* PasswordWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AC19E17D2F0026464E /* PasswordWindow.xib */; };
+		27E8460419E17D300026464E /* PasswordDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AC19E17D2F0026464E /* PasswordDialog.xib */; };
 		27E8460619E17D300026464E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AD19E17D2F0026464E /* Preferences.xib */; };
 		27E8460819E17D300026464E /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AE19E17D2F0026464E /* PurposeSplitWindow.xib */; };
 		27E8460A19E17D300026464E /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AF19E17D2F0026464E /* ResultWindow.xib */; };
@@ -785,7 +784,7 @@
 		27E8464B19E181280026464E /* NotificationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845A919E17D2F0026464E /* NotificationWindow.xib */; };
 		27E8464C19E181280026464E /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AA19E17D2F0026464E /* Orders.xib */; };
 		27E8464D19E181280026464E /* OrdersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AB19E17D2F0026464E /* OrdersListViewCell.xib */; };
-		27E8464E19E181280026464E /* PasswordWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AC19E17D2F0026464E /* PasswordWindow.xib */; };
+		27E8464E19E181280026464E /* PasswordDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AC19E17D2F0026464E /* PasswordDialog.xib */; };
 		27E8464F19E181280026464E /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AD19E17D2F0026464E /* Preferences.xib */; };
 		27E8465019E181280026464E /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AE19E17D2F0026464E /* PurposeSplitWindow.xib */; };
 		27E8465119E181280026464E /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845AF19E17D2F0026464E /* ResultWindow.xib */; };
@@ -840,6 +839,8 @@
 		27FA4A17154D49E5002A5ED0 /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A15154D49E5002A5ED0 /* donate-active.png */; };
 		27FA4A18154D49E5002A5ED0 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A16154D49E5002A5ED0 /* donate.png */; };
 		27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */; };
+		27FCA9251B1F592C006B590A /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA9241B1F592C006B590A /* Security.swift */; };
+		27FCA9261B1F592C006B590A /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FCA9241B1F592C006B590A /* Security.swift */; };
 		27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
 		27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
@@ -945,7 +946,6 @@
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
 		B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */; };
 		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
-		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19CA99219410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA99319410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA9961950222E005B1125 /* AccountStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA9951950222E005B1125 /* AccountStatement.m */; };
@@ -1009,7 +1009,7 @@
 		B1A6AA7D1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
 		B1A6AA7E1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
 		B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1A6AA7F1A26750500141C39 /* PCSC.framework */; };
-		B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
+		B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
@@ -1532,7 +1532,7 @@
 		27E845A919E17D2F0026464E /* NotificationWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationWindow.xib; sourceTree = "<group>"; };
 		27E845AA19E17D2F0026464E /* Orders.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
 		27E845AB19E17D2F0026464E /* OrdersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrdersListViewCell.xib; sourceTree = "<group>"; };
-		27E845AC19E17D2F0026464E /* PasswordWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PasswordWindow.xib; sourceTree = "<group>"; };
+		27E845AC19E17D2F0026464E /* PasswordDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PasswordDialog.xib; sourceTree = "<group>"; };
 		27E845AD19E17D2F0026464E /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		27E845AE19E17D2F0026464E /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
 		27E845AF19E17D2F0026464E /* ResultWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultWindow.xib; sourceTree = "<group>"; };
@@ -1586,6 +1586,7 @@
 		27FA4A16154D49E5002A5ED0 /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
 		27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BankingController+Tabs.h"; sourceTree = "<group>"; };
 		27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BankingController+Tabs.m"; sourceTree = "<group>"; };
+		27FCA9241B1F592C006B590A /* Security.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD0DA4184120AE0047911C /* StatementsOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatementsOverviewController.h; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD0DA5184120AE0047911C /* StatementsOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsOverviewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
@@ -1777,8 +1778,6 @@
 		B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDecimalNumber+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; };
 		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAnalysisWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; tabWidth = 4; };
-		B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; tabWidth = 4; };
 		B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 12.xcdatamodel"; sourceTree = "<group>"; };
 		B19CA99019410C04005B1125 /* SepaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SepaData.h; sourceTree = "<group>"; };
 		B19CA99119410C04005B1125 /* SepaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SepaData.m; sourceTree = "<group>"; };
@@ -1831,8 +1830,8 @@
 		B1A6AA471A2672C400141C39 /* verify_pin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = verify_pin.m; sourceTree = "<group>"; };
 		B1A6AA481A2672C400141C39 /* write_record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = write_record.m; sourceTree = "<group>"; };
 		B1A6AA7F1A26750500141C39 /* PCSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCSC.framework; path = System/Library/Frameworks/PCSC.framework; sourceTree = SDKROOT; };
-		B1A6E8330FC890E400566C55 /* PasswordWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordWindow.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1A6E8340FC890E400566C55 /* PasswordWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordWindow.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1A6E8330FC890E400566C55 /* PasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B1A6E8340FC890E400566C55 /* PasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA6335140990EF00ADE1D0 /* ImportSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportSettings.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA6336140990EF00ADE1D0 /* ImportSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportSettings.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640A140C074E00ADE1D0 /* ImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2394,7 +2393,7 @@
 				27E845A919E17D2F0026464E /* NotificationWindow.xib */,
 				27E845AA19E17D2F0026464E /* Orders.xib */,
 				27E845AB19E17D2F0026464E /* OrdersListViewCell.xib */,
-				27E845AC19E17D2F0026464E /* PasswordWindow.xib */,
+				27E845AC19E17D2F0026464E /* PasswordDialog.xib */,
 				27E845AD19E17D2F0026464E /* Preferences.xib */,
 				27E845AE19E17D2F0026464E /* PurposeSplitWindow.xib */,
 				27E845AF19E17D2F0026464E /* ResultWindow.xib */,
@@ -3004,8 +3003,8 @@
 		B1C7B196130B13730091CD72 /* Password */ = {
 			isa = PBXGroup;
 			children = (
-				B1A6E8330FC890E400566C55 /* PasswordWindow.h */,
-				B1A6E8340FC890E400566C55 /* PasswordWindow.m */,
+				B1A6E8330FC890E400566C55 /* PasswordController.h */,
+				B1A6E8340FC890E400566C55 /* PasswordController.m */,
 				A652533315E39A76000C2989 /* TanWindow.h */,
 				A652533415E39A92000C2989 /* TanWindow.m */,
 				B12A4D4D10C869F0002CC63E /* NewPasswordController.h */,
@@ -3122,8 +3121,6 @@
 				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
 				B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */,
-				B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */,
-				B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */,
 				B196E03B0FABA2CC00509748 /* WorkerThread.h */,
 				B196E03C0FABA2CC00509748 /* WorkerThread.m */,
 				B132FADD0F9CFD0000263F3B /* TimeSliceManager.h */,
@@ -3135,6 +3132,7 @@
 				B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */,
 				2701A849165E827F00A9A1C7 /* SystemNotification.h */,
 				2701A84A165E827F00A9A1C7 /* SystemNotification.m */,
+				27FCA9241B1F592C006B590A /* Security.swift */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -3476,7 +3474,7 @@
 				27E8464B19E181280026464E /* NotificationWindow.xib in Resources */,
 				27E8464C19E181280026464E /* Orders.xib in Resources */,
 				27E8464D19E181280026464E /* OrdersListViewCell.xib in Resources */,
-				27E8464E19E181280026464E /* PasswordWindow.xib in Resources */,
+				27E8464E19E181280026464E /* PasswordDialog.xib in Resources */,
 				27E8464F19E181280026464E /* Preferences.xib in Resources */,
 				27E8465019E181280026464E /* PurposeSplitWindow.xib in Resources */,
 				27E8465119E181280026464E /* ResultWindow.xib in Resources */,
@@ -3623,7 +3621,7 @@
 				272328A41551A4D500B9683B /* transfer-sepa-preview.png in Resources */,
 				27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */,
 				2794FF651972D201000B69EC /* new-small@2x.png in Resources */,
-				27E8460419E17D300026464E /* PasswordWindow.xib in Resources */,
+				27E8460419E17D300026464E /* PasswordDialog.xib in Resources */,
 				272F6E681955D0E600096734 /* sequence-type-start.png in Resources */,
 				272F6E801955E6A500096734 /* sequence-type-red@2x.png in Resources */,
 				27E845DA19E17D300026464E /* CategoryPeriods.xib in Resources */,
@@ -3830,7 +3828,6 @@
 				27593DA51AB458A70009A91E /* DERules.swift in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
 				27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */,
-				2777888B173CE22700430EBC /* Keychain.m in Sources */,
 				2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */,
 				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
@@ -3841,7 +3838,7 @@
 				27778891173CE22700430EBC /* StatusBarController.m in Sources */,
 				27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
-				27778893173CE22700430EBC /* PasswordWindow.m in Sources */,
+				27778893173CE22700430EBC /* PasswordController.m in Sources */,
 				B1A6AA5A1A2672C400141C39 /* ddv_readbankdata.m in Sources */,
 				27778894173CE22700430EBC /* MCEMTableView.m in Sources */,
 				27778895173CE22700430EBC /* TanMethod.m in Sources */,
@@ -3958,6 +3955,7 @@
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
+				27FCA9261B1F592C006B590A /* Security.swift in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
@@ -4100,7 +4098,6 @@
 				27F5911D1AA38214005FA793 /* DERules.swift in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
 				27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */,
-				B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */,
 				B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */,
 				B132F91F0F96594000263F3B /* ShortDate.m in Sources */,
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
@@ -4111,7 +4108,7 @@
 				B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */,
 				27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
-				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
+				B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */,
 				B1A6AA591A2672C400141C39 /* ddv_readbankdata.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
@@ -4228,6 +4225,7 @@
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
+				27FCA9251B1F592C006B590A /* Security.swift in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,

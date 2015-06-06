@@ -32,10 +32,15 @@
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
 
+@interface AccountMaintenanceController () {
+    IBOutlet NSArrayController *accountTypesController;
+}
+
+@end;
+
 @implementation AccountMaintenanceController
 
-- (id)initWithAccount: (BankAccount *)acc
-{
+- (id)initWithAccount: (BankAccount *)acc {
     self = [super initWithWindowNibName: @"AccountMaintenance"];
     moc = MOAssistant.sharedAssistant.memContext;
 
@@ -59,12 +64,15 @@ extern NSString *const CategoryKey;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
     account.balance = acc.balance;
+    account.plugin = acc.plugin;
 
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
+    NSMutableArray *types = [[PluginRegistry getPluginList] mutableCopy];
+    [types insertObject: @{@"id": @"hbci", @"name": NSLocalizedString(@"AP86", nil)} atIndex: 0];
+    accountTypesController.content = types;
     if ([changedAccount.isManual boolValue]) {
         
         // add special User
@@ -130,8 +138,7 @@ extern NSString *const CategoryKey;
     backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
-- (IBAction)cancel: (id)sender
-{
+- (IBAction)cancel: (id)sender {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
@@ -140,8 +147,7 @@ extern NSString *const CategoryKey;
     [NSApp stopModalWithCode: 0];
 }
 
-- (IBAction)ok: (id)sender
-{
+- (IBAction)ok: (id)sender {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
@@ -163,6 +169,7 @@ extern NSString *const CategoryKey;
     changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
+    changedAccount.plugin = account.plugin;
     
     NSString *oldUserId = changedAccount.userId;
 
@@ -213,17 +220,15 @@ extern NSString *const CategoryKey;
     [NSApp stopModalWithCode: 1];
 }
 
-- (IBAction)predicateEditorChanged: (id)sender
-{
+- (IBAction)predicateEditorChanged: (id)sender {
     // If the user deleted the first row, then add it again - no sense leaving the user with no rows.
     if ([predicateEditor numberOfRows] == 0) {
         [predicateEditor addRow: self];
     }
 }
 
-- (BOOL)check
-{
-    if (![IBANtools isValidIBAN: account.iban]) {
+- (BOOL)check {
+    if (account.iban.length > 0 && ![IBANtools isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
@@ -246,8 +251,7 @@ extern NSString *const CategoryKey;
     return YES;
 }
 
-- (IBAction)showSupportedBusinessTransactions: (id)sender
-{
+- (IBAction)showSupportedBusinessTransactions: (id)sender {
     NSArray *result = [[HBCIController controller] getSupportedBusinessTransactions: account];
     if (result != nil) {
         if (supportedTransactionsSheet == nil) {

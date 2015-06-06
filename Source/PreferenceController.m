@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,9 +23,8 @@
 #import "BankAccount.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
-#import "Keychain.h"
 #import "BankingController.h"
-#import "PasswordWindow.h"
+#import "PasswordController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
@@ -492,7 +491,7 @@ static NSDictionary *heightMappings;
         return;
     }
 
-    [Keychain deletePasswordsForService: @"Pecunia PIN"];
+    [Security deletePasswordsForService: @"Pecunia PIN"];
 }
 
 - (IBAction)changePassword:(id)sender
@@ -509,11 +508,11 @@ static NSDictionary *heightMappings;
     
     if ([MOAssistant.sharedAssistant changePassword:newPassword]) {
         // was the old password in key store?
-        NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        NSString *passwd = [Security passwordForService: @"Pecunia" account: @"DataFile"];
         if (passwd) {
             passwordStored = YES;
         }
-        [Keychain setPassword: newPassword forService: @"Pecunia" account: @"DataFile" store: passwordStored];
+        [Security setPassword: newPassword forService: @"Pecunia" account: @"DataFile" store: passwordStored];
         
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP176", nil),
@@ -559,7 +558,7 @@ static NSDictionary *heightMappings;
         }
         
         // check if passwort is already defined. If yes, it must(!) be taken
-        NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        NSString *passwd = [Security passwordForService: @"Pecunia" account: @"DataFile"];
         if (passwd != nil) {
             [passw1Field setStringValue: passwd];
             [passw2Field setStringValue: passwd];
@@ -586,7 +585,7 @@ static NSDictionary *heightMappings;
             MOAssistant *assistant = [MOAssistant sharedAssistant];
 
             BOOL           passwordOk = NO;
-            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+            PasswordController *pwWindow = [[PasswordController alloc] initWithText: NSLocalizedString(@"AP163", nil)
                                                                       title: NSLocalizedString(@"AP162", nil)];
             [pwWindow disablePasswordSave];
             while (passwordOk == NO) {
@@ -618,7 +617,7 @@ static NSDictionary *heightMappings;
             }
 
             if ([assistant stopEncryption]) {
-                [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
+                [Security deletePasswordForService: @"Pecunia" account: @"DataFile"];
                 NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                 NSLocalizedString(@"AP154", nil),
                                 NSLocalizedString(@"AP1", nil),
@@ -690,7 +689,7 @@ static NSDictionary *heightMappings;
     password = passw1;
 
     if (savePassword) {
-        [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
+        [Security setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
 
     [encryptionSheet orderOut: sender];

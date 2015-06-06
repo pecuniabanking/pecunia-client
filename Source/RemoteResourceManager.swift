@@ -30,30 +30,31 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
     override init() {
         super.init();
 
-        let url : NSURL? = NSURL(string: RemoteResourceUpdateInfo);
-        let xmlData : NSData? = NSData(contentsOfURL: url!);
-        if xmlData != nil {
-            var error : NSError?;
+        // Trigger updating files in the background.
+        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+        dispatch_async(queue) {
+            let url : NSURL? = NSURL(string: RemoteResourceUpdateInfo);
+            let xmlData : NSData? = NSData(contentsOfURL: url!);
+            if xmlData != nil {
+                var error : NSError?;
 
-            var updateInfo : NSDictionary = NSDictionary.dictForXMLData(xmlData, error: &error);
-            if (error != nil) {
-                // Currently default and variadic parameters don't work well together.
-                // So we need to help a compiler a bit to pick up the variadics (here for the logError call).
-                logError("Parser error for update info file %@", arguments: RemoteResourceUpdateInfo);
-                return;
-            }
+                var updateInfo : NSDictionary = NSDictionary.dictForXMLData(xmlData, error: &error);
+                if (error != nil) {
+                    // Currently default and variadic parameters don't work well together.
+                    // So we need to help a compiler a bit to pick up the variadics (here for the logError call).
+                    logError("Parser error for update info file %@", arguments: RemoteResourceUpdateInfo);
+                    return;
+                }
 
-            let filesEntry = updateInfo["files"] as? NSDictionary;
-            if (filesEntry != nil) {
-                downloadableFiles = filesEntry!["file"] as? Array;
-            }
+                let filesEntry = updateInfo["files"] as? NSDictionary;
+                if (filesEntry != nil) {
+                    self.downloadableFiles = filesEntry!["file"] as? Array;
+                }
 
-            // Trigger updating files in the background.
-            dispatch_after(0, dispatch_get_main_queue()) {
                 self.updateFiles();
+            } else {
+                logError("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
             }
-        } else {
-            logError("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
         }
     }
 

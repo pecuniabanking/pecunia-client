@@ -73,6 +73,7 @@ AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur F
 AP83 = "Fehler";
 AP84 = "Warnung";
 AP85 = "Kritischer Fehler";
+AP86 = "Standardkonto";
 
 // General + miscellaneous messages
 // AP100..AP149
@@ -155,6 +156,8 @@ AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
 AP177 = "Bitte wählen Sie die Datei %@ aus";
 AP178 = "Die Verwendungszweckinformationen werden nach SEPA-Informationen durchsucht. Dies kann bei großen Datenmengen etwas länger dauern.";
 AP179 = "Die Bankkennung %@ jetzt löschen?";
+AP180 = "Bitte Passwort eingeben";
+AP181 = "Bitte PIN eingeben";
 
 // Banking common + business transactions
 // AP200..AP249

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,15 +17,20 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+import Foundation
 
-@interface Keychain : NSObject {
+// Mockup code created from the same BankAccount class in Pecunia.
+
+@objc class BankAccount {
+  var accountNumber: String;
+  var bankCode: String;
+
+  init (number: String, code: String) {
+    accountNumber = number;
+    bankCode = code;
+  }
+
+  class func findAccountWithNumber(number: String, bankCode code: String) -> BankAccount? {
+    return BankAccount(number: number, code: code);
+  }
 }
-
-+ (NSString *)passwordForService: (NSString *)service account: (NSString *)account;
-+ (BOOL)setPassword: (NSString *)password forService: (NSString *)service account: (NSString *)account store: (BOOL)store;
-+ (void)deletePasswordsForService: (NSString *)service;
-+ (void)deletePasswordForService: (NSString *)service account: (NSString *)account;
-+ (void)clearCache;
-
-@end

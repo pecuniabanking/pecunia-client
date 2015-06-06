@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AccountMaintenanceController">
             <connections>
                 <outlet property="accountAddView" destination="209" id="211"/>
                 <outlet property="accountController" destination="56" id="91"/>
+                <outlet property="accountTypesController" destination="SFP-f8-v7m" id="27n-ZC-vjy"/>
                 <outlet property="backgroundGradient" destination="4" id="250"/>
                 <outlet property="bankCodeField" destination="30" id="157"/>
                 <outlet property="bicField" destination="36" id="118"/>
@@ -26,20 +28,18 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Konto ändern" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="documentWindow" frameAutosaveName="AccountChange" id="3">
             <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
-            <rect key="contentRect" x="871" y="405" width="690" height="470"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="contentRect" x="871" y="405" width="915" height="528"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <value key="minSize" type="size" width="690" height="470"/>
             <view key="contentView" id="4" userLabel="Background Gradient" customClass="BWGradientBox">
-                <rect key="frame" x="0.0" y="0.0" width="690" height="470"/>
+                <rect key="frame" x="0.0" y="0.0" width="915" height="528"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView id="247" userLabel="Top Gradient" customClass="BWGradientBox">
-                        <rect key="frame" x="0.0" y="410" width="690" height="60"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="247" userLabel="Top Gradient" customClass="BWGradientBox">
+                        <rect key="frame" x="0.0" y="468" width="915" height="60"/>
                         <subviews>
-                            <button toolTip="PIN/TAN Methode ändern" horizontalHuggingPriority="750" verticalHuggingPriority="750" id="237">
-                                <rect key="frame" x="457" y="2" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <button toolTip="PIN/TAN Methode ändern" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="237">
+                                <rect key="frame" x="694" y="1" width="25" height="25"/>
                                 <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="238">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -48,18 +48,22 @@
                                     <action selector="showSupportedBusinessTransactions:" target="-2" id="239"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" id="240">
-                                <rect key="frame" x="485" y="8" width="195" height="14"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="240">
+                                <rect key="frame" x="722" y="8" width="195" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="191" id="Ctj-34-h3U"/>
+                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Unterstützte Geschäftsvorfälle" id="241">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="159">
-                                <rect key="frame" x="17" y="19" width="382" height="21"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="159">
+                                <rect key="frame" x="17" y="20" width="673" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="7sw-Yj-jc2"/>
+                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Bankname" id="160">
                                     <font key="font" metaFont="systemBold" size="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -70,174 +74,25 @@
                                 </connections>
                             </textField>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="4Ua-fV-QbQ"/>
+                            <constraint firstAttribute="trailing" secondItem="240" secondAttribute="trailing" id="78J-QA-Lba"/>
+                            <constraint firstItem="237" firstAttribute="centerY" secondItem="240" secondAttribute="centerY" id="Qz0-b4-xij"/>
+                            <constraint firstItem="240" firstAttribute="top" secondItem="247" secondAttribute="top" constant="38" id="dZ8-L0-fYB"/>
+                            <constraint firstAttribute="trailing" secondItem="159" secondAttribute="trailing" constant="227" id="kSb-Jn-mcl"/>
+                            <constraint firstAttribute="centerY" secondItem="159" secondAttribute="centerY" id="lvj-iF-bAS"/>
+                            <constraint firstItem="159" firstAttribute="leading" secondItem="247" secondAttribute="leading" constant="19" id="nc1-zL-MBq"/>
+                            <constraint firstItem="240" firstAttribute="leading" secondItem="237" secondAttribute="trailing" constant="7" id="tUW-6O-DGa"/>
+                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="hasGradient" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </customView>
-                    <box autoresizesSubviews="NO" title="Kontodaten" borderType="line" id="17">
-                        <rect key="frame" x="16" y="57" width="649" height="217"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <view key="contentView">
-                            <rect key="frame" x="1" y="1" width="647" height="201"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textField verticalHuggingPriority="750" id="20">
-                                    <rect key="frame" x="15" y="141" width="119" height="17"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontoinhaber" id="21">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField verticalHuggingPriority="750" tag="10" id="22">
-                                    <rect key="frame" x="144" y="139" width="439" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="23">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="56" name="value" keyPath="selection.owner" id="151"/>
-                                    </connections>
-                                </textField>
-                                <textField verticalHuggingPriority="750" id="44">
-                                    <rect key="frame" x="144" y="169" width="259" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="47">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="56" name="value" keyPath="selection.name" id="66"/>
-                                    </connections>
-                                </textField>
-                                <textField verticalHuggingPriority="750" id="45">
-                                    <rect key="frame" x="15" y="171" width="119" height="17"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontoname" id="46">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <customView id="209">
-                                    <rect key="frame" x="2" y="3" width="643" height="128"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button id="175">
-                                            <rect key="frame" x="18" y="42" width="280" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Keine automatische Umsatzabfrage" bezelStyle="regularSquare" imagePosition="right" alignment="left" inset="2" id="176">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <binding destination="56" name="value" keyPath="selection.noAutomaticQuery" id="178"/>
-                                            </connections>
-                                        </button>
-                                        <textField verticalHuggingPriority="750" id="251">
-                                            <rect key="frame" x="34" y="77" width="101" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Unterkonto" id="252">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="253">
-                                            <rect key="frame" x="143" y="75" width="94" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="254">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <binding destination="56" name="value" keyPath="selection.accountSuffix" id="256"/>
-                                            </connections>
-                                        </textField>
-                                        <popUpButton toolTip="Wenn möglich Überweisungsaufträge zu Sammelüberweisungen zusammenfassen" verticalHuggingPriority="750" id="257">
-                                            <rect key="frame" x="280" y="12" width="136" height="26"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <popUpButtonCell key="cell" type="push" title="Niemals" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="260" id="258">
-                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="menu"/>
-                                                <menu key="menu" title="OtherViews" id="259">
-                                                    <items>
-                                                        <menuItem title="Niemals" state="on" id="260"/>
-                                                        <menuItem title="Immer" id="261"/>
-                                                        <menuItem title="Jedesmal fragen" id="262"/>
-                                                    </items>
-                                                </menu>
-                                            </popUpButtonCell>
-                                            <connections>
-                                                <binding destination="56" name="selectedIndex" keyPath="selection.collTransferMethod" id="267"/>
-                                            </connections>
-                                        </popUpButton>
-                                        <textField verticalHuggingPriority="750" id="263">
-                                            <rect key="frame" x="17" y="19" width="290" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Sammelüberweisungen verwenden" id="264">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="38">
-                                            <rect key="frame" x="143" y="105" width="259" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="41">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <binding destination="56" name="value" keyPath="selection.iban" id="95"/>
-                                            </connections>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="39">
-                                            <rect key="frame" x="16" y="107" width="119" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="IBAN" id="40">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="36">
-                                            <rect key="frame" x="469" y="105" width="112" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="43">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <binding destination="56" name="value" keyPath="selection.bic" id="97"/>
-                                            </connections>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="37">
-                                            <rect key="frame" x="406" y="107" width="58" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="BIC" id="42">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
-                                            </textFieldCell>
-                                        </textField>
-                                    </subviews>
-                                </customView>
-                            </subviews>
-                        </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </box>
-                    <button verticalHuggingPriority="750" id="54">
-                        <rect key="frame" x="464" y="13" width="102" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="54">
+                        <rect key="frame" x="697" y="13" width="102" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="fKO-0E-hV6"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Abbrechen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="55">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -246,9 +101,11 @@
                             <action selector="cancel:" target="-2" id="77"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="52">
-                        <rect key="frame" x="566" y="13" width="102" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="52">
+                        <rect key="frame" x="799" y="13" width="102" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="s6q-8t-K48"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="53">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -257,9 +114,11 @@
                             <action selector="ok:" target="-2" id="76"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" id="26">
-                        <rect key="frame" x="161" y="338" width="130" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="26">
+                        <rect key="frame" x="650" y="391" width="245" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="245" id="npu-Iq-GxG"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="27">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -269,44 +128,55 @@
                             <binding destination="56" name="value" keyPath="selection.accountNumber" id="62"/>
                         </connections>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="48">
-                        <rect key="frame" x="308" y="340" width="110" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="48">
+                        <rect key="frame" x="514" y="355" width="130" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="126" id="PvX-SK-IS3"/>
+                        </constraints>
                         <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontowährung" id="49">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="24">
-                        <rect key="frame" x="114" y="340" width="42" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Konto" id="25">
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="24">
+                        <rect key="frame" x="502" y="393" width="142" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="138" id="u9Z-Mw-tEL"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kreditkartennummer" id="25">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <colorWell id="228">
-                        <rect key="frame" x="549" y="338" width="44" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="228">
+                        <rect key="frame" x="760" y="353" width="44" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="7TD-N4-9dB"/>
+                            <constraint firstAttribute="width" constant="44" id="pW7-5y-y5M"/>
+                        </constraints>
                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <binding destination="56" name="value" keyPath="selection.categoryColor" id="236"/>
                         </connections>
                     </colorWell>
-                    <textField verticalHuggingPriority="750" id="229">
-                        <rect key="frame" x="490" y="341" width="54" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="229">
+                        <rect key="frame" x="700" y="355" width="54" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="0e6-z4-WuT"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Farbe" id="230">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="50">
-                        <rect key="frame" x="423" y="338" width="44" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="50">
+                        <rect key="frame" x="650" y="353" width="44" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="6D6-ma-gMP"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="51">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -316,9 +186,8 @@
                             <binding destination="56" name="value" keyPath="selection.currency" id="68"/>
                         </connections>
                     </textField>
-                    <textField verticalHuggingPriority="750" tag="100" id="30">
-                        <rect key="frame" x="161" y="370" width="130" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" tag="100" translatesAutoresizingMaskIntoConstraints="NO" id="30">
+                        <rect key="frame" x="147" y="391" width="245" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="31">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -329,18 +198,22 @@
                             <outlet property="delegate" destination="-2" id="100"/>
                         </connections>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="28">
-                        <rect key="frame" x="75" y="371" width="81" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="28">
+                        <rect key="frame" x="60" y="393" width="81" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="77" id="mKj-eo-0l7"/>
+                        </constraints>
                         <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bankleitzahl" id="29">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button toolTip="Diese Kategorie (und alle Unterkageorien) nicht mit aufsummieren" id="269">
-                        <rect key="frame" x="159" y="291" width="326" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <button toolTip="Diese Kategorie (und alle Unterkageorien) nicht mit aufsummieren" verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="269">
+                        <rect key="frame" x="145" y="331" width="249" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="245" id="WVP-al-rxO"/>
+                        </constraints>
                         <buttonCell key="cell" type="check" title="Nicht in Berechnungen einbeziehen" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="272">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -349,9 +222,11 @@
                             <binding destination="56" name="value" keyPath="selection.noCatRep" id="276"/>
                         </connections>
                     </button>
-                    <button toolTip="Diese Kategorie (und alle Unterkategorien) nicht im Kategorienbaum anzeigen" id="270">
-                        <rect key="frame" x="159" y="310" width="166" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <button toolTip="Diese Kategorie (und alle Unterkategorien) nicht im Kategorienbaum anzeigen" translatesAutoresizingMaskIntoConstraints="NO" id="270">
+                        <rect key="frame" x="145" y="354" width="249" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="245" id="CBO-zU-6jH"/>
+                        </constraints>
                         <buttonCell key="cell" type="check" title="Konto verstecken" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="271">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -360,9 +235,11 @@
                             <binding destination="56" name="value" keyPath="selection.isHidden" id="274"/>
                         </connections>
                     </button>
-                    <popUpButton verticalHuggingPriority="750" id="287">
-                        <rect key="frame" x="421" y="367" width="239" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="287">
+                        <rect key="frame" x="145" y="426" width="250" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="245" id="w92-VP-vzH"/>
+                        </constraints>
                         <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="290" id="288">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -380,22 +257,324 @@
                             <binding destination="286" name="selectedIndex" keyPath="selectionIndex" previousBinding="298" id="300"/>
                         </connections>
                     </popUpButton>
-                    <textField verticalHuggingPriority="750" id="293">
-                        <rect key="frame" x="323" y="371" width="95" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="293">
+                        <rect key="frame" x="46" y="432" width="95" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="91" id="pQf-aQ-VHQ"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="91" id="zBA-Fw-YDt"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bankkennung" id="294">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BZl-1M-JiH">
+                        <rect key="frame" x="648" y="426" width="250" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="245" id="iPR-DP-BsQ"/>
+                        </constraints>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="UhJ-Jl-kEO" id="k9a-mB-f1b">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" title="OtherViews" id="1UE-Ay-g3f">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="UhJ-Jl-kEO"/>
+                                    <menuItem title="Item 2" id="5hW-Ze-wHH"/>
+                                    <menuItem title="Item 3" id="sn9-q9-b50"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="SFP-f8-v7m" name="content" keyPath="arrangedObjects" id="PMI-lu-XPl"/>
+                            <binding destination="SFP-f8-v7m" name="contentObjects" keyPath="arrangedObjects.id" previousBinding="PMI-lu-XPl" id="nMe-Hv-Pd6"/>
+                            <binding destination="SFP-f8-v7m" name="contentValues" keyPath="arrangedObjects.name" previousBinding="nMe-Hv-Pd6" id="94U-N6-rxf"/>
+                            <binding destination="56" name="selectedObject" keyPath="selection.plugin" previousBinding="94U-N6-rxf" id="MFf-sx-JHG"/>
+                        </connections>
+                    </popUpButton>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sad-WQ-67A">
+                        <rect key="frame" x="502" y="432" width="142" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="138" id="gV0-cQ-EHx"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontotyp" id="IHw-j0-uPg">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <box autoresizesSubviews="NO" title="Kontodaten" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="17">
+                        <rect key="frame" x="17" y="57" width="881" height="256"/>
+                        <view key="contentView">
+                            <rect key="frame" x="1" y="1" width="879" height="240"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField verticalHuggingPriority="750" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="22">
+                                    <rect key="frame" x="129" y="164" width="449" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="22" id="WfG-m6-ksc"/>
+                                    </constraints>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="23">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="56" name="value" keyPath="selection.owner" id="151"/>
+                                    </connections>
+                                </textField>
+                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="44">
+                                    <rect key="frame" x="129" y="202" width="260" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="260" id="noh-kg-ADt"/>
+                                    </constraints>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="47">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="56" name="value" keyPath="selection.name" id="66"/>
+                                    </connections>
+                                </textField>
+                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="45">
+                                    <rect key="frame" x="22" y="204" width="101" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="97" id="C3J-wp-mkN"/>
+                                    </constraints>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontoname" id="46">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                    </textFieldCell>
+                                </textField>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="209">
+                                    <rect key="frame" x="2" y="13" width="875" height="134"/>
+                                    <subviews>
+                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="175">
+                                            <rect key="frame" x="125" y="42" width="323" height="18"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="319" id="1LS-0i-7ap"/>
+                                            </constraints>
+                                            <buttonCell key="cell" type="check" title="Keine automatische Umsatzabfrage" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="176">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="56" name="value" keyPath="selection.noAutomaticQuery" id="178"/>
+                                            </connections>
+                                        </button>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="251">
+                                            <rect key="frame" x="2" y="76" width="119" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="115" id="EBL-Uk-Zjb"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Unterkonto" id="252">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="253">
+                                            <rect key="frame" x="127" y="74" width="94" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="94" id="5nR-VG-ZDR"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="254">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="56" name="value" keyPath="selection.accountSuffix" id="256"/>
+                                            </connections>
+                                        </textField>
+                                        <popUpButton toolTip="Wenn möglich Überweisungsaufträge zu Sammelüberweisungen zusammenfassen" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="257">
+                                            <rect key="frame" x="125" y="4" width="136" height="26"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="131" id="SzQ-gQ-eRE"/>
+                                            </constraints>
+                                            <popUpButtonCell key="cell" type="push" title="Niemals" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="260" id="258">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" title="OtherViews" id="259">
+                                                    <items>
+                                                        <menuItem title="Niemals" state="on" id="260"/>
+                                                        <menuItem title="Immer" id="261"/>
+                                                        <menuItem title="Jedesmal fragen" id="262"/>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                            <connections>
+                                                <binding destination="56" name="selectedIndex" keyPath="selection.collTransferMethod" id="267"/>
+                                            </connections>
+                                        </popUpButton>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="38">
+                                            <rect key="frame" x="127" y="112" width="260" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="260" id="PHh-Qr-9Wx"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="41">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="56" name="value" keyPath="selection.iban" id="95"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="39">
+                                            <rect key="frame" x="2" y="114" width="119" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="115" id="e20-KG-WBE"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="IBAN" id="40">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="36">
+                                            <rect key="frame" x="454" y="112" width="120" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="120" id="Jr4-mC-Lsn"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="43">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="56" name="value" keyPath="selection.bic" id="97"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="37">
+                                            <rect key="frame" x="390" y="114" width="58" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="54" id="IFR-cv-8gI"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="BIC" id="42">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="263">
+                                            <rect key="frame" x="264" y="10" width="290" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="286" id="tHn-nm-DWB"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Sammelüberweisungen verwenden" id="264">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="38" firstAttribute="leading" secondItem="253" secondAttribute="leading" id="1hb-64-9G3"/>
+                                        <constraint firstItem="253" firstAttribute="leading" secondItem="251" secondAttribute="trailing" constant="8" id="4DI-vc-uef"/>
+                                        <constraint firstItem="175" firstAttribute="top" secondItem="253" secondAttribute="bottom" constant="16" id="5TG-L0-kOg"/>
+                                        <constraint firstItem="37" firstAttribute="baseline" secondItem="39" secondAttribute="baseline" id="9nu-tV-9ik"/>
+                                        <constraint firstItem="251" firstAttribute="baseline" secondItem="253" secondAttribute="baseline" id="CGb-1M-QVj"/>
+                                        <constraint firstItem="37" firstAttribute="baseline" secondItem="36" secondAttribute="baseline" id="E6K-Ob-cJh"/>
+                                        <constraint firstItem="253" firstAttribute="top" secondItem="38" secondAttribute="bottom" constant="16" id="FFy-rX-XbN"/>
+                                        <constraint firstItem="37" firstAttribute="leading" secondItem="38" secondAttribute="trailing" constant="5" id="FRN-Y9-EFu"/>
+                                        <constraint firstItem="36" firstAttribute="leading" secondItem="37" secondAttribute="trailing" constant="8" id="Ijj-F7-keo"/>
+                                        <constraint firstItem="38" firstAttribute="leading" secondItem="209" secondAttribute="leading" constant="127" id="MfB-hm-4h8"/>
+                                        <constraint firstItem="38" firstAttribute="leading" secondItem="39" secondAttribute="trailing" constant="8" id="NJz-li-1sy"/>
+                                        <constraint firstItem="38" firstAttribute="top" secondItem="209" secondAttribute="top" id="RQa-qX-eNU"/>
+                                        <constraint firstItem="175" firstAttribute="leading" secondItem="253" secondAttribute="leading" id="ZDR-Es-erL"/>
+                                        <constraint firstItem="253" firstAttribute="leading" secondItem="257" secondAttribute="leading" id="b9u-Xd-fQr"/>
+                                        <constraint firstItem="257" firstAttribute="top" secondItem="175" secondAttribute="bottom" constant="16" id="dHg-zw-6cR"/>
+                                        <constraint firstItem="263" firstAttribute="baseline" secondItem="257" secondAttribute="baseline" id="htL-Ih-ufG"/>
+                                        <constraint firstItem="37" firstAttribute="baseline" secondItem="38" secondAttribute="baseline" id="l0N-W0-mD8"/>
+                                        <constraint firstItem="263" firstAttribute="leading" secondItem="257" secondAttribute="trailing" constant="8" id="rIw-ey-hwX"/>
+                                    </constraints>
+                                </customView>
+                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20">
+                                    <rect key="frame" x="3" y="166" width="119" height="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="115" id="OaU-dV-rnR"/>
+                                    </constraints>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kontoinhaber" id="21">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                        </view>
+                        <constraints>
+                            <constraint firstItem="209" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="2tx-5n-Ixl"/>
+                            <constraint firstItem="22" firstAttribute="baseline" secondItem="20" secondAttribute="baseline" id="6Xu-rZ-vtU"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="22" secondAttribute="leading" id="9bC-Q0-o2a"/>
+                            <constraint firstAttribute="trailing" secondItem="209" secondAttribute="trailing" id="AZ3-lb-g9S"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="17" secondAttribute="leading" constant="127" id="EsQ-1S-d3B"/>
+                            <constraint firstItem="22" firstAttribute="leading" secondItem="20" secondAttribute="trailing" constant="9" id="G99-I9-4hS"/>
+                            <constraint firstItem="22" firstAttribute="top" secondItem="44" secondAttribute="bottom" constant="16" id="Mjo-1r-iLI"/>
+                            <constraint firstItem="44" firstAttribute="top" secondItem="17" secondAttribute="top" constant="31" id="OmL-V3-P46"/>
+                            <constraint firstItem="209" firstAttribute="top" secondItem="22" secondAttribute="bottom" constant="17" id="SsD-rp-yy0"/>
+                            <constraint firstAttribute="bottom" secondItem="209" secondAttribute="bottom" constant="10" id="XGm-B3-Yyi"/>
+                            <constraint firstAttribute="trailing" secondItem="22" secondAttribute="trailing" constant="299" id="pUR-mn-CGf"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="45" secondAttribute="trailing" constant="8" id="pWW-nC-uIy"/>
+                            <constraint firstItem="44" firstAttribute="baseline" secondItem="45" secondAttribute="baseline" id="sWo-KQ-ifD"/>
+                        </constraints>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </box>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="BZl-1M-JiH" firstAttribute="baseline" secondItem="Sad-WQ-67A" secondAttribute="baseline" id="2IT-Ag-ddn"/>
+                    <constraint firstAttribute="trailing" secondItem="BZl-1M-JiH" secondAttribute="trailing" constant="20" id="5OK-cY-GuD"/>
+                    <constraint firstItem="229" firstAttribute="baseline" secondItem="48" secondAttribute="baseline" id="5pD-T1-Yk2"/>
+                    <constraint firstItem="17" firstAttribute="leading" secondItem="4" secondAttribute="leading" constant="20" id="Av1-c3-EeT"/>
+                    <constraint firstItem="247" firstAttribute="top" secondItem="4" secondAttribute="top" id="DGT-hv-mE4"/>
+                    <constraint firstItem="269" firstAttribute="leading" secondItem="30" secondAttribute="leading" id="Ed7-1L-916"/>
+                    <constraint firstAttribute="bottom" secondItem="54" secondAttribute="bottom" constant="20" id="G6w-32-MIF"/>
+                    <constraint firstItem="24" firstAttribute="trailing" secondItem="48" secondAttribute="trailing" id="Giy-Me-VTf"/>
+                    <constraint firstItem="50" firstAttribute="centerY" secondItem="228" secondAttribute="centerY" id="H6b-Y4-Jm4"/>
+                    <constraint firstItem="30" firstAttribute="baseline" secondItem="28" secondAttribute="baseline" id="IgT-gZ-GPz"/>
+                    <constraint firstItem="26" firstAttribute="leading" secondItem="50" secondAttribute="leading" id="J2G-1u-aFY"/>
+                    <constraint firstItem="24" firstAttribute="trailing" secondItem="Sad-WQ-67A" secondAttribute="trailing" id="K0q-f0-rmr"/>
+                    <constraint firstItem="287" firstAttribute="baseline" secondItem="BZl-1M-JiH" secondAttribute="baseline" id="M1x-PM-uS5"/>
+                    <constraint firstItem="269" firstAttribute="top" secondItem="270" secondAttribute="bottom" constant="9" id="MbI-Xc-9lZ"/>
+                    <constraint firstItem="287" firstAttribute="leading" secondItem="30" secondAttribute="leading" id="Ml4-C5-ya8"/>
+                    <constraint firstItem="52" firstAttribute="top" secondItem="17" secondAttribute="bottom" constant="20" id="NPD-6m-94c"/>
+                    <constraint firstItem="247" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="NRD-Pd-hCG"/>
+                    <constraint firstItem="26" firstAttribute="top" secondItem="BZl-1M-JiH" secondAttribute="bottom" constant="16" id="Os0-J4-ynP"/>
+                    <constraint firstAttribute="trailing" secondItem="247" secondAttribute="trailing" id="PGP-kC-P5L"/>
+                    <constraint firstItem="Sad-WQ-67A" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="287" secondAttribute="trailing" constant="10" id="RV3-if-P9b"/>
+                    <constraint firstItem="50" firstAttribute="top" secondItem="26" secondAttribute="bottom" constant="16" id="Ug9-fe-zO3"/>
+                    <constraint firstItem="293" firstAttribute="trailing" secondItem="28" secondAttribute="trailing" id="Wpv-gC-28m"/>
+                    <constraint firstItem="24" firstAttribute="baseline" secondItem="26" secondAttribute="baseline" id="XIp-8t-gzn"/>
+                    <constraint firstItem="287" firstAttribute="baseline" secondItem="Sad-WQ-67A" secondAttribute="baseline" id="XZL-7J-qor"/>
+                    <constraint firstAttribute="trailing" secondItem="52" secondAttribute="trailing" constant="20" id="bRU-J1-uep"/>
+                    <constraint firstItem="287" firstAttribute="baseline" secondItem="293" secondAttribute="baseline" id="fCz-Dp-V4B"/>
+                    <constraint firstItem="287" firstAttribute="leading" secondItem="293" secondAttribute="trailing" constant="8" id="fyu-MB-ZNo"/>
+                    <constraint firstItem="293" firstAttribute="top" secondItem="247" secondAttribute="bottom" constant="19" id="hhi-CO-sdZ"/>
+                    <constraint firstItem="48" firstAttribute="baseline" secondItem="50" secondAttribute="baseline" id="iBZ-s3-CHD"/>
+                    <constraint firstAttribute="bottom" secondItem="52" secondAttribute="bottom" constant="20" id="jaa-Jh-sq5"/>
+                    <constraint firstItem="17" firstAttribute="top" secondItem="269" secondAttribute="bottom" constant="20" id="ldf-U4-1yE"/>
+                    <constraint firstItem="269" firstAttribute="leading" secondItem="270" secondAttribute="leading" id="mvp-fN-DFP"/>
+                    <constraint firstItem="293" firstAttribute="leading" secondItem="4" secondAttribute="leading" constant="48" id="nU7-Nb-MNf"/>
+                    <constraint firstAttribute="trailing" secondItem="26" secondAttribute="trailing" constant="20" id="o5k-4y-sCO"/>
+                    <constraint firstItem="48" firstAttribute="baseline" secondItem="270" secondAttribute="baseline" id="sdy-hM-tRY"/>
+                    <constraint firstItem="30" firstAttribute="top" secondItem="287" secondAttribute="bottom" constant="16" id="soQ-Ki-MYr"/>
+                    <constraint firstItem="BZl-1M-JiH" firstAttribute="leading" secondItem="Sad-WQ-67A" secondAttribute="trailing" constant="8" id="wqI-VR-pNV"/>
+                    <constraint firstItem="52" firstAttribute="leading" secondItem="54" secondAttribute="trailing" constant="12" id="x1k-aE-kpE"/>
+                    <constraint firstItem="229" firstAttribute="leading" secondItem="50" secondAttribute="trailing" constant="8" id="xda-Xr-yKJ"/>
+                    <constraint firstItem="287" firstAttribute="trailing" secondItem="30" secondAttribute="trailing" id="xg9-11-yEu"/>
+                    <constraint firstAttribute="trailing" secondItem="17" secondAttribute="trailing" constant="20" id="yvW-0Q-PIq"/>
+                    <constraint firstItem="228" firstAttribute="leading" secondItem="229" secondAttribute="trailing" constant="8" id="z5z-dh-cKE"/>
+                </constraints>
                 <userDefinedRuntimeAttributes>
                     <userDefinedRuntimeAttribute type="boolean" keyPath="hasFillColor" value="YES"/>
                 </userDefinedRuntimeAttributes>
             </view>
+            <point key="canvasLocation" x="525.5" y="116"/>
         </window>
-        <objectController mode="entity" entityName="BankAccount" id="56" userLabel="AccountController">
+        <objectController mode="entity" entityName="BankAccount" id="56" userLabel="Account Controller">
             <declaredKeys>
                 <string>ownerName</string>
                 <string>accountNumber</string>
@@ -425,12 +604,11 @@
         </objectController>
         <arrayController mode="entity" entityName="BankUser" editable="NO" id="286" userLabel="BankUsers"/>
         <customView id="184" userLabel="ManAccountAdd">
-            <rect key="frame" x="0.0" y="0.0" width="643" height="179"/>
+            <rect key="frame" x="0.0" y="0.0" width="879" height="179"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="185">
-                    <rect key="frame" x="18" y="17" width="603" height="101"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="185">
+                    <rect key="frame" x="20" y="0.0" width="839" height="118"/>
                     <clipView key="contentView" id="sl5-AW-iiC">
                         <rect key="frame" x="1" y="1" width="601" height="99"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -525,27 +703,23 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField verticalHuggingPriority="750" id="207">
-                    <rect key="frame" x="15" y="126" width="280" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="207">
+                    <rect key="frame" x="20" y="124" width="420" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="416" id="CdF-WY-TIM"/>
+                    </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Regel für automatische Umsatzübertragung" id="208">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="277">
-                    <rect key="frame" x="10" y="160" width="124" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Aktueller Saldo" id="281">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField wantsLayer="YES" verticalHuggingPriority="750" id="278">
-                    <rect key="frame" x="142" y="157" width="134" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                <textField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="278">
+                    <rect key="frame" x="127" y="157" width="134" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="134" id="Vhb-Fa-zSe"/>
+                        <constraint firstAttribute="height" constant="22" id="nLX-Xg-lOZ"/>
+                    </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="279">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="280"/>
                         <font key="font" metaFont="system"/>
@@ -556,7 +730,37 @@
                         <binding destination="56" name="value" keyPath="selection.balance" id="283"/>
                     </connections>
                 </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="277">
+                    <rect key="frame" x="14" y="159" width="107" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="103" id="U0x-fi-10H"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Aktueller Saldo" id="281">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
+            <constraints>
+                <constraint firstItem="185" firstAttribute="top" secondItem="207" secondAttribute="bottom" constant="6" id="5aA-gn-cdo"/>
+                <constraint firstItem="185" firstAttribute="leading" secondItem="184" secondAttribute="leading" constant="20" id="6dw-yc-GJc"/>
+                <constraint firstItem="207" firstAttribute="leading" secondItem="184" secondAttribute="leading" constant="22" id="8vg-Q5-J1y"/>
+                <constraint firstItem="278" firstAttribute="leading" secondItem="184" secondAttribute="leading" constant="127" id="CqP-Ok-1mx"/>
+                <constraint firstItem="278" firstAttribute="baseline" secondItem="277" secondAttribute="baseline" id="EIn-MO-oDL"/>
+                <constraint firstAttribute="bottom" secondItem="185" secondAttribute="bottom" id="Uxy-Qi-zlg"/>
+                <constraint firstItem="278" firstAttribute="top" secondItem="184" secondAttribute="top" id="Z4T-JZ-es1"/>
+                <constraint firstItem="207" firstAttribute="top" secondItem="278" secondAttribute="bottom" constant="16" id="aZE-zI-SxO"/>
+                <constraint firstAttribute="trailing" secondItem="185" secondAttribute="trailing" constant="20" id="o6u-sc-t8N"/>
+                <constraint firstItem="278" firstAttribute="leading" secondItem="277" secondAttribute="trailing" constant="8" id="pl9-uP-UjK"/>
+            </constraints>
+            <point key="canvasLocation" x="525.5" y="551.5"/>
         </customView>
+        <arrayController automaticallyRearrangesObjects="YES" id="SFP-f8-v7m" userLabel="Account Types Controller">
+            <declaredKeys>
+                <string>id</string>
+                <string>name</string>
+            </declaredKeys>
+        </arrayController>
     </objects>
 </document>

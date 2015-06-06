@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,14 +17,14 @@
  * 02110-1301  USA
  */
 
-#import "PasswordWindow.h"
+#import "PasswordController.h"
 #import "BWGradientBox.h"
 
-@implementation PasswordWindow
+@implementation PasswordController
 
 - (id)init
 {
-    self = [super initWithWindowNibName: @"PasswordWindow"];
+    self = [super initWithWindowNibName: @"PasswordDialog"];
     active = YES;
     hidePasswortSave = NO;
     return self;
@@ -32,7 +32,7 @@
 
 - (id)initWithText: (NSString *)x title: (NSString *)y
 {
-    self = [super initWithWindowNibName: @"PasswordWindow"];
+    self = [super initWithWindowNibName: @"PasswordDialog"];
     text = x;
     title = y;
     active = YES;

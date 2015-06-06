@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,18 +17,10 @@
  * 02110-1301  USA
  */
 
-@class CallbackData;
-@class PasswordController;
-@class NotificationWindowController;
+import Foundation
 
-@interface CallbackHandler : NSObject {
-    NotificationWindowController *notificationController;
+// Mockup code created from the same StandingOrder class in Pecunia.
+
+@objc class StandingOrder {
+
 }
-
-@property (nonatomic, strong) NotificationWindowController *notificationController;
-
-- (NSString *)callbackWithData: (CallbackData *)data;
-
-+ (CallbackHandler *)handler;
-
-@end

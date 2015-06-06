@@ -86,8 +86,8 @@ typedef enum {
 - (NSString*)descriptionWithIndent: (NSString *)indent;
 
 + (BankAccount *)bankRootForCode: (NSString *)bankCode;
-+ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code;
-+ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
++ (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code;
++ (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
 + (NSInteger)maxUnread;
 
 @end

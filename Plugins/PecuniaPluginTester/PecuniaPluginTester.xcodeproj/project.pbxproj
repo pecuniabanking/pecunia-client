@@ -10,13 +10,17 @@
 		270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED4EA1AF4DD0400978925 /* AppDelegate.swift */; };
 		270ED4ED1AF4DD0400978925 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EC1AF4DD0400978925 /* Images.xcassets */; };
 		270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EE1AF4DD0400978925 /* MainMenu.xib */; };
-		273C38DD1B13235800937C54 /* BlocksHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273C38DC1B13235800937C54 /* BlocksHelper.swift */; };
 		276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */; };
 		27812CCF1AF5044100458619 /* debug-helper.js in Resources */ = {isa = PBXBuildFile; fileRef = 27812CCE1AF5044100458619 /* debug-helper.js */; };
 		278FFD8D1AFE43E60044BD5F /* PluginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278FFD8C1AFE43E60044BD5F /* PluginWorker.swift */; };
 		27B3D2FE1B10808D0011BBB3 /* WebKitExports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */; };
 		27B3D3001B108DB50011BBB3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B3D2FF1B108DB50011BBB3 /* WebKit.framework */; };
 		27B3D3051B120E100011BBB3 /* safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B3D3041B120E100011BBB3 /* safari.png */; };
+		27CE87A91B233669007B90F3 /* BankQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87A81B233669007B90F3 /* BankQueryResult.swift */; };
+		27CE87AB1B23373C007B90F3 /* BankStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AA1B23373C007B90F3 /* BankStatement.swift */; };
+		27CE87AD1B23385F007B90F3 /* BankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AC1B23385F007B90F3 /* BankAccount.swift */; };
+		27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AE1B23395F007B90F3 /* StandingOrder.swift */; };
+		27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +29,6 @@
 		270ED4EA1AF4DD0400978925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		270ED4EC1AF4DD0400978925 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PecuniaPluginTester/Images.xcassets; sourceTree = "<group>"; };
 		270ED4EF1AF4DD0400978925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		273C38DC1B13235800937C54 /* BlocksHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocksHelper.swift; path = ../../Source/BlocksHelper.swift; sourceTree = "<group>"; };
 		276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+PecuniaAdditions.h"; path = "../../Source/NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+PecuniaAdditions.m"; path = "../../Source/NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PecuniaPlugingTester-Bridging-Header.h"; path = "../PecuniaPlugingTester-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -34,6 +37,11 @@
 		27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebKitExports.swift; path = ../Source/WebKitExports.swift; sourceTree = "<group>"; };
 		27B3D2FF1B108DB50011BBB3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		27B3D3041B120E100011BBB3 /* safari.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = safari.png; path = PecuniaPluginTester/Resources/safari.png; sourceTree = "<group>"; };
+		27CE87A81B233669007B90F3 /* BankQueryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankQueryResult.swift; path = PecuniaPluginTester/BankQueryResult.swift; sourceTree = "<group>"; };
+		27CE87AA1B23373C007B90F3 /* BankStatement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankStatement.swift; path = PecuniaPluginTester/BankStatement.swift; sourceTree = "<group>"; };
+		27CE87AC1B23385F007B90F3 /* BankAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankAccount.swift; path = PecuniaPluginTester/BankAccount.swift; sourceTree = "<group>"; };
+		27CE87AE1B23395F007B90F3 /* StandingOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StandingOrder.swift; path = PecuniaPluginTester/StandingOrder.swift; sourceTree = "<group>"; };
+		27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocksHelper.swift; path = ../../Source/BlocksHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,10 +78,11 @@
 		270ED4E71AF4DD0400978925 /* PecuniaPluginTester */ = {
 			isa = PBXGroup;
 			children = (
-				270ED4EA1AF4DD0400978925 /* AppDelegate.swift */,
-				270ED4EE1AF4DD0400978925 /* MainMenu.xib */,
-				27812CCE1AF5044100458619 /* debug-helper.js */,
 				270ED4E81AF4DD0400978925 /* Supporting Files */,
+				270ED4EA1AF4DD0400978925 /* AppDelegate.swift */,
+				27812CCE1AF5044100458619 /* debug-helper.js */,
+				270ED4EE1AF4DD0400978925 /* MainMenu.xib */,
+				276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */,
 			);
 			path = PecuniaPluginTester;
 			sourceTree = "<group>";
@@ -82,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				270ED4E91AF4DD0400978925 /* Info.plist */,
-				276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -90,11 +98,15 @@
 		276ABD861AF65A610041DC23 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */,
-				278FFD8C1AFE43E60044BD5F /* PluginWorker.swift */,
+				27CE87AC1B23385F007B90F3 /* BankAccount.swift */,
+				27CE87A81B233669007B90F3 /* BankQueryResult.swift */,
+				27CE87AA1B23373C007B90F3 /* BankStatement.swift */,
+				27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */,
 				276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */,
 				276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */,
-				273C38DC1B13235800937C54 /* BlocksHelper.swift */,
+				278FFD8C1AFE43E60044BD5F /* PluginWorker.swift */,
+				27CE87AE1B23395F007B90F3 /* StandingOrder.swift */,
+				27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -179,10 +191,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				273C38DD1B13235800937C54 /* BlocksHelper.swift in Sources */,
+				27CE87A91B233669007B90F3 /* BankQueryResult.swift in Sources */,
+				27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */,
+				27CE87AB1B23373C007B90F3 /* BankStatement.swift in Sources */,
+				27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */,
 				276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */,
 				27B3D2FE1B10808D0011BBB3 /* WebKitExports.swift in Sources */,
 				278FFD8D1AFE43E60044BD5F /* PluginWorker.swift in Sources */,
+				27CE87AD1B23385F007B90F3 /* BankAccount.swift in Sources */,
 				270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,6 +304,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -299,6 +316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

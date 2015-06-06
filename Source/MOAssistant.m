@@ -23,7 +23,6 @@
 #import "MessageLog.h"
 
 #import "MOAssistant.h"
-#import "Keychain.h"
 #import "PecuniaError.h"
 #import "LaunchParameters.h"
 #import "BankingController.h"
@@ -127,7 +126,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     context = nil;
 
     // Remove any stored datastore passwords. We want the password always to be entered now.
-    [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
+    [Security deletePasswordForService: @"Pecunia" account: @"DataFile"];
 
     return self;
 }
@@ -763,7 +762,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     // if everything was successful, we can save the password
     if (savePassword && passwd != nil) {
-        [Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword];
+        [Security setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
 
     decryptionDone = YES;
@@ -878,31 +877,46 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 /**
  * Clears the entire data in the context. Same as if you just remove the sqlite file manually, but
  * you can immediately start adding new data after return, without restarting the application.
+ * Shared data is not affected.
  */
 - (void)clearAllData {
-    NSURL *storeURL = [[context persistentStoreCoordinator] URLForPersistentStore: [[[context persistentStoreCoordinator] persistentStores] lastObject]];
-
     // Exclusive access please. Drop pending changes.
     [context lock];
 
-    // Delete the store from the current context.
-    NSError *error;
-    if ([[context persistentStoreCoordinator] removePersistentStore: [[[context persistentStoreCoordinator] persistentStores] lastObject]
-                                                              error: &error]) {
-        // Quick and effective: remove the file containing the data.
-        [[NSFileManager defaultManager] removeItemAtURL: storeURL error: &error];
+    NSURL *storeURL = nil;
+    NSError *error = nil;
 
-        // Now recreate it.
-        NSDictionary *options = @{
-            NSMigratePersistentStoresAutomaticallyOption: @YES,
-            NSInferMappingModelAutomaticallyOption: @YES
-        };
-        [[context persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
-                                                           configuration: nil
-                                                                     URL: storeURL
-                                                                 options: options
-                                                                   error: &error];
+    NSPersistentStoreCoordinator *coordinator = context.persistentStoreCoordinator;
+    for (NSPersistentStore *store in coordinator.persistentStores) {
+        if ([store.configurationName isEqualToString: @"MainConfiguration"]) {
+            storeURL = store.URL;
+            if ([coordinator removePersistentStore: store error: &error]) {
+                if (error == nil) {
+                    // Quick and effective: remove the file containing the data.
+                    [NSFileManager.defaultManager removeItemAtURL: storeURL error: &error];
+                }
+            }
+            break;
+        }
     }
+
+    if (error == nil && storeURL != nil) {
+        NSMutableDictionary *storeOptions = [NSMutableDictionary dictionary];
+        [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                       NSInferMappingModelAutomaticallyOption: @YES}];
+        if (isEncrypted) {
+            NSDictionary *pragmaOptions = @{@"synchronous": @"FULL", @"journal_mode": @"DELETE"};
+            storeOptions[NSSQLitePragmasOption] = pragmaOptions;
+        }
+
+        LogInfo(@"Adding new main store from %@", storeURL);
+        [coordinator addPersistentStoreWithType: NSSQLiteStoreType
+                                  configuration: @"MainConfiguration"
+                                            URL: storeURL
+                                        options: storeOptions
+                                          error: &error];
+    }
+
     [context unlock];
     if (error != nil || ![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];

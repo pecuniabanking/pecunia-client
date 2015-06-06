@@ -55,9 +55,8 @@
         result = nil;
         error = res;
         
-        // error has occured. Inform callback handler, which can then invalidate PIN
-        // in case PIN was entered
-        [[CallbackHandler handler] setErrorOccured];
+        // An error has occured. Inform security, which can then invalidate PIN in case PIN was entered.
+        Security.errorOccured = YES;
     } else {
         result = res;
         error = nil;
@@ -177,8 +176,7 @@
             if (error) {
                 err = [error toPecuniaError];
             }
-            [[CallbackHandler handler] finishPasswordEntry];
-            //running = NO;
+            [Security finishPasswordEntry];
             [asyncSender asyncCommandCompletedWithResult: result error: err];
             [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
@@ -261,12 +259,11 @@
     }
     NSString *command = [cmd stringByAppendingString: @".\n"];
 
-    // todo: startSession hier ist nur die erste Näherung
-    [[CallbackHandler handler] startSession];
+    Security.errorOccured = NO;
     LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [self receive];
-    [[CallbackHandler handler] finishPasswordEntry];
+    [Security finishPasswordEntry];
     if (error) {
         *err = [error toPecuniaError];
         return nil;

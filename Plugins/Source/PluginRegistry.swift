@@ -18,10 +18,11 @@
 */
 
 import Foundation;
+import WebKit;
 
 @objc public class PluginRegistry : NSObject, JSLogger {
 
-    private var plugins: [String: (String, PluginContext)] = [:];
+    private var plugins: [String: (description: String, context: PluginContext)] = [:];
     private static var registry: PluginRegistry?;
 
     public class func startup() {
@@ -84,9 +85,85 @@ import Foundation;
         logDebug("Done loading scripts in plugin registry");
     }
 
-    public func getStatements(fromPlugin name: String, accounts: [BankAccount]) -> Void {
-        if let context = plugins[name] {
+    public static func getPluginList() -> [[String: String]] {
+        var result: [[String: String]] = [];
+        for (key, entry) in registry!.plugins {
+            result.append(["id": key, "name": entry.description]);
         }
+        return result;
+    }
+
+    private class UserEntry {
+        var bankCode: String;
+        var password: String;
+        var accountNumbers: [String];
+
+        init(bankCode bank: String, password pw: String, accountNumbers numbers: [String]) {
+            bankCode = bank;
+            password = pw;
+            accountNumbers = numbers;
+        }
+    };
+
+    /**
+     * Takes a list of accounts (which all must be handled by the same plugin) and runs the associated
+     * plugin for them. The account list is split by user ids.
+     */
+    public static func getStatements(accounts: [BankAccount], completion: ([BankQueryResult]) -> Void) -> Void {
+        logEnter();
+
+        // The HBCI part of the statement retrieval computes an own start date for each account.
+        // We don't do this kind of granularity here. Instead we use the lowest start date found for all
+        // accounts which might return a few more results for accounts that have been updated later
+        // than others (but nobodoy would notice anyway, as the unwanted older statements exist already in the db).
+        var fromDate: NSDate?;
+        var maxStatDays: NSTimeInterval = 0;
+        if NSUserDefaults.standardUserDefaults().boolForKey("limitStatsAge") {
+            maxStatDays = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("maxStatDays"));
+        }
+
+        var userList: [String: UserEntry] = [:];
+        for account in accounts {
+            if account.latestTransferDate == nil && maxStatDays > 0 {
+                account.latestTransferDate = NSDate(timeInterval: -86400.0 * maxStatDays, sinceDate: NSDate());
+            }
+
+            if (account.latestTransferDate != nil) {
+                let startDate = NSDate(timeInterval: -605000, sinceDate: account.latestTransferDate);
+                if fromDate == nil || startDate.isBefore(fromDate!) {
+                    fromDate = startDate;
+                }
+            }
+
+            var entry = userList[account.userId];
+            if entry == nil {
+                // At the moment we don't accept other authentication methods than user name + password.
+                let password = Security.getPin(account.bankCode, userId: account.userId);
+                entry = UserEntry(bankCode: account.bankCode, password: password, accountNumbers: []);
+                userList[account.userId] = entry;
+            }
+
+            let number = String(filter(account.accountNumber()) { $0 != " " }); // Remove all space chars.
+            entry!.accountNumbers.append(number);
+        }
+
+        // Use a fixed interval of ~7 days if none of the accounts has a latest transfer date and no max stat days
+        // value is specified.
+        if fromDate == nil {
+            fromDate = NSDate(timeInterval: -605000 * maxStatDays, sinceDate: NSDate());
+        }
+
+        let pluginId = accounts[0].plugin;
+        if let (_, pluginContext) = registry?.plugins[pluginId] {
+            for (userId, user) in userList {
+                pluginContext.getStatements(userId, bankCode: user.bankCode, password: user.password, fromDate: fromDate!,
+                    toDate: NSDate(), accounts: user.accountNumbers, completion: completion);
+            }
+        } else {
+            registry!.logError("Couldn't find plugin " + pluginId);
+        }
+
+        logLeave();
     }
 
     func logError(message: String) -> Void {

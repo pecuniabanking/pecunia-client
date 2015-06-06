@@ -918,7 +918,7 @@
 }
 
 - (void)startImport {
-    BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber
+    BankAccount *account = [BankAccount findAccountWithNumber: currentSettings.accountNumber
                                                 subNumber: currentSettings.accountSuffix
                                                  bankCode: currentSettings.bankCode];
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.memContext;

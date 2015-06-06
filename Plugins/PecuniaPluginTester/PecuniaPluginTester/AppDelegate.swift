@@ -211,7 +211,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   func logIntern(message: String) -> Void {
     let text = String(format: "%@\n", message);
     logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(calibratedRed: 0.3, green: 0.75, blue: 0.3, alpha: 1)]));
+      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(calibratedRed: 0.3, green: 0.5, blue: 0.3, alpha: 1)]));
   };
 
   // MARK: - User Interaction
@@ -236,7 +236,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       webBrowser?.releasedWhenClosed = false;
     }
 
-    context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self, hostWindow: webBrowser!);
+    context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self,
+      hostWindow: webBrowser!);
     if context == nil {
       detailsTextField.stringValue = "Loading failed";
       logError("Loading plugin script failed.");
@@ -305,19 +306,45 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       accounts[i] = String(filter(accounts[i]) { $0 != " " });
     }
 
-    let scriptFunction: JSValue = context!.getFunction("getStatements");
-    if scriptFunction.isUndefined() {
-      logIntern("Error: getStatements() not found in plugin");
-      return;
-    }
+    context!.getStatements(user, bankCode: "12003000", password: password, fromDate: fromDate,
+      toDate: toDate, accounts: accounts) { (values: [BankQueryResult]) -> Void in
+        let text = values.description;
+        self.logIntern("");
+        self.logIntern("Results (\(values.count)):");
+        for value in values {
+          if value.account != nil {
+            self.logIntern("  Result for \(value.account!.accountNumber) (bank code: \(value.account!.bankCode)):");
+          } else {
+            self.logIntern("  Result for unknown account:");
+          }
+          self.logIntern("    type: \(value.type)");
+          self.logIntern("    ccNumber: \(value.ccNumber)");
+          self.logIntern("    lastSettleDate:\(value.lastSettleDate) ");
+          self.logIntern("    balance: \(value.balance)");
+          self.logIntern("    oldBalance: \(value.oldBalance)");
+          self.logIntern("    statements (\(value.statements.count)):");
 
-    let result = scriptFunction.callWithArguments([user, password, fromDate, toDate, accounts]);
+          for statement in value.statements {
+            self.logIntern("      isPreliminary: \(statement.isPreliminary)");
+            self.logIntern("      date: \(statement.date)");
+            self.logIntern("      valutaDate: \(statement.valutaDate)");
+            self.logIntern("      value: \(statement.value)");
+            self.logIntern("      origValue: \(statement.origValue)");
+            self.logIntern("      purpose: \(statement.purpose)");
+            self.logIntern("");
+          }
 
-    if result.toBool() {
-      logIntern("Process successfully started");
-    } else {
-      logIntern("Process setup failed");
-    }
+          self.logIntern("    standing orders (\(value.standingOrders.count)):");
+          for order in value.standingOrders {
+            self.logIntern("      order");
+          }
+
+          self.logIntern("");
+        }
+
+        self.logIntern("--------------------------------------------------------------------------");
+        self.logIntern("");
+    };
 
   }
 

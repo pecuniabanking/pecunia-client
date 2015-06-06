@@ -34,7 +34,6 @@
 #import "CustomerMessage.h"
 #import "TanMediaList.h"
 #import "StatusBarController.h"
-#import "Keychain.h"
 #import "SigningOptionsController.h"
 #import "CallbackHandler.h"
 #import "NSDecimalNumber+PecuniaAdditions.h"
@@ -50,6 +49,7 @@ static HBCIController *controller = nil;
     NSMutableDictionary *bankInfo;
     NSMutableDictionary *countries;
 
+    NSInteger           *pluginsRunning; // The count of currently running plugins.
     NSMutableDictionary *userList; // Temporary storage when retrieving new statements.
     BOOL                retrieveStandingOrders; // Flag to indicate what we are currently retrieving
                                                 // (statements or standing orders).
@@ -554,7 +554,7 @@ static HBCIController *controller = nil;
     if (option == nil) {
         return nil;
     }
-    [CallbackHandler handler].currentSigningOption = option;
+    Security.currentSigningOption = option;
 
     // Registriere gewählten User
     BankUser *user = [self getBankUserForId: option.userId bankCode: transfer.account.bankCode];
@@ -637,7 +637,7 @@ static HBCIController *controller = nil;
         if (option == nil) {
             continue;
         }
-        [CallbackHandler handler].currentSigningOption = option;
+        Security.currentSigningOption = option;
 
         // Registriere gewählten User
         BankUser *user = [self getBankUserForId: option.userId bankCode: account.bankCode];
@@ -845,7 +845,7 @@ static HBCIController *controller = nil;
     [bridge syncCommand: cmd error: &error];
     if (error == nil) {
         NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId];
-        [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
+        [Security deletePasswordForService: @"Pecunia PIN" account: s];
     } else {
         [error alertPanel];
         return NO;
@@ -1043,60 +1043,66 @@ static HBCIController *controller = nil;
     return result;
 }
 
+- (void)handleQueryResults: (NSArray *)results {
+    for (BankQueryResult *queryResult in results) {
+        if (queryResult.type == BankQueryTypeCreditCard) {
+            // Credit Card Statements, balance field is filled with current account balance.
+            // Check if order needs to be reversed.
+            if (queryResult.statements.count > 0) {
+                BankStatement *first = queryResult.statements.firstObject;
+                BankStatement *last = queryResult.statements.lastObject;
+
+                if ([first.date compare: last.date] == NSOrderedDescending) {
+                    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: queryResult.statements.count];
+                    for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
+                        [statements addObject: queryResult.statements[i]];
+                    }
+                    queryResult.statements = statements;
+                }
+            }
+
+            // Calculate balances.
+            for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
+                BankStatement *statement = queryResult.statements[i];
+                statement.saldo = [NSDecimalNumber decimalNumberWithDecimal: queryResult.balance.decimalValue];
+                queryResult.balance = [statement.saldo decimalNumberBySubtracting: statement.value];
+            }
+        } else {
+            // Standard Statements.
+            // Saldo of the last statement which is not preliminary becomes the current saldo.
+            NSInteger i = queryResult.statements.count - 1;
+            while (i >= 0) {
+                BankStatement *statement = queryResult.statements[i];
+                if (!statement.isPreliminary.boolValue) {
+                    queryResult.balance = statement.saldo;
+                    break;
+                }
+                --i;
+            }
+        }
+    }
+}
+
 - (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err {
 
     // Statement/standing order retrieval doesn't set the account a query result is for (TODO)
     // so we use the original accounts list to do the assignments, assuming that the results
     // are in the same order as the accounts for which they had been requested.
-    if (err == nil && result != nil) {
-        NSUInteger currentAccount = 0;
-        NSArray *accounts = userList[userList.allKeys[0]];
-        if (accounts.count != [result count]) {
-            LogWarning(@"asyncCommandCompletedWithResult: account list size and result list size differ.");
-        }
-
-        for (BankQueryResult *queryResult in result) {
-            if (currentAccount < accounts.count) {
-                queryResult.account = accounts[currentAccount++];
+    // Plugin results don't need this extra handling.
+    if (err == nil && [result count] > 0) {
+        if ([result[0] account] == nil) {
+            NSUInteger currentAccount = 0;
+            NSArray *accounts = userList[userList.allKeys[0]];
+            if (accounts.count != [result count]) {
+                LogWarning(@"asyncCommandCompletedWithResult: account list size and result list size differ.");
             }
-
-            if (queryResult.ccNumber != nil) {
-                // Credit Card Statements, balance field is filled with current account balance.
-                // Check if order needs to be reversed.
-                if (queryResult.statements.count > 0) {
-                    BankStatement *first = queryResult.statements.firstObject;
-                    BankStatement *last = queryResult.statements.lastObject;
-
-                    if ([first.date compare: last.date] == NSOrderedDescending) {
-                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: queryResult.statements.count];
-                        for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
-                            [statements addObject: queryResult.statements[i]];
-                        }
-                        queryResult.statements = statements;
-                    }
+            for (BankQueryResult *queryResult in result) {
+                if (currentAccount < accounts.count) {
+                    queryResult.account = accounts[currentAccount++];
                 }
-
-                // Calculate balances.
-                for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
-                    BankStatement *statement = queryResult.statements[i];
-                    statement.saldo = [NSDecimalNumber decimalNumberWithDecimal: queryResult.balance.decimalValue];
-                    queryResult.balance = [statement.saldo decimalNumberBySubtracting: statement.value];
-                }
-            } else {
-                // Standard Statements.
-                // Saldo of the last statement which is not preliminary becomes the current saldo.
-                NSInteger i = queryResult.statements.count - 1;
-                while (i >= 0) {
-                    BankStatement *statement = queryResult.statements[i];
-                    if (!statement.isPreliminary.boolValue) {
-                        queryResult.balance = statement.saldo;
-                        break;
-                    }
-                    --i;
-                }
-
             }
         }
+        [self handleQueryResults: result];
     }
 
     if (err) {
@@ -1107,27 +1113,34 @@ static HBCIController *controller = nil;
     }
 
     // Done with this user, continue with next one.
-    NSString *userId = userList.allKeys[0];
-    [userList removeObjectForKey: userId];
+    // Synchronize access with the plugin calls running in parallel.
+    @synchronized(userList) {
+        NSString *userId = userList.allKeys[0];
+        [userList removeObjectForKey: userId];
 
-    if (userList.count > 0) {
-        userId = userList.allKeys[0];
+        if (userList.count > 0) {
+            userId = userList.allKeys[0];
 
-        // Delay execution to next run loop, so we can finish the task at hand properly first.
-        if (retrieveStandingOrders) {
-            [self performSelector: @selector(getUserStandingOrders:) withObject: userList[userId] afterDelay: 0.0];
-        } else {
-            [self performSelector: @selector(getUserStatements:) withObject: userList[userId] afterDelay: 0.0];
+            // Delay execution to next run loop, so we can finish the task at hand properly first.
+            if (retrieveStandingOrders) {
+                [self performSelector: @selector(getUserStandingOrders:) withObject: userList[userId] afterDelay: 0.0];
+            } else {
+                [self performSelector: @selector(getUserStatements:) withObject: userList[userId] afterDelay: 0.0];
+            }
+            return;
         }
-    } else {
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification object: nil];
-        [[NSNotificationCenter defaultCenter] postNotification: notification];
-        [self stopProgress];
+
+        if (pluginsRunning == 0) {
+            NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification object: nil];
+            [[NSNotificationCenter defaultCenter] postNotification: notification];
+            [self stopProgress];
+        }
     }
 }
 
 /**
- * Triggers retrieval of statements for all accounts for a given user (all accounts have the same user id).
+ * Triggers retrieval of statements for all accounts for a given user (all accounts have the same
+ * user id) using the HBCI path.
  */
 - (void)getUserStatements: (NSArray *)accounts {
     if (accounts.count == 0) {
@@ -1194,21 +1207,56 @@ static HBCIController *controller = nil;
 
     // Organize accounts by user in order to get all statements for all accounts of a given user.
     userList = [NSMutableDictionary new];
+    NSMutableDictionary *accountsWithPlugins = [NSMutableDictionary new];
     for (BankAccount *account in accounts) {
-        NSMutableArray *accountsPerUser = userList[account.userId];
-        if (accountsPerUser == nil) {
-            accountsPerUser = [NSMutableArray new];
-            userList[account.userId] = accountsPerUser;
-        }
-        [accountsPerUser addObject: account];
-    }
-    
-    // Now start asynchronous queries with first user. Send requests to the appropriate
-    // plugin or down the normal HBCI road.
-    [self startProgress];
 
-    NSString *userId = userList.allKeys[0];
-    [self getUserStatements: userList[userId]];
+        // Take out those accounts and run them through their appropriate plugin if they have
+        // one assigned. Since they don't need to use the same mechanism we have for HBCI,
+        // we can just use a local list. All plugins run in parallel.
+        if (account.plugin.length > 0 && ![account.plugin isEqualToString: @"hbci"]) {
+            NSMutableArray *accountsPerPlugin = accountsWithPlugins[account.plugin];
+            if (accountsPerPlugin == nil) {
+                accountsPerPlugin = [NSMutableArray new];
+                accountsWithPlugins[account.plugin] = accountsPerPlugin;
+            }
+            [accountsPerPlugin addObject: account];
+        } else {
+            NSMutableArray *accountsPerUser = userList[account.userId];
+            if (accountsPerUser == nil) {
+                accountsPerUser = [NSMutableArray new];
+                userList[account.userId] = accountsPerUser;
+            }
+            [accountsPerUser addObject: account];
+        }
+    }
+
+    [self startProgress];
+    pluginsRunning = accountsWithPlugins.count;
+    for (NSArray *accounts in accountsWithPlugins.allValues) {
+        [PluginRegistry getStatements: accounts completion: ^(NSArray *results) {
+            @synchronized(userList) {
+                [self handleQueryResults: results];
+                NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
+                [NSNotificationCenter.defaultCenter postNotification: notification];
+
+                --pluginsRunning;
+                if (pluginsRunning == 0 && userList.count == 0) {
+                    // Done with all queries. Set a special value for running plugins count
+                    // to aoivd the HBCI
+                    NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification
+                                                                                 object: nil];
+                    [NSNotificationCenter.defaultCenter postNotification: notification];
+                    [self stopProgress];
+                }
+            }
+        }];
+    }
+
+    // Now start retrieval with first user using HBCI.
+    if (userList.count > 0) {
+        NSString *userId = userList.allKeys[0];
+        [self getUserStatements: userList[userId]];
+    }
  }
 
 - (void)getUserStandingOrders: (NSArray*)accounts
@@ -1356,7 +1404,7 @@ static HBCIController *controller = nil;
         if (option == nil) {
             continue;
         }
-        [CallbackHandler handler].currentSigningOption = option;
+        Security.currentSigningOption = option;
 
         // Registriere gewählten User
         BankUser *user = [self getBankUserForId: option.userId bankCode: account.bankCode];
@@ -1503,7 +1551,7 @@ static HBCIController *controller = nil;
                 account.customerId = acc.customerId;
             } else {
                 // check if the account's user id still exists
-                BankUser *accUser = [BankUser userWithId:account.userId bankCode:account.bankCode];
+                BankUser *accUser = [BankUser findUserWithId:account.userId bankCode:account.bankCode];
                 if (accUser == nil) {
                     account.userId = acc.userId;
                     account.customerId = acc.customerId;
@@ -1595,7 +1643,7 @@ static HBCIController *controller = nil;
     PecuniaError *error = nil;
 
     for (Account *acc in accounts) {
-        BankAccount *account = [BankAccount accountWithNumber: acc.accountNumber subNumber: acc.subNumber bankCode: acc.bankCode];
+        BankAccount *account = [BankAccount findAccountWithNumber: acc.accountNumber subNumber: acc.subNumber bankCode: acc.bankCode];
         if (account == nil) {
             LogError(@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode);
             continue;
@@ -1769,7 +1817,7 @@ static HBCIController *controller = nil;
     
     // remove PIN from Keychain
     NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId];
-    [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
+    [Security deletePasswordForService: @"Pecunia PIN" account: s];
 
     if (error) {
         return error;
@@ -1783,7 +1831,7 @@ static HBCIController *controller = nil;
 
     [self startProgress];
 
-    BankUser *user = [BankUser userWithId: msg.account.userId bankCode: msg.account.bankCode];
+    BankUser *user = [BankUser findUserWithId: msg.account.userId bankCode: msg.account.bankCode];
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
     }
@@ -1950,7 +1998,7 @@ static HBCIController *controller = nil;
 - (BankUser *)getBankUserForId: (NSString *)userId bankCode: (NSString *)bankCode
 {
     PecuniaError *err = nil;
-    BankUser     *user = [BankUser userWithId: userId bankCode: bankCode];
+    BankUser     *user = [BankUser findUserWithId: userId bankCode: bankCode];
     if (user == nil) {
         return nil;
     }

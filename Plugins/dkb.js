@@ -46,7 +46,7 @@ var endAt;
 
 var results = [];
 
-function getStatements(user, password, from, to, creditCardNumbers) { // user/pw, 2 dates and an array of strings.
+function getStatements(user, bankCode, password, from, to, creditCardNumbers) {
 	numbers = creditCardNumbers;
 	startFrom = from;
 	endAt = to;
@@ -126,7 +126,7 @@ function navigationCallback(doStep) {
 			default:
 				currentState = 0;
 				webClient.callback = null; // Unregister ourselve. We are done.
-				logger.logInfo("Plugin invocation done");
+				logger.logDebug("Plugin invocation done");
 			}
 		} catch (err) {
 			if (currentState != 99) // If exception not triggered by logout.
@@ -263,10 +263,10 @@ function readNextCreditCard() {
 	var toPostingDate = form.elements.namedItem("toPostingDate");
 	logger.logDebug("To posting element: " + toPostingDate);
 
-	postingDate.value = padDatePart(startFrom.getDate()) + "." + padDatePart(startFrom.getMonth() + 1) + "." + startFrom.getFullYear();
-	toPostingDate.value = padDatePart(endAt.getDate()) + "." + padDatePart(endAt.getMonth() + 1) + "." + endAt.getFullYear();
+	postingDate.setValue(padDatePart(startFrom.getDate()) + "." + padDatePart(startFrom.getMonth() + 1) + "." + startFrom.getFullYear());
+	toPostingDate.setValue(padDatePart(endAt.getDate()) + "." + padDatePart(endAt.getMonth() + 1) + "." + endAt.getFullYear());
 	
-	logger.logDebug("Date range: " + postingDate.value + " .. " + toPostingDate.value);
+	logger.logDebug("Date range: " + postingDate.value() + " .. " + toPostingDate.value());
 	
 	currentState = 14;
 	var button = form.elements.namedItem("searchbutton");
@@ -279,20 +279,53 @@ function convertCsvToResult() {
 	var lines = webClient.mainFrameDocument.body.innerText.split("\n");
 
 	var statements = [];
-	var headers = ["preliminary", "valutaDate", "date", "transactionText", "value", "originalValue"];
+	var headers = ["final", "valutaDate", "date", "transactionText", "value", "originalValue"];
+
+    // Balance value is in prefix lines.
+    var balance = "0 EUR";
+    var lastSettleDate = new Date();
+    for (var i = 0; i < 8; ++i) {
+        var currentLine = lines[i].split(";");
+        if (currentLine.length > 0) {
+            if (unquote(currentLine[0]) == "Saldo:") {
+                balance = unquote(currentLine[1]);
+                break;
+            }
+            if (unquote(currentLine[0]) == "Datum:") {
+                var parts = unquote(currentLine[1]).split('.');
+                lastSettleDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                break;
+            }
+        }
+    }
 
 	for (var i = 8; i < lines.length; ++i) {
 		var statement = {};
-		var currentline = lines[i].split(";");
+		var currentLine = lines[i].split(";");
 
-		for (var j = 0; j < headers.length; ++j) {
-			statement[headers[j]] = currentline[j];
+        statement["final"] = unquote(currentLine[0]) == "Ja" ? "true" : "false";
+
+        var parts = unquote(currentLine[1]).split('.');
+        statement["valutaDate"] = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        parts = unquote(currentLine[2]).split('.');
+        statement["date"] = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        for (var j = 3; j < headers.length; ++j) {
+			statement[headers[j]] = unquote(currentLine[j]);
 		}
 
 		statements.push(statement);
 	}
 	
-	var result = {"account": numbers[currentCreditCardIndex], "statements": statements };
+	var result = {
+        "isCreditCard": "true",
+        "account": numbers[currentCreditCardIndex],
+        "bankCode": "12030000",
+        "balance": balance,
+        "statements": statements,
+        "lastSettleDate": lastSettleDate
+    };
 	results.push(result);
 
 	logger.logDebug("Done converting")
@@ -303,6 +336,13 @@ function convertCsvToResult() {
 function sleepFor(sleepDuration) { // Debugging helper.
     var now = new Date().getTime();
     while(new Date().getTime() < now + sleepDuration) { /* do nothing */ } 
+}
+
+function unquote(text) {
+    if ((text[0] === "\"" && text[text.length - 1] === "\"") || (text[0] === "'" && text[text.length - 1] === "'")) {
+        return text.slice(1, text.length - 1);
+    };
+    return text;
 }
 
 true; // Return flag to indicate if parsing the file was successfull.

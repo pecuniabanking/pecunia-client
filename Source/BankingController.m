@@ -906,15 +906,6 @@ static BankingController *bankinControllerInstance;
                         );
     }
 
-    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: selectedAccounts.count];
-    for (BankAccount *account in selectedAccounts) {
-        if (account.userId != nil) {
-            BankQueryResult *result = [BankQueryResult new];
-            result.account = account;
-            [resultList addObject: result];
-        }
-    }
-
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
@@ -983,7 +974,7 @@ static BankingController *bankinControllerInstance;
 
     // check for updated login data
     for (result in resultList) {
-        BankUser *user = [BankUser userWithId: result.account.userId bankCode: result.account.bankCode];
+        BankUser *user = [BankUser findUserWithId: result.account.userId bankCode: result.account.bankCode];
         if (user != nil) {
             [user checkForUpdatedLoginData];
         }
@@ -3685,7 +3676,7 @@ static BankingController *bankinControllerInstance;
             if ([invalidUsers containsObject: account.userId]) {
                 continue;
             }
-            BankUser *user = [BankUser userWithId: account.userId bankCode: account.bankCode];
+            BankUser *user = [BankUser findUserWithId: account.userId bankCode: account.bankCode];
             if (user) {
                 NSMutableSet *users = [account mutableSetValueForKey: @"users"];
                 [users addObject: user];

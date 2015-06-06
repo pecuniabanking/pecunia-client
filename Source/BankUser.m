@@ -377,7 +377,7 @@ static NSMutableDictionary *users = nil;
 // Important: bankCode of BankUser and bankCode of accounts can be different!
 // For that reason, if we don't find a user with the same bank code we look for one with just the same
 // userId.
-+ (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode {
++ (BankUser *)findUserWithId: (NSString *)userId bankCode: (NSString *)bankCode {
     NSError *error = nil;
 
     if (userId == nil) {

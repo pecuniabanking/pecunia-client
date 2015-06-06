@@ -601,10 +601,10 @@
         LogError(@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber);
         return nil;
     }
-    return [BankUser userWithId: self.userId bankCode: self.bankCode];
+    return [BankUser findUserWithId: self.userId bankCode: self.bankCode];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code {
++ (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 
@@ -625,7 +625,7 @@
     return results[0];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
++ (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 

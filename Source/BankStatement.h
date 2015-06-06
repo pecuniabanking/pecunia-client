@@ -33,6 +33,8 @@ typedef enum {
 @interface BankStatement : NSManagedObject {
 }
 
++ (instancetype)createTemporary;
+
 - (BOOL)matches: (BankStatement *)stat;
 - (BOOL)matchesAndRepair: (BankStatement *)stat;
 

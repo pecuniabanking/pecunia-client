@@ -47,16 +47,72 @@ class WebClient: WebView, WebViewJSExport {
     }
 
     var callback: JSValue = JSValue();
+    var completion: ([BankQueryResult]) -> Void = {([BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
     func resultsArrived(results: JSValue) -> Void {
         if let entries = results.toArray() as? [[String: AnyObject]] {
+            var queryResults: [BankQueryResult] = [];
+
             for entry in entries {
-                let account = entry["account"] as! String;
-                let statements = entry["statements"] as! [[String: String]];
-                for statement in statements {
-                    
+                var queryResult = BankQueryResult();
+
+                if let type = entry["isCreditCard"] as? String {
+                    queryResult.type = (type == "yes") ? .CreditCard : .BankStatement;
                 }
+
+                if let lastSettleDate = entry["lastSettleDate"] as? NSDate {
+                    queryResult.lastSettleDate = lastSettleDate;
+                }
+
+                if let account = entry["account"] as? String, let bankCode = entry["bankCode"] as? String {
+                    queryResult.account = BankAccount.findAccountWithNumber(account, bankCode: bankCode);
+                    if queryResult.type == .CreditCard {
+                        queryResult.ccNumber = account;
+                    }
+                }
+
+                // Balance string might contain a currency code (3 letters).
+                let balance = (entry["balance"] as! String);
+                queryResult.balance = NSDecimalNumber(string: balance, locale: NSLocale.currentLocale()); // Returns the value up to the currency code (if any).
+
+                let statements = entry["statements"] as! [[String: AnyObject]];
+                for jsonStatement in statements {
+                    var statement: BankStatement = BankStatement.createTemporary();
+                    if let final = jsonStatement["final"] as? String {
+                        statement.isPreliminary = final != "true";
+                    }
+
+                    if let date = jsonStatement["valutaDate"] as? NSDate {
+                        statement.valutaDate = date.dateByAddingTimeInterval(12 * 3600); // Add 12hrs so we start at noon.
+                    }
+
+                    if let date = jsonStatement["date"] as? NSDate {
+                        statement.date = date.dateByAddingTimeInterval(12 * 3600);
+                    }
+
+                    if let purpose = jsonStatement["transactionText"] as? String {
+                        statement.purpose = purpose;
+                    }
+
+                    // Note: using the current locale to convert the values limits us to what the user
+                    //       has set in his/her system. The plugins probably know how a floating point
+                    //       number is set for the website they work with, but we will lose precision
+                    //       if we let JS convert the string to a number.
+                    if let value = jsonStatement["value"] as? String  where count(value) > 0 {
+                        // For some unknown reasons the Swift doesn't allow to assign a value to the .value property.
+                        // Using dictionary access instead for the time being until this is resolved.
+                        let number = NSDecimalNumber(string: value, locale: NSLocale.currentLocale());
+                        statement.setValue(number, forKey: "value");
+                    }
+
+                    if let value = jsonStatement["originalValue"] as? String where count(value) > 0 {
+                        statement.origValue = NSDecimalNumber(string: value, locale: NSLocale.currentLocale());
+                    }
+                    queryResult.statements.append(statement);
+                }
+                queryResults.append(queryResult);
             }
+            completion(queryResults);
         }
     }
 }
@@ -186,6 +242,22 @@ class PluginContext : NSObject {
         );
     }
 
+    // Calls the getStatements() plugin function and translates results from JSON to a BankQueryResult list.
+    func getStatements(userId: String, bankCode: String, password: String, fromDate: NSDate, toDate: NSDate,
+        accounts: [String], completion: ([BankQueryResult]) -> Void) -> Void {
+            let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
+            let pluginId = workContext.objectForKeyedSubscript("name").toString();
+            if scriptFunction.isUndefined() {
+                jsLogger.logError("Error: getStatements() not found in plugin " + pluginId);
+                return;
+            }
+
+            webClient.completion = completion;
+            if !(scriptFunction.callWithArguments([userId, bankCode, password, fromDate, toDate, accounts]) != nil) {
+                jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId);
+            }
+    }
+
     func getFunction(name: String) -> JSValue {
         return workContext.objectForKeyedSubscript(name);
     }
@@ -242,5 +314,3 @@ class PluginContext : NSObject {
         jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
 }
-
-
