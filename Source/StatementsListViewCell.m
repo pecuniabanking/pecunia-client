@@ -448,6 +448,11 @@ static NSImage    *stripeImage;
     BOOL drawNotAssignedGradient = !preliminary && [defaults boolForKey: @"markNAStatements"];
     BOOL drawNewStatementsGradient = !preliminary && [defaults boolForKey: @"markNewStatements"];
     BOOL isUnassignedColored = NO;
+    
+    // check if assigned or not on redraw
+    StatCatAssignment *assignment = self.representedObject;
+    NSDecimalNumber *nassValue = assignment.statement.nassValue;
+    self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
 
     if (headerGradient == nil) {
         [self setupDrawStructures];

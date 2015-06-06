@@ -537,6 +537,10 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
+- (void)removeSelection {
+    [statementsListView deselectRows];
+}
+
 - (void)terminate
 {
     selectedCategory = nil;
