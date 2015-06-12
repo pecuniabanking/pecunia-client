@@ -228,7 +228,9 @@
     } else if ([elementName isEqualToString: @"result"]) {
         [parser setDelegate: parent];
         result = [stack lastObject];
-        [parent setResult: [stack lastObject]];
+        if (![parent setResult: [stack lastObject]]) {
+            parent.authRequest.errorOccured = YES;
+        }
         return;
     } else {
         if ([[stack lastObject] isKindOfClass: [NSMutableArray class]] || [[stack lastObject] isKindOfClass: [NSMutableDictionary class]]) {

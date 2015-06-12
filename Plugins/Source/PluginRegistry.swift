@@ -93,15 +93,28 @@ import WebKit;
         return result;
     }
 
-    private class UserEntry {
+    // Checks all registered plugins if any of them can handle the given combination.
+    // The first hit wins.
+    public static func pluginForAccount(account: String, bankCode: String) -> String {
+        for (key, entry) in registry!.plugins {
+            if entry.context.canHandle(account, bankCode: bankCode) {
+                return key;
+            }
+        }
+        return "";
+    }
+
+    internal class UserQueryEntry {
         var bankCode: String;
         var password: String;
         var accountNumbers: [String];
+        var authRequest: AuthRequest;
 
-        init(bankCode bank: String, password pw: String, accountNumbers numbers: [String]) {
+        init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
             bankCode = bank;
             password = pw;
             accountNumbers = numbers;
+            authRequest = auth;
         }
     };
 
@@ -122,45 +135,56 @@ import WebKit;
             maxStatDays = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("maxStatDays"));
         }
 
-        var userList: [String: UserEntry] = [:];
+        var queryList: [String: UserQueryEntry] = [:];
         for account in accounts {
             if account.latestTransferDate == nil && maxStatDays > 0 {
                 account.latestTransferDate = NSDate(timeInterval: -86400.0 * maxStatDays, sinceDate: NSDate());
             }
 
             if (account.latestTransferDate != nil) {
-                let startDate = NSDate(timeInterval: -605000, sinceDate: account.latestTransferDate);
+                let startDate = NSDate(timeInterval: -2592000, sinceDate: account.latestTransferDate);
                 if fromDate == nil || startDate.isBefore(fromDate!) {
                     fromDate = startDate;
                 }
             }
 
-            var entry = userList[account.userId];
+            var entry = queryList[account.userId];
             if entry == nil {
                 // At the moment we don't accept other authentication methods than user name + password.
-                let password = Security.getPin(account.bankCode, userId: account.userId);
-                entry = UserEntry(bankCode: account.bankCode, password: password, accountNumbers: []);
-                userList[account.userId] = entry;
+                let request = AuthRequest();
+                let password = request.getPin(account.bankCode, userId: account.userId);
+                if password != "<abort>" {
+                    entry = UserQueryEntry(bankCode: account.bankCode, password: password,
+                        accountNumbers: [], auth: request);
+                    queryList[account.userId] = entry;
+                }
             }
 
-            let number = String(filter(account.accountNumber()) { $0 != " " }); // Remove all space chars.
-            entry!.accountNumbers.append(number);
+            if entry != nil {
+                let number = String(filter(account.accountNumber()) { $0 != " " }); // Remove all space chars.
+                entry!.accountNumbers.append(number);
+            }
         }
 
-        // Use a fixed interval of ~7 days if none of the accounts has a latest transfer date and no max stat days
+        // Use a fixed interval of 30 days if none of the accounts has a latest transfer date and no max stat days
         // value is specified.
         if fromDate == nil {
-            fromDate = NSDate(timeInterval: -605000 * maxStatDays, sinceDate: NSDate());
+            fromDate = NSDate(timeInterval: -2592000 * maxStatDays, sinceDate: NSDate());
         }
 
         let pluginId = accounts[0].plugin;
         if let (_, pluginContext) = registry?.plugins[pluginId] {
-            for (userId, user) in userList {
-                pluginContext.getStatements(userId, bankCode: user.bankCode, password: user.password, fromDate: fromDate!,
-                    toDate: NSDate(), accounts: user.accountNumbers, completion: completion);
+            if queryList.count == 0 {
+                completion([]);
+            } else {
+                for (userId, query) in queryList {
+                    pluginContext.getStatements(userId, query: query, fromDate: fromDate!,
+                        toDate: NSDate(), completion: completion);
+                }
             }
         } else {
             registry!.logError("Couldn't find plugin " + pluginId);
+            completion([]);
         }
 
         logLeave();

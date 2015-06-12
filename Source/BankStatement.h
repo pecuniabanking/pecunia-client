@@ -62,7 +62,9 @@ typedef enum {
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDate *docDate;
 
-@property (nonatomic, strong) NSDecimalNumber *value;
+// Use a custom setter name for value because the default one (setValue) collides with
+// setValue in NSObject, which is especially a problem in Swift.
+@property (nonatomic, strong, setter = setStatementValue:) NSDecimalNumber *value;
 @property (nonatomic, strong) NSDecimalNumber *origValue;
 @property (nonatomic, strong) NSDecimalNumber *nassValue;
 @property (nonatomic, strong) NSDecimalNumber *charge;

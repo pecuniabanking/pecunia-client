@@ -49,8 +49,8 @@ static HBCIController *controller = nil;
     NSMutableDictionary *bankInfo;
     NSMutableDictionary *countries;
 
-    NSInteger           *pluginsRunning; // The count of currently running plugins.
-    NSMutableDictionary *userList; // Temporary storage when retrieving new statements.
+    NSInteger           pluginsRunning; // The count of currently running plugins.
+    NSMutableDictionary *userList;      // Temporary storage when retrieving new statements.
     BOOL                retrieveStandingOrders; // Flag to indicate what we are currently retrieving
                                                 // (statements or standing orders).
 }
@@ -1062,10 +1062,11 @@ static HBCIController *controller = nil;
             }
 
             // Calculate balances.
+            NSDecimalNumber *balance = queryResult.balance;
             for (NSInteger i = queryResult.statements.count - 1; i >= 0; --i) {
                 BankStatement *statement = queryResult.statements[i];
-                statement.saldo = [NSDecimalNumber decimalNumberWithDecimal: queryResult.balance.decimalValue];
-                queryResult.balance = [statement.saldo decimalNumberBySubtracting: statement.value];
+                statement.saldo = balance;
+                balance = [balance decimalNumberBySubtracting: statement.value];
             }
         } else {
             // Standard Statements.
@@ -1148,6 +1149,7 @@ static HBCIController *controller = nil;
         return;
     }
 
+    // XXX: the accounts array can contain accounts from different banks, hence a single bank user doesn't cut it.
     BankAccount *account = accounts.firstObject;
     BankUser *user = [self getBankUserForId: account.userId bankCode: account.bankCode];
     if (user == nil) {
@@ -1158,15 +1160,6 @@ static HBCIController *controller = nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStatements\"><accinfolist type=\"list\">"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"y-MM-dd";
-    
-    // If it's a chipcard user show info box to ensure the right chipcard is inserted.
-    if (user.secMethod.intValue == SecMethod_DDV) {
-        NSRunAlertPanel(NSLocalizedString(@"AP357", nil),
-                        NSLocalizedString(@"AP350", nil),
-                        NSLocalizedString(@"AP1", nil),
-                        nil, nil, user.userId
-                        );
-    }
     
     for (account in accounts) {
         [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>",
@@ -1241,8 +1234,6 @@ static HBCIController *controller = nil;
 
                 --pluginsRunning;
                 if (pluginsRunning == 0 && userList.count == 0) {
-                    // Done with all queries. Set a special value for running plugins count
-                    // to aoivd the HBCI
                     NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification
                                                                                  object: nil];
                     [NSNotificationCenter.defaultCenter postNotification: notification];
@@ -1598,8 +1589,10 @@ static HBCIController *controller = nil;
             bankAccount.bic = acc.bic;
             bankAccount.iban = acc.iban;
             bankAccount.type = acc.type;
-            //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
-            //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
+            bankAccount.plugin = [PluginRegistry pluginForAccount: acc.accountNumber bankCode: acc.bankCode];
+            if (bankAccount.plugin.length == 0) {
+                bankAccount.plugin = @"hbci";
+            }
 
             // links
             bankAccount.parent = bankRoot;
@@ -1997,11 +1990,21 @@ static HBCIController *controller = nil;
 
 - (BankUser *)getBankUserForId: (NSString *)userId bankCode: (NSString *)bankCode
 {
-    PecuniaError *err = nil;
-    BankUser     *user = [BankUser findUserWithId: userId bankCode: bankCode];
+    BankUser *user = [BankUser findUserWithId: userId bankCode: bankCode];
     if (user == nil) {
         return nil;
     }
+
+    // If it's a chipcard user show info box to ensure the right chipcard is inserted.
+    if (user.secMethod.intValue == SecMethod_DDV) {
+        NSRunAlertPanel(NSLocalizedString(@"AP357", nil),
+                        NSLocalizedString(@"AP350", nil),
+                        NSLocalizedString(@"AP1", nil),
+                        nil, nil, user.userId
+                        );
+    }
+
+    PecuniaError *err = nil;
     if ([self registerBankUser: user error: &err] == NO) {
         if (err) {
             [err alertPanel];

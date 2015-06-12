@@ -1365,7 +1365,7 @@
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
 		279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		27A0622F1B18DAD500EC6749 /* PluginWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginWorker.swift; path = Plugins/Source/PluginWorker.swift; sourceTree = SOURCE_ROOT; };
+		27A0622F1B18DAD500EC6749 /* PluginWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginWorker.swift; path = Plugins/Source/PluginWorker.swift; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
 		27A062301B18DAD500EC6749 /* WebKitExports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebKitExports.swift; path = Plugins/Source/WebKitExports.swift; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
@@ -1388,7 +1388,7 @@
 		27A6F361178DCCD60015327B /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 16.xcdatamodel"; sourceTree = "<group>"; };
-		27A85F871B1A07F70017D863 /* dkb.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = dkb.js; path = Plugins/dkb.js; sourceTree = "<group>"; };
+		27A85F871B1A07F70017D863 /* dkb.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = dkb.js; path = Plugins/dkb.js; sourceTree = "<group>"; wrapsLines = 0; };
 		27AA5658186C330A00B113E7 /* graph3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph3.png; sourceTree = "<group>"; };
 		27AA5661186C389900B113E7 /* distribution-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "distribution-active.png"; sourceTree = "<group>"; };
 		27AA5662186C389900B113E7 /* distribution-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "distribution-active@2x.png"; sourceTree = "<group>"; };
@@ -4492,7 +4492,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;

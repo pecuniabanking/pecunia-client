@@ -29,8 +29,8 @@ import Foundation
     var type: BankQueryType = .BankStatement;
     var ccNumber: String?;
     var lastSettleDate: NSDate?;
-    var balance: NSNumber?;
-    var oldBalance: NSNumber?;
+    var balance: NSDecimalNumber?;
+    var oldBalance: NSDecimalNumber?;
     var statements: [BankStatement] = [];
     var standingOrders: [StandingOrder] = [];
     var account: BankAccount?;

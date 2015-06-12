@@ -19,17 +19,93 @@
 
 import Foundation
 
+// Class for parallel running banking requests each with its own authentication need.
+internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.auth-queue", DISPATCH_QUEUE_SERIAL);
+
+@objc public class AuthRequest {
+
+    private var service: String = "";
+    private var account: String = "";
+
+    private var passwordController: PasswordController?;
+
+    public var errorOccured = false;
+
+    public static func new() -> AuthRequest {
+        return AuthRequest();
+    }
+
+    public func finishPasswordEntry() -> Void {
+        if errorOccured {
+            Security.deletePasswordForService(service, account: account);
+        }
+
+        if passwordController != nil {
+            if !errorOccured {
+                let password = passwordController!.result();
+                Security.setPassword(password, forService: service, account: account,
+                    store: passwordController!.savePassword);
+            }
+
+            passwordController!.close();
+            passwordController = nil;
+        }
+    }
+    
+    public func getPin(bankCode: String, userId: String) -> String {
+        service = "Pecunia PIN";
+        let s = "PIN_\(bankCode)_\(userId)";
+        if s != account {
+            if passwordController != nil {
+                finishPasswordEntry();
+            }
+            account = s;
+        }
+
+        // Serialize password retrieval (especially password dialogs).
+        var result = "<abort>";
+        dispatch_sync(serialQueue) {
+            var password = Security.passwordForService(self.service, account: self.account);
+            if password != nil {
+                result = password!;
+                return;
+            }
+
+            if self.passwordController == nil {
+                let user = BankUser.findUserWithId(userId, bankCode: bankCode);
+                self.passwordController = PasswordController(text: String(format: NSLocalizedString("AP171", comment: ""),
+                    user != nil ? user!.name : userId), title: NSLocalizedString( "AP181", comment: ""));
+            } else {
+                self.passwordController!.retry();
+            }
+
+            let res = NSApp.runModalForWindow(self.passwordController!.window!);
+            self.passwordController!.closeWindow();
+            if res == 0 {
+                let pin = self.passwordController!.result();
+                Security.setPassword(pin, forService: self.service, account: self.account, store: false);
+                result = pin;
+            } else {
+                Security.deletePasswordForService(self.service, account: self.account);
+                self.errorOccured = true; // Don't save the PIN.
+                result = "<abort>";
+            }
+        }
+
+        return result;
+    }
+
+}
+
 @objc public class Security {
 
-    public static var errorOccured = false;
     public static var currentSigningOption: SigningOption? = nil;
-
-    private static var passwordController: PasswordController?;
 
     private static var currentPwService = "";
     private static var currentPwAccount = "";
 
     private static var passwordCache: [String: String] = [:];
+    private static var passwordController: PasswordController?;
 
     public static func getPasswordForDataFile() -> String {
         currentPwService = "Pecunia";
@@ -53,25 +129,10 @@ import Foundation
         }
 
         if password == nil || count(password!) == 0 {
-            return "<abort>";
+            return "<abort>"; // Hopefully nobody uses this as password.
         }
 
         return password!;
-    }
-
-    public static func finishPasswordEntry() -> Void {
-        if passwordController != nil {
-            if errorOccured {
-                let password = passwordController!.result();
-                setPassword(password, forService: currentPwService, account: currentPwAccount,
-                    store: passwordController!.shouldSavePassword());
-            } else {
-                deletePasswordForService(currentPwService, account: currentPwAccount);
-            }
-
-            passwordController!.close();
-            passwordController = nil;
-        }
     }
 
     public static func getNewPassword(data: CallbackData) -> String {
@@ -81,7 +142,6 @@ import Foundation
 
         let controller = NewPasswordController(text: data.message, title: NSLocalizedString( "AP180", comment: ""));
         if NSApp.runModalForWindow(passwordController!.window!) != 0 {
-            errorOccured = true;
             return "<abort>";
         }
 
@@ -120,47 +180,10 @@ import Foundation
         return controller.selectedMethod.stringValue;
     }
 
-    public static func getPin(bankCode: String, userId: String) -> String {
-        currentPwService = "Pecunia PIN";
-        let s = "PIN_\(bankCode)_\(userId)";
-        if s != currentPwAccount {
-            if passwordController != nil {
-                finishPasswordEntry();
-            }
-            currentPwAccount = s;
-        }
-
-        var password = passwordForService(currentPwService, account: currentPwAccount);
-        if password != nil {
-            return password!;
-        }
-
-        if passwordController == nil {
-            let user = BankUser.findUserWithId(userId, bankCode: bankCode);
-            passwordController = PasswordController(text: String(format: NSLocalizedString("AP171", comment: ""),
-                user != nil ? user!.name : userId), title: NSLocalizedString( "AP181", comment: ""));
-        } else {
-            passwordController!.retry();
-        }
-
-        let res = NSApp.runModalForWindow(passwordController!.window!);
-        passwordController!.closeWindow();
-        if res == 0 {
-            let pin = passwordController!.result();
-            setPassword(pin, forService: currentPwService, account: currentPwAccount, store: false);
-            return pin;
-        } else {
-            deletePasswordForService(currentPwService, account: s);
-            errorOccured = true; // Don't save the PIN.
-            return "<abort>";
-        }
-    }
-
     public static func removePin(data: CallbackData) -> Void {
         currentPwService = "Pecunia PIN";
         let s = "PIN_\(data.bankCode)_\(data.userId)";
         deletePasswordForService("Pecunia PIN", account: s);
-        errorOccured = true;
     }
 
     public static func getTan(data: CallbackData) -> String {
@@ -199,7 +222,7 @@ import Foundation
         }
     }
     
-    // TODO: for all password functions, they could use a more generic implementation like Locksmith (see Github).
+    // TODO: for all keychain functions, they could use a more generic implementation like Locksmith (see Github).
     public static func setPassword(password: String, forService service: String, account: String, store: Bool) -> Bool {
         let key = service + "/" + account;
         passwordCache[key] = password;

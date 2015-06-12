@@ -582,7 +582,9 @@ extension WebFrame: WebFrameJSExport {
 
     var URL: String { get set }; // Same as mainFrameURL below, just a nicer name.
     var callback: JSValue { get set };
+
     func resultsArrived(results: JSValue) -> Void;
+    func reportError(message: String) -> Void;
 
     // WebView exports.
     static func canShowMIMEType(MIMEType: String!) -> Bool;

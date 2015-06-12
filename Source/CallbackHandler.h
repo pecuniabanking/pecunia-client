@@ -20,6 +20,7 @@
 @class CallbackData;
 @class PasswordController;
 @class NotificationWindowController;
+@class HBCIBridge;
 
 @interface CallbackHandler : NSObject {
     NotificationWindowController *notificationController;
@@ -27,7 +28,7 @@
 
 @property (nonatomic, strong) NotificationWindowController *notificationController;
 
-- (NSString *)callbackWithData: (CallbackData *)data;
+- (NSString *)callbackWithData: (CallbackData *)data parent: (HBCIBridge *)parent;
 
 + (CallbackHandler *)handler;
 

@@ -73,7 +73,6 @@ AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur F
 AP83 = "Fehler";
 AP84 = "Warnung";
 AP85 = "Kritischer Fehler";
-AP86 = "Standardkonto";
 
 // General + miscellaneous messages
 // AP100..AP149
@@ -123,6 +122,8 @@ AP142 = "Gutschriften";
 AP143 = "Zwischensaldo";
 AP144 = "Summe";
 AP145 = "Notizen";
+AP146 = "Standardkonto";
+AP147 = "Plugin Fehler";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,8 +24,7 @@
 
 @implementation CallbackParser
 
-- (id)initWithParent: (HBCIBridge *)par command: (NSString *)cmd
-{
+- (id)initWithParent: (HBCIBridge *)par command: (NSString *)cmd {
     self = [super init];
     if (self == nil) {
         return nil;
@@ -36,28 +35,32 @@
     return self;
 }
 
-- (void)parser: (NSXMLParser *)parser didStartElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName attributes: (NSDictionary *)attributeDict
-{
+-  (void)parser: (NSXMLParser *)parser
+didStartElement: (NSString *)elementName
+   namespaceURI: (NSString *)namespaceURI
+  qualifiedName: (NSString *)qName
+     attributes: (NSDictionary *)attributeDict {
     currentValue = [[NSMutableString alloc] init];
 }
 
-- (void)parser: (NSXMLParser *)parser foundCharacters: (NSString *)string
-{
+- (void)parser: (NSXMLParser *)parser foundCharacters: (NSString *)string {
     [currentValue appendString: string];
 }
 
-- (void)parser: (NSXMLParser *)parser didEndElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName
-{
+- (void)parser: (NSXMLParser *)parser
+ didEndElement: (NSString *)elementName
+  namespaceURI: (NSString *)namespaceURI
+ qualifiedName: (NSString *)qName {
     if ([elementName isEqualToString: @"callback"]) {
         [parser setDelegate: parent];
 
         // do command handling here.
-        NSString *result = [[CallbackHandler handler] callbackWithData: data];
+        NSString *result = [CallbackHandler.handler callbackWithData: data parent: parent];
 
         NSPipe *pipe = [parent outPipe];
         result = [result stringByAppendingString: @"\n"];
         [[pipe fileHandleForWriting] writeData: [result dataUsingEncoding: NSUTF8StringEncoding]];
-        //[self autorelease ]; autorelease where alloc'ed
+
         return;
     }
     [data setValue: currentValue forKey: elementName];

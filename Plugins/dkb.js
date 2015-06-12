@@ -4,7 +4,7 @@
 // Plugin to read DKB credit card statements from the DKB website (www.dkb.de).
 
 
-// Plugin details used to manage usage.
+// Plugin details used to manage usage. Name and description are mandatory.
 var name = "pecunia.plugin.dkbvisa";
 var author = "Mike Lischke";
 var description = "DKB Kreditkartenkonto"; // Short string for plugin selection.
@@ -12,7 +12,15 @@ var homePage = "http://pecuniabanking.de";
 var license = "CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de";
 var version = "1.0";
 
-// Internal variables.
+// Info about the number format used for money values. All values are optional.
+var numberInfo = {
+    "decimalSeparator": ",",    // Default is .
+    "groupSeparator": ".",      // Default is ,
+    "groupingSize": 3,          // Number of digits in a group. Default is 3.
+    "maximumFractionalDigit": 2 // Default is 2.
+};
+
+// --- Internal variables.
 var currentState = 0; // Used in the callback to determine what to do next (state machine).
 var userName = "";
 var thePassword = "";
@@ -30,6 +38,18 @@ var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index
 // Credit card URLs.
 var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
 var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.creditcard.CreditcardTransactionSearch&$event=csvExport";
+
+// Option function to support auto account type determination.
+function canHandle(account, bankCode) {
+    if (bankCode != "12030000")
+        return false;
+
+    // Credit cards are the only accounts with 16 digits.
+    if (account.length != 16)
+        return false;
+
+    return true;
+}
 
 function logOut() {
 	logger.logDebug("Starting log out...");
@@ -97,8 +117,22 @@ function navigationCallback(doStep) {
 				startLogin();
 				break;
 
-			case 12: // Logged in, now collect statements.
+			case 12: // After log in state. If all is fine collect statements.
 				logger.logDebug("URL after login: " + webClient.URL);
+
+                // Check if we were sent back to the login form.
+                var formLogin = webClient.mainFrame.document.forms.item(0);
+                var submitLogin = formLogin.elements.namedItem("buttonlogin");
+                if (submitLogin != null) {
+                    // TODO: localization support.
+                    webClient.reportError("Die Anmeldung ist fehlgeschlagen. Falsche PIN verwendet?");
+                    webClient.resultsArrived([], "", "");
+                    currentState = 0;
+                    webClient.callback = null;
+
+                    return;
+                }
+
 				navigateToCreditCardPage();
 				break;
 
@@ -205,7 +239,7 @@ function padDatePart(i) {
 function readNextCreditCard() {
 	if (++currentCreditCardIndex >= numbers.length) {
 		// We are done.
-		webClient.resultsArrived(results);
+        webClient.resultsArrived(results);
 		logOut();
 		return;
 	};
@@ -303,7 +337,9 @@ function convertCsvToResult() {
 		var statement = {};
 		var currentLine = lines[i].split(";");
 
-        statement["final"] = unquote(currentLine[0]) == "Ja" ? "true" : "false";
+        // This field seems not what we understand from it. Even though it might say the value
+        // is not yet processed it is actually already contained in the balance.
+        statement["final"] = "true"; //unquote(currentLine[0]) == "Ja" ? "true" : "false";
 
         var parts = unquote(currentLine[1]).split('.');
         statement["valutaDate"] = new Date(parts[2], parts[1] - 1, parts[0]);
@@ -321,7 +357,6 @@ function convertCsvToResult() {
 	var result = {
         "isCreditCard": "true",
         "account": numbers[currentCreditCardIndex],
-        "bankCode": "12030000",
         "balance": balance,
         "statements": statements,
         "lastSettleDate": lastSettleDate

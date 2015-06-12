@@ -71,7 +71,7 @@ extern NSString *const CategoryKey;
 
 - (void)awakeFromNib {
     NSMutableArray *types = [[PluginRegistry getPluginList] mutableCopy];
-    [types insertObject: @{@"id": @"hbci", @"name": NSLocalizedString(@"AP86", nil)} atIndex: 0];
+    [types insertObject: @{ @"id": @"hbci", @"name": NSLocalizedString(@"AP146", nil) } atIndex: 0];
     accountTypesController.content = types;
     if ([changedAccount.isManual boolValue]) {
         

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @class ResultParser;
 @class CallbackParser;
 @class LogParser;
@@ -27,27 +25,14 @@
 @class PecuniaError;
 @class CallbackData;
 
+@class AuthRequest;
+
 @interface HBCIBridge : NSObject <NSXMLParserDelegate>
-{
-    ResultParser   *rp;
-    CallbackParser *cp;
-    LogParser      *lp;
 
-    NSPipe *inPipe;
-    NSPipe *outPipe;
-    NSTask *task;
-
-    BOOL resultExists;
-    BOOL running;
-
-    id              result;
-    HBCIError       *error;
-    NSMutableString *asyncString;
-    id              asyncSender;
-}
+@property (readonly) AuthRequest *authRequest;
 
 - (NSPipe *)outPipe;
-- (void)setResult: (id)res;
+- (BOOL)setResult: (id)res;
 - (id)result;
 - (void)startup;
 

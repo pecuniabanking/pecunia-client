@@ -19,33 +19,14 @@
 
 @class BWGradientBox;
 
-@interface PasswordController : NSWindowController {
-    IBOutlet NSTextField *inputText;
-    IBOutlet NSTextField *inputField;
-    IBOutlet NSButton    *savePasswordButton;
+@interface PasswordController : NSWindowController
 
-    NSString               *text;
-    NSString               *title;
-    NSString               *result;
-    IBOutlet BWGradientBox *topGradient;
-    IBOutlet BWGradientBox *backgroundGradient;
-    NSTimer                *shakeTimer;
-
-    BOOL savePassword;
-    BOOL active;
-    BOOL hidePasswortSave;
-    BOOL retry;
-
-    int shakeCount;
-}
+@property BOOL savePassword;
 
 - (id)initWithText: (NSString *)x title: (NSString *)y;
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification;
-- (void)windowWillClose: (NSNotification *)aNotification;
 - (void)windowDidLoad;
 - (void)closeWindow;
 - (NSString *)result;
-- (BOOL)shouldSavePassword;
 - (void)retry;
 - (void)disablePasswordSave;
 

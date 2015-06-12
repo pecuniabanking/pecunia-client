@@ -19,14 +19,14 @@
 
 #import "CallbackHandler.h"
 #import "ChipcardHandler.h"
+#import "HBCIBridge.h"
 
 static CallbackHandler *callbackHandler = nil;
 
 @implementation CallbackHandler
 @synthesize notificationController;
 
-- (void)userIDChanged: (CallbackData*)data
-{
+- (void)userIDChanged: (CallbackData*)data {
     NSArray *userData = [data.proposal componentsSeparatedByString: @"|"];
     BankUser *user = [BankUser findUserWithId:data.userId bankCode:data.bankCode];
     if (user != nil) {
@@ -40,8 +40,7 @@ static CallbackHandler *callbackHandler = nil;
 }
 
 
-- (NSString *)callbackWithData: (CallbackData *)data
-{
+- (NSString *)callbackWithData: (CallbackData *)data parent: (HBCIBridge *)parent {
     if ([data.command isEqualToString: @"password_load"]) {
         return [Security getPasswordForDataFile];
     }
@@ -53,7 +52,7 @@ static CallbackHandler *callbackHandler = nil;
         return [Security getTanMethod: data];
     }
     if ([data.command isEqualToString: @"getPin"]) {
-        return [Security getPin: data.bankCode userId: data.userId];
+        return [parent.authRequest getPin: data.bankCode userId: data.userId];
     }
     if ([data.command isEqualToString: @"getTan"]) {
         return [Security getTan: data];

@@ -20,6 +20,28 @@
 #import "PasswordController.h"
 #import "BWGradientBox.h"
 
+@interface PasswordController ()  {
+    IBOutlet NSTextField *inputText;
+    IBOutlet NSTextField *inputField;
+    IBOutlet NSButton    *savePasswordButton;
+
+    IBOutlet BWGradientBox *topGradient;
+    IBOutlet BWGradientBox *backgroundGradient;
+
+    NSString *text;
+    NSString *title;
+    NSString *result;
+    NSTimer  *shakeTimer;
+
+    BOOL active;
+    BOOL hidePasswortSave;
+    BOOL retry;
+
+    int shakeCount;
+}
+
+@end
+
 @implementation PasswordController
 
 - (id)init
@@ -53,8 +75,8 @@
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-    result = [inputField stringValue];
-    if ([result length] == 0) {
+    result = inputField.stringValue;
+    if (result.length == 0) {
         NSBeep();
     } else {
         [NSApp stopModalWithCode: 0];
@@ -87,10 +109,10 @@
 - (void)closeWindow
 {
     if (active) {
-        [[self window] close];
+        [self.window close];
     }
 }
-
+/*
 - (void)windowWillClose: (NSNotification *)aNotification
 {
     if (active) {
@@ -98,16 +120,18 @@
         if ([NSApp modalWindow] == self.window) {
             if ([result length] == 0) {
                 [NSApp stopModalWithCode: 1];
-            } else {[NSApp stopModalWithCode: 0]; }
+            } else {
+                [NSApp stopModalWithCode: 0];
+            }
         }
         active = NO;
     }
 }
-
+*/
 - (void)windowDidLoad
 {
-    [inputText setStringValue: text];
-    [[self window] setTitle: title];
+    inputText.stringValue = text;
+    self.window.title = title;
 }
 
 - (NSString *)result
@@ -115,14 +139,21 @@
     return result;
 }
 
-- (BOOL)shouldSavePassword
-{
-    return savePassword;
-}
-
 - (void)disablePasswordSave
 {
     hidePasswortSave = YES;
+}
+
+- (IBAction)ok:(id)sender {
+    result = inputField.stringValue;
+    [self.window close];
+    [NSApp stopModalWithCode: 0];
+}
+
+- (IBAction)cancel:(id)sender {
+    result = @"";
+    [self.window close];
+    [NSApp stopModalWithCode: 1];
 }
 
 @end

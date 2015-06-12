@@ -46,26 +46,56 @@ class WebClient: WebView, WebViewJSExport {
         }
     }
 
+    var query: PluginRegistry.UserQueryEntry?;
     var callback: JSValue = JSValue();
-    var completion: ([BankQueryResult]) -> Void = {([BankQueryResult]) -> Void in }; // Block to call on results arrival.
+    var completion: ([BankQueryResult]) -> Void = { ([BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
+    func reportError(message: String) {
+        query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
+        
+        let alert = NSAlert();
+        alert.messageText = message;
+        alert.alertStyle = .WarningAlertStyle;
+        alert.runModal();
+    }
+    
     func resultsArrived(results: JSValue) -> Void {
+        query!.authRequest.finishPasswordEntry();
+
         if let entries = results.toArray() as? [[String: AnyObject]] {
             var queryResults: [BankQueryResult] = [];
+            var decimalSeparator = ".";
+            var groupSeparator = ",";
+            var groupingSize = 3;
+            var maximumFractionalDigit = 2;
+            if let numberSettings = results.context.objectForKeyedSubscript("numberInfo").toDictionary() as? [String: AnyObject] {
+                if let value = numberSettings["decimalSeparator"] as? String {
+                    decimalSeparator = value;
+                }
+                if let value = numberSettings["groupSeparator"] as? String {
+                    groupSeparator = value;
+                }
+                if let value = numberSettings["groupingSize"] as? NSNumber {
+                    groupingSize = value.integerValue;
+                }
+                if let value = numberSettings["maximumFractionalDigit"] as? NSNumber {
+                    maximumFractionalDigit = value.integerValue;
+                }
+            }
 
             for entry in entries {
                 var queryResult = BankQueryResult();
 
                 if let type = entry["isCreditCard"] as? String {
-                    queryResult.type = (type == "yes") ? .CreditCard : .BankStatement;
+                    queryResult.type = (type == "yes" || type == "true") ? .CreditCard : .BankStatement;
                 }
 
                 if let lastSettleDate = entry["lastSettleDate"] as? NSDate {
                     queryResult.lastSettleDate = lastSettleDate;
                 }
 
-                if let account = entry["account"] as? String, let bankCode = entry["bankCode"] as? String {
-                    queryResult.account = BankAccount.findAccountWithNumber(account, bankCode: bankCode);
+                if let account = entry["account"] as? String {
+                    queryResult.account = BankAccount.findAccountWithNumber(account, bankCode: query!.bankCode);
                     if queryResult.type == .CreditCard {
                         queryResult.ccNumber = account;
                     }
@@ -94,15 +124,31 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    // Note: using the current locale to convert the values limits us to what the user
-                    //       has set in his/her system. The plugins probably know how a floating point
-                    //       number is set for the website they work with, but we will lose precision
-                    //       if we let JS convert the string to a number.
                     if let value = jsonStatement["value"] as? String  where count(value) > 0 {
-                        // For some unknown reasons the Swift doesn't allow to assign a value to the .value property.
+                        var formatter = NSNumberFormatter();
+                        formatter.generatesDecimalNumbers = true;
+                        if count(decimalSeparator) > 0 {
+                            formatter.usesGroupingSeparator = true;
+                            formatter.groupingSeparator = groupSeparator;
+                        }
+                        formatter.decimalSeparator = decimalSeparator;
+                        formatter.groupingSize = groupingSize;
+                        formatter.maximumFractionDigits = maximumFractionalDigit;
+
+                        var object: AnyObject?;
+                        var range: NSRange = NSMakeRange(0, count(value));
+                        var error: NSError? = nil;
+                        formatter.getObjectValue(&object, forString: value, range: &range, error: &error);
+
+                        // Because there is a setValue function in NSObject we cannot write to the .value
+                        // member in BankStatement. Using a custom setter would make this into a function
+                        // call instead, but that crashes atm.
                         // Using dictionary access instead for the time being until this is resolved.
-                        let number = NSDecimalNumber(string: value, locale: NSLocale.currentLocale());
-                        statement.setValue(number, forKey: "value");
+                        if let number = object as? NSDecimalNumber where error == nil {
+                            statement.setValue(number, forKey: "value");
+                        } else {
+                            statement.setValue(NSDecimalNumber(int: 0), forKey: "value");
+                        }
                     }
 
                     if let value = jsonStatement["originalValue"] as? String where count(value) > 0 {
@@ -146,13 +192,15 @@ class PluginContext : NSObject {
         }
 
         webClient.frameLoadDelegate = self;
+        webClient.UIDelegate = self;
+        webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
         webClient.hostWindow = hostWindow;
         if hostWindow != nil {
             hostWindow!.contentView = webClient;
         }
     }
 
-    init?(script: String, logger: JSLogger, hostWindow: NSWindow) {
+    init?(script: String, logger: JSLogger, hostWindow: NSWindow?) {
         jsLogger = logger;
         webClient = WebClient();
 
@@ -167,8 +215,12 @@ class PluginContext : NSObject {
         }
 
         webClient.frameLoadDelegate = self;
+        webClient.UIDelegate = self;
+        webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
         webClient.hostWindow = hostWindow;
-        hostWindow.contentView = webClient;
+        if hostWindow != nil {
+            hostWindow!.contentView = webClient;
+        }
     }
 
     // MARK: - Setup
@@ -243,8 +295,8 @@ class PluginContext : NSObject {
     }
 
     // Calls the getStatements() plugin function and translates results from JSON to a BankQueryResult list.
-    func getStatements(userId: String, bankCode: String, password: String, fromDate: NSDate, toDate: NSDate,
-        accounts: [String], completion: ([BankQueryResult]) -> Void) -> Void {
+    func getStatements(userId: String, query: PluginRegistry.UserQueryEntry, fromDate: NSDate, toDate: NSDate,
+        completion: ([BankQueryResult]) -> Void) -> Void {
             let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
             let pluginId = workContext.objectForKeyedSubscript("name").toString();
             if scriptFunction.isUndefined() {
@@ -253,7 +305,9 @@ class PluginContext : NSObject {
             }
 
             webClient.completion = completion;
-            if !(scriptFunction.callWithArguments([userId, bankCode, password, fromDate, toDate, accounts]) != nil) {
+            webClient.query = query;
+            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.password, fromDate,
+                toDate, query.accountNumbers]) != nil) {
                 jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId);
             }
     }
@@ -267,7 +321,19 @@ class PluginContext : NSObject {
         return webClient.mainFrame.document.body.outerHTML;
     }
 
-    
+    func canHandle(account: String, bankCode: String) -> Bool {
+        let function = workContext.objectForKeyedSubscript("canHandle");
+        if function.isUndefined() {
+            return false;
+        }
+
+        let result = function.callWithArguments([account, bankCode]);
+        if result.isBoolean() {
+            return result.toBool();
+        }
+        return false;
+    }
+
     // MARK: - webView delegate methods.
 
     internal override func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
@@ -313,4 +379,11 @@ class PluginContext : NSObject {
     internal override func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
         jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
+
+    internal override func webView(sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame: WebFrame!) {
+        let alert = NSAlert();
+        alert.messageText = message;
+        alert.runModal();
+    }
+
 }
