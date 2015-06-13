@@ -16,6 +16,7 @@
             <connections>
                 <outlet property="accountsTextField" destination="9jb-9j-hy4" id="qTg-wV-el2"/>
                 <outlet property="autoLoadCheckbox" destination="azm-E5-W51" id="mgo-JY-8cC"/>
+                <outlet property="bankCodeTextField" destination="H9D-Ca-noG" id="6bx-sD-zWx"/>
                 <outlet property="detailsTextField" destination="cia-nf-ZEG" id="MGn-Th-T2M"/>
                 <outlet property="fromDatePicker" destination="lEo-6I-fVi" id="28J-OA-TQJ"/>
                 <outlet property="logLevelSelector" destination="j9t-ae-2G7" id="an4-cw-dOY"/>
@@ -157,7 +158,7 @@
         <window title="Pecunia Plugin Tester" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="pptMain" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <rect key="contentRect" x="309" y="236" width="900" height="641"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <view key="contentView" identifier="pptMain" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-1" width="900" height="641"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -347,12 +348,12 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wPa-39-92D">
-                        <rect key="frame" x="20" y="443" width="103" height="20"/>
+                        <rect key="frame" x="20" y="443" width="121" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="99" id="FYl-Ed-b5c"/>
+                            <constraint firstAttribute="width" constant="117" id="FYl-Ed-b5c"/>
                             <constraint firstAttribute="height" constant="20" id="rPS-gB-T14"/>
                         </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Script Functions" id="ujN-AW-3Lz">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Script Functionality" id="ujN-AW-3Lz">
                             <font key="font" size="13" name="HelveticaNeue-Medium"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -518,6 +519,29 @@
                             <action selector="autoLoadChanged:" target="Voe-Tx-rLC" id="0RD-ou-qoV"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="H9D-Ca-noG">
+                        <rect key="frame" x="478" y="413" width="100" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="DcB-5Q-zfT"/>
+                            <constraint firstAttribute="width" constant="100" id="t6D-ny-nD7"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="tgO-3R-TFb">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tU2-oJ-SzS">
+                        <rect key="frame" x="400" y="415" width="70" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="66" id="VPo-Br-fXW"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="bank code:" id="Hmi-dU-NdI">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="wPa-39-92D" firstAttribute="top" secondItem="v81-iT-ZDh" secondAttribute="bottom" constant="40" id="00C-UH-7X8"/>
@@ -537,6 +561,7 @@
                     <constraint firstItem="lEo-6I-fVi" firstAttribute="top" secondItem="u0U-3D-adF" secondAttribute="bottom" constant="8" id="BOk-q9-S2r"/>
                     <constraint firstItem="azm-E5-W51" firstAttribute="leading" secondItem="PBH-f5-V8p" secondAttribute="trailing" constant="8" id="Bh4-8I-2pb"/>
                     <constraint firstItem="8eY-p1-lau" firstAttribute="baseline" secondItem="8ZJ-CW-gKc" secondAttribute="baseline" id="Ep9-J5-2mq"/>
+                    <constraint firstItem="H9D-Ca-noG" firstAttribute="leading" secondItem="tU2-oJ-SzS" secondAttribute="trailing" constant="10" id="Fvf-jr-YsN"/>
                     <constraint firstItem="JSI-oQ-txV" firstAttribute="baseline" secondItem="n7q-Cp-x3R" secondAttribute="baseline" id="G6I-db-wFM"/>
                     <constraint firstAttribute="trailing" secondItem="iBW-YY-rkw" secondAttribute="trailing" constant="20" id="H5J-no-JSr"/>
                     <constraint firstItem="lEo-6I-fVi" firstAttribute="leading" secondItem="9jb-9j-hy4" secondAttribute="leading" id="HFj-qg-oEt"/>
@@ -567,9 +592,12 @@
                     <constraint firstAttribute="bottom" secondItem="4MH-uf-qaK" secondAttribute="bottom" constant="20" id="cCq-57-ygO"/>
                     <constraint firstItem="cia-nf-ZEG" firstAttribute="top" secondItem="PBH-f5-V8p" secondAttribute="bottom" constant="9" id="caa-5T-lS6"/>
                     <constraint firstAttribute="trailing" secondItem="cia-nf-ZEG" secondAttribute="trailing" constant="280" id="cr2-tX-hd9"/>
+                    <constraint firstItem="tU2-oJ-SzS" firstAttribute="baseline" secondItem="Nyo-g1-iyd" secondAttribute="baseline" id="drb-MK-aci"/>
                     <constraint firstItem="vfe-PK-M8S" firstAttribute="trailing" secondItem="9jb-9j-hy4" secondAttribute="trailing" id="due-85-udi"/>
+                    <constraint firstItem="tU2-oJ-SzS" firstAttribute="leading" secondItem="Nyo-g1-iyd" secondAttribute="trailing" constant="8" id="eCV-xl-Tkn"/>
                     <constraint firstItem="8eY-p1-lau" firstAttribute="baseline" secondItem="u0U-3D-adF" secondAttribute="baseline" id="eRI-s4-mTS"/>
                     <constraint firstItem="8Iq-Ex-JxI" firstAttribute="top" secondItem="9jb-9j-hy4" secondAttribute="bottom" constant="8" id="ew7-mc-SMt"/>
+                    <constraint firstItem="tU2-oJ-SzS" firstAttribute="baseline" secondItem="H9D-Ca-noG" secondAttribute="baseline" id="f5u-hf-z52"/>
                     <constraint firstItem="vfe-PK-M8S" firstAttribute="leading" secondItem="yPH-V7-kmz" secondAttribute="trailing" constant="8" id="gNj-bb-eD9"/>
                     <constraint firstItem="wPa-39-92D" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="22" id="hbF-1Z-7Aw"/>
                     <constraint firstAttribute="bottom" secondItem="iBW-YY-rkw" secondAttribute="bottom" constant="20" id="iES-og-EVA"/>
@@ -585,7 +613,7 @@
                     <constraint firstItem="8eY-p1-lau" firstAttribute="baseline" secondItem="Nyo-g1-iyd" secondAttribute="baseline" id="zfn-EX-J5D"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-100" y="-311.5"/>
+            <point key="canvasLocation" x="-229" y="-317.5"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="c9a-Sm-RuA"/>
     </objects>

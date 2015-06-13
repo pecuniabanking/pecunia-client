@@ -104,20 +104,6 @@ import WebKit;
         return "";
     }
 
-    internal class UserQueryEntry {
-        var bankCode: String;
-        var password: String;
-        var accountNumbers: [String];
-        var authRequest: AuthRequest;
-
-        init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
-            bankCode = bank;
-            password = pw;
-            accountNumbers = numbers;
-            authRequest = auth;
-        }
-    };
-
     /**
      * Takes a list of accounts (which all must be handled by the same plugin) and runs the associated
      * plugin for them. The account list is split by user ids.

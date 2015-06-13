@@ -20,6 +20,25 @@
 import Cocoa;
 import WebKit;
 
+@objc public class AuthRequest {
+
+  var passwordTextField: NSTextField!;
+
+  public var errorOccured = false;
+
+  public static func new() -> AuthRequest {
+    return AuthRequest();
+  }
+
+  public func finishPasswordEntry() -> Void {
+  }
+
+  public func getPin(bankCode: String, userId: String) -> String {
+    return passwordTextField.stringValue;
+  }
+
+}
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLogger, NSFilePresenter {
 
@@ -31,6 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   @IBOutlet weak var detailsTextField: NSTextField!;
   @IBOutlet weak var userNameTextField: NSTextField!;
   @IBOutlet weak var passwordTextField: NSTextField!;
+  @IBOutlet weak var bankCodeTextField: NSTextField!
   @IBOutlet weak var fromDatePicker: NSDatePicker!
   @IBOutlet weak var toDatePicker: NSDatePicker!
   @IBOutlet weak var accountsTextField: NSTextField!
@@ -38,6 +58,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
   private var context: PluginContext? = nil;
   private var webBrowser: NSWindow? = nil;
+  private let authRequest = AuthRequest();
 
   private var redirecting = false;
   private var lastChangeDate: NSDate? = nil;
@@ -45,6 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   func applicationDidFinishLaunching(aNotification: NSNotification) {
 
     toDatePicker.dateValue = NSDate();
+    authRequest.passwordTextField = passwordTextField;
 
     let defaults = NSUserDefaults.standardUserDefaults();
 
@@ -67,6 +89,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     if let password = defaults.stringForKey("pptLoginPassword") {
       passwordTextField.stringValue = password;
+    }
+
+    if let bankCode = defaults.stringForKey("pptBankCode") {
+      bankCodeTextField.stringValue = bankCode;
     }
 
     if let fromDate: AnyObject = defaults.objectForKey("pptFromDate") where fromDate.isKindOfClass(NSDate) {
@@ -285,6 +311,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let user = userNameTextField.stringValue;
     let password = passwordTextField.stringValue;
+    let bankCode = bankCodeTextField.stringValue;
     let fromDate = fromDatePicker.dateValue;
     let toDate = toDatePicker.dateValue;
     let accountString = accountsTextField.stringValue;
@@ -292,6 +319,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     let defaults = NSUserDefaults.standardUserDefaults();
     defaults.setObject(user, forKey: "pptLoginUser");
     defaults.setObject(password, forKey: "pptLoginPassword");
+    defaults.setObject(bankCode, forKey: "pptBankCode");
     defaults.setObject(fromDate, forKey: "pptFromDate");
     defaults.setObject(toDate, forKey: "pptToDate");
     defaults.setObject(accountString, forKey: "pptAccounts");
@@ -306,8 +334,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       accounts[i] = String(filter(accounts[i]) { $0 != " " });
     }
 
-    context!.getStatements(user, bankCode: "12003000", password: password, fromDate: fromDate,
-      toDate: toDate, accounts: accounts) { (values: [BankQueryResult]) -> Void in
+    let query = UserQueryEntry(bankCode: bankCode, password: password, accountNumbers: accounts, auth: authRequest);
+    context!.getStatements(user, query: query, fromDate: fromDate, toDate: toDate) { (values: [BankQueryResult]) -> Void in
         let text = values.description;
         self.logIntern("");
         self.logIntern("Results (\(values.count)):");

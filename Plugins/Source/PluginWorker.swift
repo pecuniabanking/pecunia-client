@@ -31,6 +31,20 @@ import AppKit
     func logVerbose(message: String) -> Void;
 }
 
+internal class UserQueryEntry {
+    var bankCode: String;
+    var password: String;
+    var accountNumbers: [String];
+    var authRequest: AuthRequest;
+
+    init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
+        bankCode = bank;
+        password = pw;
+        accountNumbers = numbers;
+        authRequest = auth;
+    }
+};
+
 class WebClient: WebView, WebViewJSExport {
     private var redirecting: Bool = false;
 
@@ -46,7 +60,7 @@ class WebClient: WebView, WebViewJSExport {
         }
     }
 
-    var query: PluginRegistry.UserQueryEntry?;
+    var query: UserQueryEntry?;
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { ([BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
@@ -295,7 +309,7 @@ class PluginContext : NSObject {
     }
 
     // Calls the getStatements() plugin function and translates results from JSON to a BankQueryResult list.
-    func getStatements(userId: String, query: PluginRegistry.UserQueryEntry, fromDate: NSDate, toDate: NSDate,
+    func getStatements(userId: String, query: UserQueryEntry, fromDate: NSDate, toDate: NSDate,
         completion: ([BankQueryResult]) -> Void) -> Void {
             let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
             let pluginId = workContext.objectForKeyedSubscript("name").toString();
