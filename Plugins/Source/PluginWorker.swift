@@ -100,8 +100,8 @@ class WebClient: WebView, WebViewJSExport {
             for entry in entries {
                 var queryResult = BankQueryResult();
 
-                if let type = entry["isCreditCard"] as? String {
-                    queryResult.type = (type == "yes" || type == "true") ? .CreditCard : .BankStatement;
+                if  let type = entry["isCreditCard"] as? Bool {
+                    queryResult.type = type ? .CreditCard : .BankStatement;
                 }
 
                 if let lastSettleDate = entry["lastSettleDate"] as? NSDate {
@@ -122,8 +122,8 @@ class WebClient: WebView, WebViewJSExport {
                 let statements = entry["statements"] as! [[String: AnyObject]];
                 for jsonStatement in statements {
                     var statement: BankStatement = BankStatement.createTemporary();
-                    if let final = jsonStatement["final"] as? String {
-                        statement.isPreliminary = final != "true";
+                    if let final = jsonStatement["final"] as? Bool {
+                        statement.isPreliminary = final;
                     }
 
                     if let date = jsonStatement["valutaDate"] as? NSDate {

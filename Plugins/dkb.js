@@ -39,7 +39,7 @@ var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index
 var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
 var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.creditcard.CreditcardTransactionSearch&$event=csvExport";
 
-// Option function to support auto account type determination.
+// Optionial function to support auto account type determination.
 function canHandle(account, bankCode) {
     if (bankCode != "12030000")
         return false;
@@ -339,7 +339,7 @@ function convertCsvToResult() {
 
         // This field seems not what we understand from it. Even though it might say the value
         // is not yet processed it is actually already contained in the balance.
-        statement["final"] = "true"; //unquote(currentLine[0]) == "Ja" ? "true" : "false";
+        statement["final"] = true; //unquote(currentLine[0]) == "Ja" ? true : false;
 
         var parts = unquote(currentLine[1]).split('.');
         statement["valutaDate"] = new Date(parts[2], parts[1] - 1, parts[0]);
@@ -355,7 +355,7 @@ function convertCsvToResult() {
 	}
 	
 	var result = {
-        "isCreditCard": "true",
+        "isCreditCard": true,
         "account": numbers[currentCreditCardIndex],
         "balance": balance,
         "statements": statements,

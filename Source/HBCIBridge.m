@@ -72,16 +72,17 @@
     return outPipe;
 }
 
+// Returns NO if the result was an error.
 - (BOOL)setResult: (id)res {
     if ([res isKindOfClass: [HBCIError class]]) {
         result = nil;
         error = res;
-        return YES;
+        return NO;
     } else {
         result = res;
         error = nil;
     }
-    return NO;
+    return YES;
 }
 
 - (id)result {
