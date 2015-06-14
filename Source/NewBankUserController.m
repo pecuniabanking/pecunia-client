@@ -163,27 +163,29 @@
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // create user
-            // first check if user with same userid already exists
-            if ([BankUser existsUserWithId:currentUser.userId]) {
-                NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
-                                NSLocalizedString(@"AP838", nil),
-                                NSLocalizedString(@"AP1", nil), nil, nil,
-                                currentUser.userId);
-                return;
+            if (step == 2) {
+                // first check if user with same userid already exists
+                if ([BankUser existsUserWithId:currentUser.userId]) {
+                    NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
+                                    NSLocalizedString(@"AP838", nil),
+                                    NSLocalizedString(@"AP1", nil), nil, nil,
+                                    currentUser.userId);
+                    return;
+                }
+
+                // copy from temp user to real user
+                BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+                NSEntityDescription *entity = [currentUser entity];
+                NSArray             *attributeKeys = [[entity attributesByName] allKeys];
+                NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
+                [newUser setValuesForKeysWithDictionary: attributeValues];
+                
+                currentUser = newUser;
+                [currentUserController setManagedObjectContext:context];
+                [currentUserController setContent: currentUser];
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
-            
-            // copy from temp user to real user
-            BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
-            NSEntityDescription *entity = [currentUser entity];
-            NSArray             *attributeKeys = [[entity attributesByName] allKeys];
-            NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
-            [newUser setValuesForKeysWithDictionary: attributeValues];
-            
-            currentUser = newUser;
-            [currentUserController setManagedObjectContext:context];
-            [currentUserController setContent: currentUser];
             
             // now we work with the real user
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
@@ -237,27 +239,29 @@
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // Create User
-            // first check if user with same userid already exists
-            if ([BankUser existsUserWithId:currentUser.userId]) {
-                NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
-                                NSLocalizedString(@"AP838", nil),
-                                NSLocalizedString(@"AP1", nil), nil, nil,
-                                currentUser.userId);
-                return;
+            if (step == 2) {
+                // first check if user with same userid already exists
+                if ([BankUser existsUserWithId:currentUser.userId]) {
+                    NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
+                                    NSLocalizedString(@"AP838", nil),
+                                    NSLocalizedString(@"AP1", nil), nil, nil,
+                                    currentUser.userId);
+                    return;
+                }
+
+                // copy from temp user to real user
+                BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+                NSEntityDescription *entity = [currentUser entity];
+                NSArray             *attributeKeys = [[entity attributesByName] allKeys];
+                NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
+                [newUser setValuesForKeysWithDictionary: attributeValues];
+                
+                currentUser = newUser;
+                [currentUserController setManagedObjectContext:context];
+                [currentUserController setContent: currentUser];
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
-            
-            // copy from temp user to real user
-            BankUser *newUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
-            NSEntityDescription *entity = [currentUser entity];
-            NSArray             *attributeKeys = [[entity attributesByName] allKeys];
-            NSDictionary        *attributeValues = [currentUser dictionaryWithValuesForKeys: attributeKeys];
-            [newUser setValuesForKeysWithDictionary: attributeValues];
-            
-            currentUser = newUser;
-            [currentUserController setManagedObjectContext:context];
-            [currentUserController setContent: currentUser];
             
             // now we work with the real user
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
