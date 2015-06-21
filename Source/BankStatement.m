@@ -515,6 +515,9 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
     NSSet *assignments = [self valueForKey: @"assignments"];
     for (StatCatAssignment *assignment in assignments) {
+        if (!assignment.value) {
+            assignment.value = [NSDecimalNumber zero];
+        }
         if (![assignment.category isBankAccount] && assignment.category != ncat) {
             value = [value decimalNumberBySubtracting: assignment.value];
         }

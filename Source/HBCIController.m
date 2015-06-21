@@ -235,7 +235,7 @@ static HBCIController *controller = nil;
 {
     NSDictionary *bicInfo = [IBANtools bicForBankCode: bankCode countryCode: @"de"];
     IBANToolsResult result = [bicInfo[@"result"] intValue];
-    if (result == IBANToolsResultNoBIC) {
+    if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
         return NSLocalizedString(@"AP13", nil);
     }
     InstituteInfo *info = [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];

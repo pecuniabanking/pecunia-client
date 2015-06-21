@@ -1186,15 +1186,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo {
     [sheet orderOut: nil];
+    NSDictionary *info = (__bridge_transfer NSDictionary *)(contextInfo);
     if (returnCode == NSRunStoppedResponse) {
-        if (contextInfo == nil) {
+        if (info == nil) {
             NSUInteger counter = 0;
             for (Transfer *transfer in draggedTransfers) {
                 NSString *actualName = (counter++ == 0) ? templateName.stringValue : [NSString stringWithFormat: @"%@ %li", templateName.stringValue, counter];
                 [transactionController saveTransfer: transfer asTemplateWithName: actualName];
             }
         } else {
-            NSDictionary *info = (__bridge NSDictionary *)(contextInfo);
             [transactionController saveStatement: info[@"statement"]
                                         withType: [info[@"type"] intValue]
                               asTemplateWithName: templateName.stringValue];
@@ -1374,7 +1374,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         modalForWindow: [mainView window]
          modalDelegate: self
         didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-           contextInfo: (__bridge void *)(info)];
+           contextInfo: (__bridge_retained void *)(info)];
 }
 
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template {

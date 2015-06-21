@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ChipTanWindowController">
@@ -22,24 +22,16 @@
         <window title="Bitte TAN eingeben" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" frameAutosaveName="ChipTanWindow" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="901" y="680" width="585" height="547"/>
+            <rect key="contentRect" x="901" y="680" width="580" height="500"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <value key="minSize" type="size" width="480" height="370"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="585" height="547"/>
+                <rect key="frame" x="0.0" y="0.0" width="580" height="500"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <slider verticalHuggingPriority="750" id="7">
-                        <rect key="frame" x="71" y="181" width="125" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="30" maxValue="60" doubleValue="45" tickMarkPosition="above" sliderType="linear" id="8"/>
-                        <connections>
-                            <action selector="sizeSliderChanged:" target="-2" id="51"/>
-                            <binding destination="54" name="value" keyPath="values.chipTANFlickerSize" id="58"/>
-                        </connections>
-                    </slider>
                     <textField verticalHuggingPriority="750" id="9">
-                        <rect key="frame" x="17" y="185" width="54" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="15" y="472" width="50" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Größe:" id="10">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -47,8 +39,8 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="11">
-                        <rect key="frame" x="287" y="184" width="86" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="300" y="472" width="65" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Frequenz:" id="12">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -56,8 +48,8 @@
                         </textFieldCell>
                     </textField>
                     <slider verticalHuggingPriority="750" id="13">
-                        <rect key="frame" x="376" y="181" width="189" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="369" y="469" width="189" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="40" doubleValue="20" tickMarkPosition="above" sliderType="linear" id="14"/>
                         <connections>
                             <action selector="frequencySliderChanged:" target="-2" id="34"/>
@@ -65,8 +57,8 @@
                         </connections>
                     </slider>
                     <customView id="15" customClass="FlickerView">
-                        <rect key="frame" x="19" y="86" width="550" height="82"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="17" y="374" width="545" height="82"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     </customView>
                     <textField verticalHuggingPriority="750" id="16">
                         <rect key="frame" x="17" y="51" width="38" height="17"/>
@@ -95,7 +87,7 @@
                         </connections>
                     </textField>
                     <button verticalHuggingPriority="750" id="20">
-                        <rect key="frame" x="463" y="12" width="108" height="32"/>
+                        <rect key="frame" x="458" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="21">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -109,7 +101,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" id="22">
-                        <rect key="frame" x="343" y="12" width="108" height="32"/>
+                        <rect key="frame" x="338" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Abbrechen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="23">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -120,21 +112,21 @@ DQ
                         </connections>
                     </button>
                     <scrollView focusRingType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="44">
-                        <rect key="frame" x="20" y="222" width="550" height="280"/>
+                        <rect key="frame" x="17" y="90" width="545" height="233"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="dwH-wG-hwM">
-                            <rect key="frame" x="1" y="1" width="548" height="278"/>
+                            <rect key="frame" x="1" y="1" width="528" height="231"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="47">
-                                    <rect key="frame" x="0.0" y="0.0" width="548" height="278"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="528" height="231"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="548" height="278"/>
-                                    <size key="maxSize" width="550" height="10000000"/>
+                                    <size key="minSize" width="527" height="231"/>
+                                    <size key="maxSize" width="554" height="10000000"/>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="548" height="278"/>
-                                    <size key="maxSize" width="550" height="10000000"/>
+                                    <size key="minSize" width="527" height="231"/>
+                                    <size key="maxSize" width="554" height="10000000"/>
                                 </textView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -149,7 +141,7 @@ DQ
                         </scroller>
                     </scrollView>
                     <textField verticalHuggingPriority="750" id="49">
-                        <rect key="frame" x="17" y="510" width="124" height="17"/>
+                        <rect key="frame" x="15" y="331" width="124" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hinweise der Bank:" id="50">
                             <font key="font" metaFont="system"/>
@@ -158,8 +150,8 @@ DQ
                         </textFieldCell>
                     </textField>
                     <button id="63">
-                        <rect key="frame" x="188" y="46" width="114" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <rect key="frame" x="188" y="49" width="114" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="check" title="TAN einblenden" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="64">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -189,12 +181,22 @@ DQ
                             </binding>
                         </connections>
                     </textField>
+                    <slider verticalHuggingPriority="750" id="7">
+                        <rect key="frame" x="66" y="469" width="125" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="30" maxValue="60" doubleValue="45" tickMarkPosition="above" sliderType="linear" id="8"/>
+                        <connections>
+                            <action selector="sizeSliderChanged:" target="-2" id="51"/>
+                            <binding destination="54" name="value" keyPath="values.chipTANFlickerSize" id="58"/>
+                        </connections>
+                    </slider>
                 </subviews>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="31"/>
                 <outlet property="initialFirstResponder" destination="18" id="62"/>
             </connections>
+            <point key="canvasLocation" x="349" y="224"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="54"/>
     </objects>
