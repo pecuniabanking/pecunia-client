@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED4EA1AF4DD0400978925 /* AppDelegate.swift */; };
-		270ED4ED1AF4DD0400978925 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EC1AF4DD0400978925 /* Images.xcassets */; };
 		270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EE1AF4DD0400978925 /* MainMenu.xib */; };
 		276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */; };
+		277C0FE91B36C64500B9C738 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = 277C0FE81B36C64500B9C738 /* Pecunia.icns */; };
 		27812CCF1AF5044100458619 /* debug-helper.js in Resources */ = {isa = PBXBuildFile; fileRef = 27812CCE1AF5044100458619 /* debug-helper.js */; };
 		278FFD8D1AFE43E60044BD5F /* PluginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278FFD8C1AFE43E60044BD5F /* PluginWorker.swift */; };
 		27B3D2FE1B10808D0011BBB3 /* WebKitExports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */; };
@@ -27,11 +27,11 @@
 		270ED4E51AF4DD0400978925 /* PecuniaPluginTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PecuniaPluginTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		270ED4E91AF4DD0400978925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		270ED4EA1AF4DD0400978925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		270ED4EC1AF4DD0400978925 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PecuniaPluginTester/Images.xcassets; sourceTree = "<group>"; };
 		270ED4EF1AF4DD0400978925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+PecuniaAdditions.h"; path = "../../Source/NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+PecuniaAdditions.m"; path = "../../Source/NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PecuniaPlugingTester-Bridging-Header.h"; path = "../PecuniaPlugingTester-Bridging-Header.h"; sourceTree = "<group>"; };
+		277C0FE81B36C64500B9C738 /* Pecunia.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Pecunia.icns; path = ../../Resources/Images/Pecunia.icns; sourceTree = "<group>"; };
 		27812CCE1AF5044100458619 /* debug-helper.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "debug-helper.js"; sourceTree = "<group>"; };
 		278FFD8C1AFE43E60044BD5F /* PluginWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; name = PluginWorker.swift; path = ../Source/PluginWorker.swift; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27B3D2FD1B10808D0011BBB3 /* WebKitExports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebKitExports.swift; path = ../Source/WebKitExports.swift; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				27B3D3041B120E100011BBB3 /* safari.png */,
-				270ED4EC1AF4DD0400978925 /* Images.xcassets */,
+				277C0FE81B36C64500B9C738 /* Pecunia.icns */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -177,9 +177,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				270ED4ED1AF4DD0400978925 /* Images.xcassets in Resources */,
 				27812CCF1AF5044100458619 /* debug-helper.js in Resources */,
 				270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */,
+				277C0FE91B36C64500B9C738 /* Pecunia.icns in Resources */,
 				27B3D3051B120E100011BBB3 /* safari.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,7 +302,6 @@
 		270ED5001AF4DD0400978925 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
@@ -314,7 +313,6 @@
 		270ED5011AF4DD0400978925 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;

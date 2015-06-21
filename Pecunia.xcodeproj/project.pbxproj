@@ -491,6 +491,8 @@
 		2778C24518140027003BF49D /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778C24118140027003BF49D /* gear@2x.png */; };
 		2778C24918140984003BF49D /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2778C24818140984003BF49D /* ClickableImageView.m */; };
 		2778C24A18140984003BF49D /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2778C24818140984003BF49D /* ClickableImageView.m */; };
+		277C0FEB1B36C81000B9C738 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = 277C0FEA1B36C81000B9C738 /* Pecunia.icns */; };
+		277C0FEC1B36C81000B9C738 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = 277C0FEA1B36C81000B9C738 /* Pecunia.icns */; };
 		277CBA2C19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; };
 		277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */; };
 		277D1A701799B26900C0E4DF /* closed-sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6E1799B26900C0E4DF /* closed-sign.png */; };
@@ -1320,6 +1322,7 @@
 		2778C24118140027003BF49D /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 		2778C24718140984003BF49D /* ClickableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClickableImageView.h; sourceTree = "<group>"; };
 		2778C24818140984003BF49D /* ClickableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClickableImageView.m; sourceTree = "<group>"; };
+		277C0FEA1B36C81000B9C738 /* Pecunia.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Pecunia.icns; sourceTree = "<group>"; };
 		277CBA2B19F2848600B26789 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Frameworks/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
@@ -2782,6 +2785,7 @@
 				275AC7EF186B62BD002E6BED /* overview-active.png */,
 				2732F6A9186B202300809CF2 /* overview@2x.png */,
 				275AC7F0186B62BD002E6BED /* overview-active@2x.png */,
+				277C0FEA1B36C81000B9C738 /* Pecunia.icns */,
 				27D902FF178857AF00B7452B /* pecunia-vertical.png */,
 				27D90300178857AF00B7452B /* pecunia-vertical@2x.png */,
 				B1835C1615D2A1F4003B93ED /* PinTan.png */,
@@ -3257,6 +3261,7 @@
 				270A3DFB18146E820079B37F /* calendar.png in Resources */,
 				2777891D173CE22700430EBC /* InfoPlist.strings in Resources */,
 				2778C24318140027003BF49D /* gear.png in Resources */,
+				277C0FEC1B36C81000B9C738 /* Pecunia.icns in Resources */,
 				27778921173CE22700430EBC /* plus-8.png in Resources */,
 				27778922173CE22700430EBC /* minus-8.png in Resources */,
 				2732F6B1186B21E900809CF2 /* graph3@2x.png in Resources */,
@@ -3526,6 +3531,7 @@
 				27E3E77E194C7D4300C1DF97 /* de.lproj in Resources */,
 				27E845C219E17D2F0026464E /* AccountMaintenance.xib in Resources */,
 				B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */,
+				277C0FEB1B36C81000B9C738 /* Pecunia.icns in Resources */,
 				272F6E701955D72300096734 /* sequence-type-once-off@2x.png in Resources */,
 				B1014BEC1018E87B00ABA1FF /* save.ico in Resources */,
 				272F6E5F1955C5BF00096734 /* sequence-type-repeat.png in Resources */,
