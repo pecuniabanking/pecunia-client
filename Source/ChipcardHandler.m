@@ -82,7 +82,8 @@ ChipcardHandler *_handler = nil;
         return nil;
     }
     
-    /* reset should not be done anymore 
+    // reset should not be done anymore
+    /*
     if(!BCS_resetCard()) {
         LogError(@"Chipcard could not be reset");
         return nil;

@@ -929,6 +929,9 @@
 		B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
 		B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */; };
 		B19330190EE1DA37003FEC97 /* Vespasian.icns in Resources */ = {isa = PBXBuildFile; fileRef = B19330180EE1DA37003FEC97 /* Vespasian.icns */; };
+		B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */; };
+		B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */; };
+		B19669F91B39EFB400D690B0 /* HBCISmartcardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */; };
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
@@ -939,6 +942,11 @@
 		B19CA99319410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA9961950222E005B1125 /* AccountStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA9951950222E005B1125 /* AccountStatement.m */; };
 		B19CA9971950222E005B1125 /* AccountStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA9951950222E005B1125 /* AccountStatement.m */; };
+		B19EBD771B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */; };
+		B19EBD781B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */; };
+		B19EBD791B3B4172001DEC8E /* HBCISmartcardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */; };
+		B19EBD7A1B3B4176001DEC8E /* HBCISmartcardDDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */; };
+		B19EBD7B1B3B4A15001DEC8E /* HBCISmartcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A1377311B6FD9400622D6C /* AccountDefController.m */; };
 		B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
@@ -1013,6 +1021,10 @@
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */; };
 		B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
+		B1E80EC91B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
+		B1E80ECA1B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
+		B1E80ECC1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */; };
+		B1E80ECD1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
 		B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
@@ -1728,6 +1740,9 @@
 		B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryRepWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryRepWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19330180EE1DA37003FEC97 /* Vespasian.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Vespasian.icns; sourceTree = "<group>"; };
+		B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcard.swift; sourceTree = "<group>"; };
+		B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcardDDV.swift; sourceTree = "<group>"; };
+		B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcardData.swift; sourceTree = "<group>"; };
 		B196E03B0FABA2CC00509748 /* WorkerThread.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = WorkerThread.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E03C0FABA2CC00509748 /* WorkerThread.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerThread.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E0920FACE15F00509748 /* BSSelectWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BSSelectWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1745,6 +1760,7 @@
 		B19CA99119410C04005B1125 /* SepaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SepaData.m; sourceTree = "<group>"; };
 		B19CA9941950222E005B1125 /* AccountStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountStatement.h; path = Source/AccountStatement.h; sourceTree = SOURCE_ROOT; };
 		B19CA9951950222E005B1125 /* AccountStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountStatement.m; path = Source/AccountStatement.m; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
+		B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardManager.swift; sourceTree = "<group>"; };
 		B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaError.h; sourceTree = "<group>"; tabWidth = 4; };
 		B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaError.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1A1377211B6FD9400622D6C /* AccountDefController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountDefController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1820,6 +1836,8 @@
 		B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlementController.h; sourceTree = "<group>"; };
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
 		B1E3E4BD16BC6DE500DC1638 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
+		B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardRequestController.xib; sourceTree = "<group>"; };
+		B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardRequestController.swift; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaComboBoxCell.h; sourceTree = "<group>"; };
 		B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaComboBoxCell.m; sourceTree = "<group>"; };
@@ -2624,6 +2642,8 @@
 				B14D4C7213DB608D00843BE6 /* TanMethodListController.m */,
 				B183572915CC5091003B93ED /* NotificationWindowController.h */,
 				B183572A15CC5091003B93ED /* NotificationWindowController.m */,
+				B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */,
+				B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */,
 			);
 			name = Dialogs;
 			sourceTree = "<group>";
@@ -2806,6 +2826,10 @@
 		B1A6AA221A26722E00141C39 /* Chipcards */ = {
 			isa = PBXGroup;
 			children = (
+				B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */,
+				B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */,
+				B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */,
+				B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */,
 				B1A6AA231A2672C400141C39 /* atr.h */,
 				B1A6AA241A2672C400141C39 /* atr.m */,
 				B1A6AA251A2672C400141C39 /* bcs.h */,
@@ -3372,6 +3396,7 @@
 				27D902FC1788520E00B7452B /* flow.png in Resources */,
 				27D902FE1788520E00B7452B /* flow@2x.png in Resources */,
 				27D90302178857AF00B7452B /* pecunia-vertical.png in Resources */,
+				B1E80ECA1B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */,
 				275AC7FA186B6405002E6BED /* graph3-active@2x.png in Resources */,
 				27D90304178857AF00B7452B /* pecunia-vertical@2x.png in Resources */,
 				27AA567E186C3E9100B113E7 /* assign-active.png in Resources */,
@@ -3654,6 +3679,7 @@
 				2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */,
 				27AF5A9B173FC8EC00929B0E /* move-cursor.png in Resources */,
 				27E845D019E17D2F0026464E /* BusinessTransactionsWindow.xib in Resources */,
+				B1E80EC91B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */,
 				27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */,
 				273273701747DEE6005DF560 /* blue arrow@2x.png in Resources */,
 				27AA5669186C389900B113E7 /* distribution.png in Resources */,
@@ -3747,6 +3773,7 @@
 				2777887A173CE22700430EBC /* Transfer.m in Sources */,
 				2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
+				B1E80ECD1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */,
 				2777887C173CE22700430EBC /* TransactionLimits.m in Sources */,
 				27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
 				27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
@@ -3828,6 +3855,7 @@
 				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
 				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
 				B1A6AA541A2672C400141C39 /* ddv_decrypt.m in Sources */,
+				B19EBD791B3B4172001DEC8E /* HBCISmartcardData.swift in Sources */,
 				277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */,
 				277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */,
 				277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */,
@@ -3855,6 +3883,7 @@
 				277788C2173CE22700430EBC /* TanMethodListController.m in Sources */,
 				27686E42193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
 				277788C3173CE22700430EBC /* Passport.m in Sources */,
+				B19EBD781B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */,
 				277788C4173CE22700430EBC /* HBCIController.m in Sources */,
 				277788C5173CE22700430EBC /* User.m in Sources */,
 				277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */,
@@ -3904,8 +3933,10 @@
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
+				B19EBD7A1B3B4176001DEC8E /* HBCISmartcardDDV.swift in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
 				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
+				B19EBD7B1B3B4A15001DEC8E /* HBCISmartcard.swift in Sources */,
 				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
 				B1A6AA7C1A2672C400141C39 /* verify_pin.m in Sources */,
 				2759D8A41A0133FB002AE07E /* Double.swift in Sources */,
@@ -4013,9 +4044,11 @@
 				B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */,
 				2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
+				B1E80ECC1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */,
 				B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */,
 				27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
 				27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
+				B19EBD771B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */,
 				B17074870D55104000FBF186 /* PreferenceController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
 				B1A6AA631A2672C400141C39 /* ddv_writesigid.m in Sources */,
@@ -4085,6 +4118,7 @@
 				27C49E9E19F2774B001087D3 /* MessageLog.swift in Sources */,
 				B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */,
 				B1FB660F124FC89500C54A0E /* TransferTemplateController.m in Sources */,
+				B19669F91B39EFB400D690B0 /* HBCISmartcardData.swift in Sources */,
 				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
 				B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */,
 				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
@@ -4104,7 +4138,9 @@
 				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
+				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
+				B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */,
 				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
 				27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */,
 				27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */,

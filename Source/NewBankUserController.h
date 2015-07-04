@@ -63,7 +63,6 @@
 
 
 - (IBAction)close: (id)sender;
-- (IBAction)add: (id)sender;
 - (IBAction)addEntry: (id)sender;
 - (IBAction)removeEntry: (id)sender;
 - (IBAction)updateBankParameter: (id)sender;

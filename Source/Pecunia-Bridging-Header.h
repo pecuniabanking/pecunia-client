@@ -201,3 +201,9 @@
 #import "ZipWriteStream.h"
 #import "ZipException.h"
 #import "FileInZipInfo.h"
+
+#import <PCSC/winscard.h>
+#import "reader.h"
+typedef uint32_t DWORD;
+
+

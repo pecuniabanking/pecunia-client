@@ -288,7 +288,8 @@ static CallbackHandler *callbackHandler = nil;
         [self userIDChanged: data];
     }
     if ([data.command isEqualToString:@"ctInit"]) {
-        NSString *res = [[ChipcardHandler handler] initializeChipcard:data.proposal];
+        NSString *res = [[ChipcardManager manager] initializeChipcard:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] initializeChipcard:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -296,7 +297,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctReadBankData"]) {
-        NSString *res = [[ChipcardHandler handler] readBankData:data.proposal];
+        NSString *res = [[ChipcardManager manager] readBankData:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] readBankData:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -304,7 +306,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctReadKeyData"]) {
-        NSString *res = [[ChipcardHandler handler] readKeyData:data.proposal];
+        NSString *res = [[ChipcardManager manager] readKeyData:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] readKeyData:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -312,7 +315,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctEnterPin"]) {
-        if ([[ChipcardHandler handler] enterPin:data.proposal]) {
+        if ([[ChipcardManager manager] enterPin:data.proposal]) {
+        //if ([[ChipcardHandler handler] enterPin:data.proposal]) {
             return @"<ok>";
         } else {
             return @"<error>";
@@ -324,16 +328,19 @@ static CallbackHandler *callbackHandler = nil;
         } else {
             return @"<error>";
         }
+        return @"<ok>";
     }
     if ([data.command isEqualToString:@"ctSaveSig"]) {
-        if ([[ChipcardHandler handler] saveSigId:data.proposal]) {
+        if ([[ChipcardManager manager] saveSigId:data.proposal]) {
+        //if ([[ChipcardHandler handler] saveSigId:data.proposal]) {
             return @"<ok>";
         } else {
             return @"<error>";
         }
     }
     if ([data.command isEqualToString:@"ctSign"]) {
-        NSString *res = [[ChipcardHandler handler] sign:data.proposal];
+        NSString *res = [[ChipcardManager manager] sign:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] sign:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -341,7 +348,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctEncrypt"]) {
-        NSString *res = [[ChipcardHandler handler] encrypt:data.proposal];
+        NSString *res = [[ChipcardManager manager] encrypt:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] encrypt:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -349,7 +357,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctDecrypt"]) {
-        NSString *res = [[ChipcardHandler handler] decrypt:data.proposal];
+        NSString *res = [[ChipcardManager manager] decrypt:data.proposal];
+        //NSString *res = [[ChipcardHandler handler] decrypt:data.proposal];
         if (res == nil) {
             return @"<error>";
         } else {
@@ -357,7 +366,8 @@ static CallbackHandler *callbackHandler = nil;
         }
     }
     if ([data.command isEqualToString:@"ctClose"]) {
-        [[ChipcardHandler handler] close];
+        [[ChipcardManager manager] close];
+        //[[ChipcardHandler handler] close];
     }
 
     return @"";
