@@ -48,6 +48,121 @@ var _manager:ChipcardManager!
         return false;
     }
     
+    
+    public func getReaders() ->Array<String>? {
+        return HBCISmartcardDDV.readers();
+    }
+    
+    public func connectCard(userIdName:String?) ->Bool {
+        // check if reader is still available
+        if !card.isReaderConnected() {
+            let alert = NSAlert();
+            alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+            alert.messageText = NSLocalizedString("AP366", comment: "");
+            alert.runModal();
+            return false;            
+        }
+        
+        if !card.isConnected() {
+            var result = card.connect(1);
+            if result == HBCISmartcard.ConnectResult.not_supported {
+                let alert = NSAlert();
+                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                alert.messageText = NSLocalizedString("AP365", comment: "");
+                alert.runModal();
+                return false;
+            }
+            if result == HBCISmartcard.ConnectResult.no_card {
+                // no card inserted. Open dialog to wait for it
+                let controller = ChipcardRequestController(windowNibName: "ChipcardRequestController");
+                controller._userIdName = userIdName;
+                if NSApp.runModalForWindow(controller.window!) == 1 {
+                    // cancelled
+                    return false;
+                }
+                result = controller.connectResult;
+            }
+            
+            // verify card
+            let notificationController = NotificationWindowController(message: NSLocalizedString("AP351", comment:""), title: NSLocalizedString("AP357", comment:""));
+            notificationController.showWindow(self);
+            if !card.verifyPin() {
+                notificationController.window?.close();
+                return false;
+            }
+            notificationController.window?.close();
+        }
+        return true;
+    }
+    
+    public func requestCardForUser(user:BankUser) ->Bool {
+        if card == nil {
+            // no card  object created yet
+            if let readers = HBCISmartcardDDV.readers() {
+                if readers.count == 0 {
+                    // no card readers found
+                    let alert = NSAlert();
+                    alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                    alert.messageText = NSLocalizedString("AP364", comment: "");
+                    alert.runModal();
+                    return false;
+                }
+                let idx = user.ddvReaderIdx.integerValue
+                if idx >= readers.count {
+                    return false;
+                }
+                let readerName = readers[idx];
+                card = HBCISmartcardDDV(readerName: readerName);
+            } else {
+                let alert = NSAlert();
+                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                alert.messageText = NSLocalizedString("AP364", comment: "");
+                alert.runModal();
+                return false;
+            }
+        }
+        
+        // connect card
+        if !connectCard(user.name) {
+            return false;
+        }
+        
+        // check user
+        if let bankData = card.getBankData(1) {
+            if bankData.userId == user.userId {
+                return true;
+            } else {
+                // card is connected but wrong user
+                logError("HBCIChipcard: card inserted but wrong user(%@)", bankData.userId);
+                let alert = NSAlert();
+                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                let msg = String(format: NSLocalizedString("AP362", comment: ""), bankData.userId, user.userId);
+                alert.messageText = msg;
+                alert.runModal();
+                return false;
+            }
+        } else {
+            logError("Chipcard: bank data could not be read");
+            let alert = NSAlert();
+            alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+            alert.messageText = NSLocalizedString("AP363", comment: "");
+            alert.runModal();
+            return false;
+        }
+    }
+    
+    public func requestCardForReader(readerName:String) ->Bool {
+        if card == nil {
+            card = HBCISmartcardDDV(readerName: readerName);
+        } else if card.readerName != readerName {
+            card.disconnect();
+            card = HBCISmartcardDDV(readerName: readerName);
+        }
+        
+        // connect card
+        return connectCard(nil);
+    }
+    
     public func initializeChipcard(paramString:NSString) ->NSString? {
         let params = paramString.componentsSeparatedByString("|");
         
@@ -56,35 +171,18 @@ var _manager:ChipcardManager!
             return nil;
         }
         
-        let readerNum = params[1].integerValue;
+        // card should already be initialized...
+        if card == nil {
+            return nil;
+        }
         
-        if let readers = HBCISmartcard.readers() {
-            if readers.count == 0 {
-                logError("No reader found");
-                return nil;
-            }
+        if !card.getCardID() {
+            logError("Card ID could not be read");
+            return nil;
+        }
             
-            if readerNum > readers.count-1 {
-                logError("Reader %d is not available", arguments:readerNum);
-                return nil;
-            }
-            
-            let name = readers[readerNum];
-            
-            card = HBCISmartcardDDV(readerName: name);
-            if !card.connect(120) {
-                logError("Card could not be connected");
-                return nil;
-            }
-            
-            if !card.getCardID() {
-                logError("Card ID could not be read");
-                return nil;
-            }
-            
-            if let cid = card.cardID, cnumber = card.cardNumber {
-                return NSString(format: "%@|%@", bytesToString(cid), cnumber);
-            }
+        if let cid = card.cardID, cnumber = card.cardNumber {
+            return NSString(format: "%@|%@", bytesToString(cid), cnumber);
         }
         return nil;
     }
@@ -116,7 +214,9 @@ var _manager:ChipcardManager!
     }
     
     public func enterPin(paramString:NSString) ->Bool {
-        return card.verifyPin();
+        //return card.verifyPin();
+        // card should already been verified
+        return true;
     }
     
     public func saveSigId(paramString:NSString) ->Bool {

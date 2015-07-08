@@ -15,50 +15,49 @@ import Cocoa
 
 class ChipcardRequestController : NSWindowController {
     @IBOutlet var messageField:NSTextField!
-    var readerName:NSString!
-    var _userId:String?
+    var _userIdName:String?
+    var _timer:NSTimer?
     var card:HBCISmartcardDDV!
+    var connectResult = HBCISmartcard.ConnectResult.no_card;
     
     override func awakeFromNib() {
-        if let userId = self._userId {
-            messageField.stringValue = "Bitte legen Sie die Chipkarte mit der Benutzerkennung " + userId + " ein";
+        if let name = self._userIdName {
+            messageField.stringValue = String(format: NSLocalizedString("AP350", comment: ""), name);
         } else {
-            messageField.stringValue = "Bitte legen Sie die Chipkarte ein";
+            messageField.stringValue = NSLocalizedString("AP361", comment: "");
         }
         
         let timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkCard:"), userInfo: nil, repeats: true);
         NSRunLoop.currentRunLoop().addTimer(timer, forMode: NSModalPanelRunLoopMode);
+        _timer = timer;
     }
     
     func checkCard(timer:NSTimer) {
         if card == nil {
-            card = HBCISmartcardDDV(readerName: readerName);
+            card = ChipcardManager.manager().card;
         }
-        if card.connect(1) {
-            if let userId = _userId {
-                // check if userId is same as requested
-                if let bankData = card.getBankData(0) {
-                    if bankData.userId != userId {
-                        // wrong card inserted
-                        messageField.stringValue = "Diese Chipkarte hat die Benutzerkennung " + bankData.userId + ". Bitte ";
-                        card.disconnect();
-                        // Bitte richtige Karte einführen
-                    } else {
-                        // Karte korrekt
-                        self.close();
-                        NSApp.stopModalWithCode(0);
-                    }
-                } else {
-                    // Bankdaten können nicht gelesen werden
-                }
-            }
-            // Karte erkannt
+        connectResult = card.connect(1);
+        
+        if connectResult == HBCISmartcard.ConnectResult.connected ||
+            connectResult == HBCISmartcard.ConnectResult.reconnected ||
+            connectResult != HBCISmartcard.ConnectResult.no_card {
+            // exit from dialog
+            timer.invalidate();
             self.close();
-            NSApp.stopModalWithCode(0);
+            if connectResult == HBCISmartcard.ConnectResult.connected ||
+               connectResult == HBCISmartcard.ConnectResult.reconnected {
+                NSApp.stopModalWithCode(0);
+            } else {
+                NSApp.stopModalWithCode(1);
+            }
+            return;
         }
     }
     
     @IBAction override func cancelOperation(sender: AnyObject?) {
+        if let timer = _timer {
+            timer.invalidate();
+        }
         self.close();
         NSApp.stopModalWithCode(1);
     }

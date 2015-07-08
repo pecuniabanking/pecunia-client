@@ -1053,13 +1053,6 @@ static HBCIController *controller = nil;
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
     }
-    if (user.secMethod.intValue == SecMethod_DDV) {
-        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
-                        NSLocalizedString(@"AP350", @""),
-                        NSLocalizedString(@"AP1", @"Ok"),
-                        nil, nil, user.userId
-                        );
-    }
     
     // register user
     user = [self getBankUserForId:result.userId bankCode:result.bankCode];
@@ -1240,13 +1233,6 @@ static HBCIController *controller = nil;
     if (user == nil) {
         [self asyncCommandCompletedWithResult:nil error:nil];
         return;
-    }
-    if (user.secMethod.intValue == SecMethod_DDV) {
-        NSRunAlertPanel(NSLocalizedString(@"AP357", @""),
-                        NSLocalizedString(@"AP350", @""),
-                        NSLocalizedString(@"AP1", @"Ok"),
-                        nil, nil, user.userId
-                        );
     }
     
     // register user
@@ -1962,6 +1948,13 @@ static HBCIController *controller = nil;
     if (user == nil) {
         return nil;
     }
+    
+    if (user.secMethod.intValue == SecMethod_DDV) {
+        if (![[ChipcardManager manager] requestCardForUser:user]) {
+            return nil;
+        }
+    }
+
     if ([self registerBankUser: user error: &err] == NO) {
         if (err) {
             [err alertPanel];

@@ -9,22 +9,8 @@
 import Foundation
 import PCSC
 
-let APDU_CLA_STD:UInt8 = 0x00
-let APDU_CLA_SM_PROPR:UInt8 = 0x04;
-let APDU_CLA_SM1:UInt8 = 0x08;
-
-let APDU_INS_SELECT_FILE:UInt8 = 0xA4;
-let APDU_INS_READ_RECORD:UInt8 = 0xB2;
-let APDU_INS_GET_CHALLENGE:UInt8 = 0x84;
-let APDU_INS_VERIFY:UInt8 = 0x20;
-let APDU_INS_WRITE_RECORD:UInt8 = 0xDC;
-let APDU_INS_PUT_DATA:UInt8 = 0xDA;
-let APDU_INS_AUTH_INT:UInt8 = 0x88;
-let APDU_SEL_RET_NOTHING:UInt8 = 0x0C;
-
-
 class HBCISmartcard {
-    let readerName:NSString;
+    let readerName:String;
     var version:UInt8 = 0;
     var _hCard:SCARDHANDLE?
     var _ioctl_verify:DWORD?
@@ -34,6 +20,27 @@ class HBCISmartcard {
     
     static var _hContext:SCARDCONTEXT?
     
+    // constants
+    let CM_IOCTL_GET_FEATURE_REQUEST:DWORD = 0x42000D48;
+    
+    let APDU_CLA_STD:UInt8 = 0x00
+    let APDU_CLA_SM_PROPR:UInt8 = 0x04;
+    let APDU_CLA_SM1:UInt8 = 0x08;
+    
+    let APDU_INS_SELECT_FILE:UInt8 = 0xA4;
+    let APDU_INS_READ_RECORD:UInt8 = 0xB2;
+    let APDU_INS_GET_CHALLENGE:UInt8 = 0x84;
+    let APDU_INS_VERIFY:UInt8 = 0x20;
+    let APDU_INS_WRITE_RECORD:UInt8 = 0xDC;
+    let APDU_INS_PUT_DATA:UInt8 = 0xDA;
+    let APDU_INS_AUTH_INT:UInt8 = 0x88;
+    let APDU_SEL_RET_NOTHING:UInt8 = 0x0C;
+    
+    enum ConnectResult {
+        case connected, reconnected, no_card, no_context, not_supported, error
+    }
+
+
     class func establishReaderContext() ->Bool {
         if _hContext == nil {
             var context:SCARDCONTEXT = 0;
@@ -48,9 +55,9 @@ class HBCISmartcard {
         return true;
     }
     
-    class func readers() ->Array<NSString>? {
+    class func readers() ->Array<String>? {
         var numReaders:DWORD = 0;
-        var result = Array<NSString>();
+        var result = Array<String>();
         
         if _hContext == nil && !establishReaderContext() {
             return nil;
@@ -69,7 +76,7 @@ class HBCISmartcard {
             var p = pReaders;
             while p.memory != 0 {
                 if let s = NSString(CString: p, encoding: NSISOLatin1StringEncoding) {
-                    result.append(s);
+                    result.append(s as String);
                 }
                 p = p.advancedBy(Int(strlen(p))+1);
             }
@@ -88,9 +95,18 @@ class HBCISmartcard {
         return true;
     }
     
-    init(readerName:NSString) {
+    init(readerName:String) {
         self.readerName = readerName;
         connected = false;
+    }
+    
+    func convertToUInt32(x:Int32) ->UInt32 {
+        if x >= 0 {
+            return UInt32(x);
+        } else {
+            let i = 0x100000000+Int(x);
+            return UInt32(i);
+        }
     }
     
     func checkResult(result:NSData?) ->Bool {
@@ -165,7 +181,7 @@ class HBCISmartcard {
         }
         pRecBuffer.destroy();
         pSendBuffer.destroy();
-        return true;
+        return false;
     }
     
     func retrieveCapabilities() ->Bool {
@@ -202,6 +218,7 @@ class HBCISmartcard {
 
             if _ioctl_verify == nil {
                 // log
+                logError("HBCIChipcard: IOCTL for verify could not be retrieved");
                 return false;
             }
         }
@@ -225,29 +242,51 @@ class HBCISmartcard {
             pAttr.destroy();
             
             if rv != SCARD_S_SUCCESS {
-                // log
                 return false;
             }
             if (state & DWORD(SCARD_ABSENT)) != 0 {
                 return false;
             }
+            return true;
         }
-        return true;
+        return false;
     }
     
-    func connect(tries:Int) ->Bool {
+    // check if reader ist still connected
+    func isReaderConnected() ->Bool {
+        if let readers = HBCISmartcard.readers() {
+            return contains(readers, readerName);
+        }
+        return false;
+    }
+    
+    func connect(tries:Int) ->ConnectResult {
         var prot:DWORD = 0;
         var n = 0;
+        var reconnected = false;
+        var rv:Int32 = 0;
         
         if !HBCISmartcard.establishReaderContext() {
-            return false;
+            return ConnectResult.no_context;
         }
-
+        
         if let context = HBCISmartcard._hContext {
             while n < tries {
-                var hCard:SCARDHANDLE = 0;
-                var rv = SCardConnect(context, readerName.cStringUsingEncoding(NSISOLatin1StringEncoding), DWORD(SCARD_SHARE_EXCLUSIVE), DWORD(SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1), &hCard, &prot);
-                if rv != SCARD_S_SUCCESS {
+                // once connection was successful, following accesses have to be done with
+                // a reconnect
+                if let hCard = _hCard {
+                    rv = SCardReconnect(hCard, DWORD(SCARD_SHARE_EXCLUSIVE), DWORD(SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1), DWORD(SCARD_RESET_CARD), &prot);
+                    if rv == SCARD_S_SUCCESS {
+                        reconnected = true;
+                    }
+                } else {
+                    var hCard:SCARDHANDLE = 0;
+                    rv = SCardConnect(context, readerName.cStringUsingEncoding(NSISOLatin1StringEncoding)!, DWORD(SCARD_SHARE_EXCLUSIVE), DWORD(SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1), &hCard, &prot);
+                    if rv == SCARD_S_SUCCESS {
+                        _hCard = hCard;
+                    }
+                }
+                if convertToUInt32(rv) == SCARD_E_NO_SMARTCARD {
                     if n < tries-1 {
                         // wait 500ms
                         var a = UnsafeMutablePointer<timespec>.alloc(1);
@@ -260,26 +299,34 @@ class HBCISmartcard {
                     }
                     n++;
                 } else {
-                    _hCard = hCard;
                     break;
                 }
             }
             
-            if n < tries {
+            if n < tries && rv == SCARD_S_SUCCESS {
                 if isConnected() && retrieveCapabilities() {
-                    return true;
+                    if reconnected {
+                        return ConnectResult.reconnected;
+                    } else {
+                        return ConnectResult.connected;
+                    }
+                }
+            } else {
+                if convertToUInt32(rv) == SCARD_E_NO_SMARTCARD {
+                    return ConnectResult.no_card;
                 }
             }
+            //logError("HBCISmartcard: connection error: %x", rv);
+            NSLog("HBCISmartcard: connection error: 0x%X", rv);
+            return ConnectResult.error;
         } else {
-            logError("HBCI Chipcard: could not establish conntection to reader");
+            return ConnectResult.no_context;
         }
-        return false;
     }
     
     func disconnect() {
         if let hCard = _hCard {
             SCardDisconnect(hCard, DWORD(SCARD_UNPOWER_CARD));
-            _hCard = 0;
         }
     }
     

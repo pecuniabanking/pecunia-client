@@ -8,51 +8,50 @@
 
 import Foundation
 
-let CM_IOCTL_GET_FEATURE_REQUEST:DWORD = 0x42000D48;
-
-let DDV_EF_ID  = 0x19
-let DDV_EF_BANK = 0x1A
-let DDV_EF_MAC = 0x1B
-let DDV_EF_SEQ = 0x1C
-
-let APDU_CLA_EXT:UInt8 = 0xB0
-let APDU_INS_GET_KEYINFO:UInt8 = 0xEE;
-
-let APDU_SM_RESP_DESCR:UInt8 = 0xBA;
-let APDU_SM_CRT_CC:UInt8 = 0xB4;
-let APDU_SM_REF_INIT_DATA:UInt8 = 0x87;
-let APDU_SM_VALUE_LE:UInt8 = 0x96;
-
-
-let KEY_TYPE_DF:UInt8 = 0x80;
-
-enum CardType {
-    case CARDTYPE_UNKNOWN, CARDTYPE_DDV0, CARDTYPE_DDV1, CARDTYPE_RSA
-}
-
-
 
 class HBCISmartcardDDV : HBCISmartcard {
     var cardType:CardType;
     var cardID:NSData?
     var cardNumber:NSString?
     
-    override init(readerName:NSString) {
+    enum CardType {
+        case CARDTYPE_UNKNOWN, CARDTYPE_DDV0, CARDTYPE_DDV1, CARDTYPE_RSA
+    }
+
+    // constants
+    let DDV_EF_ID  = 0x19
+    let DDV_EF_BANK = 0x1A
+    let DDV_EF_MAC = 0x1B
+    let DDV_EF_SEQ = 0x1C
+    
+    let APDU_CLA_EXT:UInt8 = 0xB0
+    let APDU_INS_GET_KEYINFO:UInt8 = 0xEE;
+    
+    let APDU_SM_RESP_DESCR:UInt8 = 0xBA;
+    let APDU_SM_CRT_CC:UInt8 = 0xB4;
+    let APDU_SM_REF_INIT_DATA:UInt8 = 0x87;
+    let APDU_SM_VALUE_LE:UInt8 = 0x96;
+    
+    let KEY_TYPE_DF:UInt8 = 0x80;
+
+    override init(readerName:String) {
         cardType = CardType.CARDTYPE_UNKNOWN;
         super.init(readerName: readerName);
     }
     
-    override func connect(tries:Int) -> Bool {
-        if super.connect(tries) {
+    override func connect(tries:Int) -> ConnectResult {
+        let result = super.connect(tries);
+        if result == ConnectResult.connected || result == ConnectResult.reconnected {
             // get card type
             cardType = getCardType();
             if cardType != CardType.CARDTYPE_DDV0 && cardType != CardType.CARDTYPE_DDV1 {
                 // Card is not supported
-                return false;
+                disconnect();
+                return ConnectResult.not_supported;
             }
-            return true;
+            return result;
         }
-        return false;
+        return result;
     }
     
     func trim(s:NSString) ->String {
