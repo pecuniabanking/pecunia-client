@@ -10,6 +10,20 @@ import Foundation
 
 var _manager:ChipcardManager!
 
+@objc public class CardBankData {
+    var name:String;
+    var bankCode:String;
+    var country:String;
+    var host:String;
+    var userId:String;
+    
+    init(name:String, bankCode:String, country:String, host:String, userId:String) {
+        self.name = name; self.bankCode = bankCode; self.country = country; self.host = host; self.userId = userId;
+    }
+    
+    
+}
+
 @objc public class ChipcardManager {
     var card:HBCISmartcardDDV!
     
@@ -86,6 +100,7 @@ var _manager:ChipcardManager!
             // verify card
             let notificationController = NotificationWindowController(message: NSLocalizedString("AP351", comment:""), title: NSLocalizedString("AP357", comment:""));
             notificationController.showWindow(self);
+            notificationController.window?.makeKeyAndOrderFront(self);
             if !card.verifyPin() {
                 notificationController.window?.close();
                 return false;
@@ -183,6 +198,13 @@ var _manager:ChipcardManager!
             
         if let cid = card.cardID, cnumber = card.cardNumber {
             return NSString(format: "%@|%@", bytesToString(cid), cnumber);
+        }
+        return nil;
+    }
+    
+    public func getBankData() ->CardBankData? {
+        if let data = card.getBankData(1) {
+            return CardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, userId: data.userId);
         }
         return nil;
     }

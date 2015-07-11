@@ -29,6 +29,7 @@
     IBOutlet NSArrayController   *bankUserController;
     IBOutlet NSArrayController   *tanSigningOptions;
     IBOutlet NSArrayController   *hbciVersions;
+    IBOutlet NSArrayController   *readersController;
     IBOutlet NSPanel             *userSheet;
     IBOutlet NSMutableDictionary *bankUserInfo;
     IBOutlet NSMutableArray      *bankUsers;
@@ -56,6 +57,7 @@
     SecurityMethod secMethod;
     NSBox          *currentBox;
     BOOL           triedFirst;
+    BOOL           bankUserCreated;
 }
 
 - (id)initForController: (BankingController *)con;

@@ -278,9 +278,11 @@ AP360 = "Warte auf Chipkarte...";
 AP361 = "Bitte legen Sie Ihre Chipkarte in den Chipkartenleser ein";
 AP362 = "Diese Chipkarte hat die Benutzerkennung %@, benötigt wird aber die Karte mit Benutzerkennung %@.\nBitte wechseln Sie die Karte und starten den Vorgang erneut";
 AP363 = "Die Bankdaten können nicht von der Chipkarte gelesen werden";
-AP364 = "Es wurden keine Kartenleser gefunden";
+AP364 = "Es wurden keine Kartenleser gefunden. Bitte schließen Sie einen Chipkartenleser an bzw. stellen Sie sicher dass die aktuellen Treiber für das Lesegerät installiert sind";
 AP365 = "Dieser Kartentyp wird nicht unterstützt (es werden nur DDV-Karten unterstützt)";
 AP366 = "Der Chipkartenleser %@ ist nicht mehr verfügbar. Bitte prüfen Sie ob der Leser korrekt angeschlossen ist";
+AP367 = "Kein Kartenleser gefunden";
+AP368 = "Chipkarten-Fehler";
 
 // Transfers (sent statements)
 // AP400..AP449

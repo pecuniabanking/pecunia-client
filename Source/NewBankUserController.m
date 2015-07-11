@@ -123,14 +123,36 @@
     [self prepareUserSheet];
 }
 
+- (BOOL)prepareReaders {
+    NSArray *readers = [[ChipcardManager manager] getReaders];
+    if (readers == nil || readers.count == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP367", nil),
+                        NSLocalizedString(@"AP364", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return FALSE;
+    }
+    
+    [readersController setContent:readers];
+    return TRUE;
+}
+
 - (IBAction)ok: (id)sender {
     [currentUserController commitEditing];
 
     BankUser *currentUser = [currentUserController content];
 
     if (step == 0) {
+        bankUserCreated = NO;
         NSInteger idx = [secMethodPopup indexOfSelectedItem];
         if (idx == 1) {
+            // check if any card reader is connected
+            if (![self prepareReaders]) {
+                [self stopProgress];
+                [userSheet orderOut: sender];
+                [NSApp endSheet: userSheet returnCode: 0];
+                return;
+            }
+            
             secMethod = SecMethod_DDV;
             currentUser.ddvPortIdx = @1;
             currentUser.ddvReaderIdx = @0;
@@ -163,7 +185,7 @@
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // create user
-            if (step == 2) {
+            if (bankUserCreated == NO) {
                 // first check if user with same userid already exists
                 if ([BankUser existsUserWithId:currentUser.userId]) {
                     NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
@@ -183,6 +205,7 @@
                 currentUser = newUser;
                 [currentUserController setManagedObjectContext:context];
                 [currentUserController setContent: currentUser];
+                bankUserCreated = YES;
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
@@ -218,28 +241,64 @@
 
     // DDV-Access
     if (secMethod == SecMethod_DDV) {
+        /*
         if ([self check] == NO) {
             return;
         }
+        */
 
         if (step == 1) {
-            // get bank infos
-            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
-            if (bi) {
-                currentUser.hbciVersion = bi.hbciVersion;
-                currentUser.bankURL = bi.hostURL;
-                if (currentUser.hbciVersion == nil || currentUser.bankURL == nil) {
-                    step = 4;
-                }
+            ChipcardManager *manager = [ChipcardManager manager];
+            NSString *readerName = readersController.selectedObjects.firstObject;
+            if (readerName == nil) {
+                // abort
+                [userSheet orderOut: sender];
+                [NSApp endSheet: userSheet returnCode: 0];
+                return;
             } else {
-                step = 4;
+                if ([manager requestCardForReader:readerName]) {
+                    CardBankData *data = [manager getBankData];
+                    if (data != nil) {
+                        currentUser.bankCode = data.bankCode;
+                        currentUser.bankURL = data.host;
+                        currentUser.userId = data.userId;
+                        currentUser.bankName = data.name;
+                        currentUser.name = data.name;
+                        
+                        // get further bank infos
+                        InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+                        if (bi) {
+                            currentUser.hbciVersion = bi.hbciVersion;
+                            if (bi.name != nil) {
+                                currentUser.name = bi.name;
+                            }
+                            //currentUser.bankURL = bi.hostURL;
+                            if (currentUser.hbciVersion == nil) {
+                                step = 3;
+                            }
+                        } else {
+                            step = 3;
+                        }
+                    } else {
+                        // cound not read bank data
+                        NSRunAlertPanel(NSLocalizedString(@"AP368", nil),
+                                        NSLocalizedString(@"AP363", nil),
+                                        NSLocalizedString(@"AP1", nil), nil, nil);
+                        return;
+                    }
+                } else {
+                    // abort
+                    [userSheet orderOut: sender];
+                    [NSApp endSheet: userSheet returnCode: 0];
+                    return;
+                }
             }
         }
 
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // Create User
-            if (step == 2) {
+            if (bankUserCreated == NO) {
                 // first check if user with same userid already exists
                 if ([BankUser existsUserWithId:currentUser.userId]) {
                     NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
@@ -259,6 +318,7 @@
                 currentUser = newUser;
                 [currentUserController setManagedObjectContext:context];
                 [currentUserController setContent: currentUser];
+                bankUserCreated = YES;
             }
 
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
@@ -267,10 +327,7 @@
             PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
-                if (step == 2) {
-                } else {
-                    [error alertPanel];
-                }
+                [error alertPanel];
             } else {
                 [self stopProgress];
                 [userSheet orderOut: sender];
@@ -278,13 +335,13 @@
                 return;
             }
         }
-        if (step >= 5 && currentUser.hbciVersion == nil) {
+        if (step >= 3 && currentUser.hbciVersion == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP79", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
-        if (step >= 5 && currentUser.bankURL == nil) {
+        if (step >= 3 && currentUser.bankURL == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP81", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
@@ -292,7 +349,7 @@
         }
     }
 
-    if (step < 6) {
+    if (step < 3) {
         step += 1;
     }
     [self prepareUserSheet];
@@ -543,27 +600,31 @@
         user.ddvReaderIdx = @0;
 
         for (NSView *view in views) {
-            if ([view tag] >= 100) {
+            if ([view tag] > 10) {
                 [view setHidden: YES];
             }
         }
+        /*
         // set size
         NSRect frame = [userSheet frame];
         frame.size.height += 20; frame.origin.y -= 20;
         [[userSheet animator] setFrame: frame display: YES];
+        */
         [userSheet makeFirstResponder: [contentView viewWithTag: 10]];
     }
+    
     if (step == 2) {
         for (NSView *view in views) {
-            if ([view tag] >= 100 && [view tag] <= 110) {
+            if ([view tag] > 10 && [view tag] < 20) {
                 [[view animator] setHidden: NO];
             }
         }
         NSRect frame = [userSheet frame];
-        frame.size.height += 32; frame.origin.y -= 32;
+        frame.size.height += 20; frame.origin.y -= 20;
         [[userSheet animator] setFrame: frame display: YES];
         [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
     }
+    /*
     if (step == 3) {
         for (NSView *view in views) {
             if ([view tag] > 110 && [view tag] <= 130) {
@@ -584,14 +645,15 @@
         frame.size.height += 87; frame.origin.y -= 87;
         [[userSheet animator] setFrame: frame display: YES];
     }
-    if (step == 5) {
+    */
+    if (step == 3) {
         for (NSView *view in views) {
             if ([view tag] >= 100) {
                 [[view animator] setHidden: NO];
             }
         }
         NSRect frame = [userSheet frame];
-        frame.size.height += 183; frame.origin.y -= 183;
+        frame.size.height += 80; frame.origin.y -= 80;
         [[userSheet animator] setFrame: frame display: YES];
     }
 
