@@ -34,7 +34,6 @@
 #import "ShadowedTextField.h"
 
 #import "NSString+PecuniaAdditions.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"

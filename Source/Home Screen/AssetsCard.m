@@ -25,7 +25,6 @@
 
 #import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 
 #import "MOAssistant.h"
 #import "BankingController.h"
@@ -406,11 +405,11 @@ double trend(double x) {
     }
     NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
-    roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundedToUpperOuter];
     if (useDefault) {
         roundedLocalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue];
     } else {
-        roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+        roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundedToUpperOuter];
     }
 
     // Let the larger area (negative or positive) determine the size of the major tick range.

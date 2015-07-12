@@ -33,6 +33,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         // Trigger updating files in the background.
         let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
         dispatch_async(queue) {
+            objc_sync_enter(self);
+
             let url : NSURL? = NSURL(string: RemoteResourceUpdateInfo);
             let xmlData : NSData? = NSData(contentsOfURL: url!);
             if xmlData != nil {
@@ -41,7 +43,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 var updateInfo : NSDictionary = NSDictionary.dictForXMLData(xmlData, error: &error);
                 if (error != nil) {
                     // Currently default and variadic parameters don't work well together.
-                    // So we need to help a compiler a bit to pick up the variadics (here for the logError call).
+                    // So we need to help the compiler a bit to pick up the variadics.
                     logError("Parser error for update info file %@", arguments: RemoteResourceUpdateInfo);
                     return;
                 }
@@ -55,6 +57,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             } else {
                 logError("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
             }
+
+            objc_sync_exit(self);
         }
     }
 
@@ -65,7 +69,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         return singleton!
     }
 
-    public class var pecuniaResourcesUpdatedNotification : String { // Class vars
+    public class var pecuniaResourcesUpdatedNotification : String {
         return "PecuniaResourcesUpdatedNotification";
     }
 
@@ -108,6 +112,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         dateFormatter.dateFormat = "yyyy-MM-dd";
 
         // Check that the given file is one of the remote files we can download.
+        objc_sync_enter(self);
+
         var fileInfo: Dictionary<String, AnyObject>? = nil;
         if downloadableFiles != nil {
             for info in downloadableFiles! {
@@ -117,6 +123,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 }
             }
         }
+
+        objc_sync_exit(self);
 
         if (fileInfo == nil) {
             return false;
@@ -160,6 +168,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         dateFormatter.dateFormat = "yyyy-MM-dd";
 
         // Check that the given file is one of the remote files we can download.
+        objc_sync_enter(self);
+
         var fileInfo: Dictionary<String, AnyObject>? = nil;
         if downloadableFiles != nil {
             for info in downloadableFiles! {
@@ -169,6 +179,8 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 }
             }
         }
+
+        objc_sync_exit(self);
 
         if (fileInfo == nil) {
             logWarning("File %@ is not a remote resource file", arguments: fileName);

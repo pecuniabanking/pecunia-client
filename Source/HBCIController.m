@@ -36,7 +36,6 @@
 #import "StatusBarController.h"
 #import "SigningOptionsController.h"
 #import "CallbackHandler.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "SystemNotification.h"
 #import "NSString+PecuniaAdditions.h"
 #import "AccountStatement.h"

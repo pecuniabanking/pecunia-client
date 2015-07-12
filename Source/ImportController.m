@@ -23,7 +23,6 @@
 #import "MOAssistant.h"
 #import "ImportSettings.h"
 #import "BankStatement.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "BankAccount.h"
 #import "ShortDate.h"
 

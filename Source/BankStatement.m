@@ -27,8 +27,6 @@
 #import "SEPAMT94xPurposeParser.h"
 #import "SepaData.h"
 
-#import "NSDecimalNumber+PecuniaAdditions.h"
-
 #import "MOAssistant.h"
 
 static NSArray *catCache = nil;

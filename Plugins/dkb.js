@@ -12,14 +12,6 @@ var homePage = "http://pecuniabanking.de";
 var license = "CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de";
 var version = "1.0";
 
-// Info about the number format used for money values. All values are optional.
-var numberInfo = {
-    "decimalSeparator": ",",    // Default is .
-    "groupSeparator": ".",      // Default is ,
-    "groupingSize": 3,          // Number of digits in a group. Default is 3.
-    "maximumFractionalDigit": 2 // Default is 2.
-};
-
 // --- Internal variables.
 var currentState = 0; // Used in the callback to determine what to do next (state machine).
 var userName = "";
@@ -363,7 +355,7 @@ function convertCsvToResult() {
     };
     results.push(result);
     
-    logger.logDebug("Done converting")
+    logger.logDebug("Done converting a set of results");
     currentState = 16;
     webClient.goBack(); // Back to credit card selection.
 }

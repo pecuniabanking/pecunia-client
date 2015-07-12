@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -306,7 +306,6 @@
 		277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		277788B5173CE22700430EBC /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		277788B6173CE22700430EBC /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
-		277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */; };
 		277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
 		277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
 		277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
@@ -805,6 +804,8 @@
 		27E8465F19E181280026464E /* WaitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BD19E17D2F0026464E /* WaitView.xib */; };
 		27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27E8466319E1816F0026464E /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27E98CC51B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */; };
+		27E98CC61B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */; };
 		27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EB308314B22CB000ABE3A6 /* Bank large.png */; };
@@ -949,7 +950,6 @@
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
-		B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */; };
 		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		B19CA99219410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA99319410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
@@ -1565,6 +1565,7 @@
 		27E845BC19E17D2F0026464E /* TransferTemplates.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransferTemplates.xib; sourceTree = "<group>"; };
 		27E845BD19E17D2F0026464E /* WaitView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WaitView.xib; sourceTree = "<group>"; };
 		27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
+		27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumber.swift; sourceTree = "<group>"; };
 		27EA7D541816ED25000D9B30 /* LocalSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalSettingsController.h; sourceTree = "<group>"; };
 		27EA7D551816ED25000D9B30 /* LocalSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalSettingsController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27EB308314B22CB000ABE3A6 /* Bank large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bank large.png"; sourceTree = "<group>"; };
@@ -1792,8 +1793,6 @@
 		B196E0930FACE15F00509748 /* BSSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BSSelectWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B00FB4CFE200509748 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B10FB4CFE200509748 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B197C3E213C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
-		B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDecimalNumber+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; };
 		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAnalysisWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -2115,21 +2114,20 @@
 				27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */,
 				276B83C31811A35F00AFF54A /* NSColor+PecuniaAdditions.h */,
 				276B83C41811A35F00AFF54A /* NSColor+PecuniaAdditions.m */,
-				B197C3E213C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.h */,
-				B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */,
+				27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */,
 				27A6F361178DCCD60015327B /* NSDictionary+PecuniaAdditions.h */,
 				27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */,
-				B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */,
-				B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */,
-				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
-				2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */,
-				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
-				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
-				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
-				27D576441662819200761132 /* NSSplitView+PecuniaAdditions.h */,
-				27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */,
 				276D9C8A18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.h */,
 				276D9C8B18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m */,
+				B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */,
+				B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */,
+				27D576441662819200761132 /* NSSplitView+PecuniaAdditions.h */,
+				27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */,
+				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
+				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
+				2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */,
+				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
+				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
 			);
 			name = "AppKit categories";
 			sourceTree = "<group>";
@@ -3241,7 +3239,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
@@ -3253,7 +3251,7 @@
 				};
 			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
-			compatibilityVersion = "Xcode 6.3";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -3930,7 +3928,6 @@
 				B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
-				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
@@ -4094,6 +4091,7 @@
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AC1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100717D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
+				27E98CC61B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */,
 				275B3C4F17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4206,7 +4204,6 @@
 				B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
-				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
@@ -4369,6 +4366,7 @@
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AB1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100617D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
+				27E98CC51B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */,
 				275B3C4E17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

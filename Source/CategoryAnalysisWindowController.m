@@ -25,7 +25,6 @@
 #import "PreferenceController.h"
 
 #import "PecuniaPlotTimeFormatter.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "NSColor+PecuniaAdditions.h"
 #import "NSView+PecuniaAdditions.h"
 #import "AnimationHelper.h"
@@ -1501,14 +1500,14 @@ extern void *UserDefaultsBindingContext;
     }
     NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
-    roundedTotalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
-    roundedTotalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+    roundedTotalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundedToUpperOuter];
+    roundedTotalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundedToUpperOuter];
 
     if (maxTurnovers < 5) {
         maxTurnovers = 5;
     }
     NSDecimal decimalTurnoversValue = CPTDecimalFromDouble(maxTurnovers);
-    roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundToUpperOuter];
+    roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundedToUpperOuter];
 }
 
 - (void)computeLocalStatisticsFrom: (NSUInteger)fromIndex to: (NSUInteger)toIndex
@@ -1577,11 +1576,11 @@ extern void *UserDefaultsBindingContext;
     }
     NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
-    roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundedToUpperOuter];
     if (useDefault) {
         roundedLocalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue];
     } else {
-        roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+        roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundedToUpperOuter];
     }
 }
 

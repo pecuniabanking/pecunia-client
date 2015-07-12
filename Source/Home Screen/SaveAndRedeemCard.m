@@ -26,7 +26,6 @@
 #import "AnimationHelper.h"
 #import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "ColumnLayoutCorePlotLayer.h"
 
 #import "MOAssistant.h"
@@ -466,12 +465,12 @@ extern void *UserDefaultsBindingContext;
     }
     NSDecimal       decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal       decimalMaxValue = CPTDecimalFromDouble(max);
-    NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundedToUpperOuter];
     NSDecimalNumber *roundedMax;
     if (useDefault) {
         roundedMax = [NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue];
     } else {
-        roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+        roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundedToUpperOuter];
     }
 
     // Let the larger area (negative or positive) determine the size of the major tick range.
@@ -1625,12 +1624,12 @@ extern void *UserDefaultsBindingContext;
     }
     NSDecimal       decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal       decimalMaxValue = CPTDecimalFromDouble(max);
-    NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundedToUpperOuter];
     NSDecimalNumber *roundedMax;
     if (useDefault) {
         roundedMax = [NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue];
     } else {
-        roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+        roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundedToUpperOuter];
     }
 
     // Let the larger area (negative or positive) determine the size of the major tick range.

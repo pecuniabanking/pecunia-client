@@ -1,21 +1,21 @@
-/**
-* Copyright (c) 2015, Pecunia Project. All rights reserved.
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License as
-* published by the Free Software Foundation; version 2 of the
-* License.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-* 02110-1301  USA
-*/
+/*
+ * Copyright (c) 2015, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 import Foundation;
 import WebKit;
@@ -42,18 +42,69 @@ import WebKit;
         var isDir: ObjCBool = false;
         if fileManager.fileExistsAtPath(pluginPath, isDirectory: &isDir) && isDir {
             if var contents = fileManager.contentsOfDirectoryAtPath(pluginPath, error: nil) as? [String] {
-                // First check if any of the default plugins is missing and copy it to the target plugin folder if so.
+                // First check if any of the default plugins is missing or newer and copy it to the
+                // target plugin folder if so.
                 var needRescan = false;
                 var error: NSError?;
                 for defaultPluginPath in defaultPluginPaths {
-                    if !contents.contains(defaultPluginPath.lastPathComponent) {
+                    var pluginName = defaultPluginPath.lastPathComponent;
+                    if !contents.contains(pluginName) {
                         needRescan = true;
                         if (!fileManager.copyItemAtPath(defaultPluginPath,
-                            toPath: pluginPath + "/" + defaultPluginPath.lastPathComponent, error: &error)) {
+                            toPath: pluginPath + "/" + pluginName, error: &error)) {
                                 NSAlert(error: error!).runModal();
                         }
                     } else {
-                        // TODO: check last modified date and if the default is newer ask user + copy.
+                        // Check last modified date and if the default is newer backup existing file + copy.
+                        // If there's any error accessing the files then ignore them.
+                        var sourceAttributes: NSDictionary? = fileManager.attributesOfItemAtPath(defaultPluginPath, error: &error);
+                        if (sourceAttributes == nil || error != nil) {
+                            continue;
+                        }
+                        let targetName = pluginPath + "/" + pluginName;
+                        var targetAttributes: NSDictionary? = fileManager.attributesOfItemAtPath(targetName, error: &error);
+                        if (targetAttributes == nil || error != nil) {
+                            continue;
+                        }
+                        if let sourceDate = sourceAttributes!.fileModificationDate(),
+                            let targetDate = targetAttributes!.fileModificationDate() {
+                                if sourceDate > targetDate {
+                                    // A newer version of the plugin exists. Backup the exsting one
+                                    // (don't touch existing backups) and then copy the new one.
+                                    var newBackupName = "";
+                                    let baseName = pluginName.stringByDeletingPathExtension;
+                                    let ext = pluginName.pathExtension;
+                                    var counter = 1;
+
+                                    while counter < 1000 {
+                                        let tempBackupName = baseName + ".backup \(counter++)." + ext;
+                                        if !contents.contains(tempBackupName) {
+                                            // Unused backup name found.
+                                            newBackupName = tempBackupName;
+                                            break;
+                                        }
+                                    }
+
+                                    // If we cannot find a usable backup name give up and simply replace
+                                    // the current file.
+                                    if newBackupName.length == 0 {
+                                        if !fileManager.removeItemAtPath(targetName, error: &error) {
+                                            logError("Cannot delete existing plugin: \(error?.localizedDescription)");
+                                            continue;
+                                        }
+                                    } else {
+                                        if !fileManager.moveItemAtPath(targetName, toPath: pluginPath + "/" + newBackupName, error: &error) {
+                                            logError("Cannot backup existing plugin: \(error?.localizedDescription)");
+                                            continue;
+                                        }
+                                    }
+
+                                    if !fileManager.copyItemAtPath(defaultPluginPath,
+                                        toPath: targetName, error: &error) {
+                                            NSAlert(error: error!).runModal();
+                                    }
+                                }
+                        }
                     }
                 }
 
@@ -63,7 +114,7 @@ import WebKit;
                 }
 
                 for entry in contents {
-                    if !entry.hasSuffix(".js") {
+                    if !entry.hasSuffix(".js") || entry.containsMatch("\\.backup \\d+\\.", ignoreCase: true)! {
                         continue;
                     }
 

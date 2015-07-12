@@ -32,7 +32,6 @@
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
 #import "MCEMTreeController.h"
-#import "NSDecimalNumber+PecuniaAdditions.h" // TODO: Removal candidate
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"

@@ -28,8 +28,6 @@
 #import "Country.h"
 #import "TransferTemplate.h"
 
-#import "NSDecimalNumber+PecuniaAdditions.h"
-
 /**
  * Transform zero-based selector indices to one-based chargedBy property values for transfers.
  */

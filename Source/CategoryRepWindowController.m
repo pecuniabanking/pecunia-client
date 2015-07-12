@@ -28,7 +28,6 @@
 #import "NSView+PecuniaAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 
 #import <tgmath.h>
 

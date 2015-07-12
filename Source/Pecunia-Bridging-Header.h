@@ -104,7 +104,6 @@
 #import "NSAttributedString+PecuniaAdditions.h"
 #import "NSButton+PecuniaAdditions.h"
 #import "NSColor+PecuniaAdditions.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
 #import "NSOutlineView+PecuniaAdditions.h"

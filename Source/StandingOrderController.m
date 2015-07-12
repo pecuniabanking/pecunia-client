@@ -34,7 +34,6 @@
 #import "AnimationHelper.h"
 
 #import "NSButton+PecuniaAdditions.h"
-#import "NSDecimalNumber+PecuniaAdditions.h"
 
 NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an existing order to the bin.
 
