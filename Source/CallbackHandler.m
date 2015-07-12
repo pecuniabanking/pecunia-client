@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,211 +18,17 @@
  */
 
 #import "CallbackHandler.h"
-#import "CallbackData.h"
-#import "Keychain.h"
-#import "PasswordWindow.h"
-#import "Keychain.h"
-#import "TanMethodOld.h"
-#import "TanMethod.h"
-#import "PasswordWindow.h"
-#import "NewPasswordController.h"
-#import "TanMethodListController.h"
-#import "PecuniaError.h"
-#import "ChipTanWindowController.h"
-#import "TanMediaWindowController.h"
-#import "HBCIBackend.h"
-#import "BankUser.h"
-#import "TanMedium.h"
-#import "TanSigningOption.h"
-#import "NotificationWindowController.h"
-#import "TanWindow.h"
 #import "ChipcardHandler.h"
+#import "HBCIBridge.h"
 
 static CallbackHandler *callbackHandler = nil;
 
 @implementation CallbackHandler
-@synthesize currentSigningOption;
 @synthesize notificationController;
 
-- (void)startSession
-{
-    errorOccured = NO;
-}
-
-- (NSString *)getPassword
-{
-    currentPwService = @"Pecunia";
-    currentPwAccount = @"DataFile";
-    NSString *passwd = [Keychain passwordForService: currentPwService account: currentPwAccount];
-    if (passwd == nil) {
-        if (pwWindow == nil) {
-            pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
-                                                      title: NSLocalizedString(@"AP162", nil)];
-
-        } else {[pwWindow retry]; }
-
-        int res = [NSApp runModalForWindow: [pwWindow window]];
-        if (res) {
-            passwd = nil;
-        } else {
-            passwd = [pwWindow result];
-        }
-        [pwWindow closeWindow];
-    }
-    if (passwd == nil || [passwd length] == 0) {
-        return @"<abort>";
-    }
-    return passwd;
-}
-
-- (void)finishPasswordEntry
-{
-    if (pwWindow) {
-        if (errorOccured == NO) {
-            NSString *passwd = [pwWindow result];
-            BOOL     savePassword = [pwWindow shouldSavePassword];
-            [Keychain setPassword: passwd forService: currentPwService account: currentPwAccount store: savePassword];
-        } else {
-            [Keychain deletePasswordForService: currentPwService account: currentPwAccount];
-        }
-        [pwWindow close];
-        pwWindow = nil;
-    }
-}
-
-- (NSString *)getNewPassword: (CallbackData *)data
-{
-    NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
-    if (passwd) {
-        return passwd;
-    }
-    NewPasswordController *pwController = [[NewPasswordController alloc] initWithText: data.message
-                                                                                title: @"Bitte Passwort eingeben"];
-    int res = [NSApp runModalForWindow: [pwController window]];
-    if (res) {
-        errorOccured = YES;
-        return @"<abort>";
-    }
-    passwd = [pwController result];
-
-    [Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: NO];
-    return passwd;
-}
-
-- (NSString *)getTanMethod: (CallbackData *)data
-{
-    if (self.currentSigningOption && self.currentSigningOption.tanMethod) {
-        return self.currentSigningOption.tanMethod;
-    }
-
-    // alter Code, sollte eigentlich nicht durchlaufen werden. Bleibt drin als Fallback
-    BankUser *user = [BankUser userWithId: data.userId bankCode: data.bankCode];
-    if (user.preferredTanMethod != nil) {
-        return user.preferredTanMethod.method;
-    }
-
-    NSMutableArray *tanMethods = [NSMutableArray arrayWithCapacity: 5];
-    NSArray        *meths = [data.proposal componentsSeparatedByString: @"|"];
-    NSString       *meth;
-    for (meth in meths) {
-        TanMethodOld *tanMethod = [[TanMethodOld alloc] init];
-        NSArray      *list = [meth componentsSeparatedByString: @":"];
-        tanMethod.function = @([list[0] integerValue]);
-        tanMethod.description = list[1];
-        [tanMethods addObject: tanMethod];
-    }
-    TanMethodListController *controller = [[TanMethodListController alloc] initWithMethods: tanMethods];
-    int                     res = [NSApp runModalForWindow: [controller window]];
-    if (res) {
-        return @"<abort>";
-    }
-    NSString *method = [[controller selectedMethod] stringValue];
-
-    return method;
-}
-
-- (NSString *)getPin: (CallbackData *)data
-{
-    currentPwService = @"Pecunia PIN";
-    NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", data.bankCode, data.userId];
-    if (![s isEqualToString: currentPwAccount]) {
-        if (pwWindow) {
-            [self finishPasswordEntry];
-        }
-        currentPwAccount = s;
-    }
-
-    NSString *passwd;
-    // Check keychain
-    passwd = [Keychain passwordForService: currentPwService account: currentPwAccount];
-    if (passwd) {
-        return passwd;
-    }
-
-    if (pwWindow == nil) {
-        BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
-        pwWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP171", nil), user?user.name:data.userId]
-                                                  title: @"Bitte PIN eingeben"];
-
-    } else {[pwWindow retry]; }
-    int res = [NSApp runModalForWindow: [pwWindow window]];
-    [pwWindow closeWindow];
-    if (res == 0) {
-        NSString *pin = [pwWindow result];
-        [Keychain setPassword: pin forService: currentPwService account: currentPwAccount store: NO];
-        return pin;
-    } else {
-        [Keychain deletePasswordForService: currentPwService account: s];
-        errorOccured = YES; // don't save PIN
-        return @"<abort>";
-    }
-}
-
-- (void)removePin: (CallbackData *)data
-{
-    currentPwService = @"Pecunia PIN";
-    NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", data.bankCode, data.userId];
-    [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
-    errorOccured = YES;
-}
-
-- (NSString *)getTan: (CallbackData *)data
-{
-    BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
-    if (data.proposal && [data.proposal length] > 0) {
-        // FlickerCode
-        ChipTanWindowController *controller = [[ChipTanWindowController alloc] initWithCode: data.proposal message: data.message];
-        int res = [NSApp runModalForWindow: [controller window]];
-        if (res == 0) {
-            return [controller tan];
-        } else {return @"<abort>"; }
-    }
-
-    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP172", nil), user?user.name:data.userId, data.message]];
-    int       res = [NSApp runModalForWindow: [tanWindow window]];
-    [tanWindow close];
-    if (res == 0) {
-        return [tanWindow result];
-    } else {return @"<abort>"; }
-}
-
-- (NSString *)getTanMedia: (CallbackData *)data
-{
-    if (self.currentSigningOption && self.currentSigningOption.tanMediumName) {
-        return self.currentSigningOption.tanMediumName;
-    }
-
-    TanMediaWindowController *mediaWindow = [[TanMediaWindowController alloc] initWithUser: data.userId bankCode: data.bankCode message: data.message];
-    int                      res = [NSApp runModalForWindow: [mediaWindow window]];
-    if (res == 0) {
-        return mediaWindow.tanMedia;
-    } else {return @"<abort>"; }
-}
-
-- (void)userIDChanged: (CallbackData*)data
-{
+- (void)userIDChanged: (CallbackData*)data {
     NSArray *userData = [data.proposal componentsSeparatedByString: @"|"];
-    BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
+    BankUser *user = [BankUser findUserWithId:data.userId bankCode:data.bankCode];
     if (user != nil) {
         if (![user.userId isEqualToString:[userData objectAtIndex:0]]) {
             user.updatedUserId = [userData objectAtIndex:0];
@@ -234,27 +40,25 @@ static CallbackHandler *callbackHandler = nil;
 }
 
 
-- (NSString *)callbackWithData: (CallbackData *)data
-{
+- (NSString *)callbackWithData: (CallbackData *)data parent: (HBCIBridge *)parent {
     if ([data.command isEqualToString: @"password_load"]) {
-        NSString *passwd = [self getPassword];
-        return passwd;
+        return [Security getPasswordForDataFile];
     }
     if ([data.command isEqualToString: @"password_save"]) {
-        NSString *passwd = [self getNewPassword: data];
+        NSString *passwd = [Security getNewPassword: data];
         return passwd;
     }
     if ([data.command isEqualToString: @"getTanMethod"]) {
-        return [self getTanMethod: data];
+        return [Security getTanMethod: data];
     }
     if ([data.command isEqualToString: @"getPin"]) {
-        return [self getPin: data];
+        return [parent.authRequest getPin: data.bankCode userId: data.userId];
     }
     if ([data.command isEqualToString: @"getTan"]) {
-        return [self getTan: data];
+        return [Security getTan: data];
     }
     if ([data.command isEqualToString: @"getTanMedia"]) {
-        return [self getTanMedia: data];
+        return [Security getTanMedia: data];
     }
     if ([data.command isEqualToString: @"instMessage"]) {
         NSNotification *notification = [NSNotification notificationWithName: PecuniaInstituteMessageNotification
@@ -266,6 +70,7 @@ static CallbackHandler *callbackHandler = nil;
         notificationController = [[NotificationWindowController alloc] initWithMessage: NSLocalizedString(@"AP360", nil)
                                                                                  title: NSLocalizedString(@"AP357", nil)];
         [notificationController showWindow: self];
+
         //[self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
         */
     }
@@ -290,7 +95,7 @@ static CallbackHandler *callbackHandler = nil;
         */
     }
     if ([data.command isEqualToString: @"wrongPin"]) {
-        [self removePin: data];
+        [Security removePin: data];
     }
     if ([data.command isEqualToString: @"UserIDChanged"]) {
         [self userIDChanged: data];
@@ -385,11 +190,6 @@ static CallbackHandler *callbackHandler = nil;
 {
     [notificationController showWindow: self];
     [[notificationController window] makeKeyAndOrderFront: self];
-}
-
-- (void)setErrorOccured
-{
-    errorOccured = YES;
 }
 
 + (CallbackHandler *)handler

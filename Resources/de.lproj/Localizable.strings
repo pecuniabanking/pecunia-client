@@ -122,6 +122,8 @@ AP142 = "Gutschriften";
 AP143 = "Zwischensaldo";
 AP144 = "Summe";
 AP145 = "Notizen";
+AP146 = "Standardkonto";
+AP147 = "Plugin Fehler";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199
@@ -155,6 +157,8 @@ AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
 AP177 = "Bitte wählen Sie die Datei %@ aus";
 AP178 = "Die Verwendungszweckinformationen werden nach SEPA-Informationen durchsucht. Dies kann bei großen Datenmengen etwas länger dauern.";
 AP179 = "Die Bankkennung %@ jetzt löschen?";
+AP180 = "Bitte Passwort eingeben";
+AP181 = "Bitte PIN eingeben";
 
 // Banking common + business transactions
 // AP200..AP249

@@ -150,14 +150,26 @@
         NSMutableArray *list = [NSMutableArray arrayWithCapacity: 10];
         [stack addObject: list];
     } else if ([elementName isEqualToString: @"object"]) {
-        id obj;
-        id class = objc_getClass([currentType UTF8String]);
+        // Creating a class from string doesn't work with Swift classes, hence we have to
+        // handle those explicitly.
+        id class;
+        if ([currentType isEqualToString: @"BankQueryResult"]) {
+            class = BankQueryResult.class;
+        } else {
+            class = [NSBundle.mainBundle classNamed: currentType];
+        }
         if (class == nil) {
             LogError(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
         } else {
-            obj = [[class alloc] init];
-            [stack addObject: obj];
+            [stack addObject: [class new]];
         }
+/*
+        if ([currentType isEqualToString: @"BankQueryResult"]) {
+            [stack addObject: [BankQueryResult new]];
+        } else {
+            LogError(@"Result parser: couldn't find class \"%@\"", currentType);
+        }
+*/
     } else if ([elementName isEqualToString: @"cdObject"]) {
         NSManagedObjectContext *context = [[MOAssistant sharedAssistant] memContext];
         id                     obj = [NSEntityDescription insertNewObjectForEntityForName: currentType inManagedObjectContext: context];
@@ -216,7 +228,9 @@
     } else if ([elementName isEqualToString: @"result"]) {
         [parser setDelegate: parent];
         result = [stack lastObject];
-        [parent setResult: [stack lastObject]];
+        if (![parent setResult: [stack lastObject]]) {
+            parent.authRequest.errorOccured = YES;
+        }
         return;
     } else {
         if ([[stack lastObject] isKindOfClass: [NSMutableArray class]] || [[stack lastObject] isKindOfClass: [NSMutableDictionary class]]) {

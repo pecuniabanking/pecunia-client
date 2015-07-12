@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,7 +20,6 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "BankQueryResult.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
 #import "PurposeSplitController.h"
@@ -53,6 +52,7 @@
 @dynamic isStandingOrderSupported;
 @dynamic accountSuffix;
 @dynamic users;
+@dynamic plugin;
 
 @synthesize dbStatements;
 @synthesize unread;
@@ -196,7 +196,7 @@
 
     result.oldBalance = self.balance;
     if (result.balance) {
-        self.balance = result.balance;
+        self.balance = [NSDecimalNumber decimalNumberWithDecimal: result.balance.decimalValue];
     }
     if (result.statements == nil) {
         return 0;
@@ -601,10 +601,10 @@
         LogError(@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber);
         return nil;
     }
-    return [BankUser userWithId: self.userId bankCode: self.bankCode];
+    return [BankUser findUserWithId: self.userId bankCode: self.bankCode];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code {
++ (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 
@@ -625,7 +625,7 @@
     return results[0];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
++ (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
 

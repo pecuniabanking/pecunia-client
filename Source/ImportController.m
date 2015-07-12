@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,7 +24,6 @@
 #import "ImportSettings.h"
 #import "BankStatement.h"
 #import "NSDecimalNumber+PecuniaAdditions.h"
-#import "BankQueryResult.h"
 #import "BankAccount.h"
 #import "ShortDate.h"
 
@@ -919,7 +918,7 @@
 }
 
 - (void)startImport {
-    BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber
+    BankAccount *account = [BankAccount findAccountWithNumber: currentSettings.accountNumber
                                                 subNumber: currentSettings.accountSuffix
                                                  bankCode: currentSettings.bankCode];
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.memContext;
@@ -973,10 +972,8 @@
         }
     }
 
-    importResult = [[BankQueryResult alloc] init];
+    importResult = [BankQueryResult new];
     importResult.statements = statements;
-    importResult.accountNumber = currentSettings.accountNumber;
-    importResult.bankCode = currentSettings.bankCode;
     importResult.isImport = YES;
     importResult.account = account;
 }

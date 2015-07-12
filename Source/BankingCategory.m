@@ -474,6 +474,9 @@ static ShortDate *endReportDate = nil;
     [self assignmentsFrom: startReportDate to: endReportDate withChildren: YES];
 }
 
+- (void)setAccountNumber: (NSString *)number {
+}
+
 - (NSString *)accountNumber {
     return nil;
 }

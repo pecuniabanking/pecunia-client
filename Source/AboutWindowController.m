@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -40,9 +40,13 @@
     NSBundle *mainBundle = [NSBundle mainBundle];
     NSString *path = [mainBundle pathForResource: @"Credits" ofType: @"rtf"];
     [aboutText readRTFDFromFile: path];
-    [versionText setStringValue: [NSString stringWithFormat: @"Version %@ (%@)",
-                                  [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"],
-                                  [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
+
+    // Countering a display problem:
+    [aboutText pageDown: aboutText];
+    [aboutText pageUp: aboutText];
+
+    [versionText setStringValue: [NSString stringWithFormat: @"Version %@",
+                                  [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"]
                                   ]];
     [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
 }

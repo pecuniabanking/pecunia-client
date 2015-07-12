@@ -31,51 +31,69 @@
 
 #import "NSString+PecuniaAdditions.h"
 
+@interface HBCIBridge () {
+    ResultParser   *rp;
+    CallbackParser *cp;
+    LogParser      *lp;
+
+    NSPipe *inPipe;
+    NSPipe *outPipe;
+    NSTask *task;
+
+    BOOL resultExists;
+    BOOL running;
+
+    id result;
+    id asyncSender;
+
+    HBCIError *error;
+
+    NSMutableString *asyncString;
+}
+
+@end
+
 @implementation HBCIBridge
 
-- (id)init
-{
+@synthesize authRequest;
+
+- (id)init {
     self = [super init];
     if (self == nil) {
         return nil;
     }
     running = NO;
+    authRequest = [AuthRequest new];
 
     return self;
 }
 
-- (NSPipe *)outPipe
-{
+- (NSPipe *)outPipe {
     return outPipe;
 }
 
-- (void)setResult: (id)res
-{
+// Returns NO if the result was an error.
+- (BOOL)setResult: (id)res {
     if ([res isKindOfClass: [HBCIError class]]) {
         result = nil;
         error = res;
-        
-        // error has occured. Inform callback handler, which can then invalidate PIN
-        // in case PIN was entered
-        [[CallbackHandler handler] setErrorOccured];
+        return NO;
     } else {
         result = res;
         error = nil;
     }
+    return YES;
 }
 
-- (id)result
-{
+- (id)result {
     return result;
 }
 
-- (HBCIError *)error
-{
+- (HBCIError *)error {
     return error;
 }
 
-- (void)startup
-{
+- (void)startup {
     task = [[NSTask alloc] init];
     // The output of stdout and stderr is sent to a pipe so that we can catch it later
     // and send it along to the controller; notice that we don't bother to do anything with stdin,
@@ -172,19 +190,21 @@
         }
         [asyncString setString: @""];
 
-        if (resultExists == YES) {
+        if (resultExists) {
             PecuniaError *err = nil;
             if (error) {
                 err = [error toPecuniaError];
             }
-            [[CallbackHandler handler] finishPasswordEntry];
-            //running = NO;
+            [authRequest finishPasswordEntry];
+
             [asyncSender asyncCommandCompletedWithResult: result error: err];
             [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
-        } else {[[aNotification object] readInBackgroundAndNotify]; }
+        } else {
+            [[aNotification object] readInBackgroundAndNotify];
+        }
     } else {
-        if (resultExists == NO) {
+        if (!resultExists) {
             [[aNotification object] readInBackgroundAndNotify];
         }
     }
@@ -261,12 +281,13 @@
     }
     NSString *command = [cmd stringByAppendingString: @".\n"];
 
-    // todo: startSession hier ist nur die erste Näherung
-    [[CallbackHandler handler] startSession];
+    authRequest.errorOccured = NO;
     LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [self receive];
-    [[CallbackHandler handler] finishPasswordEntry];
+
+    [authRequest finishPasswordEntry];
+
     if (error) {
         *err = [error toPecuniaError];
         return nil;

@@ -37,7 +37,6 @@
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
 #import "DonationMessageController.h"
-#import "BankQueryResult.h"
 #import "CategoryView.h"
 #import "HBCIController.h"
 #import "StatCatAssignment.h"
@@ -283,10 +282,13 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
+    RemoteResourceManager *resourceManager = RemoteResourceManager.sharedManager; // Creates singleton.
     if ([userDefaults boolForKey: @"autoCasing"]) {
         [resourceManager addManagedFile: @"words.zip"];
     }
+
+    [PluginRegistry startup];
+    
     LogLeave;
 }
 
@@ -904,18 +906,6 @@ static BankingController *bankinControllerInstance;
                         );
     }
 
-    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: selectedAccounts.count];
-    for (BankAccount *account in selectedAccounts) {
-        if (account.userId != nil) {
-            BankQueryResult *result = [[BankQueryResult alloc] init];
-            result.accountNumber = account.accountNumber;
-            result.accountSubnumber = account.accountSuffix;
-            result.bankCode = account.bankCode;
-            result.userId = account.userId;
-            result.account = account;
-            [resultList addObject: result];
-        }
-    }
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
@@ -923,7 +913,7 @@ static BankingController *bankinControllerInstance;
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
 
-    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+    if ([defaults boolForKey: @"manualTransactionCheck"] && selectWindowController == nil) {
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
 
@@ -935,7 +925,7 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(statementsFinalizeNotification:)
                                                  name: PecuniaStatementsFinalizeNotification
                                                object: nil];
-    [[HBCIController controller] getStatements: resultList];
+    [[HBCIController controller] getStatements: selectedAccounts];
 
     LogLeave;
 }
@@ -984,7 +974,7 @@ static BankingController *bankinControllerInstance;
 
     // check for updated login data
     for (result in resultList) {
-        BankUser *user = [BankUser userWithId: result.userId bankCode: result.bankCode];
+        BankUser *user = [BankUser findUserWithId: result.account.userId bankCode: result.account.bankCode];
         if (user != nil) {
             [user checkForUpdatedLoginData];
         }
@@ -3516,7 +3506,7 @@ static BankingController *bankinControllerInstance;
             if ([NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]) {
                 // User switched auto casing on. Start downloading the word data file
                 // if it needs to be updated.
-                if ([RemoteResourceManager.manager fileNeedsUpdate: @"words.zip"]) {
+                if ([RemoteResourceManager.sharedManager fileNeedsUpdate: @"words.zip"]) {
                     NSAlert *alert = [NSAlert new];
                     alert.alertStyle = NSWarningAlertStyle;
                     alert.messageText = NSLocalizedString(@"AP1700", nil);
@@ -3525,13 +3515,13 @@ static BankingController *bankinControllerInstance;
                     [alert addButtonWithTitle: NSLocalizedString(@"AP1706", nil)];
                     [alert beginSheetModalForWindow: mainWindow completionHandler: ^(NSModalResponse returnCode) {
                         if (returnCode == NSAlertFirstButtonReturn) {
-                            [RemoteResourceManager.manager addManagedFile: @"words.zip"];
+                            [RemoteResourceManager.sharedManager addManagedFile: @"words.zip"];
                         } else {
                             [NSUserDefaults.standardUserDefaults setBool: NO forKey: @"autoCasing"];
                         }
                     }];
                 } else {
-                    [RemoteResourceManager.manager addManagedFile: @"words.zip"];
+                    [RemoteResourceManager.sharedManager addManagedFile: @"words.zip"];
                 }
             } else {
                 // User switched off auto casing. Ask for deleting data.
@@ -3544,7 +3534,7 @@ static BankingController *bankinControllerInstance;
                     [alert addButtonWithTitle: NSLocalizedString(@"AP1702", nil)];
                     [alert beginSheetModalForWindow: mainWindow completionHandler: ^(NSModalResponse returnCode) {
                         if (returnCode == NSAlertSecondButtonReturn) {
-                            [RemoteResourceManager.manager removeManagedFile: @"words.zip"];
+                            [RemoteResourceManager.sharedManager removeManagedFile: @"words.zip"];
                             [WordMapping removeWordMappings];
                         }
                     }];
@@ -3686,7 +3676,7 @@ static BankingController *bankinControllerInstance;
             if ([invalidUsers containsObject: account.userId]) {
                 continue;
             }
-            BankUser *user = [BankUser userWithId: account.userId bankCode: account.bankCode];
+            BankUser *user = [BankUser findUserWithId: account.userId bankCode: account.bankCode];
             if (user) {
                 NSMutableSet *users = [account mutableSetValueForKey: @"users"];
                 [users addObject: user];
@@ -3763,7 +3753,22 @@ static BankingController *bankinControllerInstance;
         settings[@"Migrated112"] = @YES;
     }
 
+    if (![settings boolForKey: @"Migrated121"]) {
 
+        // Update plugin settings accounts.
+        for (BankUser *user in BankUser.allUsers) {
+            for (BankAccount *account in user.accounts) {
+                if (account.plugin.length == 0) {
+                    account.plugin = [PluginRegistry pluginForAccount: account.accountNumber bankCode: account.bankCode];
+                    if (account.plugin.length == 0) {
+                        account.plugin = @"hbci";
+                    }
+                }
+            }
+        }
+
+        settings[@"Migrated121"] = @YES;
+    }
 
     LogLeave;
 }

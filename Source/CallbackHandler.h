@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,38 +17,18 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
 @class CallbackData;
-@class PasswordWindow;
+@class PasswordController;
 @class NotificationWindowController;
-@class SigningOption;
+@class HBCIBridge;
 
 @interface CallbackHandler : NSObject {
-    PasswordWindow *pwWindow;
-    NSString       *currentPwService;
-    NSString       *currentPwAccount;
-    BOOL           errorOccured;
-
     NotificationWindowController *notificationController;
-    SigningOption                *currentSigningOption;
 }
 
-@property (nonatomic, strong) NSMutableDictionary          *currentSignOptions;
-@property (nonatomic, strong) SigningOption                *currentSigningOption;
 @property (nonatomic, strong) NotificationWindowController *notificationController;
 
-
-
-- (void)startSession;
-- (NSString *)getPassword;
-- (void)finishPasswordEntry;
-- (NSString *)getNewPassword: (CallbackData *)data;
-- (NSString *)getTanMethod: (CallbackData *)data;
-- (NSString *)getPin: (CallbackData *)data;
-- (NSString *)getTan: (CallbackData *)data;
-- (NSString *)getTanMedia: (CallbackData *)data;
-- (NSString *)callbackWithData: (CallbackData *)data;
-- (void)setErrorOccured;
+- (NSString *)callbackWithData: (CallbackData *)data parent: (HBCIBridge *)parent;
 
 + (CallbackHandler *)handler;
 

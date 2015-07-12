@@ -29,6 +29,8 @@
 
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
+#import "MOAssistant.h"
+
 static NSArray *catCache = nil;
 
 static NSRegularExpression *ibanRE;
@@ -63,7 +65,7 @@ static NSRegularExpression *bicRE;
 
 BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b) {
     int            i = 0, j = 0;
-    int            l1, l2;
+    NSInteger      l1, l2;
     BOOL           done = NO;
     NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
@@ -150,6 +152,11 @@ BOOL stringEqual(NSString *a, NSString *b) {
                                                           options: 0
                                                             error: nil];
     }
+}
+
+// Helper factory method to create a BankStatement instance in the memory context.
++ (instancetype)createTemporary {
+    return [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement" inManagedObjectContext: MOAssistant.sharedAssistant.memContext];
 }
 
 - (NSString *)categoriesDescription {

@@ -386,7 +386,7 @@ extern IS8 CT_data(IU16 ctn, IU8 *dad, IU8 *sad, IU16 lenc, IU8 *command, IU16 *
 			return(CTAPI_OK);
 	};
 	
-	LogError(@"CT_data: Request not handled");
+	LogDebug(@"CT_data: Request not handled");
 	return(CTAPI_ERR_INVALID);
 }
 

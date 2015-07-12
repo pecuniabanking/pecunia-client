@@ -25,7 +25,6 @@
 #import "MOAssistant.h"
 #import "BankStatement.h"
 #import "StatusBarController.h"
-#import "BankQueryResult.h"
 
 @implementation BSSelectWindowController
 
