@@ -1,4 +1,4 @@
-// Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
+// Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -21,6 +21,7 @@ extension NSDecimalNumber : Comparable {
     private static var numberHandler: NSDecimalNumberHandler? = nil;
     private static var outboundHandler: NSDecimalNumberHandler? = nil;
     private static var roundDownHandler: NSDecimalNumberHandler? = nil;
+    private static let separators = NSCharacterSet.init(charactersInString: ".,");
 
     override public class func initialize() {
         super.initialize();
@@ -37,6 +38,58 @@ extension NSDecimalNumber : Comparable {
         roundDownHandler = NSDecimalNumberHandler(roundingMode: .RoundDown, scale: Int16(NSDecimalNoScale),
             raiseOnExactness: false, raiseOnOverflow: true, raiseOnUnderflow: true,
             raiseOnDivideByZero: true);
+    }
+
+    // Tries to determine the correct group and decimal separators automatically.
+    // In order for that to work we have to apply some heuristics to get the correct format.
+    // For simplicity we assume that the number of fractional digits
+    // is always 2 and the number of group digits is always 3. This lets us check the first
+    // non-digit value from the right side. If that separates only 2 digits it's the decimal
+    // separator, otherwise the group separator. Since in financial data we additionally only
+    // have 2 separator values (comma and dot, at least in those values Pecunia can deal with),
+    // it's easy to continue from that decision.
+    class func fromString(input: String) -> NSDecimalNumber? {
+        var formatter = NSNumberFormatter();
+        formatter.generatesDecimalNumbers = true;
+
+        // Split input by space char in order to strip off potential currency values.
+        let values = (input as NSString).componentsSeparatedByString(" ") as! [NSString];
+        if values.count < 1 {
+            return nil;
+        }
+
+        let separatorRange = values[0].rangeOfCharacterFromSet(separators, options: .BackwardsSearch);
+        if separatorRange.length > 0 { // Any separator at all?
+            if separatorRange.length == 1 {
+                formatter.usesGroupingSeparator = true;
+                formatter.groupingSize = 3;
+
+                // One char separator length is the only one we accept.
+                let separator = String(Character(UnicodeScalar(values[0].characterAtIndex(separatorRange.location))));
+                if values[0].length - separatorRange.location == 3 {
+                    // 2 digits
+                    formatter.decimalSeparator = separator;
+                    formatter.groupingSeparator = (separator == ".") ? "," : ".";
+                } else {
+                    formatter.groupingSeparator = separator;
+                    formatter.decimalSeparator = (separator == ".") ? "," : ".";
+                }
+            } else {
+                return nil;
+            }
+        }
+
+        formatter.maximumFractionDigits = 2;
+
+        var object: AnyObject?;
+        var range: NSRange = NSMakeRange(0, count(input));
+        var error: NSError? = nil;
+        formatter.getObjectValue(&object, forString: input, range: &range, error: &error);
+
+        if let number = object as? NSDecimalNumber where error == nil {
+            return number;
+        }
+        return nil;
     }
 
     func isNegative() -> Bool {

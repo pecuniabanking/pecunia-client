@@ -78,25 +78,9 @@ class WebClient: WebView, WebViewJSExport {
 
         if let entries = results.toArray() as? [[String: AnyObject]] {
             var queryResults: [BankQueryResult] = [];
-            var decimalSeparator = ".";
-            var groupSeparator = ",";
-            var groupingSize = 3;
-            var maximumFractionalDigit = 2;
-            if let numberSettings = results.context.objectForKeyedSubscript("numberInfo").toDictionary() as? [String: AnyObject] {
-                if let value = numberSettings["decimalSeparator"] as? String {
-                    decimalSeparator = value;
-                }
-                if let value = numberSettings["groupSeparator"] as? String {
-                    groupSeparator = value;
-                }
-                if let value = numberSettings["groupingSize"] as? NSNumber {
-                    groupingSize = value.integerValue;
-                }
-                if let value = numberSettings["maximumFractionalDigit"] as? NSNumber {
-                    maximumFractionalDigit = value.integerValue;
-                }
-            }
 
+            // Unfortunately, the number format can change within a single set of values, which makes it
+            // impossible to just have the plugin specify it for us.
             for entry in entries {
                 var queryResult = BankQueryResult();
 
@@ -116,14 +100,17 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                let balance = (entry["balance"] as! String);
-                queryResult.balance = NSDecimalNumber(string: balance, locale: NSLocale.currentLocale()); // Returns the value up to the currency code (if any).
+                if let value = entry["balance"] as? String where count(value) > 0 {
+                    if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
+                        queryResult.balance = number;
+                    }
+                }
 
                 let statements = entry["statements"] as! [[String: AnyObject]];
                 for jsonStatement in statements {
                     var statement: BankStatement = BankStatement.createTemporary();
                     if let final = jsonStatement["final"] as? Bool {
-                        statement.isPreliminary = final;
+                        statement.isPreliminary = !final;
                     }
 
                     if let date = jsonStatement["valutaDate"] as? NSDate {
@@ -139,26 +126,11 @@ class WebClient: WebView, WebViewJSExport {
                     }
 
                     if let value = jsonStatement["value"] as? String  where count(value) > 0 {
-                        var formatter = NSNumberFormatter();
-                        formatter.generatesDecimalNumbers = true;
-                        if count(decimalSeparator) > 0 {
-                            formatter.usesGroupingSeparator = true;
-                            formatter.groupingSeparator = groupSeparator;
-                        }
-                        formatter.decimalSeparator = decimalSeparator;
-                        formatter.groupingSize = groupingSize;
-                        formatter.maximumFractionDigits = maximumFractionalDigit;
-
-                        var object: AnyObject?;
-                        var range: NSRange = NSMakeRange(0, count(value));
-                        var error: NSError? = nil;
-                        formatter.getObjectValue(&object, forString: value, range: &range, error: &error);
-
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
                         // Using dictionary access instead for the time being until this is resolved.
-                        if let number = object as? NSDecimalNumber where error == nil {
+                        if let number = NSDecimalNumber.fromString(value) {
                             statement.setValue(number, forKey: "value");
                         } else {
                             statement.setValue(NSDecimalNumber(int: 0), forKey: "value");
@@ -166,10 +138,16 @@ class WebClient: WebView, WebViewJSExport {
                     }
 
                     if let value = jsonStatement["originalValue"] as? String where count(value) > 0 {
-                        statement.origValue = NSDecimalNumber(string: value, locale: NSLocale.currentLocale());
+                        if let number = NSDecimalNumber.fromString(value) {
+                            statement.origValue = number;
+                        }
                     }
                     queryResult.statements.append(statement);
                 }
+
+                // Explicitly sort by date, as it might happen that statements have a different
+                // sorting (e.g. by valuta date).
+                queryResult.statements.sort({ $0.date < $1.date });
                 queryResults.append(queryResult);
             }
             completion(queryResults);
