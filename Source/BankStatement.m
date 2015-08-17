@@ -238,8 +238,17 @@ BOOL stringEqual(NSString *a, NSString *b) {
  */
 - (void)extractSEPADataUsingContext: (NSManagedObjectContext *)context {
     // Examine purpose to see if we need to extract SEPA informations.
-    NSDictionary *values = [SEPAMT94xPurposeParser parse: self.purpose];
-    if (values.count > 0) {
+    NSDictionary *values = nil;
+    
+    @try {
+        values = [SEPAMT94xPurposeParser parse: self.purpose];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception when parsing SEPA information from %@", self.purpose);
+        return;
+    }
+
+    if (values != nil && values.count > 0) {
         if (self.sepa == nil) {
             self.sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
                                                       inManagedObjectContext: context];
@@ -251,12 +260,18 @@ BOOL stringEqual(NSString *a, NSString *b) {
             sepaDateFormatter.dateFormat = @"yyyy-MM-dd";
         }
 
-        if ([IBANtools isValidIBAN: values[@"IBAN"]] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
-            self.remoteIBAN = values[@"IBAN"];
+        @try {
+            if ([IBANtools isValidIBAN: values[@"IBAN"]] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
+                self.remoteIBAN = values[@"IBAN"];
+            }
+            if ([IBANtools isValidBIC: values[@"BIC"]] && ![IBANtools isValidBIC: self.remoteBIC]) {
+                self.remoteBIC = values[@"BIC"];
+            }
         }
-        if ([IBANtools isValidBIC: values[@"BIC"]] && ![IBANtools isValidBIC: self.remoteBIC]) {
-            self.remoteBIC = values[@"BIC"];
+        @catch (NSException *exception) {
+            NSLog(@"Exception while checking IBAN/BIC");
         }
+
         self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.
         self.sepa.purpose = values[@"SVWZ"];
         self.sepa.ultimateDebitorId = values[@"ABWA"];
@@ -266,7 +281,9 @@ BOOL stringEqual(NSString *a, NSString *b) {
         self.sepa.creditorId = values[@"CRED"];
         if (values[@"MDAT"] != nil) {
             NSDate *date = [sepaDateFormatter dateFromString: values[@"MDAT"]];
-            self.sepa.mandateSignatureDate = date;
+            if (date != nil) {
+                self.sepa.mandateSignatureDate = date;
+            }
         } else {
             self.sepa.mandateSignatureDate = nil;
         }
@@ -275,7 +292,9 @@ BOOL stringEqual(NSString *a, NSString *b) {
         self.sepa.oldMandateId = values[@"ORMR"];
         if (values[@"DDAT"] != nil) {
             NSDate *date = [sepaDateFormatter dateFromString: values[@"DDAT"]];
-            self.sepa.settlementDate = date;
+            if (date != nil) {
+                self.sepa.settlementDate = date;
+            }
         } else {
             self.sepa.settlementDate = nil;
         }

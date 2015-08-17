@@ -59,6 +59,7 @@ extern NSString *const CategoryKey;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
     account.balance = acc.balance;
+    account.isManual = acc.isManual;
 
     return self;
 }
@@ -223,7 +224,7 @@ extern NSString *const CategoryKey;
 
 - (BOOL)check
 {
-    if (![IBANtools isValidIBAN: account.iban]) {
+    if (![account.isManual boolValue] && ![IBANtools isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
