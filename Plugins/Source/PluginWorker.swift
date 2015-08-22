@@ -47,6 +47,7 @@ internal class UserQueryEntry {
 
 class WebClient: WebView, WebViewJSExport {
     private var redirecting: Bool = false;
+    private var pluginDescription: String = ""; // The plugin description for error messages.
 
     var URL: String {
         get {
@@ -64,11 +65,13 @@ class WebClient: WebView, WebViewJSExport {
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { ([BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
-    func reportError(message: String) {
+    func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
         
         let alert = NSAlert();
-        alert.messageText = message;
+        alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: ""),
+            account, pluginDescription) as String;
+        alert.informativeText = message;
         alert.alertStyle = .WarningAlertStyle;
         alert.runModal();
     }
@@ -190,6 +193,7 @@ class PluginContext : NSObject {
         if hostWindow != nil {
             hostWindow!.contentView = webClient;
         }
+        webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
     }
 
     init?(script: String, logger: JSLogger, hostWindow: NSWindow?) {
@@ -213,6 +217,7 @@ class PluginContext : NSObject {
         if hostWindow != nil {
             hostWindow!.contentView = webClient;
         }
+        webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
     }
 
     // MARK: - Setup

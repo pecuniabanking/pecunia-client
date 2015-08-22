@@ -584,7 +584,7 @@ extension WebFrame: WebFrameJSExport {
     var callback: JSValue { get set };
 
     func resultsArrived(results: JSValue) -> Void;
-    func reportError(message: String) -> Void;
+    func reportError(account: String, _ message: String) -> Void;
 
     // WebView exports.
     static func canShowMIMEType(MIMEType: String!) -> Bool;

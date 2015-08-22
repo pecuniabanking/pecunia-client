@@ -791,7 +791,11 @@ AP1704 = "Für die automatische Groß-/Kleinschreibung werden lexikalische Daten
 AP1705 = "Daten importieren";
 AP1706 = "Option deaktivert lassen";
 
-// Use a new block of IDs for the next set of strings!
+// Plugin messages
 // AP1800..AP1849
+AP1800 = "Bei der Bearbeitung des Kontos %@ (%@) trat ein Fehler auf.";
+
+// Use a new block of IDs for the next set of strings!
+// AP1850..AP1899
 
 

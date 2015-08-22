@@ -29,7 +29,7 @@ var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index
 
 // Credit card URLs.
 var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
-var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.creditcard.CreditcardTransactionSearch&$event=csvExport";
+var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.transaction.CreditCard.CreditcardTransactionSearch&$event=csvExport";
 
 // Optionial function to support auto account type determination.
 function canHandle(account, bankCode) {
@@ -90,6 +90,13 @@ function getStatements(user, bankCode, password, from, to, creditCardNumbers) {
 var singleStep = false;
 
 function navigationCallback(doStep) {
+	// Check if we ended up on an unknown page (which indicates that our URLs might be wrong).
+	var text = webClient.mainFrameDocument.body.innerText;
+	if (text.indexOf("Fehler - Seite konnte nicht gefunden werden") >= 0) {
+		errorExit("Das Plugin wurde auf eine Fehlerseite der Bank umgeleitet. Möglicherweise ist eine URL falsch.");
+		return;
+	}
+	
     if (singleStep) {
         // We executed a step and hold the state machine here.
         singleStep = false;
@@ -117,8 +124,7 @@ function navigationCallback(doStep) {
                 var submitLogin = formLogin.elements.namedItem("buttonlogin");
                 if (submitLogin != null) {
                     // TODO: localization support.
-                    webClient.reportError("Die Anmeldung ist fehlgeschlagen. Falsche PIN verwendet?");
-                    webClient.resultsArrived([], "", "");
+                    errorExit("Die Anmeldung ist fehlgeschlagen. Falsche PIN verwendet?");
                     currentState = 0;
                     webClient.callback = null;
 
@@ -134,11 +140,13 @@ function navigationCallback(doStep) {
                 break;
 
             case 14: // Arrived at list of statements. Start CSV export and collect results.
+            	logger.logDebug("URL after retrieving statements: " + webClient.URL);
                 currentState = 15;
                 webClient.URL = dkbCsvURL;
                 break;
 
             case 15:
+            	logger.logDebug("URL after loading csv data: " + webClient.URL);
                 convertCsvToResult();
                 break;
 
@@ -156,7 +164,7 @@ function navigationCallback(doStep) {
         }
     } catch (err) {
         if (currentState != 99) // If exception not triggered by logout.
-            logOut();
+            errorExit("Bei der Ausführung des Scripts kam es zu einem unerwarteten Fehler. Ausführung wurde abgebrochen.");
         throw err;
     }
 }
@@ -242,10 +250,10 @@ function readNextCreditCard() {
     } else if (url.indexOf("/dkb") !== -1) {
         for (var i = 0; i < webClient.mainFrameDocument.forms.length; ++i) {
             var form = webClient.mainFrameDocument.forms.item(i);
-            if (form.name == "form772007528_1")
+            if (form.name == "form1579108072_1")
                 break;
         }
-        //var form = webClient.mainFrameDocument.forms.namedItem("form772007528_1"); namedItem doesn't work on forms it seems.
+        //var form = webClient.mainFrameDocument.forms.namedItem("form1579108072_1"); namedItem doesn't work on forms it seems.
         var creditCardSelector = form.elements.namedItem("slCreditCard");
     } else {
         throw "Unknown URL, couldn't get credit card overview";
@@ -303,6 +311,7 @@ function convertCsvToResult() {
 
     logger.logDebug("Converting results");
     var lines = webClient.mainFrameDocument.body.innerText.split("\n");
+	logger.logVerbose("CSV data: " + lines);
 
     var statements = [];
     var headers = ["final", "valutaDate", "date", "transactionText", "value", "originalValue"];
@@ -312,6 +321,8 @@ function convertCsvToResult() {
     var lastSettleDate = new Date();
     for (var i = 0; i < 8; ++i) {
         var currentLine = lines[i].split(";");
+		logger.logVerbose("CSV line " + i + ", values: " + currentLine);
+		
         if (currentLine.length > 0) {
             if (unquote(currentLine[0]) == "Saldo:") {
                 balance = unquote(currentLine[1]);
@@ -360,12 +371,30 @@ function convertCsvToResult() {
     webClient.goBack(); // Back to credit card selection.
 }
 
+function errorExit(message) {
+	try
+	{
+		logger.logVerbose("Accounts: " + numbers);
+		logger.logVerbose("currentCreditCardIndex: " + currentCreditCardIndex);
+
+		var index = (currentCreditCardIndex == undefined) ? 0 : currentCreditCardIndex;
+		webClient.reportError(numbers[index], message);
+		webClient.resultsArrived(results);
+	}
+	finally {
+		//logOut();
+	}
+}
+
 function sleepFor(sleepDuration) { // Debugging helper.
     var now = new Date().getTime();
     while(new Date().getTime() < now + sleepDuration) { /* do nothing */ } 
 }
 
 function unquote(text) {
+	if (text == undefined)
+		return "";
+		
     if ((text[0] === "\"" && text[text.length - 1] === "\"") || (text[0] === "'" && text[text.length - 1] === "'")) {
         return text.slice(1, text.length - 1);
     };
