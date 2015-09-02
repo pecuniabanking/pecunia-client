@@ -134,11 +134,20 @@ ChipcardHandler *_handler = nil;
         return nil;
     }
     
-    NSString *country = [NSString stringWithUTF8String:(char*)data->country];
-    NSString *blz = [NSString stringWithUTF8String:(char*)data->blz];
-    NSString *host = [NSString stringWithUTF8String:(char*)data->commaddr];
-    NSString *userid = [NSString stringWithUTF8String:(char*)data->userid];
-
+    //NSString *country = [NSString stringWithUTF8String:(char*)data->country];
+    NSString *country = [[NSString alloc] initWithBytes:data->country length:5 encoding:NSISOLatin1StringEncoding];
+    //NSString *blz = [NSString stringWithUTF8String:(char*)data->blz];
+    NSString *blz = [[NSString alloc] initWithBytes:data->blz length:10 encoding:NSISOLatin1StringEncoding];
+    //NSString *host = [NSString stringWithUTF8String:(char*)data->commaddr];
+    NSString *host = [[NSString alloc] initWithBytes:data->commaddr length:30 encoding:NSISOLatin1StringEncoding];
+    //NSString *userid = [NSString stringWithUTF8String:(char*)data->userid];
+    NSString *userid = [[NSString alloc] initWithBytes:data->userid length:32 encoding:NSISOLatin1StringEncoding];
+    
+    country = [country stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    blz = [blz stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    host = [host stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    userid = [userid stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
     return [NSString stringWithFormat:@"%@|%@|%@|%@", country, blz, host, userid];
 }
 
