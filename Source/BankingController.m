@@ -600,14 +600,14 @@ static BankingController *bankinControllerInstance;
     [bankAccount invalidateCacheIncludeParents: YES recursive: YES];
 
     //  Delete bank statements which are not assigned first
-    NSSet *statements = [bankAccount valueForKey: @"statements"];
+    NSSet *statements = [[bankAccount valueForKey: @"statements"] copy];
     if (!keepAssignedStats) {
         for (BankStatement *statement in statements) {
             [managedObjectContext deleteObject: statement];
         }
     } else {
         for (BankStatement *statement in statements) {
-            NSSet *assignments = [statement mutableSetValueForKey: @"assignments"];
+            NSSet *assignments = [[statement mutableSetValueForKey: @"assignments"] copy];
             if ([assignments count] < 2) {
                 [managedObjectContext deleteObject: statement];
             } else if ([assignments count] == 2) {
@@ -3746,7 +3746,12 @@ static BankingController *bankinControllerInstance;
                             );
 
             for (BankStatement *stat in statements) {
-                [stat extractSEPADataUsingContext: context];
+                @try {
+                    [stat extractSEPADataUsingContext: context];
+                }
+                @catch (NSException *exception) {
+                    NSLog(@"Exception inside SEPA data extract for purpose %@", stat.purpose);
+                }
             }
         }
         settings[@"Migrated112"] = @YES;

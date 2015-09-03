@@ -2696,7 +2696,6 @@
 				B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */,
 				B1835C0B15D2A1A2003B93ED /* SigningOptionsController.h */,
 				B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */,
-				B1A6AA351A2672C400141C39 /* ddv_writesigid.m */,
 				B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */,
 				B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */,
 				B14D4C7113DB608D00843BE6 /* TanMethodListController.h */,
@@ -2888,6 +2887,7 @@
 		B1A6AA221A26722E00141C39 /* Chipcards */ = {
 			isa = PBXGroup;
 			children = (
+				B1A6AA351A2672C400141C39 /* ddv_writesigid.m */,
 				B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */,
 				B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */,
 				B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */,
@@ -3243,7 +3243,7 @@
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
-						DevelopmentTeam = 4P379L9Y2H;
+						DevelopmentTeam = JY3Q678PYA;
 					};
 					8D1107260486CEB800E47090 = {
 						DevelopmentTeam = JY3Q678PYA;

@@ -112,7 +112,7 @@
         [self.window close];
     }
 }
-/*
+
 - (void)windowWillClose: (NSNotification *)aNotification
 {
     if (active) {
@@ -127,7 +127,7 @@
         active = NO;
     }
 }
-*/
+
 - (void)windowDidLoad
 {
     inputText.stringValue = text;
