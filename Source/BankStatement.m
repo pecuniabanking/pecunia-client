@@ -261,11 +261,21 @@ BOOL stringEqual(NSString *a, NSString *b) {
         }
 
         @try {
-            if ([IBANtools isValidIBAN: values[@"IBAN"]] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
-                self.remoteIBAN = values[@"IBAN"];
+            NSString *iban = values[@"IBAN"];
+            if ([IBANtools isValidIBAN: iban] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
+                if (iban != nil && iban.length <= 34) {
+                    self.remoteIBAN = iban;
+                } else {
+                    LogError(@"Could not extract IBAN information from %@, IBAN %@ is not valid", self.purpose, iban);
+                }
             }
-            if ([IBANtools isValidBIC: values[@"BIC"]] && ![IBANtools isValidBIC: self.remoteBIC]) {
-                self.remoteBIC = values[@"BIC"];
+            NSString *bic = values[@"BIC"];
+            if ([IBANtools isValidBIC: bic] && ![IBANtools isValidBIC: self.remoteBIC]) {
+                if (bic != nil && bic.length <= 11) {
+                    self.remoteBIC = bic;
+                } else {
+                    LogError(@"Could not extract BIC information from %@, BIC %@ is not valid", self.purpose, bic);
+                }
             }
         }
         @catch (NSException *exception) {
