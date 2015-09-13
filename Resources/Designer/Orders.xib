@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="StandingOrderController">
@@ -540,7 +540,7 @@ IA
                             </connections>
                         </popUpButton>
                         <button toolTip="Bearbeitung abbrechen und Auftrag löschen." id="578">
-                            <rect key="frame" x="15" y="497" width="16" height="16"/>
+                            <rect key="frame" x="17" y="497" width="16" height="16"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="delete2" imagePosition="only" alignment="center" inset="2" id="579">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -658,7 +658,7 @@ IA
                 </customView>
             </subviews>
         </customView>
-        <arrayController mode="entity" entityName="StandingOrder" automaticallyPreparesContent="YES" clearsFilterPredicateOnInsertion="NO" automaticallyRearrangesObjects="YES" id="2" userLabel="Orders">
+        <arrayController mode="entity" entityName="StandingOrder" automaticallyPreparesContent="YES" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="2" userLabel="Orders">
             <declaredKeys>
                 <string>account.accountNumber</string>
                 <string>account.bankCode</string>

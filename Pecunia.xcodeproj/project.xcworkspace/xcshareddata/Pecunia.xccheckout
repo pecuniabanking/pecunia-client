@@ -7,43 +7,35 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>558B1DEE-5D99-40FF-A732-F84EDCDE05F1</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>Pecunia</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3</key>
-		<string>https://github.com/pecuniabanking/pecunia-client</string>
+		<string>https://github.com/pecuniabanking/pecunia-client.git</string>
 		<key>E2F476CE895D3596DBE8080E8F363F8F94823E70</key>
 		<string>https://github.com/pNre/ExSwift</string>
 		<key>F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A</key>
 		<string>https://github.com/mike-lischke/IBANTools</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Pecunia.xcodeproj/project.xcworkspace</string>
+	<string>Pecunia.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3</key>
 		<string>../..</string>
 		<key>E2F476CE895D3596DBE8080E8F363F8F94823E70</key>
-		<string>../..Submodules/ExSwift/</string>
+		<string>../..Submodules/ExSwift</string>
 		<key>F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A</key>
-		<string>../..Submodules/IBANtools/</string>
+		<string>../..Submodules/IBANtools</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/pecuniabanking/pecunia-client</string>
+	<string>https://github.com/pecuniabanking/pecunia-client.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
 	<string>0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3</string>
-			<key>IDESourceControlWCCName</key>
-			<string>client</string>
-		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
@@ -59,6 +51,14 @@
 			<string>F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>IBANtools</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Pecunia12</string>
 		</dict>
 	</array>
 </dict>

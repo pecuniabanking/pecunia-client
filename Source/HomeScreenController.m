@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -134,7 +134,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     title = aTitle;
     NSDictionary *attributes = @{
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 14]
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 14 bold: false]
     };
     titleString = [[NSAttributedString alloc] initWithString: title attributes: attributes];
 
@@ -308,7 +308,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
         [paragraphStyle setMaximumLineHeight: 15];
         mainDateAttributes = @{
             NSForegroundColorAttributeName: [NSColor whiteColor],
-            NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 18],
+            NSFontAttributeName: [PreferenceController mainFontOfSize: 18 bold: false],
             NSParagraphStyleAttributeName: paragraphStyle
         };
 

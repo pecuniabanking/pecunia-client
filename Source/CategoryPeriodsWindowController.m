@@ -128,7 +128,7 @@ extern void *UserDefaultsBindingContext;
     toSlider.intValue = toIndex;
     [self updateLimitLabel: toText index: toIndex];
 
-    NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+    NSFont *font = [PreferenceController mainFontOfSize: 13 bold: false];
     CGFloat height = floor(font.pointSize);
     valueGrid.defaultCellSize = NSMakeSize(height < 16 ? 100 : 130, height + 8);
     valueGrid.defaultHeaderSize = valueGrid.defaultCellSize;
@@ -182,7 +182,7 @@ extern void *UserDefaultsBindingContext;
             [selectionBox setNeedsDisplay: YES];
         }
         if ([keyPath isEqualToString: @"fontScale"]) {
-            NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: false];
             CGFloat height = floor(font.pointSize);
             valueGrid.defaultCellSize = NSMakeSize(height < 16 ? 100 : 130, height + 8);
             valueGrid.defaultHeaderSize = valueGrid.defaultCellSize;

@@ -52,7 +52,7 @@ extern void *UserDefaultsBindingContext;
 
 @interface OrdersListViewCell ()
 {
-    NSColor *categoryColor;
+    NSColor   *categoryColor;
 }
 
 @end
@@ -78,7 +78,6 @@ extern void *UserDefaultsBindingContext;
     [self registerStandardLabel: remoteNameLabel];
     [self registerStandardLabel: ibanLabel];
     [self registerStandardLabel: bicLabel];
-    [self registerStandardLabel: firstDateLabel];
     [self registerStandardLabel: nextDateLabel];
     [self registerStandardLabel: lastDateLabel];
 
@@ -89,7 +88,6 @@ extern void *UserDefaultsBindingContext;
     [self registerPaleLabel: currencyLabel];
     [self registerPaleLabel: ibanCaption];
     [self registerPaleLabel: bicCaption];
-    [self registerPaleLabel: firstDateTitle];
     [self registerPaleLabel: nextDateTitle];
     [self registerPaleLabel: lastDateTitle];
 }
@@ -105,8 +103,7 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    firstDateLabel.stringValue = [details valueForKey: OrderFirstExecDateKey];
-    nextDateLabel.stringValue = [details valueForKey: StatementDateKey];
+    nextDateLabel.stringValue = [details valueForKey: OrderFirstExecDateKey];
     lastDateLabel.stringValue = [details valueForKey: OrderLastExecDateKey];
 
     remoteNameLabel.stringValue = [details valueForKey: StatementRemoteNameKey];
@@ -212,7 +209,7 @@ static CurrencyValueTransformer *currencyTransformer;
     [path setLineWidth: 1];
 
     // Separator line between main text part and the rest.
-    CGFloat left = [firstDateTitle frame].origin.x + 0.5;
+    CGFloat left = valueLabel.frame.origin.x + 0.5;
     [path moveToPoint: NSMakePoint(left - 6, 10)];
     [path lineToPoint: NSMakePoint(left - 6, bounds.size.height - 10)];
 

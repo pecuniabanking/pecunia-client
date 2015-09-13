@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,7 +25,6 @@
 
 @interface OrdersListViewCell : PecuniaListViewCell
 {
-    IBOutlet NSTextField *firstDateLabel;
     IBOutlet NSTextField *nextDateLabel;
     IBOutlet NSTextField *lastDateLabel;
     IBOutlet NSTextField *bankNameLabel;
@@ -33,7 +32,6 @@
     IBOutlet NSTextField *purposeLabel;
     IBOutlet NSTextField *valueLabel;
     IBOutlet NSTextField *currencyLabel;
-    IBOutlet NSTextField *firstDateTitle;
     IBOutlet NSTextField *lastDateTitle;
     IBOutlet NSTextField *nextDateTitle;
     IBOutlet NSImageView *editImage;

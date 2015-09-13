@@ -972,40 +972,25 @@ static NSDictionary *heightMappings;
     return [defaults boolForKey: @"showCatColorsInTree"];
 }
 
-+ (BOOL)showHiddenCategories
-{
++ (BOOL)showHiddenCategories {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults boolForKey: @"showHiddenCategories"];
 }
 
-static NSString *baseFontName = @"HelveticaNeue";
-
-+ (NSString*)mainFontName
-{
-    return [baseFontName stringByAppendingString: @"-Light"];
++ (NSString *)mainFontName {
+    return [NSFont systemFontOfSize: 13].fontName;
 }
 
-+ (NSString*)mainFontNameMedium
-{
-    return [baseFontName stringByAppendingString: @"-Medium"];
-}
++ (NSString *)mainFontNameBold {
+    return [NSFont boldSystemFontOfSize: 13].fontName;
 
-+ (NSString*)mainFontNameBold
-{
-    return [baseFontName stringByAppendingString: @"-Bold"];
-}
-
-+ (NSString*)popoverFontName
-{
-    return [baseFontName stringByAppendingString: @"-Light"];
 }
 
 /**
- * Returns a font instance for the given font name and base size. The size is increased implictely depending
- * on user settings.
+ * Returns a main (system) font instance for the given base size (and bold trait).
+ * The size is increased implicitly depending on the font scale factor set by the user.
  */
-+ (NSFont *)fontNamed: (NSString *)name baseSize: (CGFloat)size
-{
++ (NSFont *)mainFontOfSize: (CGFloat)size bold: (Boolean)isBold {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"fontScale"] != nil) {
         double scale = [defaults doubleForKey: @"fontScale"];
@@ -1013,8 +998,11 @@ static NSString *baseFontName = @"HelveticaNeue";
             size *= scale;
         }
     }
-    return [NSFont fontWithName: name size: size];
-    //return [NSFont systemFontOfSize: size];
+    if (bold) {
+        return [NSFont systemFontOfSize: size];
+    } else {
+        return [NSFont boldSystemFontOfSize: size];
+    }
 }
 
 #pragma mark - Color ListView delegate protocol

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -97,11 +97,10 @@
 // Query settings + related values.
 + (BOOL)showCategoryColorsInTree;
 + (BOOL)showHiddenCategories;
-+ (NSString *)mainFontName;
-+ (NSString *)mainFontNameMedium;
-+ (NSString *)mainFontNameBold;
-+ (NSString *)popoverFontName;
 
-+ (NSFont *)fontNamed: (NSString *)name baseSize: (CGFloat)size;
++ (NSString *)mainFontName;
++ (NSString *)mainFontNameBold;
+
++ (NSFont *)mainFontOfSize: (CGFloat)size bold: (Boolean)isBold;
 
 @end

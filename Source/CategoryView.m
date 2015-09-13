@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -42,8 +42,7 @@
     BankingCategory *category = [[self itemAtRow: row] representedObject];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    titleAttributes[NSFontAttributeName] = [NSFont fontWithName: PreferenceController.mainFontNameMedium
-                                                           size: 14];
+    titleAttributes[NSFontAttributeName] = [PreferenceController mainFontOfSize: 14 bold: false];
     titleAttributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedRed: 0.177
                                                                                 green: 0.413
                                                                                  blue: 0.809

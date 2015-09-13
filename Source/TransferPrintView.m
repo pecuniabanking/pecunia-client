@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -299,7 +299,7 @@
 
     // Footer
     NSDictionary *attributes = @{
-        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 9],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 9 bold: false],
         NSForegroundColorAttributeName: NSColor.blackColor,
     };
 
@@ -310,7 +310,7 @@
     NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
     style.alignment = NSRightTextAlignment;
     attributes = @{
-        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 9],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 9 bold: false],
         NSForegroundColorAttributeName: NSColor.blackColor,
         NSParagraphStyleAttributeName: style
     };

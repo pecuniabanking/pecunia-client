@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -121,8 +121,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
-#pragma mark -
-#pragma mark Bindings, KVO and KVC
+#pragma mark - Bindings, KVO and KVC
 
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject

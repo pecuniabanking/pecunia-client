@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -97,8 +97,8 @@ extern void *UserDefaultsBindingContext;
                                      nil
                                      ];
 
-    normalAttributes = @{NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13]};
-    selectedAttributes = @{NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 13],
+    normalAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: false]};
+    selectedAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: false],
                            NSForegroundColorAttributeName: NSColor.whiteColor};
 
 

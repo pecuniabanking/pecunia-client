@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -209,7 +209,10 @@ NSDictionary    *whiteAttributes;
 - (void)updateEntry: (NSDictionary *)entry
 {
     NSTextField *field = entry[@"field"];
-    field.font = [PreferenceController fontNamed: entry[@"font"] baseSize: [entry[@"size"] intValue]];
+
+    // For now we ignore the stored font name, as a control should usually use the system font.
+    // If needed we can later take it into account again, hence I leave it in the dict.
+    field.font = [PreferenceController mainFontOfSize: [entry[@"size"] intValue] bold: false];
 
     NSRect frame = field.frame;
     CGRect rect = [field.attributedStringValue boundingRectWithSize: CGSizeMake(NSWidth(frame), FLT_MAX)
