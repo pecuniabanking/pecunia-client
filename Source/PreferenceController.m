@@ -999,9 +999,9 @@ static NSDictionary *heightMappings;
         }
     }
     if (bold) {
-        return [NSFont systemFontOfSize: size];
-    } else {
         return [NSFont boldSystemFontOfSize: size];
+    } else {
+        return [NSFont systemFontOfSize: size];
     }
 }
 
