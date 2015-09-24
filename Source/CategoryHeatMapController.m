@@ -783,7 +783,10 @@ static NSFont *smallNumberFont;
 
 - (void)awakeFromNib
 {
-    helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+    NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
+    if (version.minorVersion >= 10) {
+        helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+    }
 
     formatter = [[NSNumberFormatter alloc] init];
     [formatter setLocale: NSLocale.currentLocale];

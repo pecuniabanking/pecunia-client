@@ -88,7 +88,7 @@ let wordsLoadStride : Int = 50000;
                 }
 
                 // Create an own managed context for each block, so we don't get into concurrency issues.
-                dispatch_apply(blockCount, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), { index in
+                dispatch_apply(blockCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { index in
 
                         // Create a local managed context for this thread.
                         let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;

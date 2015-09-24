@@ -283,10 +283,12 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
+    /*
     RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
     if ([userDefaults boolForKey: @"autoCasing"]) {
         [resourceManager addManagedFile: @"words.zip"];
     }
+    */
     LogLeave;
 }
 
@@ -499,6 +501,11 @@ static BankingController *bankinControllerInstance;
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
+    
+    RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
+    if ([[NSUserDefaults standardUserDefaults] boolForKey: @"autoCasing"]) {
+        [resourceManager addManagedFile: @"words.zip"];
+    }
 
     LogLeave;
 }
@@ -523,7 +530,9 @@ static BankingController *bankinControllerInstance;
 - (void)resourceUpdated: (NSNotification *)notification {
     NSArray *files = notification.object;
     if ([files containsObject: @"words.zip"]) {
+        self.updatingWordList = YES;
         [WordMapping updateWordMappings];
+        self.updatingWordList = NO;
     }
 }
 
@@ -1887,12 +1896,20 @@ static BankingController *bankinControllerInstance;
 - (BOOL)canTerminate {
     LogEnter;
 
+    // check if word list is currently loaded. If so and update is still running, application cannot be terminated
+    if (self.updatingWordList) {
+        NSRunAlertPanel(NSLocalizedString(@"AP146", nil),
+                        NSLocalizedString(@"AP1706", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
+    
     // Check if there are unsent or unfinished transfers. Send unsent transfers if the users says so.
     BOOL canClose = [self checkForUnhandledTransfersAndSend];
     if (!canClose) {
         return NO;
     }
-
+    
     // check if there are BankUsers. If not, don't show the donation popup
     NSArray *users = [BankUser allUsers];
     if ([users count] == 0) {
@@ -3767,8 +3784,6 @@ static BankingController *bankinControllerInstance;
         }
         settings[@"Migrated112"] = @YES;
     }
-
-
 
     LogLeave;
 }

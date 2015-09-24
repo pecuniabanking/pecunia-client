@@ -435,7 +435,10 @@ extern void *UserDefaultsBindingContext;
 
 - (void)awakeFromNib
 {
-    helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+    NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
+    if (version.minorVersion >= 10) {
+        helpPopover.appearance = [NSAppearance appearanceNamed: NSAppearanceNameVibrantDark];
+    }
 
     [topView.window useOptimizedDrawing: YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

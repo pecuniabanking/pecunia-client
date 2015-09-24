@@ -60,7 +60,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-f accounts4"
+            argument = "-f accounts3_2"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-loglevel debug"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

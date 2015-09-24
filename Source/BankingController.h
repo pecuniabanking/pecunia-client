@@ -104,6 +104,7 @@
 @property (nonatomic, assign) BOOL showRecursiveStatements;
 @property (nonatomic, assign) BOOL showDetailsPane;
 @property (nonatomic, assign) BOOL shuttingDown;
+@property (nonatomic, assign) BOOL updatingWordList;
 
 - (IBAction)addAccount: (id)sender;
 - (IBAction)showProperties: (id)sender;
