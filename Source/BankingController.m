@@ -500,6 +500,11 @@ static BankingController *bankinControllerInstance;
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
+    
+    RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
+    if ([[NSUserDefaults standardUserDefaults] boolForKey: @"autoCasing"]) {
+        [resourceManager addManagedFile: @"words.zip"];
+    }
 
     LogLeave;
 }
@@ -524,7 +529,9 @@ static BankingController *bankinControllerInstance;
 - (void)resourceUpdated: (NSNotification *)notification {
     NSArray *files = notification.object;
     if ([files containsObject: @"words.zip"]) {
+        self.updatingWordList = YES;
         [WordMapping updateWordMappings];
+        self.updatingWordList = NO;
     }
 }
 
@@ -1876,12 +1883,20 @@ static BankingController *bankinControllerInstance;
 - (BOOL)canTerminate {
     LogEnter;
 
+    // Check if word list is currently loaded. If so and update is still running, application cannot be terminated.
+    if (self.updatingWordList) {
+        NSRunAlertPanel(NSLocalizedString(@"AP34", nil),
+                        NSLocalizedString(@"AP1707", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
+    
     // Check if there are unsent or unfinished transfers. Send unsent transfers if the users says so.
     BOOL canClose = [self checkForUnhandledTransfersAndSend];
     if (!canClose) {
         return NO;
     }
-
+    
     // check if there are BankUsers. If not, don't show the donation popup
     NSArray *users = [BankUser allUsers];
     if ([users count] == 0) {

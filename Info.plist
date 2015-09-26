@@ -30,7 +30,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Pecunia</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.pecuniabanking.pecunia</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -40,7 +40,7 @@
 	<key>CFBundleSignature</key>
 	<string>EMMI</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.0</string>
+	<string>1.2.07</string>
 	<key>HPDBookIconPath</key>
 	<string>Pecunia</string>
 	<key>LSApplicationCategoryType</key>

@@ -75,10 +75,12 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
 
     public func addManagedFile(fileName: String) {
         logEnter();
-        let backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
+        
+        let backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
         dispatch_async(backgroundQueue, {
             self.updateFileAndNotify(fileName);
         })
+
         logLeave();
     }
 

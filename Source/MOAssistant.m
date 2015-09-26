@@ -313,6 +313,30 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     }
 }
 
+- (void)backup {
+    NSError *error = nil;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *fileName = self.isEncrypted? _dataFileCrypted: _dataFileStandard;
+    
+    NSURL *sourceURL = [pecuniaFileURL URLByAppendingPathComponent:fileName];
+    fileName = [fileName stringByAppendingString:@".bak"];
+    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent:fileName];
+    
+    // if there is a backup file already, remove it first
+    if ([fm fileExistsAtPath:[targetURL path]]) {
+        [fm removeItemAtURL:targetURL error:&error];
+        if (error != nil) {
+            LogError(@"Backup of store was not possible, old backup file could not be removed");
+            return;
+        }
+    }
+    
+    [fm copyItemAtURL:sourceURL toURL:targetURL error:&error];
+    if (error != nil) {
+        LogError(@"Backup of store was not possible");
+    }
+}
+
 - (BOOL)checkIsEncrypted {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSURL         *dataFileURL = [dataDirURL URLByAppendingPathComponent: dataFilename];
@@ -551,9 +575,6 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     LogDebug(@"Persistent stores released");
 
-    if ([context hasChanges]) {
-        [context save: &error];
-    }
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -959,6 +980,17 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     }
 
     NSError *error = nil;
+    
+    // check if store needs migration
+    NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                                              URL:accountsURL
+                                                                                            error:&error];
+    if (sourceMetadata != nil) {
+        if (![model isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata]) {
+            // create a backup of the source file
+            [self backup];
+        }
+    }
 
     LogInfo(@"Adding main store from %@", accountsURL);
     [coordinator addPersistentStoreWithType: NSSQLiteStoreType

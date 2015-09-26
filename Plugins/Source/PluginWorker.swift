@@ -63,7 +63,7 @@ class WebClient: WebView, WebViewJSExport {
 
     var query: UserQueryEntry?;
     var callback: JSValue = JSValue();
-    var completion: ([BankQueryResult]) -> Void = { ([BankQueryResult]) -> Void in }; // Block to call on results arrival.
+    var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
     func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.

@@ -27,7 +27,7 @@
 #import "SEPAMT94xPurposeParser.h"
 #import "SepaData.h"
 
-#import "MOAssistant.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 
 static NSArray *catCache = nil;
 
@@ -63,7 +63,7 @@ static NSRegularExpression *bicRE;
 
 BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b) {
     int            i = 0, j = 0;
-    NSInteger      l1, l2;
+    int            l1, l2;
     BOOL           done = NO;
     NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
@@ -150,11 +150,6 @@ BOOL stringEqual(NSString *a, NSString *b) {
                                                           options: 0
                                                             error: nil];
     }
-}
-
-// Helper factory method to create a BankStatement instance in the memory context.
-+ (instancetype)createTemporary {
-    return [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement" inManagedObjectContext: MOAssistant.sharedAssistant.memContext];
 }
 
 - (NSString *)categoriesDescription {
@@ -252,7 +247,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         NSLog(@"Exception when parsing SEPA information from %@", self.purpose);
         return;
     }
-    
+
     if (values != nil && values.count > 0) {
         if (self.sepa == nil) {
             self.sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
@@ -266,17 +261,27 @@ BOOL stringEqual(NSString *a, NSString *b) {
         }
 
         @try {
-            if ([IBANtools isValidIBAN: values[@"IBAN"]] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
-                self.remoteIBAN = values[@"IBAN"];
+            NSString *iban = values[@"IBAN"];
+            if ([IBANtools isValidIBAN: iban] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
+                if (iban != nil && iban.length <= 34) {
+                    self.remoteIBAN = iban;
+                } else {
+                    LogError(@"Could not extract IBAN information from %@, IBAN %@ is not valid", self.purpose, iban);
+                }
             }
-            if ([IBANtools isValidBIC: values[@"BIC"]] && ![IBANtools isValidBIC: self.remoteBIC]) {
-                self.remoteBIC = values[@"BIC"];
-            }
+            NSString *bic = values[@"BIC"];
+            if ([IBANtools isValidBIC: bic] && ![IBANtools isValidBIC: self.remoteBIC]) {
+                if (bic != nil && bic.length <= 11) {
+                    self.remoteBIC = bic;
+                } else {
+                    LogError(@"Could not extract BIC information from %@, BIC %@ is not valid", self.purpose, bic);
+                }
+        }
         }
         @catch (NSException *exception) {
             NSLog(@"Exception while checking IBAN/BIC");
         }
-        
+
         self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.
         self.sepa.purpose = values[@"SVWZ"];
         self.sepa.ultimateDebitorId = values[@"ABWA"];
@@ -287,7 +292,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         if (values[@"MDAT"] != nil) {
             NSDate *date = [sepaDateFormatter dateFromString: values[@"MDAT"]];
             if (date != nil) {
-                self.sepa.mandateSignatureDate = date;
+            self.sepa.mandateSignatureDate = date;
             }
         } else {
             self.sepa.mandateSignatureDate = nil;
@@ -298,7 +303,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         if (values[@"DDAT"] != nil) {
             NSDate *date = [sepaDateFormatter dateFromString: values[@"DDAT"]];
             if (date != nil) {
-                self.sepa.settlementDate = date;
+            self.sepa.settlementDate = date;
             }
         } else {
             self.sepa.settlementDate = nil;

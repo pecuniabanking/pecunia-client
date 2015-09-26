@@ -1,21 +1,21 @@
 /**
-* Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License as
-* published by the Free Software Foundation; version 2 of the
-* License.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-* 02110-1301  USA
-*/
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 import Foundation
 import CoreData
@@ -36,7 +36,7 @@ let wordsLoadStride : Int = 50000;
 
     public class var wordMappingsAvailable : Bool {
         if mappingsAvailable == nil {
-            var request = NSFetchRequest();
+            let request = NSFetchRequest();
             request.entity = NSEntityDescription.entityForName("WordMapping",
                 inManagedObjectContext: MOAssistant.sharedAssistant().context);
             request.includesSubentities = false;
@@ -76,7 +76,7 @@ let wordsLoadStride : Int = 50000;
                 var text = NSString(data: buffer!, encoding: NSUTF8StringEncoding);
                 buffer = nil; // Free buffer to lower mem consuption.
                 let lines : Array<NSString>? = text!.componentsSeparatedByCharactersInSet(
-                    NSCharacterSet.newlineCharacterSet()) as? Array<NSString>;
+                    NSCharacterSet.newlineCharacterSet()) as! Array<NSString>;
                 text = nil;
 
                 // Convert to lower case and decompose diacritics (e.g. umlauts).
@@ -88,7 +88,7 @@ let wordsLoadStride : Int = 50000;
                 }
 
                 // Create an own managed context for each block, so we don't get into concurrency issues.
-                dispatch_apply(blockCount, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), { index in
+                dispatch_apply(blockCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { index in
 
                         // Create a local managed context for this thread.
                         let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
