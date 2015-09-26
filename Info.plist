@@ -30,7 +30,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Vespasian</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.pecuniabanking.pecunia</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
