@@ -1899,7 +1899,7 @@ static BankingController *bankinControllerInstance;
     // check if word list is currently loaded. If so and update is still running, application cannot be terminated
     if (self.updatingWordList) {
         NSRunAlertPanel(NSLocalizedString(@"AP146", nil),
-                        NSLocalizedString(@"AP1706", nil),
+                        NSLocalizedString(@"AP1707", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
@@ -3292,7 +3292,10 @@ static BankingController *bankinControllerInstance;
         if (path) {
             NSError *error = nil;
             NSURL   *url = [NSURL fileURLWithPath: path];
-            [[NSWorkspace sharedWorkspace] launchApplicationAtURL: url options: (NSWorkspaceLaunchNewInstance) configuration: nil error: &error];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL: url
+                                                          options: (NSWorkspaceLaunchNewInstance)
+                                                    configuration: [NSDictionary new]
+                                                            error: &error];
             if (error != nil) {
                 [[NSAlert alertWithError: error] runModal];
             }
@@ -3655,8 +3658,6 @@ static BankingController *bankinControllerInstance;
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
 
     if (!migrated10) {
-        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-
         NSError *error = nil;
         NSArray *bankUsers = BankUser.allUsers;
         NSArray *users = [[HBCIController controller] getOldBankUsers];

@@ -180,7 +180,7 @@ NSString *MBTableGridRowDataType = @"tablegrid.MBTableGridRowDataType";
 - (void)awakeFromNib
 {
 //	[self reloadData];
-	[self registerForDraggedTypes:nil];
+	[self registerForDraggedTypes: [NSArray new]];
 }
 
 - (void)dealloc

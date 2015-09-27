@@ -109,23 +109,23 @@ extension DDLog {
     }
 }
 
-func logError(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, #arguments: CVarArgType ...) {
+func logError(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
     DDLog.doLog(DDLogFlag.Error, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logWarning(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, #arguments: CVarArgType ...) {
+func logWarning(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
     DDLog.doLog(DDLogFlag.Warning, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logInfo(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, #arguments: CVarArgType ...) {
+func logInfo(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
     DDLog.doLog(DDLogFlag.Info, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logDebug(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, #arguments: CVarArgType ...) {
+func logDebug(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
     DDLog.doLog(DDLogFlag.Debug, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logVerbose(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, #arguments: CVarArgType ...) {
+func logVerbose(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
     DDLog.doLog(DDLogFlag.Verbose, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,10 +17,10 @@
  * 02110-1301  USA
  */
 
+#import "Transfer.h"
 #import "TransfersListview.h"
 #import "TransfersListViewCell.h"
 #import "ShortDate.h"
-#import "Transfer.h"
 #import "BankingCategory.h"
 
 #import "BankAccount.h"

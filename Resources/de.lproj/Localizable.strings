@@ -779,7 +779,7 @@ AP1703 = "Daten behalten";
 AP1704 = "Für die automatische Groß-/Kleinschreibung werden lexikalische Daten benötigt, die zunächst heruntergeladen und in die Datenbank importiert werden müssen. Das kann etwas dauern (abhängig von Download- und Computergeschwindigkeit. Während dieser Zeit können Sie Pecunia nicht beenden. Die Anzeige wird außerdem erst dann korrekt, wenn der Import abgeschlossen ist.\n\nWollen Sie diese Daten jetzt importieren?";
 AP1705 = "Daten importieren";
 AP1706 = "Option deaktivert lassen";
-AP1706 = "Pecunia kann im Moment nicht beendet werden da noch Daten aktualisiert werden. Bitte versuchen Sie es später noch einmal.";
+AP1707 = "Pecunia kann im Moment nicht beendet werden da noch Daten aktualisiert werden. Bitte versuchen Sie es später noch einmal.";
 
 // Use a new block of IDs for the next set of strings!
 // AP1800..AP1849

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -275,8 +275,9 @@
         return cell;
     } else {
         TransfersCellView *cell = [tableView makeViewWithIdentifier: @"MainCell" owner: self];
-        cell.statement = [entries[row] statement];
-        cell.category = [entries[row] category];
+        StatCatAssignment *assignment = entries[row];
+        cell.statement = assignment.statement;
+        cell.category = assignment.category;
         return cell;
     }
 }
