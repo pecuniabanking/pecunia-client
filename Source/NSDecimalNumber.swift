@@ -49,24 +49,23 @@ extension NSDecimalNumber : Comparable {
     // have 2 separator values (comma and dot, at least in those values Pecunia can deal with),
     // it's easy to continue from that decision.
     class func fromString(input: String) -> NSDecimalNumber? {
-        var formatter = NSNumberFormatter();
+        let formatter = NSNumberFormatter();
         formatter.generatesDecimalNumbers = true;
 
         // Split input by space char in order to strip off potential currency values.
-        let values = (input as NSString).componentsSeparatedByString(" ") as! [NSString];
-        if values.count < 1 {
+        let values = (input as NSString).componentsSeparatedByString(" ");
+        if values.isEmpty {
             return nil;
         }
 
-        let separatorRange = values[0].rangeOfCharacterFromSet(separators, options: .BackwardsSearch);
-        if separatorRange.length > 0 { // Any separator at all?
-            if separatorRange.length == 1 {
+        if let separatorRange = values[0].rangeOfCharacterFromSet(separators, options: .BackwardsSearch) {
+            if separatorRange.count == 1 {
                 formatter.usesGroupingSeparator = true;
                 formatter.groupingSize = 3;
 
                 // One char separator length is the only one we accept.
-                let separator = String(Character(UnicodeScalar(values[0].characterAtIndex(separatorRange.location))));
-                if values[0].length - separatorRange.location == 3 {
+                let separator = String(values[0][separatorRange.startIndex]);
+                if separatorRange.startIndex.distanceTo(values[0].endIndex) == 3 {
                     // 2 digits
                     formatter.decimalSeparator = separator;
                     formatter.groupingSeparator = (separator == ".") ? "," : ".";
@@ -82,12 +81,15 @@ extension NSDecimalNumber : Comparable {
         formatter.maximumFractionDigits = 2;
 
         var object: AnyObject?;
-        var range: NSRange = NSMakeRange(0, count(input));
-        var error: NSError? = nil;
-        formatter.getObjectValue(&object, forString: input, range: &range, error: &error);
+        var range: NSRange = NSMakeRange(0, input.length);
+        do {
+            try formatter.getObjectValue(&object, forString: input, range: &range);
 
-        if let number = object as? NSDecimalNumber where error == nil {
-            return number;
+            if let number = object as? NSDecimalNumber {
+                return number;
+            }
+        } catch {
+            // Ignore. We return nil.
         }
         return nil;
     }

@@ -75,13 +75,12 @@ let wordsLoadStride : Int = 50000;
             if (length == info.length) {
                 var text = NSString(data: buffer!, encoding: NSUTF8StringEncoding);
                 buffer = nil; // Free buffer to lower mem consuption.
-                let lines : Array<NSString>? = text!.componentsSeparatedByCharactersInSet(
-                    NSCharacterSet.newlineCharacterSet()) as! Array<NSString>;
+                let lines = text!.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet());
                 text = nil;
 
                 // Convert to lower case and decompose diacritics (e.g. umlauts).
                 // Split work into blocks of wordsLoadStride size and iterate in parallel over them.
-                let lineCount = lines!.count;
+                let lineCount = lines.count;
                 var blockCount = lineCount / wordsLoadStride;
                 if lineCount % wordsLoadStride != 0 {
                     ++blockCount; // One more (incomplete) block for the remainder.
@@ -90,29 +89,31 @@ let wordsLoadStride : Int = 50000;
                 // Create an own managed context for each block, so we don't get into concurrency issues.
                 dispatch_apply(blockCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { index in
 
-                        // Create a local managed context for this thread.
-                        let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
-                        var context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
-                        context.persistentStoreCoordinator = coordinator;
+                    // Create a local managed context for this thread.
+                    let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
+                    let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
+                    context.persistentStoreCoordinator = coordinator;
 
-                        let start = index * wordsLoadStride;
-                        var end = start + wordsLoadStride;
-                        if (end > lineCount) {
-                            end = lineCount;
-                        }
-                        for (var i = start; i < end; ++i) {
-                            let key = lines![Int(i)].stringWithNormalizedGermanChars().lowercaseString;
-                            var mapping = NSEntityDescription.insertNewObjectForEntityForName("WordMapping",
-                                inManagedObjectContext: context) as! WordMapping;
-                            mapping.wordKey = key;
-                            mapping.translated = lines![Int(i)] as String;
-                        }
+                    let start = index * wordsLoadStride;
+                    var end = start + wordsLoadStride;
+                    if (end > lineCount) {
+                        end = lineCount;
+                    }
+                    for (var i = start; i < end; ++i) {
+                        let key = lines[Int(i)].stringWithNormalizedGermanChars().lowercaseString;
+                        let mapping = NSEntityDescription.insertNewObjectForEntityForName("WordMapping",
+                            inManagedObjectContext: context) as! WordMapping;
+                        mapping.wordKey = key;
+                        mapping.translated = lines[Int(i)] as String;
+                    }
 
-                        var error: NSError?;
-                        if !context.save(&error) {
-                            let alert = NSAlert(error: error!);
-                            alert.runModal();
-                        }
+                    do {
+                        try context.save();
+                    }
+                    catch let error as NSError {
+                        let alert = NSAlert(error: error);
+                        alert.runModal();
+                    }
                     }
                 );
             }
@@ -138,20 +139,23 @@ let wordsLoadStride : Int = 50000;
         let startTime = Mathematics.beginTimeMeasure();
 
         let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
-        var context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
+        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
         context.persistentStoreCoordinator = coordinator;
 
-        var allMappings = NSFetchRequest();
+        let allMappings = NSFetchRequest();
         allMappings.entity = NSEntityDescription.entityForName("WordMapping", inManagedObjectContext: context);
         allMappings.includesPropertyValues = false; // Fetch only IDs.
 
-        var error : NSError?;
-        let mappings = context.executeFetchRequest(allMappings, error: &error);
-        if mappings != nil {
-            for mapping in mappings! {
+        do {
+            let mappings = try context.executeFetchRequest(allMappings);
+            for mapping in mappings {
                 context.deleteObject(mapping as! WordMapping);
             }
-            context.save(&error);
+            try context.save();
+        }
+        catch let error as NSError {
+            let alert = NSAlert(error: error);
+            alert.runModal();
         }
         logDebug("Word list truncation done in: %.2fs", arguments: Mathematics.timeDifferenceSince(startTime) / 1000000000);
     }

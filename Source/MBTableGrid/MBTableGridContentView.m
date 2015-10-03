@@ -526,7 +526,7 @@
 	
 	NSRect cellFrame = [self frameOfCellAtColumn:editedColumn row:editedRow];
 	NSText *editor = [[self window] fieldEditor:YES forObject:self];
-	[cell editWithFrame:cellFrame inView:self editor:editor delegate:self event:nil];
+	[cell editWithFrame:cellFrame inView:self editor:editor delegate:self event: [NSEvent new]];
 }
 
 #pragma mark Layout Support

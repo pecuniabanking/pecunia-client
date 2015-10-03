@@ -10,7 +10,7 @@ import Foundation
 
 var _manager:ChipcardManager!
 
-@objc public class CardBankData {
+@objc public class CardBankData : NSObject  {
     var name:String;
     var bankCode:String;
     var country:String;
@@ -24,14 +24,15 @@ var _manager:ChipcardManager!
     
 }
 
-@objc public class ChipcardManager {
+@objc public class ChipcardManager : NSObject {
     var card:HBCISmartcardDDV!
     
-    public init() {
+    public override init() {
+        super.init();
     }
     
     func stringToBytes(s:NSString) ->NSData {
-        var buffer = UnsafeMutablePointer<UInt8>.alloc(s.length/2);
+        let buffer = UnsafeMutablePointer<UInt8>.alloc(s.length/2);
         
         for var i = 0; i < s.length/2; i++ {
             var value:UInt32 = 0;
@@ -47,8 +48,8 @@ var _manager:ChipcardManager!
     }
     
     func bytesToString(data:NSData) ->NSString {
-        var ret = NSMutableString();
-        var p = UnsafeMutablePointer<UInt8>(data.bytes);
+        let ret = NSMutableString();
+        let p = UnsafeMutablePointer<UInt8>(data.bytes);
         for var i = 0; i<data.length; i++ {
             ret.appendFormat("%0.2X", p[i]);
         }
@@ -276,8 +277,8 @@ var _manager:ChipcardManager!
             return nil;
         }
         
-        let keyNum = params[0].integerValue;
-        let encKey = params[1] as! NSString;
+        let keyNum = Int(params[0])!;
+        let encKey = params[1] as NSString;
         
         if let plain = card.decryptKey(UInt8(keyNum), encrypted: stringToBytes(encKey)) {
             return bytesToString(plain);

@@ -27,8 +27,6 @@
 #import "SEPAMT94xPurposeParser.h"
 #import "SepaData.h"
 
-#import "NSDecimalNumber+PecuniaAdditions.h"
-
 static NSArray *catCache = nil;
 
 static NSRegularExpression *ibanRE;
@@ -150,6 +148,11 @@ BOOL stringEqual(NSString *a, NSString *b) {
                                                           options: 0
                                                             error: nil];
     }
+}
+
+// Helper factory method to create a BankStatement instance in the memory context.
++ (instancetype)createTemporary {
+    return [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement" inManagedObjectContext: MOAssistant.sharedAssistant.memContext];
 }
 
 - (NSString *)categoriesDescription {

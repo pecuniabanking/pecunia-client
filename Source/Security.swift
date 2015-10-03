@@ -22,7 +22,7 @@ import Foundation
 // Class for parallel running banking requests each with its own authentication need.
 internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.auth-queue", DISPATCH_QUEUE_SERIAL);
 
-@objc public class AuthRequest {
+@objc public class AuthRequest : NSObject {
 
     private var service: String = "";
     private var account: String = "";
@@ -30,10 +30,6 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
     private var passwordController: PasswordController?;
 
     public var errorOccured = false;
-
-    public static func new() -> AuthRequest {
-        return AuthRequest();
-    }
 
     public func finishPasswordEntry() -> Void {
         if errorOccured {
@@ -65,7 +61,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         // Serialize password retrieval (especially password dialogs).
         var result = "<abort>";
         dispatch_sync(serialQueue) {
-            var password = Security.passwordForService(self.service, account: self.account);
+            let password = Security.passwordForService(self.service, account: self.account);
             if password != nil {
                 result = password!;
                 return;
@@ -97,7 +93,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
 
 }
 
-@objc public class Security {
+@objc public class Security : NSObject {
 
     public static var currentSigningOption: SigningOption? = nil;
 
@@ -128,7 +124,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
             passwordController!.closeWindow();
         }
 
-        if password == nil || count(password!) == 0 {
+        if password == nil || password!.length == 0 {
             return "<abort>"; // Hopefully nobody uses this as password.
         }
 
@@ -140,12 +136,13 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
             return password;
         }
 
+        // A local controller here. The member var is used for repeating password queries for the data file.
         let controller = NewPasswordController(text: data.message, title: NSLocalizedString( "AP180", comment: ""));
-        if NSApp.runModalForWindow(passwordController!.window!) != 0 {
+        if NSApp.runModalForWindow(controller!.window!) != 0 {
             return "<abort>";
         }
 
-        if let password = passwordController?.result() {
+        if let password = controller?.result() {
             setPassword(password, forService: "Pecunia", account: "DataFile", store: false);
             return password;
         }
@@ -168,7 +165,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         for method in methods {
             let tanMethod = TanMethodOld();
             let list = method.componentsSeparatedByString(":");
-            tanMethod.function = NSNumber(integer: list[0].toInt()!);
+            tanMethod.function = NSNumber(integer: Int(list[0])!);
             tanMethod.description = list[1];
             tanMethods.append(tanMethod);
         }
@@ -188,7 +185,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
 
     public static func getTan(data: CallbackData) -> String {
         let user = BankUser.findUserWithId(data.userId, bankCode:data.bankCode);
-        if data.proposal != nil && count(data.proposal) > 0 {
+        if data.proposal != nil && !data.proposal.isEmpty {
             // Flicker code.
             let controller = ChipTanWindowController(code: data.proposal, message: data.message);
             if NSApp.runModalForWindow(controller.window!) == 0 {
@@ -285,14 +282,13 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         let accountAsUtf8 = (account as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
         let accountLength = UInt32(account.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
 
-        var itemRef: Unmanaged<SecKeychainItem>? = nil;
+        var itemRef: SecKeychainItem? = nil;
         let status = SecKeychainFindGenericPassword(nil, serviceLength, serviceAsUtf8, accountLength,
             accountAsUtf8, nil, nil, &itemRef);
 
         if status == noErr {
             if itemRef != nil {
-                SecKeychainItemDelete(itemRef!.takeUnretainedValue());
-                itemRef!.release();
+                SecKeychainItemDelete(itemRef!);
             }
         }
     }
@@ -301,17 +297,17 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         let serviceAsUtf8 = (service as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
         let serviceLength = UInt32(service.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
         var status: OSStatus;
-        var itemRef: Unmanaged<SecKeychainItem>? = nil;
+        var itemRef: SecKeychainItem? = nil;
 
         passwordCache.removeAll(keepCapacity: false);
 
-        do {
+        repeat {
             status = SecKeychainFindGenericPassword(nil, serviceLength, serviceAsUtf8, 0, nil, nil,
                 nil, &itemRef);
 
             if status == noErr && itemRef != nil {
-                SecKeychainItemDelete(itemRef!.takeUnretainedValue());
-                itemRef!.release();
+                SecKeychainItemDelete(itemRef!);
+                itemRef = nil;
             }
         } while status == noErr && itemRef != nil;
     }

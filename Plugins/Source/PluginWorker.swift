@@ -85,7 +85,7 @@ class WebClient: WebView, WebViewJSExport {
             // Unfortunately, the number format can change within a single set of values, which makes it
             // impossible to just have the plugin specify it for us.
             for entry in entries {
-                var queryResult = BankQueryResult();
+                let queryResult = BankQueryResult();
 
                 if  let type = entry["isCreditCard"] as? Bool {
                     queryResult.type = type ? .CreditCard : .BankStatement;
@@ -103,7 +103,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                if let value = entry["balance"] as? String where count(value) > 0 {
+                if let value = entry["balance"] as? String where value.length > 0 {
                     if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
                         queryResult.balance = number;
                     }
@@ -111,7 +111,7 @@ class WebClient: WebView, WebViewJSExport {
 
                 let statements = entry["statements"] as! [[String: AnyObject]];
                 for jsonStatement in statements {
-                    var statement: BankStatement = BankStatement.createTemporary();
+                    let statement: BankStatement = BankStatement.createTemporary(); // Created in memory context.
                     if let final = jsonStatement["final"] as? Bool {
                         statement.isPreliminary = !final;
                     }
@@ -128,7 +128,7 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    if let value = jsonStatement["value"] as? String  where count(value) > 0 {
+                    if let value = jsonStatement["value"] as? String  where value.length > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
@@ -140,7 +140,7 @@ class WebClient: WebView, WebViewJSExport {
                         }
                     }
 
-                    if let value = jsonStatement["originalValue"] as? String where count(value) > 0 {
+                    if let value = jsonStatement["originalValue"] as? String where value.length > 0 {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.origValue = number;
                         }
@@ -150,7 +150,7 @@ class WebClient: WebView, WebViewJSExport {
 
                 // Explicitly sort by date, as it might happen that statements have a different
                 // sorting (e.g. by valuta date).
-                queryResult.statements.sort({ $0.date < $1.date });
+                queryResult.statements.sortInPlace({ $0.date < $1.date });
                 queryResults.append(queryResult);
             }
             completion(queryResults);
@@ -158,7 +158,7 @@ class WebClient: WebView, WebViewJSExport {
     }
 }
 
-class PluginContext : NSObject {
+class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     private let webClient: WebClient;
     private let workContext: JSContext; // The context on which we run the script.
                                         // WebView's context is recreated on loading a new page,
@@ -175,13 +175,14 @@ class PluginContext : NSObject {
 
         prepareContext();
 
-        if let script = String(contentsOfFile: pluginFile, encoding: NSUTF8StringEncoding, error: nil) {
+        do {
+            let script = try String(contentsOfFile: pluginFile, encoding: NSUTF8StringEncoding);
             let parseResult = workContext.evaluateScript(script);
             if parseResult.toString() != "true" {
                 logger.logError("Script loaded but did not return \"true\"");
                 return nil;
             }
-        } else {
+        } catch {
             logger.logError("Failed to parse script");
             return nil;
         }
@@ -296,7 +297,7 @@ class PluginContext : NSObject {
         completion: ([BankQueryResult]) -> Void) -> Void {
             let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
             let pluginId = workContext.objectForKeyedSubscript("name").toString();
-            if scriptFunction.isUndefined() {
+            if scriptFunction.isUndefined {
                 jsLogger.logError("Error: getStatements() not found in plugin " + pluginId);
                 return;
             }
@@ -320,12 +321,12 @@ class PluginContext : NSObject {
 
     func canHandle(account: String, bankCode: String) -> Bool {
         let function = workContext.objectForKeyedSubscript("canHandle");
-        if function.isUndefined() {
+        if function.isUndefined {
             return false;
         }
 
         let result = function.callWithArguments([account, bankCode]);
-        if result.isBoolean() {
+        if result.isBoolean {
             return result.toBool();
         }
         return false;
@@ -333,51 +334,51 @@ class PluginContext : NSObject {
 
     // MARK: - webView delegate methods.
 
-    internal override func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
+    internal func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
         jsLogger.logVerbose("(*) Start loading");
         webClient.redirecting = false; // Gets set when we get redirected while processing the provisional frame.
     }
 
-    internal override func webView(sender: WebView!, didReceiveServerRedirectForProvisionalLoadForFrame frame: WebFrame!) {
+    internal func webView(sender: WebView!, didReceiveServerRedirectForProvisionalLoadForFrame frame: WebFrame!) {
         jsLogger.logVerbose("(*) Received server redirect for frame");
     }
 
-    internal override func webView(sender: WebView!, didCommitLoadForFrame frame: WebFrame!) {
+    internal func webView(sender: WebView!, didCommitLoadForFrame frame: WebFrame!) {
         jsLogger.logVerbose("(*) Committed load for frame");
     }
 
-    internal override func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
+    internal func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
         delay seconds: NSTimeInterval, fireDate date: NSDate!, forFrame frame: WebFrame!) {
             jsLogger.logVerbose("(*) Performing client redirection...");
             webClient.redirecting = true;
     }
 
-    internal override func webView(sender: WebView!, didCreateJavaScriptContext context: JSContext, forFrame: WebFrame!) {
+    internal func webView(sender: WebView!, didCreateJavaScriptContext context: JSContext, forFrame: WebFrame!) {
         jsLogger.logVerbose("(*) JS create");
     }
 
-    internal override func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString!);
+    internal func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString);
         if webClient.redirecting {
             webClient.redirecting = false;
             return;
         }
 
-        if !webClient.callback.isUndefined() && !webClient.callback.isNull() {
+        if !webClient.callback.isUndefined && !webClient.callback.isNull {
             jsLogger.logVerbose("(*) Calling callback...");
             webClient.callback.callWithArguments([false]);
         }
     }
 
-    internal override func webView(sender: WebView!, willCloseFrame frame: WebFrame!) {
+    internal func webView(sender: WebView!, willCloseFrame frame: WebFrame!) {
         jsLogger.logVerbose("(*) Closing frame...");
     }
 
-    internal override func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
+    internal func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
         jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
 
-    internal override func webView(sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame: WebFrame!) {
+    internal func webView(sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame: WebFrame!) {
         let alert = NSAlert();
         alert.messageText = message;
         alert.runModal();

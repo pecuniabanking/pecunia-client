@@ -99,10 +99,10 @@ class HBCISmartcardDDV : HBCISmartcard {
         if let res = result {
             cardID = res;
             
-            var cardid = UnsafeMutablePointer<UInt8>.alloc(16);
-            var p = UnsafePointer<UInt8>(res.bytes);
+            let cardid = UnsafeMutablePointer<UInt8>.alloc(16);
+            let p = UnsafePointer<UInt8>(res.bytes);
             for var i = 0; i<8; i++ {
-                var x = p[i+1] >> 4;
+                _ = p[i+1] >> 4;
                 cardid[i<<1] = ((p[i+1] >> 4) & 0x0F) + 0x30;
                 cardid[(i<<1)+1] = ((p[i+1]) & 0x0F) + 0x30;
             }
@@ -144,7 +144,7 @@ class HBCISmartcardDDV : HBCISmartcard {
             }
             
             p = UnsafeMutablePointer<UInt8>(result.bytes).advancedBy(20);
-            var blz = UnsafeMutablePointer<UInt8>.alloc(8);
+            let blz = UnsafeMutablePointer<UInt8>.alloc(8);
             for var i = 0; i < 4; i++ {
                 var nibble:UInt8 = 0;
                 nibble=(p[i]>>4)&0x0F;
@@ -216,21 +216,21 @@ class HBCISmartcardDDV : HBCISmartcard {
     
     func writeSignatureId(sigid:Int) ->Bool {
         let buffer:[UInt8] = [ UInt8(sigid >> 8), UInt8(sigid & 0xff) ];
-        var data = NSData(bytes: buffer, length: 2);
+        let data = NSData(bytes: buffer, length: 2);
         return writeRecordWithSFI(1, sfi: DDV_EF_SEQ, data: data);
     }
     
     func sign(hash:NSData) ->NSData? {
-        var pHash = UnsafeMutablePointer<UInt8>(hash.bytes);
+        let pHash = UnsafeMutablePointer<UInt8>(hash.bytes);
         
         // write right key part
-        var rKey = NSData(bytes: pHash.advancedBy(8), length: 12);
+        let rKey = NSData(bytes: pHash.advancedBy(8), length: 12);
         if !writeRecordWithSFI(1, sfi: DDV_EF_MAC, data: rKey) {
             return nil;
         }
         
         if cardType == CardType.CARDTYPE_DDV0 {
-            var lKey = NSData(bytes: pHash, length: 8);
+            let lKey = NSData(bytes: pHash, length: 8);
             
             // store left part
             if !putData(0x0100, data: lKey) {
@@ -238,7 +238,7 @@ class HBCISmartcardDDV : HBCISmartcard {
             }
             
             // re-read right part and signature
-            var command:[UInt8] = [ APDU_CLA_SM_PROPR, APDU_INS_READ_RECORD, 1, UInt8(Int(DDV_EF_MAC<<3) | 0x04), 0x00 ];
+            let command:[UInt8] = [ APDU_CLA_SM_PROPR, APDU_INS_READ_RECORD, 1, UInt8(Int(DDV_EF_MAC<<3) | 0x04), 0x00 ];
             let apdu = NSData(bytes: command, length: 5);
             if let result = sendAPDU(apdu) {
                 let p = UnsafeMutablePointer<UInt8>(result.bytes).advancedBy(12);
@@ -247,13 +247,13 @@ class HBCISmartcardDDV : HBCISmartcard {
             return nil;
         } else {
             // DDV-1
-            var command1:[UInt8] = [
+            let command1:[UInt8] = [
                 APDU_CLA_SM1, APDU_INS_READ_RECORD, 1, UInt8(Int(DDV_EF_MAC<<3) | 0x04), 0x11, APDU_SM_RESP_DESCR, 0x0C, APDU_SM_CRT_CC,
                 0x0A, APDU_SM_REF_INIT_DATA, 0x08
             ];
-            var command2:[UInt8] = [ APDU_SM_VALUE_LE, 0x01, 0x00, 0x00 ];
+            let command2:[UInt8] = [ APDU_SM_VALUE_LE, 0x01, 0x00, 0x00 ];
             
-            var apdu = NSMutableData(bytes: command1, length: 11);
+            let apdu = NSMutableData(bytes: command1, length: 11);
             apdu.appendBytes(pHash, length: 8);
             apdu.appendBytes(command2, length: 4);
             
@@ -272,11 +272,11 @@ class HBCISmartcardDDV : HBCISmartcard {
                 if let plain2 = getChallenge(8) {
                     if let encr2 = internal_authenticate(keyNum, keyType: KEY_TYPE_DF, data: plain2) {
                         // now build keys and return
-                        var plain = NSMutableData();
+                        let plain = NSMutableData();
                         plain.appendData(plain1);
                         plain.appendData(plain2);
                         
-                        var encrypted = NSMutableData();
+                        let encrypted = NSMutableData();
                         encrypted.appendData(encr1);
                         encrypted.appendData(encr2);
                         return (plain, encrypted);
@@ -295,7 +295,7 @@ class HBCISmartcardDDV : HBCISmartcard {
         
         if let plain1 = internal_authenticate(keyNum, keyType: KEY_TYPE_DF, data: encr1) {
             if let plain2 = internal_authenticate(keyNum, keyType: KEY_TYPE_DF, data: encr2) {
-                var result = NSMutableData();
+                let result = NSMutableData();
                 result.appendData(plain1);
                 result.appendData(plain2);
                 return result;

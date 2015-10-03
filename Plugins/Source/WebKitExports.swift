@@ -128,8 +128,7 @@ extension DOMNode: DOMNodeJSExport {
 
     var ownerElement: DOMElement! { get };
     var style: DOMCSSStyleDeclaration! { get };
-    func value() -> String!;
-    func setValue(value: String!);
+    var value: String! { get };
 }
 
 extension DOMAttr : DOMAttrJSExport {
@@ -253,8 +252,7 @@ extension DOMHTMLElement : DOMHTMLElementJExport {
     func select();
     func setSelectionRange(start: Int32, end: Int32);
     func click();
-    func value() -> String!;
-    func setValue(value: String!);
+    var value: String! { get set };
 }
 
 extension DOMHTMLInputElement : DOMHTMLInputElementJSExport {
@@ -270,8 +268,7 @@ extension DOMHTMLInputElement : DOMHTMLInputElementJSExport {
     var willValidate: Bool { get };
 
     func click();
-    func value() -> String!;
-    func setValue(value: String!);
+    var value: String! { get set };
 }
 
 extension DOMHTMLButtonElement : DOMHTMLButtonElementJSExport {
@@ -313,8 +310,7 @@ extension DOMHTMLAnchorElement : DOMHTMLAnchorElementJSExport {
     var text: String! { get };
     var index: Int32 { get };
 
-    func value() -> String!;
-    func setValue(value: String!);
+    var value: String! { get set };
 }
 
 extension DOMHTMLOptionElement : DOMHTMLOptionElementJSExport {
@@ -351,8 +347,7 @@ extension DOMHTMLOptionsCollection : DOMHTMLOptionsCollectionJSExport {
     func namedItem(name: String!) -> DOMNode!;
     func add(element: DOMHTMLElement!, before: DOMHTMLElement!);
     func remove(index: Int32);
-    func value() -> String!;
-    func setValue(value: String!);
+    var value: String! { get set };
 }
 
 extension DOMHTMLSelectElement : DOMHTMLSelectElementJSExport {

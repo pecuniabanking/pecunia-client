@@ -21,6 +21,7 @@
 
 @class TransfersListView;
 @class TransferTemplate;
+@class Transfer;
 
 @protocol TransfersActionDelegate
 

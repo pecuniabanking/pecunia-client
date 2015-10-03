@@ -501,7 +501,7 @@ static BankingController *bankinControllerInstance;
 
     [self logDatabaseInfo];
     
-    RemoteResourceManager *resourceManager = RemoteResourceManager.manager; // Creates singleton.
+    RemoteResourceManager *resourceManager = RemoteResourceManager.sharedManager; // Creates singleton.
     if ([[NSUserDefaults standardUserDefaults] boolForKey: @"autoCasing"]) {
         [resourceManager addManagedFile: @"words.zip"];
     }
@@ -3279,7 +3279,10 @@ static BankingController *bankinControllerInstance;
         if (path) {
             NSError *error = nil;
             NSURL   *url = [NSURL fileURLWithPath: path];
-            [[NSWorkspace sharedWorkspace] launchApplicationAtURL: url options: (NSWorkspaceLaunchNewInstance) configuration: nil error: &error];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL: url
+                                                          options: (NSWorkspaceLaunchNewInstance)
+                                                    configuration: [NSDictionary new]
+                                                            error: &error];
             if (error != nil) {
                 [[NSAlert alertWithError: error] runModal];
             }
@@ -3642,8 +3645,6 @@ static BankingController *bankinControllerInstance;
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
 
     if (!migrated10) {
-        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-
         NSError *error = nil;
         NSArray *bankUsers = BankUser.allUsers;
         NSArray *users = [[HBCIController controller] getOldBankUsers];

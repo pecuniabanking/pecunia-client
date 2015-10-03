@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2014, Pecunia Project. All rights reserved.
+* Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License as
@@ -18,9 +18,6 @@
 */
 
 import Foundation
-
-extension ShortDate : Equatable {
-}
 
 public func == (lhs: ShortDate, rhs: ShortDate) -> Bool {
     if (lhs.year == rhs.year)

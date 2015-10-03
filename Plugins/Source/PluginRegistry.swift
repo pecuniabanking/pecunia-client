@@ -37,84 +37,95 @@ import WebKit;
         let fileManager = NSFileManager.defaultManager();
 
         // For standard plugins (non-existing, out-of-date) checks.
-        let defaultPluginPaths = NSBundle.mainBundle().pathsForResourcesOfType("js", inDirectory: "Plugins") as! [String];
+        let defaultPluginPaths = NSBundle.mainBundle().pathsForResourcesOfType("js", inDirectory: "Plugins");
 
         var isDir: ObjCBool = false;
         if fileManager.fileExistsAtPath(pluginPath, isDirectory: &isDir) && isDir {
-            if var contents = fileManager.contentsOfDirectoryAtPath(pluginPath, error: nil) as? [String] {
+            do {
+                var contents = try fileManager.contentsOfDirectoryAtPath(pluginPath);
+
                 // First check if any of the default plugins is missing or newer and copy it to the
                 // target plugin folder if so.
                 var needRescan = false;
-                var error: NSError?;
                 for defaultPluginPath in defaultPluginPaths {
-                    var pluginName = defaultPluginPath.lastPathComponent;
+                    let pluginName = NSURL(fileURLWithPath: defaultPluginPath).lastPathComponent!;
+                    let pluginNameCopy : NSString = pluginName as NSString; // To avoid frequent casts.
                     if !contents.contains(pluginName) {
                         needRescan = true;
-                        if (!fileManager.copyItemAtPath(defaultPluginPath,
-                            toPath: pluginPath + "/" + pluginName, error: &error)) {
-                                NSAlert(error: error!).runModal();
-                        }
+                        try fileManager.copyItemAtPath(defaultPluginPath, toPath: pluginPath + "/" + pluginName);
                     } else {
                         // Check last modified date and if the default is newer backup existing file + copy.
                         // If there's any error accessing the files then ignore them.
-                        var sourceAttributes: NSDictionary? = fileManager.attributesOfItemAtPath(defaultPluginPath, error: &error);
-                        if (sourceAttributes == nil || error != nil) {
+                        do {
+                            let sourceAttributes = try fileManager.attributesOfItemAtPath(defaultPluginPath) as NSDictionary;
+                            let targetName = pluginPath + "/" + pluginName;
+                            let targetAttributes = try fileManager.attributesOfItemAtPath(targetName) as NSDictionary;
+                            if let sourceDate = sourceAttributes.fileModificationDate(),
+                                let targetDate = targetAttributes.fileModificationDate() {
+                                    if sourceDate > targetDate {
+                                        // A newer version of the plugin exists. Backup the exsting one
+                                        // (don't touch existing backups) and then copy the new one.
+                                        var newBackupName = "";
+                                        let baseName = pluginNameCopy.stringByDeletingPathExtension;
+                                        let ext = pluginNameCopy.pathExtension;
+                                        var counter = 1;
+
+                                        while counter < 1000 {
+                                            let tempBackupName = baseName + ".backup \(counter++)." + ext;
+                                            if !contents.contains(tempBackupName) {
+                                                // Unused backup name found.
+                                                newBackupName = tempBackupName;
+                                                break;
+                                            }
+                                        }
+
+                                        // If we cannot find a usable backup name give up and simply replace
+                                        // the current file.
+                                        if newBackupName.isEmpty {
+                                            do {
+                                                try fileManager.removeItemAtPath(targetName);
+                                            } catch let error as NSError {
+                                                logError("Cannot delete existing plugin: \(error.localizedDescription)");
+                                                continue;
+                                            }
+
+                                        } else {
+                                            do {
+                                                try fileManager.moveItemAtPath(targetName, toPath: pluginPath + "/" + newBackupName);
+                                            } catch let error as NSError {
+                                                logError("Cannot backup existing plugin: \(error.localizedDescription)");
+                                                continue;
+                                            }
+                                        }
+
+                                        do {
+                                            try fileManager.copyItemAtPath(defaultPluginPath, toPath: targetName);
+                                        } catch let error as NSError {
+                                            NSAlert(error: error).runModal();
+                                        }
+                                    }
+                            }
+                        } catch {
                             continue;
-                        }
-                        let targetName = pluginPath + "/" + pluginName;
-                        var targetAttributes: NSDictionary? = fileManager.attributesOfItemAtPath(targetName, error: &error);
-                        if (targetAttributes == nil || error != nil) {
-                            continue;
-                        }
-                        if let sourceDate = sourceAttributes!.fileModificationDate(),
-                            let targetDate = targetAttributes!.fileModificationDate() {
-                                if sourceDate > targetDate {
-                                    // A newer version of the plugin exists. Backup the exsting one
-                                    // (don't touch existing backups) and then copy the new one.
-                                    var newBackupName = "";
-                                    let baseName = pluginName.stringByDeletingPathExtension;
-                                    let ext = pluginName.pathExtension;
-                                    var counter = 1;
-
-                                    while counter < 1000 {
-                                        let tempBackupName = baseName + ".backup \(counter++)." + ext;
-                                        if !contents.contains(tempBackupName) {
-                                            // Unused backup name found.
-                                            newBackupName = tempBackupName;
-                                            break;
-                                        }
-                                    }
-
-                                    // If we cannot find a usable backup name give up and simply replace
-                                    // the current file.
-                                    if newBackupName.length == 0 {
-                                        if !fileManager.removeItemAtPath(targetName, error: &error) {
-                                            logError("Cannot delete existing plugin: \(error?.localizedDescription)");
-                                            continue;
-                                        }
-                                    } else {
-                                        if !fileManager.moveItemAtPath(targetName, toPath: pluginPath + "/" + newBackupName, error: &error) {
-                                            logError("Cannot backup existing plugin: \(error?.localizedDescription)");
-                                            continue;
-                                        }
-                                    }
-
-                                    if !fileManager.copyItemAtPath(defaultPluginPath,
-                                        toPath: targetName, error: &error) {
-                                            NSAlert(error: error!).runModal();
-                                    }
-                                }
                         }
                     }
                 }
 
                 // Re-read folder content if we copied files.
                 if needRescan {
-                    contents = fileManager.contentsOfDirectoryAtPath(pluginPath, error: nil) as! [String];
+                    contents = try fileManager.contentsOfDirectoryAtPath(pluginPath);
                 }
 
                 for entry in contents {
-                    if !entry.hasSuffix(".js") || entry.containsMatch("\\.backup \\d+\\.", ignoreCase: true)! {
+                    do {
+                        if !entry.hasSuffix(".js") {
+                            continue;
+                        }
+                        let result = try entry.containsMatch("\\.backup \\d+\\.", ignoreCase: true);
+                        if result! {
+                            continue;
+                        }
+                    } catch {
                         continue;
                     }
 
@@ -129,7 +140,10 @@ import WebKit;
                         }
                     }
                 }
-                logDebug("Found \(count(plugins)) valid plugins");
+                logDebug("Found \(plugins.count) valid plugins");
+            } catch let error as NSError {
+                logError("Could not enumerate plugin folder: \(error.localizedDescription)");
+                NSAlert(error: error).runModal();
             }
         }
 
@@ -198,7 +212,7 @@ import WebKit;
             }
 
             if entry != nil {
-                let number = String(filter(account.accountNumber()) { $0 != " " }); // Remove all space chars.
+                let number = String(account.accountNumber().characters.filter { $0 != " " } ); // Remove all space chars.
                 entry!.accountNumbers.append(number);
             }
         }

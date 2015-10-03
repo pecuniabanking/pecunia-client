@@ -94,7 +94,7 @@ extern void *UserDefaultsBindingContext;
     style.alignment = NSLeftTextAlignment;
     NSTextTab *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
                                                      location: NSWidth(self.frame) - 4
-                                                      options: nil];
+                                                      options: [NSDictionary new]];
     style.tabStops = @[tab];
     [string addAttribute: NSParagraphStyleAttributeName
                    value: style
@@ -476,7 +476,7 @@ extern void *UserDefaultsBindingContext;
     NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
     NSTextTab               *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
                                                                    location: NSWidth(dateSlider.frame) - 4
-                                                                    options: nil];
+                                                                    options: [NSDictionary new]];
     style.tabStops = @[tab];
 
     NSMutableAttributedString *string = [NSMutableAttributedString new];
@@ -498,10 +498,10 @@ extern void *UserDefaultsBindingContext;
 - (void)setRepresentedObject: (id)value {
     [super setRepresentedObject: value];
 
-    colorBox.fillColor = [[value category] categoryColor];
+    StatCatAssignment *assignment = value;
+    colorBox.fillColor = assignment.category.categoryColor;
 
     // Construct certain values out of the available data.
-    StatCatAssignment *assignment = value;
     BankStatement     *statement = assignment.statement;
 
     BOOL isCreditCardStatement = statement.type.intValue == StatementType_CreditCard;
