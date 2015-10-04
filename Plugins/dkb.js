@@ -187,8 +187,8 @@ function startLogin() {
         var formLogin = webClient.mainFrame.document.forms.item(0);
 
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
-        formLogin.elements.namedItem("j_username").setValue(userName);
-        formLogin.elements.namedItem("j_password").setValue(thePassword);
+        formLogin.elements.namedItem("j_username").value = userName;
+        formLogin.elements.namedItem("j_password").value = thePassword;
         var submitLogin = formLogin.elements.namedItem("buttonlogin");
         logger.logDebug("submit button: " + submitLogin + ", id: " + submitLogin.idName);
 
@@ -297,10 +297,10 @@ function readNextCreditCard() {
     var toPostingDate = form.elements.namedItem("toPostingDate");
     logger.logDebug("To posting element: " + toPostingDate);
 
-    postingDate.setValue(padDatePart(startFrom.getDate()) + "." + padDatePart(startFrom.getMonth() + 1) + "." + startFrom.getFullYear());
-    toPostingDate.setValue(padDatePart(endAt.getDate()) + "." + padDatePart(endAt.getMonth() + 1) + "." + endAt.getFullYear());
+    postingDate.value = padDatePart(startFrom.getDate()) + "." + padDatePart(startFrom.getMonth() + 1) + "." + startFrom.getFullYear();
+    toPostingDate.value = padDatePart(endAt.getDate()) + "." + padDatePart(endAt.getMonth() + 1) + "." + endAt.getFullYear();
 
-    logger.logDebug("Date range: " + postingDate.value() + " .. " + toPostingDate.value());
+    logger.logDebug("Date range: " + postingDate.value + " .. " + toPostingDate.value);
 
     currentState = 14;
     var button = form.elements.namedItem("searchbutton");
