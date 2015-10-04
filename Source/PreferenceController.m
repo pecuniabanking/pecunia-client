@@ -990,7 +990,7 @@ static NSDictionary *heightMappings;
  * Returns a main (system) font instance for the given base size (and bold trait).
  * The size is increased implicitly depending on the font scale factor set by the user.
  */
-+ (NSFont *)mainFontOfSize: (CGFloat)size bold: (Boolean)isBold {
++ (NSFont *)mainFontOfSize: (CGFloat)size bold: (BOOL)isBold {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"fontScale"] != nil) {
         double scale = [defaults doubleForKey: @"fontScale"];
@@ -998,7 +998,7 @@ static NSDictionary *heightMappings;
             size *= scale;
         }
     }
-    if (bold) {
+    if (isBold) {
         return [NSFont boldSystemFontOfSize: size];
     } else {
         return [NSFont systemFontOfSize: size];

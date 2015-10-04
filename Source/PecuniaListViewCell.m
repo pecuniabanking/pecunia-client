@@ -212,7 +212,7 @@ NSDictionary    *whiteAttributes;
 
     // For now we ignore the stored font name, as a control should usually use the system font.
     // If needed we can later take it into account again, hence I leave it in the dict.
-    field.font = [PreferenceController mainFontOfSize: [entry[@"size"] intValue] bold: false];
+    field.font = [PreferenceController mainFontOfSize: [entry[@"size"] intValue] bold: NO];
 
     NSRect frame = field.frame;
     CGRect rect = [field.attributedStringValue boundingRectWithSize: CGSizeMake(NSWidth(frame), FLT_MAX)

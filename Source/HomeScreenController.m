@@ -134,7 +134,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     title = aTitle;
     NSDictionary *attributes = @{
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-        NSFontAttributeName: [PreferenceController mainFontOfSize: 14 bold: false]
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 14 bold: NO]
     };
     titleString = [[NSAttributedString alloc] initWithString: title attributes: attributes];
 
@@ -308,7 +308,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
         [paragraphStyle setMaximumLineHeight: 15];
         mainDateAttributes = @{
             NSForegroundColorAttributeName: [NSColor whiteColor],
-            NSFontAttributeName: [PreferenceController mainFontOfSize: 18 bold: false],
+            NSFontAttributeName: [PreferenceController mainFontOfSize: 18 bold: NO],
             NSParagraphStyleAttributeName: paragraphStyle
         };
 

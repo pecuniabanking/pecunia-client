@@ -221,11 +221,11 @@ extern void *UserDefaultsBindingContext;
     [tagsController prepareContent];
 
     tagViewPopup.datasource = tagsController;
-    tagViewPopup.defaultFont = [PreferenceController mainFontOfSize: 11 bold: false];
+    tagViewPopup.defaultFont = [PreferenceController mainFontOfSize: 11 bold: NO];
     tagViewPopup.canCreateNewTags = YES;
 
     tagView.datasource = statementTags;
-    tagView.defaultFont = [PreferenceController mainFontOfSize: 11 bold: false];
+    tagView.defaultFont = [PreferenceController mainFontOfSize: 11 bold: NO];
     tagView.canCreateNewTags = YES;
 
     notesTextView.editable = NO;
@@ -307,14 +307,14 @@ extern void *UserDefaultsBindingContext;
                                                          alignment: NSRightTextAlignment
                                                                row: row
                                                             column: 0
-                                                              font: [PreferenceController mainFontOfSize: 12 bold: false]
+                                                              font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
                                                              table: table
                                                          alignment: NSLeftTextAlignment
                                                                row: row
                                                             column: 1
-                                                              font: [PreferenceController mainFontOfSize: 12 bold: false]
+                                                              font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     return YES;
 }
@@ -332,14 +332,14 @@ extern void *UserDefaultsBindingContext;
                                                          alignment: NSRightTextAlignment
                                                                row: row
                                                             column: 0
-                                                              font: [PreferenceController mainFontOfSize: 11 bold: false]
+                                                              font: [PreferenceController mainFontOfSize: 11 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
                                                              table: table
                                                          alignment: NSLeftTextAlignment
                                                                row: row
                                                             column: 1
-                                                              font: [PreferenceController mainFontOfSize: 12 bold: false]
+                                                              font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     return YES;
 }
@@ -551,11 +551,11 @@ extern void *UserDefaultsBindingContext;
     sequenceTypeImage.image = sequenceImage;
 
     NSDictionary *normalAttributes = @{
-        NSFontAttributeName : [PreferenceController mainFontOfSize: 13 bold: false],
+        NSFontAttributeName : [PreferenceController mainFontOfSize: 13 bold: NO],
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
     };
     NSDictionary *boldAttributes = @{
-        NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: false],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: NO],
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
     };
 

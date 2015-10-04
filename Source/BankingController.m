@@ -220,7 +220,7 @@ static BankingController *bankinControllerInstance;
     [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
 
-    NSFont *font = [PreferenceController mainFontOfSize: 13 bold: false];
+    NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
     [self setupSidebar];
@@ -233,7 +233,7 @@ static BankingController *bankinControllerInstance;
     if (tableColumn) {
         ImageAndTextCell *cell = (ImageAndTextCell *)[tableColumn dataCell];
         if (cell) {
-            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: false];
+            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
             [cell setFont: font];
 
             accountsView.rowHeight = floor(font.pointSize) + 8;
@@ -3458,7 +3458,7 @@ static BankingController *bankinControllerInstance;
                           image: [NSImage imageNamed: @"send3-active"]
                  alternateImage: [NSImage imageNamed: @"send3"]];
 
-    NSFont *font = [PreferenceController mainFontOfSize: 11 bold: false];
+    NSFont *font = [PreferenceController mainFontOfSize: 11 bold: NO];
     if (font != nil) {
         for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
             id                        cell = [sidebar cellForItem: i];
@@ -3500,7 +3500,7 @@ static BankingController *bankinControllerInstance;
 
         if ([keyPath isEqualToString: @"fontScale"]) {
             [accountsScrollView setNeedsDisplay: YES];
-            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: false];
+            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
 
             NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
             if (tableColumn) {
@@ -3508,7 +3508,7 @@ static BankingController *bankinControllerInstance;
             }
             accountsView.rowHeight = floor(font.pointSize) + 8;
 
-            font = [PreferenceController mainFontOfSize: 11 bold: false];
+            font = [PreferenceController mainFontOfSize: 11 bold: NO];
             for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
                 id                        cell = [sidebar cellForItem: i];
                 NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];

@@ -97,8 +97,8 @@ extern void *UserDefaultsBindingContext;
                                      nil
                                      ];
 
-    normalAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: false]};
-    selectedAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: false],
+    normalAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: NO]};
+    selectedAttributes = @{NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: NO],
                            NSForegroundColorAttributeName: NSColor.whiteColor};
 
 

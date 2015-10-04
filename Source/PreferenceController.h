@@ -101,6 +101,6 @@
 + (NSString *)mainFontName;
 + (NSString *)mainFontNameBold;
 
-+ (NSFont *)mainFontOfSize: (CGFloat)size bold: (Boolean)isBold;
++ (NSFont *)mainFontOfSize: (CGFloat)size bold: (BOOL)isBold;
 
 @end

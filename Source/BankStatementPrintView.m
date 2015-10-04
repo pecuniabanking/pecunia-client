@@ -614,7 +614,7 @@
     }
     // Footer
     NSDictionary *attributes = @{
-        NSFontAttributeName: [PreferenceController mainFontOfSize: 8 bold: false],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 8 bold: NO],
         NSForegroundColorAttributeName: NSColor.blackColor,
     };
 
@@ -625,7 +625,7 @@
     NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
     style.alignment = NSRightTextAlignment;
     attributes = @{
-        NSFontAttributeName: [PreferenceController mainFontOfSize: 8 bold: false],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 8 bold: NO],
         NSForegroundColorAttributeName: NSColor.blackColor,
         NSParagraphStyleAttributeName: style
     };

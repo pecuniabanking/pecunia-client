@@ -42,7 +42,7 @@
     BankingCategory *category = [[self itemAtRow: row] representedObject];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    titleAttributes[NSFontAttributeName] = [PreferenceController mainFontOfSize: 14 bold: false];
+    titleAttributes[NSFontAttributeName] = [PreferenceController mainFontOfSize: 14 bold: NO];
     titleAttributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedRed: 0.177
                                                                                 green: 0.413
                                                                                  blue: 0.809
