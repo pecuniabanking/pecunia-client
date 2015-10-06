@@ -162,7 +162,7 @@ class WebClient: WebView, WebViewJSExport {
     }
     
     func fireRequest(requestData: JSValue) {
-        var url         = "http://requestb.in/x1kr22x1";
+        var url         = "";
         var method      = "GET";
         var parameters : [String: String] = ["":""];
         
