@@ -188,6 +188,7 @@ import WebKit;
 
         var queryList: [String: UserQueryEntry] = [:];
         for account in accounts {
+            maxStatDays = 365*5; //ACHTUN
             if account.latestTransferDate == nil && maxStatDays > 0 {
                 account.latestTransferDate = NSDate(timeInterval: -86400.0 * maxStatDays, sinceDate: NSDate());
             }
@@ -205,7 +206,7 @@ import WebKit;
                 let request = AuthRequest();
                 let password = request.getPin(account.bankCode, userId: account.userId);
                 if password != "<abort>" {
-                    entry = UserQueryEntry(bankCode: account.bankCode, passwords: [password],
+                    entry = UserQueryEntry(bankCode: account.bankCode, password: password,
                         accountNumbers: [], auth: request);
                     queryList[account.userId] = entry;
                 }

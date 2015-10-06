@@ -49,8 +49,9 @@ function getStatements(user, bankCode, _passwords, from, to, _accountNumbers) {
     arguments.callee.accountNumbers = _accountNumbers;
     arguments.callee.startFrom      = from;
     arguments.callee.endAt          = to;
-    arguments.callee.thePassword    = _passwords;
+    arguments.callee.thePassword    = _passwords.split("|||");
     
+    //logger.logDebug(arguments.callee.thePassword[0] + " : " + arguments.callee.thePassword[1]);
     if (user == "") {
         logger.logError("Login: user name empty");
         return false;
@@ -59,7 +60,7 @@ function getStatements(user, bankCode, _passwords, from, to, _accountNumbers) {
     logger.logDebug("Statements for user : " + arguments.callee.userName);
     logger.logDebug("From : "                + arguments.callee.startFrom);
     logger.logDebug("To : "                  + arguments.callee.endAt);
-    logger.logDebug("Credit cards : "        + arguments.callee.accountNumbers);
+    logger.logDebug("Accounts : "            + arguments.callee.accountNumbers);
 
     setState(states.LOGIN_STATEMENT);
     navigationCallback.singleStep   = false;
@@ -129,7 +130,6 @@ function navigationCallback(doStep) {
             case states.LOGIN, states.LOGIN_STATEMENT: // 1 for pure login, 11 for login + statements.
                 if ( startLogin(webClient) ) {
                     setState(states.SUBMIT_BUTTON);
-                    //navigationCallback(false, "");
                     return;
                 }
                 break;
@@ -137,19 +137,13 @@ function navigationCallback(doStep) {
             case states.SUBMIT_BUTTON:
                 if ( submitButton(webClient) ) {
                     setState(states.CHECK_USER);
-                    //sleepFor(3000);
-                    //navigationCallback(false, "");
-                    //return;
                 } else {
-                    //navigationCallback(false, "");
-                    //return;
                 }
                 break;
                 
             case states.CHECK_USER: //check if user name was correct
                 if ( checkUserName(webClient) ) {
                     setState(states.SECURITY_QUESTION);
-                    //sleepFor(3000);
                     navigationCallback(false, "");
                     return;
                 } else {
@@ -166,11 +160,9 @@ function navigationCallback(doStep) {
                 
                 if (answerSecurityQuestion(webClient)) {
                     setState(states.NAVIGATE_ACC);
-                    //sleepFor(1000);
                     navigationCallback(false, "");
                     return;
                 } else {
-                    //sleepFor(1000);
                     setState(states.SUBMIT_BUTTON);
                     navigationCallback(false, "");
                     return;
@@ -331,7 +323,7 @@ function answerSecurityQuestion(webClient) {
         logger.logInfo("answering security question");
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
         
-        sleepFor(1000); // that's not cool but it seems that we do have timing issues if we the click event comes to early
+        sleepFor(500); // that's not cool but it seems that we do have timing issues if we the click event comes to early
         
         submitLogin.click();//press the button
         logger.logDebug("security question process triggered ");

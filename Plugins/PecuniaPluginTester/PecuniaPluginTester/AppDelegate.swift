@@ -330,7 +330,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
 
     let user = userNameTextField.stringValue;
-    let passwordString = passwordTextField.stringValue;
+    let password = passwordTextField.stringValue;
     let bankCode = bankCodeTextField.stringValue;
     let fromDate = fromDatePicker.dateValue;
     let toDate = toDatePicker.dateValue;
@@ -338,17 +338,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let defaults = NSUserDefaults.standardUserDefaults();
     defaults.setObject(user, forKey: "pptLoginUser");
-    defaults.setObject(passwordString, forKey: "pptLoginPassword");
+    defaults.setObject(password, forKey: "pptLoginPassword");
     defaults.setObject(bankCode, forKey: "pptBankCode");
     defaults.setObject(fromDate, forKey: "pptFromDate");
     defaults.setObject(toDate, forKey: "pptToDate");
     defaults.setObject(accountString, forKey: "pptAccounts");
 
-    let passwords = passwordString.componentsSeparatedByString(",");
-    if passwords.count == 0 {
-        logError("No passwords specified");
-        return;
-    }
     
     var accounts = accountString.componentsSeparatedByString(",");
     if accounts.count == 0 {
@@ -361,7 +356,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       accounts[i] = String(filter(accounts[i]) { $0 != " " });
     }
 */
-    let query = UserQueryEntry(bankCode: bankCode, passwords: passwords, accountNumbers: accounts, auth: authRequest);
+    let query = UserQueryEntry(bankCode: bankCode, password: password, accountNumbers: accounts, auth: authRequest);
     context!.getStatements(user, query: query, fromDate: fromDate, toDate: toDate) { (values: [BankQueryResult]) -> Void in
         self.logIntern("");
         self.logIntern("Results (\(values.count)):");
