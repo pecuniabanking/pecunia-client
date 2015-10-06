@@ -188,7 +188,7 @@ import WebKit;
 
         var queryList: [String: UserQueryEntry] = [:];
         for account in accounts {
-            maxStatDays = 365*5; //ACHTUN
+
             if account.latestTransferDate == nil && maxStatDays > 0 {
                 account.latestTransferDate = NSDate(timeInterval: -86400.0 * maxStatDays, sinceDate: NSDate());
             }
