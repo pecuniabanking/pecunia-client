@@ -205,7 +205,7 @@ import WebKit;
                 let request = AuthRequest();
                 let password = request.getPin(account.bankCode, userId: account.userId);
                 if password != "<abort>" {
-                    entry = UserQueryEntry(bankCode: account.bankCode, password: password,
+                    entry = UserQueryEntry(bankCode: account.bankCode, passwords: [password],
                         accountNumbers: [], auth: request);
                     queryList[account.userId] = entry;
                 }

@@ -27,7 +27,7 @@ import Foundation
   case StandingOrder;
 }
 
-@objc class BankQueryResult {
+@objc class BankQueryResult : NSObject {
   var type: BankQueryType = .BankStatement;
   var ccNumber: String?;
   var lastSettleDate: NSDate?;

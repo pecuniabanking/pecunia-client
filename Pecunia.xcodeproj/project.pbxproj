@@ -849,6 +849,37 @@
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		99B9B0C11BC1DED400400B44 /* bos.js in Resources */ = {isa = PBXBuildFile; fileRef = 99B9B0C01BC1DED400400B44 /* bos.js */; settings = {ASSET_TAGS = (); }; };
+		99BE2B491BC2CC53005F5D17 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99BE2B471BC2CBF4005F5D17 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4A1BC2CC53005F5D17 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2B1BC2CBDF005F5D17 /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4B1BC2CC53005F5D17 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2C1BC2CBDF005F5D17 /* Download.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4C1BC2CC53005F5D17 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2D1BC2CBDF005F5D17 /* Error.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4D1BC2CC53005F5D17 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2E1BC2CBDF005F5D17 /* Manager.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4E1BC2CC53005F5D17 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2F1BC2CBDF005F5D17 /* MultipartFormData.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B4F1BC2CC53005F5D17 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B301BC2CBDF005F5D17 /* ParameterEncoding.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B501BC2CC53005F5D17 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B311BC2CBDF005F5D17 /* Request.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B511BC2CC53005F5D17 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B321BC2CBDF005F5D17 /* Response.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B521BC2CC53005F5D17 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B331BC2CBDF005F5D17 /* ResponseSerialization.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B531BC2CC53005F5D17 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B341BC2CBDF005F5D17 /* Result.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B541BC2CC53005F5D17 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B351BC2CBDF005F5D17 /* ServerTrustPolicy.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B551BC2CC53005F5D17 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B361BC2CBDF005F5D17 /* Stream.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B561BC2CC53005F5D17 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B371BC2CBDF005F5D17 /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B571BC2CC53005F5D17 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B381BC2CBDF005F5D17 /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B581BC2CC55005F5D17 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99BE2B471BC2CBF4005F5D17 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		99BE2B591BC2CC55005F5D17 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2B1BC2CBDF005F5D17 /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5A1BC2CC55005F5D17 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2C1BC2CBDF005F5D17 /* Download.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5B1BC2CC55005F5D17 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2D1BC2CBDF005F5D17 /* Error.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5C1BC2CC55005F5D17 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2E1BC2CBDF005F5D17 /* Manager.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5D1BC2CC55005F5D17 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B2F1BC2CBDF005F5D17 /* MultipartFormData.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5E1BC2CC55005F5D17 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B301BC2CBDF005F5D17 /* ParameterEncoding.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B5F1BC2CC55005F5D17 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B311BC2CBDF005F5D17 /* Request.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B601BC2CC55005F5D17 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B321BC2CBDF005F5D17 /* Response.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B611BC2CC55005F5D17 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B331BC2CBDF005F5D17 /* ResponseSerialization.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B621BC2CC55005F5D17 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B341BC2CBDF005F5D17 /* Result.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B631BC2CC55005F5D17 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B351BC2CBDF005F5D17 /* ServerTrustPolicy.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B641BC2CC55005F5D17 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B361BC2CBDF005F5D17 /* Stream.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B651BC2CC55005F5D17 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B371BC2CBDF005F5D17 /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B661BC2CC55005F5D17 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B381BC2CBDF005F5D17 /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
 		A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
 		A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
@@ -1613,6 +1644,23 @@
 		32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pecunia_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99B9B0C01BC1DED400400B44 /* bos.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bos.js; path = Plugins/bos.js; sourceTree = "<group>"; };
+		99BE2B2A1BC2CBDF005F5D17 /* Alamofire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alamofire.h; path = Submodules/Alamofire/Source/Alamofire.h; sourceTree = SOURCE_ROOT; };
+		99BE2B2B1BC2CBDF005F5D17 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Submodules/Alamofire/Source/Alamofire.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B2C1BC2CBDF005F5D17 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = Submodules/Alamofire/Source/Download.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B2D1BC2CBDF005F5D17 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Submodules/Alamofire/Source/Error.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B2E1BC2CBDF005F5D17 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manager.swift; path = Submodules/Alamofire/Source/Manager.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B2F1BC2CBDF005F5D17 /* MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultipartFormData.swift; path = Submodules/Alamofire/Source/MultipartFormData.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B301BC2CBDF005F5D17 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParameterEncoding.swift; path = Submodules/Alamofire/Source/ParameterEncoding.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B311BC2CBDF005F5D17 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Submodules/Alamofire/Source/Request.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B321BC2CBDF005F5D17 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Submodules/Alamofire/Source/Response.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B331BC2CBDF005F5D17 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseSerialization.swift; path = Submodules/Alamofire/Source/ResponseSerialization.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B341BC2CBDF005F5D17 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Submodules/Alamofire/Source/Result.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B351BC2CBDF005F5D17 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServerTrustPolicy.swift; path = Submodules/Alamofire/Source/ServerTrustPolicy.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B361BC2CBDF005F5D17 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stream.swift; path = Submodules/Alamofire/Source/Stream.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B371BC2CBDF005F5D17 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Upload.swift; path = Submodules/Alamofire/Source/Upload.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B381BC2CBDF005F5D17 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validation.swift; path = Submodules/Alamofire/Source/Validation.swift; sourceTree = SOURCE_ROOT; };
+		99BE2B471BC2CBF4005F5D17 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Submodules/Alamofire/Source/Info.plist; sourceTree = SOURCE_ROOT; };
 		A652533315E39A76000C2989 /* TanWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanWindow.h; sourceTree = "<group>"; };
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
 		A687545F1778CDC0007B4BC2 /* AssignmentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignmentController.h; sourceTree = "<group>"; };
@@ -2181,6 +2229,7 @@
 			isa = PBXGroup;
 			children = (
 				27A85F871B1A07F70017D863 /* dkb.js */,
+				99B9B0C01BC1DED400400B44 /* bos.js */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -2297,6 +2346,7 @@
 				275C07DC1438777900D97415 /* PXListview */,
 				27516818193B87C900FE942F /* YRK Spinning Indicator */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
+				99BE2B291BC2CBAD005F5D17 /* Alamofire */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
 			);
 			name = "3rd Party";
@@ -2575,6 +2625,29 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		99BE2B291BC2CBAD005F5D17 /* Alamofire */ = {
+			isa = PBXGroup;
+			children = (
+				99BE2B471BC2CBF4005F5D17 /* Info.plist */,
+				99BE2B2A1BC2CBDF005F5D17 /* Alamofire.h */,
+				99BE2B2B1BC2CBDF005F5D17 /* Alamofire.swift */,
+				99BE2B2C1BC2CBDF005F5D17 /* Download.swift */,
+				99BE2B2D1BC2CBDF005F5D17 /* Error.swift */,
+				99BE2B2E1BC2CBDF005F5D17 /* Manager.swift */,
+				99BE2B2F1BC2CBDF005F5D17 /* MultipartFormData.swift */,
+				99BE2B301BC2CBDF005F5D17 /* ParameterEncoding.swift */,
+				99BE2B311BC2CBDF005F5D17 /* Request.swift */,
+				99BE2B321BC2CBDF005F5D17 /* Response.swift */,
+				99BE2B331BC2CBDF005F5D17 /* ResponseSerialization.swift */,
+				99BE2B341BC2CBDF005F5D17 /* Result.swift */,
+				99BE2B351BC2CBDF005F5D17 /* ServerTrustPolicy.swift */,
+				99BE2B361BC2CBDF005F5D17 /* Stream.swift */,
+				99BE2B371BC2CBDF005F5D17 /* Upload.swift */,
+				99BE2B381BC2CBDF005F5D17 /* Validation.swift */,
+			);
+			name = Alamofire;
 			sourceTree = "<group>";
 		};
 		B12A497E10BDD242002CC63E /* Banking Backend */ = {
@@ -3460,6 +3533,7 @@
 				272F6E7D1955E6A500096734 /* sequence-type-blue@2x.png in Resources */,
 				27D902FC1788520E00B7452B /* flow.png in Resources */,
 				27D902FE1788520E00B7452B /* flow@2x.png in Resources */,
+				99BE2B491BC2CC53005F5D17 /* Info.plist in Resources */,
 				27D90302178857AF00B7452B /* pecunia-vertical.png in Resources */,
 				B1E80ECA1B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */,
 				275AC7FA186B6405002E6BED /* graph3-active@2x.png in Resources */,
@@ -3676,6 +3750,7 @@
 				27E845F019E17D300026464E /* HomeScreenTransfersView.xib in Resources */,
 				27E845BE19E17D2F0026464E /* About.xib in Resources */,
 				27E845D419E17D2F0026464E /* CategoryDefinition.xib in Resources */,
+				99B9B0C11BC1DED400400B44 /* bos.js in Resources */,
 				2778C24418140027003BF49D /* gear@2x.png in Resources */,
 				B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */,
 				B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */,
@@ -3708,6 +3783,7 @@
 				27649722167D2A73006770A9 /* Collections in Resources */,
 				27E23534168A16290050276E /* edit-large.png in Resources */,
 				275AC7E0186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
+				99BE2B581BC2CC55005F5D17 /* Info.plist in Resources */,
 				27E23535168A16290050276E /* edit-large@2x.png in Resources */,
 				27E2353F168A228D0050276E /* csv.png in Resources */,
 				27E845E019E17D300026464E /* CreditCardSettlement.xib in Resources */,
@@ -3839,6 +3915,7 @@
 				2777887A173CE22700430EBC /* Transfer.m in Sources */,
 				2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
+				99BE2B4A1BC2CC53005F5D17 /* Alamofire.swift in Sources */,
 				B1E80ECD1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */,
 				2777887C173CE22700430EBC /* TransactionLimits.m in Sources */,
 				27F2A418197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
@@ -3862,6 +3939,7 @@
 				27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */,
 				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
+				99BE2B501BC2CC53005F5D17 /* Request.swift in Sources */,
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
 				27593DA31AB458A20009A91E /* Converter.swift in Sources */,
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
@@ -3882,6 +3960,7 @@
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
 				27778899173CE22700430EBC /* Account.m in Sources */,
+				99BE2B531BC2CC53005F5D17 /* Result.swift in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */,
 				27593DA41AB458A40009A91E /* DEAccountCheck.swift in Sources */,
@@ -3892,8 +3971,10 @@
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
+				99BE2B4D1BC2CC53005F5D17 /* Manager.swift in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				270ED6CF1AE3C50E001D3B8C /* NSDate.swift in Sources */,
+				99BE2B521BC2CC53005F5D17 /* ResponseSerialization.swift in Sources */,
 				B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
@@ -3908,6 +3989,7 @@
 				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
 				27BB3B83190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
 				277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */,
+				99BE2B4F1BC2CC53005F5D17 /* ParameterEncoding.swift in Sources */,
 				277788A6173CE22700430EBC /* PurposeSplitData.m in Sources */,
 				27C49E9F19F2774B001087D3 /* MessageLog.swift in Sources */,
 				277788A7173CE22700430EBC /* TransferTemplate.m in Sources */,
@@ -3917,6 +3999,7 @@
 				277788AB173CE22700430EBC /* CategoryReportingNode.m in Sources */,
 				277788AC173CE22700430EBC /* StandingOrder.m in Sources */,
 				277788AD173CE22700430EBC /* StandingOrderController.m in Sources */,
+				99BE2B4E1BC2CC53005F5D17 /* MultipartFormData.swift in Sources */,
 				277788AE173CE22700430EBC /* MessageLog.m in Sources */,
 				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
 				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
@@ -3924,6 +4007,7 @@
 				B19EBD791B3B4172001DEC8E /* HBCISmartcardData.swift in Sources */,
 				277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */,
 				277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */,
+				99BE2B4B1BC2CC53005F5D17 /* Download.swift in Sources */,
 				277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */,
 				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
 				B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */,
@@ -3932,8 +4016,10 @@
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
+				99BE2B511BC2CC53005F5D17 /* Response.swift in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
+				99BE2B541BC2CC53005F5D17 /* ServerTrustPolicy.swift in Sources */,
 				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
 				277788BC173CE22700430EBC /* HBCIBridge.m in Sources */,
 				277788BD173CE22700430EBC /* CallbackData.m in Sources */,
@@ -3955,9 +4041,11 @@
 				277788C7173CE22700430EBC /* FlickerView.m in Sources */,
 				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
 				276AED0E195B2F61005D5E06 /* SliderView.m in Sources */,
+				99BE2B551BC2CC53005F5D17 /* Stream.swift in Sources */,
 				27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
 				B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
+				99BE2B4C1BC2CC53005F5D17 /* Error.swift in Sources */,
 				277788CA173CE22700430EBC /* ImportSettings.m in Sources */,
 				27F69B7D18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				277788CB173CE22700430EBC /* ImportController.m in Sources */,
@@ -3986,6 +4074,7 @@
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
+				99BE2B571BC2CC53005F5D17 /* Validation.swift in Sources */,
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				27FCA9261B1F592C006B590A /* Security.swift in Sources */,
@@ -4079,6 +4168,7 @@
 				27778917173CE22700430EBC /* TagView.m in Sources */,
 				272454681871F89C00AF9042 /* BankDetailsParser.m in Sources */,
 				276B83C61811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */,
+				99BE2B561BC2CC53005F5D17 /* Upload.swift in Sources */,
 				27778918173CE22700430EBC /* ColorPopup.m in Sources */,
 				27778919173CE22700430EBC /* BFIconTabBar.m in Sources */,
 				A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */,
@@ -4114,6 +4204,7 @@
 				B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */,
 				2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
+				99BE2B591BC2CC55005F5D17 /* Alamofire.swift in Sources */,
 				B1E80ECC1B47350D00AB45B9 /* ChipcardRequestController.swift in Sources */,
 				B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */,
 				27F2A417197BFA65002E6CA6 /* TagRuleEditorController.m in Sources */,
@@ -4137,6 +4228,7 @@
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
 				27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */,
+				99BE2B5F1BC2CC55005F5D17 /* Request.swift in Sources */,
 				B132F91F0F96594000263F3B /* ShortDate.m in Sources */,
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
 				27F5911B1AA38214005FA793 /* Converter.swift in Sources */,
@@ -4157,6 +4249,7 @@
 				B1A6AA491A2672C400141C39 /* atr.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
+				99BE2B621BC2CC55005F5D17 /* Result.swift in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */,
@@ -4167,8 +4260,10 @@
 				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */,
+				99BE2B5C1BC2CC55005F5D17 /* Manager.swift in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
+				99BE2B611BC2CC55005F5D17 /* ResponseSerialization.swift in Sources */,
 				270ED6CE1AE3C50E001D3B8C /* NSDate.swift in Sources */,
 				B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
@@ -4183,6 +4278,7 @@
 				2759D89F1A0133FB002AE07E /* Array.swift in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				27BB3B82190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */,
+				99BE2B5E1BC2CC55005F5D17 /* ParameterEncoding.swift in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
 				B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */,
 				27C49E9E19F2774B001087D3 /* MessageLog.swift in Sources */,
@@ -4192,6 +4288,7 @@
 				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
 				B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */,
 				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
+				99BE2B5D1BC2CC55005F5D17 /* MultipartFormData.swift in Sources */,
 				B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */,
 				B1AFAA0512A061C100B115A7 /* StandingOrderController.m in Sources */,
 				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
@@ -4199,6 +4296,7 @@
 				B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */,
 				B1A6AA531A2672C400141C39 /* ddv_decrypt.m in Sources */,
 				B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */,
+				99BE2B5A1BC2CC55005F5D17 /* Download.swift in Sources */,
 				B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */,
 				B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */,
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
@@ -4207,8 +4305,10 @@
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
+				99BE2B601BC2CC55005F5D17 /* Response.swift in Sources */,
 				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
+				99BE2B631BC2CC55005F5D17 /* ServerTrustPolicy.swift in Sources */,
 				B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */,
 				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
 				27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */,
@@ -4230,9 +4330,11 @@
 				B14D4D2B13DCA0E000843BE6 /* User.m in Sources */,
 				B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */,
 				B17B2B4313EC921200739E7A /* FlickerView.m in Sources */,
+				99BE2B641BC2CC55005F5D17 /* Stream.swift in Sources */,
 				B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */,
 				276AED0D195B2F61005D5E06 /* SliderView.m in Sources */,
 				27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
+				99BE2B5B1BC2CC55005F5D17 /* Error.swift in Sources */,
 				B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */,
 				B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
 				B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */,
@@ -4261,6 +4363,7 @@
 				B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
+				99BE2B661BC2CC55005F5D17 /* Validation.swift in Sources */,
 				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
@@ -4354,6 +4457,7 @@
 				2795F20F17071DE6003AC74D /* TagView.m in Sources */,
 				272454671871F89C00AF9042 /* BankDetailsParser.m in Sources */,
 				276B83C51811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */,
+				99BE2B651BC2CC55005F5D17 /* Upload.swift in Sources */,
 				279918121711E97400C1AC3D /* ColorPopup.m in Sources */,
 				2739FEF4171336580066F326 /* BFIconTabBar.m in Sources */,
 				A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */,
@@ -4383,10 +4487,10 @@
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4441,10 +4545,10 @@
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4489,10 +4593,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4539,6 +4643,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4601,6 +4706,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4650,6 +4756,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Submodules/Alamofire/build/Debug",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4697,7 +4804,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4712,7 +4819,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4727,7 +4834,7 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};

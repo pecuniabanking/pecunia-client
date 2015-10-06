@@ -21,7 +21,7 @@ import Foundation
 
 // Mockup code created from the same BankAccount class in Pecunia.
 
-@objc class BankAccount {
+@objc class BankAccount : NSObject {
   var accountNumber: String;
   var bankCode: String;
 
