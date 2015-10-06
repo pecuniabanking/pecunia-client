@@ -238,7 +238,7 @@ function navigationCallback(doStep) {
                 return;
             
             case states.LOGIN_ERROR:
-                webClient.resultsArrived([], "", ""); //übergabe???
+                webClient.resultsArrived([], "", "");
                 
             case states.LOGOUT:
                 logger.logInfo("Log out done");
@@ -316,7 +316,7 @@ function answerSecurityQuestion(webClient) {
         
         answerElement.value = getStatements.thePassword[1];
         
-        logger.logInfo("question: " + formLogin.elements.namedItem("fldquestion1").defaultValue);
+        logger.logDebug("question: " + formLogin.elements.namedItem("fldquestion1").defaultValue);
         
         var submitLogin = formLogin.elements.namedItem("fldGO");
         logger.logDebug("submit button: " + submitLogin + ", text: " + submitLogin.alt);
@@ -351,7 +351,7 @@ function checkSecurityQuestion(webClient) {
             messageFrame.outerHTML.indexOf('<frame src="display_message.htm"') !== -1) {
             
             logger.logInfo("Security question failed ");
-            logger.logDebug("counter : " + arguments.callee.secCheckCounter + "\n" + messageFrame.outerHTML);
+            logger.logDebug("secCheckCounter : " + arguments.callee.secCheckCounter + "\n" + messageFrame.outerHTML);
             
             arguments.callee.secCheckCounter = 0;
             return false;
@@ -434,6 +434,7 @@ function getAccountData(data, accounts) {
     //page exists
     if (arguments.callee.currentPageNum == 1) {
         arguments.callee.accountInfo = parseAccountData(data);
+        logger.logVerbose(JSON.stringify(arguments.callee.accountInfo));
         //logger.logDebug("---------------------------\n"+                        JSON.stringify(accountInfo));
     }
     
@@ -528,13 +529,7 @@ function newTransactionEntry(statement) {
         "originalValue" : value//dito wie "value" (für Umsätze die von anderen Währungen stammen)
     }
     
-    logger.logVerbose("final: "+transaction["final"] + " " +
-                    "valutaDate: "+transaction["valutaDate"].format("dd.mm.yyy") + " "+
-                    "date: "+transaction["date"].format("dd.mm.yyy") + " "+
-                    "transactionText: "+transaction["transactionText"] + " "+
-                    "value: "+transaction["value"] + " "+
-                    "originalValue: "+transaction["originalValue"]
-                    );
+    logger.logVerbose(JSON.stringify(transaction));
     
     return transaction;
 }
@@ -612,6 +607,7 @@ function requestAccountPage(sessionID, pageNum, accountNum) {
                    }
                    ];
     
+    logger.logVerbose("request: \n" + JSON.stringify(accountPageRequest));
     //send request
     webClient.fireRequest(accountPageRequest);
     logger.logDebug("fired account data request");

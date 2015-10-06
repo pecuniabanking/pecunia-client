@@ -75,8 +75,8 @@
         DDTTYLogger.sharedInstance.colorsEnabled = YES;
 
         // Swift.
-        // DDLog.logLevel = DDLogLevelDebug;
-        DDLog.logLevel = DDLogLevelVerbose;
+        DDLog.logLevel = DDLogLevelDebug;
+        //DDLog.logLevel = DDLogLevelVerbose;
 #else
         logLevel = LOG_LEVEL_INFO;
         DDLog.logLevel = DDLogLevelInfo;
