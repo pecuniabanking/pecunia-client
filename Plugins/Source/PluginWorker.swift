@@ -34,11 +34,11 @@ import AppKit
 
 internal class UserQueryEntry {
     var bankCode: String;
-    var passwords: [String];
+    var passwords: String;
     var accountNumbers: [String];
     var authRequest: AuthRequest;
 
-    init(bankCode bank: String, passwords pw: [String], accountNumbers numbers: [String], auth: AuthRequest) {
+    init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
         bankCode = bank;
         passwords = pw;
         accountNumbers = numbers;
