@@ -262,7 +262,8 @@ function navigationCallback(doStep) {
 function startLogin(webClient) {
 
     try {
-        var formLogin = webClient.selectedFrame.document.forms.item(0);
+        var formLogin = webClient.mainFrame.childFrames[3].document.forms.item(0);
+        
         formLogin.elements.namedItem("fldLoginUserId").value = getStatements.userName;
         formLogin.elements.namedItem("fldPassword").value = getStatements.thePassword[0];
         
@@ -278,7 +279,7 @@ function startLogin(webClient) {
 
 function submitButton(webClient) {
     try {
-        var formLogin = webClient.selectedFrame.document.forms.item(0);
+        var formLogin = webClient.mainFrame.childFrames[3].document.forms.item(0);
         var submitLogin = formLogin.elements.namedItem("btnContinue");
         
         logger.logVerbose("submitButton: " + submitLogin + ", text: " + submitLogin.alt);
@@ -295,7 +296,7 @@ function submitButton(webClient) {
 
 function checkUserName(webClient) {
     
-    var formLogin = webClient.selectedFrame;
+    var formLogin = webClient.mainFrame.childFrames[3];
     
     if (formLogin !== undefined ) {
         logger.logInfo("user name accepted")
@@ -309,7 +310,7 @@ function checkUserName(webClient) {
 
 function answerSecurityQuestion(webClient) {
     try {
-        var formLogin = webClient.selectedFrame.document.forms.item(0);
+        var formLogin = webClient.mainFrame.childFrames[3].document.forms.item(0);
         
         var answerElement = formLogin.elements.namedItem("fldanswer1");
         
@@ -323,7 +324,7 @@ function answerSecurityQuestion(webClient) {
         logger.logInfo("answering security question");
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
         
-        sleepFor(500); // that's not cool but it seems that we do have timing issues if we the click event comes to early
+        sleepFor(1000); // that's not cool but it seems that we do have timing issues if we the click event comes to early
         
         submitLogin.click();//press the button
         logger.logDebug("security question process triggered ");
