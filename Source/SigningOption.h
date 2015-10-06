@@ -23,7 +23,8 @@
 
 typedef enum {
     SecMethod_PinTan = 0,
-    SecMethod_DDV
+    SecMethod_DDV,
+    SecMethod_Script
 } SecurityMethod;
 
 @interface SigningOption : NSObject {
