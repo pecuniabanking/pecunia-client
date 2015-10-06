@@ -21,6 +21,6 @@ import Foundation
 
 // Mockup code created from the same StandingOrder class in Pecunia.
 
-@objc class StandingOrder {
+@objc class StandingOrder : NSObject {
 
 }

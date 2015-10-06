@@ -581,6 +581,10 @@ extension WebFrame: WebFrameJSExport {
     func resultsArrived(results: JSValue) -> Void;
     func reportError(account: String, _ message: String) -> Void;
 
+    // for handling HTTP requests
+    var httpRequestCallback: JSValue { get set };
+    func fireRequest(request: JSValue) ->  Void;
+    
     // WebView exports.
     static func canShowMIMEType(MIMEType: String!) -> Bool;
     static func canShowMIMETypeAsHTML(MIMEType: String!) -> Bool;

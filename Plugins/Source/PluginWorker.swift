@@ -22,6 +22,7 @@
 import Foundation
 import WebKit
 import AppKit
+//import Alamofire
 
 @objc protocol JSLogger : JSExport {
     func logError(message: String) -> Void;
@@ -33,13 +34,13 @@ import AppKit
 
 internal class UserQueryEntry {
     var bankCode: String;
-    var password: String;
+    var passwords: String;
     var accountNumbers: [String];
     var authRequest: AuthRequest;
 
     init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
         bankCode = bank;
-        password = pw;
+        passwords = pw;
         accountNumbers = numbers;
         authRequest = auth;
     }
@@ -65,6 +66,9 @@ class WebClient: WebView, WebViewJSExport {
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
+    // JS callback after the async request answer arrived
+    var httpRequestCallback: JSValue = JSValue();
+    
     func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
         
@@ -103,7 +107,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                if let value = entry["balance"] as? String where value.length > 0 {
+                if let value = entry["balance"] as? String where value.characters.count > 0 {
                     if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
                         queryResult.balance = number;
                     }
@@ -128,7 +132,7 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    if let value = jsonStatement["value"] as? String  where value.length > 0 {
+                    if let value = jsonStatement["value"] as? String  where value.characters.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
@@ -140,7 +144,7 @@ class WebClient: WebView, WebViewJSExport {
                         }
                     }
 
-                    if let value = jsonStatement["originalValue"] as? String where value.length > 0 {
+                    if let value = jsonStatement["originalValue"] as? String where value.characters.count > 0 {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.origValue = number;
                         }
@@ -156,6 +160,53 @@ class WebClient: WebView, WebViewJSExport {
             completion(queryResults);
         }
     }
+    
+    func fireRequest(requestData: JSValue) {
+        var url         = "http://requestb.in/x1kr22x1";
+        var method      = "GET";
+        var parameters : [String: String] = ["":""];
+        
+        Manager.defaultHTTPHeaders;
+        //
+        
+        if let entries = requestData.toArray() as? [[String: AnyObject]] {
+            url        = entries[0]["action"] as! String;
+            method     = entries[0]["method"] as! String;
+            parameters = entries[1] as! [String : String];
+        }
+        
+        request(method == "POST" ? .POST : .GET, url, parameters: parameters)
+            .responseString{ response in
+                
+                let myRequest = response.request!.description;
+                
+                //callback to JSScript
+                var myResult = "";
+                if (response.result.value != nil) {
+                    myResult = response.result.value!;
+                }
+                var myResponse = "";
+                if (response.response != nil) {
+                    myResponse = response.response!.debugDescription
+                }
+                var myError = "";
+                if (response.result.error != nil) {
+                    myError = response.result.error!.localizedDescription;
+                }
+                
+                let serializedData : [AnyObject] = [
+                    myRequest,
+                    myResponse,
+                    myResult,
+                    myError
+                ];
+                if !self.httpRequestCallback.isUndefined && !self.httpRequestCallback.isNull {
+                    self.httpRequestCallback.callWithArguments(serializedData);
+                }
+        }
+        
+    }
+
 }
 
 class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
@@ -304,7 +355,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
 
             webClient.completion = completion;
             webClient.query = query;
-            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.password, fromDate,
+            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.passwords, fromDate,
                 toDate, query.accountNumbers]) != nil) {
                 jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId);
             }

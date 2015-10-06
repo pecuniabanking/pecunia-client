@@ -23,6 +23,21 @@
 		27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AE1B23395F007B90F3 /* StandingOrder.swift */; };
 		27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */; };
 		27E5E7581B88950E00E5D835 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5E7571B88950E00E5D835 /* NSDecimalNumber.swift */; };
+		99BE2B8B1BC2CE47005F5D17 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99BE2B6D1BC2CE3D005F5D17 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		99BE2B8C1BC2CE47005F5D17 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B6E1BC2CE3D005F5D17 /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B8D1BC2CE47005F5D17 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B6F1BC2CE3D005F5D17 /* Download.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B8E1BC2CE47005F5D17 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B701BC2CE3D005F5D17 /* Error.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B8F1BC2CE47005F5D17 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B711BC2CE3D005F5D17 /* Manager.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B901BC2CE47005F5D17 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B721BC2CE3D005F5D17 /* MultipartFormData.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B911BC2CE47005F5D17 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B731BC2CE3D005F5D17 /* ParameterEncoding.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B921BC2CE47005F5D17 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B741BC2CE3D005F5D17 /* Request.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B931BC2CE47005F5D17 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B751BC2CE3D005F5D17 /* Response.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B941BC2CE47005F5D17 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B761BC2CE3D005F5D17 /* ResponseSerialization.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B951BC2CE47005F5D17 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B771BC2CE3D005F5D17 /* Result.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B961BC2CE47005F5D17 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B781BC2CE3D005F5D17 /* ServerTrustPolicy.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B971BC2CE47005F5D17 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B791BC2CE3D005F5D17 /* Stream.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B981BC2CE47005F5D17 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B7A1BC2CE3D005F5D17 /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
+		99BE2B991BC2CE47005F5D17 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BE2B7B1BC2CE3D005F5D17 /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +45,7 @@
 		270ED4E91AF4DD0400978925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		270ED4EA1AF4DD0400978925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		270ED4EF1AF4DD0400978925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		271F95421B8880F500C2D242 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
+		271F95421B8880F500C2D242 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = de.lproj; path = ../../Resources/de.lproj; sourceTree = "<group>"; };
 		276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+PecuniaAdditions.h"; path = "../../Source/NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+PecuniaAdditions.m"; path = "../../Source/NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PecuniaPlugingTester-Bridging-Header.h"; path = "../PecuniaPlugingTester-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -46,6 +61,21 @@
 		27CE87AE1B23395F007B90F3 /* StandingOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StandingOrder.swift; path = PecuniaPluginTester/StandingOrder.swift; sourceTree = "<group>"; };
 		27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocksHelper.swift; path = ../../Source/BlocksHelper.swift; sourceTree = "<group>"; };
 		27E5E7571B88950E00E5D835 /* NSDecimalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDecimalNumber.swift; path = ../../Source/NSDecimalNumber.swift; sourceTree = "<group>"; };
+		99BE2B6D1BC2CE3D005F5D17 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../Submodules/Alamofire/Source/Info.plist; sourceTree = "<group>"; };
+		99BE2B6E1BC2CE3D005F5D17 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = ../../Submodules/Alamofire/Source/Alamofire.swift; sourceTree = "<group>"; };
+		99BE2B6F1BC2CE3D005F5D17 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = ../../Submodules/Alamofire/Source/Download.swift; sourceTree = "<group>"; };
+		99BE2B701BC2CE3D005F5D17 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = ../../Submodules/Alamofire/Source/Error.swift; sourceTree = "<group>"; };
+		99BE2B711BC2CE3D005F5D17 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manager.swift; path = ../../Submodules/Alamofire/Source/Manager.swift; sourceTree = "<group>"; };
+		99BE2B721BC2CE3D005F5D17 /* MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultipartFormData.swift; path = ../../Submodules/Alamofire/Source/MultipartFormData.swift; sourceTree = "<group>"; };
+		99BE2B731BC2CE3D005F5D17 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParameterEncoding.swift; path = ../../Submodules/Alamofire/Source/ParameterEncoding.swift; sourceTree = "<group>"; };
+		99BE2B741BC2CE3D005F5D17 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Request.swift; path = ../../Submodules/Alamofire/Source/Request.swift; sourceTree = "<group>"; };
+		99BE2B751BC2CE3D005F5D17 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Response.swift; path = ../../Submodules/Alamofire/Source/Response.swift; sourceTree = "<group>"; };
+		99BE2B761BC2CE3D005F5D17 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseSerialization.swift; path = ../../Submodules/Alamofire/Source/ResponseSerialization.swift; sourceTree = "<group>"; };
+		99BE2B771BC2CE3D005F5D17 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = ../../Submodules/Alamofire/Source/Result.swift; sourceTree = "<group>"; };
+		99BE2B781BC2CE3D005F5D17 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServerTrustPolicy.swift; path = ../../Submodules/Alamofire/Source/ServerTrustPolicy.swift; sourceTree = "<group>"; };
+		99BE2B791BC2CE3D005F5D17 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stream.swift; path = ../../Submodules/Alamofire/Source/Stream.swift; sourceTree = "<group>"; };
+		99BE2B7A1BC2CE3D005F5D17 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Upload.swift; path = ../../Submodules/Alamofire/Source/Upload.swift; sourceTree = "<group>"; };
+		99BE2B7B1BC2CE3D005F5D17 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validation.swift; path = ../../Submodules/Alamofire/Source/Validation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +132,7 @@
 		276ABD861AF65A610041DC23 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				99BE2B671BC2CE14005F5D17 /* 3rd Party */,
 				27CE87AC1B23385F007B90F3 /* BankAccount.swift */,
 				27CE87A81B233669007B90F3 /* BankQueryResult.swift */,
 				27CE87AA1B23373C007B90F3 /* BankStatement.swift */,
@@ -124,6 +155,28 @@
 				277C0FE81B36C64500B9C738 /* Pecunia.icns */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		99BE2B671BC2CE14005F5D17 /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				99BE2B6D1BC2CE3D005F5D17 /* Info.plist */,
+				99BE2B6E1BC2CE3D005F5D17 /* Alamofire.swift */,
+				99BE2B6F1BC2CE3D005F5D17 /* Download.swift */,
+				99BE2B701BC2CE3D005F5D17 /* Error.swift */,
+				99BE2B711BC2CE3D005F5D17 /* Manager.swift */,
+				99BE2B721BC2CE3D005F5D17 /* MultipartFormData.swift */,
+				99BE2B731BC2CE3D005F5D17 /* ParameterEncoding.swift */,
+				99BE2B741BC2CE3D005F5D17 /* Request.swift */,
+				99BE2B751BC2CE3D005F5D17 /* Response.swift */,
+				99BE2B761BC2CE3D005F5D17 /* ResponseSerialization.swift */,
+				99BE2B771BC2CE3D005F5D17 /* Result.swift */,
+				99BE2B781BC2CE3D005F5D17 /* ServerTrustPolicy.swift */,
+				99BE2B791BC2CE3D005F5D17 /* Stream.swift */,
+				99BE2B7A1BC2CE3D005F5D17 /* Upload.swift */,
+				99BE2B7B1BC2CE3D005F5D17 /* Validation.swift */,
+			);
+			name = "3rd Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,7 +205,9 @@
 		270ED4DD1AF4DD0400978925 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Pecunia Team";
 				TargetAttributes = {
 					270ED4E41AF4DD0400978925 = {
@@ -185,6 +240,7 @@
 			files = (
 				27812CCF1AF5044100458619 /* debug-helper.js in Resources */,
 				270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */,
+				99BE2B8B1BC2CE47005F5D17 /* Info.plist in Resources */,
 				277C0FE91B36C64500B9C738 /* Pecunia.icns in Resources */,
 				271F95431B8880F500C2D242 /* de.lproj in Resources */,
 				27B3D3051B120E100011BBB3 /* safari.png in Resources */,
@@ -201,12 +257,26 @@
 				27CE87A91B233669007B90F3 /* BankQueryResult.swift in Sources */,
 				27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */,
 				27CE87AB1B23373C007B90F3 /* BankStatement.swift in Sources */,
+				99BE2B981BC2CE47005F5D17 /* Upload.swift in Sources */,
+				99BE2B8E1BC2CE47005F5D17 /* Error.swift in Sources */,
+				99BE2B931BC2CE47005F5D17 /* Response.swift in Sources */,
 				27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */,
+				99BE2B951BC2CE47005F5D17 /* Result.swift in Sources */,
 				276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */,
 				27E5E7581B88950E00E5D835 /* NSDecimalNumber.swift in Sources */,
+				99BE2B921BC2CE47005F5D17 /* Request.swift in Sources */,
 				27B3D2FE1B10808D0011BBB3 /* WebKitExports.swift in Sources */,
+				99BE2B971BC2CE47005F5D17 /* Stream.swift in Sources */,
 				278FFD8D1AFE43E60044BD5F /* PluginWorker.swift in Sources */,
+				99BE2B961BC2CE47005F5D17 /* ServerTrustPolicy.swift in Sources */,
+				99BE2B901BC2CE47005F5D17 /* MultipartFormData.swift in Sources */,
+				99BE2B911BC2CE47005F5D17 /* ParameterEncoding.swift in Sources */,
+				99BE2B8C1BC2CE47005F5D17 /* Alamofire.swift in Sources */,
+				99BE2B8D1BC2CE47005F5D17 /* Download.swift in Sources */,
+				99BE2B8F1BC2CE47005F5D17 /* Manager.swift in Sources */,
+				99BE2B941BC2CE47005F5D17 /* ResponseSerialization.swift in Sources */,
 				27CE87AD1B23385F007B90F3 /* BankAccount.swift in Sources */,
+				99BE2B991BC2CE47005F5D17 /* Validation.swift in Sources */,
 				270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +316,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -261,7 +332,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -300,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "PecuniaPlugingTester-Bridging-Header.h";
@@ -314,6 +385,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.pecuniabanking.pecunia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -325,6 +397,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.pecuniabanking.pecunia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

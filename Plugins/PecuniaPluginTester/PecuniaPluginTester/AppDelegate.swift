@@ -20,7 +20,7 @@
 import Cocoa;
 import WebKit;
 
-@objc public class AuthRequest {
+public class AuthRequest {
 
   var passwordTextField: NSTextField!;
 
@@ -77,10 +77,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     if let name = defaults.stringForKey("pptScriptPath") {
       pluginFileTextField.stringValue = name;
 
-      var error: NSError?;
-      if let attributes = NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue, error: &error) {
-        lastChangeDate = attributes[NSFileModificationDate] as! NSDate?;
-      }
+        do {
+            if let attributes : NSDictionary? = try NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue) {
+                if let _attr = attributes {
+                    lastChangeDate = _attr.fileModificationDate();// as! NSDate?;
+                }
+            }
+        } catch {
+            print("Error: \(error)")
+        }
     }
 
     if let user = defaults.stringForKey("pptLoginUser") {
@@ -168,13 +173,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   var pendingRefresh: dispatch_cancelable_block_t? = nil;
 
   func presentedItemDidChange() {
-    var error: NSError?;
-    if let attributes = NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue, error: &error) {
-      let date = attributes[NSFileModificationDate] as! NSDate?;
-      if lastChangeDate != nil && lastChangeDate == date {
-        return;
-      }
-      lastChangeDate = date;
+    do {
+        if let attributes : NSDictionary? = try NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue) {
+            
+            var date : NSDate?;
+            if let _attr = attributes {
+                date = _attr.fileModificationDate();// as! NSDate?;
+            }
+            
+            if lastChangeDate != nil && lastChangeDate == date {
+                return;
+            }
+            lastChangeDate = date;
+        }
+    } catch {
+        
     }
 
     dispatch_async(dispatch_get_main_queue(), {
@@ -258,7 +271,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       let frame = NSRect(x: 0, y: 0, width: 900, height: 900);
       webBrowser = NSWindow(contentRect: frame, styleMask: NSTitledWindowMask | NSClosableWindowMask
         | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask,
-        backing: .Buffered, defer: false);
+        backing: .Buffered, `defer`: false);
       webBrowser?.releasedWhenClosed = false;
     }
 
@@ -271,16 +284,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
 
     let bundle = NSBundle(forClass: AppDelegate.self);
-    if let scriptPath = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
-      if let script = String(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding, error: nil) {
-        context?.addDebugScript(script);
-      }
+    do {
+        if let scriptPath : String = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
+            if let script : NSString = try NSString(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding) {
+                context?.addDebugScript(script as String);
+            }
+        }
     }
+    catch {/* error handling here */}
+    //      if let script = String(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding, error: nil) {
+    //      context?.addDebugScript(script);
+    //    }
+    
 
     var text: String;
-    let (name, author, description, homePage, license, version) = context!.pluginInfo();
+    let (name, _, description, _, _, _) = context!.pluginInfo();
 
-    if count(name) == 0 || name == "undefined" {
+    if name.characters.count == 0 || name == "undefined" {
       logIntern("Plugin name missing or empty");
       text = "<plugin name not found>";
     } else {
@@ -290,7 +310,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       text = name;
     }
 
-    if count(description) == 0 || description == "undefined" {
+    if description.characters.count == 0 || description == "undefined" {
       logIntern("Warning: plugin description not found");
       text += ", <description not found>";
     } else {
@@ -324,19 +344,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     defaults.setObject(toDate, forKey: "pptToDate");
     defaults.setObject(accountString, forKey: "pptAccounts");
 
+    
     var accounts = accountString.componentsSeparatedByString(",");
-    if count(accounts) == 0 {
+    if accounts.count == 0 {
       logError("No accounts specified");
       return;
     }
 
-    for (var i = 0; i < count(accounts); i++) {
+    accounts = accounts.filter{ $0 != " " };
+/*    for (var i = 0; i < accounts.count; i++) {
       accounts[i] = String(filter(accounts[i]) { $0 != " " });
     }
-
+*/
     let query = UserQueryEntry(bankCode: bankCode, password: password, accountNumbers: accounts, auth: authRequest);
     context!.getStatements(user, query: query, fromDate: fromDate, toDate: toDate) { (values: [BankQueryResult]) -> Void in
-        let text = values.description;
         self.logIntern("");
         self.logIntern("Results (\(values.count)):");
         for value in values {
@@ -364,7 +385,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
           self.logIntern("    standing orders (\(value.standingOrders.count)):");
           for order in value.standingOrders {
-            self.logIntern("      order");
+            self.logIntern("      order \(order)");
           }
 
           self.logIntern("");
