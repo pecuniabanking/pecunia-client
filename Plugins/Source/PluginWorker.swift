@@ -22,7 +22,6 @@
 import Foundation
 import WebKit
 import AppKit
-//import Alamofire
 
 @objc protocol JSLogger : JSExport {
     func logError(message: String) -> Void;
@@ -56,18 +55,32 @@ class WebClient: WebView, WebViewJSExport {
         }
         set {
             redirecting = false;
-            if let url = NSURL(string: newValue) {
+            if let url = NSURL(string: newValue) {                
                 mainFrame.loadRequest(NSURLRequest(URL: url));
             }
         }
     }
+    
+    var postURL: String {
+        get {
+            return mainFrameURL;
+        }
+        set {
+            redirecting = false;
+            if let url = NSURL(string: newValue) {
+                let request = NSMutableURLRequest(URL: url);
+                request.HTTPMethod = "POST";
+                request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type");
+                mainFrame.loadRequest(request);
+            }
+        }
+    }
+
 
     var query: UserQueryEntry?;
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
-    // JS callback after the async request answer arrived
-    var httpRequestCallback: JSValue = JSValue();
     
     func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
@@ -159,52 +172,6 @@ class WebClient: WebView, WebViewJSExport {
             }
             completion(queryResults);
         }
-    }
-    
-    func fireRequest(requestData: JSValue) {
-        var url         = "";
-        var method      = "GET";
-        var parameters : [String: String] = ["":""];
-        
-        Manager.defaultHTTPHeaders;
-        //
-        
-        if let entries = requestData.toArray() as? [[String: AnyObject]] {
-            url        = entries[0]["action"] as! String;
-            method     = entries[0]["method"] as! String;
-            parameters = entries[1] as! [String : String];
-        }
-        
-        request(method == "POST" ? .POST : .GET, url, parameters: parameters)
-            .responseString{ response in
-                
-                let myRequest = response.request!.description;
-                
-                //callback to JSScript
-                var myResult = "";
-                if (response.result.value != nil) {
-                    myResult = response.result.value!;
-                }
-                var myResponse = "";
-                if (response.response != nil) {
-                    myResponse = response.response!.debugDescription
-                }
-                var myError = "";
-                if (response.result.error != nil) {
-                    myError = response.result.error!.localizedDescription;
-                }
-                
-                let serializedData : [AnyObject] = [
-                    myRequest,
-                    myResponse,
-                    myResult,
-                    myError
-                ];
-                if !self.httpRequestCallback.isUndefined && !self.httpRequestCallback.isNull {
-                    self.httpRequestCallback.callWithArguments(serializedData);
-                }
-        }
-        
     }
 
 }

@@ -65,7 +65,6 @@ function getStatements(user, bankCode, _passwords, from, to, _accountNumbers) {
     setState(states.LOGIN_STATEMENT);
     navigationCallback.singleStep   = false;
     webClient.callback              = navigationCallback;
-    webClient.httpRequestCallback   = httpRequestCallback;
     webClient.URL                   = bosBaseURL;
 
     return true;
@@ -220,8 +219,11 @@ function navigationCallback(doStep) {
                 logger.logInfo("parsed account " + getStatements.accountNumbers[getAccountData.currentAccountIndex].trim() +
                                " (" + (getAccountData.currentAccountIndex+1) + "/" + getStatements.accountNumbers.length + ") at " +
                                "page " + getAccountData.currentPageNum);
-
-                if (getAccountData(httpRequestCallback.requestedData,getStatements.accountNumbers) == false) { //last page for account
+                
+                var data = webClient.mainFrameDocument.documentElement.innerHTML;
+                //logger.logDebug(data);
+                
+                if (getAccountData(data,getStatements.accountNumbers) == false) { //last page for account
                     // try next account
                     logger.logDebug("next account");
                 } else {
@@ -246,7 +248,6 @@ function navigationCallback(doStep) {
             default:
                 setState(states.UNREGISTER);
                 webClient.callback = null; // Unregister ourselve. We are done.
-                webClient.httpRequestCallback = null;
                 logger.logInfo("Plugin invocation done");
         }
     } catch (err) {
@@ -286,6 +287,7 @@ function submitButton(webClient) {
         
         var buttonClick = submitLogin.click();//press the button
         logger.logDebug("login process triggered");
+        sleepFor(1000);
     } catch (err) {
         logger.logVerbose("submitButton: " + err);
         return false;
@@ -404,9 +406,11 @@ function logOut() {
                          "fldDataId"    : navigateToAccountPage.sessionID,
                          }];
     
+    
     //send request
-    webClient.fireRequest(logOutRequest);
+    setState(states.LOGOUT);
     logger.logInfo("logout request sent");
+    fireRequest(logOutRequest);
 }
 
 /***********************************
@@ -421,7 +425,7 @@ function getAccountData(data, accounts) {
     arguments.callee.currentAccountIndex= arguments.callee.currentAccountIndex || 0;
     
     //what happens if the requested account number is faulty and does not exist
-    if ( data.indexOf('<tr class="AlterRow2" >') == -1) {
+    if ( data.indexOf('<tr class="AlterRow2">') == -1) {
         logger.logError("Couldn't find credit card in list (" + accounts[arguments.callee.currentAccountIndex] + ")");
         //try next account
         arguments.callee.currentAccountIndex++;
@@ -446,14 +450,17 @@ function getAccountData(data, accounts) {
         // lets push everthing we have to results
         // should be done for last page
         var result = {
-            "isCreditCard": false,
-            "account": accounts[arguments.callee.currentAccountIndex],
+            "isCreditCard" : false,
+            //"isBankStatement" : true,
+            "account": arguments.callee.accountInfo["account"],
             "balance": arguments.callee.accountInfo["balance"],
             "statements": arguments.callee.statements,
-            "lastSettleDate": arguments.callee.statements[0]["date"]
+            "lastSettleDate": arguments.callee.statements[0]["date"],
+            "bankCode" : arguments.callee.accountInfo["bankCode"]
         };
         arguments.callee.statements = [];
         arguments.callee.results.push(result);
+        logger.logDebug(JSON.stringify(result));
         
     }
     arguments.callee.currentAccountIndex++;
@@ -466,34 +473,34 @@ function getAccountData(data, accounts) {
  */
 function parseAccountData(data) {
 
-    var sub = data.substring(data.indexOf('<tr class="AlterRow2" >'),data.indexOf('<table class="TableNoBorder"'));
+    var sub = data.substring(data.indexOf('<tr class="AlterRow2">'),data.indexOf('<table class="TableNoBorder"'));
     sub = removeTags(sub);
     
     var acInfo = sub.split('|');
     
     //logger.logDebug(JSON.stringify(acInfo));
     return {
-        "accountNumber" : acInfo[2],
-        "bankleitzahl"  : acInfo[4],
+        "account"       : acInfo[2],
+        "bankCode"      : acInfo[4],
         "IBAN"          : acInfo[6],
         "BIC"           : acInfo[8],
         "type"          : acInfo[10],
-        "balance"       : acInfo[12]
+        "balance"       : acInfo[12] + " EUR"
     };
 }
 
 /* parses the transactions from the received html-page
  */
 function parseDataForTransactions(data) {
-    var testString = '<tr class="AlterRow2" >'
+    var testString = '<tr class="AlterRow2">'
     
     // scip the useless headers
     var sub = data.substring(data.indexOf(testString) + testString.length , data.length);
     sub = sub.substring(sub.indexOf(testString) + testString.length ,data.length);
     
     // parse transactions
-    while ( sub.indexOf('<tr class="AlterRow2" >') !== -1 ) {
-        var workSub = sub.substring(0, sub.indexOf('<tr class="AlterRow2" >'));
+    while ( sub.indexOf('<tr class="AlterRow2">') !== -1 ) {
+        var workSub = sub.substring(0, sub.indexOf('<tr class="AlterRow2">'));
         var statement = removeTags(workSub).split('|');
         sub = sub.substring(sub.indexOf(testString) + testString.length ,data.length);
         getAccountData.statements.push(newTransactionEntry(statement));
@@ -502,7 +509,9 @@ function parseDataForTransactions(data) {
     var workSub = sub.substring(0, sub.indexOf('</table>'));
     var statement = removeTags(workSub).split('|');
     
-    if (statement.length == 16) { //if statement length is 16 it is valide!
+    //logger.logDebug(statement.length + " ::: " + removeTags(workSub));
+    
+    if (statement.length == 17) { //if statement length is 17 it is valide!
         getAccountData.statements.push(newTransactionEntry(statement));
         return true; // we need to check the next page
     }
@@ -524,9 +533,10 @@ function newTransactionEntry(statement) {
         "final"         : true, //(false für vorgemerkte Umsätze)
         "valutaDate"    : trimDateString(statement[3]), //(Wertstellungsdatum)
         "date"          : trimDateString(statement[1]), //(Buchungsdatum)
-        "transactionText" : statement[5] + " : " + statement[7], //(Verwendungszweck)
+        "transactionText" : statement[7], //(Verwendungszweck)
         "value"         : value , //(Umsatz als String, korrekte Konvertierung erfolgt in Pecunia)
-        "originalValue" : value//dito wie "value" (für Umsätze die von anderen Währungen stammen)
+        "originalValue" : value,//dito wie "value" (für Umsätze die von anderen Währungen stammen)
+        "customerReference" : statement[5]
     }
     
     logger.logVerbose(JSON.stringify(transaction));
@@ -537,21 +547,6 @@ function newTransactionEntry(statement) {
 /*************************************
  * HTTP request and response handler *
  *************************************/
-
-// Callback for a submitted HTTP request
-function httpRequestCallback(response, request, data, error) {
-    // the data received after
-    arguments.callee.requestedData = arguments.callee.requestedData || "";
-    
-    logger.logVerbose("data received");
-    //logger.logVerbose("httpRequestCallback: response data: " + data);
-    
-    arguments.callee.requestedData = data;
-    if (navigationCallback.currentState != states.LOGOUT) {
-        setState(states.READ_ACC);
-    }
-    navigationCallback(false, "");
-}
 
 
 //prepare request for account page and submit
@@ -608,9 +603,19 @@ function requestAccountPage(sessionID, pageNum, accountNum) {
                    ];
     
     logger.logVerbose("request: \n" + JSON.stringify(accountPageRequest));
-    //send request
-    webClient.fireRequest(accountPageRequest);
+
+    setState(states.READ_ACC);
     logger.logDebug("fired account data request");
+    fireRequest(accountPageRequest);
+}
+
+function fireRequest(queries) {
+    var requestURL = queries[0]["action"]+"?";
+    
+    for (var key in queries[1]) {
+        requestURL += key + "=" + queries[1][key] + "&";
+    }
+    webClient.postURL = requestURL.slice(0,-1);
 }
 
 /*********************
