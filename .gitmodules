@@ -4,6 +4,3 @@ url=https://github.com/mike-lischke/ExSwift.git
 [submodule "Submodules/IBANtools"]
 	path = Submodules/IBANtools
 	url = https://github.com/mike-lischke/IBANTools
-[submodule "Submodules/Alamofire"]
-	path = Submodules/Alamofire
-	url = https://github.com/Alamofire/Alamofire.git
