@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NewBankUserController">
@@ -44,6 +44,7 @@
                             <textField verticalHuggingPriority="750" id="713">
                                 <rect key="frame" x="265" y="46" width="96" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Bankleitzahl:" id="714">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -53,6 +54,7 @@
                             <textField verticalHuggingPriority="750" id="712">
                                 <rect key="frame" x="386" y="47" width="118" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankCode" id="715">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -72,6 +74,7 @@
                             <textField verticalHuggingPriority="750" id="734">
                                 <rect key="frame" x="266" y="22" width="128" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Benutzerkennung:" id="735">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -81,6 +84,7 @@
                             <textField verticalHuggingPriority="750" id="733">
                                 <rect key="frame" x="386" y="22" width="118" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" title="userId" id="736">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -98,6 +102,7 @@
                             <textField verticalHuggingPriority="750" id="782">
                                 <rect key="frame" x="506" y="46" width="85" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Bankname:" id="783">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -107,6 +112,7 @@
                             <textField verticalHuggingPriority="750" id="781">
                                 <rect key="frame" x="619" y="47" width="185" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankName" id="784">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -125,6 +131,7 @@
                             <textField verticalHuggingPriority="750" id="739">
                                 <rect key="frame" x="506" y="22" width="116" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kundennummer:" id="740">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -134,6 +141,7 @@
                             <textField verticalHuggingPriority="750" id="738">
                                 <rect key="frame" x="619" y="22" width="185" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" title="customerId" id="741">
                                     <font key="font" metaFont="systemBold"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -149,6 +157,7 @@
                                 </connections>
                             </textField>
                         </subviews>
+                        <animations/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="hasGradient" value="YES"/>
                         </userDefinedRuntimeAttributes>
@@ -156,11 +165,13 @@
                     <imageView id="860">
                         <rect key="frame" x="791" y="133" width="163" height="167"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <animations/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="Bank large" id="861"/>
                     </imageView>
                     <button toolTip="Benutzerkennung mit der Bank synchronisieren" verticalHuggingPriority="750" id="155">
                         <rect key="frame" x="282" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Synchronisieren" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="575">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -183,6 +194,7 @@
                     <button toolTip="Bankparameter ins Nachrichtenlog schreiben" verticalHuggingPriority="750" id="667">
                         <rect key="frame" x="439" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="BP ausgeben" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="668">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -196,6 +208,7 @@
                     <button verticalHuggingPriority="750" id="654">
                         <rect key="frame" x="781" y="11" width="100" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Schließen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="655">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -207,6 +220,7 @@
                     <button verticalHuggingPriority="750" id="77">
                         <rect key="frame" x="28" y="23" width="24" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="plus-8" imagePosition="only" alignment="center" borderStyle="border" inset="2" id="573">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -218,6 +232,7 @@
                     <button verticalHuggingPriority="750" id="123">
                         <rect key="frame" x="51" y="23" width="24" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="minus-8" imagePosition="only" alignment="center" borderStyle="border" inset="2" id="574">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -235,8 +250,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="869" id="701">
-                                    <rect key="frame" x="0.0" y="0.0" width="193" height="19"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="193" height="218"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -263,24 +279,30 @@
                                     </connections>
                                 </tableView>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
+                        <animations/>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="700">
                             <rect key="frame" x="1" y="219" width="193" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="699">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </scroller>
                         <tableHeaderView key="headerView" id="869">
                             <rect key="frame" x="0.0" y="0.0" width="193" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <animations/>
                         </tableHeaderView>
                     </scrollView>
                     <textField verticalHuggingPriority="750" id="744">
                         <rect key="frame" x="285" y="93" width="96" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="HBCI Version:" id="745">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -290,6 +312,7 @@
                     <textField verticalHuggingPriority="750" id="748">
                         <rect key="frame" x="408" y="143" width="361" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankUrl" id="751">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" red="0.0" green="0.3219028115" blue="0.65158373120000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -307,6 +330,7 @@
                     <textField verticalHuggingPriority="750" id="749">
                         <rect key="frame" x="285" y="142" width="96" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bank URL" id="750">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -316,6 +340,7 @@
                     <button id="757">
                         <rect key="frame" x="286" y="81" width="22" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="758">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -332,6 +357,7 @@
                     <textField verticalHuggingPriority="750" id="762">
                         <rect key="frame" x="306" y="82" width="130" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Base64 Kodierung" id="763">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -341,6 +367,7 @@
                     <textField verticalHuggingPriority="750" id="801">
                         <rect key="frame" x="285" y="173" width="128" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Signierverfahren:" id="802">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -350,6 +377,7 @@
                     <button id="963">
                         <rect key="frame" x="286" y="60" width="22" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="966">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -365,6 +393,7 @@
                     <textField verticalHuggingPriority="750" id="964">
                         <rect key="frame" x="306" y="61" width="130" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Zertifikate prüfen" id="965">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -374,6 +403,7 @@
                     <textField verticalHuggingPriority="750" id="970">
                         <rect key="frame" x="408" y="112" width="91" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" id="971">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" red="0.0" green="0.3219028115" blue="0.65158373120000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -391,6 +421,7 @@
                     <popUpButton verticalHuggingPriority="750" id="974">
                         <rect key="frame" x="408" y="167" width="361" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="977" id="975">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -412,6 +443,7 @@
                     <button toolTip="Neue PIN vergeben" verticalHuggingPriority="750" id="YFo-GD-qSX">
                         <rect key="frame" x="596" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="PIN ändern" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WN4-Pd-xga">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -422,6 +454,7 @@
                         </connections>
                     </button>
                 </subviews>
+                <animations/>
                 <userDefinedRuntimeAttributes>
                     <userDefinedRuntimeAttribute type="boolean" keyPath="hasFillColor" value="YES"/>
                 </userDefinedRuntimeAttributes>
@@ -464,11 +497,13 @@
                     <imageView alphaValue="0.5" id="885">
                         <rect key="frame" x="45" y="224" width="120" height="121"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <animations/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="Tresor" id="886"/>
                     </imageView>
                     <button verticalHuggingPriority="750" id="60">
                         <rect key="frame" x="557" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Weiter" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" inset="2" id="584">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -483,6 +518,7 @@ DQ
                     <button verticalHuggingPriority="750" id="61">
                         <rect key="frame" x="449" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Abbrechen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="585">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -501,6 +537,7 @@ DQ
                                 <textField verticalHuggingPriority="750" tag="100" id="54">
                                     <rect key="frame" x="8" y="168" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Benutzerkennung" id="578">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -510,6 +547,7 @@ DQ
                                 <textField verticalHuggingPriority="750" tag="120" id="57">
                                     <rect key="frame" x="8" y="136" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Kundennummer" id="581">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -519,6 +557,7 @@ DQ
                                 <textField verticalHuggingPriority="750" tag="110" id="55">
                                     <rect key="frame" x="161" y="166" width="180" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="579">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -532,6 +571,7 @@ DQ
                                 <textField verticalHuggingPriority="750" tag="11" id="328">
                                     <rect key="frame" x="161" y="198" width="253" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="589">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -550,6 +590,7 @@ IA
                                 <textField verticalHuggingPriority="750" id="329">
                                     <rect key="frame" x="8" y="200" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name" id="590">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -559,6 +600,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="130" id="65">
                                     <rect key="frame" x="346" y="138" width="209" height="13"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="(meist identisch mit Benutzerkennung)" id="587">
                                         <font key="font" metaFont="system" size="10"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -568,6 +610,7 @@ IA
                                 <textField verticalHuggingPriority="750" id="53">
                                     <rect key="frame" x="8" y="232" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Bankleitzahl" id="577">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -577,6 +620,7 @@ IA
                                 <textField verticalHuggingPriority="750" id="332">
                                     <rect key="frame" x="419" y="200" width="121" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(frei wählbar)" id="591">
                                         <font key="font" metaFont="system" size="10"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -586,6 +630,7 @@ IA
                                 <textField toolTip="Kundennummer bei der Bank, meist identisch mit Benutzerkennung" verticalHuggingPriority="750" tag="130" id="56">
                                     <rect key="frame" x="161" y="134" width="180" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="580">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -598,6 +643,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="10" id="52">
                                     <rect key="frame" x="161" y="230" width="126" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="576">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -618,6 +664,7 @@ IA
                                 <textField verticalHuggingPriority="750" id="877">
                                     <rect key="frame" x="12" y="277" width="266" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung PIN/TAN hinzufügen" id="878">
                                         <font key="font" metaFont="systemBold" size="14"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -627,6 +674,7 @@ IA
                                 <button tag="160" id="379">
                                     <rect key="frame" x="159" y="44" width="22" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="592">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -642,6 +690,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="160" id="931">
                                     <rect key="frame" x="22" y="41" width="130" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Base64-Kodierung" id="932">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -651,6 +700,7 @@ IA
                                 <button tag="170" id="933">
                                     <rect key="frame" x="159" y="18" width="22" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="934">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -662,19 +712,22 @@ IA
                                 <textField verticalHuggingPriority="750" tag="170" id="935">
                                     <rect key="frame" x="22" y="15" width="130" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Zertifikate prüfen" id="936">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="944">
+                                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="944">
                                     <rect key="frame" x="295" y="232" width="16" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                 </progressIndicator>
                                 <textField verticalHuggingPriority="750" tag="20" id="945">
                                     <rect key="frame" x="314" y="229" width="218" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="946">
                                         <font key="font" metaFont="system" size="10"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -684,6 +737,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="140" id="1054">
                                     <rect key="frame" x="10" y="106" width="142" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="HBCI-Version" id="1060">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -693,6 +747,7 @@ IA
                                 <popUpButton verticalHuggingPriority="750" tag="140" id="1055">
                                     <rect key="frame" x="158" y="101" width="132" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="1056">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="menu"/>
@@ -711,6 +766,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="150" id="1063">
                                     <rect key="frame" x="-35" y="74" width="187" height="19"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="PIN/TAN-URL" id="1066">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -720,6 +776,7 @@ IA
                                 <textField verticalHuggingPriority="750" tag="150" id="1064">
                                     <rect key="frame" x="161" y="74" width="253" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1065">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -730,13 +787,16 @@ IA
                                     </connections>
                                 </textField>
                             </subviews>
+                            <animations/>
                         </view>
+                        <animations/>
                         <color key="borderColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="0.30000001189999997" colorSpace="calibratedRGB"/>
                         <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                     </box>
                     <button verticalHuggingPriority="750" id="1083">
                         <rect key="frame" x="14" y="12" width="116" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Hilfe" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1084">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -746,6 +806,7 @@ IA
                         </connections>
                     </button>
                 </subviews>
+                <animations/>
             </view>
         </window>
         <arrayController mode="entity" entityName="BankUser" automaticallyPreparesContent="YES" id="76" userLabel="BankUsers">
@@ -794,6 +855,7 @@ IA
                             <textField verticalHuggingPriority="750" id="993">
                                 <rect key="frame" x="74" y="37" width="153" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sicherheitsverfahren" id="994">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -803,6 +865,7 @@ IA
                             <textField verticalHuggingPriority="750" id="1009">
                                 <rect key="frame" x="15" y="75" width="241" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung hinzufügen" id="1010">
                                     <font key="font" metaFont="systemBold" size="14"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -812,13 +875,15 @@ IA
                             <popUpButton verticalHuggingPriority="750" id="995">
                                 <rect key="frame" x="223" y="31" width="236" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <popUpButtonCell key="cell" type="push" title="PIN/TAN" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="998" id="996">
+                                <animations/>
+                                <popUpButtonCell key="cell" type="push" title="Passwort" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1wO-DI-O7E" id="996">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="OtherViews" id="997">
                                         <items>
-                                            <menuItem title="PIN/TAN" state="on" id="998"/>
+                                            <menuItem title="PIN/TAN" id="998"/>
                                             <menuItem title="DDV-Chipkarte" id="999"/>
+                                            <menuItem title="Passwort" state="on" id="1wO-DI-O7E"/>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
@@ -827,11 +892,14 @@ IA
                                 </connections>
                             </popUpButton>
                         </subviews>
+                        <animations/>
                     </view>
+                    <animations/>
                     <color key="borderColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="0.30000001189999997" colorSpace="calibratedRGB"/>
                     <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                 </box>
             </subviews>
+            <animations/>
         </customView>
         <customView id="1015" userLabel="ddvView">
             <rect key="frame" x="0.0" y="0.0" width="583" height="380"/>
@@ -847,6 +915,7 @@ IA
                             <textField verticalHuggingPriority="750" id="1019">
                                 <rect key="frame" x="15" y="274" width="426" height="18"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung DDV-Chipkarte hinzufügen" id="1020">
                                     <font key="font" metaFont="systemBold" size="14"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -856,6 +925,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="12" id="1041">
                                 <rect key="frame" x="189" y="193" width="253" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1050">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -875,6 +945,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="11" id="1042">
                                 <rect key="frame" x="35" y="195" width="144" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name" id="1049">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -884,6 +955,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="140" id="915">
                                 <rect key="frame" x="29" y="158" width="150" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="HBCI-Version" id="916">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -893,6 +965,7 @@ IA
                             <popUpButton verticalHuggingPriority="750" tag="140" id="919">
                                 <rect key="frame" x="187" y="153" width="132" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <popUpButtonCell key="cell" type="push" title="220" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="922" id="920">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -911,6 +984,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="150" id="925">
                                 <rect key="frame" x="0.0" y="119" width="179" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Kommunikationsaddresse" id="926">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -920,6 +994,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="150" id="927">
                                 <rect key="frame" x="189" y="119" width="253" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="928">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -932,6 +1007,7 @@ IA
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="xYi-vS-eTS">
                                 <rect key="frame" x="103" y="231" width="74" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kartenleser" id="83E-AI-jYD">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -941,6 +1017,7 @@ IA
                             <popUpButton focusRingType="none" verticalHuggingPriority="750" tag="10" id="efw-NX-kuB">
                                 <rect key="frame" x="185" y="225" width="258" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" focusRingType="none" imageScaling="proportionallyDown" inset="2" selectedItem="cc0-58-Hjk" id="KZP-yc-oUF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -960,6 +1037,7 @@ IA
                             <textField verticalHuggingPriority="750" tag="13" id="1044">
                                 <rect key="frame" x="449" y="193" width="76" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(frei wählbar)" id="1047">
                                     <font key="font" metaFont="system" size="10"/>
                                     <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -967,11 +1045,14 @@ IA
                                 </textFieldCell>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
+                    <animations/>
                     <color key="borderColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="0.30000001189999997" colorSpace="calibratedRGB"/>
                     <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                 </box>
             </subviews>
+            <animations/>
         </customView>
     </objects>
     <resources>

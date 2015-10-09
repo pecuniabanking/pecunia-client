@@ -81,7 +81,7 @@ extension NSDecimalNumber : Comparable {
         formatter.maximumFractionDigits = 2;
 
         var object: AnyObject?;
-        var range: NSRange = NSMakeRange(0, input.length);
+        var range: NSRange = NSMakeRange(0, input.characters.count);
         do {
             try formatter.getObjectValue(&object, forString: input, range: &range);
 
