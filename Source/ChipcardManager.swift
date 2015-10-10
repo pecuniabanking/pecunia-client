@@ -25,7 +25,7 @@ var _manager:ChipcardManager!
 }
 
 @objc public class ChipcardManager : NSObject {
-    var card:HBCISmartcardDDV!
+    var card: HBCISmartcardDDV!;
     
     public override init() {
         super.init();
@@ -287,7 +287,9 @@ var _manager:ChipcardManager!
     }
     
     public func close() {
-        card.disconnect();
+        if card != nil {
+            card.disconnect();
+        }
     }
     
     public class func manager() ->ChipcardManager {

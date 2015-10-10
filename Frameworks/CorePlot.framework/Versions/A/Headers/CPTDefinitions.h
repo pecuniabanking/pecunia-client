@@ -10,7 +10,7 @@
  **/
 
 /**
- *  @def __cpt_weak
+ *  @def cpt_weak
  *  @hideinitializer
  *  @brief A custom definition for automatic reference counting (ARC) weak references that falls back to
  *  <code>__unsafe_unretained</code> values on older platforms.
@@ -34,13 +34,13 @@
 #endif
 
 #if CPT_SDK_SUPPORTS_WEAK
-#define __cpt_weak        __weak
+#define cpt_weak          __weak
 #define cpt_weak_property weak
 #else
 #if __clang__ && (__clang_major__ >= 3)
-#define __cpt_weak __unsafe_unretained
+#define cpt_weak __unsafe_unretained
 #else
-#define __cpt_weak
+#define cpt_weak
 #endif
 #define cpt_weak_property assign
 #endif
@@ -126,11 +126,12 @@ typedef NS_ENUM (NSInteger, CPTErrorBarType) {
  *  @brief Enumeration of axis scale types
  **/
 typedef NS_ENUM (NSInteger, CPTScaleType) {
-    CPTScaleTypeLinear,   ///< Linear axis scale
-    CPTScaleTypeLog,      ///< Logarithmic axis scale
-    CPTScaleTypeAngular,  ///< Angular axis scale (not implemented)
-    CPTScaleTypeDateTime, ///< Date/time axis scale (not implemented)
-    CPTScaleTypeCategory  ///< Category axis scale
+    CPTScaleTypeLinear,    ///< Linear axis scale
+    CPTScaleTypeLog,       ///< Logarithmic axis scale
+    CPTScaleTypeAngular,   ///< Angular axis scale (not implemented)
+    CPTScaleTypeDateTime,  ///< Date/time axis scale (not implemented)
+    CPTScaleTypeCategory,  ///< Category axis scale
+    CPTScaleTypeLogModulus ///< Log-modulus axis scale
 };
 
 /**
@@ -202,3 +203,48 @@ typedef struct _CPTEdgeInsets {
 CPTEdgeInsets;
 
 extern const CPTEdgeInsets CPTEdgeInsetsZero; ///< Defines a set of stretchable image edge insets where all of the values are zero (@num{0}).
+
+/**
+ *  @brief An array of numbers.
+ **/
+typedef NSArray<NSNumber *> *CPTNumberArray;
+
+/**
+ *  @brief A mutable array of numbers.
+ **/
+typedef NSMutableArray<NSNumber *> *CPTMutableNumberArray;
+
+/**
+ *  @brief A set of numbers.
+ **/
+typedef NSSet<NSNumber *> *CPTNumberSet;
+
+/**
+ *  @brief A mutable set of numbers.
+ **/
+typedef NSMutableSet<NSNumber *> *CPTMutableNumberSet;
+
+/**
+ *  @brief An array of strings.
+ **/
+typedef NSArray<NSString *> *CPTStringArray;
+
+/**
+ *  @brief A mutable array of strings.
+ **/
+typedef NSMutableArray<NSString *> *CPTMutableStringArray;
+
+/**
+ *  @brief An array of strings.
+ **/
+typedef NSDictionary<NSString *, id> *CPTDictionary;
+
+/**
+ *  @brief A mutable array of strings.
+ **/
+typedef NSMutableDictionary<NSString *, id> *CPTMutableDictionary;
+
+/**
+ *  @brief Render a Quick Look image into the given context.
+ **/
+typedef void (^CPTQuickLookImageBlock)(__nonnull CGContextRef context, CGFloat scale, CGRect bounds);
