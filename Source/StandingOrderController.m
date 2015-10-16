@@ -897,10 +897,14 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+            editable = YES;
         } else {
-            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
-            if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
+            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
+            if (transactionInfo != nil) {
                 self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+                editable = [transactionInfo.allowsChange boolValue];
+            } else {
+                editable = NO;
             }
         }
 
@@ -949,6 +953,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
         // update account selector
         [self updateSourceAccountSelection];
+        
+        if (!editable) {
+            [self disableCycles];
+        }
 
         return;
     }

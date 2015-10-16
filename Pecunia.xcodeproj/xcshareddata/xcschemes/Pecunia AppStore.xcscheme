@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-f accounts3_2"
+            argument = "-f accounts4"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
