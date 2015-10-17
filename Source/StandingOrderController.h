@@ -59,6 +59,7 @@
 
     NSNumber *requestRunning;
     BOOL     initializing;
+    BOOL     editable;
 }
 
 @property (nonatomic, strong) NSNumber          *requestRunning;
