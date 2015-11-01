@@ -21,7 +21,7 @@ import Foundation
 
 // Mockup code created from the same BankStatement class in Pecunia.
 
-@objc class BankStatement {
+@objc class BankStatement : NSObject {
   var isPreliminary: Bool = false;
   var date: NSDate? = nil;
   var valutaDate: NSDate? = nil;
@@ -36,7 +36,7 @@ import Foundation
   // Due to conflicts with the member "value" and NSObject we cannot make our mock class
   // derive from NSObject. However that requires to explicitly implement setValue:forObject, which
   // is used by PluginWorker explicitly, again due to the value conflict.
-  func setValue(value: AnyObject?, forKey key: String) {
+   override func setValue(value: AnyObject?, forKey key: String) {
     if key == "value" {
       if let number = value as? NSDecimalNumber {
         self.value = number;
