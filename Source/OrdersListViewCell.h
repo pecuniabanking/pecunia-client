@@ -19,33 +19,6 @@
 
 #import "PecuniaListViewCell.h"
 
-@protocol OrdersListViewNotificationProtocol
-- (void)cancelDeletionForIndex: (NSUInteger)index;
-@end
-
 @interface OrdersListViewCell : PecuniaListViewCell
-{
-    IBOutlet NSTextField *nextDateLabel;
-    IBOutlet NSTextField *lastDateLabel;
-    IBOutlet NSTextField *bankNameLabel;
-    IBOutlet NSTextField *remoteNameLabel;
-    IBOutlet NSTextField *purposeLabel;
-    IBOutlet NSTextField *valueLabel;
-    IBOutlet NSTextField *currencyLabel;
-    IBOutlet NSTextField *lastDateTitle;
-    IBOutlet NSTextField *nextDateTitle;
-    IBOutlet NSImageView *editImage;
-    IBOutlet NSImageView *sendImage;
-    IBOutlet NSButton    *deleteButton;
-
-    IBOutlet NSTextField *ibanCaption;
-    IBOutlet NSTextField *ibanLabel;
-    IBOutlet NSTextField *bicCaption;
-    IBOutlet NSTextField *bicLabel;
-}
-
-@property (nonatomic, strong) id delegate;
-
-- (void)setDetails: (NSDictionary *)details;
 
 @end

@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15B17c" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="OrdersListViewCell"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="1" customClass="OrdersListViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="622" height="75"/>
+            <rect key="frame" x="0.0" y="0.0" width="622" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9" customClass="NoAnimationTextField">
-                    <rect key="frame" x="35" y="56" width="425" height="17"/>
+                    <rect key="frame" x="35" y="61" width="425" height="17"/>
                     <animations/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Remote name" placeholderString="" id="10">
-                        <font key="font" size="11" name="HelveticaNeue-Medium"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Remote name" placeholderString="" usesSingleLineMode="YES" id="10">
+                        <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="23" userLabel="amountCurrencyLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="608" y="4" width="10" height="15"/>
+                    <rect key="frame" x="608" y="7" width="10" height="15"/>
                     <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="€" id="24">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" title="€" usesSingleLineMode="YES" id="24">
                         <font key="font" size="10" name="HelveticaNeue"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4AE-bH-gaG" userLabel="ibanCaption" customClass="NoAnimationTextField">
-                    <rect key="frame" x="35" y="39" width="29" height="17"/>
+                    <rect key="frame" x="35" y="44" width="29" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="WyX-CJ-nIY">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -41,7 +41,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RXI-Xx-8pA" userLabel="bicCaption" customClass="NoAnimationTextField">
-                    <rect key="frame" x="248" y="39" width="22" height="17"/>
+                    <rect key="frame" x="248" y="44" width="22" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="9qi-bH-YNc">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -50,16 +50,16 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9hM-EX-Oov" userLabel="ibanLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="67" y="39" width="158" height="17"/>
+                    <rect key="frame" x="67" y="44" width="158" height="17"/>
                     <animations/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="4KC-ST-Gvc">
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="nicht angegeben" id="4KC-ST-Gvc">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fWx-kd-U9q" userLabel="bicLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="273" y="39" width="187" height="17"/>
+                    <rect key="frame" x="273" y="44" width="187" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="183" id="a1O-94-8DP"/>
                     </constraints>
@@ -71,7 +71,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="118" userLabel="purposeLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="35" y="5" width="425" height="17"/>
+                    <rect key="frame" x="35" y="10" width="425" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Purpose" id="119">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -80,7 +80,7 @@
                     </textFieldCell>
                 </textField>
                 <imageView toolTip="Dieser Auftrag wurde verändert. Die Änderungen werden durch einen Klick auf &quot;Änderungen Senden&quot; zur Bank transferiert." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="135" userLabel="editImage">
-                    <rect key="frame" x="16" y="47" width="16" height="16"/>
+                    <rect key="frame" x="16" y="52" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="Stl-Z4-6S2"/>
                         <constraint firstAttribute="height" constant="16" id="kZX-VT-d6O"/>
@@ -93,7 +93,7 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="edit" id="136"/>
                 </imageView>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="138" userLabel="nextDateLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="565" y="50" width="53" height="17"/>
+                    <rect key="frame" x="565" y="55" width="53" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="141">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
@@ -102,7 +102,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="139" userLabel="nextDateCaption" customClass="NoAnimationTextField">
-                    <rect key="frame" x="514" y="50" width="45" height="17"/>
+                    <rect key="frame" x="514" y="55" width="45" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="nächste:" id="140">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -111,7 +111,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="142" userLabel="lastDateLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="565" y="33" width="53" height="17"/>
+                    <rect key="frame" x="565" y="38" width="53" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="145">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
@@ -120,7 +120,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="143" userLabel="lastDateCaption" customClass="NoAnimationTextField">
-                    <rect key="frame" x="507" y="33" width="52" height="17"/>
+                    <rect key="frame" x="507" y="38" width="52" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="letztmalig:" id="144">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -129,7 +129,7 @@
                     </textFieldCell>
                 </textField>
                 <imageView toolTip="Dieser Auftrag wurde erfolgreich zur Bank gesendet." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="156" userLabel="sentImage">
-                    <rect key="frame" x="15" y="29" width="16" height="16"/>
+                    <rect key="frame" x="15" y="34" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="gKv-GB-seB"/>
                         <constraint firstAttribute="height" constant="16" id="wNn-VK-xQh"/>
@@ -142,7 +142,7 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="send" id="157"/>
                 </imageView>
                 <button toolTip="Löschanforderung für diesen Dauerauftrag aufheben." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="162" userLabel="deleteImage">
-                    <rect key="frame" x="16" y="13" width="16" height="16"/>
+                    <rect key="frame" x="16" y="18" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="fNB-oW-HOU"/>
                         <constraint firstAttribute="width" constant="16" id="t5o-Jy-NZF"/>
@@ -161,7 +161,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h8t-uG-kzz" userLabel="bankNameLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="35" y="22" width="425" height="17"/>
+                    <rect key="frame" x="35" y="27" width="425" height="17"/>
                     <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Bank name" placeholderString="" id="lGD-qt-XDg">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -170,19 +170,22 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="179" userLabel="valueLabel" customClass="NoAnimationTextField">
-                    <rect key="frame" x="495" y="4" width="114" height="20"/>
+                    <rect key="frame" x="495" y="6" width="114" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="110" id="t1B-b5-SHP"/>
                     </constraints>
                     <animations/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100,000,00" id="180">
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100,000,00" usesSingleLineMode="YES" id="180">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="181">
                             <textAttributesForNegativeValues/>
                         </numberFormatter>
-                        <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                        <font key="font" metaFont="systemBold" size="15"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="representedObject.value" id="Ky4-im-CNc"/>
+                    </connections>
                 </textField>
             </subviews>
             <constraints>
@@ -190,14 +193,15 @@
                 <constraint firstItem="9" firstAttribute="top" secondItem="1" secondAttribute="top" constant="2" id="5XS-bi-qmU"/>
                 <constraint firstItem="138" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="6yW-na-HS2"/>
                 <constraint firstItem="179" firstAttribute="leading" secondItem="118" secondAttribute="trailing" constant="39" id="8Cd-dS-mkn"/>
-                <constraint firstAttribute="bottom" secondItem="162" secondAttribute="bottom" constant="13" id="8XI-Pr-Xhs"/>
+                <constraint firstAttribute="bottom" secondItem="162" secondAttribute="bottom" constant="18" id="8XI-Pr-Xhs"/>
                 <constraint firstItem="156" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="DLN-d6-btp"/>
-                <constraint firstItem="23" firstAttribute="top" secondItem="142" secondAttribute="bottom" constant="14" id="DTq-K8-1f2"/>
+                <constraint firstItem="139" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="HLc-en-4lb"/>
                 <constraint firstItem="4AE-bH-gaG" firstAttribute="baseline" secondItem="9hM-EX-Oov" secondAttribute="baseline" id="HcO-Pg-8cU"/>
+                <constraint firstItem="143" firstAttribute="top" secondItem="139" secondAttribute="bottom" id="JLi-cf-hf8"/>
                 <constraint firstItem="23" firstAttribute="leading" secondItem="179" secondAttribute="trailing" constant="3" id="JSg-T3-k3i"/>
                 <constraint firstAttribute="trailing" secondItem="142" secondAttribute="trailing" constant="6" id="NH9-gV-jYd"/>
                 <constraint firstAttribute="trailing" secondItem="138" secondAttribute="trailing" constant="6" id="OPY-g0-zul"/>
-                <constraint firstAttribute="bottom" secondItem="118" secondAttribute="bottom" constant="5" id="PnR-dC-tvM"/>
+                <constraint firstAttribute="bottom" secondItem="118" secondAttribute="bottom" constant="10" id="PnR-dC-tvM"/>
                 <constraint firstItem="135" firstAttribute="top" secondItem="1" secondAttribute="top" constant="12" id="W38-Nr-Cpp"/>
                 <constraint firstItem="162" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="16" id="WRF-AS-W0X"/>
                 <constraint firstItem="9hM-EX-Oov" firstAttribute="leading" secondItem="4AE-bH-gaG" secondAttribute="trailing" constant="7" id="ZGi-FG-15X"/>
@@ -206,10 +210,9 @@
                 <constraint firstItem="139" firstAttribute="baseline" secondItem="138" secondAttribute="baseline" id="eoe-Mc-RuI"/>
                 <constraint firstAttribute="trailing" secondItem="23" secondAttribute="trailing" constant="6" id="fCZ-eF-6hA"/>
                 <constraint firstItem="118" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="37" id="gAf-d6-H1B"/>
+                <constraint firstItem="23" firstAttribute="baseline" secondItem="179" secondAttribute="baseline" id="gVA-gJ-ePo"/>
                 <constraint firstItem="4AE-bH-gaG" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="37" id="hKg-N9-AeP"/>
-                <constraint firstAttribute="bottom" secondItem="23" secondAttribute="bottom" constant="4" id="hVZ-KZ-UIC"/>
                 <constraint firstItem="4AE-bH-gaG" firstAttribute="baseline" secondItem="RXI-Xx-8pA" secondAttribute="baseline" id="isG-ug-FYB"/>
-                <constraint firstItem="179" firstAttribute="top" secondItem="143" secondAttribute="bottom" constant="9" id="nc4-TO-yOZ"/>
                 <constraint firstItem="9" firstAttribute="trailing" secondItem="118" secondAttribute="trailing" id="ovb-3s-QF9"/>
                 <constraint firstItem="139" firstAttribute="trailing" secondItem="143" secondAttribute="trailing" id="pA3-md-wCn"/>
                 <constraint firstItem="RXI-Xx-8pA" firstAttribute="leading" secondItem="9hM-EX-Oov" secondAttribute="trailing" constant="27" id="qOs-8f-M0i"/>
@@ -217,8 +220,8 @@
                 <constraint firstItem="142" firstAttribute="top" secondItem="138" secondAttribute="bottom" id="rMK-V7-7cZ"/>
                 <constraint firstItem="118" firstAttribute="top" secondItem="h8t-uG-kzz" secondAttribute="bottom" id="rdk-UC-VKx"/>
                 <constraint firstItem="fWx-kd-U9q" firstAttribute="leading" secondItem="RXI-Xx-8pA" secondAttribute="trailing" constant="7" id="rrn-vf-Au3"/>
-                <constraint firstItem="156" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" id="tLw-l3-TSU"/>
-                <constraint firstAttribute="bottom" secondItem="179" secondAttribute="bottom" constant="4" id="tbS-zm-OpY"/>
+                <constraint firstItem="156" firstAttribute="centerY" secondItem="1" secondAttribute="centerY" constant="-2" id="tLw-l3-TSU"/>
+                <constraint firstAttribute="bottom" secondItem="179" secondAttribute="bottom" constant="6" id="tbS-zm-OpY"/>
                 <constraint firstItem="4AE-bH-gaG" firstAttribute="top" secondItem="9" secondAttribute="bottom" id="v2B-ym-wRM"/>
                 <constraint firstItem="118" firstAttribute="trailing" secondItem="h8t-uG-kzz" secondAttribute="trailing" id="vSJ-sJ-phB"/>
                 <constraint firstItem="4AE-bH-gaG" firstAttribute="baseline" secondItem="fWx-kd-U9q" secondAttribute="baseline" id="vZ6-Uf-Hv6"/>
@@ -246,7 +249,7 @@
                 <outlet property="sendImage" destination="156" id="160"/>
                 <outlet property="valueLabel" destination="179" id="182"/>
             </connections>
-            <point key="canvasLocation" x="-32" y="-408.5"/>
+            <point key="canvasLocation" x="-131" y="-636"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="747-VQ-5ZA"/>
     </objects>

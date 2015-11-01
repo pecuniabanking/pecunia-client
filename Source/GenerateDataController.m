@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -45,6 +45,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 @synthesize bankCount;
 @synthesize maxAccountsPerBank;
 @synthesize numberOfStatementsPerBank;
+@synthesize dataTemplate;
 
 - (id)init;
 {
@@ -57,13 +58,11 @@ static NSString *DemoDataKey = @"contains-demo-data";
         bankCount = 5;
         maxAccountsPerBank = 3;
         numberOfStatementsPerBank = 650;
+        dataTemplate = @"<select file>";
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary   *values = [defaults objectForKey: @"generator-values"];
         if (values != nil) {
-            if ([values[@"path"] length] > 0) {
-                self.path.stringValue = values[@"path"];
-            }
             if (values[@"startYear"] != nil) {
                 startYear = [values[@"startYear"] integerValue];
             }
@@ -78,6 +77,9 @@ static NSString *DemoDataKey = @"contains-demo-data";
             }
             if (values[@"transactionCount"] != nil) {
                 numberOfStatementsPerBank = [values[@"transactionCount"] integerValue];
+            }
+            if (values[@"template"] != nil || values[@"path"] != nil) {
+                dataTemplate = (values[@"template"] != nil) ? values[@"template"] : values[@"path"];
             }
         }
     }
@@ -116,11 +118,12 @@ static NSString *DemoDataKey = @"contains-demo-data";
     [panel setAllowedFileTypes: @[@"txt"]];
     NSInteger result = [panel runModal];
     if (result == NSFileHandlingPanelOKButton) {
-        [self.path setStringValue: panel.URL.path];
+        self.dataTemplate = panel.URL.path; // Need self here for KVO.
     }
 }
 
 - (IBAction)close: (id)sender {
+    [self close];
     [NSApp stopModal];
 }
 
@@ -340,6 +343,8 @@ static NSString *DemoDataKey = @"contains-demo-data";
                         statement.currency = account.currency;
                         statement.localAccount = account.accountNumber;
                         statement.localBankCode = account.bankCode;
+                        statement.remoteBIC = account.bic;
+                        statement.remoteIBAN = account.iban;
                         statement.date = date;
                         statement.valutaDate = date;
                         statement.remoteCountry = @"de";
@@ -478,8 +483,8 @@ static NSString *DemoDataKey = @"contains-demo-data";
             newAccount.parent = bankRoot;
             newAccount.isBankAcc = @YES;
 
-            //newAccount.iban = account.iban;
-            //newAccount.bic = account.bic;
+            newAccount.iban = @"DE70762200731210100047";
+            newAccount.bic = @"HYVEDEMM419";
             //newAccount.owner = account.owner;
             newAccount.accountNumber = [NSString stringWithFormat: @"%i", arc4random_uniform(19999999)];
             newAccount.name = accountName;
@@ -540,22 +545,21 @@ static NSString *DemoDataKey = @"contains-demo-data";
     // First store all values used for generation for restore on next run.
     // This way we can start off were we left, quickly.
     NSDictionary *values = @{
-        @"path": self.path.stringValue,
         @"startYear": @(startYear),
         @"endYear": @(endYear),
         @"bankCount": @(bankCount),
         @"maxAccounts": @(maxAccountsPerBank),
-        @"transactionCount": @(numberOfStatementsPerBank)
+        @"transactionCount": @(numberOfStatementsPerBank),
+        @"template": dataTemplate
     };
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject: values forKey: @"generator-values"];
 
     NSError  *error;
-    NSString *path = self.path.stringValue;
-    NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+    NSString *s = [NSString stringWithContentsOfFile: dataTemplate encoding: NSUTF8StringEncoding error: &error];
     if (error) {
-        LogError(@"Error reading demo data template file at %@\n%@", path, error.localizedFailureReason);
+        LogError(@"Error reading demo data template file at %@\n%@", dataTemplate, error.localizedFailureReason);
     } else {
         NSMutableDictionary *blocks = [NSMutableDictionary dictionary];
         NSString            *blockName = @"";
@@ -680,6 +684,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
         [self.progressIndicator stopAnimation: self];
         if (![context save: &error]) {
+            [self close];
             [NSApp stopModal];
 
             NSAlert *alert = [NSAlert alertWithError: error];
@@ -689,6 +694,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
         [SystemNotification showMessage: NSLocalizedString(@"AP501", nil)
                               withTitle: NSLocalizedString(@"AP500", nil)];
+        [self close];
         [NSApp stopModal];
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -80,8 +80,8 @@ extern NSDictionary    *whiteAttributes;
                                                         object: nil
                                                          queue: nil
                                                     usingBlock:
-         ^(NSNotification *notifictation) {
-            BankingCategory *category = (notifictation.userInfo)[CategoryKey];
+         ^(NSNotification *notification) {
+            BankingCategory *category = (notification.userInfo)[CategoryKey];
             categoryColor = category.categoryColor;
             [self setNeedsDisplay: YES];
         }

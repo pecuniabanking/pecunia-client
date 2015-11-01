@@ -1054,7 +1054,7 @@ static char *colorEntries[] = {
     ColorListViewCell *cell = (ColorListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"colorcell"];
 
     if (!cell) {
-        cell = [ColorListViewCell cellLoadedFromNibNamed: @"Preferences" reusableIdentifier: @"colorcell"];
+        cell = [ColorListViewCell cellLoadedFromNibNamed: @"Preferences" owner: cell reusableIdentifier: @"colorcell"];
     }
 
     [cell configureWithString: @(colorEntries[row])];

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="GenerateDataController">
             <connections>
-                <outlet property="path" destination="16" id="56"/>
                 <outlet property="progressIndicator" destination="111" id="120"/>
                 <outlet property="removeOldDataCheckBox" destination="83" id="110"/>
                 <outlet property="totalCountLabel" destination="800" id="818"/>
@@ -16,19 +16,20 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="1">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Window" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" animationBehavior="default" id="1">
+            <windowStyleMask key="styleMask" titled="YES"/>
             <rect key="contentRect" x="196" y="240" width="719" height="395"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="719" height="395"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="3">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="506" translatesAutoresizingMaskIntoConstraints="NO" id="3">
                         <rect key="frame" x="18" y="324" width="510" height="51"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="51" id="12"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Dieses Tool ist nur als Entwicklerwerkzeug konzipiert und dient allein der Erzeugung zufälliger Daten für Demos und Tests." allowsEditingTextAttributes="YES" id="4">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" red="0.048363774460000002" green="0.32999724229999999" blue="0.81900453569999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -36,7 +37,8 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                        <rect key="frame" x="18" y="303" width="67" height="17"/>
+                        <rect key="frame" x="18" y="303" width="64" height="17"/>
+                        <animations/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Template:" id="11">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -48,11 +50,19 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="435" id="285"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/Data/Work/projects/Pecunia/client/Resources/demo-data-template.txt" drawsBackground="YES" id="17">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="dataTemplate" id="3hg-ZB-eLf">
+                                <dictionary key="options">
+                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                </dictionary>
+                            </binding>
+                        </connections>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="38">
                         <rect key="frame" x="534" y="301" width="23" height="23"/>
@@ -60,6 +70,7 @@
                             <constraint firstAttribute="width" constant="23" id="47"/>
                             <constraint firstAttribute="height" constant="21" id="48"/>
                         </constraints>
+                        <animations/>
                         <buttonCell key="cell" type="smallSquare" title="..." bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="39">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="miniSystem"/>
@@ -70,6 +81,7 @@
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="59">
                         <rect key="frame" x="604" y="13" width="100" height="32"/>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Schließen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="60">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -83,6 +95,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="88" id="76"/>
                         </constraints>
+                        <animations/>
                         <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="66">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -96,6 +109,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="264" id="216"/>
                         </constraints>
+                        <animations/>
                         <buttonCell key="cell" type="check" title="Existierende Daten löschen" bezelStyle="regularSquare" imagePosition="right" alignment="right" state="on" inset="2" id="84">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -106,9 +120,11 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="678" id="747"/>
                         </constraints>
+                        <animations/>
                     </progressIndicator>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="121">
                         <rect key="frame" x="322" y="246" width="19" height="27"/>
+                        <animations/>
                         <stepperCell key="cell" continuous="YES" alignment="left" minValue="1990" maxValue="2099" doubleValue="2008" id="122"/>
                         <connections>
                             <action selector="stepperChanged:" target="-2" id="832"/>
@@ -119,8 +135,9 @@
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="134">
                         <rect key="frame" x="203" y="251" width="65" height="17"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="61" id="468"/>
+                            <constraint firstAttribute="width" constant="61" id="ZyH-LG-Uon"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Startjahr:" id="135">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -132,6 +149,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="49" id="184"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="2008" drawsBackground="YES" usesSingleLineMode="YES" id="178">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="0" negativeFormat="0" localizesFormat="NO" numberStyle="decimal" generatesDecimalNumbers="YES" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="4" maximumIntegerDigits="4" id="855">
                                 <integer key="minimum" value="1990"/>
@@ -150,6 +168,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="61" id="193"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Endjahr:" id="190">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -161,6 +180,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="49" id="740"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="2013" drawsBackground="YES" id="205">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="0" negativeFormat="0" localizesFormat="NO" numberStyle="decimal" generatesDecimalNumbers="YES" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="4" maximumIntegerDigits="4" id="206">
                                 <integer key="minimum" value="1990"/>
@@ -177,6 +197,7 @@
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="231">
                         <rect key="frame" x="322" y="214" width="19" height="27"/>
+                        <animations/>
                         <stepperCell key="cell" continuous="YES" alignment="left" minValue="1991" maxValue="2100" doubleValue="2008" id="232"/>
                         <connections>
                             <action selector="stepperChanged:" target="-2" id="833"/>
@@ -189,6 +210,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="245" id="748"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Maximale Kontenzahl je Bank:" id="312">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -197,6 +219,7 @@
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="329">
                         <rect key="frame" x="273" y="155" width="49" height="22"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="3" drawsBackground="YES" id="330">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="0" negativeFormat="0" numberStyle="decimal" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" id="332">
                                 <integer key="minimum" value="1"/>
@@ -212,6 +235,7 @@
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="339">
                         <rect key="frame" x="322" y="152" width="19" height="27"/>
+                        <animations/>
                         <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="15" doubleValue="3" id="340"/>
                         <connections>
                             <action selector="stepperChanged:" target="-2" id="835"/>
@@ -220,6 +244,7 @@
                     </stepper>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="348">
                         <rect key="frame" x="22" y="125" width="249" height="17"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Anzahl Überweisung je Bank und Jahr:" id="349">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -228,6 +253,7 @@
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="700">
                         <rect key="frame" x="273" y="123" width="49" height="22"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="650" drawsBackground="YES" id="702">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="0" negativeFormat="0" localizesFormat="NO" numberStyle="decimal" allowsFloats="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" id="703">
                                 <integer key="minimum" value="1"/>
@@ -242,6 +268,7 @@
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="727">
                         <rect key="frame" x="322" y="120" width="19" height="27"/>
+                        <animations/>
                         <stepperCell key="cell" continuous="YES" alignment="left" increment="25" minValue="1" maxValue="10000" doubleValue="650" id="728"/>
                         <connections>
                             <action selector="stepperChanged:" target="-2" id="836"/>
@@ -253,6 +280,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="245" id="764"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Anzahl Banken:" id="765">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -261,6 +289,7 @@
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="771">
                         <rect key="frame" x="273" y="185" width="49" height="22"/>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="5" drawsBackground="YES" id="772">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="0" negativeFormat="0" numberStyle="decimal" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="309" id="773">
                                 <integer key="minimum" value="1"/>
@@ -284,6 +313,7 @@
                     </textField>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="785">
                         <rect key="frame" x="322" y="182" width="19" height="27"/>
+                        <animations/>
                         <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="9" doubleValue="5" id="786"/>
                         <connections>
                             <action selector="stepperChanged:" target="-2" id="834"/>
@@ -295,6 +325,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="163" id="838"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="0" id="801">
                             <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="809"/>
                             <font key="font" metaFont="systemBold" size="14"/>
@@ -307,6 +338,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="245" id="814"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Gesamtzahl Überweisungen:" id="811">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -318,6 +350,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="353" id="825"/>
                         </constraints>
+                        <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="variiert zufällig, Minimum ist 1" id="820">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -329,33 +362,31 @@
                     <constraint firstItem="3" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" symbolic="YES" id="5"/>
                     <constraint firstItem="3" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" symbolic="YES" id="6"/>
                     <constraint firstItem="10" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" symbolic="YES" id="32"/>
-                    <constraint firstItem="16" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="8" symbolic="YES" id="36"/>
+                    <constraint firstItem="16" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="11" id="36"/>
                     <constraint firstItem="3" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" id="37"/>
                     <constraint firstItem="38" firstAttribute="leading" secondItem="16" secondAttribute="trailing" constant="8" symbolic="YES" id="43"/>
-                    <constraint firstItem="38" firstAttribute="baseline" secondItem="16" secondAttribute="baseline" id="53"/>
+                    <constraint firstItem="38" firstAttribute="baseline" secondItem="16" secondAttribute="baseline" constant="1" id="53"/>
                     <constraint firstItem="38" firstAttribute="centerY" secondItem="16" secondAttribute="centerY" id="54"/>
                     <constraint firstAttribute="bottom" secondItem="59" secondAttribute="bottom" constant="20" symbolic="YES" id="62"/>
                     <constraint firstAttribute="bottom" secondItem="65" secondAttribute="bottom" constant="20" symbolic="YES" id="70"/>
                     <constraint firstItem="59" firstAttribute="leading" secondItem="65" secondAttribute="trailing" constant="12" symbolic="YES" id="75"/>
-                    <constraint firstItem="16" firstAttribute="baseline" secondItem="10" secondAttribute="baseline" id="265"/>
+                    <constraint firstItem="16" firstAttribute="baseline" secondItem="10" secondAttribute="baseline" constant="-1" id="265"/>
                     <constraint firstItem="83" firstAttribute="top" secondItem="16" secondAttribute="bottom" constant="8" symbolic="YES" id="284"/>
                     <constraint firstItem="177" firstAttribute="top" secondItem="83" secondAttribute="bottom" constant="8" symbolic="YES" id="609"/>
-                    <constraint firstItem="177" firstAttribute="leading" secondItem="134" secondAttribute="trailing" constant="8" symbolic="YES" id="610"/>
-                    <constraint firstItem="134" firstAttribute="baseline" secondItem="177" secondAttribute="baseline" id="625"/>
                     <constraint firstItem="121" firstAttribute="top" secondItem="177" secondAttribute="top" id="626"/>
                     <constraint firstItem="310" firstAttribute="leading" secondItem="83" secondAttribute="leading" id="648"/>
                     <constraint firstItem="121" firstAttribute="leading" secondItem="231" secondAttribute="leading" id="658"/>
                     <constraint firstItem="203" firstAttribute="leading" secondItem="189" secondAttribute="trailing" constant="8" symbolic="YES" id="671"/>
                     <constraint firstItem="203" firstAttribute="top" secondItem="177" secondAttribute="bottom" constant="10" symbolic="YES" id="673"/>
-                    <constraint firstItem="203" firstAttribute="baseline" secondItem="189" secondAttribute="baseline" id="674"/>
+                    <constraint firstItem="203" firstAttribute="baseline" secondItem="189" secondAttribute="baseline" constant="-1" id="674"/>
                     <constraint firstItem="231" firstAttribute="top" secondItem="203" secondAttribute="top" id="676"/>
-                    <constraint firstItem="329" firstAttribute="baseline" secondItem="310" secondAttribute="baseline" id="678"/>
+                    <constraint firstItem="329" firstAttribute="baseline" secondItem="310" secondAttribute="baseline" constant="-1" id="678"/>
                     <constraint firstItem="339" firstAttribute="top" secondItem="329" secondAttribute="top" id="682"/>
                     <constraint firstItem="700" firstAttribute="leading" secondItem="329" secondAttribute="leading" id="721"/>
                     <constraint firstItem="700" firstAttribute="trailing" secondItem="329" secondAttribute="trailing" id="724"/>
                     <constraint firstItem="700" firstAttribute="top" secondItem="329" secondAttribute="bottom" constant="10" symbolic="YES" id="725"/>
                     <constraint firstItem="727" firstAttribute="leading" secondItem="339" secondAttribute="leading" id="733"/>
-                    <constraint firstItem="700" firstAttribute="baseline" secondItem="348" secondAttribute="baseline" id="735"/>
+                    <constraint firstItem="700" firstAttribute="baseline" secondItem="348" secondAttribute="baseline" constant="-1" id="735"/>
                     <constraint firstItem="348" firstAttribute="trailing" secondItem="310" secondAttribute="trailing" id="736"/>
                     <constraint firstItem="348" firstAttribute="leading" secondItem="310" secondAttribute="leading" id="737"/>
                     <constraint firstAttribute="trailing" secondItem="59" secondAttribute="trailing" constant="21" id="744"/>
@@ -371,8 +402,7 @@
                     <constraint firstItem="785" firstAttribute="leading" secondItem="231" secondAttribute="leading" id="791"/>
                     <constraint firstItem="785" firstAttribute="leading" secondItem="339" secondAttribute="leading" id="792"/>
                     <constraint firstItem="763" firstAttribute="leading" secondItem="111" secondAttribute="leading" id="794"/>
-                    <constraint firstItem="763" firstAttribute="trailing" secondItem="134" secondAttribute="trailing" id="795"/>
-                    <constraint firstItem="771" firstAttribute="baseline" secondItem="763" secondAttribute="baseline" id="796"/>
+                    <constraint firstItem="771" firstAttribute="baseline" secondItem="763" secondAttribute="baseline" constant="-1" id="796"/>
                     <constraint firstItem="339" firstAttribute="top" secondItem="785" secondAttribute="bottom" constant="8" symbolic="YES" id="797"/>
                     <constraint firstItem="800" firstAttribute="leading" secondItem="700" secondAttribute="leading" id="804"/>
                     <constraint firstItem="800" firstAttribute="top" secondItem="700" secondAttribute="bottom" constant="8" symbolic="YES" id="805"/>
@@ -380,11 +410,15 @@
                     <constraint firstItem="16" firstAttribute="top" secondItem="2" secondAttribute="top" constant="71" id="808"/>
                     <constraint firstItem="800" firstAttribute="leading" secondItem="810" secondAttribute="trailing" constant="8" symbolic="YES" id="815"/>
                     <constraint firstItem="810" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" symbolic="YES" id="816"/>
-                    <constraint firstItem="819" firstAttribute="baseline" secondItem="329" secondAttribute="baseline" id="821"/>
+                    <constraint firstItem="819" firstAttribute="baseline" secondItem="329" secondAttribute="baseline" constant="1" id="821"/>
                     <constraint firstItem="819" firstAttribute="leading" secondItem="339" secondAttribute="trailing" constant="8" symbolic="YES" id="822"/>
                     <constraint firstItem="800" firstAttribute="top" secondItem="810" secondAttribute="top" id="823"/>
                     <constraint firstAttribute="trailing" secondItem="819" secondAttribute="trailing" constant="20" symbolic="YES" id="826"/>
+                    <constraint firstItem="134" firstAttribute="trailing" secondItem="763" secondAttribute="trailing" id="94U-wu-SMs"/>
+                    <constraint firstItem="134" firstAttribute="centerY" secondItem="177" secondAttribute="centerY" id="WM9-Oo-14c"/>
+                    <constraint firstItem="177" firstAttribute="leading" secondItem="134" secondAttribute="trailing" constant="8" symbolic="YES" id="b3S-Bs-GVv"/>
                 </constraints>
+                <animations/>
             </view>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="167"/>

@@ -249,7 +249,7 @@ extern void *UserDefaultsBindingContext;
     TransfersListViewCell *cell = (TransfersListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"transfer-cell"];
 
     if (!cell) {
-        cell = [TransfersListViewCell cellLoadedFromNibNamed: @"TransfersListViewCell" reusableIdentifier: @"transfer-cell"];
+        cell = [TransfersListViewCell cellLoadedFromNibNamed: @"TransfersListViewCell" owner: cell reusableIdentifier: @"transfer-cell"];
         cell.listView = self;
     }
 

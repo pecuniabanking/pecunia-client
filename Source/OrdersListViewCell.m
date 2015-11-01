@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014 Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015 Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,39 +19,41 @@
 
 #import "OrdersListViewCell.h"
 #import "PreferenceController.h"
+#import "StandingOrder.h"
+#import "BankingCategory.h"
+#import "BankAccount.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "ValueTransformers.h"
 
-extern NSString *StatementDateKey;
-extern NSString *StatementTurnoversKey;
-extern NSString *StatementRemoteNameKey;
-extern NSString *StatementPurposeKey;
-extern NSString *StatementCategoriesKey;
-extern NSString *StatementValueKey;
-extern NSString *StatementSaldoKey;
-extern NSString *StatementCurrencyKey;
-extern NSString *StatementTransactionTextKey;
-extern NSString *StatementIndexKey;
-extern NSString *StatementNoteKey;
-extern NSString *StatementRemoteBankNameKey;
-extern NSString *StatementColorKey;
-extern NSString *StatementRemoteAccountKey;
-extern NSString *StatementRemoteBankCodeKey;
-extern NSString *StatementRemoteIBANKey;
-extern NSString *StatementRemoteBICKey;
-extern NSString *StatementTypeKey;
-
-extern NSString *OrderFirstExecDateKey;
-extern NSString *OrderLastExecDateKey;
-extern NSString *OrderIsChangedKey;
-extern NSString *OrderPendingDeletionKey;
-extern NSString *OrderIsSentKey;
-
 extern void *UserDefaultsBindingContext;
+
+extern NSString *const CategoryColorNotification;
+extern NSString *const CategoryKey;
+
+extern NSDateFormatter *dateFormatter; // From PecuniaListViewCell.
+extern NSDictionary    *whiteAttributes;
 
 @interface OrdersListViewCell ()
 {
+    IBOutlet NSTextField *nextDateLabel;
+    IBOutlet NSTextField *lastDateLabel;
+    IBOutlet NSTextField *bankNameLabel;
+    IBOutlet NSTextField *remoteNameLabel;
+    IBOutlet NSTextField *purposeLabel;
+    IBOutlet NSTextField *valueLabel;
+    IBOutlet NSTextField *currencyLabel;
+    IBOutlet NSTextField *lastDateTitle;
+    IBOutlet NSTextField *nextDateTitle;
+    IBOutlet NSImageView *editImage;
+    IBOutlet NSImageView *sendImage;
+    IBOutlet NSButton    *deleteButton;
+
+    IBOutlet NSTextField *ibanCaption;
+    IBOutlet NSTextField *ibanLabel;
+    IBOutlet NSTextField *bicCaption;
+    IBOutlet NSTextField *bicLabel;
+
     NSColor   *categoryColor;
 }
 
@@ -59,16 +61,38 @@ extern void *UserDefaultsBindingContext;
 
 @implementation OrdersListViewCell
 
-@synthesize delegate;
-
 #pragma mark - Init/Dealloc
 
 - (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
     if (self != nil) {
+        [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
+                                                        object: nil
+                                                         queue: nil
+                                                    usingBlock:
+         ^(NSNotification *notification) {
+             BankingCategory *category = (notification.userInfo)[CategoryKey];
+             BankAccount *account = [self.representedObject account];
+             if (category == (id)account) { // Weird warning without cast.
+                 categoryColor = category.categoryColor;
+                 [self setNeedsDisplay: YES];
+             }
+         }
+        ];
+
+        // In addition listen to certain preference changes.
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
     }
     return self;
+}
+
+- (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver: self];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 - (void)awakeFromNib
@@ -90,57 +114,100 @@ extern void *UserDefaultsBindingContext;
     [self registerPaleLabel: bicCaption];
     [self registerPaleLabel: nextDateTitle];
     [self registerPaleLabel: lastDateTitle];
+
+    [self adjustLabelsAndSize];
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context {
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            [self updateLabelsWithCasing: [NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]];
+            return;
+        }
+
+    }
+
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (IBAction)cancelDeletion: (id)sender
 {
-    if ([self.delegate conformsToProtocol: @protocol(OrdersListViewNotificationProtocol)]) {
-        [self.delegate cancelDeletionForIndex: index];
-    }
+    StandingOrder *order = self.representedObject;
+    order.toDelete = @NO;
+    deleteButton.hidden = YES;
 }
 
-static CurrencyValueTransformer *currencyTransformer;
-
-- (void)setDetails: (NSDictionary *)details
+- (void)setRepresentedObject: (id)object
 {
-    nextDateLabel.stringValue = [details valueForKey: OrderFirstExecDateKey];
-    lastDateLabel.stringValue = [details valueForKey: OrderLastExecDateKey];
+    [super setRepresentedObject: object];
 
-    remoteNameLabel.stringValue = [details valueForKey: StatementRemoteNameKey];
-    remoteNameLabel.toolTip = [details valueForKey: StatementRemoteNameKey];
+    StandingOrder *order = object;
 
-    valueLabel.objectValue = [details valueForKey: StatementValueKey];
+    [self updateLabelsWithCasing: [NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]];
 
-    bankNameLabel.stringValue = [details valueForKey: StatementRemoteBankNameKey];
-    bankNameLabel.toolTip = [details valueForKey: StatementRemoteBankNameKey];
+    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    nextDateLabel.stringValue = [dateFormatter stringFromDate: order.firstExecDate];
+
+    static NSDate *farAway = nil;
+    if (farAway == nil) {
+        farAway = [[NSDate alloc] initWithString: @"1.1.2900"];
+    }
+    if (order.lastExecDate > farAway) {
+        lastDateLabel.stringValue = @"--";
+    } else {
+        lastDateLabel.stringValue = [dateFormatter stringFromDate: order.lastExecDate];
+    }
+
+    valueLabel.objectValue = order.value;
+
+    bankNameLabel.stringValue = [self formatValue: order.remoteBankName capitalize: NO];
+    bankNameLabel.toolTip = bankNameLabel.stringValue;
 
     // By now all standing orders are SEPA orders. No traditional type anymore.
-    bicLabel.stringValue = [details valueForKey: StatementRemoteBICKey];
-    bicLabel.toolTip = [details valueForKey: StatementRemoteBICKey];
+    bicLabel.stringValue = [self formatValue: order.remoteBIC capitalize: NO];
+    if (bicLabel.stringValue.length == 0) {
+        bicLabel.stringValue = NSLocalizedString(@"AP35", nil);
+    }
+    bicLabel.toolTip = bicLabel.stringValue;
 
-    ibanLabel.stringValue = [details valueForKey: StatementRemoteIBANKey];
-    ibanLabel.toolTip = [details valueForKey: StatementRemoteIBANKey];
+    ibanLabel.stringValue = [self formatValue: order.remoteIBAN capitalize: NO];
+    if (ibanLabel.stringValue.length == 0) {
+        ibanLabel.stringValue = NSLocalizedString(@"AP35", nil);
+    }
+    ibanLabel.toolTip = ibanLabel.stringValue;
 
-    purposeLabel.stringValue = [details valueForKey: StatementPurposeKey];
-    purposeLabel.toolTip = [details valueForKey: StatementPurposeKey];
+    categoryColor = order.account.categoryColor;
 
-    id color = [details valueForKey: StatementColorKey];
-    categoryColor = (color == [NSNull null] ? nil : color);
-
+    static CurrencyValueTransformer *currencyTransformer;
     if (currencyTransformer == nil) {
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
     }
 
-    NSString *currency = [details valueForKey: StatementCurrencyKey];
+    NSString *currency = [self formatValue: order.currency capitalize: NO];
     NSString *symbol = [currencyTransformer transformedValue: currency];
     currencyLabel.stringValue = symbol;
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
 
-    [editImage setHidden: ![[details valueForKey: OrderIsChangedKey] boolValue]];
-    [sendImage setHidden: ![[details valueForKey: OrderIsSentKey] boolValue]];
-    [deleteButton setHidden: ![[details valueForKey: OrderPendingDeletionKey] boolValue]];
+    editImage.hidden = !order.isChanged.boolValue;
+    sendImage.hidden = !order.isSent.boolValue;
+    deleteButton.hidden = !order.toDelete.boolValue;
 
     [self adjustLabelsAndSize];
+}
+
+- (void)updateLabelsWithCasing: (BOOL)autoCasing {
+    StandingOrder *order = self.representedObject;
+
+    id value = [self formatValue: order.remoteName capitalize: autoCasing];
+    remoteNameLabel.stringValue = value;
+    remoteNameLabel.toolTip = value;
+
+    value = [self formatValue: order.purpose capitalize: autoCasing];
+    purposeLabel.stringValue = value;
+    purposeLabel.toolTip = value;
 }
 
 #pragma mark - Drawing

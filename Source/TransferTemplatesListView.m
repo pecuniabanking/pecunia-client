@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -183,7 +183,9 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     TransferTemplateListViewCell *cell = (TransferTemplateListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"transfer-template-cell"];
 
     if (!cell) {
-        cell = [TransferTemplateListViewCell cellLoadedFromNibNamed: @"TransferTemplateListViewCell" reusableIdentifier: @"transfer-template-cell"];
+        cell = [TransferTemplateListViewCell cellLoadedFromNibNamed: @"TransferTemplateListViewCell"
+                                                              owner: cell
+                                                 reusableIdentifier: @"transfer-template-cell"];
         cell.listView = self;
     }
 

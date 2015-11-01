@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,14 +17,11 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @interface GenerateDataController : NSWindowController
 {
     NSCalendar *calendar;
 }
 
-@property (strong) IBOutlet NSTextField         *path;
 @property (strong) IBOutlet NSButton            *removeOldDataCheckBox;
 @property (strong) IBOutlet NSProgressIndicator *progressIndicator;
 @property (strong) IBOutlet NSTextField         *totalCountLabel;
@@ -34,6 +31,8 @@
 @property (assign) NSUInteger bankCount;
 @property (assign) NSUInteger maxAccountsPerBank;
 @property (assign) NSUInteger numberOfStatementsPerBank;
+
+@property NSString *dataTemplate;
 
 - (IBAction)selectFile: (id)sender;
 - (IBAction)close: (id)sender;

@@ -139,11 +139,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     [ordersListView setAllowsEmptySelection: NO];
     [ordersListView setAllowsMultipleSelection: NO];
 
-    // Sort order list by change date (newest first).
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
-    NSArray          *sds = @[sd];
-    [orderController setSortDescriptors: sds];
-
+    // We don't use any explicit sorting for the orders, as especially for new orders many values are not available yet,
+    // creating so problems with the sorting.
     ordersListView.owner = self;
 
     // Actually, the values for the bound property and the key path don't matter as the listview has
@@ -849,9 +846,6 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
     StatusBarController *status = [StatusBarController controller];
 
-    // After updating all accounts schedule a delayed cleanup.
-    // Delayed, because we may need new HBCI requests that cannot run while we are here.
-    //[self performSelector: @selector(validateNewOrders) withObject: nil afterDelay: 0.5];
     [self validateNewOrders];
     [orderController prepareContent];
 
@@ -1025,13 +1019,6 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
 - (IBAction)deleteOrder: (id)sender {
     [self doDeletionOfOrder: currentOrder];
-}
-
-- (void)cancelDeletionForIndex: (NSUInteger)index {
-    [orderController.arrangedObjects[index] setToDelete: @NO];
-    if (orderController.arrangedObjects[index] == currentOrder) {
-        deleteButton.hidden = NO;
-    }
 }
 
 #pragma mark -

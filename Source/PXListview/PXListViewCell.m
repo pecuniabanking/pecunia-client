@@ -23,19 +23,23 @@
 @synthesize listView = _listView;
 @synthesize row = _row;
 
-+ (id)cellLoadedFromNibNamed:(NSString*)nibName reusableIdentifier:(NSString*)identifier
+// ml: added owner to parameter list.
++ (id)cellLoadedFromNibNamed:(NSString*)nibName  owner: (id)owner reusableIdentifier:(NSString*)identifier
 {
-    return [self cellLoadedFromNibNamed:nibName bundle:nil reusableIdentifier:identifier];
+    return [self cellLoadedFromNibNamed: nibName owner: owner bundle: nil reusableIdentifier: identifier];
 }
 
-+ (id)cellLoadedFromNibNamed:(NSString*)nibName bundle:(NSBundle*)bundle reusableIdentifier:(NSString*)identifier
++ (id)cellLoadedFromNibNamed: (NSString*)nibName
+                       owner: (id)owner
+                      bundle: (NSBundle*)bundle
+          reusableIdentifier: (NSString*)identifier
 {
     NSNib *cellNib = [[NSNib alloc] initWithNibNamed:nibName bundle:bundle];
     NSArray *objects = nil;
     
     id cell = nil;
     
-    [cellNib instantiateWithOwner:nil topLevelObjects:&objects];
+    [cellNib instantiateWithOwner: owner topLevelObjects:&objects];
     for(id object in objects) {
         if([object isKindOfClass:[self class]]) {
             cell = object;

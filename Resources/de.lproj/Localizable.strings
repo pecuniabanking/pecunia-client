@@ -35,7 +35,9 @@ AP31 = "Zuordnung";
 AP32 = "Überweisungen";
 AP33 = "Daueraufträge";
 
+// Other base strings
 AP34 = "Beenden nicht möglich";
+AP35 = "nicht angegeben";
 
 // Validation strings
 // AP50..AP99

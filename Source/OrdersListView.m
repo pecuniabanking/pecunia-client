@@ -47,17 +47,8 @@ extern NSString *StatementTypeKey;
 
 NSString *OrderFirstExecDateKey   = @"OrderFirstExecDateKey";   // NSDate
 NSString *OrderLastExecDateKey    = @"OrderLastExecDateKey";    // NSDate
-NSString *OrderIsChangedKey       = @"OrderIsChangedKey";       // bool (as NSNumber)
-NSString *OrderPendingDeletionKey = @"OrderPendingDeletionKey"; // bool (as NSNumber)
-NSString *OrderIsSentKey          = @"OrderIsSentKey";          // bool (as NSNumber)
 
 extern NSString *OrderDataType;
-
-@interface OrdersListView (Private)
-
-- (void)updateVisibleCells;
-
-@end
 
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
@@ -170,19 +161,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
                        context: (void *)context
 {
     // Coalesce many notifications into one.
-    if (context == UserDefaultsBindingContext) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([keyPath isEqualToString: @"autoCasing"]) {
-            autoCasing = [userDefaults boolForKey: @"autoCasing"];
-            if (!pendingRefresh && !pendingReload) {
-                pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
-            }
-        }
-
-        return;
-    }
-
     if (context == DataSourceBindingContext) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
         pendingReload = YES;
@@ -190,7 +168,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
         return;
     }
-
+/*
     // If there's already a full reload pending do nothing.
     if (!pendingReload) {
         // If there's another property change pending cancel it and do a full reload instead.
@@ -204,10 +182,10 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
             [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
         }
     }
+ */
 }
 
-#pragma mark -
-#pragma mark PXListViewDelegate protocol implementation
+#pragma mark - PXListViewDelegate protocol implementation
 
 - (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
@@ -215,36 +193,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 #pragma unused(aListView)
     return [dataSource count];
-}
-
-- (id)formatValue: (id)value capitalize: (BOOL)capitalize
-{
-    if (value == nil || [value isKindOfClass: [NSNull class]]) {
-        value = @"";
-    } else {
-        if ([value isKindOfClass: [NSDate class]]) {
-            ShortDate *date = [ShortDate dateWithDate: value];
-            if ([hunderedYearsLater unitsToDate: date byUnit: NSCalendarUnitYear] > 0) {
-                // Silently assumes that only last execution dates are set that high.
-                value = @"--";
-            } else {
-                value = [dateFormatter stringFromDate: value];
-            }
-        } else {
-            if (capitalize && autoCasing) {
-                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
-                for (NSUInteger i = 0; i < [words count]; i++) {
-                    NSString *word = words[i];
-                    if (i == 0 || [word length] > 3) {
-                        words[i] = [word capitalizedString];
-                    }
-                }
-                value = [words componentsJoinedByString: @" "];
-            }
-        }
-    }
-
-    return value;
 }
 
 #define CELL_HEIGHT 80
@@ -261,7 +209,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         }
     }
 
-    cell.delegate = self;
+    cell.representedObject = order;
+    /*
     NSColor      *color = [order.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
                               OrderFirstExecDateKey: [self formatValue: order.firstExecDate capitalize: NO],
@@ -275,13 +224,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
                               StatementRemoteBICKey: [self formatValue: order.remoteBIC capitalize: NO],
                               StatementRemoteIBANKey: [self formatValue: order.remoteIBAN capitalize: NO],
                               StatementTypeKey: [self formatValue: order.type capitalize: NO],
-                              OrderIsChangedKey: order.isChanged,
-                              OrderPendingDeletionKey: order.toDelete,
-                              OrderIsSentKey: order.isSent,
                               StatementColorKey: (color != nil) ? color : [NSNull null]};
-
-    [cell setDetails: details];
-
+*/
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
@@ -292,7 +236,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     OrdersListViewCell *cell = (OrdersListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"order-cell"];
 
     if (!cell) {
-        cell = [OrdersListViewCell cellLoadedFromNibNamed: @"OrdersListViewCell" reusableIdentifier: @"order-cell"];
+        cell = [OrdersListViewCell cellLoadedFromNibNamed: @"OrdersListViewCell" owner: cell reusableIdentifier: @"order-cell"];
         cell.listView = self;
     }
 
@@ -320,31 +264,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     }
 }
 
-/**
- * Triggered when KVO notifies us about changes.
- */
-- (void)updateVisibleCells
-{
-    pendingRefresh = NO;
-    NSArray *cells = [self visibleCells];
-    for (OrdersListViewCell *cell in cells) {
-        [self fillCell: cell forRow: [cell row]];
-    }
-}
-
-#pragma mark -
-#pragma mark OrdersListViewNotificationProtocol
-
-- (void)cancelDeletionForIndex: (NSUInteger)index
-{
-    // Simply forward the notification to the notification delegate if any is set.
-    if ([self.owner respondsToSelector: @selector(cancelDeletionForIndex:)]) {
-        [self.owner cancelDeletionForIndex: index];
-    }
-}
-
-#pragma mark -
-#pragma mark Drag'n drop
+#pragma mark - Drag'n drop
 
 - (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
     toPasteboard: (NSPasteboard *)dragPasteboard

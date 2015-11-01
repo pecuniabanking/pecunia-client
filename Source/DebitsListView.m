@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -236,7 +236,9 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     DebitsListViewCell *cell = (DebitsListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"debit-cell"];
 
     if (!cell) {
-        cell = [DebitsListViewCell cellLoadedFromNibNamed: @"DebitsListViewCell" reusableIdentifier: @"debit-cell"];
+        cell = [DebitsListViewCell cellLoadedFromNibNamed: @"DebitsListViewCell"
+                                                    owner: cell
+                                       reusableIdentifier: @"debit-cell"];
         cell.listView = self;
     }
 

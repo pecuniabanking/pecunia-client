@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -969,7 +969,9 @@ static NSFont *smallNumberFont;
     ValuePopupCell *cell = (ValuePopupCell *)[aListView dequeueCellWithReusableIdentifier: @"valueCell"];
 
     if (!cell) {
-        cell = [ValuePopupCell cellLoadedFromNibNamed: @"CategoryHeatMap" reusableIdentifier: @"valueCell"];
+        cell = [ValuePopupCell cellLoadedFromNibNamed: @"CategoryHeatMap"
+                                                owner: cell
+                                   reusableIdentifier: @"valueCell"];
     }
 
     if (currentAssignments.count == 0) {
