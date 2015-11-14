@@ -849,6 +849,7 @@
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		99B9B0C11BC1DED400400B44 /* bos.js in Resources */ = {isa = PBXBuildFile; fileRef = 99B9B0C01BC1DED400400B44 /* bos.js */; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
 		A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
 		A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
@@ -1613,6 +1614,7 @@
 		32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pecunia_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99B9B0C01BC1DED400400B44 /* bos.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bos.js; path = Plugins/bos.js; sourceTree = "<group>"; };
 		A652533315E39A76000C2989 /* TanWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanWindow.h; sourceTree = "<group>"; };
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
 		A687545F1778CDC0007B4BC2 /* AssignmentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignmentController.h; sourceTree = "<group>"; };
@@ -2181,6 +2183,7 @@
 			isa = PBXGroup;
 			children = (
 				27A85F871B1A07F70017D863 /* dkb.js */,
+				99B9B0C01BC1DED400400B44 /* bos.js */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -3676,6 +3679,7 @@
 				27E845F019E17D300026464E /* HomeScreenTransfersView.xib in Resources */,
 				27E845BE19E17D2F0026464E /* About.xib in Resources */,
 				27E845D419E17D2F0026464E /* CategoryDefinition.xib in Resources */,
+				99B9B0C11BC1DED400400B44 /* bos.js in Resources */,
 				2778C24418140027003BF49D /* gear@2x.png in Resources */,
 				B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */,
 				B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */,
@@ -4381,10 +4385,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
@@ -4418,7 +4421,6 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4443,7 +4445,6 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
@@ -4468,7 +4469,6 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4490,9 +4490,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
@@ -4516,7 +4515,6 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4571,7 +4569,6 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_CFLAGS = (
 					"-D",
@@ -4624,7 +4621,6 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_CFLAGS = "";
 				OTHER_CODE_SIGN_FLAGS = "";
@@ -4673,7 +4669,6 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_CFLAGS = "";
 				OTHER_CODE_SIGN_FLAGS = "";

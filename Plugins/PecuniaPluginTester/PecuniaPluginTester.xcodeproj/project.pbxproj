@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270ED4EA1AF4DD0400978925 /* AppDelegate.swift */; };
 		270ED4F01AF4DD0400978925 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270ED4EE1AF4DD0400978925 /* MainMenu.xib */; };
+		27181B9A1BF740B700D09D39 /* BankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27181B991BF740B700D09D39 /* BankAccount.swift */; };
 		271F95431B8880F500C2D242 /* de.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 271F95421B8880F500C2D242 /* de.lproj */; };
 		276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */; };
 		277C0FE91B36C64500B9C738 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = 277C0FE81B36C64500B9C738 /* Pecunia.icns */; };
@@ -19,7 +20,6 @@
 		27B3D3051B120E100011BBB3 /* safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B3D3041B120E100011BBB3 /* safari.png */; };
 		27CE87A91B233669007B90F3 /* BankQueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87A81B233669007B90F3 /* BankQueryResult.swift */; };
 		27CE87AB1B23373C007B90F3 /* BankStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AA1B23373C007B90F3 /* BankStatement.swift */; };
-		27CE87AD1B23385F007B90F3 /* BankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AC1B23385F007B90F3 /* BankAccount.swift */; };
 		27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87AE1B23395F007B90F3 /* StandingOrder.swift */; };
 		27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */; };
 		27E5E7581B88950E00E5D835 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5E7571B88950E00E5D835 /* NSDecimalNumber.swift */; };
@@ -30,7 +30,8 @@
 		270ED4E91AF4DD0400978925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		270ED4EA1AF4DD0400978925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		270ED4EF1AF4DD0400978925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		271F95421B8880F500C2D242 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
+		27181B991BF740B700D09D39 /* BankAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankAccount.swift; path = PecuniaPluginTester/BankAccount.swift; sourceTree = "<group>"; };
+		271F95421B8880F500C2D242 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = de.lproj; path = ../../Resources/de.lproj; sourceTree = "<group>"; };
 		276ABD871AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+PecuniaAdditions.h"; path = "../../Source/NSDictionary+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		276ABD881AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+PecuniaAdditions.m"; path = "../../Source/NSDictionary+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		276ABD8C1AF65D700041DC23 /* PecuniaPlugingTester-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PecuniaPlugingTester-Bridging-Header.h"; path = "../PecuniaPlugingTester-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -42,7 +43,6 @@
 		27B3D3041B120E100011BBB3 /* safari.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = safari.png; path = PecuniaPluginTester/Resources/safari.png; sourceTree = "<group>"; };
 		27CE87A81B233669007B90F3 /* BankQueryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankQueryResult.swift; path = PecuniaPluginTester/BankQueryResult.swift; sourceTree = "<group>"; };
 		27CE87AA1B23373C007B90F3 /* BankStatement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankStatement.swift; path = PecuniaPluginTester/BankStatement.swift; sourceTree = "<group>"; };
-		27CE87AC1B23385F007B90F3 /* BankAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankAccount.swift; path = PecuniaPluginTester/BankAccount.swift; sourceTree = "<group>"; };
 		27CE87AE1B23395F007B90F3 /* StandingOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StandingOrder.swift; path = PecuniaPluginTester/StandingOrder.swift; sourceTree = "<group>"; };
 		27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlocksHelper.swift; path = ../../Source/BlocksHelper.swift; sourceTree = "<group>"; };
 		27E5E7571B88950E00E5D835 /* NSDecimalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDecimalNumber.swift; path = ../../Source/NSDecimalNumber.swift; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 		276ABD861AF65A610041DC23 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				27CE87AC1B23385F007B90F3 /* BankAccount.swift */,
+				27181B991BF740B700D09D39 /* BankAccount.swift */,
 				27CE87A81B233669007B90F3 /* BankQueryResult.swift */,
 				27CE87AA1B23373C007B90F3 /* BankStatement.swift */,
 				27CE87B01B2339EC007B90F3 /* BlocksHelper.swift */,
@@ -152,7 +152,9 @@
 		270ED4DD1AF4DD0400978925 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Pecunia Team";
 				TargetAttributes = {
 					270ED4E41AF4DD0400978925 = {
@@ -202,11 +204,11 @@
 				27CE87B11B2339EC007B90F3 /* BlocksHelper.swift in Sources */,
 				27CE87AB1B23373C007B90F3 /* BankStatement.swift in Sources */,
 				27CE87AF1B23395F007B90F3 /* StandingOrder.swift in Sources */,
+				27181B9A1BF740B700D09D39 /* BankAccount.swift in Sources */,
 				276ABD891AF65A8F0041DC23 /* NSDictionary+PecuniaAdditions.m in Sources */,
 				27E5E7581B88950E00E5D835 /* NSDecimalNumber.swift in Sources */,
 				27B3D2FE1B10808D0011BBB3 /* WebKitExports.swift in Sources */,
 				278FFD8D1AFE43E60044BD5F /* PluginWorker.swift in Sources */,
-				27CE87AD1B23385F007B90F3 /* BankAccount.swift in Sources */,
 				270ED4EB1AF4DD0400978925 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +248,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -261,7 +264,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -300,7 +303,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "PecuniaPlugingTester-Bridging-Header.h";
@@ -314,6 +317,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.pecuniabanking.pecunia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -325,6 +329,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = PecuniaPluginTester/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.pecuniabanking.pecunia.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

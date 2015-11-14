@@ -33,13 +33,13 @@ import AppKit
 
 internal class UserQueryEntry {
     var bankCode: String;
-    var password: String;
+    var passwords: String;
     var accountNumbers: [String];
     var authRequest: AuthRequest;
 
     init(bankCode bank: String, password pw: String, accountNumbers numbers: [String], auth: AuthRequest) {
         bankCode = bank;
-        password = pw;
+        passwords = pw;
         accountNumbers = numbers;
         authRequest = auth;
     }
@@ -55,16 +55,33 @@ class WebClient: WebView, WebViewJSExport {
         }
         set {
             redirecting = false;
-            if let url = NSURL(string: newValue) {
+            if let url = NSURL(string: newValue) {                
                 mainFrame.loadRequest(NSURLRequest(URL: url));
             }
         }
     }
+    
+    var postURL: String {
+        get {
+            return mainFrameURL;
+        }
+        set {
+            redirecting = false;
+            if let url = NSURL(string: newValue) {
+                let request = NSMutableURLRequest(URL: url);
+                request.HTTPMethod = "POST";
+                request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type");
+                mainFrame.loadRequest(request);
+            }
+        }
+    }
+
 
     var query: UserQueryEntry?;
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
+    
     func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
         
@@ -103,7 +120,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                if let value = entry["balance"] as? String where value.length > 0 {
+                if let value = entry["balance"] as? String where value.characters.count > 0 {
                     if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
                         queryResult.balance = number;
                     }
@@ -128,7 +145,7 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    if let value = jsonStatement["value"] as? String  where value.length > 0 {
+                    if let value = jsonStatement["value"] as? String  where value.characters.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
@@ -140,7 +157,7 @@ class WebClient: WebView, WebViewJSExport {
                         }
                     }
 
-                    if let value = jsonStatement["originalValue"] as? String where value.length > 0 {
+                    if let value = jsonStatement["originalValue"] as? String where value.characters.count > 0 {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.origValue = number;
                         }
@@ -156,6 +173,7 @@ class WebClient: WebView, WebViewJSExport {
             completion(queryResults);
         }
     }
+
 }
 
 class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
@@ -304,7 +322,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
 
             webClient.completion = completion;
             webClient.query = query;
-            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.password, fromDate,
+            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.passwords, fromDate,
                 toDate, query.accountNumbers]) != nil) {
                 jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId);
             }

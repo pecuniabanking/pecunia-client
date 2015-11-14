@@ -576,11 +576,12 @@ extension WebFrame: WebFrameJSExport {
 @objc protocol WebViewJSExport : JSExport {
 
     var URL: String { get set }; // Same as mainFrameURL below, just a nicer name.
+    var postURL: String { get set }; // if written it's an URL for POST requests otherwise the same as mainFrameURL
     var callback: JSValue { get set };
 
     func resultsArrived(results: JSValue) -> Void;
     func reportError(account: String, _ message: String) -> Void;
-
+    
     // WebView exports.
     static func canShowMIMEType(MIMEType: String!) -> Bool;
     static func canShowMIMETypeAsHTML(MIMEType: String!) -> Bool;

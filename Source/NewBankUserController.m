@@ -156,14 +156,17 @@
             secMethod = SecMethod_DDV;
             currentUser.ddvPortIdx = @1;
             currentUser.ddvReaderIdx = @0;
-        } else {
+        } else if (idx == 0) {
             secMethod = SecMethod_PinTan;
+        } else {
+            secMethod = SecMethod_Script;
         }
         currentUser.secMethod = @((int)secMethod);
     }
 
     // PinTan
-    if (secMethod == SecMethod_PinTan) {
+    if (secMethod == SecMethod_PinTan ||
+        secMethod == SecMethod_Script) {
         if ([self check] == NO) {
             return;
         }
@@ -174,7 +177,9 @@
             return;
         }
 
-        if (step == 2) {
+        if ((step == 2)
+            && (secMethod != SecMethod_Script)) //we do not want HBCI for scripts
+        {
             // look if we have bank infos
             InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
             if (bi) {
@@ -183,7 +188,7 @@
             }
         }
 
-        if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
+        if (step >= 2 ) {
             // create user
             if (bankUserCreated == NO) {
                 // first check if user with same userid already exists
@@ -208,35 +213,47 @@
                 bankUserCreated = YES;
             }
 
-            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
-            
-            // now we work with the real user
-            PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
-            if (error) {
-                [self stopProgress];
-                [error alertPanel];
-            } else {
-                // update TAN options
-                [self updateTanMethods];
-                [self stopProgress];
 
-                [userSheet orderOut: sender];
-                [NSApp endSheet: userSheet returnCode: 0];
-                return;
+            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
+
+            
+            if ((currentUser.hbciVersion != nil && currentUser.bankURL != nil)
+                || (secMethod == SecMethod_Script)){
+                // now we work with the real user
+                PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
+                if (error) {
+                    [self stopProgress];
+                    [error alertPanel];
+                } else {
+                    // update TAN options
+                    [self updateTanMethods];
+                    [self stopProgress];
+                    
+                    [userSheet orderOut: sender];
+                    [NSApp endSheet: userSheet returnCode: 0];
+                    return;
+                }
             }
         }
-        if (step >= 3 && currentUser.hbciVersion == nil) {
+        
+        /* commented out to allow for no HBCI version for accounts
+         * that are handled manually using a script
+         ******************************/
+        if (step >= 3 && currentUser.hbciVersion == nil
+            && (secMethod != SecMethod_Script)) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP79", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
-        if (step >= 3 && currentUser.bankURL == nil) {
+        if (step >= 3 && currentUser.bankURL == nil
+            && (secMethod != SecMethod_Script)) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP80", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
+         /**/
     }
 
     // DDV-Access
@@ -559,7 +576,7 @@
 
         [userSheet makeFirstResponder: [contentView viewWithTag: 10]];
     }
-    if (step == 2) {
+    else if (step == 2) {
         for (NSView *view in views) {
             if ([view tag] >= 100 && [view tag] <= 130) {
                 [[view animator] setHidden: NO];
@@ -571,7 +588,8 @@
 
         [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
     }
-    if (step == 3) {
+    else if (step == 3
+        && (secMethod != SecMethod_Script)) {
         for (NSView *view in views) {
             if ([view tag] > 110) {
                 [[view animator] setHidden: NO];
@@ -612,8 +630,7 @@
         */
         [userSheet makeFirstResponder: [contentView viewWithTag: 10]];
     }
-    
-    if (step == 2) {
+    else if (step == 2) {
         for (NSView *view in views) {
             if ([view tag] > 10 && [view tag] < 20) {
                 [[view animator] setHidden: NO];
@@ -646,7 +663,7 @@
         [[userSheet animator] setFrame: frame display: YES];
     }
     */
-    if (step == 3) {
+    else if (step == 3) {
         for (NSView *view in views) {
             if ([view tag] >= 100) {
                 [[view animator] setHidden: NO];
@@ -678,7 +695,8 @@
         return;
     }
 
-    if (secMethod == SecMethod_PinTan) {
+    if (secMethod == SecMethod_PinTan ||
+        secMethod == SecMethod_Script) {
         [self prepareUserSheet_PinTan];
     }
     if (secMethod == SecMethod_DDV) {

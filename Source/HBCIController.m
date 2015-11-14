@@ -771,49 +771,51 @@ static HBCIController *controller = nil;
     [self startProgress];
 
     // create bank user at the bank
-    User *usr = [bridge syncCommand: cmd error: &error];
-    if (error) {
-        [self stopProgress];
-        return error;
-    }
-
-    // update external user data
-    if (secMethod == SecMethod_DDV) {
-        user.bankCode = usr.bankCode;
-        user.bankName = usr.bankName;
-        user.customerId = usr.customerId;
-        user.hbciVersion = usr.hbciVersion;
-        user.country = usr.country;
-        user.chipCardId = usr.chipCardId;
-    }
-
-    if (secMethod == SecMethod_PinTan) {
-        user.hbciVersion = usr.hbciVersion;
-        user.bankName = usr.bankName;
-        user.customerId = usr.customerId;
-    }
-
-    // Update user's accounts
-    [self updateBankAccounts: usr.accounts forUser: user];
-
-    // update supported transactions
-    error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
-    if (error != nil) {
-        [self stopProgress];
-        return error;
-    }
-
-    // also update TAN media and TAN methods
-    if (secMethod == SecMethod_PinTan) {
-        error = [self updateTanMethodsForUser: user];
+    if (secMethod != SecMethod_Script) {
+        User *usr = [bridge syncCommand: cmd error: &error];
+        if (error) {
+            [self stopProgress];
+            return error;
+        }
+        
+        // update external user data
+        if (secMethod == SecMethod_DDV) {
+            user.bankCode = usr.bankCode;
+            user.bankName = usr.bankName;
+            user.customerId = usr.customerId;
+            user.hbciVersion = usr.hbciVersion;
+            user.country = usr.country;
+            user.chipCardId = usr.chipCardId;
+        }
+        
+        if (secMethod == SecMethod_PinTan) {
+            user.hbciVersion = usr.hbciVersion;
+            user.bankName = usr.bankName;
+            user.customerId = usr.customerId;
+        }
+    
+        // Update user's accounts
+        [self updateBankAccounts: usr.accounts forUser: user];
+        
+        // update supported transactions
+        error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
         if (error != nil) {
             [self stopProgress];
             return error;
         }
-        error = [self updateTanMediaForUser: user];
-        if (error != nil) {
-            [self stopProgress];
-            return error;
+        
+        // also update TAN media and TAN methods
+        if (secMethod == SecMethod_PinTan) {
+            error = [self updateTanMethodsForUser: user];
+            if (error != nil) {
+                [self stopProgress];
+                return error;
+            }
+            error = [self updateTanMediaForUser: user];
+            if (error != nil) {
+                [self stopProgress];
+                return error;
+            }
         }
     }
     return nil;

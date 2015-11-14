@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="9060"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AccountStatementsController">
@@ -24,7 +24,7 @@
         <window title="Kontoauszüge" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" frameAutosaveName="accountStatements" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="495" y="140" width="729" height="762"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="729" height="762"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -32,11 +32,12 @@
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="xh3-Sr-3GR" userLabel="Top Gradient" customClass="BWGradientBox">
                         <rect key="frame" x="0.0" y="712" width="729" height="50"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TwB-XD-RX9">
+                            <textField verticalHuggingPriority="750" preferredMaxLayoutWidth="637" translatesAutoresizingMaskIntoConstraints="NO" id="TwB-XD-RX9">
                                 <rect key="frame" x="70" y="14" width="641" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="SRL-6O-lTO"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Kreditinstitut - Konto" id="Ngd-Q6-zKF">
                                     <font key="font" size="16" name="HelveticaNeue-Medium"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -59,10 +60,12 @@
                                         </configuration>
                                     </ciFilter>
                                 </contentFilters>
+                                <animations/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon95-1" id="nvI-97-tAR"/>
                             </imageView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="36" userLabel="Load Button">
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="36" userLabel="Load Button">
                                 <rect key="frame" x="467" y="7" width="214" height="32"/>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Kontoauszüge aktualisieren" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -76,6 +79,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="29" id="TaP-nv-KEE"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" bezelStyle="rounded" image="icon66-1" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hxw-nn-iY4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -97,6 +101,7 @@
                             <constraint firstItem="TwB-XD-RX9" firstAttribute="centerY" secondItem="xh3-Sr-3GR" secondAttribute="centerY" id="t9T-iA-tbH"/>
                             <constraint firstAttribute="trailing" secondItem="TwB-XD-RX9" secondAttribute="trailing" constant="20" id="wEg-Ek-gUB"/>
                         </constraints>
+                        <animations/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="hasGradient" value="YES"/>
                             <userDefinedRuntimeAttribute type="color" keyPath="fillStartingColor">
@@ -112,6 +117,7 @@
                         <subviews>
                             <pdfView autoresizesSubviews="NO" autoScales="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3" userLabel="PDF Viewer">
                                 <rect key="frame" x="20" y="105" width="689" height="555"/>
+                                <animations/>
                             </pdfView>
                             <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="mKU-ij-9xw">
                                 <rect key="frame" x="20" y="64" width="16" height="16"/>
@@ -119,12 +125,14 @@
                                     <constraint firstAttribute="width" constant="16" id="Egx-Ql-zXR"/>
                                     <constraint firstAttribute="height" constant="16" id="aDU-3Q-RP5"/>
                                 </constraints>
+                                <animations/>
                             </progressIndicator>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ntu-4z-vtl">
                                 <rect key="frame" x="42" y="61" width="608" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="9Aa-y3-DKG"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Status" id="TcE-vF-1Rj">
                                     <font key="font" size="14" name="HelveticaNeue-Light"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -136,6 +144,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="XXj-tz-F4i"/>
                                 </constraints>
+                                <animations/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="A9x-V8-2Gw">
                                     <font key="font" metaFont="system"/>
                                     <segments>
@@ -152,6 +161,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="88" id="t91-h8-G3v"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Schließen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y3o-wx-NTf">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -166,6 +176,7 @@
                                     <constraint firstAttribute="height" constant="24" id="Fwi-vl-9Dt"/>
                                     <constraint firstAttribute="width" constant="24" id="f9K-fP-k5z"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="zoom-out" imagePosition="only" alignment="center" inset="2" id="Yt1-qy-vNv">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -180,6 +191,7 @@
                                     <constraint firstAttribute="width" constant="24" id="UZ5-Q3-xPH"/>
                                     <constraint firstAttribute="height" constant="24" id="ydA-iU-c0H"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="zoom-in" imagePosition="only" alignment="center" inset="2" id="2Lh-QR-0jr">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -208,6 +220,7 @@
                             <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="20" id="u0N-uP-OGD"/>
                             <constraint firstAttribute="trailing" secondItem="LYg-M1-iy9" secondAttribute="trailing" constant="45" id="xgi-0j-Lot"/>
                         </constraints>
+                        <animations/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="hasFillColor" value="YES"/>
                             <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
@@ -225,6 +238,7 @@
                     <constraint firstAttribute="bottom" secondItem="xo8-6Q-G6e" secondAttribute="bottom" id="kzM-Gw-l7W"/>
                     <constraint firstItem="xo8-6Q-G6e" firstAttribute="top" secondItem="xh3-Sr-3GR" secondAttribute="bottom" id="tU3-HB-bQw"/>
                 </constraints>
+                <animations/>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="22"/>
@@ -233,8 +247,8 @@
         <userDefaultsController representsSharedInstance="YES" id="6lc-Qh-n1g"/>
     </objects>
     <resources>
-        <image name="NSGoLeftTemplate" width="9" height="9"/>
-        <image name="NSGoRightTemplate" width="9" height="9"/>
+        <image name="NSGoLeftTemplate" width="9" height="12"/>
+        <image name="NSGoRightTemplate" width="9" height="12"/>
         <image name="icon66-1" width="128" height="128"/>
         <image name="icon95-1" width="128" height="128"/>
         <image name="zoom-in" width="24" height="24"/>
