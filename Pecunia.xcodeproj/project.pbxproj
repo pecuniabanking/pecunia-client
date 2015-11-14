@@ -40,6 +40,7 @@
 		271394D919FD16F30099FB27 /* ShortDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271394D719FD16F30099FB27 /* ShortDate.swift */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
+		27181B9B1BF7496800D09D39 /* bos.js in Copy Pecunia Plugins */ = {isa = PBXBuildFile; fileRef = 99B9B0C01BC1DED400400B44 /* bos.js */; };
 		271861541971846000229978 /* settled.png in Resources */ = {isa = PBXBuildFile; fileRef = 271861521971846000229978 /* settled.png */; };
 		271861551971846000229978 /* settled.png in Resources */ = {isa = PBXBuildFile; fileRef = 271861521971846000229978 /* settled.png */; };
 		271861561971846000229978 /* settled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271861531971846000229978 /* settled@2x.png */; };
@@ -849,7 +850,6 @@
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		99B9B0C11BC1DED400400B44 /* bos.js in Resources */ = {isa = PBXBuildFile; fileRef = 99B9B0C01BC1DED400400B44 /* bos.js */; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
 		A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
 		A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
@@ -1079,6 +1079,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				27A85F8B1B1A09420017D863 /* dkb.js in Copy Pecunia Plugins */,
+				27181B9B1BF7496800D09D39 /* bos.js in Copy Pecunia Plugins */,
 			);
 			name = "Copy Pecunia Plugins";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3679,7 +3680,6 @@
 				27E845F019E17D300026464E /* HomeScreenTransfersView.xib in Resources */,
 				27E845BE19E17D2F0026464E /* About.xib in Resources */,
 				27E845D419E17D2F0026464E /* CategoryDefinition.xib in Resources */,
-				99B9B0C11BC1DED400400B44 /* bos.js in Resources */,
 				2778C24418140027003BF49D /* gear@2x.png in Resources */,
 				B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */,
 				B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */,
