@@ -460,7 +460,6 @@ extension DOMProcessingInstruction : DOMProcessingInstructionJSExport {
 extension DOMEntityReference : DOMEntityReferenceJSExport {
 }
 
-/* Gives linker errors atm. Looks like the XPath classes are not available in Swift.
 @objc protocol DOMXPathExpressionJSExport : JSExport {
     func evaluate(contextNode: DOMNode!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
 }
@@ -483,7 +482,6 @@ extension DOMXPathExpression : DOMXPathExpressionJSExport {
 
 extension DOMXPathResult : DOMXPathResultJSExport {
 }
-*/
 
 @objc protocol DOMDocumentJSExport : JSExport {
     var doctype: DOMDocumentType! { get };

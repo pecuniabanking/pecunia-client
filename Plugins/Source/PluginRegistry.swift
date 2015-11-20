@@ -179,7 +179,7 @@ import WebKit;
         // The HBCI part of the statement retrieval computes an own start date for each account.
         // We don't do this kind of granularity here. Instead we use the lowest start date found for all
         // accounts which might return a few more results for accounts that have been updated later
-        // than others (but nobodoy would notice anyway, as the unwanted older statements exist already in the db).
+        // than others (but nobody would notice anyway, as the unwanted older statements exist already in the db).
         var fromDate: NSDate?;
         var maxStatDays: NSTimeInterval = 0;
         if NSUserDefaults.standardUserDefaults().boolForKey("limitStatsAge") {

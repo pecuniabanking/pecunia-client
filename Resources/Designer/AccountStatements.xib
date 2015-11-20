@@ -63,8 +63,8 @@
                                 <animations/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon95-1" id="nvI-97-tAR"/>
                             </imageView>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="36" userLabel="Load Button">
-                                <rect key="frame" x="467" y="7" width="214" height="32"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="36" userLabel="Load Button">
+                                <rect key="frame" x="474" y="7" width="207" height="32"/>
                                 <animations/>
                                 <buttonCell key="cell" type="push" title="Kontoauszüge aktualisieren" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
