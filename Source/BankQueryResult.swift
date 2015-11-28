@@ -40,6 +40,9 @@ import Foundation
     var bankCode: String = "";
     var accountNumber: String = "";
     var accountSuffix: String?;
+    
+    // DKB-Broker BankAccount has this in the XML, KVC in ResultParser.m needs this.
+    var currency: String = "";
 
     override init() {
         super.init();
