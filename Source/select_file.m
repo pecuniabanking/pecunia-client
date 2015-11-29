@@ -36,8 +36,8 @@ void* extractSelectResult(unsigned short int len,unsigned char *response,unsigne
             break;
         case SECCOS_SELECT_RET_FCP: {
             SECCOS_FCP *fcp= calloc(1, sizeof(SECCOS_FCP));
-            fcp->fd=malloc(0); //new unsigned char[0];
-            fcp->dfname=malloc(0); //new unsigned char[0];
+            fcp->fd = NULL; //malloc(0); //new unsigned char[0];
+            fcp->dfname = NULL; //malloc(0); //new unsigned char[0];
               
             int pos=2; // skip TL
             len-=2; // without status
@@ -128,7 +128,7 @@ void* SECCOS_selectSubFile(unsigned char returntype,unsigned short int fileid)
     };
     char               *descr=calloc(sizeof(char), 32);
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     sprintf(descr,"selectSubFile %04X",fileid);
     unsigned short int status=CTAPI_performWithCard(descr,(returntype==SECCOS_SELECT_RET_NOTHING)?7:8,command,&len,response);
@@ -159,7 +159,7 @@ void* SECCOS_selectDF(unsigned char returntype,unsigned short int fileid)
     };
     char               *descr=calloc(sizeof(char), 32);
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     sprintf(descr,"selectDF %04X",fileid);
     unsigned short int status=CTAPI_performWithCard(descr,(returntype==SECCOS_SELECT_RET_NOTHING)?7:8,command,&len,response);
@@ -177,7 +177,7 @@ void* SECCOS_selectDF(unsigned char returntype,unsigned short int fileid)
 
 void* SECCOS_selectFileByName(unsigned char returntype,unsigned char namesize,unsigned char *name)
 {
-    unsigned char *command=calloc(sizeof(char), 6+namesize);
+    unsigned char *command=calloc(sizeof(unsigned char), 6+namesize);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_SELECT_FILE;
@@ -189,7 +189,7 @@ void* SECCOS_selectFileByName(unsigned char returntype,unsigned char namesize,un
     
     char               *descr=calloc(sizeof(char), 64);
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     char *hex=bytes2hex(namesize,name);
     sprintf(descr,"selectFileByName %s",hex);
@@ -211,7 +211,7 @@ void* SECCOS_selectFileByName(unsigned char returntype,unsigned char namesize,un
 
 void* SECCOS_selectFileByPath(unsigned char returntype,unsigned char pathsize,unsigned char *path)
 {
-    unsigned char *command=calloc(sizeof(char), 6+pathsize);
+    unsigned char *command=calloc(sizeof(unsigned char), 6+pathsize);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_SELECT_FILE;
@@ -223,7 +223,7 @@ void* SECCOS_selectFileByPath(unsigned char returntype,unsigned char pathsize,un
     
     char               *descr=calloc(sizeof(char), 64);
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     char *hex=bytes2hex(pathsize,path);
     sprintf(descr,"selectFileByPath %s",hex);

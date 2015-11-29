@@ -38,7 +38,7 @@ extern void *UserDefaultsBindingContext;
 
 @interface AssetGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate>
 {
-    @private
+@private
     CPTXYGraph *graph;
 
     ShortDate *referenceDate;
@@ -106,19 +106,6 @@ extern void *UserDefaultsBindingContext;
     free(positiveBalances);
     free(negativeBalances);
     free(totalBalances);
-
-    LogLeave;
-}
-
-- (void)prepareForShutDown {
-    LogEnter;
-
-    if (rangeAnimationOperation != nil) {
-        [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
-    }
-    if (globalRangeAnimationOperation != nil) {
-        [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
-    }
 
     LogLeave;
 }

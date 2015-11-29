@@ -27,7 +27,7 @@
 
 bool SECCOS_modifyPin(unsigned char pwdnum,unsigned char pwdtype,size_t oldlen,unsigned char *oldpin,size_t newlen,unsigned char *newpin)
 {
-    unsigned char *command=calloc(sizeof(char), 5+oldlen+newlen);
+    unsigned char *command=calloc(sizeof(unsigned char), 5+oldlen+newlen);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_MODIFY;
@@ -38,7 +38,7 @@ bool SECCOS_modifyPin(unsigned char pwdnum,unsigned char pwdtype,size_t oldlen,u
     memcpy(command+5,        oldpin, oldlen);
     memcpy(command+5+oldlen, newpin, newlen);
     
-    unsigned char      *response=calloc(sizeof(char), 2);
+    unsigned char      *response=calloc(sizeof(unsigned char), 2);
     unsigned short int len=2;
     
     unsigned short int status=CTAPI_performWithCard("modify",5+oldlen+newlen,command,&len,response);
