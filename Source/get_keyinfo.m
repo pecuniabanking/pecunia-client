@@ -36,7 +36,7 @@ bool SECCOS_getKeyInfo(unsigned char keynum,unsigned char keytype,unsigned char 
         0x00,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     unsigned short int status=CTAPI_performWithCard("getKeyInfo",5,command,&len,response);
     

@@ -529,11 +529,6 @@ extern void *UserDefaultsBindingContext;
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
-
-        BOOL editable = NO;
-        if (!newCategory.isBankAccount && newCategory != BankingCategory.nassRoot && newCategory != BankingCategory.catRoot) {
-            editable = categoryAssignments.selectedObjects.count == 1;
-        }
     }
 }
 
