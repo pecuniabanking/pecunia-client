@@ -36,7 +36,7 @@ bool SECCOS_readRecordBySFI(unsigned short int sfi,unsigned char recordnum,unsig
         0x00,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     unsigned short int status=CTAPI_performWithCard("readRecord",5,command,&len,response);
 

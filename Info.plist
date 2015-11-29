@@ -12,7 +12,7 @@
 				<string>pecuniadata</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>Vespasian</string>
+			<string>Pecunia</string>
 			<key>CFBundleTypeName</key>
 			<string>Pecunia Datendatei</string>
 			<key>CFBundleTypeRole</key>
@@ -28,7 +28,7 @@
 	<key>CFBundleHelpBookName</key>
 	<string>Pecunia Help</string>
 	<key>CFBundleIconFile</key>
-	<string>Vespasian</string>
+	<string>Pecunia</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -42,11 +42,11 @@
 	<key>CFBundleVersion</key>
 	<string>1.2.08</string>
 	<key>HPDBookIconPath</key>
-	<string>Vespasian</string>
+	<string>Pecunia</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.finance</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.7.4</string>
+	<string>10.9.0</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSMainNibFile</key>
