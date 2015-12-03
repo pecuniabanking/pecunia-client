@@ -37,7 +37,7 @@ bool DDV_writeBankData(unsigned char recordnum,HBCI_BankData *data)
     bool ret=false;
     
     // *** ungueltig fuer RSA-Karten
-    unsigned char *rawData=calloc(sizeof(char), 88);
+    unsigned char *rawData=calloc(sizeof(unsigned char), 88);
     unsigned char st[300];
     
     expand(data->shortname,st,20); memcpy(rawData,st,20);

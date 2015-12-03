@@ -41,7 +41,7 @@ bool BCS_resetCT()
         0x00,
     };
     unsigned short int len=2;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     unsigned short int status=CTAPI_performWithCT("resetCT",4,command,&len,response);
     bool               ret=CTAPI_isOK(status);
     free(response);
@@ -66,7 +66,7 @@ bool BCS_resetCard()
         0x00
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("resetCard",5,command,&len,response);
     analyzeATR(response,len);
@@ -77,7 +77,7 @@ bool BCS_resetCard()
 
 bool BCS_requestCard(const char *msg,unsigned char timeout)
 {
-    unsigned char      *command=calloc(sizeof(char),300);
+    unsigned char      *command=calloc(sizeof(unsigned char),300);
     unsigned short int cmdLen;
     
     command[0]=BCS_CLA;
@@ -125,7 +125,7 @@ bool BCS_requestCard(const char *msg,unsigned char timeout)
     command[cmdLen++]=0x00;
 
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("requestCard",cmdLen,command,&len,response);
     analyzeATR(response,len);
@@ -146,7 +146,7 @@ char* BCS_requestCTManufacturer()
         0x00,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("requestCTManufacturer",5,command,&len,response);
     
@@ -177,7 +177,7 @@ BCS_ICCStatus* BCS_requestICCStatus(size_t *number)
         0x00,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("requestICCStatus",5,command,&len,response);
     
@@ -214,7 +214,7 @@ unsigned short int BCS_requestFunctionalUnits()
         0x00,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("requestFunctionalUnits",5,command,&len,response);
     
@@ -245,7 +245,7 @@ unsigned short int BCS_requestFunctionalUnits()
 
 bool BCS_ejectCard(const char *msg,unsigned char timeout,bool keep,bool blink,bool beep)
 {
-    unsigned char      *command=calloc(sizeof(char),300);
+    unsigned char      *command=calloc(sizeof(unsigned char),300);
     unsigned short int cmdLen;
     
     command[0]=BCS_CLA;
@@ -298,7 +298,7 @@ bool BCS_ejectCard(const char *msg,unsigned char timeout,bool keep,bool blink,bo
     }
 
     unsigned short int len=2;
-    unsigned char      *response=calloc(sizeof(char),len);
+    unsigned char      *response=calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("ejectCard",cmdLen,command,&len,response);
     
@@ -309,7 +309,7 @@ bool BCS_ejectCard(const char *msg,unsigned char timeout,bool keep,bool blink,bo
 
 bool BCS_performVerification(const char *msg,unsigned char timeout,unsigned char pinlen,unsigned char pincoding,bool usebio,size_t cmdsize,unsigned char *verifycommand,unsigned char insertpos)
 {
-    unsigned char *command=calloc(sizeof(char),300);
+    unsigned char *command=calloc(sizeof(unsigned char),300);
     unsigned char writePos;
     
     command[0x00]=BCS_CLA;
@@ -342,7 +342,7 @@ bool BCS_performVerification(const char *msg,unsigned char timeout,unsigned char
     command[0x04]=writePos-5;
     
     unsigned short int len=2;
-    unsigned char *buffer = calloc(sizeof(char),len);
+    unsigned char *buffer = calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("performVerify",writePos,command,&len,buffer);
     
@@ -352,7 +352,7 @@ bool BCS_performVerification(const char *msg,unsigned char timeout,unsigned char
 
 bool BCS_modifyVerificationData(const char *msg,unsigned char timeout,unsigned char pinlen,unsigned char pincoding,bool usebio,size_t cmdsize,unsigned char *verifycommand,unsigned char insertposOld,unsigned char insertposNew)
 {
-    unsigned char *command=calloc(sizeof(char),300);
+    unsigned char *command=calloc(sizeof(unsigned char),300);
     unsigned char writePos;
     
     command[0x00]=BCS_CLA;
@@ -386,7 +386,7 @@ bool BCS_modifyVerificationData(const char *msg,unsigned char timeout,unsigned c
     command[0x04]=writePos-5;
     
     unsigned short int len=2;
-    unsigned char *buffer = calloc(sizeof(char),len);
+    unsigned char *buffer = calloc(sizeof(unsigned char),len);
     
     unsigned short int status=CTAPI_performWithCT("modifyVerificationData",writePos,command,&len,buffer);
     

@@ -26,7 +26,7 @@ unsigned short int DDV_readSigId()
 {
     unsigned short int ret=(unsigned short int)0xFFFF;
     
-    unsigned char *buffer=calloc(sizeof(char) ,2);
+    unsigned char *buffer=calloc(sizeof(unsigned char), 2);
     size_t        len;
     
     if (SECCOS_readRecordBySFI(DDV_EF_SEQ,1,buffer,&len)) {
