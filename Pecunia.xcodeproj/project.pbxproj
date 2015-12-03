@@ -454,7 +454,6 @@
 		2777898B173CE22700430EBC /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C81604D8D200C737E8 /* delete.png */; };
 		2777898C173CE22700430EBC /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
 		2777898D173CE22700430EBC /* container-migration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */; };
-		27778990173CE22700430EBC /* jre.zip in Resources */ = {isa = PBXBuildFile; fileRef = B1DE0768165FB554004FFC8A /* jre.zip */; };
 		27778991173CE22700430EBC /* hide.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763C16626C5300761132 /* hide.png */; };
 		27778992173CE22700430EBC /* hide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763D16626C5300761132 /* hide@2x.png */; };
 		27778995173CE22700430EBC /* java.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B170C16D167689310047FD42 /* java.entitlements */; };
@@ -3320,7 +3319,6 @@
 				2777898C173CE22700430EBC /* donate2.jpg in Resources */,
 				2777898D173CE22700430EBC /* container-migration.plist in Resources */,
 				274365B819BB35C400722380 /* disclosure-closed.pdf in Resources */,
-				27778990173CE22700430EBC /* jre.zip in Resources */,
 				275AC7DF186B5BDC002E6BED /* graph4-active.png in Resources */,
 				27AA5684186C3E9100B113E7 /* assign@2x.png in Resources */,
 				27778991173CE22700430EBC /* hide.png in Resources */,
