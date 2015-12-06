@@ -942,25 +942,6 @@ extern void *UserDefaultsBindingContext;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-    CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
-    [CPTAnimation animate: plot
-                 property: @"barWidth"
-                     from: plot.barWidth.floatValue
-                       to: 1
-                 duration: ANIMATION_TIME
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: nil];
-
-    plot = (id)[graph plotWithIdentifier : @"rawDebtValues"];
-    [CPTAnimation animate: plot
-                 property: @"barWidth"
-                     from: plot.barWidth.floatValue
-                       to: 1
-                 duration: ANIMATION_TIME
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: nil];
 
     zoomInAnimation = [CPTAnimation animate: plotSpace
                                    property: @"xRange"
@@ -978,12 +959,6 @@ extern void *UserDefaultsBindingContext;
  * Called when the range animation has ended.
  */
 - (void)finishSwitchToMonthMode {
-    CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
-    plot.barWidth = @(0.75);
-
-    plot = (id)[graph plotWithIdentifier : @"rawDebtValues"];
-    plot.barWidth = @(0.75);
-
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     axisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
     [self updateGraphUsingMinimalTickCount: YES];
@@ -1973,27 +1948,7 @@ extern void *UserDefaultsBindingContext;
     lastInfoTimePoint *= 12; // Convert to month index.
                              // Make the bar fill the entire width.
 
-    // Only animate the bar widths. The peer graph notifications for the plot range
-    // will animate our range then.
-    CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
-    [CPTAnimation animate: plot
-                 property: @"barWidth"
-                     from: plot.barWidth.floatValue
-                       to: 1
-                 duration: ANIMATION_TIME
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: nil];
-
-    plot = (id)[graph plotWithIdentifier : @"rawRedemptionPlot"];
-    [CPTAnimation animate: plot
-                 property: @"barWidth"
-                     from: plot.barWidth.floatValue
-                       to: 1
-                 duration: ANIMATION_TIME
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: self];
+    [self performSelector: @selector(finishSwitchToMonthMode) withObject: nil afterDelay: ANIMATION_TIME];
 }
 
 /**
@@ -2001,11 +1956,6 @@ extern void *UserDefaultsBindingContext;
  */
 - (void)finishSwitchToMonthMode {
     ++peerUpdateCount;
-    CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
-    plot.barWidth = @(0.65);
-
-    plot = (id)[graph plotWithIdentifier : @"rawRedemptionPlot"];
-    plot.barWidth = @(0.9);
 
     [self updateGraphUsingMinimalTickCount: YES];
     [self updateVerticalGraphRange];
