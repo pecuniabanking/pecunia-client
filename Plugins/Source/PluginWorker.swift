@@ -135,10 +135,14 @@ class WebClient: WebView, WebViewJSExport {
 
                     if let date = jsonStatement["valutaDate"] as? NSDate {
                         statement.valutaDate = date.dateByAddingTimeInterval(12 * 3600); // Add 12hrs so we start at noon.
+                    } else {
+                        statement.valutaDate = NSDate();
                     }
 
                     if let date = jsonStatement["date"] as? NSDate {
                         statement.date = date.dateByAddingTimeInterval(12 * 3600);
+                    } else {
+                        statement.date = statement.valutaDate;
                     }
 
                     if let purpose = jsonStatement["transactionText"] as? String {
