@@ -158,8 +158,6 @@
 		2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8971A0133FB002AE07E /* ExSwift.swift */; };
 		2759D8A71A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
 		2759D8A81A0133FB002AE07E /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D8981A0133FB002AE07E /* Float.swift */; };
-		2759D8A91A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
-		2759D8AA1A0133FB002AE07E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2759D8991A0133FB002AE07E /* Info.plist */; };
 		2759D8AB1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
 		2759D8AC1A0133FB002AE07E /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89A1A0133FB002AE07E /* Int.swift */; };
 		2759D8AD1A0133FB002AE07E /* NSArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759D89B1A0133FB002AE07E /* NSArray.swift */; };
@@ -740,7 +738,6 @@
 		27E8462219E17D300026464E /* TransferTemplateListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BB19E17D2F0026464E /* TransferTemplateListViewCell.xib */; };
 		27E8462419E17D300026464E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BC19E17D2F0026464E /* TransferTemplates.xib */; };
 		27E8462619E17D300026464E /* WaitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BD19E17D2F0026464E /* WaitView.xib */; };
-		27E8462B19E17FBD0026464E /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27E8462C19E181280026464E /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E8458919E17D2F0026464E /* About.xib */; };
 		27E8462D19E181280026464E /* AccountCreate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E8458A19E17D2F0026464E /* AccountCreate.xib */; };
 		27E8462E19E181280026464E /* AccountMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E8458B19E17D2F0026464E /* AccountMaintenance.xib */; };
@@ -793,7 +790,6 @@
 		27E8465E19E181280026464E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BC19E17D2F0026464E /* TransferTemplates.xib */; };
 		27E8465F19E181280026464E /* WaitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BD19E17D2F0026464E /* WaitView.xib */; };
 		27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		27E8466319E1816F0026464E /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
 		27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EB308314B22CB000ABE3A6 /* Bank large.png */; };
@@ -1048,11 +1044,10 @@
 		27E844DD19E173510026464E /* Copy external libs */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = ..;
-			dstSubfolderSpec = 10;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
 				27E844DE19E173830026464E /* HBCIServer.jar in Copy external libs */,
-				27E8462B19E17FBD0026464E /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
 			);
 			name = "Copy external libs";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1060,11 +1055,10 @@
 		27E8466019E1815D0026464E /* Copy external libs */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = ..;
+			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
 				27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */,
-				27E8466319E1816F0026464E /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
 			);
 			name = "Copy external libs";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3338,7 +3332,6 @@
 				27516822193B932700FE942F /* check-mark@2x.png in Resources */,
 				2777899D173CE22700430EBC /* pdf.png in Resources */,
 				2777899E173CE22700430EBC /* pdf@2x.png in Resources */,
-				2759D8AA1A0133FB002AE07E /* Info.plist in Resources */,
 				277789A1173CE22700430EBC /* blue-slanted-stripes.png in Resources */,
 				277789A2173CE22700430EBC /* delete@2x.png in Resources */,
 				277789A3173CE22700430EBC /* edit@2x.png in Resources */,
@@ -3451,7 +3444,6 @@
 				2732F6B0186B21E900809CF2 /* graph3@2x.png in Resources */,
 				2732F6A0186B06CE00809CF2 /* home@2x.png in Resources */,
 				B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */,
-				2759D8A91A0133FB002AE07E /* Info.plist in Resources */,
 				274365B919BB35C400722380 /* disclosure-open.pdf in Resources */,
 				274365B519BB35C400722380 /* disclosure-clicked.pdf in Resources */,
 				2792F6D4181D369100093727 /* delete4.png in Resources */,
@@ -3708,7 +3700,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n";
+			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\ncodesign --force --entitlements \"$SRCROOT/Resources/java.entitlements\" -s \"3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre/Contents/Home/bin/java\"\n\nfi\n\n";
 			showEnvVarsInLog = 0;
 		};
 		27F975DD1956DBBD00FF9DA0 /* Check duplicate localizable strings */ = {
@@ -4270,7 +4262,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4329,7 +4321,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4379,7 +4371,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
