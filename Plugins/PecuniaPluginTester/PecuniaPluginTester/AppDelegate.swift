@@ -199,7 +199,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
   // MARK: - Logging
 
-  private let logFont = NSFont(name: "LucidaConsole", size: 13);
+  private let logFont = NSFont(name: "Menlo", size: 13);
 
   @objc func logError(message: String) -> Void {
     let text = String(format: "[Error] %@\n", message);
