@@ -105,7 +105,7 @@
 
     if (LaunchParameters.parameters.debugServer) {
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
+        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/Resources/HBCIServer.jar"];
 
         [task setLaunchPath: @"/usr/bin/java" ];
         //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
@@ -123,7 +123,7 @@
         }
     } else {
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
+        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/Resources/HBCIServer.jar"];
         NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/Resources/Java/jre/Contents/Home/bin/java"];
 
         [task setLaunchPath: launchPath];
