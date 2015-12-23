@@ -1083,6 +1083,9 @@ static ShortDate *endReportDate = nil;
 + (BankingCategory *)categoryForName: (NSString *)name {
     if (name.length > 0) {
         NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+        if (context == nil) {
+            return nil;
+        }
         NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription    *entity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext: context];
         [fetchRequest setEntity: entity];

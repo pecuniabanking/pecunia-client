@@ -641,10 +641,10 @@ static BankingController *bankinControllerInstance;
         }
     }
 
-    // calculate index path of current object
+    // Calculate index path of current object.
     NSArray     *nodes = [[categoryController arrangedObjects] childNodes];
     NSIndexPath *path = [self indexPathForCategory: bankAccount inArray: nodes];
-    // IndexPath umdrehen
+    // Revert IndexPath.
     NSIndexPath *newPath = [[NSIndexPath alloc] init];
     for (NSInteger i = path.length - 1; i >= 0; i--) {
         newPath = [newPath indexPathByAddingIndex: [path indexAtPosition: i]];
@@ -2281,6 +2281,49 @@ static BankingController *bankinControllerInstance;
     [self updateStatusbar];
 }
 
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn: (NSTableColumn *)tableColumn item: (NSTreeNode*)item
+{
+    if (outlineView != accountsOutline) {
+        return nil;
+    }
+    if ([item.representedObject parent] == nil) {
+        return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: outlineView];
+    }
+    NSView *view = [outlineView makeViewWithIdentifier: @"DataCell" owner: outlineView];
+    return view;
+}
+
+- (BOOL)outlineView: (NSOutlineView *)outlineView isGroupItem: (NSTreeNode*)item
+{
+    return [item.representedObject parent] == nil;
+}
+
+- (id)findTreeNodeForCategory: (BankingCategory *)category underParent: (NSTreeNode *)parent {
+    for (NSTreeNode *node in parent.childNodes) {
+        if ([node.representedObject isEqual: category]) {
+            return node;
+        }
+        id childNode = [self findTreeNodeForCategory: category underParent: node];
+        if (childNode != nil) {
+            return childNode;
+        }
+    }
+    return nil;
+}
+
+- (id)outlineView: (NSOutlineView *)outlineView itemForPersistentObject: (id)object {
+    NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: object];
+    NSManagedObjectID *objectID = [managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation: uri];
+    BankingCategory *category = (BankingCategory *)[managedObjectContext objectWithID: objectID];
+    return [self findTreeNodeForCategory: category underParent: categoryController.arrangedObjects];
+}
+
+- (id)outlineView: (NSOutlineView *)outlineView persistentObjectForItem: (id)item
+{
+    BankingCategory *category = [item representedObject];
+    return [NSKeyedArchiver archivedDataWithRootObject: category.objectID.URIRepresentation];
+}
+
 - (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell *)cell
      forTableColumn: (NSTableColumn *)tableColumn item: (id)item {
     if (![[tableColumn identifier] isEqualToString: @"name"]) {
@@ -3159,6 +3202,7 @@ static BankingController *bankinControllerInstance;
     [self migrate];
 
     [self publishContext];
+    accountsOutline.autosaveExpandedItems = YES; // Set it manually here to trigger loading not before we are done with setup.
 
     [sc stopSpinning];
     [sc clearMessage];

@@ -56,6 +56,7 @@
     IBOutlet NSTabView             *mainTabView;
     IBOutlet MCEMTreeController    *categoryController;
     IBOutlet SynchronousScrollView *accountsScrollView;
+    __weak IBOutlet NSOutlineView  *accountsOutline;
     IBOutlet PecuniaSplitView      *mainVSplit;
     IBOutlet NSArrayController     *assignPreviewController;
     IBOutlet TimeSliceManager      *timeSlicer;
