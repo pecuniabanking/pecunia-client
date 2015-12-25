@@ -27,6 +27,8 @@
 #import "PreferenceController.h"
 
 #import "NSColor+PecuniaAdditions.h"
+#import "NSImage+PecuniaAdditions.h"
+#import "NSDictionary+PecuniaAdditions.h"
 
 static BankingCategory *catRootSingleton = nil;
 static BankingCategory *bankRootSingleton = nil;
@@ -37,6 +39,16 @@ static ShortDate *endReportDate = nil;
 
 // balance: sum of own statements
 // catSum: sum of balance and child's catSums
+
+@interface BankingCategory() {
+    NSColor *catColor;
+    NSImage *catIcon;
+    BOOL    iconLoaded;
+
+    NSUInteger hiddenChildren; // Keep track of hidden child count to optimize handling.
+}
+
+@end
 
 @implementation BankingCategory
 
@@ -54,7 +66,14 @@ static ShortDate *endReportDate = nil;
 @dynamic isHidden;
 
 @synthesize categoryColor;
-@synthesize reportedAssignments;  // assignments that are between start and end report date
+@synthesize reportedAssignments;  // Assignments that are between start and end report date.
+@synthesize unreadEntries;
+
+static NSImage *notAssignedImage;
+
++ (void)initialize {
+    notAssignedImage = [NSImage imageNamed: @"edit"];
+}
 
 /** If the balance of a category (sum of assignment values between start and end report date) is not valid
  *  (isBalanceValid) it is recalculated here.
@@ -996,6 +1015,135 @@ static ShortDate *endReportDate = nil;
         self.catRepColor = data;
         [self didChangeValueForKey: @"categoryColor"];
     }
+}
+
+- (void)setIconName: (NSString *)newName {
+    if (![self.iconName isEqualToString: newName]) {
+        iconLoaded = NO;
+        catIcon = nil;
+
+        [self willChangeValueForKey: @"iconName"];
+        [self setPrimitiveValue: newName forKey: @"iconName"];
+        [self didChangeValueForKey: @"iconName"];
+    }
+}
+
+/**
+ * Takes the (localized) title of the receiver and determines an icon for it from the default collection.
+ */
+- (void)determineDefaultIcon {
+    iconLoaded = NO;
+    catIcon = nil;
+
+    // Finding a default icon means to compare the category title with all the keywords we have in our defaultIcons
+    // list. For flexibility we also compare substrings. Exact matches get priority though. If there's more than one hit
+    // of the same priority then that wins which has fewer keywords assigned (so is likely more specialized).
+    if ([self.name hasPrefix: @"++"]) {
+        // One of the predefined root notes. They don't have an image.
+        self.iconName = @"";
+        return;
+    }
+
+    NSString *bestMatch = @"";
+    BOOL     exactMatch = NO;
+
+    NSUInteger currentCount = 1000; // Number of keywords assigned to the best match so far.
+    for (NSDictionary *entry in NSImage.defaultCategoryIcons) {
+        NSArray *keywords = entry[@"keywords"];
+        for (NSString *keyword in keywords) {
+            if ([keyword caseInsensitiveCompare: @"Default"] == NSOrderedSame && bestMatch.length == 0) {
+                // No match so far, but we found the default entry. Keep this as first best match.
+                bestMatch = entry[@"icon"];
+                continue;
+            }
+            NSRange range = [self.name rangeOfString: keyword options: NSCaseInsensitiveSearch];
+            if (range.length == 0) {
+                continue; // No match at all.
+            }
+
+            if (range.length == self.name.length) {
+                // Exact match. If there wasn't any exact match before then use this one as the current
+                // best match, ignoring any previous partial matches.
+                if (!exactMatch || keywords.count < currentCount) {
+                    exactMatch = YES;
+                    bestMatch = entry[@"icon"];
+                    currentCount = keywords.count;
+                }
+
+                // If the current keyword count is 1 then we can't get any better. So stop here with what we have.
+                if (currentCount == 1) {
+                    self.iconName = bestMatch;
+                    return;
+                }
+            } else {
+                // Only consider this partial match if we haven't had any exact match so far.
+                if (!exactMatch && keywords.count < currentCount) {
+                    bestMatch = entry[@"icon"];
+                    currentCount = keywords.count;
+                }
+            }
+        }
+    }
+    // The icon determined is one of the default collection.
+    self.iconName = [@"Collections/1/" stringByAppendingString : bestMatch];
+}
+
+- (NSImage *)categoryImage {
+    if (self.isNotAssignedCategory) {
+        return notAssignedImage;
+    }
+
+    if (iconLoaded) {
+        return catIcon; // Could be nil.
+    }
+
+    if (self.iconName == nil) {
+        [self determineDefaultIcon];
+    }
+
+    iconLoaded = YES;
+    if (self.iconName.length > 0) {
+        NSString *path;
+        if ([self.iconName isAbsolutePath]) {
+            path = self.iconName;
+        } else {
+            NSURL *url = [NSURL URLWithString: self.iconName];
+            if (url.scheme == nil) { // Old style collection item.
+                NSString *subfolder = [self.iconName stringByDeletingLastPathComponent];
+                path = [[NSBundle mainBundle] pathForResource: [self.iconName lastPathComponent]
+                                                       ofType: @"icns"
+                                                  inDirectory: subfolder];
+            } else {
+                if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
+                    NSDictionary *parameters = [NSDictionary dictForUrlParameters: url];
+                    NSString     *subfolder = [@"Collections/" stringByAppendingString : parameters[@"c"]];
+                    path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
+                                                           ofType: url.host.pathExtension
+                                                      inDirectory: subfolder];
+
+                } else {
+                    if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
+                        NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+                        path = [targetFolder stringByAppendingString: url.host];
+                    }
+                }
+            }
+        }
+        
+        if (path != nil) {
+            // Also assigns nil if the path doesn't exist or the referenced file cannot be used as image.
+            catIcon = [[NSImage alloc] initWithContentsOfFile: path];
+        }
+    }
+
+    return catIcon;
+}
+
+- (NSColor *)textColor {
+    if (self.isNotAssignedCategory) {
+        return [NSColor colorWithCalibratedRed: 23 / 255.0 green: 124 / 255.0 blue: 236 / 255.0 alpha: 1];
+    }
+    return [NSColor textColor];
 }
 
 + (BankingCategory *)bankRoot {

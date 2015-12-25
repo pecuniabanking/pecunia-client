@@ -38,7 +38,6 @@ typedef enum {
 @interface BankAccount : BankingCategory<NSCopying> {
     NSDate           *newLatestTransferDate;
     NSArray          *dbStatements;
-    NSInteger        unread;
 }
 
 @property (nonatomic, strong) NSArray         *dbStatements;
@@ -62,7 +61,6 @@ typedef enum {
 @property (nonatomic, strong) NSNumber        *isStandingOrderSupported;
 @property (nonatomic, strong) NSString        *splitRule;
 @property (nonatomic, strong) NSString        *accountSuffix;
-@property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
 @property (nonatomic, strong) NSString        *plugin;
 
@@ -79,7 +77,6 @@ typedef enum {
 - (BOOL)updateSupportedTransactions;
 
 - (NSDate *)nextDateForDate: (NSDate *)date;
-- (NSInteger)calcUnread;
 - (BankUser *)defaultBankUser;
 
 - (NSString*)description;
@@ -88,10 +85,6 @@ typedef enum {
 + (BankAccount *)bankRootForCode: (NSString *)bankCode;
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code;
 + (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
-+ (NSInteger)maxUnread;
++ (NSInteger)highestUnreadCount;
 
-@end
-
-// coalesce these into one @interface BankAccount (CoreDataGeneratedAccessors) section
-@interface BankAccount (CoreDataGeneratedAccessors)
 @end

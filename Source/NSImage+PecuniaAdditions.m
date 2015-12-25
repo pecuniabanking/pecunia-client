@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +20,53 @@
 #import "NSImage+PecuniaAdditions.h"
 
 @implementation NSImage (PecuniaAdditions)
+
++ (NSArray<NSDictionary *> *)defaultCategoryIcons {
+    static NSMutableArray<NSDictionary *> *defaultIcons;
+    if (defaultIcons == nil) {
+        defaultIcons = [NSMutableArray arrayWithCapacity: 100];
+
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        NSString *path = [mainBundle pathForResource: @"category-icon-defaults" ofType: @"txt"];
+        NSError  *error = nil;
+        NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+        if (error) {
+            LogError(@"Error reading default category icon assignments file at %@\n%@", path, [error localizedFailureReason]);
+        } else {
+            NSArray *lines = [s componentsSeparatedByString: @"\n"];
+            for (__strong NSString *line in lines) {
+                NSRange hashPosition = [line rangeOfString: @"#"];
+                if (hashPosition.length > 0) {
+                    line = [line substringToIndex: hashPosition.location];
+                }
+                line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                if (line.length == 0) {
+                    continue;
+                }
+
+                NSArray *components = [line componentsSeparatedByString: @"="];
+                if (components.count < 2) {
+                    continue;
+                }
+                NSString *icon = [components[0] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                NSArray  *keywordArray = [components[1] componentsSeparatedByString: @","];
+
+                NSMutableArray *keywords = [NSMutableArray arrayWithCapacity: keywordArray.count];
+                for (__strong NSString *keyword in keywordArray) {
+                    keyword = [keyword stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                    if (keyword.length == 0) {
+                        continue;
+                    }
+                    [keywords addObject: keyword];
+                }
+                NSDictionary *entry = @{@"icon": icon, @"keywords": keywords};
+                [defaultIcons addObject: entry];
+            }
+        }
+    }
+
+    return defaultIcons;
+}
 
 + (NSImage *)imageNamed: (NSString *)name fromCollection: (NSUInteger)collection {
     NSString *path = [[NSBundle mainBundle] pathForResource: name

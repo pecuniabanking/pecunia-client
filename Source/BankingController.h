@@ -50,38 +50,9 @@
 @interface BankingController : NSObject
 {
 @private
-    IBOutlet NSWindow *mainWindow;
-
-    IBOutlet EDSideBar             *sidebar;
-    IBOutlet NSTabView             *mainTabView;
-    IBOutlet MCEMTreeController    *categoryController;
-    IBOutlet SynchronousScrollView *accountsScrollView;
-    __weak IBOutlet NSOutlineView  *accountsOutline;
-    IBOutlet PecuniaSplitView      *mainVSplit;
-    IBOutlet NSArrayController     *assignPreviewController;
-    IBOutlet TimeSliceManager      *timeSlicer;
-    IBOutlet NSImageView           *lockImage;
-    IBOutlet NSTextField           *earningsField;
-    IBOutlet NSTextField           *spendingsField;
-    IBOutlet NSTextField           *earningsFieldLabel;
-    IBOutlet NSTextField           *spendingsFieldLabel;
-    IBOutlet NSView                *sectionPlaceholder;
-    IBOutlet NSView                *rightPane;
-    IBOutlet NSButton              *refreshButton;
-    IBOutlet ComTraceHelper        *comTracePanel;
-    IBOutlet NSButton              *decreaseFontButton;
-    IBOutlet NSButton              *increaseButton;
-
-    IBOutlet NSMenuItem *developerMenu;
-    IBOutlet NSMenuItem *comTraceMenuItem;
-
-    IBOutlet JMModalOverlay     *waitOverlay;
-    IBOutlet WaitViewController *waitViewController;
-
-    NSManagedObjectContext *managedObjectContext;
+    IBOutlet NSTabView *mainTabView;
 
     NSMutableDictionary *mainTabItems;
-    NSUInteger          newStatementsCount;
 
     HomeScreenController             *homeScreenController;
     StatementsOverviewController     *overviewController;

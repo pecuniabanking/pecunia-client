@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 NSCalendarDate * normalizeDate(NSDate *date);
 
 typedef NS_ENUM(NSUInteger, CatValueType) {
@@ -58,28 +56,30 @@ typedef struct {
 @class CategoryReportingNode;
 @class StatCatAssignment;
 
-@interface BankingCategory : NSManagedObject {
-@private
-    NSColor    *catColor;
-    NSUInteger hiddenChildren; // Keep track of hidden child count to optimize handling.
-}
+@interface BankingCategory : NSManagedObject
 
-@property (nonatomic, strong) NSString        *rule;
-@property (nonatomic, strong) NSString        *name;
-@property (nonatomic, strong) NSNumber        *isBankAcc;
-@property (nonatomic, strong) NSString        *currency;
-@property (nonatomic, strong) BankingCategory *parent;
-@property (nonatomic, strong) NSString        *localName;
-@property (nonatomic, strong) NSNumber        *isBalanceValid;
-@property (nonatomic, strong) NSDecimalNumber *catSum;
-@property (nonatomic, strong) NSDecimalNumber *balance;
-@property (nonatomic, strong) NSData          *catRepColor;
-@property (nonatomic, strong) NSNumber        *noCatRep;
-@property (nonatomic) NSString                *iconName;
-@property (nonatomic, strong) NSNumber        *isHidden;
+@property (nonatomic) BankingCategory *parent;
+@property (nonatomic) NSDecimalNumber *catSum;
+@property (nonatomic) NSDecimalNumber *balance;
 
-@property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
-@property (nonatomic, strong) NSArray *reportedAssignments; // assignments between start and end report date
+@property (nonatomic) NSString *rule;
+@property (nonatomic) NSString *name;
+@property (nonatomic) NSNumber *isBankAcc;
+@property (nonatomic) NSString *currency;
+@property (nonatomic) NSString *localName;
+@property (nonatomic) NSNumber *isBalanceValid;
+@property (nonatomic) NSData   *catRepColor;
+@property (nonatomic) NSNumber *noCatRep;
+@property (nonatomic) NSString *iconName;
+@property (nonatomic) NSNumber *isHidden;
+
+@property (nonatomic) NSArray *reportedAssignments; // assignments between start and end report date
+
+// Dynamic UI properties.
+@property (nonatomic) NSColor *categoryColor; // Unarchived catRepColor.
+@property (readonly) NSImage *categoryImage; // Loaded from iconName.
+@property (readonly) NSColor *textColor;
+@property NSNumber *unreadEntries;
 
 - (void)recomputeInvalidBalances;
 - (void)invalidateBalance;
@@ -136,7 +136,9 @@ typedef struct {
 + (BankingCategory *)bankRoot;
 + (BankingCategory *)catRoot;
 + (BankingCategory *)nassRoot;
-+ (BankingCategory *)categoryForName: (NSString *)name;
++ (BankingCategory *)categoryForName: (NSString *)name; // Unreliable, there can be duplicate names.
+
+- (void)determineDefaultIcon;
 + (void)updateBalancesAndSums;
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate;
 + (void)recreateRoots;

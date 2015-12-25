@@ -106,6 +106,38 @@ static BankingController *bankinControllerInstance;
 
 @interface BankingController () <EDSideBarDelegate>
 {
+    IBOutlet NSWindow *mainWindow;
+
+    __weak IBOutlet NSOutlineView  *accountsOutline;
+
+    IBOutlet EDSideBar             *sidebar;
+    IBOutlet MCEMTreeController    *categoryController;
+    IBOutlet SynchronousScrollView *accountsScrollView;
+    IBOutlet PecuniaSplitView      *mainVSplit;
+    IBOutlet NSArrayController     *assignPreviewController;
+    IBOutlet TimeSliceManager      *timeSlicer;
+    IBOutlet NSImageView           *lockImage;
+    IBOutlet NSTextField           *earningsField;
+    IBOutlet NSTextField           *spendingsField;
+    IBOutlet NSTextField           *earningsFieldLabel;
+    IBOutlet NSTextField           *spendingsFieldLabel;
+    IBOutlet NSView                *sectionPlaceholder;
+    IBOutlet NSView                *rightPane;
+    IBOutlet NSButton              *refreshButton;
+    IBOutlet ComTraceHelper        *comTracePanel;
+    IBOutlet NSButton              *decreaseFontButton;
+    IBOutlet NSButton              *increaseButton;
+
+    IBOutlet NSMenuItem *developerMenu;
+    IBOutlet NSMenuItem *comTraceMenuItem;
+
+    IBOutlet JMModalOverlay     *waitOverlay;
+    IBOutlet WaitViewController *waitViewController;
+    
+    NSManagedObjectContext *managedObjectContext;
+
+    NSUInteger          newStatementsCount;
+
     NSManagedObjectModel  *model;
     NewBankUserController *bankUserController;
     DockIconController    *dockIconController;
@@ -121,15 +153,13 @@ static BankingController *bankinControllerInstance;
     NSImage  *moneySyncImage;
     NSImage  *bankImage;
 
-    NSMutableArray *bankAccountItemsExpandState;
-    BankingCategory       *lastSelection;
+    NSMutableArray  *bankAccountItemsExpandState;
+    BankingCategory *lastSelection;
 
     NSInteger currentPage; // Current main page.
     NSInteger currentSectionIndex; // Current page on the accounts main page.
 
     id<PecuniaSectionItem> currentSection;
-
-    NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
 @end
@@ -185,32 +215,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)setNumberFormatForCell: (NSCell *)cell positive: (NSDictionary *)positive
-                      negative: (NSDictionary *)negative {
-    LogEnter;
-    if (cell == nil) {
-        return;
-    }
-
-    NSNumberFormatter *formatter;
-    if ([cell isKindOfClass: [ImageAndTextCell class]]) {
-        formatter =  ((ImageAndTextCell *)cell).amountFormatter;
-    } else {
-        formatter =  [cell formatter];
-    }
-
-    if (formatter) {
-        [formatter setTextAttributesForPositiveValues: positive];
-        [formatter setTextAttributesForNegativeValues: negative];
-    }
-
-    LogLeave;
-}
-
 - (void)awakeFromNib {
     LogEnter;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
+    accountsOutline.refusesFirstResponder = YES;
 
     [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
 
@@ -237,7 +246,7 @@ static BankingController *bankinControllerInstance;
             [cell setFont: font];
 
             accountsView.rowHeight = floor(font.pointSize) + 8;
-            [cell setMaxUnread: [BankAccount maxUnread]];
+            [cell setMaxUnread: [BankAccount highestUnreadCount]];
         }
     }
 
@@ -1059,7 +1068,7 @@ static BankingController *bankinControllerInstance;
         }
 
         // update unread information
-        NSInteger maxUnread = [BankAccount maxUnread];
+        NSInteger maxUnread = [BankAccount highestUnreadCount];
 
         // update data cell
         NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
@@ -1340,10 +1349,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     for (BankingCategory *child in category.children) {
-        if ([child.name hasPrefix: @"++"]) {
-            continue;
-        }
-        [self determineDefaultIconForCategory: child];
+        [child determineDefaultIcon];
         [self reapplyDefaultIconsForCategory: child];
     }
     LogLeave;
@@ -2289,8 +2295,7 @@ static BankingController *bankinControllerInstance;
     if ([item.representedObject parent] == nil) {
         return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: outlineView];
     }
-    NSView *view = [outlineView makeViewWithIdentifier: @"DataCell" owner: outlineView];
-    return view;
+    return [outlineView makeViewWithIdentifier: @"DataCell" owner: outlineView];
 }
 
 - (BOOL)outlineView: (NSOutlineView *)outlineView isGroupItem: (NSTreeNode*)item
@@ -2336,74 +2341,14 @@ static BankingController *bankinControllerInstance;
     }
 
     cell.swatchColor = cat.categoryColor;
-
-    if (moneyImage == nil) {
-        moneyImage = [NSImage imageNamed: @"money_18.png"];
-        moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
-
-        bankImage = [NSImage imageNamed: @"icon95-1" fromCollection: 1];
-    }
-
-    if (cat.iconName == nil) {
-        [self determineDefaultIconForCategory: cat];
-    }
-
-    if (cat.iconName.length > 0) {
-        NSString *path;
-        if ([cat.iconName isAbsolutePath]) {
-            path = cat.iconName;
-        } else {
-            NSURL *url = [NSURL URLWithString: cat.iconName];
-            if (url.scheme == nil) { // Old style collection item.
-                NSString *subfolder = [cat.iconName stringByDeletingLastPathComponent];
-                path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
-                                                       ofType: @"icns"
-                                                  inDirectory: subfolder];
-            } else {
-                if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
-                    NSDictionary *parameters = [NSDictionary dictForUrlParameters: url];
-                    NSString     *subfolder = [@"Collections/" stringByAppendingString : parameters[@"c"]];
-                    path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
-                                                           ofType: url.host.pathExtension
-                                                      inDirectory: subfolder];
-
-                } else {
-                    if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
-                        NSString *targetFolder = [MOAssistant.sharedAssistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
-                        path = [targetFolder stringByAppendingString: url.host];
-                    }
-                }
-            }
-        }
-        if (path != nil) {
-            // Also assigns nil if the path doesn't exist or the referenced file cannot be used as image.
-            [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
-        } else {
-            [cell setImage: nil];
-        }
-    } else {
-        [cell setImage: nil];
-    }
+    cell.image = cat.categoryImage;
 
     NSInteger numberUnread = 0;
-
-    if ([cat isBankAccount] && cat.accountNumber == nil) {
-        [cell setImage: bankImage];
-    }
-
-    if ([cat isBankAccount] && cat.accountNumber != nil) {
-        BankAccount *account = (BankAccount *)cat;
-        if ([account.isManual boolValue] || [account.noAutomaticQuery boolValue]) {
-            [cell setImage: moneyImage];
-        } else {
-            [cell setImage: moneySyncImage];
-        }
-    }
 
     if (![cat isBankAccount] || [cat isRoot]) {
         numberUnread = 0;
     } else {
-        numberUnread = [(BankAccount *)cat unread];
+        numberUnread = [(BankAccount *)cat unreadEntries];
     }
 
     BOOL itemIsDisabled = NO;
@@ -2883,109 +2828,6 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-/**
- * Takes the (localized) title of the given category and determines an icon for it from the default collection.
- */
-- (void)determineDefaultIconForCategory: (BankingCategory *)category {
-    if (defaultIcons == nil) {
-        NSMutableArray *entries = [NSMutableArray arrayWithCapacity: 100];
-
-        NSBundle *mainBundle = [NSBundle mainBundle];
-        NSString *path = [mainBundle pathForResource: @"category-icon-defaults" ofType: @"txt"];
-        NSError  *error = nil;
-        NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
-        if (error) {
-            LogError(@"Error reading default category icon assignments file at %@\n%@", path, [error localizedFailureReason]);
-        } else {
-            NSArray *lines = [s componentsSeparatedByString: @"\n"];
-            for (__strong NSString *line in lines) {
-                NSRange hashPosition = [line rangeOfString: @"#"];
-                if (hashPosition.length > 0) {
-                    line = [line substringToIndex: hashPosition.location];
-                }
-                line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                if (line.length == 0) {
-                    continue;
-                }
-
-                NSArray *components = [line componentsSeparatedByString: @"="];
-                if (components.count < 2) {
-                    continue;
-                }
-                NSString *icon = [components[0] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                NSArray  *keywordArray = [components[1] componentsSeparatedByString: @","];
-
-                NSMutableArray *keywords = [NSMutableArray arrayWithCapacity: keywordArray.count];
-                for (__strong NSString *keyword in keywordArray) {
-                    keyword = [keyword stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                    if (keyword.length == 0) {
-                        continue;
-                    }
-                    [keywords addObject: keyword];
-                }
-                NSDictionary *entry = @{
-                    @"icon": icon, @"keywords": keywords
-                };
-                [entries addObject: entry];
-            }
-        }
-
-        defaultIcons = entries;
-    }
-
-    // Finding a default icon means to compare the category title with all the keywords we have in our defaultIcons
-    // list. For flexibility we also compare substrings. Exact matches get priority though. If there's more than one hit
-    // of the same priority then that wins which has fewer keywords assigned (so is likely more specialized).
-    NSString *name = category.name;
-    if ([name hasPrefix: @"++"]) {
-        // One of the predefined root notes. They don't have an image.
-        category.iconName = @"";
-        return;
-    }
-
-    NSString   *bestMatch = @"";
-    BOOL       exactMatch = NO;
-    NSUInteger currentCount = 1000; // Number of keywords assigned to the best match so far.
-    for (NSDictionary *entry in defaultIcons) {
-        NSArray *keywords = entry[@"keywords"];
-        for (NSString *keyword in keywords) {
-            if ([keyword caseInsensitiveCompare: @"Default"] == NSOrderedSame && bestMatch.length == 0) {
-                // No match so far, but we found the default entry. Keep this as first best match.
-                bestMatch = entry[@"icon"];
-                continue;
-            }
-            NSRange range = [name rangeOfString: keyword options: NSCaseInsensitiveSearch];
-            if (range.length == 0) {
-                continue; // No match at all.
-            }
-
-            if (range.length == name.length) {
-                // Exact match. If there wasn't any exact match before then use this one as the current
-                // best match, ignoring any previous partial matches.
-                if (!exactMatch || keywords.count < currentCount) {
-                    exactMatch = YES;
-                    bestMatch = entry[@"icon"];
-                    currentCount = keywords.count;
-                }
-
-                // If the current keyword count is 1 then we can't get any better. So stop here with what we have.
-                if (currentCount == 1) {
-                    category.iconName = bestMatch;
-                    return;
-                }
-            } else {
-                // Only consider this partial match if we haven't had any exact match so far.
-                if (!exactMatch && keywords.count < currentCount) {
-                    bestMatch = entry[@"icon"];
-                    currentCount = keywords.count;
-                }
-            }
-        }
-    }
-    // The icon determined is one of the default collection.
-    category.iconName = [@"Collections/1/" stringByAppendingString : bestMatch];
-}
-
 #pragma mark - Miscellaneous code
 
 /**
@@ -3414,7 +3256,7 @@ static BankingController *bankinControllerInstance;
     NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
     if (tc) {
         ImageAndTextCell *cell = (ImageAndTextCell *)[tc dataCell];
-        [cell setMaxUnread: BankAccount.maxUnread];
+        [cell setMaxUnread: BankAccount.highestUnreadCount];
     }
 
     [dockIconController updateBadge];

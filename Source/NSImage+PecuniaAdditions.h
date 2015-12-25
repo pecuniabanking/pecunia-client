@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,10 +17,9 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @interface NSImage (PecuniaAdditions)
 
++ (NSArray<NSDictionary *> *)defaultCategoryIcons; // Default images with keywords.
 + (NSImage *)imageNamed: (NSString *)name fromCollection: (NSUInteger)collection;
 
 - (void)drawEtchedInRect: (NSRect)rect;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +20,7 @@
 #import "ValueTransformers.h"
 
 #import "NSString+PecuniaAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 
 @implementation CurrencyValueTransformer
 
@@ -238,3 +239,50 @@ static NSMutableDictionary *cache;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@implementation ObjectToStringTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    return [value description];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation ZeroValueToBoolTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    return ([value integerValue] == 0) ? @YES : @NO;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation ValueToColorTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    return ([value doubleValue] < 0) ? [NSColor applicationColorForKey: @"Negative Cash"] : [NSColor applicationColorForKey: @"Positive Cash"];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------

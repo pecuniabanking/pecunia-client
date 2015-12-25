@@ -31,6 +31,8 @@
 
 #import "HBCIController.h"
 
+#import "NSImage+PecuniaAdditions.h"
+
 @implementation BankAccount
 
 @dynamic latestTransferDate;
@@ -55,22 +57,36 @@
 @dynamic plugin;
 
 @synthesize dbStatements;
-@synthesize unread;
+
+static NSImage *moneyImage;
+static NSImage *moneySyncImage;
+static NSImage *bankImage;
+
++ (void)initialize {
+    moneyImage = [NSImage imageNamed: @"money_18.png"];
+    moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
+    bankImage = [NSImage imageNamed: @"icon95-1" fromCollection: 1];
+}
 
 - (id)copyWithZone: (NSZone *)zone {
     return self;
 }
 
-- (NSInteger)calcUnread {
-    NSError                *error = nil;
+- (NSInteger)determineUnreadEntries {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
-    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+
+    NSError        *error = nil;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isNew = 1)", self];
     [request setPredicate: predicate];
+
     NSArray *statements = [context executeFetchRequest: request error: &error];
-    return unread = [statements count];
+    self.unreadEntries = [NSNumber numberWithInteger: statements.count];
+
+    return statements.count;
 }
 
 - (NSDictionary *)statementsByDay: (NSArray *)stats {
@@ -332,7 +348,7 @@
     }
 
     self.latestTransferDate = ltd;
-    [self  calcUnread];
+    [self  determineUnreadEntries];
     return [newStatements count];
 }
 
@@ -604,6 +620,19 @@
     return [BankUser findUserWithId: self.userId bankCode: self.bankCode];
 }
 
+- (NSImage *)categoryImage {
+    if (self.accountNumber == nil) {
+        return bankImage;
+    } else {
+        BankAccount *account = (BankAccount *)self;
+        if (self.isManual.boolValue || account.noAutomaticQuery.boolValue) {
+            return moneyImage;
+        } else {
+            return moneySyncImage;
+        }
+    }
+}
+
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSManagedObjectModel   *model = [[MOAssistant sharedAssistant] model];
@@ -654,7 +683,7 @@
     return nil;
 }
 
-+ (NSInteger)maxUnread {
++ (NSInteger)highestUnreadCount {
     NSError   *error = nil;
     NSInteger unread = 0;
 
@@ -673,7 +702,7 @@
     }
 
     for (BankAccount *account in accounts) {
-        NSInteger n = [account calcUnread];
+        NSInteger n = [account determineUnreadEntries];
         if (n > unread) {
             unread = n;
         }
