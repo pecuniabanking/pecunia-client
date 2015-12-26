@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "CategoryView.h"
+#import "CategoryOutlineView.h"
 #import "BankingCategory.h"
 
 #import "BankingController.h"
@@ -26,9 +26,7 @@
 
 #import "PreferenceController.h"
 
-@implementation CategoryView
-
-@synthesize saveCatName;
+@implementation CategoryOutlineView
 
 - (NSMenu *)menuForEvent: (NSEvent *)theEvent {
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
@@ -219,15 +217,9 @@
     [self editColumn: 0 row: [self selectedRow] withEvent: nil select: YES];
 }
 
-- (void)highlightSelectionInClipRect: (NSRect)rect {
-    // Stop the outline from drawing a selection background. We do that in the image cell.
-}
-
-- (void)cancelOperation: (id)sender {
-    if ([self currentEditor] != nil) {
-        [self abortEditing];
-        [[self window] makeFirstResponder: self];
-    }
+- (BOOL)becomeFirstResponder {
+    // This is a hack because I cannot find a good way to let the outline tell us when editing finishes.
+    return [super becomeFirstResponder];
 }
 
 @end

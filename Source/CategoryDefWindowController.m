@@ -25,10 +25,9 @@
 #import "BankStatement.h"
 #import "MOAssistant.h"
 #import "BankingCategory.h"
-#import "CategoryView.h"
+#import "CategoryOutlineView.h"
 #import "ShortDate.h"
 #import "StatCatAssignment.h"
-#import "ImageAndTextCell.h"
 
 #import "StatementsListview.h"
 #import "GraphicsAdditions.h"

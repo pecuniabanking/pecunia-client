@@ -17,9 +17,9 @@
  * 02110-1301  USA
  */
 
-#import "MCEMTreeController.h"
+#import "NSTreeController+PecuniaAdditions.h"
 
-@implementation MCEMTreeController
+@implementation NSTreeController (PecuniaAdditions)
 
 - (NSIndexPath *)reverseIndexPathForObject: (id)obj inArray: (NSArray *)nodes
 {

@@ -85,6 +85,7 @@ typedef enum {
 + (BankAccount *)bankRootForCode: (NSString *)bankCode;
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code;
 + (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
-+ (NSInteger)highestUnreadCount;
+
++ (void)updateUnreadCounts;
 
 @end

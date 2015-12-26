@@ -31,12 +31,11 @@
 #import "ExportController.h"
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
-#import "MCEMTreeController.h"
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
 #import "DonationMessageController.h"
-#import "CategoryView.h"
+#import "CategoryOutlineView.h"
 #import "HBCIController.h"
 #import "StatCatAssignment.h"
 #import "PecuniaError.h"
@@ -65,7 +64,6 @@
 #import "CreditCardSettlementController.h"
 
 #import "ImportController.h"
-#import "ImageAndTextCell.h"
 #import "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
@@ -73,8 +71,8 @@
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
-#import "NSOutlineView+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
+#import "NSTreeController+PecuniaAdditions.h"
 
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
@@ -111,7 +109,7 @@ static BankingController *bankinControllerInstance;
     __weak IBOutlet NSOutlineView  *accountsOutline;
 
     IBOutlet EDSideBar             *sidebar;
-    IBOutlet MCEMTreeController    *categoryController;
+    IBOutlet NSTreeController      *categoryController;
     IBOutlet SynchronousScrollView *accountsScrollView;
     IBOutlet PecuniaSplitView      *mainVSplit;
     IBOutlet NSArrayController     *assignPreviewController;
@@ -168,7 +166,6 @@ static BankingController *bankinControllerInstance;
 
 @synthesize dockIconController;
 @synthesize shuttingDown;
-@synthesize accountsView;
 
 #pragma mark - Initialization
 
@@ -229,33 +226,18 @@ static BankingController *bankinControllerInstance;
     [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
 
-    NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
-    accountsView.rowHeight = floor(font.pointSize) + 7;
-
     [self setupSidebar];
 
     // Edit accounts/categories when double clicking on a node.
-    [accountsView setDoubleAction: @selector(showProperties:)];
-    [accountsView setTarget: self];
-
-    NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
-    if (tableColumn) {
-        ImageAndTextCell *cell = (ImageAndTextCell *)[tableColumn dataCell];
-        if (cell) {
-            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
-            [cell setFont: font];
-
-            accountsView.rowHeight = floor(font.pointSize) + 8;
-            [cell setMaxUnread: [BankAccount highestUnreadCount]];
-        }
-    }
+    [accountsOutline setDoubleAction: @selector(showProperties:)];
+    [accountsOutline setTarget: self];
 
     // Status bar.
     [mainWindow setAutorecalculatesContentBorderThickness: NO forEdge: NSMinYEdge];
     [mainWindow setContentBorderThickness: 30.0f forEdge: NSMinYEdge];
 
     // Register drag'n drop types.
-    [accountsView registerForDraggedTypes: @[BankStatementDataType, CategoryDataType]];
+    [accountsOutline registerForDraggedTypes: @[BankStatementDataType, CategoryDataType]];
 
     lockImage.image = [NSImage imageNamed: @"icon72-1" fromCollection: 1];
 
@@ -490,7 +472,7 @@ static BankingController *bankinControllerInstance;
     NSError *error = nil;
 
     categoryController.managedObjectContext = managedObjectContext;
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES selector: @selector(caseInsensitiveCompare:)];
     [categoryController setSortDescriptors: @[sd]];
 
     // repair Category Root
@@ -505,7 +487,6 @@ static BankingController *bankinControllerInstance;
 
     [timeSlicer updateDelegate];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
-    [accountsView restoreState];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
@@ -1067,18 +1048,7 @@ static BankingController *bankinControllerInstance;
             [timeSlicer stepIn: [ShortDate dateWithDate: maxDate]];
         }
 
-        // update unread information
-        NSInteger maxUnread = [BankAccount highestUnreadCount];
-
-        // update data cell
-        NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
-        if (tc) {
-            ImageAndTextCell *cell = (ImageAndTextCell *)[tc dataCell];
-            [cell setMaxUnread: maxUnread];
-        }
-
-        // redraw accounts view
-        [accountsView setNeedsDisplay: YES];
+        [BankAccount updateUnreadCounts];
         [rightPane setNeedsDisplay: YES];
     }
 
@@ -1368,7 +1338,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
     [self reapplyDefaultIconsForCategory: BankingCategory.catRoot];
-    [accountsView setNeedsDisplay: YES];
+    //[accountsOutline setNeedsDisplay: YES];
 
     LogLeave;
 }
@@ -1756,7 +1726,7 @@ static BankingController *bankinControllerInstance;
                         [categoryPeriodsController connectScrollViews: accountsScrollView];
                     }
                     [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
-                    categoryPeriodsController.outline = accountsView;
+                    categoryPeriodsController.outline = accountsOutline;
                 }
 
                 if (currentSection != categoryPeriodsController) {
@@ -1841,7 +1811,7 @@ static BankingController *bankinControllerInstance;
         if (pageHasChanged) {
             currentSection.selectedCategory = [self currentSelection];
             [currentSection activate];
-            [accountsView setNeedsDisplay];
+            //[accountsOutline setNeedsDisplay];
         }
     }
 
@@ -2072,22 +2042,21 @@ static BankingController *bankinControllerInstance;
 }
 
 - (BOOL)outlineView: (NSOutlineView *)ov writeItems: (NSArray *)items toPasteboard: (NSPasteboard *)pboard {
-    BankingCategory *cat;
+    BankingCategory *category = [items[0] representedObject];
+    if (category == nil) {
+        return NO;
+    }
+    if (category.isBankAccount) {
+        return NO;
+    }
+    if (category.isRoot) {
+        return NO;
+    }
+    if (category == BankingCategory.nassRoot) {
+        return NO;
+    }
 
-    cat = [items[0] representedObject];
-    if (cat == nil) {
-        return NO;
-    }
-    if ([cat isBankAccount]) {
-        return NO;
-    }
-    if ([cat isRoot]) {
-        return NO;
-    }
-    if (cat == [BankingCategory nassRoot]) {
-        return NO;
-    }
-    NSURL  *uri = [[cat objectID] URIRepresentation];
+    NSURL  *uri = category.objectID.URIRepresentation;
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uri];
     [pboard declareTypes: @[CategoryDataType] owner: self];
     [pboard setData: data forType: CategoryDataType];
@@ -2329,57 +2298,11 @@ static BankingController *bankinControllerInstance;
     return [NSKeyedArchiver archivedDataWithRootObject: category.objectID.URIRepresentation];
 }
 
-- (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell *)cell
-     forTableColumn: (NSTableColumn *)tableColumn item: (id)item {
-    if (![[tableColumn identifier] isEqualToString: @"name"]) {
-        return;
-    }
-
-    BankingCategory *cat = [item representedObject];
-    if (cat == nil) {
-        return;
-    }
-
-    cell.swatchColor = cat.categoryColor;
-    cell.image = cat.categoryImage;
-
-    NSInteger numberUnread = 0;
-
-    if (![cat isBankAccount] || [cat isRoot]) {
-        numberUnread = 0;
-    } else {
-        numberUnread = [(BankAccount *)cat unreadEntries];
-    }
-
-    BOOL itemIsDisabled = NO;
-    if (currentSection != nil) {
-        if (currentSection == categoryReportingController && [[cat children] count] == 0) {
-            itemIsDisabled = YES;
-        }
-        if (currentSection == categoryDefinitionController && [cat isBankAccount]) {
-            itemIsDisabled = YES;
-        }
-    }
-
-    BOOL itemIsRoot = [cat isRoot];
-    if (itemIsRoot) {
-        [cell setImage: nil];
-    }
-
-    [cell setValues: cat.catSum
-           currency: cat.currency
-             unread: numberUnread
-           disabled: itemIsDisabled
-             isRoot: itemIsRoot
-           isHidden: cat.isHidden.boolValue
-          isIgnored: cat.noCatRep.boolValue];
-}
-
 #pragma mark - Splitview delegate methods
 
 - (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex {
     if (splitView == mainVSplit) {
-        return 370;
+        return 300;
     }
     return proposedMin;
 }
@@ -2677,7 +2600,7 @@ static BankingController *bankinControllerInstance;
     } else {
         [categoryController add: sender];
     }
-    [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
+    [accountsOutline performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 
     [self save];
 
@@ -2692,7 +2615,7 @@ static BankingController *bankinControllerInstance;
         return;
     }
     [categoryController addChild: sender];
-    [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
+    [accountsOutline performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 
     [self save];
 
@@ -2705,11 +2628,17 @@ static BankingController *bankinControllerInstance;
     int clickedSegment = [sender selectedSegment];
     int clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
     switch (clickedSegmentTag) {
-        case 0:[self addCategory: sender]; break;
+        case 0:
+            [self addCategory: sender];
+            break;
 
-        case 1:[self insertCategory: sender]; break;
+        case 1:
+            [self insertCategory: sender];
+            break;
 
-        case 2:[self deleteCategory: sender]; break;
+        case 2:
+            [self deleteCategory: sender];
+            break;
 
         default: return;
     }
@@ -2740,27 +2669,21 @@ static BankingController *bankinControllerInstance;
     [self updateStatusbar];
 }
 
-- (void)controlTextDidBeginEditing: (NSNotification *)aNotification {
-    if ([aNotification object] == accountsView) {
-        BankingCategory *cat = [self currentSelection];
-        accountsView.saveCatName = [cat name];
-    }
-}
+- (void)controlTextDidEndEditing: (NSNotification *)notification {
+    if (notification.object == accountsOutline) {
+        switch ([notification.userInfo[@"NSTextMovement"] integerValue]) {
+            case NSReturnTextMovement: {
+                // Category name changed. The change is already sent to the backend.
+                BankingCategory *category = [self currentSelection];
+                [categoryController resort];
+                [categoryController setSelectedObject: category];
+                [self save];
+                return;
+            }
 
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification {
-    // Category name changed
-    if ([aNotification object] == accountsView) {
-        BankingCategory *cat = [self currentSelection];
-        if ([cat name] == nil) {
-            [cat setValue: accountsView.saveCatName forKey: @"name"];
+            default:
+                break; // Do nothing.
         }
-        [categoryController resort];
-        if (cat) {
-            [categoryController setSelectedObject: cat];
-        }
-
-        // Category was created or changed. Save changes.
-        [self save];
     }
 }
 
@@ -2836,25 +2759,25 @@ static BankingController *bankinControllerInstance;
  */
 - (void)saveBankAccountItemsStates {
     LogEnter;
-
+/*
     BankingCategory *category = [self currentSelection];
     if ([category isBankAccount]) {
         lastSelection = category;
         [categoryController setSelectedObject: BankingCategory.nassRoot];
     }
     bankAccountItemsExpandState = [NSMutableArray array];
-    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+    NSUInteger row, numberOfRows = [accountsOutline numberOfRows];
 
     for (row = 0; row < numberOfRows; row++) {
-        id       item = [accountsView itemAtRow: row];
+        id       item = [accountsOutline itemAtRow: row];
         BankingCategory *category = [item representedObject];
         if (![category isBankAccount]) {
             break;
         }
-        if ([accountsView isItemExpanded: item]) {
+        if ([accountsOutline isItemExpanded: item]) {
             [bankAccountItemsExpandState addObject: category];
         }
-    }
+    }*/
     LogLeave;
 }
 
@@ -2864,15 +2787,15 @@ static BankingController *bankinControllerInstance;
  */
 - (void)restoreBankAccountItemsStates {
     LogEnter;
-
-    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+/*
+    NSUInteger row, numberOfRows = [accountsOutline numberOfRows];
     for (BankingCategory *savedItem in bankAccountItemsExpandState) {
         for (row = 0; row < numberOfRows; row++) {
-            id       item = [accountsView itemAtRow: row];
+            id       item = [accountsOutline itemAtRow: row];
             BankingCategory *object = [item representedObject];
             if ([object.name isEqualToString: savedItem.name]) {
-                [accountsView expandItem: item];
-                numberOfRows = [accountsView numberOfRows];
+                [accountsOutline expandItem: item];
+                numberOfRows = [accountsOutline numberOfRows];
                 break;
             }
         }
@@ -2884,7 +2807,7 @@ static BankingController *bankinControllerInstance;
         [categoryController setSelectedObject: lastSelection];
     }
     lastSelection = nil;
-
+*/
     LogLeave;
 }
 
@@ -3120,7 +3043,6 @@ static BankingController *bankinControllerInstance;
     [userDefaults setObject: NSStringFromRect(mainWindow.frame) forKey: @"mcmain"];
 
     [currentSection deactivate];
-    [accountsView saveState];
 
     // Remove explicit bindings and observers to speed up shutdown.
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
@@ -3253,14 +3175,8 @@ static BankingController *bankinControllerInstance;
 - (void)updateUnread {
     LogEnter;
 
-    NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
-    if (tc) {
-        ImageAndTextCell *cell = (ImageAndTextCell *)[tc dataCell];
-        [cell setMaxUnread: BankAccount.highestUnreadCount];
-    }
-
+    [BankAccount updateUnreadCounts];
     [dockIconController updateBadge];
-    [accountsView setNeedsDisplay: YES];
 
     LogLeave;
 }
@@ -3397,17 +3313,18 @@ static BankingController *bankinControllerInstance;
         if ([keyPath isEqualToString: @"fontScale"]) {
             [accountsScrollView setNeedsDisplay: YES];
             NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
-
+/* XXX: update
             NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
             if (tableColumn) {
                 [tableColumn.dataCell setFont: font];
             }
             accountsView.rowHeight = floor(font.pointSize) + 8;
-
+*/
             font = [PreferenceController mainFontOfSize: 11 bold: NO];
             for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
-                id                        cell = [sidebar cellForItem: i];
+                id cell = [sidebar cellForItem: i];
                 NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
+
                 [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
                 [cell setAttributedTitle: title];
             }
@@ -3461,7 +3378,7 @@ static BankingController *bankinControllerInstance;
     }
 
     if (object == categoryController) {
-        [accountsView setNeedsDisplay: YES];
+        //[accountsOutline setNeedsDisplay: YES];
         return;
     }
 

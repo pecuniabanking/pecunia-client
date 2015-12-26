@@ -683,13 +683,12 @@ static NSImage *bankImage;
     return nil;
 }
 
-+ (NSInteger)highestUnreadCount {
-    NSError   *error = nil;
-    NSInteger unread = 0;
++ (void)updateUnreadCounts {
+    NSError *error = nil;
 
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     if (context == nil) {
-        return 0;
+        return;
     }
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
@@ -697,17 +696,14 @@ static NSImage *bankImage;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 0) AND (accountNumber != nil)"];
     [request setPredicate: predicate];
     NSArray *accounts = [context executeFetchRequest: request error: &error];
-    if (accounts == nil || error || [accounts count] == 0) {
-        return 0;
+    if (accounts == nil || error || accounts.count == 0) {
+        return;
     }
 
     for (BankAccount *account in accounts) {
-        NSInteger n = [account determineUnreadEntries];
-        if (n > unread) {
-            unread = n;
-        }
+        [account determineUnreadEntries];
     }
-    return unread;
+    return;
 }
 
 - (NSString *)description {

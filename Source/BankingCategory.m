@@ -37,6 +37,36 @@ static BankingCategory *notAssignedRootSingleton = nil;
 static ShortDate *startReportDate = nil;
 static ShortDate *endReportDate = nil;
 
+// This is a very special value transformer used in account lists with category balances (catSums)
+// that also incorporate certain state (e.g. category reporting).
+@interface CatSumToColorTransformer : NSValueTransformer
+@end
+
+@implementation CatSumToColorTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if (![value isKindOfClass: BankingCategory.class]) {
+        return NSColor.blackColor;
+    }
+
+    BankingCategory *category = value;
+    NSColor *color = (category.catSum.doubleValue < 0) ? [NSColor applicationColorForKey: @"Negative Cash"] : [NSColor applicationColorForKey: @"Positive Cash"];
+    color = [color colorUsingColorSpace: NSColorSpace.sRGBColorSpace];
+
+    CGFloat alpha = category.noCatRep.boolValue ? 0.4 : 1;
+    return [NSColor colorWithCalibratedRed: color.redComponent green: color.greenComponent blue: color.blueComponent alpha: alpha];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
 // balance: sum of own statements
 // catSum: sum of balance and child's catSums
 
@@ -1140,10 +1170,12 @@ static NSImage *notAssignedImage;
 }
 
 - (NSColor *)textColor {
+    CGFloat alpha = self.noCatRep.boolValue ? 0.4 : 1;
     if (self.isNotAssignedCategory) {
-        return [NSColor colorWithCalibratedRed: 23 / 255.0 green: 124 / 255.0 blue: 236 / 255.0 alpha: 1];
+        return [NSColor colorWithCalibratedRed: 19 / 255.0 green: 104 / 255.0 blue: 198 / 255.0 alpha: alpha];
     }
-    return [NSColor textColor];
+    NSColor *color = [NSColor.textColor colorUsingColorSpace: NSColorSpace.sRGBColorSpace];
+    return [NSColor colorWithCalibratedRed: color.redComponent green: color.greenComponent blue: color.blueComponent alpha: alpha];
 }
 
 + (BankingCategory *)bankRoot {

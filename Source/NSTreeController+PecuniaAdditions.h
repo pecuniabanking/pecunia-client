@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,11 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+@interface NSTreeController (PecuniaAdditions)
 
-@interface CategoryView : NSOutlineView {
-}
-
-@property (copy) NSString *saveCatName;
+- (NSIndexPath *)indexPathForObject: (id)obj;
+- (BOOL)setSelectedObject: (id)obj;
+- (void)resort;
 
 @end

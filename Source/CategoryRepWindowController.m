@@ -19,7 +19,6 @@
 
 #import "CategoryRepWindowController.h"
 #import "BankingCategory.h"
-#import "NSOutlineView+PecuniaAdditions.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"
@@ -921,7 +920,9 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 
     NSMutableArray   *children = [[[selectedCategory valueForKey: @"children"] allObjects] mutableCopy];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name"
+                                                                   ascending: YES
+                                                                    selector: @selector(caseInsensitiveCompare:)];
     [children sortUsingDescriptors: @[sortDescriptor]];
 
     NSDecimalNumber *totalEarnings = [NSDecimalNumber zero];

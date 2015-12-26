@@ -23,7 +23,6 @@
 #import "HBCIController.h"
 #import "BankAccount.h"
 #import "TransactionLimits.h"
-#import "MCEMTableView.h"
 #import "AmountCell.h"
 #import "PecuniaError.h"
 #import "StatusBarController.h"

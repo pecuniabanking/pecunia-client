@@ -71,7 +71,7 @@
     [countryController setSortDescriptors: @[sd]];
 
     // sort descriptor for template view
-    sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES selector: @selector(caseInsensitiveCompare:)];
     [templateController setSortDescriptors: @[sd]];
 }
 

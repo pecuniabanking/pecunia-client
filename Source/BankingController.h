@@ -20,15 +20,8 @@
 #import "PecuniaSectionItem.h"
 #import "Transfer.h"
 
-@class MCEMTreeController;
-@class SynchronousScrollView;
-@class PecuniaSplitView;
-@class TimeSliceManager;
-@class BWGradientBox;
-@class EDSideBar;
-@class CategoryView;
+@class CategoryOutlineView;
 @class DockIconController;
-@class ComTraceHelper;
 @class BankAccount;
 @class BankStatement;
 
@@ -44,14 +37,10 @@
 @class CategoryHeatMapController;
 @class BSSelectWindowController;
 
-@class JMModalOverlay;
-@class WaitViewController;
-
 @interface BankingController : NSObject
 {
 @private
-    IBOutlet NSTabView *mainTabView;
-
+    IBOutlet NSTabView  *mainTabView;
     NSMutableDictionary *mainTabItems;
 
     HomeScreenController             *homeScreenController;
@@ -66,8 +55,6 @@
     CategoryHeatMapController        *heatMapController;
     BSSelectWindowController         *selectWindowController;
 }
-
-@property (strong) IBOutlet CategoryView *accountsView;
 
 @property (nonatomic, copy) NSDecimalNumber      *saveValue;
 @property (nonatomic, strong) DockIconController *dockIconController;

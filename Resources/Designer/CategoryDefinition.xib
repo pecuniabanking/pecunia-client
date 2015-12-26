@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CategoryDefWindowController">
@@ -746,7 +746,7 @@
             </subviews>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="72"/>
-        <treeController mode="entity" entityName="Category" fetchPredicateFormat="parent == nil AND isBankAcc == 0" childrenKeyPath="children" id="87" userLabel="CategoryDef" customClass="MCEMTreeController">
+        <treeController mode="entity" entityName="Category" fetchPredicateFormat="parent == nil AND isBankAcc == 0" childrenKeyPath="children" id="87" userLabel="Category Controller">
             <declaredKeys>
                 <string>name</string>
                 <string>balance</string>

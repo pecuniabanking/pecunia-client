@@ -64,6 +64,183 @@
                                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="5998" userLabel="Main Navigation Bar">
                                                             <rect key="frame" x="0.0" y="0.0" width="338" height="650"/>
                                                             <subviews>
+                                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6f-U6-aMI" userLabel="Category Outline Scroll View">
+                                                                    <rect key="frame" x="0.0" y="44" width="338" height="606"/>
+                                                                    <clipView key="contentView" drawsBackground="NO" id="vOF-Xg-FL2">
+                                                                        <rect key="frame" x="1" y="1" width="336" height="604"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <subviews>
+                                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="336" height="0.0"/>
+                                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                                <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                                                <tableColumns>
+                                                                                    <tableColumn width="336" minWidth="16" maxWidth="1000" id="0ch-yC-d9l">
+                                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </tableHeaderCell>
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="uJR-PO-6kg">
+                                                                                            <font key="font" metaFont="system"/>
+                                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                        </textFieldCell>
+                                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                                        <prototypeCellViews>
+                                                                                            <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="336" height="22"/>
+                                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                                <subviews>
+                                                                                                    <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-au-7DG" userLabel="Title">
+                                                                                                        <rect key="frame" x="-2" y="3" width="205" height="17"/>
+                                                                                                        <constraints>
+                                                                                                            <constraint firstAttribute="height" constant="17" id="dm3-Qn-fGL"/>
+                                                                                                        </constraints>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="HEADER CELL" usesSingleLineMode="YES" id="GLl-U8-tA4">
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                        <connections>
+                                                                                                            <binding destination="3YH-VX-vzL" name="value" keyPath="objectValue.localName" id="Btz-hy-PpL"/>
+                                                                                                        </connections>
+                                                                                                    </textField>
+                                                                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9o-MT-Ec1">
+                                                                                                        <rect key="frame" x="211" y="3" width="99" height="17"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="kxU-0O-yYq">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="w2u-AW-vjD"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                        <connections>
+                                                                                                            <binding destination="3YH-VX-vzL" name="textColor" keyPath="objectValue" id="xXL-RK-sD4">
+                                                                                                                <dictionary key="options">
+                                                                                                                    <string key="NSValueTransformerName">CatSumToColorTransformer</string>
+                                                                                                                </dictionary>
+                                                                                                            </binding>
+                                                                                                            <binding destination="3YH-VX-vzL" name="value" keyPath="objectValue.catSum" id="5tK-Ap-eEL"/>
+                                                                                                        </connections>
+                                                                                                    </textField>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="o3W-au-7DG" firstAttribute="centerX" secondItem="3YH-VX-vzL" secondAttribute="centerX" constant="-67.5" id="5xx-dd-6Y5"/>
+                                                                                                    <constraint firstItem="o3W-au-7DG" firstAttribute="leading" secondItem="3YH-VX-vzL" secondAttribute="leading" id="RS4-aP-hJY"/>
+                                                                                                    <constraint firstItem="e9o-MT-Ec1" firstAttribute="leading" secondItem="o3W-au-7DG" secondAttribute="trailing" constant="12" id="YsD-u4-GQX"/>
+                                                                                                    <constraint firstItem="o3W-au-7DG" firstAttribute="top" secondItem="3YH-VX-vzL" secondAttribute="top" constant="2" id="aP5-fQ-c5e"/>
+                                                                                                    <constraint firstItem="e9o-MT-Ec1" firstAttribute="centerY" secondItem="3YH-VX-vzL" secondAttribute="centerY" id="lsy-Dn-Aj7"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="28" id="o6a-rb-k3u"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="textField" destination="o3W-au-7DG" id="XIa-Fk-1JX"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                            <tableCellView identifier="DataCell" id="XZ1-Q6-4ar" userLabel="Content Cell View">
+                                                                                                <rect key="frame" x="0.0" y="22" width="336" height="22"/>
+                                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                                <subviews>
+                                                                                                    <imageView translatesAutoresizingMaskIntoConstraints="NO" id="dtH-zL-oVs">
+                                                                                                        <rect key="frame" x="3" y="3" width="17" height="17"/>
+                                                                                                        <constraints>
+                                                                                                            <constraint firstAttribute="width" constant="17" id="MTA-dl-2z9"/>
+                                                                                                        </constraints>
+                                                                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="5IM-IY-5UN"/>
+                                                                                                        <connections>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.categoryImage" id="TFY-oV-Oit"/>
+                                                                                                        </connections>
+                                                                                                    </imageView>
+                                                                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h0q-Br-OOR" userLabel="Name">
+                                                                                                        <rect key="frame" x="25" y="4" width="175" height="17"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Name" placeholderString="" usesSingleLineMode="YES" id="PeN-vN-R7T">
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                        <connections>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="editable" keyPath="objectValue.isEditable" id="Ri9-ox-Zrm"/>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.localName" id="N4U-Yb-daG"/>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue.textColor" id="xZF-bf-OhF"/>
+                                                                                                        </connections>
+                                                                                                    </textField>
+                                                                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
+                                                                                                        <rect key="frame" x="204" y="3" width="99" height="17"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="PM5-IX-XLA">
+                                                                                                            <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="KHY-xC-02N"/>
+                                                                                                            <font key="font" metaFont="system"/>
+                                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        </textFieldCell>
+                                                                                                        <connections>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue" id="84Y-6W-94K">
+                                                                                                                <dictionary key="options">
+                                                                                                                    <string key="NSValueTransformerName">CatSumToColorTransformer</string>
+                                                                                                                </dictionary>
+                                                                                                            </binding>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.catSum" id="Gem-j2-kyf"/>
+                                                                                                        </connections>
+                                                                                                    </textField>
+                                                                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2k2-je-fdV">
+                                                                                                        <rect key="frame" x="309" y="2" width="27" height="17"/>
+                                                                                                        <buttonCell key="cell" type="inline" title="50" bezelStyle="inline" alignment="center" borderStyle="border" inset="2" id="H6x-aI-2ea">
+                                                                                                            <behavior key="behavior" lightByContents="YES"/>
+                                                                                                            <font key="font" metaFont="smallSystemBold"/>
+                                                                                                        </buttonCell>
+                                                                                                        <connections>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="title" keyPath="objectValue.unreadEntries" id="Xha-Jd-ngg">
+                                                                                                                <dictionary key="options">
+                                                                                                                    <string key="NSNullPlaceholder">0</string>
+                                                                                                                    <string key="NSValueTransformerName">ObjectToStringTransformer</string>
+                                                                                                                </dictionary>
+                                                                                                            </binding>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="hidden" keyPath="objectValue.unreadEntries" id="xld-gm-AOV">
+                                                                                                                <dictionary key="options">
+                                                                                                                    <string key="NSValueTransformerName">ZeroValueToBoolTransformer</string>
+                                                                                                                </dictionary>
+                                                                                                            </binding>
+                                                                                                        </connections>
+                                                                                                    </button>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstItem="h0q-Br-OOR" firstAttribute="leading" secondItem="dtH-zL-oVs" secondAttribute="trailing" constant="7" id="5og-yf-f80"/>
+                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="h0q-Br-OOR" secondAttribute="trailing" constant="8" id="9ed-NO-4xz"/>
+                                                                                                    <constraint firstItem="2k2-je-fdV" firstAttribute="leading" secondItem="iHA-SR-Q8p" secondAttribute="trailing" constant="8" id="J9P-NK-Af2"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="2k2-je-fdV" secondAttribute="trailing" id="OE4-0S-wH3"/>
+                                                                                                    <constraint firstItem="h0q-Br-OOR" firstAttribute="top" secondItem="XZ1-Q6-4ar" secondAttribute="top" constant="1" id="m8F-KP-guH"/>
+                                                                                                    <constraint firstItem="dtH-zL-oVs" firstAttribute="leading" secondItem="XZ1-Q6-4ar" secondAttribute="leading" constant="3" id="mXI-aV-hJb"/>
+                                                                                                    <constraint firstItem="2k2-je-fdV" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="nOZ-Iq-WeB"/>
+                                                                                                    <constraint firstItem="dtH-zL-oVs" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="rwy-o4-JGK"/>
+                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="uZp-RA-HzL"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="dtH-zL-oVs" secondAttribute="bottom" constant="3" id="zES-51-mbx"/>
+                                                                                                </constraints>
+                                                                                                <connections>
+                                                                                                    <outlet property="imageView" destination="dtH-zL-oVs" id="hO0-GX-bd9"/>
+                                                                                                    <outlet property="textField" destination="h0q-Br-OOR" id="2Yz-4B-UCt"/>
+                                                                                                </connections>
+                                                                                            </tableCellView>
+                                                                                        </prototypeCellViews>
+                                                                                    </tableColumn>
+                                                                                </tableColumns>
+                                                                                <connections>
+                                                                                    <binding destination="911" name="content" keyPath="arrangedObjects" id="qF2-Il-d2u"/>
+                                                                                    <binding destination="911" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="qF2-Il-d2u" id="JRs-gy-aS7"/>
+                                                                                    <outlet property="dataSource" destination="235" id="Qr5-jc-6K8"/>
+                                                                                    <outlet property="delegate" destination="235" id="IaK-5P-79Q"/>
+                                                                                </connections>
+                                                                            </outlineView>
+                                                                        </subviews>
+                                                                        <nil key="backgroundColor"/>
+                                                                    </clipView>
+                                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="WjD-Bg-7T6">
+                                                                        <rect key="frame" x="1" y="628" width="331" height="16"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </scroller>
+                                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3Cg-Zf-4lQ">
+                                                                        <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                    </scroller>
+                                                                </scrollView>
                                                                 <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4562">
                                                                     <rect key="frame" x="269" y="17" width="51" height="20"/>
                                                                     <constraints>
@@ -80,7 +257,7 @@
                                                                         <action selector="timeSliceUpDown:" target="4624" id="4628"/>
                                                                     </connections>
                                                                 </segmentedControl>
-                                                                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4561">
+                                                                <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4561" userLabel="Date Switcher">
                                                                     <rect key="frame" x="19" y="17" width="249" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="247" id="2Lr-9y-HJq"/>
@@ -98,266 +275,16 @@
                                                                         <action selector="timeSliceChanged:" target="4624" id="4627"/>
                                                                     </connections>
                                                                 </segmentedControl>
-                                                                <box autoresizesSubviews="NO" boxType="custom" borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="GLe-iy-6ip" userLabel="Divider line">
-                                                                    <rect key="frame" x="20" y="49" width="298" height="1"/>
-                                                                    <view key="contentView">
-                                                                        <rect key="frame" x="1" y="1" width="296" height="0.0"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    </view>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="1" id="C6Z-gt-cpM"/>
-                                                                    </constraints>
-                                                                    <color key="borderColor" red="0.75294117647058822" green="0.75294117647058822" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                </box>
-                                                                <splitView dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="fwg-hn-99Y">
-                                                                    <rect key="frame" x="20" y="58" width="299" height="572"/>
-                                                                    <subviews>
-                                                                        <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="y6f-U6-aMI" userLabel="Category Outline Scroll View">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="299" height="362"/>
-                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <clipView key="contentView" drawsBackground="NO" id="vOF-Xg-FL2">
-                                                                                <rect key="frame" x="1" y="1" width="297" height="360"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                <subviews>
-                                                                                    <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="16" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="297" height="0.0"/>
-                                                                                        <autoresizingMask key="autoresizingMask"/>
-                                                                                        <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <tableColumns>
-                                                                                            <tableColumn width="297" minWidth="16" maxWidth="1000" id="0ch-yC-d9l">
-                                                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                                    <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                                                                                </tableHeaderCell>
-                                                                                                <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="uJR-PO-6kg">
-                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                                </textFieldCell>
-                                                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                                                                <prototypeCellViews>
-                                                                                                    <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="297" height="22"/>
-                                                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                                        <subviews>
-                                                                                                            <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-au-7DG" userLabel="Title">
-                                                                                                                <rect key="frame" x="-2" y="3" width="166" height="17"/>
-                                                                                                                <constraints>
-                                                                                                                    <constraint firstAttribute="height" constant="17" id="dm3-Qn-fGL"/>
-                                                                                                                </constraints>
-                                                                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="HEADER CELL" usesSingleLineMode="YES" id="GLl-U8-tA4">
-                                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                </textFieldCell>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="3YH-VX-vzL" name="value" keyPath="objectValue.localName" id="Btz-hy-PpL"/>
-                                                                                                                </connections>
-                                                                                                            </textField>
-                                                                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9o-MT-Ec1">
-                                                                                                                <rect key="frame" x="172" y="3" width="99" height="17"/>
-                                                                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="kxU-0O-yYq">
-                                                                                                                    <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="w2u-AW-vjD"/>
-                                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                </textFieldCell>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="3YH-VX-vzL" name="textColor" keyPath="objectValue.catSum" id="DDB-vB-ke1">
-                                                                                                                        <dictionary key="options">
-                                                                                                                            <string key="NSValueTransformerName">ValueToColorTransformer</string>
-                                                                                                                        </dictionary>
-                                                                                                                    </binding>
-                                                                                                                    <binding destination="3YH-VX-vzL" name="value" keyPath="objectValue.catSum" id="5tK-Ap-eEL"/>
-                                                                                                                </connections>
-                                                                                                            </textField>
-                                                                                                        </subviews>
-                                                                                                        <constraints>
-                                                                                                            <constraint firstItem="o3W-au-7DG" firstAttribute="centerX" secondItem="3YH-VX-vzL" secondAttribute="centerX" constant="-67.5" id="5xx-dd-6Y5"/>
-                                                                                                            <constraint firstItem="o3W-au-7DG" firstAttribute="leading" secondItem="3YH-VX-vzL" secondAttribute="leading" id="RS4-aP-hJY"/>
-                                                                                                            <constraint firstItem="e9o-MT-Ec1" firstAttribute="leading" secondItem="o3W-au-7DG" secondAttribute="trailing" constant="12" id="YsD-u4-GQX"/>
-                                                                                                            <constraint firstItem="o3W-au-7DG" firstAttribute="top" secondItem="3YH-VX-vzL" secondAttribute="top" constant="2" id="aP5-fQ-c5e"/>
-                                                                                                            <constraint firstItem="e9o-MT-Ec1" firstAttribute="centerY" secondItem="3YH-VX-vzL" secondAttribute="centerY" id="lsy-Dn-Aj7"/>
-                                                                                                            <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="28" id="o6a-rb-k3u"/>
-                                                                                                        </constraints>
-                                                                                                        <connections>
-                                                                                                            <outlet property="textField" destination="o3W-au-7DG" id="XIa-Fk-1JX"/>
-                                                                                                        </connections>
-                                                                                                    </tableCellView>
-                                                                                                    <tableCellView identifier="DataCell" id="XZ1-Q6-4ar" userLabel="Content Cell View">
-                                                                                                        <rect key="frame" x="0.0" y="22" width="297" height="22"/>
-                                                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                                        <subviews>
-                                                                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="dtH-zL-oVs">
-                                                                                                                <rect key="frame" x="3" y="3" width="17" height="17"/>
-                                                                                                                <constraints>
-                                                                                                                    <constraint firstAttribute="width" constant="17" id="MTA-dl-2z9"/>
-                                                                                                                </constraints>
-                                                                                                                <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="5IM-IY-5UN"/>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.categoryImage" id="TFY-oV-Oit"/>
-                                                                                                                </connections>
-                                                                                                            </imageView>
-                                                                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h0q-Br-OOR" userLabel="Name">
-                                                                                                                <rect key="frame" x="25" y="4" width="136" height="17"/>
-                                                                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Name" placeholderString="XXX" usesSingleLineMode="YES" id="PeN-vN-R7T">
-                                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                    <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                                                </textFieldCell>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.localName" id="N4U-Yb-daG"/>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue.textColor" id="xZF-bf-OhF"/>
-                                                                                                                </connections>
-                                                                                                            </textField>
-                                                                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
-                                                                                                                <rect key="frame" x="165" y="3" width="99" height="17"/>
-                                                                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="PM5-IX-XLA">
-                                                                                                                    <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="KHY-xC-02N"/>
-                                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                                                </textFieldCell>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue.catSum" id="k9Y-ZF-jAg">
-                                                                                                                        <dictionary key="options">
-                                                                                                                            <string key="NSValueTransformerName">ValueToColorTransformer</string>
-                                                                                                                        </dictionary>
-                                                                                                                    </binding>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.catSum" id="Gem-j2-kyf"/>
-                                                                                                                </connections>
-                                                                                                            </textField>
-                                                                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2k2-je-fdV">
-                                                                                                                <rect key="frame" x="270" y="2" width="27" height="17"/>
-                                                                                                                <buttonCell key="cell" type="inline" title="50" bezelStyle="inline" alignment="center" borderStyle="border" inset="2" id="H6x-aI-2ea">
-                                                                                                                    <behavior key="behavior" lightByContents="YES"/>
-                                                                                                                    <font key="font" metaFont="smallSystemBold"/>
-                                                                                                                </buttonCell>
-                                                                                                                <connections>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="hidden" keyPath="objectValue.unreadEntries" id="xld-gm-AOV">
-                                                                                                                        <dictionary key="options">
-                                                                                                                            <string key="NSValueTransformerName">ZeroValueToBoolTransformer</string>
-                                                                                                                        </dictionary>
-                                                                                                                    </binding>
-                                                                                                                    <binding destination="XZ1-Q6-4ar" name="title" keyPath="objectValue.unreadEntries" id="Xha-Jd-ngg">
-                                                                                                                        <dictionary key="options">
-                                                                                                                            <string key="NSNullPlaceholder">0</string>
-                                                                                                                            <string key="NSValueTransformerName">ObjectToStringTransformer</string>
-                                                                                                                        </dictionary>
-                                                                                                                    </binding>
-                                                                                                                </connections>
-                                                                                                            </button>
-                                                                                                        </subviews>
-                                                                                                        <constraints>
-                                                                                                            <constraint firstItem="h0q-Br-OOR" firstAttribute="leading" secondItem="dtH-zL-oVs" secondAttribute="trailing" constant="7" id="5og-yf-f80"/>
-                                                                                                            <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="h0q-Br-OOR" secondAttribute="trailing" constant="8" id="9ed-NO-4xz"/>
-                                                                                                            <constraint firstItem="2k2-je-fdV" firstAttribute="leading" secondItem="iHA-SR-Q8p" secondAttribute="trailing" constant="8" id="J9P-NK-Af2"/>
-                                                                                                            <constraint firstAttribute="trailing" secondItem="2k2-je-fdV" secondAttribute="trailing" id="OE4-0S-wH3"/>
-                                                                                                            <constraint firstItem="h0q-Br-OOR" firstAttribute="top" secondItem="XZ1-Q6-4ar" secondAttribute="top" constant="1" id="m8F-KP-guH"/>
-                                                                                                            <constraint firstItem="dtH-zL-oVs" firstAttribute="leading" secondItem="XZ1-Q6-4ar" secondAttribute="leading" constant="3" id="mXI-aV-hJb"/>
-                                                                                                            <constraint firstItem="2k2-je-fdV" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="nOZ-Iq-WeB"/>
-                                                                                                            <constraint firstItem="dtH-zL-oVs" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="rwy-o4-JGK"/>
-                                                                                                            <constraint firstItem="iHA-SR-Q8p" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="uZp-RA-HzL"/>
-                                                                                                            <constraint firstAttribute="bottom" secondItem="dtH-zL-oVs" secondAttribute="bottom" constant="3" id="zES-51-mbx"/>
-                                                                                                        </constraints>
-                                                                                                        <connections>
-                                                                                                            <outlet property="imageView" destination="dtH-zL-oVs" id="hO0-GX-bd9"/>
-                                                                                                            <outlet property="textField" destination="h0q-Br-OOR" id="2Yz-4B-UCt"/>
-                                                                                                        </connections>
-                                                                                                    </tableCellView>
-                                                                                                </prototypeCellViews>
-                                                                                            </tableColumn>
-                                                                                        </tableColumns>
-                                                                                        <connections>
-                                                                                            <binding destination="911" name="content" keyPath="arrangedObjects" id="qF2-Il-d2u"/>
-                                                                                            <binding destination="911" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="qF2-Il-d2u" id="JRs-gy-aS7"/>
-                                                                                            <outlet property="dataSource" destination="235" id="Qr5-jc-6K8"/>
-                                                                                            <outlet property="delegate" destination="235" id="IaK-5P-79Q"/>
-                                                                                        </connections>
-                                                                                    </outlineView>
-                                                                                </subviews>
-                                                                                <nil key="backgroundColor"/>
-                                                                            </clipView>
-                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="WjD-Bg-7T6">
-                                                                                <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                            </scroller>
-                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3Cg-Zf-4lQ">
-                                                                                <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                            </scroller>
-                                                                        </scrollView>
-                                                                        <scrollView focusRingType="none" fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="0.0" verticalLineScroll="20" verticalPageScroll="0.0" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="280" customClass="SynchronousScrollView">
-                                                                            <rect key="frame" x="0.0" y="372" width="299" height="200"/>
-                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="WcI-He-wNN">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="299" height="200"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                <subviews>
-                                                                                    <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveName="category-outline" rowHeight="20" indentationPerLevel="14" outlineTableColumn="282" id="281" customClass="CategoryView">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="299" height="20"/>
-                                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                        <size key="intercellSpacing" width="3" height="0.0"/>
-                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <tableColumns>
-                                                                                            <tableColumn identifier="name" width="296" minWidth="16" maxWidth="1000" headerToolTip="" id="282">
-                                                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
-                                                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
-                                                                                                    <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                                </tableHeaderCell>
-                                                                                                <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" bezelStyle="round" id="3454" customClass="ImageAndTextCell">
-                                                                                                    <font key="font" metaFont="system"/>
-                                                                                                    <color key="textColor" red="0.15686275059999999" green="0.15686275059999999" blue="0.15686275059999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                                </textFieldCell>
-                                                                                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                                                                <connections>
-                                                                                                    <binding destination="911" name="value" keyPath="arrangedObjects.localName" id="4444"/>
-                                                                                                    <binding destination="911" name="editable" keyPath="selection.isEditable" id="4416"/>
-                                                                                                </connections>
-                                                                                            </tableColumn>
-                                                                                        </tableColumns>
-                                                                                        <connections>
-                                                                                            <outlet property="dataSource" destination="235" id="isF-3b-Z4T"/>
-                                                                                            <outlet property="delegate" destination="235" id="r3g-Z0-71f"/>
-                                                                                        </connections>
-                                                                                    </outlineView>
-                                                                                </subviews>
-                                                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                            </clipView>
-                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0037037036381661892" horizontal="YES" id="3482">
-                                                                                <rect key="frame" x="-100" y="-100" width="298" height="16"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                            </scroller>
-                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3481">
-                                                                                <rect key="frame" x="-14" y="0.0" width="16" height="0.0"/>
-                                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                            </scroller>
-                                                                        </scrollView>
-                                                                    </subviews>
-                                                                    <holdingPriorities>
-                                                                        <real value="250"/>
-                                                                        <real value="250"/>
-                                                                    </holdingPriorities>
-                                                                </splitView>
                                                             </subviews>
                                                             <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="y6f-U6-aMI" secondAttribute="trailing" id="A0v-dF-RHh"/>
+                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="leading" secondItem="5998" secondAttribute="leading" id="BDP-pn-sCo"/>
                                                                 <constraint firstAttribute="bottom" secondItem="4562" secondAttribute="bottom" constant="18" id="Ebg-1T-bAX"/>
                                                                 <constraint firstAttribute="trailing" secondItem="4562" secondAttribute="trailing" constant="19" id="GkT-rP-fCg"/>
-                                                                <constraint firstItem="GLe-iy-6ip" firstAttribute="top" secondItem="fwg-hn-99Y" secondAttribute="bottom" constant="8" id="LC2-Ak-4eK"/>
                                                                 <constraint firstAttribute="bottom" secondItem="4561" secondAttribute="bottom" constant="18" id="WYQ-3N-WN4"/>
-                                                                <constraint firstItem="fwg-hn-99Y" firstAttribute="top" secondItem="5998" secondAttribute="top" constant="20" id="aoW-jM-E87"/>
-                                                                <constraint firstAttribute="trailing" secondItem="GLe-iy-6ip" secondAttribute="trailing" constant="20" id="bFU-bs-Qt8"/>
-                                                                <constraint firstItem="4561" firstAttribute="top" secondItem="GLe-iy-6ip" secondAttribute="bottom" constant="13" id="iEg-CV-Iu3"/>
-                                                                <constraint firstItem="fwg-hn-99Y" firstAttribute="leading" secondItem="5998" secondAttribute="leading" constant="20" id="ltE-ML-zBe"/>
+                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="top" secondItem="5998" secondAttribute="top" id="eDy-LK-Yjr"/>
+                                                                <constraint firstItem="4561" firstAttribute="top" secondItem="y6f-U6-aMI" secondAttribute="bottom" constant="8" symbolic="YES" id="eab-sY-sGd"/>
                                                                 <constraint firstItem="4562" firstAttribute="leading" secondItem="4561" secondAttribute="trailing" constant="3" id="ufz-Og-3cv"/>
-                                                                <constraint firstItem="GLe-iy-6ip" firstAttribute="leading" secondItem="5998" secondAttribute="leading" constant="20" id="uzc-8R-nbX"/>
-                                                                <constraint firstAttribute="trailing" secondItem="fwg-hn-99Y" secondAttribute="trailing" constant="19" id="vI1-sF-bv9"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="rightMargin">
@@ -427,9 +354,9 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iL7-B7-Esb">
-                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
+                                                            <rect key="frame" x="127" y="656" width="47" height="17"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="34" id="xCo-tA-Fra"/>
+                                                                <constraint firstAttribute="width" constant="43" id="xCo-tA-Fra"/>
                                                             </constraints>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="IBAN:" usesSingleLineMode="YES" id="FiZ-uQ-gTs">
                                                                 <font key="font" metaFont="system"/>
@@ -464,36 +391,6 @@
                                                                     </dictionary>
                                                                 </binding>
                                                                 <binding destination="911" name="hidden" keyPath="selection.iban" id="g7L-a4-yxe">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8O0-fc-4lv">
-                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Konto:" usesSingleLineMode="YES" id="bTv-fK-iza">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden2" keyPath="selection.accountNumber" previousBinding="Z24-L1-9ZY" id="Get-Oz-i6d">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Z24-L1-9ZY">
                                                                     <dictionary key="options">
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
@@ -600,10 +497,40 @@ IA
                                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="lwF-Qy-Ve8" userLabel="Section Placeholder">
                                                             <rect key="frame" x="0.0" y="0.0" width="761" height="650"/>
                                                         </customView>
+                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8O0-fc-4lv">
+                                                            <rect key="frame" x="127" y="656" width="47" height="17"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Konto:" usesSingleLineMode="YES" id="bTv-fK-iza">
+                                                                <font key="font" metaFont="systemBold"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <binding destination="911" name="hidden2" keyPath="selection.accountNumber" previousBinding="Z24-L1-9ZY" id="Get-Oz-i6d">
+                                                                    <dictionary key="options">
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Z24-L1-9ZY">
+                                                                    <dictionary key="options">
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                            </connections>
+                                                        </textField>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="cBW-1J-fam" secondAttribute="baseline" id="09R-1F-7wD"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="577" secondAttribute="trailing" constant="8" symbolic="YES" id="0vH-tS-YpB"/>
+                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="577" secondAttribute="trailing" constant="-1" id="0vH-tS-YpB"/>
                                                         <constraint firstItem="4746" firstAttribute="leading" secondItem="6002" secondAttribute="trailing" constant="8" symbolic="YES" id="1qk-JO-v5b"/>
                                                         <constraint firstAttribute="trailing" secondItem="6002" secondAttribute="trailing" constant="71" id="4Yn-oz-RoI"/>
                                                         <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="L9r-fR-5jU" secondAttribute="baseline" id="9bs-tw-vdu"/>
@@ -615,14 +542,14 @@ IA
                                                         <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="8O0-fc-4lv" secondAttribute="leading" id="RTc-dI-cJQ"/>
                                                         <constraint firstAttribute="trailing" secondItem="lwF-Qy-Ve8" secondAttribute="trailing" id="W36-Um-DMF"/>
                                                         <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="573" secondAttribute="baseline" id="WD4-es-A1d"/>
-                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="iL7-B7-Esb" secondAttribute="trailing" constant="8" symbolic="YES" id="Whz-xd-zBE"/>
+                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="iL7-B7-Esb" secondAttribute="trailing" constant="8" id="Whz-xd-zBE"/>
                                                         <constraint firstItem="577" firstAttribute="leading" secondItem="6323" secondAttribute="leading" constant="13" id="XWu-Ic-1E3"/>
                                                         <constraint firstItem="L9r-fR-5jU" firstAttribute="leading" secondItem="cBW-1J-fam" secondAttribute="trailing" constant="8" symbolic="YES" id="Y9q-sj-WA0"/>
                                                         <constraint firstItem="4746" firstAttribute="baseline" secondItem="6002" secondAttribute="baseline" id="aMi-O3-RHQ"/>
                                                         <constraint firstItem="lwF-Qy-Ve8" firstAttribute="leading" secondItem="6323" secondAttribute="leading" id="aUh-jq-0z1"/>
                                                         <constraint firstItem="6002" firstAttribute="top" secondItem="6323" secondAttribute="top" constant="7" id="aWd-FZ-Ybq"/>
                                                         <constraint firstItem="cBW-1J-fam" firstAttribute="leading" secondItem="573" secondAttribute="leading" id="agr-YN-Eby"/>
-                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="8O0-fc-4lv" secondAttribute="trailing" constant="8" symbolic="YES" id="cZH-1E-XAJ"/>
+                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="8O0-fc-4lv" secondAttribute="trailing" constant="8" id="cZH-1E-XAJ"/>
                                                         <constraint firstItem="573" firstAttribute="leading" secondItem="6323" secondAttribute="leading" constant="180" id="cn0-aF-tpo"/>
                                                         <constraint firstItem="lwF-Qy-Ve8" firstAttribute="top" secondItem="6323" secondAttribute="top" constant="30" id="iYR-Vw-Jgh"/>
                                                         <constraint firstAttribute="bottom" secondItem="lwF-Qy-Ve8" secondAttribute="bottom" id="lfW-EL-V2F"/>
@@ -806,7 +733,6 @@ Unterstütze die Entwicklung!</string>
             <contentBorderThickness minY="22"/>
             <connections>
                 <outlet property="delegate" destination="235" id="6433"/>
-                <outlet property="initialFirstResponder" destination="281" id="6358"/>
             </connections>
             <point key="canvasLocation" x="-501" y="-502"/>
         </window>
@@ -1332,8 +1258,6 @@ CA
         <customObject id="235" userLabel="BankingController" customClass="BankingController">
             <connections>
                 <outlet property="accountsOutline" destination="I39-Kk-HLZ" id="mrL-eF-pEv"/>
-                <outlet property="accountsScrollView" destination="280" id="6349"/>
-                <outlet property="accountsView" destination="281" id="1031"/>
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
                 <outlet property="categoryController" destination="911" id="930"/>
                 <outlet property="comTraceMenuItem" destination="suc-Py-BAh" id="j6I-1K-Ktn"/>
@@ -1400,7 +1324,7 @@ CA
                 <string>statement.localAccount</string>
             </declaredKeys>
         </arrayController>
-        <treeController mode="entity" entityName="Category" fetchPredicateFormat="parent == nil" childrenKeyPath="children" id="911" userLabel="Categories Controller" customClass="MCEMTreeController">
+        <treeController mode="entity" entityName="Category" fetchPredicateFormat="parent == nil" childrenKeyPath="children" id="911" userLabel="Categories Controller">
             <declaredKeys>
                 <string>name</string>
                 <string>balance</string>
