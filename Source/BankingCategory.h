@@ -101,7 +101,7 @@ typedef struct {
 - (BOOL)checkMoveToCategory: (BankingCategory *)cat;
 - (BOOL)canSynchronize;
 
-- (id)children;
+- (NSSet *)children;
 - (NSSet *)allCategories;
 - (NSSet *)siblings;
 - (NSUInteger)historyToDates: (NSArray **)dates

@@ -65,18 +65,18 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="338" height="650"/>
                                                             <subviews>
                                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6f-U6-aMI" userLabel="Category Outline Scroll View">
-                                                                    <rect key="frame" x="0.0" y="44" width="338" height="606"/>
+                                                                    <rect key="frame" x="10" y="44" width="328" height="596"/>
                                                                     <clipView key="contentView" drawsBackground="NO" id="vOF-Xg-FL2">
-                                                                        <rect key="frame" x="1" y="1" width="336" height="604"/>
+                                                                        <rect key="frame" x="1" y="1" width="326" height="594"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="336" height="0.0"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="326" height="0.0"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                 <tableColumns>
-                                                                                    <tableColumn width="336" minWidth="16" maxWidth="1000" id="0ch-yC-d9l">
+                                                                                    <tableColumn width="326" minWidth="16" maxWidth="1000" id="0ch-yC-d9l">
                                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                                                             <font key="font" metaFont="smallSystem"/>
                                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -90,11 +90,11 @@
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
                                                                                             <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="336" height="22"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="326" height="22"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-au-7DG" userLabel="Title">
-                                                                                                        <rect key="frame" x="-2" y="3" width="205" height="17"/>
+                                                                                                        <rect key="frame" x="-2" y="3" width="198" height="17"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="17" id="dm3-Qn-fGL"/>
                                                                                                         </constraints>
@@ -108,7 +108,7 @@
                                                                                                         </connections>
                                                                                                     </textField>
                                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9o-MT-Ec1">
-                                                                                                        <rect key="frame" x="211" y="3" width="99" height="17"/>
+                                                                                                        <rect key="frame" x="204" y="3" width="99" height="17"/>
                                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="kxU-0O-yYq">
                                                                                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="w2u-AW-vjD"/>
                                                                                                             <font key="font" metaFont="system"/>
@@ -126,19 +126,19 @@
                                                                                                     </textField>
                                                                                                 </subviews>
                                                                                                 <constraints>
-                                                                                                    <constraint firstItem="o3W-au-7DG" firstAttribute="centerX" secondItem="3YH-VX-vzL" secondAttribute="centerX" constant="-67.5" id="5xx-dd-6Y5"/>
+                                                                                                    <constraint firstItem="o3W-au-7DG" firstAttribute="centerX" secondItem="3YH-VX-vzL" secondAttribute="centerX" constant="-66" id="5xx-dd-6Y5"/>
                                                                                                     <constraint firstItem="o3W-au-7DG" firstAttribute="leading" secondItem="3YH-VX-vzL" secondAttribute="leading" id="RS4-aP-hJY"/>
                                                                                                     <constraint firstItem="e9o-MT-Ec1" firstAttribute="leading" secondItem="o3W-au-7DG" secondAttribute="trailing" constant="12" id="YsD-u4-GQX"/>
                                                                                                     <constraint firstItem="o3W-au-7DG" firstAttribute="top" secondItem="3YH-VX-vzL" secondAttribute="top" constant="2" id="aP5-fQ-c5e"/>
                                                                                                     <constraint firstItem="e9o-MT-Ec1" firstAttribute="centerY" secondItem="3YH-VX-vzL" secondAttribute="centerY" id="lsy-Dn-Aj7"/>
-                                                                                                    <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="28" id="o6a-rb-k3u"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="25" id="o6a-rb-k3u"/>
                                                                                                 </constraints>
                                                                                                 <connections>
                                                                                                     <outlet property="textField" destination="o3W-au-7DG" id="XIa-Fk-1JX"/>
                                                                                                 </connections>
                                                                                             </tableCellView>
                                                                                             <tableCellView identifier="DataCell" id="XZ1-Q6-4ar" userLabel="Content Cell View">
-                                                                                                <rect key="frame" x="0.0" y="22" width="336" height="22"/>
+                                                                                                <rect key="frame" x="0.0" y="22" width="326" height="22"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <imageView translatesAutoresizingMaskIntoConstraints="NO" id="dtH-zL-oVs">
@@ -152,7 +152,7 @@
                                                                                                         </connections>
                                                                                                     </imageView>
                                                                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h0q-Br-OOR" userLabel="Name">
-                                                                                                        <rect key="frame" x="25" y="4" width="175" height="17"/>
+                                                                                                        <rect key="frame" x="25" y="4" width="169" height="17"/>
                                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Name" placeholderString="" usesSingleLineMode="YES" id="PeN-vN-R7T">
                                                                                                             <font key="font" metaFont="system"/>
                                                                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -165,7 +165,7 @@
                                                                                                         </connections>
                                                                                                     </textField>
                                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
-                                                                                                        <rect key="frame" x="204" y="3" width="99" height="17"/>
+                                                                                                        <rect key="frame" x="197" y="3" width="99" height="17"/>
                                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="PM5-IX-XLA">
                                                                                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="KHY-xC-02N"/>
                                                                                                             <font key="font" metaFont="system"/>
@@ -182,7 +182,7 @@
                                                                                                         </connections>
                                                                                                     </textField>
                                                                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2k2-je-fdV">
-                                                                                                        <rect key="frame" x="309" y="2" width="27" height="17"/>
+                                                                                                        <rect key="frame" x="299" y="2" width="27" height="17"/>
                                                                                                         <buttonCell key="cell" type="inline" title="50" bezelStyle="inline" alignment="center" borderStyle="border" inset="2" id="H6x-aI-2ea">
                                                                                                             <behavior key="behavior" lightByContents="YES"/>
                                                                                                             <font key="font" metaFont="smallSystemBold"/>
@@ -204,8 +204,8 @@
                                                                                                 </subviews>
                                                                                                 <constraints>
                                                                                                     <constraint firstItem="h0q-Br-OOR" firstAttribute="leading" secondItem="dtH-zL-oVs" secondAttribute="trailing" constant="7" id="5og-yf-f80"/>
-                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="h0q-Br-OOR" secondAttribute="trailing" constant="8" id="9ed-NO-4xz"/>
-                                                                                                    <constraint firstItem="2k2-je-fdV" firstAttribute="leading" secondItem="iHA-SR-Q8p" secondAttribute="trailing" constant="8" id="J9P-NK-Af2"/>
+                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="h0q-Br-OOR" secondAttribute="trailing" constant="7" id="9ed-NO-4xz"/>
+                                                                                                    <constraint firstItem="2k2-je-fdV" firstAttribute="leading" secondItem="iHA-SR-Q8p" secondAttribute="trailing" constant="5" id="J9P-NK-Af2"/>
                                                                                                     <constraint firstAttribute="trailing" secondItem="2k2-je-fdV" secondAttribute="trailing" id="OE4-0S-wH3"/>
                                                                                                     <constraint firstItem="h0q-Br-OOR" firstAttribute="top" secondItem="XZ1-Q6-4ar" secondAttribute="top" constant="1" id="m8F-KP-guH"/>
                                                                                                     <constraint firstItem="dtH-zL-oVs" firstAttribute="leading" secondItem="XZ1-Q6-4ar" secondAttribute="leading" constant="3" id="mXI-aV-hJb"/>
@@ -242,7 +242,7 @@
                                                                     </scroller>
                                                                 </scrollView>
                                                                 <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4562">
-                                                                    <rect key="frame" x="269" y="17" width="51" height="20"/>
+                                                                    <rect key="frame" x="286" y="17" width="51" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="49" id="RLT-4n-TbI"/>
                                                                     </constraints>
@@ -258,7 +258,7 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4561" userLabel="Date Switcher">
-                                                                    <rect key="frame" x="19" y="17" width="249" height="20"/>
+                                                                    <rect key="frame" x="36" y="17" width="249" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="247" id="2Lr-9y-HJq"/>
                                                                     </constraints>
@@ -278,11 +278,11 @@
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstAttribute="trailing" secondItem="y6f-U6-aMI" secondAttribute="trailing" id="A0v-dF-RHh"/>
-                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="leading" secondItem="5998" secondAttribute="leading" id="BDP-pn-sCo"/>
+                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="leading" secondItem="5998" secondAttribute="leading" constant="10" id="BDP-pn-sCo"/>
                                                                 <constraint firstAttribute="bottom" secondItem="4562" secondAttribute="bottom" constant="18" id="Ebg-1T-bAX"/>
-                                                                <constraint firstAttribute="trailing" secondItem="4562" secondAttribute="trailing" constant="19" id="GkT-rP-fCg"/>
+                                                                <constraint firstAttribute="trailing" secondItem="4562" secondAttribute="trailing" constant="2" id="GkT-rP-fCg"/>
                                                                 <constraint firstAttribute="bottom" secondItem="4561" secondAttribute="bottom" constant="18" id="WYQ-3N-WN4"/>
-                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="top" secondItem="5998" secondAttribute="top" id="eDy-LK-Yjr"/>
+                                                                <constraint firstItem="y6f-U6-aMI" firstAttribute="top" secondItem="5998" secondAttribute="top" constant="10" id="eDy-LK-Yjr"/>
                                                                 <constraint firstItem="4561" firstAttribute="top" secondItem="y6f-U6-aMI" secondAttribute="bottom" constant="8" symbolic="YES" id="eab-sY-sGd"/>
                                                                 <constraint firstItem="4562" firstAttribute="leading" secondItem="4561" secondAttribute="trailing" constant="3" id="ufz-Og-3cv"/>
                                                             </constraints>
@@ -734,7 +734,7 @@ Unterstütze die Entwicklung!</string>
             <connections>
                 <outlet property="delegate" destination="235" id="6433"/>
             </connections>
-            <point key="canvasLocation" x="-501" y="-502"/>
+            <point key="canvasLocation" x="-427" y="-596"/>
         </window>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>

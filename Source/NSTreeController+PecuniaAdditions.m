@@ -44,8 +44,6 @@
 
 - (NSIndexPath *)indexPathForObject: (id)obj
 {
-    int i;
-
     NSArray     *nodes = [[self arrangedObjects] childNodes];
     NSIndexPath *path = [self reverseIndexPathForObject: obj inArray: nodes];
     if (path == nil) {
@@ -53,7 +51,7 @@
     }
     // IndexPath umdrehen
     NSIndexPath *newPath = [[NSIndexPath alloc] init];
-    for (i = [path length] - 1; i >= 0; i--) {
+    for (NSInteger i = path.length - 1; i >= 0; i--) {
         newPath = [newPath indexPathByAddingIndex: [path indexAtPosition: i]];
     }
     return newPath;

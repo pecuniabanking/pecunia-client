@@ -73,6 +73,7 @@
 #import "NSDictionary+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
 #import "NSTreeController+PecuniaAdditions.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
@@ -110,7 +111,6 @@ static BankingController *bankinControllerInstance;
 
     IBOutlet EDSideBar             *sidebar;
     IBOutlet NSTreeController      *categoryController;
-    IBOutlet SynchronousScrollView *accountsScrollView;
     IBOutlet PecuniaSplitView      *mainVSplit;
     IBOutlet NSArrayController     *assignPreviewController;
     IBOutlet TimeSliceManager      *timeSlicer;
@@ -272,10 +272,6 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    RemoteResourceManager *resourceManager = RemoteResourceManager.sharedManager; // Creates singleton.
-    if ([userDefaults boolForKey: @"autoCasing"]) {
-        [resourceManager addManagedFile: @"words.zip"];
-    }
 
     [PluginRegistry startup];
     
@@ -1723,7 +1719,6 @@ static BankingController *bankinControllerInstance;
                     if ([NSBundle.mainBundle loadNibNamed: @"CategoryPeriods" owner: categoryPeriodsController topLevelObjects: nil]) {
                         NSView *view = [categoryPeriodsController mainView];
                         view.frame = frame;
-                        [categoryPeriodsController connectScrollViews: accountsScrollView];
                     }
                     [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                     categoryPeriodsController.outline = accountsOutline;
@@ -2272,37 +2267,11 @@ static BankingController *bankinControllerInstance;
     return [item.representedObject parent] == nil;
 }
 
-- (id)findTreeNodeForCategory: (BankingCategory *)category underParent: (NSTreeNode *)parent {
-    for (NSTreeNode *node in parent.childNodes) {
-        if ([node.representedObject isEqual: category]) {
-            return node;
-        }
-        id childNode = [self findTreeNodeForCategory: category underParent: node];
-        if (childNode != nil) {
-            return childNode;
-        }
-    }
-    return nil;
-}
-
-- (id)outlineView: (NSOutlineView *)outlineView itemForPersistentObject: (id)object {
-    NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: object];
-    NSManagedObjectID *objectID = [managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation: uri];
-    BankingCategory *category = (BankingCategory *)[managedObjectContext objectWithID: objectID];
-    return [self findTreeNodeForCategory: category underParent: categoryController.arrangedObjects];
-}
-
-- (id)outlineView: (NSOutlineView *)outlineView persistentObjectForItem: (id)item
-{
-    BankingCategory *category = [item representedObject];
-    return [NSKeyedArchiver archivedDataWithRootObject: category.objectID.URIRepresentation];
-}
-
 #pragma mark - Splitview delegate methods
 
 - (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex {
     if (splitView == mainVSplit) {
-        return 300;
+        return 310;
     }
     return proposedMin;
 }
@@ -2967,14 +2936,12 @@ static BankingController *bankinControllerInstance;
     [self migrate];
 
     [self publishContext];
-    accountsOutline.autosaveExpandedItems = YES; // Set it manually here to trigger loading not before we are done with setup.
+    [accountsOutline restoreState];
 
     [sc stopSpinning];
     [sc clearMessage];
 
     [mainWindow.contentView setHidden: NO];
-
-    //sidebar.hidden = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey: @"restoreActivePage"]) {
@@ -2983,6 +2950,11 @@ static BankingController *bankinControllerInstance;
     } else {
         [self switchMainPage: 0];
     }
+
+    // Select the first available bank node (if any).
+    NSUInteger indexes[] = {0, 0, 0};
+    NSIndexPath *path = [NSIndexPath indexPathWithIndexes: indexes length: 3];
+    [categoryController setSelectionIndexPath: path];
 
     [mainVSplit restorePosition];
 
@@ -3034,6 +3006,7 @@ static BankingController *bankinControllerInstance;
 
     shuttingDown = YES;
 
+    [accountsOutline saveState];
     [mainVSplit savePosition];
     MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
@@ -3311,7 +3284,6 @@ static BankingController *bankinControllerInstance;
         }
 
         if ([keyPath isEqualToString: @"fontScale"]) {
-            [accountsScrollView setNeedsDisplay: YES];
             NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
 /* XXX: update
             NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];

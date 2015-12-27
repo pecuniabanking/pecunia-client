@@ -606,6 +606,8 @@
 		27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27AF5A9E173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
+		27B42C371C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */; };
+		27B42C381C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */; };
 		27B56887159743B10064A28B /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
 		27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E2D28219167D30001D6E80 /* Accelerate.framework */; };
 		27B9868515769132008907F3 /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
@@ -1406,6 +1408,8 @@
 		27AF5A99173FC8EC00929B0E /* move-cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor.png"; sourceTree = "<group>"; };
 		27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor@2x.png"; sourceTree = "<group>"; };
 		27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-slanted-stripes.png"; sourceTree = "<group>"; };
+		27B42C351C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; };
+		27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27B56886159743B10064A28B /* basket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket.png; sourceTree = "<group>"; };
 		27B9868315769132008907F3 /* GradientButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonCell.h; sourceTree = "<group>"; };
 		27B9868415769132008907F3 /* GradientButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonCell.m; sourceTree = "<group>"; };
@@ -2082,13 +2086,15 @@
 				27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */,
 				276D9C8A18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.h */,
 				276D9C8B18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m */,
+				27B42C351C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.h */,
+				27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */,
 				27D576441662819200761132 /* NSSplitView+PecuniaAdditions.h */,
 				27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 				2735D6D61A024C66008EED36 /* NSString+PecuniaAdditions.swift */,
-				B132F8D00F93DC0D00263F3B /* NSTreeController+PecuniaAdditions.m */,
 				B132F8CF0F93DC0D00263F3B /* NSTreeController+PecuniaAdditions.h */,
+				B132F8D00F93DC0D00263F3B /* NSTreeController+PecuniaAdditions.m */,
 				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
 				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
 			);
@@ -3959,6 +3965,7 @@
 				B1A6AA5C1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				27A062341B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */,
+				27B42C381C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
 				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
@@ -4230,6 +4237,7 @@
 				B1A6AA5B1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				27A062331B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				2706F2091556C3BE0011A20E /* OnOffSwitchControl.m in Sources */,
+				27B42C371C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */,
 				2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */,
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,

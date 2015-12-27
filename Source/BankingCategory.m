@@ -642,7 +642,7 @@ static NSImage *notAssignedImage;
     return self == BankingCategory.catRoot;
 }
 
-- (id)children {
+- (NSSet *)children {
     if (hiddenChildren > 0 && !PreferenceController.showHiddenCategories) {
         NSMutableSet *children = [[self mutableSetValueForKey: @"children"] mutableCopy];
         NSPredicate  *predicate = [NSPredicate predicateWithFormat: @"isHidden = NO"];
