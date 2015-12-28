@@ -459,7 +459,6 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"TransactionLimits" withMessage: @"transaction limits"];
     [self logSummary: @"Transfer" withMessage: @"transfers"];
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
-
 }
 
 - (void)publishContext {
@@ -2242,17 +2241,14 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    BankingCategory *cat = [self currentSelection];
-
     // Update current section if the default is not active.
     if (currentSection != nil) {
-        currentSection.selectedCategory = cat;
+        currentSection.selectedCategory = self.currentSelection;
     }
     [self updateStatusbar];
 }
 
-- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn: (NSTableColumn *)tableColumn item: (NSTreeNode*)item
-{
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn: (NSTableColumn *)tableColumn item: (NSTreeNode*)item {
     if (outlineView != accountsOutline) {
         return nil;
     }
@@ -2262,8 +2258,7 @@ static BankingController *bankinControllerInstance;
     return [outlineView makeViewWithIdentifier: @"DataCell" owner: outlineView];
 }
 
-- (BOOL)outlineView: (NSOutlineView *)outlineView isGroupItem: (NSTreeNode*)item
-{
+- (BOOL)outlineView: (NSOutlineView *)outlineView isGroupItem: (NSTreeNode*)item {
     return [item.representedObject parent] == nil;
 }
 
