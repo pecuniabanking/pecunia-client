@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//import PCSC
+import PCSCard
 
 class HBCISmartcard {
     let readerName:String;

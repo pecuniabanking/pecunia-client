@@ -20,10 +20,10 @@
 #import "CallbackHandler.h"
 #import "ChipcardHandler.h"
 #import "HBCIBridge.h"
-#import "HBCIBackend.h"
 #import "CallbackData.h"
 #import "BankUser.h"
 #import "NotificationWindowController.h"
+#import "HBCICommon.h"
 
 static CallbackHandler *callbackHandler = nil;
 

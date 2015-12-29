@@ -886,6 +886,10 @@
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
+		B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
+		B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
+		B13CE5771C1250B000B5B750 /* HBCI4Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; };
+		B13CE5781C1250B000B5B750 /* HBCI4Swift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
@@ -1059,6 +1063,44 @@
 		C13152B1150A0B260037958E /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B11E61441C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B19B35921AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+		B11E61461C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B19B359D1AF1792B00F20B9A;
+			remoteInfo = HBCI4SwiftTests;
+		};
+		B11E61481C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B1AFEC491B5B9E7D002F1DDF;
+			remoteInfo = CommonCrypto;
+		};
+		B11E614A1C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B1AF0FF81BC45A6D00365496;
+			remoteInfo = PCSCard;
+		};
+		B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B19B35911AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		277789C2173CE22700430EBC /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -1068,6 +1110,7 @@
 			files = (
 				277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */,
 				2797E22419F2864200CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */,
+				B13CE5781C1250B000B5B750 /* HBCI4Swift.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1638,6 +1681,7 @@
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HBCI4Swift.xcodeproj; path = Submodules/HBCI4Swift/HBCI4Swift/HBCI4Swift.xcodeproj; sourceTree = "<group>"; };
 		B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "container-migration.plist"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
@@ -1673,6 +1717,8 @@
 		B138B315139D6B390026BEE2 /* AmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AmountCell.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138B3DE139EBC0E0026BEE2 /* DockIconController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DockIconController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138B3E0139EBC230026BEE2 /* DockIconController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = DockIconController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCIBackend.swift; sourceTree = "<group>"; };
+		B13CE57B1C12FD3D00B5B750 /* HBCICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCICommon.h; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1741,7 +1787,6 @@
 		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
 		B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportedTransactionInfo.h; sourceTree = "<group>"; };
 		B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportedTransactionInfo.m; sourceTree = "<group>"; wrapsLines = 0; };
-		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1917,6 +1962,7 @@
 				B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */,
 				27E844E819E1740A0026464E /* Quartz.framework in Frameworks */,
 				277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
+				B13CE5771C1250B000B5B750 /* HBCI4Swift.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
@@ -2527,6 +2573,7 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */,
 				27A85F861B1A07D20017D863 /* Plugins */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2581,6 +2628,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B11E613E1C0125770031F368 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B11E61451C0125770031F368 /* HBCI4Swift.framework */,
+				B11E61471C0125770031F368 /* HBCI4SwiftTests.xctest */,
+				B11E61491C0125770031F368 /* CommonCrypto.framework */,
+				B11E614B1C0125770031F368 /* PCSCard.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B12A497E10BDD242002CC63E /* Banking Backend */ = {
 			isa = PBXGroup;
 			children = (
@@ -2594,7 +2652,6 @@
 				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
 				B189782C0ECF47CA00D20503 /* Country.h */,
 				B189782D0ECF47CA00D20503 /* Country.m */,
-				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
 				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
 				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
 				B183586015CDC064003B93ED /* SigningOption.h */,
@@ -2615,6 +2672,8 @@
 				B1A5940D112A8D8500FD8CB8 /* TransferResult.m */,
 				B14D4D2913DCA0E000843BE6 /* User.h */,
 				B14D4D2A13DCA0E000843BE6 /* User.m */,
+				B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */,
+				B13CE57B1C12FD3D00B5B750 /* HBCICommon.h */,
 			);
 			name = "Banking Backend";
 			sourceTree = "<group>";
@@ -3071,7 +3130,6 @@
 			children = (
 				B1C7B193130B12870091CD72 /* Accounts */,
 				27DFFD9316739C9900848CD2 /* Categories */,
-				27A3DA1C16A1C96A00FD7335 /* Debits */,
 				B1C7B194130B12F80091CD72 /* ImExport */,
 				B1C7B189130B10BF0091CD72 /* MainWindow */,
 				27BB3B7F190D4A6F006F15CB /* Orders */,
@@ -3146,6 +3204,7 @@
 		B1FE0DD610658759005B3800 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				27A3DA1C16A1C96A00FD7335 /* Debits */,
 				279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */,
 				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
 				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
@@ -3207,6 +3266,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B13CE57A1C1250B000B5B750 /* PBXTargetDependency */,
 			);
 			name = "Pecunia AppStore";
 			productInstallPath = "$(HOME)/Applications";
@@ -3269,6 +3329,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Pecunia */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B11E613E1C0125770031F368 /* Products */;
+					ProjectRef = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Pecunia */,
@@ -3276,6 +3342,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B11E61451C0125770031F368 /* HBCI4Swift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = HBCI4Swift.framework;
+			remoteRef = B11E61441C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E61471C0125770031F368 /* HBCI4SwiftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HBCI4SwiftTests.xctest;
+			remoteRef = B11E61461C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E61491C0125770031F368 /* CommonCrypto.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CommonCrypto.framework;
+			remoteRef = B11E61481C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E614B1C0125770031F368 /* PCSCard.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PCSCard.framework;
+			remoteRef = B11E614A1C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2777891A173CE22700430EBC /* Resources */ = {
@@ -3936,6 +4033,7 @@
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
+				B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
 				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
@@ -4211,6 +4309,7 @@
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
+				B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */,
 				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
 				B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */,
@@ -4378,6 +4477,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B13CE57A1C1250B000B5B750 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HBCI4Swift;
+			targetProxy = B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		277789C8173CE22700430EBC /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -4385,12 +4492,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4403,6 +4511,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "__APPSTORE=1";
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
@@ -4421,6 +4530,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4445,9 +4555,10 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4457,6 +4568,7 @@
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "__APPSTORE=1";
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -4469,6 +4581,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4490,11 +4603,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4503,6 +4617,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -4515,6 +4630,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4534,6 +4650,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4595,6 +4712,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4643,6 +4761,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4692,10 +4811,12 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4709,8 +4830,10 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4724,8 +4847,10 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};

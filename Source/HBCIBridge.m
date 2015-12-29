@@ -23,7 +23,7 @@
 #import "LogParser.h"
 #import "HBCIError.h"
 #import "PecuniaError.h"
-#import "HBCIBackend.h"
+#import "HBCICommon.h"
 #import "LaunchParameters.h"
 #import "CallbackHandler.h"
 

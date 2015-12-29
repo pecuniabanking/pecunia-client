@@ -1,0 +1,23 @@
+//
+//  HBCICommon.h
+//  Pecunia
+//
+//  Created by Frank Emminghaus on 05.12.15.
+//  Copyright © 2015 Frank Emminghaus. All rights reserved.
+//
+
+#ifndef HBCICommon_h
+#define HBCICommon_h
+
+#import <Cocoa/Cocoa.h>
+#import "MessageLog.h"
+#import "Transfer.h"
+#import "StandingOrder.h"
+#import "SupportedTransactionInfo.h"
+
+#define PecuniaStatementsNotification         @"PecuniaStatementsNotification"
+#define PecuniaStatementsFinalizeNotification @"PecuniaStatementsFinalizeNotification"
+#define PecuniaInstituteMessageNotification   @"PecuniaInstMessageNotification"
+
+
+#endif /* HBCICommon_h */

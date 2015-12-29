@@ -84,7 +84,7 @@ static HBCIController *controller = nil;
 @implementation HBCIController
 
 
-+ (id<HBCIBackend>)controller
++ (HBCIController *)controller
 {
     if (controller == nil) {
         controller = [HBCIController new];

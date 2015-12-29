@@ -53,7 +53,7 @@
 }
 
 - (void)awakeFromNib {
-    [hbciVersions setContent: [[HBCIController controller] supportedVersions]];
+    [hbciVersions setContent: [[HBCIBackend backend] supportedVersions]];
     [hbciVersions setSelectedObjects: @[@"220"]];
 
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
@@ -104,20 +104,20 @@
 - (void)getBankSetupInfo {
     BankUser *currentUser = [currentUserController content];
 
-    BankSetupInfo *info = [[HBCIController controller] getBankSetupInfo: currentUser.bankCode];
+    BankSetupInfo *info = [[HBCIBackend backend] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {
-            NSTextField *field = [[groupBox contentView] viewWithTag: 100];
+            NSTextField *field = [[currentBox contentView] viewWithTag: 100];
             [field setStringValue: info.info_userid];
         }
         if (info.info_customerid) {
-            NSTextField *field = [[groupBox contentView] viewWithTag: 120];
+            NSTextField *field = [[currentBox contentView] viewWithTag: 120];
             [field setStringValue: info.info_customerid];
         }
     }
     [self stopProgress];
     step = 2;
-    NSView *view = [[groupBox contentView] viewWithTag: 110];
+    NSView *view = [[currentBox contentView] viewWithTag: 110];
     [userSheet makeFirstResponder: view];
 
     [self prepareUserSheet];
@@ -181,7 +181,7 @@
             && (secMethod != SecMethod_Script)) //we do not want HBCI for scripts
         {
             // look if we have bank infos
-            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -283,7 +283,7 @@
                         currentUser.name = data.name;
                         
                         // get further bank infos
-                        InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+                        InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
                         if (bi) {
                             currentUser.hbciVersion = bi.hbciVersion;
                             if (bi.name != nil) {
@@ -450,7 +450,7 @@
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
-            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
+            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];
