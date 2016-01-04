@@ -1781,6 +1781,7 @@
 		B17729131504C9B200256898 /* TanMethodOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethodOld.m; sourceTree = "<group>"; };
 		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
+		B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 17.xcdatamodel"; sourceTree = "<group>"; };
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
@@ -4895,6 +4896,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */,
 				27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */,
 				27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
@@ -4913,7 +4915,7 @@
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */;
+			currentVersion = B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

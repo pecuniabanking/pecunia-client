@@ -42,12 +42,16 @@
 @property (nonatomic, strong) NSString     *port;
 @property (nonatomic, strong) NSString     *userId;
 @property (nonatomic, strong) NSString     *chipCardId;
+@property (nonatomic, strong) NSString     *sysId;
 @property (nonatomic, strong) TanMethod    *preferredTanMethod;
 @property (nonatomic, strong) NSMutableSet *tanMedia;
 @property (nonatomic, strong) NSMutableSet *tanMethods;
 @property (nonatomic, strong) NSNumber     *ddvPortIdx;
 @property (nonatomic, strong) NSNumber     *ddvReaderIdx;
+@property (nonatomic, strong) NSString     *ddvReaderName;
 @property (nonatomic, strong) NSNumber     *secMethod;
+@property (nonatomic, strong) NSData       *hbciParameters;
+
 
 @property (nonatomic, strong) NSMutableSet *accounts;
 

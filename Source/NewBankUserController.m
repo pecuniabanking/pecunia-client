@@ -220,7 +220,7 @@
             if ((currentUser.hbciVersion != nil && currentUser.bankURL != nil)
                 || (secMethod == SecMethod_Script)){
                 // now we work with the real user
-                PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
+                PecuniaError *error = [[HBCIBackend backend] addBankUser: currentUser];
                 if (error) {
                     [self stopProgress];
                     [error alertPanel];

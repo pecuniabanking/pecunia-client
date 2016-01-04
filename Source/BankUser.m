@@ -47,6 +47,9 @@
 @dynamic ddvReaderIdx;
 @dynamic secMethod;
 @dynamic chipCardId;
+@dynamic sysId;
+@dynamic hbciParameters;
+@dynamic ddvReaderName;
 @dynamic accounts;
 
 @synthesize isRegistered;
