@@ -1169,15 +1169,6 @@ static NSImage *notAssignedImage;
     return catIcon;
 }
 
-- (NSColor *)textColor {
-    CGFloat alpha = self.noCatRep.boolValue ? 0.4 : 1;
-    if (self.isNotAssignedCategory) {
-        return [NSColor colorWithCalibratedRed: 19 / 255.0 green: 104 / 255.0 blue: 198 / 255.0 alpha: alpha];
-    }
-    NSColor *color = [NSColor.textColor colorUsingColorSpace: NSColorSpace.sRGBColorSpace];
-    return [NSColor colorWithCalibratedRed: color.redComponent green: color.greenComponent blue: color.blueComponent alpha: alpha];
-}
-
 + (BankingCategory *)bankRoot {
     NSError *error = nil;
     if (bankRootSingleton) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +20,15 @@
 #import "PXListView.h"
 
 @class PecuniaListView;
+
+@interface PopoverAnimation : NSAnimation
+@end
+
+@interface PecuniaPopover : NSPopover
+
+@property BOOL wantClose;
+
+@end
 
 @interface DetailsView : NSView
 

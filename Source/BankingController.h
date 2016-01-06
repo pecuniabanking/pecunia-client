@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,7 +21,6 @@
 #import "Transfer.h"
 
 @class CategoryOutlineView;
-@class DockIconController;
 @class BankAccount;
 @class BankStatement;
 
@@ -57,8 +56,6 @@
 }
 
 @property (nonatomic, copy) NSDecimalNumber      *saveValue;
-@property (nonatomic, strong) DockIconController *dockIconController;
-
 @property (nonatomic, assign) BOOL showBalances;
 @property (nonatomic, assign) BOOL showRecursiveStatements;
 @property (nonatomic, assign) BOOL showDetailsPane;

@@ -200,7 +200,7 @@ AP230 = "Neue Überweisung von diesem Konto";
 AP231 = "Konto löschen...";
 AP232 = "Neues Konto anlegen...";
 AP233 = "Umsatz splitten...";
-AP234 = "Umsatz löschen...";
+AP234 = "";
 AP235 = "Als ungelesen markieren";
 AP236 = "Neue Überweisung von dieser Buchung";
 AP237 = "Neue Vorlage von dieser Buchung";
@@ -288,7 +288,7 @@ AP362 = "Diese Chipkarte hat die Benutzerkennung %@, benötigt wird aber die Kar
 AP363 = "Die Bankdaten können nicht von der Chipkarte gelesen werden";
 AP364 = "Es wurden keine Kartenleser gefunden. Bitte schließen Sie einen Chipkartenleser an bzw. stellen Sie sicher dass die aktuellen Treiber für das Lesegerät installiert sind";
 AP365 = "Dieser Kartentyp wird nicht unterstützt (es werden nur DDV-Karten unterstützt)";
-AP366 = "Der Chipkartenleser %@ ist nicht mehr verfügbar. Bitte prüfen Sie ob der Leser korrekt angeschlossen ist";
+AP366 = "Der Chipkartenleser ist nicht mehr verfügbar. Bitte prüfen Sie ob der Leser korrekt angeschlossen ist";
 AP367 = "Kein Kartenleser gefunden";
 AP368 = "Chipkarten-Fehler";
 

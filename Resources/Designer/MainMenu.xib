@@ -70,7 +70,7 @@
                                                                         <rect key="frame" x="1" y="1" width="326" height="594"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
-                                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
+                                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="326" height="0.0"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -82,14 +82,14 @@
                                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                         </tableHeaderCell>
-                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="uJR-PO-6kg">
+                                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" refusesFirstResponder="YES" title="Text Cell" id="uJR-PO-6kg">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         </textFieldCell>
                                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                         <prototypeCellViews>
-                                                                                            <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View">
+                                                                                            <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View" customClass="NumberTableCellView" customModule="Pecunia" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="326" height="22"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
@@ -108,7 +108,7 @@
                                                                                                         </connections>
                                                                                                     </textField>
                                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9o-MT-Ec1">
-                                                                                                        <rect key="frame" x="224" y="3" width="99" height="17"/>
+                                                                                                        <rect key="frame" x="197" y="3" width="99" height="17"/>
                                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="kxU-0O-yYq">
                                                                                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="w2u-AW-vjD"/>
                                                                                                             <font key="font" metaFont="system"/>
@@ -128,16 +128,16 @@
                                                                                                 <constraints>
                                                                                                     <constraint firstItem="o3W-au-7DG" firstAttribute="centerX" secondItem="3YH-VX-vzL" secondAttribute="centerX" constant="-53.5" id="5xx-dd-6Y5"/>
                                                                                                     <constraint firstItem="o3W-au-7DG" firstAttribute="leading" secondItem="3YH-VX-vzL" secondAttribute="leading" constant="2" id="RS4-aP-hJY"/>
-                                                                                                    <constraint firstItem="e9o-MT-Ec1" firstAttribute="leading" secondItem="o3W-au-7DG" secondAttribute="trailing" constant="8" id="YsD-u4-GQX"/>
+                                                                                                    <constraint firstItem="e9o-MT-Ec1" firstAttribute="leading" secondItem="o3W-au-7DG" secondAttribute="trailing" constant="-19" id="YsD-u4-GQX"/>
                                                                                                     <constraint firstItem="o3W-au-7DG" firstAttribute="top" secondItem="3YH-VX-vzL" secondAttribute="top" constant="2" id="aP5-fQ-c5e"/>
                                                                                                     <constraint firstItem="e9o-MT-Ec1" firstAttribute="centerY" secondItem="3YH-VX-vzL" secondAttribute="centerY" id="lsy-Dn-Aj7"/>
-                                                                                                    <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="5" id="o6a-rb-k3u"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="e9o-MT-Ec1" secondAttribute="trailing" constant="32" id="o6a-rb-k3u"/>
                                                                                                 </constraints>
                                                                                                 <connections>
                                                                                                     <outlet property="textField" destination="o3W-au-7DG" id="XIa-Fk-1JX"/>
                                                                                                 </connections>
                                                                                             </tableCellView>
-                                                                                            <tableCellView identifier="DataCell" id="XZ1-Q6-4ar" userLabel="Content Cell View" customClass="CategoryTableCellView">
+                                                                                            <tableCellView identifier="DataCell" id="XZ1-Q6-4ar" userLabel="Content Cell View" customClass="CategoryTableCellView" customModule="Pecunia" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="22" width="326" height="22"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
@@ -164,15 +164,13 @@
                                                                                                     </imageView>
                                                                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h0q-Br-OOR" userLabel="Name">
                                                                                                         <rect key="frame" x="34" y="4" width="160" height="17"/>
-                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" title="Name" placeholderString="" usesSingleLineMode="YES" id="PeN-vN-R7T">
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Name" placeholderString="" usesSingleLineMode="YES" id="PeN-vN-R7T">
                                                                                                             <font key="font" metaFont="system"/>
                                                                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                                         </textFieldCell>
                                                                                                         <connections>
-                                                                                                            <binding destination="XZ1-Q6-4ar" name="editable" keyPath="objectValue.isEditable" id="Ri9-ox-Zrm"/>
                                                                                                             <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.localName" id="N4U-Yb-daG"/>
-                                                                                                            <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue.textColor" id="xZF-bf-OhF"/>
                                                                                                         </connections>
                                                                                                     </textField>
                                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
@@ -184,11 +182,6 @@
                                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                                         </textFieldCell>
                                                                                                         <connections>
-                                                                                                            <binding destination="XZ1-Q6-4ar" name="textColor" keyPath="objectValue" id="84Y-6W-94K">
-                                                                                                                <dictionary key="options">
-                                                                                                                    <string key="NSValueTransformerName">CatSumToColorTransformer</string>
-                                                                                                                </dictionary>
-                                                                                                            </binding>
                                                                                                             <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.catSum" id="Gem-j2-kyf"/>
                                                                                                         </connections>
                                                                                                     </textField>
@@ -226,6 +219,7 @@
                                                                                                     <constraint firstAttribute="bottom" secondItem="dtH-zL-oVs" secondAttribute="bottom" constant="3" id="zES-51-mbx"/>
                                                                                                 </constraints>
                                                                                                 <connections>
+                                                                                                    <outlet property="badge" destination="2k2-je-fdV" id="2fb-a1-PRl"/>
                                                                                                     <outlet property="badgeWidthConstraint" destination="R6S-HJ-5vn" id="a7o-27-nR1"/>
                                                                                                     <outlet property="colorWellWidthConstraint" destination="Eln-ga-qxi" id="NrR-Mo-zhe"/>
                                                                                                     <outlet property="imageView" destination="dtH-zL-oVs" id="hO0-GX-bd9"/>
@@ -299,11 +293,6 @@
                                                                 <constraint firstItem="4561" firstAttribute="top" secondItem="y6f-U6-aMI" secondAttribute="bottom" constant="8" symbolic="YES" id="eab-sY-sGd"/>
                                                                 <constraint firstItem="4562" firstAttribute="leading" secondItem="4561" secondAttribute="trailing" constant="3" id="ufz-Og-3cv"/>
                                                             </constraints>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="rightMargin">
-                                                                    <integer key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
                                                         </customView>
                                                     </subviews>
                                                     <constraints>
@@ -595,11 +584,8 @@ IA
                     <progressIndicator hidden="YES" focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="4592" userLabel="Progress Indicator">
                         <rect key="frame" x="5" y="2" width="16" height="16"/>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4593" userLabel="Status Text">
-                        <rect key="frame" x="25" y="3" width="698" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="694" id="DAa-dq-aho"/>
-                        </constraints>
+                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4593" userLabel="Status Text">
+                        <rect key="frame" x="25" y="3" width="712" height="14"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="4594">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -614,10 +600,7 @@ IA
                         <imageCell key="cell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSLockLockedTemplate" id="4741"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6099" userLabel="Income Text">
-                        <rect key="frame" x="824" y="3" width="100" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="96" id="ZkM-dT-F53"/>
-                        </constraints>
+                        <rect key="frame" x="838" y="3" width="86" height="14"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6100">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6105"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -625,7 +608,7 @@ IA
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6103" userLabel="Spending Tect">
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6103" userLabel="Spending Text">
                         <rect key="frame" x="1021" y="3" width="100" height="14"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9,999,999,99 €" id="6104">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6106"/>
@@ -707,7 +690,10 @@ Unterstütze die Entwicklung!</string>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wz9-K1-SAF">
-                        <rect key="frame" x="741" y="3" width="81" height="14"/>
+                        <rect key="frame" x="755" y="3" width="81" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="77" id="KTB-LT-AaY"/>
+                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Einnahmen:" id="HPg-lN-syK">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -747,7 +733,7 @@ Unterstütze die Entwicklung!</string>
             <connections>
                 <outlet property="delegate" destination="235" id="6433"/>
             </connections>
-            <point key="canvasLocation" x="-427" y="-596"/>
+            <point key="canvasLocation" x="257" y="-1049"/>
         </window>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>

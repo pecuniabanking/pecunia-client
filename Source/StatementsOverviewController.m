@@ -43,10 +43,8 @@ extern void *UserDefaultsBindingContext;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@interface StatementsOverviewController ()
-{
+@interface StatementsOverviewController () {
     NSDecimalNumber *saveValue;
-    NSUInteger      lastSplitterPosition; // Last position of the splitter between list and details.
 
     // Sorting statements.
     int  sortIndex;
@@ -54,6 +52,7 @@ extern void *UserDefaultsBindingContext;
 
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;
+    __weak IBOutlet StatementsTable *statementsTable;
 
     IBOutlet NSTextField       *selectedSumField;
     IBOutlet NSTextField       *totalSumField;
@@ -67,8 +66,7 @@ extern void *UserDefaultsBindingContext;
 
 @synthesize selectedCategory;
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     sortAscending = NO;
     sortIndex = 0;
 
@@ -107,6 +105,15 @@ extern void *UserDefaultsBindingContext;
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
     categoryAssignments.managedObjectContext = MOAssistant.sharedAssistant.context;
+}
+
+- (void)dealloc {
+    [NSNotificationCenter.defaultCenter removeObserver: self];
+    [NSUserDefaults.standardUserDefaults removeObserver: self forKeyPath: @"colors"];
+}
+
+- (void)updateStatementsTable {
+    [statementsTable setNeedsDisplay];
 }
 
 #pragma mark - Sorting and searching statements
@@ -148,27 +155,6 @@ extern void *UserDefaultsBindingContext;
 - (BOOL)canEditAttachment
 {
     return categoryAssignments.selectedObjects.count == 1;
-}
-
-- (BOOL)validateMenuItem: (NSMenuItem *)item
-{
-    if ([item action] == @selector(deleteStatement:)) {
-        if (!selectedCategory.isBankAccount || categoryAssignments.selectedObjects.count == 0) {
-            return NO;
-        }
-    }
-    if ([item action] == @selector(splitStatement:)) {
-        if (categoryAssignments.selectedObjects.count != 1) {
-            return NO;
-        }
-
-        StatCatAssignment *stat = categoryAssignments.selectedObjects.lastObject;
-        if (stat.statement.isPreliminary.boolValue == YES) {
-            return NO;
-        }
-    }
-    
-    return YES;
 }
 
 - (void)updateSorting
@@ -421,26 +407,41 @@ extern void *UserDefaultsBindingContext;
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-#pragma mark - StatementsListViewProtocol and PecuniaListViewProtocol
+#pragma mark - Table View delegate methods
 
-- (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action {
+- (id)tableView: (NSTableView *)table viewForTableColumn: (nullable NSTableColumn *)tableColumn row: (NSInteger)row {
+    return [table makeViewWithIdentifier: @"DataCellView" owner: table];
+}
+
+- (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row {
+    return 70;
+}
+
+#pragma mark - Menu handling
+
+- (void)menuAction: (NSMenuItem *)item {
     LogEnter;
 
-    BankingCategory *category = assignment.category; // This is not the bank account for the statement, but the assigned category.
-    BankAccount *account = assignment.statement.account;
-    switch (action) {
-        case MenuActionShowDetails:
-            [statementsListView toggleStatementDetails];
+    NSArray *assignments;
+    if (![categoryAssignments.selectionIndexes containsIndex: statementsTable.clickedRow]) {
+        assignments = [[NSArray alloc] initWithObjects: categoryAssignments.arrangedObjects[statementsTable.clickedRow], nil];
+    } else {
+        assignments = categoryAssignments.selectedObjects;
+    }
+
+    switch (item.tag) {
+        case MenuActionShowDetails: // Only called for single selection.
+            [statementsTable toggleStatementDetails];
             break;
 
         case MenuActionAddStatement:
-            if (category.accountNumber != nil) {
-                BankStatementController *controller = [[BankStatementController alloc] initWithAccount: (BankAccount *)category
+            if (selectedCategory.accountNumber != nil) {
+                BankStatementController *controller = [[BankStatementController alloc] initWithAccount: (BankAccount *)selectedCategory
                                                                                              statement: nil];
 
                 int res = [NSApp runModalForWindow: controller.window];
                 if (res != 0) {
-                    [assignment.category updateAssignmentsForReportRange];
+                    [selectedCategory updateAssignmentsForReportRange];
                 }
             }
 
@@ -461,34 +462,167 @@ extern void *UserDefaultsBindingContext;
         case MenuActionMarkUnread:
             [self markSelectedStatementsUnread];
             break;
+            /*
+             case MenuActionStartTransfer:
+             if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: selectedCategory]) {
+             [BankingController.controller startTransferOfType: TransferTypeSEPA
+             fromAccount: selectedCategory
+             statement: assignment.statement];
+             } else {
+             if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+             [BankingController.controller startTransferOfType: TransferTypeInternalSEPA
+             fromAccount: account
+             statement: assignment.statement];
+             }
+             }
+             break;
 
-        case MenuActionStartTransfer:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
-                [BankingController.controller startTransferOfType: TransferTypeSEPA
-                                                      fromAccount: account
-                                                        statement: assignment.statement];
-            } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
-                    [BankingController.controller startTransferOfType: TransferTypeInternalSEPA
-                                                          fromAccount: account
-                                                            statement: assignment.statement];
-                }
-            }
-            break;
-
-        case MenuActionCreateTemplate:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
-                [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
-            } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
-                    [BankingController.controller createTemplateOfType: TransferTypeInternalSEPA fromStatement: assignment.statement];
-                }
-            }
-            break;
+             case MenuActionCreateTemplate:
+             if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+             [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
+             } else {
+             if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+             [BankingController.controller createTemplateOfType: TransferTypeInternalSEPA fromStatement: assignment.statement];
+             }
+             }
+             break;*/
     }
-    
+
     LogLeave;
 
+}
+
+- (void)menuNeedsUpdate: (NSMenu *)menu {
+    LogEnter;
+
+    [menu removeAllItems];
+    BOOL isManualAccount = NO;
+
+    if (selectedCategory.isBankAccount) {
+        isManualAccount = [(BankAccount *)selectedCategory isManual].boolValue;
+    }
+
+    NSMenuItem *item;
+    if (isManualAccount) {
+        item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
+                               action: @selector(menuAction:)
+                        keyEquivalent: @"n"];
+        item.target = self;
+        item.keyEquivalentModifierMask = NSCommandKeyMask;
+        item.tag = MenuActionAddStatement;
+
+        [menu addItem: NSMenuItem.separatorItem];
+    }
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP240", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @" "];
+    item.target = self;
+    item.keyEquivalentModifierMask = 0;
+    item.tag = MenuActionShowDetails;
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP233", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @"s"];
+    item.target = self;
+    item.tag = MenuActionSplitStatement;
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP234", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: [NSString stringWithFormat: @"%c", NSBackspaceCharacter]];
+    item.target = self;
+    item.tag = MenuActionDeleteStatement;
+
+    [menu addItem: NSMenuItem.separatorItem];
+
+    __block BOOL allRead = YES;
+    if (![categoryAssignments.selectionIndexes containsIndex: statementsTable.clickedRow]) {
+        allRead = ![categoryAssignments.arrangedObjects[statementsTable.clickedRow] statement].isNew.boolValue;
+    } else {
+        for (StatCatAssignment *assignment in categoryAssignments.selectedObjects) {
+            if (assignment.statement.isNew.boolValue) {
+                allRead = NO;
+                break;
+            }
+        }
+    }
+    item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil): NSLocalizedString(@"AP239", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @""];
+    item.target = self;
+    item.tag = allRead ? MenuActionMarkUnread : MenuActionMarkRead;
+
+    if (!isManualAccount) {
+        [menu addItem: [NSMenuItem separatorItem]];
+        item = [menu addItemWithTitle: NSLocalizedString(@"AP236", nil)
+                               action: @selector(menuAction:)
+                        keyEquivalent: @""];
+        item.target = self;
+        item.tag = MenuActionStartTransfer;
+    }
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP237", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @""];
+    item.target = self;
+    item.tag = MenuActionCreateTemplate;
+
+    LogLeave;
+}
+
+- (BOOL)validateMenuItem: (NSMenuItem *)item
+{
+    if (item.target != self) { // Call from the main menu.
+        if ([item action] == @selector(deleteStatement:)) {
+            if (!selectedCategory.isBankAccount || categoryAssignments.selectedObjects.count == 0) {
+                return NO;
+            }
+        }
+        if ([item action] == @selector(splitStatement:)) {
+            if (categoryAssignments.selectedObjects.count != 1) {
+                return NO;
+            }
+
+            StatCatAssignment *stat = categoryAssignments.selectedObjects.lastObject;
+            if (stat.statement.isPreliminary.boolValue == YES) {
+                return NO;
+            }
+        }
+    } else {
+        // Call from the context menu.
+        BOOL isManualAccount = NO;
+        if (selectedCategory.isBankAccount) {
+            isManualAccount = [(BankAccount *)selectedCategory isManual].boolValue;
+        }
+
+        // Determine the selected assignement, if there is only one.
+        StatCatAssignment *singleAssignment = nil;
+        if (![categoryAssignments.selectionIndexes containsIndex: statementsTable.clickedRow]
+            || (categoryAssignments.selectedObjects.count == 1)) {
+            singleAssignment = categoryAssignments.arrangedObjects[statementsTable.clickedRow];
+        }
+
+        BOOL isPreliminary = (singleAssignment == nil) ? NO : singleAssignment.statement.isPreliminary.boolValue;
+
+        switch (item.tag) {
+            case MenuActionShowDetails:
+                return singleAssignment != nil;
+
+            case MenuActionSplitStatement:
+            case MenuActionStartTransfer:
+            case MenuActionCreateTemplate:
+                return singleAssignment != nil && !isPreliminary;
+
+            case MenuActionMarkUnread:
+            case MenuActionMarkRead:
+                return !isPreliminary;
+
+            case MenuActionDeleteStatement:
+                item.title = NSLocalizedString((singleAssignment == nil) ? @"AP806" : @"AP805", nil);
+                break;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - PecuniaSectionItem protocol
@@ -514,12 +648,13 @@ extern void *UserDefaultsBindingContext;
     printInfo.bottomMargin = 20;
     printInfo.leftMargin = 18;
     printInfo.rightMargin = 18;
+
     NSPrintOperation *printOp;
-    NSView           *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects]
-                                                                      printInfo: printInfo
-                                                                          title: nil
-                                                                        category: selectedCategory
-                                                                 additionalText: nil];
+    NSView *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects]
+                                                            printInfo: printInfo
+                                                                title: nil
+                                                             category: selectedCategory
+                                                       additionalText: nil];
     printOp = [NSPrintOperation printOperationWithView: view printInfo: printInfo];
     [printOp setShowsPrintPanel: YES];
     [printOp runOperation];
@@ -547,7 +682,6 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
-    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 }
 
 @end

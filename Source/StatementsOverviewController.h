@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,7 +20,7 @@
 #import "PecuniaSectionItem.h"
 #import "StatementsListView.h"
 
-@interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol>
+@interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol, NSMenuDelegate>
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item;
 - (void)deleteSelectedStatements;
@@ -31,8 +31,8 @@
 - (void)removeSelection;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, weak) BankingCategory       *selectedCategory;
-@property (nonatomic, strong) IBOutlet NSView *mainView;
+@property (nonatomic, weak) BankingCategory   *selectedCategory;
+@property (nonatomic) IBOutlet NSView *mainView;
 
 - (void)activate;
 - (void)deactivate;

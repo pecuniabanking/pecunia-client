@@ -78,7 +78,6 @@ typedef struct {
 // Dynamic UI properties.
 @property (nonatomic) NSColor *categoryColor; // Unarchived catRepColor.
 @property (readonly) NSImage *categoryImage; // Loaded from iconName.
-@property (readonly) NSColor *textColor;
 @property NSNumber *unreadEntries;
 
 - (void)recomputeInvalidBalances;

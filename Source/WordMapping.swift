@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,9 +30,7 @@ let wordsLoadStride : Int = 50000;
 
     static private var mappingsAvailable : Bool?;
 
-    public class func pecuniaWordsLoadedNotification() -> String {
-        return "PecuniaWordsLoadedNotification";
-    }
+    public static let pecuniaWordsLoadedNotification: String = "PecuniaWordsLoadedNotification";
 
     public class var wordMappingsAvailable : Bool {
         if mappingsAvailable == nil {
@@ -119,7 +117,7 @@ let wordsLoadStride : Int = 50000;
             }
 
             mappingsAvailable = true;
-            let notification = NSNotification(name: pecuniaWordsLoadedNotification(), object: nil);
+            let notification = NSNotification(name: pecuniaWordsLoadedNotification, object: nil);
             NSNotificationCenter.defaultCenter().postNotification(notification);
         }
 

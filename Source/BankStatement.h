@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,33 +30,7 @@ typedef enum {
     StatementType_CreditCard
 } BankStatementType;
 
-@interface BankStatement : NSManagedObject {
-}
-
-+ (instancetype)createTemporary;
-
-- (BOOL)matches: (BankStatement *)stat;
-- (BOOL)matchesAndRepair: (BankStatement *)stat;
-
-- (NSComparisonResult)compareValuta: (BankStatement *)stat;
-
-- (void)assignToCategory: (BankingCategory *)cat;
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (BankingCategory *)targetCategory withInfo:(NSString *)info;
-- (BOOL)updateAssigned;
-- (BOOL)hasAssignment;
-- (NSDecimalNumber *)residualAmount;
-- (StatCatAssignment *)bankAssignment;
-- (NSArray *)categoryAssignments;
-- (void)changeValueTo: (NSDecimalNumber *)val;
-
-- (void)addToAccount: (BankAccount *)account;
-- (void)sanitize;
-- (void)extractSEPADataUsingContext: (NSManagedObjectContext *)context;
-
-- (NSString *)floatingPurpose;
-- (NSString *)nonfloatingPurpose;
-
-+ (void)initCategoriesCache;
+@interface BankStatement : NSManagedObject
 
 @property (nonatomic, strong) NSDate *valutaDate;
 @property (nonatomic, strong) NSDate *date;
@@ -118,8 +92,30 @@ typedef enum {
 @property (nonatomic, strong) SepaData    *sepa;
 @property (nonatomic, strong) NSSet       *tags;
 
-@end
++ (instancetype)createTemporary;
 
-// coalesce these into one @interface BankStatement (CoreDataGeneratedAccessors) section
-@interface BankStatement (CoreDataGeneratedAccessors)
+- (BOOL)matches: (BankStatement *)stat;
+- (BOOL)matchesAndRepair: (BankStatement *)stat;
+
+- (NSComparisonResult)compareValuta: (BankStatement *)stat;
+
+- (void)assignToCategory: (BankingCategory *)cat;
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (BankingCategory *)targetCategory withInfo:(NSString *)info;
+- (BOOL)updateAssigned;
+- (BOOL)hasAssignment;
+- (NSDecimalNumber *)residualAmount;
+- (StatCatAssignment *)bankAssignment;
+- (NSArray *)categoryAssignments;
+- (void)changeValueTo: (NSDecimalNumber *)val;
+
+- (void)addToAccount: (BankAccount *)account;
+- (void)sanitize;
+- (void)extractSEPADataUsingContext: (NSManagedObjectContext *)context;
+
+- (NSString *)floatingPurpose;
+- (NSString *)nonfloatingPurpose;
+
++ (void)initCategoriesCache;
++ (NSUInteger)numberOfNewStatements;
+
 @end

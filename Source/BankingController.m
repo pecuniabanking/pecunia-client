@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -59,7 +59,6 @@
 
 #import "TransfersController.h"
 
-#import "DockIconController.h"
 #import "GenerateDataController.h"
 #import "CreditCardSettlementController.h"
 
@@ -138,7 +137,6 @@ static BankingController *bankinControllerInstance;
 
     NSManagedObjectModel  *model;
     NewBankUserController *bankUserController;
-    DockIconController    *dockIconController;
 
     BOOL restart;
     BOOL requestRunning;
@@ -164,7 +162,6 @@ static BankingController *bankinControllerInstance;
 
 @implementation BankingController
 
-@synthesize dockIconController;
 @synthesize shuttingDown;
 
 #pragma mark - Initialization
@@ -222,6 +219,7 @@ static BankingController *bankinControllerInstance;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
@@ -482,7 +480,6 @@ static BankingController *bankinControllerInstance;
 
     [timeSlicer updateDelegate];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
-    dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
     
@@ -2079,8 +2076,8 @@ static BankingController *bankinControllerInstance;
         return NO;
     }
     if ([type isEqual: BankStatementDataType]) {
-        if ([cat isBankAccount]) {
-            // only allow for manual accounts
+        if ([cat isKindOfClass: BankAccount.class]) {
+            // Only allow for manual accounts.
             BankAccount *account = (BankAccount *)cat;
             if ([account.isManual boolValue] == YES) {
                 return NSDragOperationCopy;
@@ -3046,8 +3043,6 @@ static BankingController *bankinControllerInstance;
         [heatMapController terminate];
     }
 
-    dockIconController = nil;
-
     if (managedObjectContext && [MOAssistant sharedAssistant].isMaxIdleTimeExceeded == NO) {
         if (![self save]) {
             return;
@@ -3144,7 +3139,13 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     [BankAccount updateUnreadCounts];
-    [dockIconController updateBadge];
+
+    NSUInteger newCount = BankStatement.numberOfNewStatements;
+    if (newCount == 0) {
+        [NSApplication.sharedApplication.dockTile setBadgeLabel: @""];
+    } else {
+        [NSApplication.sharedApplication.dockTile setBadgeLabel: [NSString stringWithFormat: @"%li", newCount]];
+    }
 
     LogLeave;
 }
@@ -3276,6 +3277,11 @@ static BankingController *bankinControllerInstance;
                 currentSection.selectedCategory = category;
                 return;
             }
+        }
+
+        if ([keyPath isEqualToString: @"colors"]) {
+            [accountsOutline setNeedsDisplay];
+            return;
         }
 
         if ([keyPath isEqualToString: @"fontScale"]) {

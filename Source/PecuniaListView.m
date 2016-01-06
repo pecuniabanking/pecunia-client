@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,8 +20,8 @@
 #import "PecuniaListView.h"
 #import "PXListView+UserInteraction.h"
 
-@interface PopoverAnimation : NSAnimation {
-    @private
+@interface PopoverAnimation () {
+@private
     NSRect    startRect;
     NSRect    endRect;
     NSPopover *target;
@@ -73,12 +73,9 @@
 
 @end
 
-@interface PecuniaPopover : NSPopover {
-    @public BOOL wantClose;
-}
-@end
-
 @implementation PecuniaPopover
+
+@synthesize wantClose;
 
 - (IBAction)performClose: (id)sender {
     wantClose = YES;
@@ -122,14 +119,14 @@
 }
 
 - (void)popoverDidShow: (NSNotification *)notification {
-    detailsPopover->wantClose  = NO;
-    popoverWillOpen            = NO;
+    detailsPopover.wantClose  = NO;
+    popoverWillOpen = NO;
 }
 
 - (BOOL)popoverShouldClose: (NSPopover *)popover {
     BOOL allowClose = YES;
 
-    if (!detailsPopover->wantClose) {
+    if (!detailsPopover.wantClose) {
         // Lets see if the mouse is over the popover ...
         NSRect globalLocation = NSMakeRect(NSEvent.mouseLocation.x, NSEvent.mouseLocation.y, 0, 0);
         NSRect windowLocation = [popover.contentViewController.view.window convertRectFromScreen: globalLocation];

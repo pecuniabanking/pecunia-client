@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -51,4 +51,10 @@
 @end
 
 @interface ValueToColorTransformer : NSValueTransformer
+@end
+
+@interface DayFromDateTransformer : NSValueTransformer
+@end
+
+@interface MonthFromDateTransformer : NSValueTransformer
 @end

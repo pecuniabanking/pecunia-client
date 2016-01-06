@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -210,7 +210,6 @@ static NSMutableDictionary *cache;
         return value;
     }
 
-    //return [value capitalizedStringWithLocale: NSLocale.currentLocale];
     return [value stringWithNaturalText];
 }
 
@@ -281,6 +280,56 @@ static NSMutableDictionary *cache;
 - (id)transformedValue: (id)value
 {
     return ([value doubleValue] < 0) ? [NSColor applicationColorForKey: @"Negative Cash"] : [NSColor applicationColorForKey: @"Positive Cash"];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation DayFromDateTransformer
+
+static NSDateFormatter *dateToDayFormatter = nil;
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if (dateToDayFormatter == nil) {
+        dateToDayFormatter = [NSDateFormatter new];
+        dateToDayFormatter.locale = NSLocale.currentLocale;
+        dateToDayFormatter.dateStyle = kCFDateFormatterFullStyle;
+        dateToDayFormatter.timeStyle = NSDateFormatterNoStyle;
+        dateToDayFormatter.dateFormat = @"d";
+    }
+    return [dateToDayFormatter stringFromDate: value];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation MonthFromDateTransformer
+
+static NSDateFormatter *monthToDayFormatter = nil;
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if (monthToDayFormatter == nil) {
+        monthToDayFormatter = [NSDateFormatter new];
+        monthToDayFormatter.locale = NSLocale.currentLocale;
+        monthToDayFormatter.dateStyle = kCFDateFormatterFullStyle;
+        monthToDayFormatter.timeStyle = NSDateFormatterNoStyle;
+        monthToDayFormatter.dateFormat = @"MMM";
+    }
+    return [monthToDayFormatter stringFromDate: value];
 }
 
 @end

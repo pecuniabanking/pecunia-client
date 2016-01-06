@@ -405,13 +405,13 @@ extern NSDictionary    *whiteAttributes;
 
     return menu;
 }
-
+/*
 - (void)menuAction: (id)sender {
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
         [self.delegate menuActionForCell: self action: [sender tag]];
     }
 }
-
+*/
 - (IBAction)activationChanged: (id)sender {
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
         [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: self.row];

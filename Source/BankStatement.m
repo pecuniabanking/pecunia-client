@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -673,21 +673,6 @@ BOOL stringEqual(NSString *a, NSString *b) {
     return [self.valutaDate compare: stat.valutaDate];
 }
 
-+ (void)initCategoriesCache {
-    NSError                *error = nil;
-    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
-
-    catCache = nil;
-    NSFetchRequest *request = [model fetchRequestTemplateForName: @"categories"];
-    catCache = [context executeFetchRequest: request error: &error];
-    if (error != nil || catCache == nil) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
-}
-
 - (NSString *)floatingPurpose {
     // replace newline with space
     NSString *s = self.sepa == nil ? self.purpose : self.sepa.purpose;
@@ -703,6 +688,36 @@ BOOL stringEqual(NSString *a, NSString *b) {
 - (NSString *)note {
     StatCatAssignment *stat = [self bankAssignment];
     return stat.userInfo;
+}
+
++ (void)initCategoriesCache {
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    NSManagedObjectModel   *model = MOAssistant.sharedAssistant.model;
+
+    catCache = nil;
+    NSFetchRequest *request = [model fetchRequestTemplateForName: @"categories"];
+    catCache = [context executeFetchRequest: request error: &error];
+    if (error != nil || catCache == nil) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
+
++ (NSUInteger)numberOfNewStatements {
+    static NSFetchRequest *request;
+
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    if (request == nil) {
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
+                                                             inManagedObjectContext: context];
+        request = [NSFetchRequest new];
+        request.entity = entityDescription;
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1"];
+        [request setPredicate: predicate];
+    }
+    return [context countForFetchRequest: request error: nil];
 }
 
 @end

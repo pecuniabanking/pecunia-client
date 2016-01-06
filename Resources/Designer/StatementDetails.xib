@@ -131,7 +131,7 @@ Line 3</string>
                         <rect key="frame" x="0.0" y="30" width="348" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="30s-7t-nVD">
+                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="30s-7t-nVD">
                         <rect key="frame" x="333" y="0.0" width="15" height="46"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -1168,7 +1168,7 @@ Line 3</string>
                             </contentFilters>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="edit-large" id="Tza-n8-IOn"/>
                         </imageView>
-                        <imageView toolTip="Stornierter Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jd4-8H-73H" userLabel="Preliminary Indicator">
+                        <imageView toolTip="Stornierter Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jd4-8H-73H" userLabel="Canceled Indicator">
                             <rect key="frame" x="391" y="3" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="F6D-JB-bNG"/>
@@ -1309,6 +1309,7 @@ Line 3</string>
                 <outlet property="valueField" destination="yMt-yl-Qqh" id="T9F-7F-8kN"/>
                 <outlet property="verticalConstraintValueCurrency" destination="yrR-Pn-j73" id="DH6-wy-P1l"/>
             </connections>
+            <point key="canvasLocation" x="-104.5" y="-404"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Zwd-pV-aRC"/>
         <arrayController mode="entity" entityName="Tag" selectsInsertedObjects="NO" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="NhK-1M-IZ8" userLabel="Statement Tags">
