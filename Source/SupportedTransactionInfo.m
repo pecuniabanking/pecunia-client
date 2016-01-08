@@ -71,6 +71,49 @@
     return result.lastObject;
 }
 
++ (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account {
+    SupportedTransactionInfo *info = [SupportedTransactionInfo infoForType:tt account:account];
+    return info != nil;
+}
+
++ (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user {
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND type = %d", user, tt];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSError *error = nil;
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account {
+    TransactionType transactionType;
+    switch (tt) {
+        case TransferTypeInternalSEPA: transactionType = TransactionType_TransferInternalSEPA; break;
+            
+        case TransferTypeCollectiveCreditSEPA: transactionType = TransactionType_TransferCollectiveCreditSEPA; break;
+            
+        case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
+            
+        case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
+            
+        default: return NO; // default is needed because of OLD transfer types which are not supported any longer
+            
+    }
+    
+    return [self isTransactionSupported:transactionType forAccount:account];
+}
+
 + (NSArray*)supportedTransactionsForAccount: (BankAccount*)account
 {
     NSError                *error = nil;

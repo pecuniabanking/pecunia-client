@@ -20,7 +20,7 @@
 #import "HBCIError.h"
 #import "PecuniaError.h"
 
-@implementation HBCIError
+@implementation HBCI_Error
 
 @synthesize msg;
 @synthesize code;

@@ -21,7 +21,7 @@
 @class CallbackParser;
 @class LogParser;
 
-@class HBCIError;
+@class HBCI_Error;
 @class PecuniaError;
 @class CallbackData;
 
@@ -38,6 +38,6 @@
 
 - (id)syncCommand: (NSString *)cmd error: (PecuniaError **)err;
 - (void)asyncCommand: (NSString *)cmd sender: (id)sender;
-- (HBCIError *)error;
+- (HBCI_Error *)error;
 
 @end

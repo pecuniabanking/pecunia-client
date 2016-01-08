@@ -21,7 +21,7 @@
 
 @class PecuniaError;
 
-@interface HBCIError : NSObject {
+@interface HBCI_Error : NSObject {
     NSString *msg;
     NSString *code;
 }

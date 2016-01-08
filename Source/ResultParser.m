@@ -178,7 +178,7 @@
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 10];
         [stack addObject: dict];
     } else if ([elementName isEqualToString: @"error"]) {
-        HBCIError *err = [[HBCIError alloc] init];
+        HBCI_Error *err = [[HBCI_Error alloc] init];
         err.code = [attributeDict valueForKey: @"code"];
         [stack addObject: err];
     } else {

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NewBankUserController">
@@ -250,7 +249,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="869" id="701">
-                                    <rect key="frame" x="0.0" y="0.0" width="193" height="218"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="193" height="19"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -566,6 +565,7 @@ DQ
                                     <connections>
                                         <binding destination="22" name="value" keyPath="selection.userId" id="110"/>
                                         <outlet property="delegate" destination="-2" id="960"/>
+                                        <outlet property="nextKeyView" destination="56" id="lVB-WY-THR"/>
                                     </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" tag="11" id="328">
@@ -748,19 +748,20 @@ IA
                                     <rect key="frame" x="158" y="101" width="132" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <animations/>
-                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="1056">
+                                    <popUpButtonCell key="cell" type="push" title="300" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1059" id="1056">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="menu"/>
                                         <menu key="menu" title="OtherViews" id="1057">
                                             <items>
                                                 <menuItem title="220" id="1058"/>
-                                                <menuItem title="300" id="1059"/>
+                                                <menuItem title="300" state="on" id="1059"/>
                                             </items>
                                         </menu>
                                     </popUpButtonCell>
                                     <connections>
                                         <binding destination="635" name="contentValues" keyPath="arrangedObjects" id="1061"/>
                                         <binding destination="22" name="selectedValue" keyPath="selection.hbciVersion" previousBinding="1061" id="1062"/>
+                                        <outlet property="nextKeyView" destination="1064" id="s3a-e1-lfs"/>
                                     </connections>
                                 </popUpButton>
                                 <textField verticalHuggingPriority="750" tag="150" id="1063">
@@ -876,14 +877,20 @@ IA
                                 <rect key="frame" x="223" y="31" width="236" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <animations/>
-                                <popUpButtonCell key="cell" type="push" title="Passwort" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1wO-DI-O7E" id="996">
+                                <popUpButtonCell key="cell" type="push" title="PIN/TAN" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="998" id="996">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="OtherViews" id="997">
                                         <items>
-                                            <menuItem title="PIN/TAN" id="998"/>
-                                            <menuItem title="DDV-Chipkarte" id="999"/>
-                                            <menuItem title="Passwort" state="on" id="1wO-DI-O7E"/>
+                                            <menuItem title="PIN/TAN" state="on" id="998">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
+                                            <menuItem title="DDV-Chipkarte" id="999">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
+                                            <menuItem title="Script und Passwort" id="1wO-DI-O7E">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>

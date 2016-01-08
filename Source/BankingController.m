@@ -931,7 +931,7 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(statementsFinalizeNotification:)
                                                  name: PecuniaStatementsFinalizeNotification
                                                object: nil];
-    [[HBCIController controller] getStatements: selectedAccounts];
+    [[HBCIBackend backend] getStatements: selectedAccounts];
 
     LogLeave;
 }
@@ -961,7 +961,7 @@ static BankingController *bankinControllerInstance;
         }
         [result.account updateStandingOrders: result.standingOrders];
     }
-    if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
+    if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements && resultList.count > 0) {
         [selectWindowController addResults: resultList];
     } else {
         @try {
@@ -1007,6 +1007,7 @@ static BankingController *bankinControllerInstance;
                                                   object: nil];
 
     if ([defaults boolForKey: @"manualTransactionCheck"]) {
+        // todo: don't show window if there are no statements
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];

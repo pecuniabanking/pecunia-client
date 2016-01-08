@@ -18,6 +18,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "Transfer.h"
 
 typedef NS_ENUM(NSInteger, TransactionType) {
     TransactionType_TransferStandard = 0,
@@ -61,6 +62,10 @@ typedef NS_ENUM(NSInteger, TransactionType) {
 + (PecuniaError *)updateSupportedTransactionInfoForUser: (BankUser *)user
                                                 account: (BankAccount *)account
                                                withJobs: (NSArray *)supportedJobNames;
++ (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
++ (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user;
++ (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
+
 
 - (NSString *)description;
 - (NSString *)descriptionWithIndent: (NSString *)indent;
