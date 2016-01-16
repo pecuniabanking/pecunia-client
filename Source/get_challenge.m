@@ -35,7 +35,7 @@ bool SECCOS_getChallenge(size_t *len,unsigned char *challenge)
         *len,
     };
     
-    unsigned char      *response=calloc(sizeof(char), *len+2);
+    unsigned char      *response=calloc(sizeof(unsigned char), *len+2);
     unsigned short int resLen=*len+2;
     unsigned short int status=CTAPI_performWithCard("getChallenge",5,command,&resLen,response);
     

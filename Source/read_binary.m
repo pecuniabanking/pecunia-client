@@ -36,7 +36,7 @@ bool SECCOS_readBinary_3(size_t *size,unsigned char *buffer,unsigned short offse
         maxsize,
     };
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     unsigned short int status=CTAPI_performWithCard("readBinary",5,command,&len,response);
     

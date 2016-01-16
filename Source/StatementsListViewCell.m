@@ -381,7 +381,7 @@ extern NSDictionary    *whiteAttributes;
     [listView.selectedRows enumerateIndexesUsingBlock: ^(NSUInteger index, BOOL *stop) {
         if ([listView.dataSource[index] statement].isNew.boolValue) {
             allRead = NO;
-            stop = YES;
+            *stop = YES;
         }
     }];
     item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil): NSLocalizedString(@"AP239", nil)
@@ -475,7 +475,7 @@ static NSImage    *stripeImage;
     if (preliminary) {
         alpha = 0.5;
         if (!self.isSelected) {
-            [[NSColor colorWithCalibratedWhite: 0.95 alpha: 1] set];
+            [[NSColor colorWithCalibratedWhite: 0.95 alpha: alpha] set];
             NSRectFill(bounds);
         }
     }

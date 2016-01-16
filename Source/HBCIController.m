@@ -631,6 +631,8 @@ static HBCIController *controller = nil;
     // Now go for each bank.
     BOOL allSent = YES;
 
+    [self startProgress];
+
     for (BankAccount *account in [accountTransferRegister allKeys]) {
         SigningOption *option = [self signingOptionForAccount: account];
         if (option == nil) {
@@ -721,12 +723,11 @@ static HBCIController *controller = nil;
             [self appendTag: @"transferId" withValue: [uri absoluteString] to: cmd];
             [cmd appendString: @"</command>"];
 
-            [self startProgress];
             NSNumber *isOk = [bridge syncCommand: cmd error: &err];
             if (err) {
                 [err logMessage];
             }
-            [self stopProgress];
+            [MessageLog.log.resultWindow showOnError];
             
             if (err == nil && [isOk boolValue] == YES) {
                 transfer.isSent = @YES;
@@ -735,6 +736,7 @@ static HBCIController *controller = nil;
             }
         }
     }
+    [self stopProgress];
     return allSent;
 }
 

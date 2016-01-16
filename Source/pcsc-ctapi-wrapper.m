@@ -423,7 +423,7 @@ extern IS8 CT_close(IU16 ctn)
 static bool ConnectCard()
 {
 	DWORD dwActiveProtocol = -1;
-	long rv;
+	long rv = SCARD_UNKNOWN;
     LogEnter;
     
     int  tries = 0;
