@@ -40,7 +40,7 @@ bool SECCOS_internalAuthenticate(unsigned char keynum,unsigned char keytype,
     command[5+dataLen]=0x00;
     
     unsigned short int len=300;
-    unsigned char      *response=calloc(sizeof(char), len);
+    unsigned char      *response=calloc(sizeof(unsigned char), len);
     
     unsigned short int status=CTAPI_performWithCard("internalAuthenticate",5+dataLen+1,command,&len,response);
     

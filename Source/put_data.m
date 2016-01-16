@@ -26,7 +26,7 @@
 
 bool SECCOS_putData(unsigned short int tag,unsigned char dataLen,unsigned char *data)
 {
-    unsigned char *command=calloc(sizeof(char), 5+dataLen);
+    unsigned char *command=calloc(sizeof(unsigned char), 5+dataLen);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_PUT_DATA;

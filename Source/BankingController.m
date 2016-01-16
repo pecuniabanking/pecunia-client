@@ -909,6 +909,16 @@ static BankingController *bankinControllerInstance;
                         [selectedAccounts count]
                         );
     }
+    
+    // We need to filter userId == nil accounts out (the manual ones) as this will cause an exception on HBCIController controller] getStatements
+    NSMutableArray *accountsToKeep = [NSMutableArray arrayWithCapacity:[selectedAccounts count]];
+    for (BankAccount *account in selectedAccounts) {
+        if (account.userId != nil) {
+            [accountsToKeep addObject:account];
+        }
+    }
+    [selectedAccounts setArray:accountsToKeep];
+
 
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];

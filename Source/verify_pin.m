@@ -28,7 +28,7 @@
 
 bool SECCOS_isPinInitialized(unsigned char pwdnum,unsigned char pwdtype)
 {
-    unsigned char *command=calloc(sizeof(char),5);
+    unsigned char *command=calloc(sizeof(unsigned char),5);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_VERIFY;
@@ -36,7 +36,7 @@ bool SECCOS_isPinInitialized(unsigned char pwdnum,unsigned char pwdtype)
     command[3]=pwdtype|pwdnum;
     command[4]=0x00;
     
-    unsigned char      *response=calloc(sizeof(char),2);
+    unsigned char      *response=calloc(sizeof(unsigned char),2);
     unsigned short int len=2;
     
     unsigned short int status=CTAPI_performWithCard("verify",5,command,&len,response);
@@ -49,7 +49,7 @@ bool SECCOS_isPinInitialized(unsigned char pwdnum,unsigned char pwdtype)
 bool SECCOS_verifyPin_1(unsigned char pwdnum,unsigned char pwdtype,unsigned char pincoding,size_t pinlen,unsigned char *pin)
 {
     // calculate size of data structure to store pin
-    size_t pinspace;
+    size_t pinspace = 0;
     if (pincoding==SECCOS_PIN_CODING_BCD) {
         pinspace=pinlen>>1;
         if (pinlen&1) {
@@ -63,7 +63,7 @@ bool SECCOS_verifyPin_1(unsigned char pwdnum,unsigned char pwdtype,unsigned char
     
     // allocate command memory
     size_t        commandLen=5+pinspace;
-    unsigned char *command=calloc(sizeof(char),commandLen);
+    unsigned char *command=calloc(sizeof(unsigned char),commandLen);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_VERIFY;
@@ -104,7 +104,7 @@ bool SECCOS_verifyPin_1(unsigned char pwdnum,unsigned char pwdtype,unsigned char
         }
     }
     
-    unsigned char      *response=calloc(sizeof(char),2);
+    unsigned char      *response=calloc(sizeof(unsigned char),2);
     unsigned short int len=2;
     
     unsigned short int status=CTAPI_performWithCard("verify",commandLen,command,&len,response);
@@ -117,9 +117,9 @@ bool SECCOS_verifyPin_1(unsigned char pwdnum,unsigned char pwdtype,unsigned char
 bool SECCOS_verifyPin_2(const char *msg,unsigned char timeout,unsigned char pinlen,unsigned char pincoding,unsigned char pwdnum,unsigned char pwdtype,bool usebio)
 {
     // calculate size of data structure to store pin
-    size_t        pinspace;
+    size_t        pinspace = 0;
     unsigned char pincoding_bcs=pincoding;
-    unsigned char insert_posi;
+    unsigned char insert_posi = 0;
     
     if (pincoding==SECCOS_PIN_CODING_BCD) {
         pinspace=pinlen>>1;
@@ -140,7 +140,7 @@ bool SECCOS_verifyPin_2(const char *msg,unsigned char timeout,unsigned char pinl
     
     // allocate command memory
     size_t        commandLen=4+((pinspace==0)?0:(1+pinspace));
-    unsigned char *command=calloc(sizeof(char),commandLen);
+    unsigned char *command=calloc(sizeof(unsigned char),commandLen);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_VERIFY;

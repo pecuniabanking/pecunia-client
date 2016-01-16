@@ -166,7 +166,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
      
     if (response_local==NULL) {
       lenOut_local = MIN_LOCAL_RESPONSE_BUFFER_SIZE;
-        response_local = calloc(sizeof(char), lenOut_local);
+        response_local = calloc(sizeof(unsigned char), lenOut_local);
       if (response_local==NULL) {
         LogDebug(@"Alloc of local response buffer failed. Out of memory. Aborting!");
         return 0;
@@ -175,7 +175,7 @@ static unsigned short int perform(unsigned char _dad,const char *name,
     if (lenOut_local<(*lenOut)) {
       free( response_local );
       lenOut_local = *lenOut;
-      response_local = calloc(sizeof(char), lenOut_local);
+      response_local = calloc(sizeof(unsigned char), lenOut_local);
       if (response_local==NULL) {
         LogDebug(@"Realloc of local response buffer failed. Out of memory. Aborting!");
         return 0;

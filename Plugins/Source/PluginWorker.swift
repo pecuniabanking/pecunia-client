@@ -55,12 +55,12 @@ class WebClient: WebView, WebViewJSExport {
         }
         set {
             redirecting = false;
-            if let url = NSURL(string: newValue) {                
+            if let url = NSURL(string: newValue) {
                 mainFrame.loadRequest(NSURLRequest(URL: url));
             }
         }
     }
-    
+
     var postURL: String {
         get {
             return mainFrameURL;
@@ -81,10 +81,10 @@ class WebClient: WebView, WebViewJSExport {
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
-    
+
     func reportError(account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
-        
+
         let alert = NSAlert();
         alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: ""),
             account, pluginDescription) as String;
@@ -92,7 +92,7 @@ class WebClient: WebView, WebViewJSExport {
         alert.alertStyle = .WarningAlertStyle;
         alert.runModal();
     }
-    
+
     func resultsArrived(results: JSValue) -> Void {
         query!.authRequest.finishPasswordEntry();
 
@@ -135,10 +135,14 @@ class WebClient: WebView, WebViewJSExport {
 
                     if let date = jsonStatement["valutaDate"] as? NSDate {
                         statement.valutaDate = date.dateByAddingTimeInterval(12 * 3600); // Add 12hrs so we start at noon.
+                    } else {
+                        statement.valutaDate = NSDate();
                     }
 
                     if let date = jsonStatement["date"] as? NSDate {
                         statement.date = date.dateByAddingTimeInterval(12 * 3600);
+                    } else {
+                        statement.date = statement.valutaDate;
                     }
 
                     if let purpose = jsonStatement["transactionText"] as? String {
@@ -204,15 +208,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
             logger.logError("Failed to parse script");
             return nil;
         }
-
-        webClient.frameLoadDelegate = self;
-        webClient.UIDelegate = self;
-        webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
-        webClient.hostWindow = hostWindow;
-        if hostWindow != nil {
-            hostWindow!.contentView = webClient;
-        }
-        webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
+        setupWebClient(hostWindow);
     }
 
     init?(script: String, logger: JSLogger, hostWindow: NSWindow?) {
@@ -228,15 +224,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         if parseResult.toString() != "true" {
             return nil;
         }
-
-        webClient.frameLoadDelegate = self;
-        webClient.UIDelegate = self;
-        webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
-        webClient.hostWindow = hostWindow;
-        if hostWindow != nil {
-            hostWindow!.contentView = webClient;
-        }
-        webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
+        setupWebClient(hostWindow);
     }
 
     // MARK: - Setup
@@ -282,6 +270,20 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument");
         workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame");
         workContext.setObject(webClient.self, forKeyedSubscript: "webClient");
+    }
+
+    private func setupWebClient(hostWindow: NSWindow?) {
+        webClient.frameLoadDelegate = self;
+        webClient.UIDelegate = self;
+        webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
+        webClient.hostWindow = hostWindow;
+        if hostWindow != nil {
+            hostWindow!.contentView = webClient;
+        }
+        webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
+
+        let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
+        webClient.applicationNameForUserAgent = "Pecunia/\(version) (Safari)";
     }
 
     // MARK: - Plugin Logic
@@ -395,11 +397,11 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     internal func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
         jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
-
+    
     internal func webView(sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame: WebFrame!) {
         let alert = NSAlert();
         alert.messageText = message;
         alert.runModal();
     }
-
+    
 }

@@ -34,7 +34,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
         LogDebug(@"reading ddv-0 keys");
         
         if (SECCOS_selectSubFile(SECCOS_SELECT_RET_NOTHING,0x0013)) {
-            unsigned char *buffer=calloc(sizeof(char), 16);
+            unsigned char *buffer=calloc(sizeof(unsigned char), 16);
             size_t        len;
             
             if (SECCOS_readRecord(1,buffer,&len)) {
@@ -54,7 +54,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
         }
 
         if (SECCOS_selectSubFile(SECCOS_SELECT_RET_NOTHING,0x0014)) {
-            unsigned char *buffer=calloc(sizeof(char), 16);
+            unsigned char *buffer=calloc(sizeof(unsigned char), 16);
             size_t        len;
             
             if (SECCOS_readRecord(1,buffer,&len)) {
@@ -75,7 +75,7 @@ bool DDV_readKeyData(HBCI_KeyInfo **data,size_t *dataLen)
     } else if (HBCI_cardtype==HBCI_CARD_TYPE_DDV_1) {
         LogDebug(@"reading ddv-1 keys");
         
-        unsigned char *buffer=calloc(sizeof(char), 300);
+        unsigned char *buffer=calloc(sizeof(unsigned char), 300);
         size_t        len;
         
         if (SECCOS_getKeyInfo(2,SECCOS_KEY_TYPE_DF,buffer,&len)) {

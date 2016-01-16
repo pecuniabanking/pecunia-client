@@ -296,6 +296,7 @@
 }
 
 @end
+
 @implementation ImportController
 
 @synthesize backgroundGradient;
@@ -1191,8 +1192,8 @@
     updating = YES; // Avoid two refreshs for the two changes here.
     BankAccount *selectedAccount = [accountsController.selectedObjects lastObject];
     currentSettings.accountNumber = selectedAccount.accountNumber;
-    updating = NO;
     currentSettings.bankCode = selectedAccount.bankCode;
+    updating = NO;
 }
 
 - (IBAction)decimalSeparatorChanged: (id)sender {

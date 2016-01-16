@@ -345,10 +345,14 @@ function convertCsvToResult() {
         statement["final"] = true; //unquote(currentLine[0]) == "Ja" ? true : false;
         
         var parts = unquote(currentLine[1]).split('.');
-        statement["valutaDate"] = new Date(parts[2], parts[1] - 1, parts[0]);
+        if (parts.length == 3)
+            statement["valutaDate"] = new Date(parts[2], parts[1] - 1, parts[0]);
         
         parts = unquote(currentLine[2]).split('.');
-        statement["date"] = new Date(parts[2], parts[1] - 1, parts[0]);
+        if (parts.length == 3)
+            statement["date"] = new Date(parts[2], parts[1] - 1, parts[0]);
+        else
+            statement["final"] = false; // DKB now marks preliminary statements by not specifying a transaction date.
         
         for (var j = 3; j < headers.length; ++j) {
             statement[headers[j]] = unquote(currentLine[j]);

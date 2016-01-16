@@ -27,7 +27,7 @@
 
 bool SECCOS_writeRecordBySFI(unsigned short int sfi,unsigned char recordnum,unsigned char *buffer,size_t size)
 {
-    unsigned char *command=calloc(sizeof(char), 5+size);
+    unsigned char *command=calloc(sizeof(unsigned char), 5+size);
     
     command[0]=SECCOS_CLA_STD;
     command[1]=SECCOS_INS_WRITE_RECORD;
