@@ -1189,9 +1189,10 @@
 
 - (IBAction)accountChanged: (id)sender {
     updating = YES; // Avoid two refreshs for the two changes here.
-    currentSettings.accountNumber = [[accountsController.selectedObjects lastObject] accountNumber];
+    BankAccount *selectedAccount = [accountsController.selectedObjects lastObject];
+    currentSettings.accountNumber = selectedAccount.accountNumber;
     updating = NO;
-    currentSettings.bankCode = [[accountsController.selectedObjects lastObject] bankCode];
+    currentSettings.bankCode = selectedAccount.bankCode;
 }
 
 - (IBAction)decimalSeparatorChanged: (id)sender {

@@ -215,7 +215,8 @@
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
 
             currentUser.bankURL = [currentUser.bankURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            if ((currentUser.hbciVersion != nil && currentUser.bankURL != nil) || (secMethod == SecMethod_Script)) {
+            if ((currentUser.hbciVersion != nil && currentUser.hbciVersion.length > 0 &&
+                 currentUser.bankURL != nil && currentUser.bankURL.length > 0) || (secMethod == SecMethod_Script)) {
                 // now we work with the real user
                 PecuniaError *error = [[HBCIBackend backend] syncBankUser: currentUser];
                 if (error) {

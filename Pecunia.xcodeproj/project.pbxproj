@@ -922,6 +922,8 @@
 		B17728FD1504C33F00256898 /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
 		B17729141504C9B200256898 /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
+		B178C61D1C415A5A0082E25F /* PecuniaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B178C61C1C415A5A0082E25F /* PecuniaError.swift */; };
+		B178C61E1C415A5A0082E25F /* PecuniaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B178C61C1C415A5A0082E25F /* PecuniaError.swift */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
 		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
@@ -1782,6 +1784,7 @@
 		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
 		B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 17.xcdatamodel"; sourceTree = "<group>"; };
+		B178C61C1C415A5A0082E25F /* PecuniaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PecuniaError.swift; sourceTree = "<group>"; };
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
@@ -3245,6 +3248,7 @@
 				B132F91D0F96594000263F3B /* ShortDate.h */,
 				B132F91E0F96594000263F3B /* ShortDate.m */,
 				271394D719FD16F30099FB27 /* ShortDate.swift */,
+				B178C61C1C415A5A0082E25F /* PecuniaError.swift */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -4050,6 +4054,7 @@
 				277788C1173CE22700430EBC /* ResultParser.m in Sources */,
 				277788C2173CE22700430EBC /* TanMethodListController.m in Sources */,
 				27686E42193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
+				B178C61E1C415A5A0082E25F /* PecuniaError.swift in Sources */,
 				277788C3173CE22700430EBC /* Passport.m in Sources */,
 				B19EBD781B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */,
 				277788C4173CE22700430EBC /* HBCIController.m in Sources */,
@@ -4326,6 +4331,7 @@
 				B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */,
 				27686E4A193B5E860038067D /* WaitViewController.m in Sources */,
 				271394D819FD16F30099FB27 /* ShortDate.swift in Sources */,
+				B178C61D1C415A5A0082E25F /* PecuniaError.swift in Sources */,
 				B14D4C6E13DB600400843BE6 /* ResultParser.m in Sources */,
 				B14D4C7313DB608D00843BE6 /* TanMethodListController.m in Sources */,
 				27686E41193B5B3E0038067D /* JMModalOverlayView.m in Sources */,

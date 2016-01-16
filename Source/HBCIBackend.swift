@@ -12,6 +12,19 @@ import HBCI4Swift
 
 var _backend:HBCIBackend!
 
+func ==(a:HBCIAccount, b:BankAccount) ->Bool {
+    if a.number != b.accountNumber() {
+        return false;
+    }
+    if a.subNumber == nil && b.accountSuffix == nil {
+        return true;
+    }
+    if a.subNumber != nil && b.accountSuffix != nil {
+        return a.subNumber == b.accountSuffix;
+    }
+    return false;
+}
+
 public class BackendLog: HBCILog {
     
     public init() {}
@@ -93,75 +106,72 @@ class HBCIBackend : NSObject {
         var found = false;
         
         if let request = model.fetchRequestTemplateForName("allBankAccounts") {
-            do {
-                var bankAccounts = try context.executeFetchRequest(request) as! [BankAccount];
-                
-                for account in accounts {
-                    found = false;
-                    for bankAccount in bankAccounts {
-                        if account.bankCode == bankAccount.bankCode && account.number == bankAccount.accountNumber() &&
-                            (account.subNumber == nil && bankAccount.accountSuffix == nil || account.subNumber == bankAccount.accountSuffix) {
-                                found = true;
+            var bankAccounts = try context.executeFetchRequest(request) as! [BankAccount];
+            
+            for account in accounts {
+                found = false;
+                for bankAccount in bankAccounts {
+                    if account == bankAccount {
+                        found = true;
 
-                                // update the user if there is none assigned yet
-                                let users = bankAccount.mutableSetValueForKey("users");
-                                if users.count > 0 {
-                                    // there is already another user id assigned...
-                                    break;
-                                }
-                                
-                                bankAccount.userId = user.userId;
-                                bankAccount.customerId = user.customerId;
-                                users.addObject(user);
-                                
-                                if account.bic != nil {
-                                    bankAccount.bic = account.bic;
-                                }
-                                if account.iban != nil {
-                                    bankAccount.iban = account.iban;
-                                }
-                                if bankAccount.isManual.boolValue == true {
-                                    // check if account supports statement transfers - if yes,clear manual flag
-                                    // todo
-                                }
-                                
-                                break;
+                        // update the user if there is none assigned yet
+                        let users = bankAccount.mutableSetValueForKey("users");
+                        if users.count > 0 {
+                            // there is already another user id assigned...
+                            break;
                         }
-                    }
-                    if found == false {
-                        // bank account was not found - create it
                         
-                        guard let bankRoot = getBankNodeWithAccount(account) else {
-                            return;
-                        }
-                        bankAccounts.append(bankRoot);
-                        
-                        let bankAccount = NSEntityDescription.insertNewObjectForEntityForName("BankAccount", inManagedObjectContext: context) as! BankAccount;
-                        bankAccount.bankCode = account.bankCode;
-                        bankAccount.setAccountNumber(account.number);
-                        bankAccount.name = account.name;
-                        bankAccount.currency = account.currency;
-                        bankAccount.country = user.country;
-                        bankAccount.owner = account.owner;
                         bankAccount.userId = user.userId;
                         bankAccount.customerId = user.customerId;
-                        bankAccount.isBankAcc = NSNumber(bool: true);
-                        bankAccount.accountSuffix = account.subNumber;
-                        bankAccount.bic = account.bic;
-                        bankAccount.iban = account.iban;
-                        if let type = account.type, typeNum = Int(type) {
-                            bankAccount.type = NSNumber(integer: typeNum);
-                        }
-                        
-                        bankAccount.plugin = PluginRegistry.pluginForAccount(account.number, bankCode: account.bankCode);
-                        if bankAccount.plugin.length == 0 {
-                            bankAccount.plugin = "hbci";
-                        }
-                        
-                        bankAccount.parent = bankRoot;
-                        let users = bankAccount.mutableSetValueForKey("users");
                         users.addObject(user);
+                        
+                        if account.bic != nil {
+                            bankAccount.bic = account.bic;
+                        }
+                        if account.iban != nil {
+                            bankAccount.iban = account.iban;
+                        }
+                        if bankAccount.isManual.boolValue == true {
+                            // check if account supports statement transfers - if yes,clear manual flag
+                            // todo
+                        }
+                        
+                        break;
                     }
+                }
+                if found == false {
+                    // bank account was not found - create it
+                    
+                    guard let bankRoot = getBankNodeWithAccount(account) else {
+                        return;
+                    }
+                    bankAccounts.append(bankRoot);
+                    
+                    let bankAccount = NSEntityDescription.insertNewObjectForEntityForName("BankAccount", inManagedObjectContext: context) as! BankAccount;
+                    bankAccount.bankCode = account.bankCode;
+                    bankAccount.setAccountNumber(account.number);
+                    bankAccount.name = account.name;
+                    bankAccount.currency = account.currency;
+                    bankAccount.country = user.country;
+                    bankAccount.owner = account.owner;
+                    bankAccount.userId = user.userId;
+                    bankAccount.customerId = user.customerId;
+                    bankAccount.isBankAcc = NSNumber(bool: true);
+                    bankAccount.accountSuffix = account.subNumber;
+                    bankAccount.bic = account.bic;
+                    bankAccount.iban = account.iban;
+                    if let type = account.type, typeNum = Int(type) {
+                        bankAccount.type = NSNumber(integer: typeNum);
+                    }
+                    
+                    bankAccount.plugin = PluginRegistry.pluginForAccount(account.number, bankCode: account.bankCode);
+                    if bankAccount.plugin.length == 0 {
+                        bankAccount.plugin = "hbci";
+                    }
+                    
+                    bankAccount.parent = bankRoot;
+                    let users = bankAccount.mutableSetValueForKey("users");
+                    users.addObject(user);
                 }
             }
         }
@@ -329,6 +339,9 @@ class HBCIBackend : NSObject {
     }
     
     func syncBankUser(user:BankUser) ->PecuniaError? {
+        if user.customerId == nil {
+            user.customerId = "";
+        }
         let hbciUser = HBCIUser(userId: user.userId, customerId: user.customerId, bankCode: user.bankCode, hbciVersion: user.hbciVersion, bankURLString: user.bankURL);
         
         // get PIN
@@ -473,8 +486,11 @@ class HBCIBackend : NSObject {
         }
         
         dispatch_async(queue, {
-            let notification = NSNotification(name: PecuniaStatementsFinalizeNotification, object: nil);
-            NSNotificationCenter.defaultCenter().postNotification(notification);            
+            dispatch_async(dispatch_get_main_queue(), {
+                // important: nofifications must be sent in main thread!
+                let notification = NSNotification(name: PecuniaStatementsFinalizeNotification, object: nil);
+                NSNotificationCenter.defaultCenter().postNotification(notification);
+            });
         });
     }
     
@@ -546,6 +562,13 @@ class HBCIBackend : NSObject {
                 balance = balance - result.statements[i].value;
             }
         }
+        
+        // get account reference
+        if account.subNumber == nil {
+            result.account = BankAccount.findAccountWithNumber(account.number, bankCode: account.bankCode);
+        } else {
+            result.account = BankAccount.findAccountWithNumber(account.number, subNumber: account.subNumber, bankCode: account.bankCode);            
+        }
         return result;
     }
     
@@ -556,7 +579,6 @@ class HBCIBackend : NSObject {
         let user:BankUser! = accounts.first?.users.first as? BankUser;
         guard user != nil else {
             logError("No bank user defined for account \(accounts.first?.accountNumber())");
-            performSelectorOnMainThread(Selector("statementsReceived:"), withObject: nil, waitUntilDone: false);
             return;
         }
         
@@ -574,7 +596,6 @@ class HBCIBackend : NSObject {
             }
             catch {
                 logError("Could not set parameters for user \(user.userId)");
-                performSelectorOnMainThread(Selector("statementsReceived:"), withObject: nil, waitUntilDone: false);
                 return;
             }
         }
@@ -647,8 +668,14 @@ class HBCIBackend : NSObject {
             
         }
         
-        let notification = NSNotification(name: PecuniaStatementsNotification, object: bqResult);
-        NSNotificationCenter.defaultCenter().postNotification(notification);
+        // todo: put "evaluateQueryResult" to background process
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            // important: nofifications must be sent in main thread!
+            let notification = NSNotification(name: PecuniaStatementsNotification, object: bqResult);
+            NSNotificationCenter.defaultCenter().postNotification(notification);
+        });
+
     }
     
 }

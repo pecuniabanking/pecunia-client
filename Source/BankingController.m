@@ -487,8 +487,6 @@ static BankingController *bankinControllerInstance;
     // repair Category Root
     [self repairCategories];
 
-    [self setHBCIAccounts];
-
     [self updateBalances];
 
     // update unread information
