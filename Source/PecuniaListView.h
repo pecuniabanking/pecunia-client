@@ -24,12 +24,6 @@
 @interface PopoverAnimation : NSAnimation
 @end
 
-@interface PecuniaPopover : NSPopover
-
-@property BOOL wantClose;
-
-@end
-
 @interface DetailsView : NSView
 
 @property (nonatomic, weak) id owner;

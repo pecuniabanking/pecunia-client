@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NextTransfersCard">
@@ -32,6 +34,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="rF1-MP-Qda">
+                        <rect key="frame" x="0.0" y="0.0" width="329" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <size key="intercellSpacing" width="3" height="2"/>
                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -54,9 +57,8 @@
                                         <rect key="frame" x="1" y="1" width="326" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Bph-zV-eWb" userLabel="Receiver">
+                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Bph-zV-eWb" userLabel="Receiver">
                                                 <rect key="frame" x="7" y="15" width="226" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="t3d-kv-DkS">
                                                     <font key="font" size="12" name="HelveticaNeue-Medium"/>
                                                     <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
@@ -70,15 +72,13 @@
                                                     </binding>
                                                 </connections>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="RqS-8O-tvM" userLabel="Value">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RqS-8O-tvM" userLabel="Value">
                                                 <rect key="frame" x="235" y="16" width="80" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="76" id="TyY-kV-hxX"/>
+                                                </constraints>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="100,000,00" id="Flh-Ba-wZQ">
-                                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="BfU-d7-okv">
-                                                        <metadata>
-                                                            <real key="inspectorSampleValue" value="100"/>
-                                                        </metadata>
-                                                    </numberFormatter>
+                                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="BfU-d7-okv"/>
                                                     <font key="font" size="14" name="HelveticaNeue-Medium"/>
                                                     <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -87,9 +87,11 @@
                                                     <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.value" id="4Ko-C2-CXJ"/>
                                                 </connections>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Vyx-2F-e2s" userLabel="Currency">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vyx-2F-e2s" userLabel="Currency">
                                                 <rect key="frame" x="313" y="15" width="16" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="12" id="RXC-XF-WM1"/>
+                                                </constraints>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="€" id="1XL-zd-Toi">
                                                     <font key="font" size="12" name="HelveticaNeue-Light"/>
                                                     <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
@@ -104,9 +106,8 @@
                                                     </binding>
                                                 </connections>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="CEI-Fg-I9r" userLabel="Purpose">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CEI-Fg-I9r" userLabel="Purpose">
                                                 <rect key="frame" x="7" y="0.0" width="319" height="18"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Purpose" usesSingleLineMode="YES" id="wgw-aF-8Eq">
                                                     <font key="font" size="11" name="HelveticaNeue-Light"/>
                                                     <color key="textColor" red="0.38800000000000001" green="0.38200000000000001" blue="0.36299999999999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -120,9 +121,11 @@
                                                     </binding>
                                                 </connections>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="tng-iD-s6z" userLabel="Period Description">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tng-iD-s6z" userLabel="Period Description">
                                                 <rect key="frame" x="7" y="35" width="319" height="14"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="14" id="of1-VP-628"/>
+                                                </constraints>
                                                 <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="UWK-wG-hyz">
                                                     <font key="font" size="9" name="HelveticaNeue-Bold"/>
                                                     <color key="textColor" red="0.75294125079999996" green="0.35294118520000001" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
@@ -133,6 +136,25 @@
                                                 </connections>
                                             </textField>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="tng-iD-s6z" firstAttribute="leading" secondItem="wS0-V3-sxb" secondAttribute="leading" constant="9" id="Awc-5N-qeQ"/>
+                                            <constraint firstAttribute="bottom" secondItem="RqS-8O-tvM" secondAttribute="bottom" constant="16" id="CHI-GB-Qui"/>
+                                            <constraint firstItem="RqS-8O-tvM" firstAttribute="baseline" secondItem="Bph-zV-eWb" secondAttribute="firstBaseline" id="Gfq-Vj-gNF"/>
+                                            <constraint firstItem="RqS-8O-tvM" firstAttribute="leading" secondItem="Bph-zV-eWb" secondAttribute="trailing" constant="6" id="GrV-j7-a8s"/>
+                                            <constraint firstItem="tng-iD-s6z" firstAttribute="top" secondItem="wS0-V3-sxb" secondAttribute="top" constant="1" id="N2i-7h-yv2"/>
+                                            <constraint firstAttribute="trailing" secondItem="tng-iD-s6z" secondAttribute="trailing" constant="2" id="U5N-fJ-sOM"/>
+                                            <constraint firstItem="Bph-zV-eWb" firstAttribute="centerY" secondItem="wS0-V3-sxb" secondAttribute="centerY" id="Ux9-M1-igh"/>
+                                            <constraint firstItem="RqS-8O-tvM" firstAttribute="baseline" secondItem="Vyx-2F-e2s" secondAttribute="firstBaseline" id="byi-ed-cT0"/>
+                                            <constraint firstItem="Vyx-2F-e2s" firstAttribute="baseline" secondItem="Bph-zV-eWb" secondAttribute="baseline" id="cm3-30-IbM"/>
+                                            <constraint firstItem="CEI-Fg-I9r" firstAttribute="top" secondItem="tng-iD-s6z" secondAttribute="bottom" constant="17" id="dI1-Mk-xK3"/>
+                                            <constraint firstItem="RqS-8O-tvM" firstAttribute="top" secondItem="wS0-V3-sxb" secondAttribute="top" constant="13" id="haP-OX-wvn"/>
+                                            <constraint firstAttribute="trailing" secondItem="Vyx-2F-e2s" secondAttribute="trailing" constant="-1" id="iIT-Mi-Os8"/>
+                                            <constraint firstItem="tng-iD-s6z" firstAttribute="leading" secondItem="Bph-zV-eWb" secondAttribute="leading" id="pPf-6T-Pmv"/>
+                                            <constraint firstItem="Vyx-2F-e2s" firstAttribute="leading" secondItem="RqS-8O-tvM" secondAttribute="trailing" constant="2" id="plG-mA-SGT"/>
+                                            <constraint firstItem="Bph-zV-eWb" firstAttribute="leading" secondItem="CEI-Fg-I9r" secondAttribute="leading" id="tVB-S0-hu6"/>
+                                            <constraint firstAttribute="bottom" secondItem="CEI-Fg-I9r" secondAttribute="bottom" id="vCb-Rx-Ifn"/>
+                                            <constraint firstItem="CEI-Fg-I9r" firstAttribute="trailing" secondItem="tng-iD-s6z" secondAttribute="trailing" id="zZl-p5-Rff"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="currencyField" destination="Vyx-2F-e2s" id="jXe-T4-keh"/>
                                             <outlet property="purposeField" destination="CEI-Fg-I9r" id="7nZ-AY-q5I"/>

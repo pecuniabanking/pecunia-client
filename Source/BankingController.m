@@ -933,8 +933,9 @@ static BankingController *bankinControllerInstance;
 
     BankQueryResult *result;
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL            noStatements = YES;
-    BOOL            isImport = NO;
+
+    BOOL noStatements = YES;
+    BOOL isImport = NO;
 
     NSArray *resultList = [notification object];
     if (resultList == nil) {
@@ -1227,7 +1228,6 @@ static BankingController *bankinControllerInstance;
 
 - (void)cleanupAfterMaintenance: (NSDictionary *)details {
     [self save];
-    [overviewController reload];
     [waitViewController markDone: details];
     [waitOverlay performSelector: @selector(performClose:) withObject: nil afterDelay: 5 inModes: @[NSModalPanelRunLoopMode]];
 }
@@ -1426,28 +1426,34 @@ static BankingController *bankinControllerInstance;
 - (void)doShowProperties {
     LogEnter;
 
-    BankingCategory *cat = [self currentSelection];
-    if (cat == nil) {
+    BankingCategory *category = [self currentSelection];
+    if (category == nil) {
+        LogLeave;
         return;
     }
 
-    if (!cat.isBankAccount && cat != BankingCategory.nassRoot && cat != BankingCategory.catRoot) {
-        CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
+    if (category.isCategoryRoot || category.isNotAssignedCategory) {
+        LogLeave;
+        return;
+    }
+
+    if (category.isBankAccount) {
+        // Banking root, bank nodes and account nodes.
+        // Account nodes have no children. Bank nodes are never shown without having at least one account node.
+        if (category.children.count > 0 || category.isBankingRoot) {
+            [self editBankUsers: nil];
+        } else {
+            AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount *)category];
+            [NSApp runModalForWindow: [changeController window]];
+            [categoryController prepareContent];
+            [BankingCategory.bankRoot updateCategorySums];
+        }
+    } else {
+        CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: category];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent]; // Visibility of a category could have changed.
         [BankingCategory.catRoot updateCategorySums]; // Category could have switched its noCatRep property.
-        return;
     }
-
-    if (cat.accountNumber != nil) {
-        AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount *)cat];
-        [NSApp runModalForWindow: [changeController window]];
-        [categoryController prepareContent];
-        [BankingCategory.bankRoot updateCategorySums];
-    } else {
-        [self editBankUsers: nil];
-    }
-    // Changes are stored in the controllers.
 
     LogLeave;
 }
@@ -1455,26 +1461,25 @@ static BankingController *bankinControllerInstance;
 - (IBAction)deleteAccount: (id)sender {
     LogEnter;
 
-    BankingCategory *cat = [self currentSelection];
-    if (cat == nil) {
-        return;
-    }
-    if ([cat isBankAccount] == NO) {
-        return;
-    }
-    if ([cat accountNumber] == nil) {
+    BankingCategory *category = [self currentSelection];
+    if (category == nil || !category.isBankAccount || category.children.count > 0) {
+        LogLeave;
         return;
     }
 
-    BankAccount *account = (BankAccount *)cat;
+    BankAccount *account = (BankAccount *)category;
 
-    // issue a confirmation
+    // Ask for confirmation.
+    NSString *name = account.localName;
+    if (account.accountNumber != nil) { // Might not be set, e.g. for manual accounts.
+        name = [NSString stringWithFormat: @"%@ (%@)", name, account.accountNumber];
+    }
     int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
                                       NSLocalizedString(@"AP812", nil),
                                       NSLocalizedString(@"AP3", nil),
                                       NSLocalizedString(@"AP4", nil),
                                       nil,
-                                      account.accountNumber
+                                      name
                                       );
     if (res != NSAlertDefaultReturn) {
         return;
@@ -1482,7 +1487,7 @@ static BankingController *bankinControllerInstance;
 
     // check for transactions
     BOOL         keepAssignedStatements = NO;
-    NSMutableSet *stats = [cat mutableSetValueForKey: @"statements"];
+    NSMutableSet *stats = [category mutableSetValueForKey: @"statements"];
     if (stats && [stats count] > 0) {
         BOOL hasAssignment = NO;
 
@@ -1499,12 +1504,13 @@ static BankingController *bankinControllerInstance;
                                                       NSLocalizedString(@"AP3", nil),
                                                       NSLocalizedString(@"AP4", nil),
                                                       NSLocalizedString(@"AP2", nil),
-                                                      account.accountNumber
+                                                      name
                                                       );
             if (alertResult == NSAlertDefaultReturn) {
                 keepAssignedStatements = YES;
             } else {
                 if (alertResult == NSAlertOtherReturn) {
+                    LogLeave;
                     return;
                 } else {
                     keepAssignedStatements = NO;
@@ -2210,9 +2216,6 @@ static BankingController *bankinControllerInstance;
         // Update category values including rollup for all categories.
         [BankingCategory updateBalancesAndSums];
         
-        // remove selection in statementsListView after item was dropped
-        [overviewController removeSelection];
-
         if (needBankRootUpdate) {
             [[BankingCategory bankRoot] updateCategorySums];
         }
@@ -2249,9 +2252,19 @@ static BankingController *bankinControllerInstance;
     if (outlineView != accountsOutline) {
         return nil;
     }
+
+    if ([tableColumn.identifier isEqualToString: @"BadgeColumn"]) {
+        if ([item.representedObject parent] == nil) {
+            return [outlineView makeViewWithIdentifier: @"HeaderBadgeCell" owner: outlineView];
+        }
+
+        return [outlineView makeViewWithIdentifier: @"BadgeCell" owner: outlineView];
+    }
+
     if ([item.representedObject parent] == nil) {
         return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: outlineView];
     }
+    
     return [outlineView makeViewWithIdentifier: @"DataCell" owner: outlineView];
 }
 
@@ -2387,8 +2400,8 @@ static BankingController *bankinControllerInstance;
     }
 
     if (idx == 0 && currentSectionIndex == 0) {
-        BankingCategory *cat = [self currentSelection];
-        if (cat == nil || [cat accountNumber] == nil) {
+        BankingCategory *category = [self currentSelection];
+        if (category == nil || category.children.count > 0) { // Bank nodes or the banking root.
             if ([item action] == @selector(showProperties:)) {
                 return NO;
             }
@@ -2426,8 +2439,9 @@ static BankingController *bankinControllerInstance;
                 return NO;
             }
         }
-        if ([cat isKindOfClass: [BankAccount class]]) {
-            BankAccount *account = (BankAccount *)cat;
+
+        if ([category isKindOfClass: [BankAccount class]]) {
+            BankAccount *account = (BankAccount *)category;
             if ([[account isManual] boolValue] == YES) {
                 if ([item action] == @selector(startLocalTransfer:)) {
                     return NO;
@@ -2657,10 +2671,6 @@ static BankingController *bankinControllerInstance;
 
     // This function is only called if the associated menu item is enabled, which is only the case
     // if (amongst other) the current section is the statements overview.
-    if (!self.currentSelection.isBankAcc.boolValue) {
-        return;
-    }
-
     [(id)currentSection deleteSelectedStatements];
     [overviewController clearStatementFilter];
 
@@ -3141,10 +3151,23 @@ static BankingController *bankinControllerInstance;
     [BankAccount updateUnreadCounts];
 
     NSUInteger newCount = BankStatement.numberOfNewStatements;
+    NSTableColumn *badgeColumn = accountsOutline.tableColumns[[accountsOutline columnWithIdentifier: @"BadgeColumn"]];
     if (newCount == 0) {
         [NSApplication.sharedApplication.dockTile setBadgeLabel: @""];
+        badgeColumn.hidden = YES;
     } else {
         [NSApplication.sharedApplication.dockTile setBadgeLabel: [NSString stringWithFormat: @"%li", newCount]];
+        badgeColumn.hidden = NO;
+
+        // Also set the badge column width to a good value to accomodate the widest badge.
+        CGFloat newWidth = badgeColumn.minWidth + 6;
+        for (NSInteger index = 0; index < accountsOutline.numberOfRows; ++index) {
+            NSTableCellView *view = [accountsOutline viewAtColumn: 1 row: index makeIfNecessary: NO];
+            if (view != nil && [view viewWithTag: 1].bounds.size.width > newWidth) {
+                newWidth = [view viewWithTag: 1].bounds.size.width;
+            }
+        }
+        badgeColumn.width = newWidth;
     }
 
     LogLeave;

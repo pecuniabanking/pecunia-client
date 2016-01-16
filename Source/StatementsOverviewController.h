@@ -18,17 +18,14 @@
  */
 
 #import "PecuniaSectionItem.h"
-#import "StatementsListView.h"
 
-@interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol, NSMenuDelegate>
+@interface StatementsOverviewController : NSObject <PecuniaSectionItem, NSMenuDelegate>
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item;
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
 - (void)markSelectedStatementsUnread;
 - (void)clearStatementFilter;
-- (void)reload;
-- (void)removeSelection;
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) BankingCategory   *selectedCategory;

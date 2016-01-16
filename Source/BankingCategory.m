@@ -584,10 +584,7 @@ static NSImage *notAssignedImage;
 }
 
 - (BOOL)isBankingRoot {
-    if (self.parent == nil) {
-        return [self.isBankAcc boolValue];
-    }
-    return NO;
+    return self == BankingCategory.bankRoot;
 }
 
 - (BOOL)isEditable {

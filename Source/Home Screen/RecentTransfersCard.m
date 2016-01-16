@@ -95,8 +95,8 @@
             LogError(@"Internal error: home screen recent transfers view loading failed.");
         }
 
-        transfersView.delegate = self;
-        transfersView.dataSource = self;
+        //transfersView.delegate = self;
+        //transfersView.dataSource = self;
         [self addSubview: transfersViewContainer];
 
         [self loadData];

@@ -73,19 +73,8 @@
 
 @end
 
-@implementation PecuniaPopover
-
-@synthesize wantClose;
-
-- (IBAction)performClose: (id)sender {
-    wantClose = YES;
-    [super performClose: sender];
-}
-
-@end
-
 @interface PecuniaListView () <NSPopoverDelegate> {
-    PecuniaPopover   *detailsPopover;
+    DetailsPopover   *detailsPopover;
     NSViewController *detailsPopoverController;
     DetailsView      *detailsView;
     PopoverAnimation *positionAnimation;
@@ -107,7 +96,7 @@
     detailsView = (id)detailsPopoverController.view;
     detailsView.owner = self;
 
-    detailsPopover = [PecuniaPopover new];
+    detailsPopover = [DetailsPopover new];
     detailsPopover.contentViewController = detailsPopoverController;
     detailsPopover.behavior = NSPopoverBehaviorSemitransient;
     detailsPopover.animates = YES;

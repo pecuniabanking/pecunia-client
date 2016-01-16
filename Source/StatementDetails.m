@@ -502,7 +502,7 @@ extern void *UserDefaultsBindingContext;
     colorBox.fillColor = assignment.category.categoryColor;
 
     // Construct certain values out of the available data.
-    BankStatement     *statement = assignment.statement;
+    BankStatement *statement = assignment.statement;
 
     BOOL isCreditCardStatement = statement.type.intValue == StatementType_CreditCard;
 
@@ -555,7 +555,7 @@ extern void *UserDefaultsBindingContext;
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
     };
     NSDictionary *boldAttributes = @{
-        NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: NO],
+        NSFontAttributeName: [PreferenceController mainFontOfSize: 13 bold: YES],
         NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]
     };
 
@@ -610,9 +610,9 @@ extern void *UserDefaultsBindingContext;
         isNewIndicator.alphaValue = statement.isNew.boolValue ? 1 : 0.25;
 
         NSString *accountTitle;
-        NSString *bankCodeTitle;
-        NSString *accountNumber;
-        NSString *bankCode;
+        NSString *bankCodeTitle = @"";
+        NSString *accountNumber = @"";
+        NSString *bankCode = @"";
         if (statement.remoteIBAN != nil) {
             accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP409", nil)];
             bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP410", nil)];
@@ -620,11 +620,15 @@ extern void *UserDefaultsBindingContext;
             accountNumber = statement.remoteIBAN;
             bankCode = statement.remoteBIC == nil ? @"--" : statement.remoteBIC;
         } else {
-            accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP401", nil)];
-            bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP400", nil)];
+            if (statement.remoteAccount != nil) {
+                accountTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP401", nil)];
+                bankCodeTitle = [NSString stringWithFormat: @"%@: ", NSLocalizedString(@"AP400", nil)];
 
-            accountNumber = statement.remoteAccount == nil ? @"--" : statement.remoteAccount;
-            bankCode = statement.remoteBankCode == nil ? @"--" : statement.remoteBankCode;
+                accountNumber = statement.remoteAccount == nil ? @"--" : statement.remoteAccount;
+                bankCode = statement.remoteBankCode == nil ? @"--" : statement.remoteBankCode;
+            } else {
+                accountTitle = NSLocalizedString(@"AP441", nil);
+            }
         }
 
         NSMutableAttributedString *string = [NSMutableAttributedString new];

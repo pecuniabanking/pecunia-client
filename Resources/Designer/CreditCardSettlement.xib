@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CreditCardSettlementController">
@@ -20,18 +20,19 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="842" y="670" width="729" height="666"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="729" height="666"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <pdfView autoresizesSubviews="NO" wantsLayer="YES" id="3">
+                    <pdfView autoresizesSubviews="NO" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3">
                         <rect key="frame" x="20" y="63" width="689" height="583"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </pdfView>
-                    <button verticalHuggingPriority="750" id="36">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="36">
                         <rect key="frame" x="241" y="13" width="247" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="235" id="8aw-Uc-r8K"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Abrechnungen aktualisieren" bezelStyle="rounded" image="refresh" imagePosition="left" alignment="center" alternateImage="refresh" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -40,9 +41,8 @@
                             <action selector="updateSettlements:" target="-2" id="42"/>
                         </connections>
                     </button>
-                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="57">
+                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="57">
                         <rect key="frame" x="677" y="20" width="39" height="38"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="round" bezelStyle="circular" image="NSGoRightTemplate" imagePosition="only" alignment="center" alternateImage="NSGoRightTemplate" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="58">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -51,9 +51,8 @@
                             <action selector="next:" target="-2" id="62"/>
                         </connections>
                     </button>
-                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="59">
+                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="59">
                         <rect key="frame" x="14" y="20" width="39" height="38"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="round" bezelStyle="circular" image="NSGoLeftTemplate" imagePosition="only" alignment="center" alternateImage="NSGoLeftTemplate" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="60">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -63,6 +62,18 @@
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="3" firstAttribute="trailing" secondItem="57" secondAttribute="trailing" id="0Ng-Il-hv0"/>
+                    <constraint firstItem="57" firstAttribute="top" secondItem="59" secondAttribute="top" id="3Nc-Nu-qr3"/>
+                    <constraint firstItem="3" firstAttribute="leading" secondItem="59" secondAttribute="leading" id="5z6-mH-hon"/>
+                    <constraint firstItem="36" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="22" id="JSu-fL-q5u"/>
+                    <constraint firstItem="3" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" symbolic="YES" id="MUt-Wm-6yT"/>
+                    <constraint firstAttribute="bottom" secondItem="36" secondAttribute="bottom" constant="20" symbolic="YES" id="RtF-OC-6oV"/>
+                    <constraint firstItem="3" firstAttribute="centerX" secondItem="36" secondAttribute="centerX" id="ezP-Z3-bt4"/>
+                    <constraint firstItem="59" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" symbolic="YES" id="pYF-0d-0Gj"/>
+                    <constraint firstItem="3" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" symbolic="YES" id="uJD-lm-b6T"/>
+                    <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="20" symbolic="YES" id="vkc-YA-3ke"/>
+                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="22"/>
@@ -70,8 +81,8 @@
         </window>
     </objects>
     <resources>
-        <image name="NSGoLeftTemplate" width="9" height="9"/>
-        <image name="NSGoRightTemplate" width="9" height="9"/>
-        <image name="refresh" width="24" height="24"/>
+        <image name="NSGoLeftTemplate" width="9" height="12"/>
+        <image name="NSGoRightTemplate" width="9" height="12"/>
+        <image name="refresh" width="20" height="20"/>
     </resources>
 </document>

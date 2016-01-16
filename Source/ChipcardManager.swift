@@ -64,11 +64,11 @@ var _manager:ChipcardManager!
     }
     
     
-    public func getReaders() ->Array<String>? {
+    public func getReaders() -> Array<String>? {
         return HBCISmartcardDDV.readers();
     }
     
-    public func connectCard(userIdName:String?) ->Bool {
+    public func connectCard(userIdName: String?) -> Bool {
         // check if reader is still available
         if !card.isReaderConnected() {
             let alert = NSAlert();
@@ -101,7 +101,6 @@ var _manager:ChipcardManager!
             // verify card
             let notificationController = NotificationWindowController(message: NSLocalizedString("AP351", comment:""), title: NSLocalizedString("AP357", comment:""));
             notificationController.showWindow(self);
-            notificationController.window?.makeKeyAndOrderFront(self);
             if !card.verifyPin() {
                 notificationController.window?.close();
                 return false;

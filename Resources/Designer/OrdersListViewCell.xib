@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="OrdersListViewCell"/>
@@ -15,7 +15,6 @@
             <subviews>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9" customClass="NoAnimationTextField">
                     <rect key="frame" x="35" y="61" width="425" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Remote name" placeholderString="" usesSingleLineMode="YES" id="10">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -24,7 +23,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="23" userLabel="amountCurrencyLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="608" y="7" width="10" height="15"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" title="€" usesSingleLineMode="YES" id="24">
                         <font key="font" size="10" name="HelveticaNeue"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -33,7 +31,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4AE-bH-gaG" userLabel="ibanCaption" customClass="NoAnimationTextField">
                     <rect key="frame" x="35" y="44" width="29" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="WyX-CJ-nIY">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -42,7 +39,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RXI-Xx-8pA" userLabel="bicCaption" customClass="NoAnimationTextField">
                     <rect key="frame" x="248" y="44" width="22" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="9qi-bH-YNc">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -51,7 +47,6 @@
                 </textField>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9hM-EX-Oov" userLabel="ibanLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="67" y="44" width="158" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="nicht angegeben" id="4KC-ST-Gvc">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -63,7 +58,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="183" id="a1O-94-8DP"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="KSa-z8-KN3">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -72,7 +66,6 @@
                 </textField>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="118" userLabel="purposeLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="35" y="10" width="425" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Purpose" id="119">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -89,12 +82,10 @@
                         <size key="offset" width="1" height="-1"/>
                         <color key="color" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                     </shadow>
-                    <animations/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="edit" id="136"/>
                 </imageView>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="138" userLabel="nextDateLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="565" y="55" width="53" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="141">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -103,7 +94,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="139" userLabel="nextDateCaption" customClass="NoAnimationTextField">
                     <rect key="frame" x="514" y="55" width="45" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="nächste:" id="140">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -112,7 +102,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="142" userLabel="lastDateLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="565" y="38" width="53" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="145">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -121,7 +110,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="143" userLabel="lastDateCaption" customClass="NoAnimationTextField">
                     <rect key="frame" x="507" y="38" width="52" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="letztmalig:" id="144">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -138,7 +126,6 @@
                         <size key="offset" width="1" height="-1"/>
                         <color key="color" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                     </shadow>
-                    <animations/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="send" id="157"/>
                 </imageView>
                 <button toolTip="Löschanforderung für diesen Dauerauftrag aufheben." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="162" userLabel="deleteImage">
@@ -151,7 +138,6 @@
                         <size key="offset" width="1" height="-1"/>
                         <color key="color" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                     </shadow>
-                    <animations/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="delete" imagePosition="only" alignment="center" inset="2" id="163">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -162,7 +148,6 @@
                 </button>
                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="h8t-uG-kzz" userLabel="bankNameLabel" customClass="NoAnimationTextField">
                     <rect key="frame" x="35" y="27" width="425" height="17"/>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Bank name" placeholderString="" id="lGD-qt-XDg">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -174,7 +159,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="110" id="t1B-b5-SHP"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100,000,00" usesSingleLineMode="YES" id="180">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="181">
                             <textAttributesForNegativeValues/>
@@ -230,7 +214,6 @@
                 <constraint firstItem="138" firstAttribute="leading" secondItem="139" secondAttribute="trailing" constant="10" id="yzS-Ol-erE"/>
                 <constraint firstItem="143" firstAttribute="leading" secondItem="fWx-kd-U9q" secondAttribute="trailing" constant="51" id="zyB-P8-8Cq"/>
             </constraints>
-            <animations/>
             <connections>
                 <outlet property="bankNameLabel" destination="h8t-uG-kzz" id="geA-Aw-wKR"/>
                 <outlet property="bicCaption" destination="RXI-Xx-8pA" id="eSH-jb-In9"/>

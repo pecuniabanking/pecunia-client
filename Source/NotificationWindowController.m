@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,20 +38,13 @@
 
 - (void)awakeFromNib
 {
-    [messageField setStringValue: message];
-    [[self window] setTitle: title];
-    //    [[self window ] makeKeyAndOrderFront:self ];
+    messageField.stringValue = message;
+    self.window.title = title;
 }
 
 - (IBAction)ok: (id)sender
 {
     [[self window] close];
-}
-
-- (void)dealloc
-{
-    message = nil;
-    title = nil;
 }
 
 @end

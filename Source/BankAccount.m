@@ -621,11 +621,10 @@ static NSImage *bankImage;
 }
 
 - (NSImage *)categoryImage {
-    if (self.accountNumber == nil) {
+    if (self.children.count > 0) {
         return bankImage;
     } else {
-        BankAccount *account = (BankAccount *)self;
-        if (self.isManual.boolValue || account.noAutomaticQuery.boolValue) {
+        if (self.isManual.boolValue || self.noAutomaticQuery.boolValue) {
             return moneyImage;
         } else {
             return moneySyncImage;

@@ -445,7 +445,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="uUg-87-6Io">
-                                            <rect key="frame" x="7" y="111.00000789898405" width="490" height="26"/>
+                                            <rect key="frame" x="7" y="111" width="490" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Annuitätendarlehen" id="ajw-Sj-2dp">
                                                 <font key="font" metaFont="systemBold"/>
@@ -905,7 +905,7 @@
                                             <rect key="frame" x="22" y="243" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <string key="toolTip">Noch nicht zu einer Kategorie zugeordnete Umsätze werden standardmäßig mit einer Schraffur markiert. Alternativ kann man auch einen farbigen Hintergrund verwenden. Die dafür genutzte Farbe kann man in den Farbeinstellungen anpassen.</string>
-                                            <buttonCell key="cell" type="check" title="Nicht zugeordnete Umsätze farbig hinterlegen (anstatt Schraffur)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="905">
+                                            <buttonCell key="cell" type="check" title="Nicht zugeordnete Umsätze farbig hinterlegen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="905">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -1031,7 +1031,7 @@
                                             <rect key="frame" x="22" y="271" width="460" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <string key="toolTip">Neue Umsätze können entweder mit einem Icon oder, alternativ, mit einem farbigen Hintergrund gekennzeichnet werden. Die dafür genutzte Farbe kann man in den Farbeinstellungen anpassen.</string>
-                                            <buttonCell key="cell" type="check" title="Neue Umsätze farbig hinterlegen (anstatt Icon)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="899">
+                                            <buttonCell key="cell" type="check" title="Neue Umsätze farbig hinterlegen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="899">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>

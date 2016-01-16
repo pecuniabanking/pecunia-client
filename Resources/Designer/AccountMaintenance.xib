@@ -2,8 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <development version="6000" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AccountMaintenanceController">
@@ -60,9 +60,9 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="159">
-                                <rect key="frame" x="17" y="20" width="673" height="21"/>
+                                <rect key="frame" x="17" y="18" width="673" height="24"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="7sw-Yj-jc2"/>
+                                    <constraint firstAttribute="height" constant="24" id="7sw-Yj-jc2"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Bankname" id="160">
                                     <font key="font" metaFont="systemBold" size="20"/>
@@ -305,7 +305,7 @@
                     </textField>
                     <box autoresizesSubviews="NO" title="Kontodaten" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="17">
                         <rect key="frame" x="17" y="57" width="881" height="256"/>
-                        <view key="contentView">
+                        <view key="contentView" id="eb0-2B-bIx">
                             <rect key="frame" x="1" y="1" width="879" height="240"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -506,19 +506,19 @@
                             </subviews>
                         </view>
                         <constraints>
-                            <constraint firstItem="209" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="2tx-5n-Ixl"/>
-                            <constraint firstItem="22" firstAttribute="baseline" secondItem="20" secondAttribute="baseline" constant="-1" id="6Xu-rZ-vtU"/>
-                            <constraint firstItem="44" firstAttribute="leading" secondItem="22" secondAttribute="leading" id="9bC-Q0-o2a"/>
-                            <constraint firstAttribute="trailing" secondItem="209" secondAttribute="trailing" id="AZ3-lb-g9S"/>
-                            <constraint firstItem="44" firstAttribute="leading" secondItem="17" secondAttribute="leading" constant="127" id="EsQ-1S-d3B"/>
-                            <constraint firstItem="22" firstAttribute="leading" secondItem="20" secondAttribute="trailing" constant="9" id="G99-I9-4hS"/>
-                            <constraint firstItem="22" firstAttribute="top" secondItem="44" secondAttribute="bottom" constant="16" id="Mjo-1r-iLI"/>
-                            <constraint firstItem="44" firstAttribute="top" secondItem="17" secondAttribute="top" constant="31" id="OmL-V3-P46"/>
-                            <constraint firstItem="209" firstAttribute="top" secondItem="22" secondAttribute="bottom" constant="17" id="SsD-rp-yy0"/>
-                            <constraint firstAttribute="bottom" secondItem="209" secondAttribute="bottom" constant="10" id="XGm-B3-Yyi"/>
-                            <constraint firstAttribute="trailing" secondItem="22" secondAttribute="trailing" constant="299" id="pUR-mn-CGf"/>
-                            <constraint firstItem="44" firstAttribute="leading" secondItem="45" secondAttribute="trailing" constant="8" id="pWW-nC-uIy"/>
-                            <constraint firstItem="44" firstAttribute="baseline" secondItem="45" secondAttribute="baseline" constant="-1" id="sWo-KQ-ifD"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="45" secondAttribute="trailing" constant="8" id="3xA-RL-2nB"/>
+                            <constraint firstItem="22" firstAttribute="baseline" secondItem="20" secondAttribute="baseline" constant="-1" id="4bi-ff-bsk"/>
+                            <constraint firstItem="209" firstAttribute="top" secondItem="22" secondAttribute="bottom" constant="17" id="7Wl-9z-Vt6"/>
+                            <constraint firstItem="44" firstAttribute="top" secondItem="17" secondAttribute="top" constant="31" id="7ac-0I-H7Z"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="17" secondAttribute="leading" constant="127" id="DGX-fi-ZLi"/>
+                            <constraint firstItem="22" firstAttribute="leading" secondItem="20" secondAttribute="trailing" constant="9" id="JN0-AZ-Zba"/>
+                            <constraint firstAttribute="bottom" secondItem="209" secondAttribute="bottom" constant="10" id="PPb-wN-x6z"/>
+                            <constraint firstItem="44" firstAttribute="leading" secondItem="22" secondAttribute="leading" id="cca-Pq-mtd"/>
+                            <constraint firstAttribute="trailing" secondItem="209" secondAttribute="trailing" id="dbu-h3-OwO"/>
+                            <constraint firstAttribute="trailing" secondItem="22" secondAttribute="trailing" constant="299" id="igz-k6-2cl"/>
+                            <constraint firstItem="44" firstAttribute="baseline" secondItem="45" secondAttribute="baseline" constant="-1" id="mH9-o7-ENs"/>
+                            <constraint firstItem="209" firstAttribute="leading" secondItem="17" secondAttribute="leading" id="uD7-6T-3MO"/>
+                            <constraint firstItem="22" firstAttribute="top" secondItem="44" secondAttribute="bottom" constant="16" id="vGG-Ws-KrT"/>
                         </constraints>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

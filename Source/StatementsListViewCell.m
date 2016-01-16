@@ -355,7 +355,7 @@ extern NSDictionary    *whiteAttributes;
                                action: @selector(menuAction:)
                         keyEquivalent: @"n"];
         item.keyEquivalentModifierMask = NSCommandKeyMask;
-        item.tag = MenuActionAddStatement;
+        item.tag = StatementMenuActionAddStatement;
 
         [menu addItem: NSMenuItem.separatorItem];
     }
@@ -363,17 +363,17 @@ extern NSDictionary    *whiteAttributes;
                            action: @selector(menuAction:)
                     keyEquivalent: @" "];
     item.keyEquivalentModifierMask = 0;
-    item.tag = MenuActionShowDetails;
+    item.tag = StatementMenuActionShowDetails;
 
     item = [menu addItemWithTitle: NSLocalizedString(@"AP233", nil)
                            action: singleSelection ? @selector(menuAction:) : nil
                     keyEquivalent: @"s"];
-    item.tag = MenuActionSplitStatement;
+    item.tag = StatementMenuActionSplitStatement;
 
     item = [menu addItemWithTitle: NSLocalizedString(@"AP234", nil)
                            action: @selector(menuAction:)
                     keyEquivalent: [NSString stringWithFormat: @"%c", NSBackspaceCharacter]];
-    item.tag = MenuActionDeleteStatement;
+    item.tag = StatementMenuActionDeleteStatement;
 
     [menu addItem: NSMenuItem.separatorItem];
 
@@ -387,7 +387,7 @@ extern NSDictionary    *whiteAttributes;
     item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil): NSLocalizedString(@"AP239", nil)
                            action: @selector(menuAction:)
                     keyEquivalent: @""];
-    item.tag = allRead ? MenuActionMarkUnread : MenuActionMarkRead;
+    item.tag = allRead ? StatementMenuActionMarkUnread : StatementMenuActionMarkRead;
 
     BankStatement *statement = [self.representedObject statement];
     if (!statement.account.isManual.boolValue) {
@@ -395,13 +395,13 @@ extern NSDictionary    *whiteAttributes;
         item = [menu addItemWithTitle: NSLocalizedString(@"AP236", nil)
                                action: singleSelection ? @selector(menuAction:) : nil
                         keyEquivalent: @""];
-        item.tag = MenuActionStartTransfer;
+        item.tag = StatementMenuActionStartTransfer;
     }
 
     item = [menu addItemWithTitle: NSLocalizedString(@"AP237", nil)
                            action: singleSelection ? @selector(menuAction:) : nil
                     keyEquivalent: @""];
-    item.tag = MenuActionCreateTemplate;
+    item.tag = StatementMenuActionCreateTemplate;
 
     return menu;
 }

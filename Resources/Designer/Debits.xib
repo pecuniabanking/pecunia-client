@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DebitsController">
@@ -138,7 +138,7 @@
                                                     <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <searchField verticalHuggingPriority="750" id="513">
+                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" id="513">
                                                 <rect key="frame" x="345" y="372" width="136" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="514">
@@ -544,7 +544,7 @@
                     <datePickerCell key="cell" controlSize="small" alignment="left" id="436">
                         <font key="font" size="11" name="HelveticaNeue"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                            <!--1982-02-12 16:00:00 +0000-->
+                            <!--1982-02-12 08:00:00 -0800-->
                             <timeZone key="timeZone" name="US/Pacific"/>
                         </calendarDate>
                         <color key="backgroundColor" red="0.0" green="0.4941176471" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -732,7 +732,7 @@
                     <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="clockAndCalendar" id="443">
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                            <!--1982-02-12 16:00:00 +0000-->
+                            <!--1982-02-12 08:00:00 -0800-->
                             <timeZone key="timeZone" name="US/Pacific"/>
                         </calendarDate>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

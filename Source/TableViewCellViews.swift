@@ -157,8 +157,8 @@ public class StatementTableCellView : NumberTableCellView {
         didSet {
             statementTags.content = objectValue?.statement??.tags;
 
-            if let assignment = objectValue as? StatCatAssignment {
-                blendValue = assignment.statement.isPreliminary.boolValue ? 0.4 : 1;
+            if let assignment = objectValue as? StatCatAssignment, preliminary = assignment.statement.isPreliminary {
+                blendValue = preliminary.boolValue ? 0.4 : 1;
             } else {
                 blendValue = 1;
             }
@@ -182,8 +182,6 @@ public class StatementTableCellView : NumberTableCellView {
 // Another special cell for the catgory tree.
 public class CategoryTableCellView : NumberTableCellView {
     @IBOutlet weak public var colorWellWidthConstraint: NSLayoutConstraint?;
-    @IBOutlet weak public var badgeWidthConstraint: NSLayoutConstraint?;
-    @IBOutlet weak public var badge: NSButton?;
 
     public override func awakeFromNib() {
         let userDefaults = NSUserDefaults.standardUserDefaults();
@@ -194,9 +192,6 @@ public class CategoryTableCellView : NumberTableCellView {
     deinit {
         let userDefaults = NSUserDefaults.standardUserDefaults();
         userDefaults.removeObserver(self, forKeyPath: "showCatColorsInTree");
-        if objectValue != nil {
-            objectValue!.removeObserver(self, forKeyPath: "unreadEntries");
-        }
     }
 
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?,
@@ -210,16 +205,38 @@ public class CategoryTableCellView : NumberTableCellView {
                 return;
             }
 
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context);
+    }
+
+    public override var objectValue: AnyObject? {
+        didSet {
+            if let category = objectValue as? BankingCategory {
+                blendValue = category.noCatRep.boolValue ? 0.4 : 1;
+            } else {
+                blendValue = 1;
+            }
+            updateColors();
+        }
+    }
+}
+
+public class BadgeCellView : StandardTableCellView {
+    @IBOutlet weak public var badge: NSButton?;
+
+    public override func awakeFromNib() {
+    }
+
+    deinit {
+        objectValue?.removeObserver(self, forKeyPath: "unreadEntries");
+    }
+
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?,
+        context: UnsafeMutablePointer<Void>) {
             if keyPath == "unreadEntries" {
-                if let value = objectValue?.valueForKey("unreadEntries") where value.intValue != 0 {
-                    badgeWidthConstraint!.constant = 27;
-                    badge?.hidden = false;
+                if let value = objectValue?.valueForKey("unreadEntries") {
+                    badge?.hidden = value.intValue == 0;
                 } else {
-                    if BankStatement.numberOfNewStatements() == 0 {
-                        badgeWidthConstraint!.constant = 0;
-                    } else {
-                        badge?.hidden = true;
-                    }
+                    badge?.hidden = true;
                 }
                 return;
             }
@@ -231,13 +248,6 @@ public class CategoryTableCellView : NumberTableCellView {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: "unreadEntries");
             objectValue?.addObserver(self, forKeyPath: "unreadEntries", options: .Initial, context: nil);
-
-            if let category = objectValue as? BankingCategory {
-                blendValue = category.noCatRep.boolValue ? 0.4 : 1;
-            } else {
-                blendValue = 1;
-            }
-            updateColors();
         }
     }
 }
