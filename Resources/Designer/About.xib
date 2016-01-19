@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
             <connections>
                 <outlet property="aboutText" destination="17" id="W9j-2o-dAV"/>
                 <outlet property="aboutTextScrollBox" destination="14" id="2pw-5q-lDw"/>
-                <outlet property="aboutWindow" destination="35" id="37"/>
                 <outlet property="copyrightText" destination="24" id="3ZA-De-7ED"/>
                 <outlet property="versionText" destination="26" id="tmT-VQ-ewk"/>
                 <outlet property="window" destination="35" id="YrE-TW-jhB"/>
@@ -21,7 +20,7 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" deferred="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" id="35" userLabel="About Panel" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" nonactivatingPanel="YES"/>
             <rect key="contentRect" x="610" y="418" width="610" height="280"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="36" customClass="BWGradientBox">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="280"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -74,11 +73,11 @@
                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14">
                         <rect key="frame" x="257" y="48" width="353" height="175"/>
                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="TRO-Vp-ZdG">
-                            <rect key="frame" x="0.0" y="0.0" width="353" height="180"/>
+                            <rect key="frame" x="0.0" y="0.0" width="353" height="175"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" findStyle="panel" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" linkDetection="YES" id="17">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="180"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="175"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
                                     <size key="minSize" width="353" height="175"/>
@@ -103,7 +102,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="15">
-                            <rect key="frame" x="337" y="0.0" width="16" height="180"/>
+                            <rect key="frame" x="337" y="0.0" width="16" height="175"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
