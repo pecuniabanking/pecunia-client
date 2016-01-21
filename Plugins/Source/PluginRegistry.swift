@@ -220,7 +220,7 @@ import WebKit;
         // Use a fixed interval of 30 days if none of the accounts has a latest transfer date and no max stat days
         // value is specified.
         if fromDate == nil {
-            fromDate = NSDate(timeInterval: -2592000 * maxStatDays, sinceDate: NSDate());
+            fromDate = NSDate(timeIntervalSinceNow: -2592000)
         }
 
         let pluginId = accounts[0].plugin;
