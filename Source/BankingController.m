@@ -145,9 +145,6 @@ static BankingController *bankinControllerInstance;
     BOOL autoCasingUpdateRunning;
 
     NSCursor *splitCursor;
-    NSImage  *moneyImage;
-    NSImage  *moneySyncImage;
-    NSImage  *bankImage;
 
     NSMutableArray  *bankAccountItemsExpandState;
     BankingCategory *lastSelection;
@@ -824,6 +821,7 @@ static BankingController *bankinControllerInstance;
 
     if (category.accountNumber != nil) {
         // A bank account.
+        category.loading = YES;
         [selectedAccounts addObject: category];
     } else {
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
@@ -836,6 +834,8 @@ static BankingController *bankinControllerInstance;
             selectedNodes = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
                 [self stopRefreshAnimation];
+                category.loading = NO;
+
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -853,6 +853,8 @@ static BankingController *bankinControllerInstance;
             result = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
                 [self stopRefreshAnimation];
+                category.loading = NO;
+
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -864,6 +866,8 @@ static BankingController *bankinControllerInstance;
     if ([selectedAccounts count] == 0) {
         LogWarning(@"No accounts selected, or all selected accounts have noAutomaticQuery == true");
         [self stopRefreshAnimation];
+        category.loading = NO;
+
         return;
     }
 
@@ -876,6 +880,8 @@ static BankingController *bankinControllerInstance;
     }
     if (nInactive == selectedAccounts.count) {
         [self stopRefreshAnimation];
+        category.loading = NO;
+
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
@@ -894,14 +900,15 @@ static BankingController *bankinControllerInstance;
                         );
     }
     
-    // We need to filter userId == nil accounts out (the manual ones) as this will cause an exception on HBCIController controller] getStatements
-    NSMutableArray *accountsToKeep = [NSMutableArray arrayWithCapacity:[selectedAccounts count]];
+    // We need to filter userId == nil accounts out (the manual ones) as this will cause an exception on HBCIController.getStatements.
+    NSMutableArray *accountsToKeep = [NSMutableArray arrayWithCapacity: selectedAccounts.count];
     for (BankAccount *account in selectedAccounts) {
         if (account.userId != nil) {
-            [accountsToKeep addObject:account];
+            [accountsToKeep addObject: account];
+            account.loading = YES;
         }
     }
-    [selectedAccounts setArray:accountsToKeep];
+    [selectedAccounts setArray: accountsToKeep];
 
 
     // Prepare UI.
@@ -977,6 +984,8 @@ static BankingController *bankinControllerInstance;
         if (user != nil) {
             [user checkForUpdatedLoginData];
         }
+
+        result.account.loading = NO;
     }
     [self save];
 
@@ -2997,7 +3006,7 @@ static BankingController *bankinControllerInstance;
 - (NSApplicationTerminateReply)applicationShouldTerminate: (NSApplication *)sender {
     LogEnter;
 
-    if ([self canTerminate] == NO) {
+    if (![self canTerminate]) {
         return NSTerminateCancel;
     }
     return NSTerminateNow;

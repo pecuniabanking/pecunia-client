@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -98,6 +98,7 @@ static ShortDate *endReportDate = nil;
 @synthesize categoryColor;
 @synthesize reportedAssignments;  // Assignments that are between start and end report date.
 @synthesize unreadEntries;
+@synthesize loading;
 
 static NSImage *notAssignedImage;
 

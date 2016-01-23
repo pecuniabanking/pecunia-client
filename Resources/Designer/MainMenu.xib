@@ -97,7 +97,7 @@
                                                                                                         <rect key="frame" x="0.0" y="4" width="13" height="13"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="width" constant="13" id="Eln-ga-qxi"/>
-                                                                                                            <constraint firstAttribute="height" constant="13" id="mJq-62-ufZ"/>
+                                                                                                            <constraint firstAttribute="height" constant="13" id="f8h-Nc-Ro7"/>
                                                                                                         </constraints>
                                                                                                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <connections>
@@ -105,7 +105,7 @@
                                                                                                         </connections>
                                                                                                     </colorWell>
                                                                                                     <imageView translatesAutoresizingMaskIntoConstraints="NO" id="dtH-zL-oVs">
-                                                                                                        <rect key="frame" x="16" y="3" width="17" height="17"/>
+                                                                                                        <rect key="frame" x="16" y="4" width="17" height="14"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="width" constant="17" id="MTA-dl-2z9"/>
                                                                                                         </constraints>
@@ -114,20 +114,26 @@
                                                                                                             <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.categoryImage" id="TFY-oV-Oit"/>
                                                                                                         </connections>
                                                                                                     </imageView>
-                                                                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="700" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h0q-Br-OOR" userLabel="Name">
-                                                                                                        <rect key="frame" x="34" y="3" width="154" height="17"/>
-                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Name" placeholderString="" usesSingleLineMode="YES" id="PeN-vN-R7T">
+                                                                                                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Bd9-PB-D8M" userLabel="Busy Indicator">
+                                                                                                        <rect key="frame" x="37" y="3" width="16" height="16"/>
+                                                                                                        <constraints>
+                                                                                                            <constraint firstAttribute="width" constant="16" id="blJ-95-uot"/>
+                                                                                                        </constraints>
+                                                                                                    </progressIndicator>
+                                                                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aOh-GF-enc">
+                                                                                                        <rect key="frame" x="55" y="2" width="133" height="17"/>
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Local Name" usesSingleLineMode="YES" id="duk-Mr-BsW">
                                                                                                             <font key="font" metaFont="system"/>
-                                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                                                         </textFieldCell>
                                                                                                         <connections>
-                                                                                                            <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.localName" id="N4U-Yb-daG"/>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.localName" id="MBa-om-YKn"/>
                                                                                                         </connections>
                                                                                                     </textField>
-                                                                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
+                                                                                                    <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iHA-SR-Q8p">
                                                                                                         <rect key="frame" x="192" y="3" width="99" height="17"/>
-                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="PM5-IX-XLA">
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="9.999.999,99 €" usesSingleLineMode="YES" id="PM5-IX-XLA">
                                                                                                             <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="KHY-xC-02N"/>
                                                                                                             <font key="font" metaFont="system"/>
                                                                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -140,29 +146,31 @@
                                                                                                 </subviews>
                                                                                                 <constraints>
                                                                                                     <constraint firstItem="Ffp-9K-5au" firstAttribute="leading" secondItem="XZ1-Q6-4ar" secondAttribute="leading" id="3Ud-98-ZS9"/>
-                                                                                                    <constraint firstItem="h0q-Br-OOR" firstAttribute="leading" secondItem="dtH-zL-oVs" secondAttribute="trailing" constant="3" id="5og-yf-f80"/>
                                                                                                     <constraint firstItem="Ffp-9K-5au" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="Ldw-Hc-89n"/>
                                                                                                     <constraint firstAttribute="trailing" secondItem="iHA-SR-Q8p" secondAttribute="trailing" constant="4" id="Ll7-rb-gA9"/>
-                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="h0q-Br-OOR" secondAttribute="trailing" constant="8" id="WP6-CZ-kB9"/>
-                                                                                                    <constraint firstItem="h0q-Br-OOR" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="eBJ-Lx-DY7"/>
+                                                                                                    <constraint firstItem="aOh-GF-enc" firstAttribute="leading" secondItem="Bd9-PB-D8M" secondAttribute="trailing" constant="4" id="TXr-bQ-ilh"/>
+                                                                                                    <constraint firstItem="Bd9-PB-D8M" firstAttribute="leading" secondItem="dtH-zL-oVs" secondAttribute="trailing" constant="4" id="YM6-q7-g4c"/>
                                                                                                     <constraint firstItem="dtH-zL-oVs" firstAttribute="leading" secondItem="Ffp-9K-5au" secondAttribute="trailing" constant="3" id="nzB-f7-opG"/>
+                                                                                                    <constraint firstItem="aOh-GF-enc" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="pxg-rc-kE4"/>
+                                                                                                    <constraint firstItem="Bd9-PB-D8M" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="q7a-PI-uBv"/>
                                                                                                     <constraint firstItem="dtH-zL-oVs" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="rwy-o4-JGK"/>
+                                                                                                    <constraint firstItem="iHA-SR-Q8p" firstAttribute="leading" secondItem="aOh-GF-enc" secondAttribute="trailing" constant="8" id="t1U-d3-IPF"/>
                                                                                                     <constraint firstItem="iHA-SR-Q8p" firstAttribute="centerY" secondItem="XZ1-Q6-4ar" secondAttribute="centerY" id="uZp-RA-HzL"/>
-                                                                                                    <constraint firstAttribute="bottom" secondItem="dtH-zL-oVs" secondAttribute="bottom" constant="3" id="zES-51-mbx"/>
                                                                                                 </constraints>
                                                                                                 <connections>
+                                                                                                    <outlet property="busyIndicator" destination="Bd9-PB-D8M" id="kgg-Ha-Odj"/>
+                                                                                                    <outlet property="busyIndicatorWidthConstraint" destination="blJ-95-uot" id="vJW-X7-PVQ"/>
                                                                                                     <outlet property="colorWellWidthConstraint" destination="Eln-ga-qxi" id="NrR-Mo-zhe"/>
                                                                                                     <outlet property="imageView" destination="dtH-zL-oVs" id="hO0-GX-bd9"/>
-                                                                                                    <outlet property="textField" destination="h0q-Br-OOR" id="2Yz-4B-UCt"/>
                                                                                                 </connections>
                                                                                             </tableCellView>
                                                                                             <tableCellView identifier="HeaderCell" id="3YH-VX-vzL" userLabel="Header Cell View" customClass="NumberTableCellView" customModule="Pecunia" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="22" width="293" height="22"/>
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
-                                                                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-au-7DG" userLabel="Title">
+                                                                                                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" allowsExpansionToolTips="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3W-au-7DG" userLabel="Title">
                                                                                                         <rect key="frame" x="0.0" y="3" width="189" height="17"/>
-                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="HEADER CELL" usesSingleLineMode="YES" id="GLl-U8-tA4">
+                                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="HEADER CELL" usesSingleLineMode="YES" id="GLl-U8-tA4">
                                                                                                             <font key="font" metaFont="system"/>
                                                                                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -79,6 +79,7 @@ typedef struct {
 @property (nonatomic) NSColor *categoryColor; // Unarchived catRepColor.
 @property (readonly) NSImage *categoryImage; // Loaded from iconName.
 @property NSNumber *unreadEntries;
+@property BOOL loading; // Set during load of new bank statements.
 
 - (void)recomputeInvalidBalances;
 - (void)invalidateBalance;

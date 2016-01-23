@@ -526,7 +526,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <tokenField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="154">
+                    <tokenField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="154">
                         <rect key="frame" x="307" y="242" width="731" height="62"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="62" id="a4Q-bw-iUF"/>
@@ -886,7 +886,7 @@ DQ
                             <constraint firstAttribute="height" constant="20" id="jjH-Zd-xGM"/>
                         </constraints>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="367">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="367">
                         <rect key="frame" x="18" y="77" width="490" height="51"/>
                         <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" allowsEditingTextAttributes="YES" id="368">
                             <font key="font" metaFont="system"/>
