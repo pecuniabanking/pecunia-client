@@ -226,7 +226,7 @@ public class CategoryTableCellView : NumberTableCellView {
 
     public override var objectValue: AnyObject? {
         willSet {
-            objectValue?.removeObserver(self);
+            objectValue?.removeObserver(self, forKeyPath: "loading");
         }
 
         didSet {
