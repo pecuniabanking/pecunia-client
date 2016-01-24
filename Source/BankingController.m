@@ -104,33 +104,35 @@ static BankingController *bankinControllerInstance;
 
 @interface BankingController () <EDSideBarDelegate>
 {
-    IBOutlet NSWindow *mainWindow;
+    __weak IBOutlet NSWindow *mainWindow;
 
     __weak IBOutlet NSOutlineView  *accountsOutline;
 
-    IBOutlet EDSideBar             *sidebar;
-    IBOutlet NSTreeController      *categoryController;
-    IBOutlet PecuniaSplitView      *mainVSplit;
-    IBOutlet NSArrayController     *assignPreviewController;
-    IBOutlet TimeSliceManager      *timeSlicer;
-    IBOutlet NSImageView           *lockImage;
-    IBOutlet NSTextField           *earningsField;
-    IBOutlet NSTextField           *spendingsField;
-    IBOutlet NSTextField           *earningsFieldLabel;
-    IBOutlet NSTextField           *spendingsFieldLabel;
-    IBOutlet NSView                *sectionPlaceholder;
-    IBOutlet NSView                *rightPane;
-    IBOutlet NSButton              *refreshButton;
-    IBOutlet ComTraceHelper        *comTracePanel;
-    IBOutlet NSButton              *decreaseFontButton;
-    IBOutlet NSButton              *increaseButton;
+    __weak IBOutlet EDSideBar         *sidebar;
+    __weak IBOutlet NSTreeController  *categoryController;
+    __weak IBOutlet PecuniaSplitView  *mainVSplit;
+    __weak IBOutlet NSArrayController *assignPreviewController;
+    __weak IBOutlet TimeSliceManager  *timeSlicer;
+    __weak IBOutlet NSImageView       *lockImage;
+    __weak IBOutlet NSTextField       *earningsField;
+   __weak  IBOutlet NSTextField       *spendingsField;
+    __weak IBOutlet NSTextField       *earningsFieldLabel;
+    __weak IBOutlet NSTextField       *spendingsFieldLabel;
+    __weak IBOutlet NSView            *sectionPlaceholder;
+    __weak IBOutlet NSView            *rightPane;
+    __weak IBOutlet NSButton          *refreshButton;
+    __weak IBOutlet ComTraceHelper    *comTracePanel;
+    __weak IBOutlet NSButton          *decreaseFontButton;
+    __weak IBOutlet NSButton          *increaseButton;
 
-    IBOutlet NSMenuItem *developerMenu;
-    IBOutlet NSMenuItem *comTraceMenuItem;
+    __weak IBOutlet NSMenuItem *developerMenu;
+    __weak IBOutlet NSMenuItem *comTraceMenuItem;
 
-    IBOutlet JMModalOverlay     *waitOverlay;
-    IBOutlet WaitViewController *waitViewController;
-    
+    __weak IBOutlet JMModalOverlay     *waitOverlay;
+    __weak IBOutlet WaitViewController *waitViewController;
+
+    __weak IBOutlet NSLayoutConstraint *sidebarWidthConstraint;
+
     NSManagedObjectContext *managedObjectContext;
 
     NSUInteger          newStatementsCount;
@@ -201,7 +203,9 @@ static BankingController *bankinControllerInstance;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
+    [userDefaults removeObserver: self forKeyPath: @"fontScale"];
     [userDefaults removeObserver: self forKeyPath: @"showPreliminaryStatements"];
+    [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 
     LogLeave;
 }
@@ -211,15 +215,6 @@ static BankingController *bankinControllerInstance;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
     accountsOutline.refusesFirstResponder = YES;
-
-    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
-
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
 
     [self setupSidebar];
 
@@ -242,6 +237,24 @@ static BankingController *bankinControllerInstance;
     splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"split-cursor"] hotSpot: NSMakePoint(0, 0)];
     [WorkerThread init];
 
+#ifdef DEBUG
+    [developerMenu setHidden: NO];
+#endif
+
+    comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
+
+    [PluginRegistry startup];
+
+    // Finish all setup first before adding observers.
+    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"colors" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"fontScale" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+    
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
 
     MOAssistant.sharedAssistant.mainWindow = mainWindow;
@@ -262,14 +275,6 @@ static BankingController *bankinControllerInstance;
                                                  name: RemoteResourceManager.pecuniaResourcesUpdatedNotification
                                                object: nil];
 
-#ifdef DEBUG
-    [developerMenu setHidden: NO];
-#endif
-
-    comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-
-    [PluginRegistry startup];
-    
     LogLeave;
 }
 
@@ -821,7 +826,7 @@ static BankingController *bankinControllerInstance;
 
     if (category.accountNumber != nil) {
         // A bank account.
-        category.loading = YES;
+        category.loading = @YES;
         [selectedAccounts addObject: category];
     } else {
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
@@ -905,7 +910,7 @@ static BankingController *bankinControllerInstance;
     for (BankAccount *account in selectedAccounts) {
         if (account.userId != nil) {
             [accountsToKeep addObject: account];
-            account.loading = YES;
+            account.loading = @YES;
         }
     }
     [selectedAccounts setArray: accountsToKeep];
@@ -985,7 +990,7 @@ static BankingController *bankinControllerInstance;
             [user checkForUpdatedLoginData];
         }
 
-        result.account.loading = NO;
+        result.account.loading = @NO;
     }
     [self save];
 
@@ -3271,15 +3276,6 @@ static BankingController *bankinControllerInstance;
                           image: [NSImage imageNamed: @"send3-active"]
                  alternateImage: [NSImage imageNamed: @"send3"]];
 
-    NSFont *font = [PreferenceController mainFontOfSize: 11 bold: NO];
-    if (font != nil) {
-        for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
-            id                        cell = [sidebar cellForItem: i];
-            NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
-            [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
-            [cell setAttributedTitle: title];
-        }
-    }
 }
 
 #pragma mark - KVO
@@ -3317,22 +3313,36 @@ static BankingController *bankinControllerInstance;
         }
 
         if ([keyPath isEqualToString: @"fontScale"]) {
-            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
-/* XXX: update
-            NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
-            if (tableColumn) {
-                [tableColumn.dataCell setFont: font];
+            if (accountsOutline.numberOfRows > 0) {
+                NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
+                CGFloat rowHeight = ceil([font boundingRectForFont].size.height) + 2;
+                accountsOutline.rowHeight = rowHeight;
+
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [accountsOutline noteHeightOfRowsWithIndexesChanged: [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0, accountsOutline.numberOfRows - 1)]];
+                });
             }
-            accountsView.rowHeight = floor(font.pointSize) + 8;
-*/
-            font = [PreferenceController mainFontOfSize: 11 bold: NO];
+
+            NSFont *font = [PreferenceController mainFontOfSize: 11 bold: NO];
+            CGFloat maxWidth = 70; // Default with of the side bar minus padding.
             for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
                 id cell = [sidebar cellForItem: i];
                 NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
 
                 [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
                 [cell setAttributedTitle: title];
+
+                NSSize size = [cell cellSize];
+                if (size.width > maxWidth) {
+                    maxWidth = size.width;
+                }
             }
+
+            sidebarWidthConstraint.constant = maxWidth + 10;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                sidebar.buttonsHeight = 60; // Will update all buttons width's + selection image. Need to wait for next run loop, though.
+            });
+
             return;
         }
 

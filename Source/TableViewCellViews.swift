@@ -182,19 +182,18 @@ public class StatementTableCellView : NumberTableCellView {
 // Another special cell for the catgory tree.
 public class CategoryTableCellView : NumberTableCellView {
     @IBOutlet weak public var colorWellWidthConstraint: NSLayoutConstraint?;
-    @IBOutlet weak public var busyIndicatorWidthConstraint: NSLayoutConstraint?;
-    @IBOutlet weak public var busyIndicator: NSProgressIndicator?;
+    @IBOutlet weak public var numberField: NSTextField?;
 
     public override func awakeFromNib() {
         let userDefaults = NSUserDefaults.standardUserDefaults();
-        userDefaults.addObserver(self, forKeyPath: "showCatColorsInTree", options: NSKeyValueObservingOptions.Initial,
-            context: nil);
-        busyIndicatorWidthConstraint?.constant = 0;
+        userDefaults.addObserver(self, forKeyPath: "showCatColorsInTree", options: .Initial, context: nil);
+        userDefaults.addObserver(self, forKeyPath: "fontScale", options: .Initial, context: nil);
     }
 
     deinit {
         let userDefaults = NSUserDefaults.standardUserDefaults();
         userDefaults.removeObserver(self, forKeyPath: "showCatColorsInTree");
+        userDefaults.removeObserver(self, forKeyPath: "fontScale");
 
         objectValue?.removeObserver(self);
     }
@@ -209,15 +208,10 @@ public class CategoryTableCellView : NumberTableCellView {
             }
             return;
 
-        case "loading":
-            if let category = object as? BankingCategory {
-                busyIndicatorWidthConstraint?.constant = category.loading ? 16 : 0;
-                if category.loading {
-                    busyIndicator?.startAnimation(self);
-                } else {
-                    busyIndicator?.stopAnimation(self);
-                }
-            }
+        case "fontScale":
+            textField?.font = PreferenceController.mainFontOfSize(13, bold: false);
+            numberField?.font = textField?.font;
+            return;
 
         default:
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context);
@@ -225,12 +219,7 @@ public class CategoryTableCellView : NumberTableCellView {
     }
 
     public override var objectValue: AnyObject? {
-        willSet {
-            objectValue?.removeObserver(self, forKeyPath: "loading");
-        }
-
         didSet {
-            objectValue?.addObserver(self, forKeyPath: "loading", options: .Initial, context: nil);
             if let category = objectValue as? BankingCategory {
                 blendValue = category.noCatRep.boolValue ? 0.4 : 1;
             } else {

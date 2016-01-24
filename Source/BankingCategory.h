@@ -79,7 +79,7 @@ typedef struct {
 @property (nonatomic) NSColor *categoryColor; // Unarchived catRepColor.
 @property (readonly) NSImage *categoryImage; // Loaded from iconName.
 @property NSNumber *unreadEntries;
-@property BOOL loading; // Set during load of new bank statements.
+@property NSNumber *loading; // Set during load of new bank statements.
 
 - (void)recomputeInvalidBalances;
 - (void)invalidateBalance;
