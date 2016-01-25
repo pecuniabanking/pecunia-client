@@ -71,7 +71,7 @@
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="26" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="330" height="594"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="330" height="0.0"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -108,8 +108,8 @@
                                                                                                         <rect key="frame" x="16" y="3" width="16" height="16"/>
                                                                                                         <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="5IM-IY-5UN"/>
                                                                                                         <connections>
-                                                                                                            <binding destination="XZ1-Q6-4ar" name="hidden" keyPath="objectValue.loading" id="JqU-LF-01D"/>
                                                                                                             <binding destination="XZ1-Q6-4ar" name="value" keyPath="objectValue.categoryImage" id="TFY-oV-Oit"/>
+                                                                                                            <binding destination="XZ1-Q6-4ar" name="hidden" keyPath="objectValue.loading" id="JqU-LF-01D"/>
                                                                                                         </connections>
                                                                                                     </imageView>
                                                                                                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Bd9-PB-D8M" userLabel="Busy Indicator">

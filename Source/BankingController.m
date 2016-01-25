@@ -253,7 +253,10 @@ static BankingController *bankinControllerInstance;
     [userDefaults addObserver: self forKeyPath: @"colors" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"fontScale" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: NSKeyValueObservingOptionInitial context: UserDefaultsBindingContext];
+
+    // No initial option for autoCasing which should trigger KVO only when this value actually changes.
+    // Otherwise we do the words.zip update check and the resource manager loading in parallel, without a clear order.
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
     
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
 

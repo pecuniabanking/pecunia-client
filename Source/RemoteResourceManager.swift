@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,7 +33,6 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         // Trigger updating files in the background.
         let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
         dispatch_async(queue) {
-            objc_sync_enter(self);
 
             let url : NSURL? = NSURL(string: RemoteResourceUpdateInfo);
             let xmlData : NSData? = NSData(contentsOfURL: url!);
@@ -42,7 +41,9 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
 	                let updateInfo : NSDictionary = try NSDictionary.dictForXMLData(xmlData);
 	                let filesEntry = updateInfo["files"] as? NSDictionary;
 	                if (filesEntry != nil) {
+                        objc_sync_enter(self);
 	                    self.downloadableFiles = filesEntry!["file"] as? Array;
+                        objc_sync_exit(self);
 	                }
 
 	                // Trigger updating files in the background.
@@ -60,7 +61,6 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                 logError("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
             }
 
-            objc_sync_exit(self);
         }
     }
 
@@ -175,6 +175,11 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
 
         // Check that the given file is one of the remote files we can download.
         objc_sync_enter(self);
+
+        if (downloadableFiles == nil) {
+            logWarning("Remote download info not (yet) available. Is there a working internet connection?");
+            return false;
+        }
 
         var fileInfo: Dictionary<String, AnyObject>? = nil;
         if downloadableFiles != nil {
