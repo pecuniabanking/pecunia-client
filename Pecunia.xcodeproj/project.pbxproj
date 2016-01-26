@@ -865,6 +865,7 @@
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
+		B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
@@ -1058,6 +1059,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
 				27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */,
 			);
 			name = "Copy external libs";

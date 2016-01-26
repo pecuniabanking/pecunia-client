@@ -58,7 +58,6 @@ static HBCIController *controller = nil;
     bridge = [[HBCIBridge alloc] init];
     [bridge startup];
     
-    bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
 
@@ -151,7 +150,7 @@ static HBCIController *controller = nil;
     PecuniaError *error = nil;
     NSString     *ppDir = [[MOAssistant sharedAssistant] passportDirectory];
     NSString     *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString     *libPath = [bundlePath stringByAppendingString: @"/Contents/"];
+    NSString     *libPath = [bundlePath stringByAppendingString: @"/Contents/Resources/"];
 
     NSMutableString *cmd = [NSMutableString stringWithString: @"<command name=\"init\">"];
     [self appendTag: @"passportPath" withValue: ppDir to: cmd];
@@ -174,7 +173,8 @@ static HBCIController *controller = nil;
     if (result == IBANToolsResultNoBIC || result == IBANToolsResultWrongValue) {
         return nil;
     }
-    return [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
+    return [IBANtools instituteDetailsForBankCode: bankCode];
+    //return [IBANtools instituteDetailsForBIC: bicInfo[@"bic"]];
 }
 
 - (InstituteInfo *)infoForIBAN: (NSString *)iban
@@ -1135,36 +1135,34 @@ static HBCIController *controller = nil;
             // find corresponding incoming structure
 
             BankQueryResult *iResult;
-            NSUInteger idx = [queryResults indexOfObject:res];
+            int idx = [queryResults indexOfObject:res];
             if (idx == NSNotFound) {
                 continue;
             }
             iResult = queryResults[idx];
+
+            // check if order needs to be reversed
+            if (res.statements.count > 0) {
+                BankStatement *stat1 = res.statements.firstObject;
+                BankStatement *stat2 = res.statements.lastObject;
+                
+                if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
+                    // reverse order
+                    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
+                    for (idx = [res.statements count] - 1; idx >= 0; idx--) {
+                        [statements addObject: res.statements[idx]];
+                    }
+                    iResult.statements = statements;
+                } else {
+                    iResult.statements = res.statements;
+                }
+            }
             
             if (res.ccNumber != nil) {
                 // Credit Card Statements, balance field is filled with current account balance
                 iResult.balance = res.balance;
                 iResult.ccNumber = res.ccNumber;
                 iResult.lastSettleDate = res.lastSettleDate;
-                
-                // check if order needs to be reversed
-                int idx;
-                
-                if (res.statements.count > 0) {
-                    BankStatement *stat1 = res.statements.firstObject;
-                    BankStatement *stat2 = res.statements.lastObject;
-                    
-                    if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
-                        // reverse order
-                        NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
-                        for (idx = [res.statements count] - 1; idx >= 0; idx--) {
-                            [statements addObject: res.statements[idx]];
-                        }
-                        iResult.statements = statements;
-                    } else {
-                        iResult.statements = res.statements;
-                    }
-                }
                 
                 // calculate balances
                 for (idx = [iResult.statements count] - 1; idx >= 0; idx--) {

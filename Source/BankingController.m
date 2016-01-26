@@ -3061,9 +3061,12 @@ static BankingController *bankinControllerInstance;
         }
     }
     NSDate    *lastSyncDate = [defaults objectForKey: @"lastSyncDate"];
+    if (lastSyncDate == nil) {
+        lastSyncDate = [NSDate distantPast];
+    }
     ShortDate *d1 = [ShortDate dateWithDate: lastSyncDate];
     ShortDate *d2 = [ShortDate dateWithDate: [NSDate date]];
-    if ((d1 == nil || [d1 compare: d2] != NSOrderedSame) && syncAtStartup) {
+    if (([d1 compare: d2] != NSOrderedSame) && syncAtStartup) {
         // no sync done today. If in startup, do immediate sync
         [self performSelector: @selector(syncAllAccounts) withObject: nil afterDelay: 5.0];
         syncDone = YES;
