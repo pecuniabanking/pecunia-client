@@ -1294,17 +1294,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
-    if (sent) {
-        // Save updates and refresh UI.
-        NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-        if (![context save: &error]) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
+    [[HBCIBackend backend] sendTransfers: transfers];
+    
+    // Save updates and refresh UI.
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
     }
+    
     [pendingTransfers prepareContent];
     [finishedTransfers prepareContent];
 }

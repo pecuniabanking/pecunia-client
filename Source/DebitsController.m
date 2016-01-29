@@ -994,17 +994,17 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
-    if (sent) {
-        // Save updates and refresh UI.
-        NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-        if (![context save: &error]) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
+    [[HBCIBackend backend] sendTransfers: transfers];
+    
+    // Save updates and refresh UI.
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
     }
+
     [pendingDebits prepareContent];
     [finishedDebits prepareContent];
 }

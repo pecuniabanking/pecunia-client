@@ -3353,10 +3353,8 @@ static BankingController *bankinControllerInstance;
     }
 
     // send transfers
-    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
-    if (sent) {
-        [self save];
-    }
+    [[HBCIBackend backend] sendTransfers: transfers];
+    [self save];
 
     LogLeave;
 

@@ -597,11 +597,25 @@
 
 - (BankUser *)defaultBankUser {
     // If there are multiple user ids per bank account this might need adjustment.
-    if (self.userId == nil) {
-        LogError(@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber);
+    NSSet *users = self.users;
+    if (users.count == 0) {
+        LogError(@"Account %@: no assigned users", self.accountNumber);
         return nil;
     }
-    return [BankUser findUserWithId: self.userId bankCode: self.bankCode];
+
+    if (self.userId == nil) {
+        BankUser *user = [[users allObjects] firstObject];
+        self.userId = user.userId;
+        return user;
+    }
+    for (BankUser *user in users) {
+        if ([user.userId isEqualToString:self.userId]) {
+            return user;
+        }
+    }
+    BankUser *user = [[users allObjects] firstObject];
+    self.userId = user.userId;
+    return user;
 }
 
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code {

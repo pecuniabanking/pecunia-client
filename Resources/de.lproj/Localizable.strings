@@ -803,4 +803,17 @@ AP1800 = "Bei der Bearbeitung des Kontos %@ (%@) trat ein Fehler auf.";
 // Use a new block of IDs for the next set of strings!
 // AP1850..AP1899
 
+// HBCI4Swift
+AP2000 = "Fehler beim Parsen der von der Bank gesendeten Daten. Nähere Informationen finden Sie im Fehlerlog";
+AP2001 = "Die angegebene URL (%@) ist nicht gültig";
+AP2002 = "Es konnte keine Verbindung mit der Bank aufgenommen werden (Adresse: %@). Nähere Informationen finden Sie im Fehlerlog. Möglicherweise handelt es sich nur um ein temporäres Problem (z.B. wenn die Bank Wartungsarbeiten durchführt)";
+AP2003 = "Beim Versuch eine Verbindung zur Bank (%@) aufzubauen ist ein Timeout aufgetreten. Nähere Informationen finden Sie im Fehlerlog. Möglicherweise handelt es sich nur um ein temporäres Problem (z.B. wenn die Bank Wartungsarbeiten durchführt)";
+AP2004 = "Eine für HBCI erforderliche Information fehlt (%@). Dies ist ein interer Fehler, bitte kontaktieren Sie den Pecunia-Support";
+AP2005 = "Die angegebene HBCI-Version (%@) ist ungültig bzw. wird nicht unterstützt";
+AP2006 = "Interner Fehler bei der Verarbeitung der HBCI-Syntax-Informationen. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
+AP2007 = "Ein interner Fehler ist aufgetreten. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
+AP2008 = "Es konnten nicht alle Überweisungen verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
+
+
+
 

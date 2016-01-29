@@ -19,6 +19,7 @@
 
 #import "SigningOptionsViewCell.h"
 #import "SigningOption.h"
+#import "BankUser.h"
 
 @implementation SigningOptionsViewCell
 
@@ -90,7 +91,8 @@ static NSGradient *innerGradientSelected;
 
     // Bankkennung
     NSDictionary *attributes = @{NSFontAttributeName: txtFont14, NSForegroundColorAttributeName: textColor};
-    as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue] userName] attributes: attributes];
+    SigningOption *option = self.objectValue;
+    as = [[NSMutableAttributedString alloc] initWithString: option.user.name attributes: attributes];
     drawRect = NSMakeRect(80, cellFrame.origin.y + LINE1_Y, 150, 18);
     [as drawInRect: drawRect];
 

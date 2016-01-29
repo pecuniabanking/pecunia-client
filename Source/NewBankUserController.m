@@ -218,10 +218,11 @@
             if ((currentUser.hbciVersion != nil && currentUser.hbciVersion.length > 0 &&
                  currentUser.bankURL != nil && currentUser.bankURL.length > 0) || (secMethod == SecMethod_Script)) {
                 // now we work with the real user
-                PecuniaError *error = [[HBCIBackend backend] syncBankUser: currentUser];
+                NSError *error = [[HBCIBackend backend] syncBankUser: currentUser];
                 if (error) {
                     [self stopProgress];
-                    [error alertPanel];
+                    NSAlert *alert = [NSAlert alertWithError:error];
+                    [alert runModal];
                 } else {
                     // update TAN options
                     [self updateSigningOptions];
@@ -340,10 +341,11 @@
             
             // now we work with the real user
             currentUser.bankURL = [currentUser.bankURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            PecuniaError *error = [[HBCIBackend backend] syncBankUser: currentUser];
+            NSError *error = [[HBCIBackend backend] syncBankUser: currentUser];
             if (error) {
                 [self stopProgress];
-                [error alertPanel];
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
             } else {
                 [self stopProgress];
                 [userSheet orderOut: sender];
@@ -790,9 +792,10 @@
         return;
     }
 
-    PecuniaError *error = [[HBCIBackend backend] syncBankUser: user];
+    NSError *error = [[HBCIBackend backend] syncBankUser: user];
     if (error) {
-        [error alertPanel];
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
         return;
     }
 
