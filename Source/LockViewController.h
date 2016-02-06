@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,11 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @interface LockViewController : NSViewController <NSTextFieldDelegate>
 
-@property (copy, readonly) NSString *password;
+@property (readonly) NSString *password;
+@property (readonly) BOOL savePassword;
 
 + (instancetype)createController;
 
