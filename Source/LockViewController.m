@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -53,9 +53,16 @@
 @property (strong) IBOutlet NSSecureTextField *passwordField;
 @property (strong) IBOutlet NSTextField *mainText;
 
+@property (weak) IBOutlet NSButton *savePasswordCheckBox;
+
 @end
 
 @implementation LockViewController
+
+@synthesize heading;
+@synthesize passwordField;
+@synthesize mainText;
+@synthesize savePasswordCheckBox;
 
 + (instancetype)createController
 {
@@ -70,7 +77,11 @@
 
 - (NSString *)password
 {
-    return self.passwordField.stringValue;
+    return passwordField.stringValue;
+}
+
+- (BOOL)savePassword {
+    return savePasswordCheckBox.state == NSOnState;
 }
 
 /**
@@ -82,8 +93,8 @@
     replacedContent = window.contentView;
     window.contentView = self.view;
     self.view.hidden = NO;
-    self.passwordField.stringValue = @"12345";
-    [[self.view window] makeFirstResponder: self.passwordField];
+    passwordField.stringValue = @"12345678901234567890";
+    [[self.view window] makeFirstResponder: passwordField];
 }
 
 /**
