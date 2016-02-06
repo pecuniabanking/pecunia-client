@@ -121,9 +121,6 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     model = nil;
     context = nil;
 
-    // Remove any stored datastore passwords. We want the password always to be entered now.
-    [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
-
     return self;
 }
 
@@ -680,7 +677,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
 
     if (!passwordKeyValid) {
         BOOL passwordOk = NO;
-        passwd = nil; //[Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
 
         while (!passwordOk) {
             if (passwd == nil) {
@@ -689,6 +686,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
                     [NSApp terminate: self];
                 }
                 passwd = lockViewController.password;
+                savePassword = lockViewController.savePassword;
             }
 
             // First generate key from password.
