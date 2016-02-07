@@ -197,6 +197,8 @@ extern void *UserDefaultsBindingContext;
 @synthesize bankStatementDetailsContainer;
 @synthesize creditCardDetailsContainer;
 
+#pragma mark - Initialization
+
 - (void)awakeFromNib {
     [super awakeFromNib];
 
@@ -236,6 +238,8 @@ extern void *UserDefaultsBindingContext;
 
 }
 
+#pragma mark - Application Logic
+
 - (void)updateDisplayAfterLoading {
     [self updateCaseDependentTextInDetails: self.sepaDetails];
 }
@@ -258,6 +262,8 @@ extern void *UserDefaultsBindingContext;
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [nassValueField setNeedsDisplay];
 }
+
+#pragma mark - SEPA details table
 
 - (NSMutableAttributedString *)createCellStringWithString: (NSString *)string
                                                     table: (NSTextTable *)table
@@ -661,6 +667,10 @@ extern void *UserDefaultsBindingContext;
 #pragma mark - User Actions
 
 - (void)cancelOperation: (id)sender {
+    [self.owner toggleStatementDetails];
+}
+
+- (IBAction)close:(id)sender {
     [self.owner toggleStatementDetails];
 }
 
