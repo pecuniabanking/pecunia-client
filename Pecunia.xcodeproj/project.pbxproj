@@ -142,7 +142,6 @@
 		2747C5911944750C0089A7C9 /* PecuniaListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2747C5901944750C0089A7C9 /* PecuniaListView.m */; };
 		2747C5921944750C0089A7C9 /* PecuniaListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2747C5901944750C0089A7C9 /* PecuniaListView.m */; };
 		274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */; };
-		274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
 		2751681B193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2751681A193B87D500FE942F /* YRKSpinningProgressIndicator.m */; };
 		2751681C193B87D500FE942F /* YRKSpinningProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2751681A193B87D500FE942F /* YRKSpinningProgressIndicator.m */; };
 		2751681F193B932700FE942F /* check-mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 2751681D193B932700FE942F /* check-mark.png */; };
@@ -278,7 +277,6 @@
 		2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
 		2777888F173CE22700430EBC /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
-		27778891173CE22700430EBC /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
 		27778892173CE22700430EBC /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		27778893173CE22700430EBC /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		27778895173CE22700430EBC /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
@@ -309,7 +307,6 @@
 		277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		277788B5173CE22700430EBC /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
-		277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
 		277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
 		277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
@@ -619,6 +616,7 @@
 		27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A99173FC8EC00929B0E /* move-cursor.png */; };
 		27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27AF5A9E173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
+		27AFAF071C5E6E7F002A7C50 /* Transformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFAF061C5E6E7F002A7C50 /* Transformers.swift */; };
 		27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
 		27B42C371C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */; };
 		27B42C381C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */; };
@@ -942,7 +940,6 @@
 		B19669F91B39EFB400D690B0 /* HBCISmartcardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */; };
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
-		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
 		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		B19CA99219410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA99319410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
@@ -1235,8 +1232,6 @@
 		27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 15.xcdatamodel"; sourceTree = "<group>"; };
 		274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedOuterShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedOuterShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
-		274DE2B213F992A50009EB77 /* MainBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MainBackgroundView.h; sourceTree = "<group>"; tabWidth = 4; };
-		274DE2B313F992A50009EB77 /* MainBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MainBackgroundView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27516819193B87D500FE942F /* YRKSpinningProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YRKSpinningProgressIndicator.h; path = "YRK Spinning Indicator/YRKSpinningProgressIndicator.h"; sourceTree = "<group>"; };
 		2751681A193B87D500FE942F /* YRKSpinningProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YRKSpinningProgressIndicator.m; path = "YRK Spinning Indicator/YRKSpinningProgressIndicator.m"; sourceTree = "<group>"; };
 		2751681D193B932700FE942F /* check-mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-mark.png"; sourceTree = "<group>"; };
@@ -1427,6 +1422,7 @@
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
 		27AF5A99173FC8EC00929B0E /* move-cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor.png"; sourceTree = "<group>"; };
 		27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor@2x.png"; sourceTree = "<group>"; };
+		27AFAF061C5E6E7F002A7C50 /* Transformers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Transformers.swift; path = Submodules/IBANtools/Source/Transformers.swift; sourceTree = SOURCE_ROOT; };
 		27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-slanted-stripes.png"; sourceTree = "<group>"; };
 		27B42C351C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27B42C361C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; };
@@ -1777,8 +1773,6 @@
 		B196E03C0FABA2CC00509748 /* WorkerThread.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerThread.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E0920FACE15F00509748 /* BSSelectWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BSSelectWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E0930FACE15F00509748 /* BSSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BSSelectWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B196E1B00FB4CFE200509748 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B196E1B10FB4CFE200509748 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAnalysisWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -2191,8 +2185,6 @@
 				279918111711E97400C1AC3D /* ColorPopup.m */,
 				27955AFD140C0603008369C9 /* GraphicsAdditions.h */,
 				27955AFE140C0603008369C9 /* GraphicsAdditions.m */,
-				274DE2B213F992A50009EB77 /* MainBackgroundView.h */,
-				274DE2B313F992A50009EB77 /* MainBackgroundView.m */,
 				2724DC32140155F000B0FE15 /* RoundedInnerShadowView.h */,
 				2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */,
 				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
@@ -2489,10 +2481,11 @@
 			isa = PBXGroup;
 			children = (
 				2720D2CD1AC8048900B86AD0 /* de */,
-				2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */,
 				27F591181AA38214005FA793 /* Converter.swift */,
 				27F591191AA38214005FA793 /* DEAccountCheck.swift */,
 				27F5911A1AA38214005FA793 /* DERules.swift */,
+				2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */,
+				27AFAF061C5E6E7F002A7C50 /* Transformers.swift */,
 			);
 			name = IBANtools;
 			sourceTree = "<group>";
@@ -3116,8 +3109,6 @@
 			isa = PBXGroup;
 			children = (
 				279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */,
-				B196E1B00FB4CFE200509748 /* StatusBarController.h */,
-				B196E1B10FB4CFE200509748 /* StatusBarController.m */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
 				B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */,
 				B196E03B0FABA2CC00509748 /* WorkerThread.h */,
@@ -3834,7 +3825,6 @@
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
 				B1A6AA781A2672C400141C39 /* select_file.m in Sources */,
 				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
-				27778891173CE22700430EBC /* StatusBarController.m in Sources */,
 				27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				27921A1D1C3C028F00D746BD /* StatementsTable.swift in Sources */,
 				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
@@ -3893,7 +3883,6 @@
 				B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
-				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
@@ -4108,7 +4097,6 @@
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
 				B1A6AA771A2672C400141C39 /* select_file.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
-				B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */,
 				27921A1C1C3C028F00D746BD /* StatementsTable.swift in Sources */,
 				27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
@@ -4167,7 +4155,6 @@
 				B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
-				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
 				B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */,
@@ -4237,6 +4224,7 @@
 				B1A6AA751A2672C400141C39 /* read_record.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */,
+				27AFAF071C5E6E7F002A7C50 /* Transformers.swift in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,

@@ -55,7 +55,7 @@
     BSSelectWindowController         *selectWindowController;
 }
 
-@property (nonatomic, copy) NSDecimalNumber      *saveValue;
+@property (nonatomic, copy) NSDecimalNumber *saveValue;
 @property (nonatomic, assign) BOOL showBalances;
 @property (nonatomic, assign) BOOL showRecursiveStatements;
 @property (nonatomic, assign) BOOL showDetailsPane;
@@ -91,7 +91,6 @@
 
 - (IBAction)getAccountBalance: (id)sender;
 
-
 - (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
 - (IBAction)updateSupportedTransactions: (id)sender;
@@ -117,11 +116,16 @@
 - (void)publishContext;
 - (void)updateUnread;
 - (void)updateStatusbar;
+
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;
 - (void)setHBCIAccounts;
 
 + (BankingController *)controller;
+
++ (void)setStatusText: (NSString *)text;
++ (void)setStatusText: (NSString *)text cleanAfter: (int64_t)time;
++ (void)clearStatusText;
 
 @end

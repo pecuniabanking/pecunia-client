@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,7 +24,6 @@
 #import "BankingController.h"
 #import "MOAssistant.h"
 #import "BankStatement.h"
-#import "StatusBarController.h"
 
 @implementation BSSelectWindowController
 
@@ -87,11 +86,10 @@
     @catch (NSException *error) {
         LogError(@"%@", error.debugDescription);
     }
-    [[BankingController controller] requestFinished: resultList];
+    [BankingController.controller requestFinished: resultList];
 
     // status message
-    StatusBarController *sc = [StatusBarController controller];
-    [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
+    [BankingController setStatusText: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] cleanAfter: 120];
 
     [self.window close];
     [NSApp stopModal];

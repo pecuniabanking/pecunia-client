@@ -33,7 +33,6 @@
 #import "TimeSliceManager.h"
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
-#import "StatusBarController.h"
 #import "DonationMessageController.h"
 #import "CategoryOutlineView.h"
 #import "HBCIController.h"
@@ -98,7 +97,37 @@ NSString *const CategoryKey = @"CategoryKey";
 // KVO contexts.
 void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
-static BankingController *bankinControllerInstance;
+//----------------------------------------------------------------------------------------------------------------------
+
+@interface MainBackgroundView : NSView
+@end
+
+@implementation MainBackgroundView
+
+#define HEADER_HEIGHT 34
+
+- (void)drawRect: (NSRect)dirtyRect
+{
+    [NSGraphicsContext saveGraphicsState];
+
+    NSRect bounds = [self bounds];
+    bounds.size.height -= HEADER_HEIGHT; // Upper border transfer list.
+    NSColor *color;
+    color = [NSColor colorWithDeviceWhite: 1 alpha: 1];
+    [color setFill];
+    [NSBezierPath fillRect: bounds];
+
+    bounds.origin.x = 0;
+    bounds.origin.y = bounds.size.height; // Area above the transfer list.
+    bounds.size.height = HEADER_HEIGHT;
+
+    [[NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1] set];
+    [NSBezierPath fillRect: bounds];
+
+    [NSGraphicsContext restoreGraphicsState];
+}
+
+@end
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -113,11 +142,6 @@ static BankingController *bankinControllerInstance;
     __weak IBOutlet PecuniaSplitView  *mainVSplit;
     __weak IBOutlet NSArrayController *assignPreviewController;
     __weak IBOutlet TimeSliceManager  *timeSlicer;
-    __weak IBOutlet NSImageView       *lockImage;
-    __weak IBOutlet NSTextField       *earningsField;
-   __weak  IBOutlet NSTextField       *spendingsField;
-    __weak IBOutlet NSTextField       *earningsFieldLabel;
-    __weak IBOutlet NSTextField       *spendingsFieldLabel;
     __weak IBOutlet NSView            *sectionPlaceholder;
     __weak IBOutlet NSView            *rightPane;
     __weak IBOutlet NSButton          *refreshButton;
@@ -132,10 +156,40 @@ static BankingController *bankinControllerInstance;
     __weak IBOutlet WaitViewController *waitViewController;
 
     __weak IBOutlet NSLayoutConstraint *sidebarWidthConstraint;
+    __weak IBOutlet NSLayoutConstraint *statusbarHeightConstraint;
+    __weak IBOutlet NSLayoutConstraint *headerHeightConstraint;
+
+    // Header line text elements:
+    __weak IBOutlet NSTextField *bankNameField;
+    CGFloat bankNameFieldDefaultFontSize;
+    __weak IBOutlet NSTextField *ibanTitle;
+    CGFloat ibanTitleDefaultFontSize;
+    __weak IBOutlet NSTextField *ibanField;
+    CGFloat ibanFieldDefaultFontSize;
+    __weak IBOutlet NSTextField *bicTitle;
+    CGFloat bicTitleDefaultFontSize;
+    __weak IBOutlet NSTextField *bicField;
+    CGFloat bicFieldDefaultFontSize;
+    __weak IBOutlet NSTextField *dateTitle;
+    CGFloat dateTitleDefaultFontSize;
+    __weak IBOutlet NSTextField *dateField;
+    CGFloat dateFieldDefaultFontSize;
+
+    // Status line text elements:
+    __weak IBOutlet NSTextField *statusField;
+    CGFloat statusFieldDefaultFontSize;
+    __weak IBOutlet NSTextField *earningsTitle;
+    CGFloat earningsTitleDefaultFontSize;
+    __weak IBOutlet NSTextField *earningsField;
+    CGFloat earningsFieldDefaultFontSize;
+    __weak IBOutlet NSTextField *spendingsTitle;
+    CGFloat spendingsTitleDefaultFontSize;
+    __weak IBOutlet NSTextField *spendingsField;
+    CGFloat spendingsFieldDefaultFontSize;
+    __weak IBOutlet NSImageView *lockImage;
 
     NSManagedObjectContext *managedObjectContext;
-
-    NSUInteger          newStatementsCount;
+    NSUInteger newStatementsCount;
 
     NSManagedObjectModel  *model;
     NewBankUserController *bankUserController;
@@ -165,12 +219,14 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Initialization
 
+static BankingController *singleton;
+
 - (id)init {
-    LogEnter; // Will implicitly set up the message log and the used loggers.
+    LogEnter; // Will implicitly set up the message log and the loggers used by that.
 
     self = [super init];
     if (self != nil) {
-        bankinControllerInstance = self;
+        singleton = self;
         restart = NO;
         requestRunning = NO;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity: 10];
@@ -215,6 +271,20 @@ static BankingController *bankinControllerInstance;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
     accountsOutline.refusesFirstResponder = YES;
+
+    bankNameFieldDefaultFontSize = bankNameField.font.pointSize;
+    ibanTitleDefaultFontSize = ibanTitle.font.pointSize;
+    ibanFieldDefaultFontSize = ibanField.font.pointSize;
+    bicTitleDefaultFontSize = bicTitle.font.pointSize;
+    bicFieldDefaultFontSize = bicField.font.pointSize;
+    dateTitleDefaultFontSize = dateTitle.font.pointSize;
+    dateFieldDefaultFontSize = dateField.font.pointSize;
+
+    statusFieldDefaultFontSize = statusField.font.pointSize;
+    earningsTitleDefaultFontSize = earningsTitle.font.pointSize;
+    earningsFieldDefaultFontSize = earningsField.font.pointSize;
+    spendingsTitleDefaultFontSize = spendingsTitle.font.pointSize;
+    spendingsFieldDefaultFontSize = spendingsField.font.pointSize;
 
     [self setupSidebar];
 
@@ -921,9 +991,7 @@ static BankingController *bankinControllerInstance;
 
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
+    statusField.stringValue = NSLocalizedString(@"AP219", nil);
     newStatementsCount = 0;
 
     if ([defaults boolForKey: @"manualTransactionCheck"] && selectWindowController == nil) {
@@ -1001,11 +1069,9 @@ static BankingController *bankinControllerInstance;
 }
 
 - (void)statementsFinalizeNotification: (NSNotification *)notification {
-    StatusBarController *sc = [StatusBarController controller];
-    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    [sc stopSpinning];
-    [sc clearMessage];
+    statusField.stringValue = @"";
     requestRunning = NO;
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
@@ -1019,7 +1085,7 @@ static BankingController *bankinControllerInstance;
     if ([defaults boolForKey: @"manualTransactionCheck"]) {
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
+        [BankingController setStatusText: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] cleanAfter: 120];
     }
 
     autoSyncRunning = NO;
@@ -1543,7 +1609,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-#pragma mark - Page switching
+#pragma mark - Status bar
 
 - (void)updateStatusbar {
     LogEnter;
@@ -1562,11 +1628,30 @@ static BankingController *bankinControllerInstance;
 
     spendingsField.hidden = currentPage != 1;
     earningsField.hidden = currentPage != 1;
-    spendingsFieldLabel.hidden = currentPage != 1;
-    earningsFieldLabel.hidden = currentPage != 1;
+    spendingsTitle.hidden = currentPage != 1;
+    earningsTitle.hidden = currentPage != 1;
 
     LogLeave;
 }
+
++ (void)setStatusText: (NSString *)text {
+    singleton->statusField.stringValue = text;
+}
+
++ (void)setStatusText: (NSString *)text cleanAfter: (int64_t)time {
+    singleton->statusField.stringValue = text;
+    if (time > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            singleton->statusField.stringValue = @"";
+        });
+    }
+}
+
++ (void)clearStatusText {
+    singleton->statusField.stringValue = @"";
+}
+
+#pragma mark - Page switching
 
 - (void)switchMainPage: (NSInteger)page {
     LogEnter;
@@ -2905,10 +2990,7 @@ static BankingController *bankinControllerInstance;
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
 
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
-
+    statusField.stringValue = NSLocalizedString(@"AP108", nil);
     mainVSplit.fixedIndex = 0;
 
     LogLeave;
@@ -2917,8 +2999,7 @@ static BankingController *bankinControllerInstance;
 - (void)applicationDidFinishLaunching: (NSNotification *)aNotification {
     LogEnter;
 
-    StatusBarController *sc = [StatusBarController controller];
-    MOAssistant         *assistant = [MOAssistant sharedAssistant];
+    MOAssistant *assistant = [MOAssistant sharedAssistant];
 
     // Load context & model.
     @try {
@@ -2935,9 +3016,7 @@ static BankingController *bankinControllerInstance;
 
     // Open encrypted database
     if (assistant.isEncrypted) {
-        StatusBarController *sc = [StatusBarController controller];
-        [sc startSpinning];
-        [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
+        statusField.stringValue = NSLocalizedString(@"AP108", nil);
 
         @try {
             [assistant decrypt];
@@ -2957,10 +3036,8 @@ static BankingController *bankinControllerInstance;
     [self publishContext];
     [accountsOutline restoreState];
 
-    [sc stopSpinning];
-    [sc clearMessage];
-
-    [mainWindow.contentView setHidden: NO];
+    statusField.stringValue = @"";
+    mainWindow.contentView.hidden = NO;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey: @"restoreActivePage"]) {
@@ -3346,6 +3423,59 @@ static BankingController *bankinControllerInstance;
                 sidebar.buttonsHeight = 60; // Will update all buttons width's + selection image. Need to wait for next run loop, though.
             });
 
+            CGFloat maxHeight = 0;
+            bankNameField.font = [PreferenceController mainFontOfSize: bankNameFieldDefaultFontSize bold: YES];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            ibanTitle.font = [PreferenceController mainFontOfSize: ibanTitleDefaultFontSize bold: NO];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            ibanField.font = [PreferenceController mainFontOfSize: ibanFieldDefaultFontSize bold: YES];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            bicTitle.font = [PreferenceController mainFontOfSize: bicTitleDefaultFontSize bold: NO];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            bicField.font = [PreferenceController mainFontOfSize: bicFieldDefaultFontSize bold: YES];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            dateTitle.font = [PreferenceController mainFontOfSize: dateTitleDefaultFontSize bold: NO];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            dateField.font = [PreferenceController mainFontOfSize: dateFieldDefaultFontSize bold: YES];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+
+            maxHeight = 0;
+            statusField.font = [PreferenceController mainFontOfSize: statusFieldDefaultFontSize bold: NO];
+            if (statusField.font.pointSize > maxHeight) {
+                maxHeight = statusField.font.pointSize;
+            }
+            earningsTitle.font = [PreferenceController mainFontOfSize: earningsTitleDefaultFontSize bold: NO];
+            if (earningsTitle.font.pointSize > maxHeight) {
+                maxHeight = earningsTitle.font.pointSize;
+            }
+            earningsField.font = [PreferenceController mainFontOfSize: earningsFieldDefaultFontSize bold: NO];
+            if (earningsField.font.pointSize > maxHeight) {
+                maxHeight = earningsField.font.pointSize;
+            }
+            spendingsTitle.font = [PreferenceController mainFontOfSize: spendingsTitleDefaultFontSize bold: NO];
+            if (spendingsTitle.font.pointSize > maxHeight) {
+                maxHeight = spendingsTitle.font.pointSize;
+            }
+            spendingsField.font = [PreferenceController mainFontOfSize: spendingsFieldDefaultFontSize bold: NO];
+            if (spendingsField.font.pointSize > maxHeight) {
+                maxHeight = spendingsField.font.pointSize;
+            }
+            statusbarHeightConstraint.constant = maxHeight + 12;
+
             return;
         }
 
@@ -3642,7 +3772,7 @@ static BankingController *bankinControllerInstance;
 }
 
 + (BankingController *)controller {
-    return bankinControllerInstance;
+    return singleton;
 }
 
 @end

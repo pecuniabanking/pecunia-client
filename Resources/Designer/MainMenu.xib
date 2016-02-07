@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -23,6 +23,68 @@
                 <rect key="frame" x="0.0" y="0.0" width="1200" height="700"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="B96-no-ost" customClass="EDSideBar">
+                        <rect key="frame" x="0.0" y="20" width="80" height="680"/>
+                        <subviews>
+                            <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbf-EK-ccc" userLabel="Refresh Button">
+                                <rect key="frame" x="32" y="657" width="20" height="20"/>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="enqueueRequest:" target="235" id="T0m-Uh-P2E"/>
+                                    <binding destination="911" name="enabled" keyPath="selection.isRequestable" id="Ww5-WJ-6qZ"/>
+                                </connections>
+                            </button>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="4Zn-pj-CrH" userLabel="Donate Button">
+                                <rect key="frame" x="55" y="657" width="20" height="20"/>
+                                <string key="toolTip">Für Pecunia spenden.
+Unterstütze die Entwicklung!</string>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="SCK-Tt-R98"/>
+                                </constraints>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="favorite" imagePosition="only" alignment="center" inset="2" id="WSy-fx-agS">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="donate:" target="235" id="JyC-DI-8fJ"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Schriftgröße um 10% verringern" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pdb-Az-wgq" userLabel="Decrease Font Button">
+                                <rect key="frame" x="0.0" y="9" width="20" height="20"/>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="font-decrease" imagePosition="only" alignment="center" inset="2" id="r7w-Xu-mBc">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="changeFontSize:" target="235" id="96v-VX-nj7"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Schriftgröße um 10% verringern" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GIO-bA-yvG" userLabel="Increase Font Button">
+                                <rect key="frame" x="22" y="9" width="20" height="20"/>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="font-increase" imagePosition="only" alignment="center" inset="2" id="VXZ-f8-PXt">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="changeFontSize:" target="235" id="YWW-EM-6yT"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="GIO-bA-yvG" firstAttribute="leading" secondItem="pdb-Az-wgq" secondAttribute="trailing" constant="2" id="5qu-u3-zBZ"/>
+                            <constraint firstAttribute="bottom" secondItem="pdb-Az-wgq" secondAttribute="bottom" constant="9" id="BGb-pO-PTu"/>
+                            <constraint firstAttribute="bottom" secondItem="GIO-bA-yvG" secondAttribute="bottom" constant="9" id="IU1-eZ-80H"/>
+                            <constraint firstItem="4Zn-pj-CrH" firstAttribute="leading" secondItem="hbf-EK-ccc" secondAttribute="trailing" constant="3" id="O7m-6L-2VO"/>
+                            <constraint firstItem="4Zn-pj-CrH" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="top" constant="3" id="Ygf-Xp-yiY"/>
+                            <constraint firstItem="hbf-EK-ccc" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="top" constant="3" id="cdW-Ty-6cl"/>
+                            <constraint firstItem="pdb-Az-wgq" firstAttribute="leading" secondItem="B96-no-ost" secondAttribute="leading" id="eQA-Wn-vxn"/>
+                            <constraint firstAttribute="width" constant="80" id="i6Z-lP-I6Q"/>
+                            <constraint firstAttribute="trailing" secondItem="4Zn-pj-CrH" secondAttribute="trailing" constant="5" id="ktQ-1d-SlF"/>
+                        </constraints>
+                    </customView>
                     <tabView type="noTabsNoBorder" initialItem="394" translatesAutoresizingMaskIntoConstraints="NO" id="393">
                         <rect key="frame" x="80" y="20" width="1120" height="680"/>
                         <font key="font" metaFont="system"/>
@@ -40,12 +102,12 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="P69-4S-tSe" userLabel="Comtrace Helper" customClass="ComTraceHelper">
-                                                            <rect key="frame" x="302" y="656" width="19" height="19"/>
+                                                            <rect key="frame" x="310" y="654" width="19" height="19"/>
                                                             <subviews>
-                                                                <button wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Va-H0-B6I">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
-                                                                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="magnify" imagePosition="only" alignment="center" inset="2" id="szo-aX-TlJ">
-                                                                        <behavior key="behavior" lightByContents="YES"/>
+                                                                <button wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Va-H0-B6I">
+                                                                    <rect key="frame" x="1" y="1" width="17" height="17"/>
+                                                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="magnify" imagePosition="only" alignment="center" inset="2" id="szo-aX-TlJ">
+                                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
@@ -56,18 +118,20 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="19" id="3ow-6B-Qw4"/>
                                                                 <constraint firstAttribute="height" constant="19" id="TEp-ij-bXQ"/>
+                                                                <constraint firstItem="9Va-H0-B6I" firstAttribute="centerX" secondItem="P69-4S-tSe" secondAttribute="centerX" id="ZcL-4Y-Qvk"/>
+                                                                <constraint firstItem="9Va-H0-B6I" firstAttribute="centerY" secondItem="P69-4S-tSe" secondAttribute="centerY" id="cii-mK-zi4"/>
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="magnifyButton" destination="9Va-H0-B6I" id="RRv-sj-DZf"/>
                                                             </connections>
                                                         </customView>
                                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="5998" userLabel="Main Navigation Bar">
-                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="650"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="344" height="646"/>
                                                             <subviews>
                                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6f-U6-aMI" userLabel="Category Outline Scroll View">
-                                                                    <rect key="frame" x="10" y="44" width="332" height="596"/>
+                                                                    <rect key="frame" x="10" y="44" width="332" height="592"/>
                                                                     <clipView key="contentView" drawsBackground="NO" id="vOF-Xg-FL2">
-                                                                        <rect key="frame" x="1" y="1" width="330" height="594"/>
+                                                                        <rect key="frame" x="1" y="1" width="330" height="590"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" autosaveName="accounts-outline" rowHeight="26" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="0ch-yC-d9l" id="I39-Kk-HLZ" userLabel="Accounts Outline" customClass="CategoryOutlineView">
@@ -351,10 +415,10 @@
                                                         </customView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="P69-4S-tSe" firstAttribute="top" secondItem="6322" secondAttribute="top" constant="5" id="2Yi-Zb-EDN"/>
-                                                        <constraint firstAttribute="trailing" secondItem="P69-4S-tSe" secondAttribute="trailing" constant="23" id="DMS-wg-0No"/>
+                                                        <constraint firstItem="P69-4S-tSe" firstAttribute="top" secondItem="6322" secondAttribute="top" constant="7" id="2Yi-Zb-EDN"/>
+                                                        <constraint firstAttribute="trailing" secondItem="P69-4S-tSe" secondAttribute="trailing" constant="15" id="DMS-wg-0No"/>
+                                                        <constraint firstItem="5998" firstAttribute="top" secondItem="6322" secondAttribute="top" constant="34" id="GsB-SF-vzS"/>
                                                         <constraint firstAttribute="trailing" secondItem="5998" secondAttribute="trailing" id="NbL-Ib-dPe"/>
-                                                        <constraint firstItem="5998" firstAttribute="top" secondItem="P69-4S-tSe" secondAttribute="bottom" constant="6" id="R1X-Tj-EsY"/>
                                                         <constraint firstItem="5998" firstAttribute="leading" secondItem="6322" secondAttribute="leading" id="bhm-Rh-gqT"/>
                                                         <constraint firstAttribute="bottom" secondItem="5998" secondAttribute="bottom" id="deL-54-QfE"/>
                                                     </constraints>
@@ -363,257 +427,192 @@
                                                     <rect key="frame" x="345" y="0.0" width="775" height="680"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6002">
-                                                            <rect key="frame" x="586" y="656" width="120" height="17"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="116" id="tfF-Qb-G4H"/>
-                                                            </constraints>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Letzter Umsatz am" usesSingleLineMode="YES" id="6003">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.accountNumber" id="6573">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="573" userLabel="DE12345">
-                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="194" id="agB-Ci-glN"/>
-                                                            </constraints>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="DE12345" usesSingleLineMode="YES" id="3405">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Xb2-CV-P9n">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="value" keyPath="selection.iban" id="ySJ-0R-bVm">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iL7-B7-Esb">
-                                                            <rect key="frame" x="127" y="656" width="47" height="17"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="43" id="xCo-tA-Fra"/>
-                                                            </constraints>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="IBAN:" usesSingleLineMode="YES" id="FiZ-uQ-gTs">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="hij-OV-sDu">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cBW-1J-fam" userLabel="12345">
-                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="12345" usesSingleLineMode="YES" id="sme-f3-gp6">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.accountNumber" id="kkf-UZ-f0J">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="g7L-a4-yxe">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gbg-XW-nBA">
-                                                            <rect key="frame" x="417" y="656" width="165" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="DEBXX1234" usesSingleLineMode="YES" id="bmq-6H-jeQ">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.bic" id="61m-v5-U19">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="value" keyPath="selection.bic" id="Gzo-q2-rNT">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L9r-fR-5jU">
-                                                            <rect key="frame" x="380" y="656" width="34" height="17"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="30" id="gfx-aJ-kLL"/>
-                                                            </constraints>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BIC:" usesSingleLineMode="YES" id="9oT-lB-AI5">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.bic" id="IKo-U0-SMN">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="577">
-                                                            <rect key="frame" x="11" y="656" width="121" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Postbank" usesSingleLineMode="YES" id="3408">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.bankName" id="996">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <string key="NSNullPlaceholder"></string>
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4746">
-                                                            <rect key="frame" x="710" y="656" width="60" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Date" usesSingleLineMode="YES" id="4747">
-                                                                <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="short" id="4755"/>
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.25490197539999998" green="0.25490197539999998" blue="0.25490197539999998" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden" keyPath="selection.accountNumber" id="6572">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="value" keyPath="selection.latestTransferDate" id="6062">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="HB4-mJ-aOy" userLabel="Header">
+                                                            <rect key="frame" x="0.0" y="646" width="775" height="34"/>
+                                                            <subviews>
+                                                                <textField horizontalHuggingPriority="248" verticalHuggingPriority="750" horizontalCompressionResistancePriority="748" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="577" userLabel="Bank Name">
+                                                                    <rect key="frame" x="11" y="9" width="153" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Postbank" usesSingleLineMode="YES" id="3408">
+                                                                        <font key="font" metaFont="systemBold" size="12"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="value" keyPath="selection.bankName" id="996">
+                                                                            <dictionary key="options">
+                                                                                <integer key="NSConditionallySetsEnabled" value="1"/>
+                                                                                <string key="NSNoSelectionPlaceholder"></string>
+                                                                                <string key="NSNotApplicablePlaceholder"></string>
+                                                                                <string key="NSNullPlaceholder"></string>
+                                                                                <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iL7-B7-Esb" userLabel="IBAN Title">
+                                                                    <rect key="frame" x="175" y="9" width="36" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="IBAN:" usesSingleLineMode="YES" id="FiZ-uQ-gTs">
+                                                                        <font key="font" metaFont="cellTitle"/>
+                                                                        <color key="textColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.iban" id="hij-OV-sDu">
+                                                                            <dictionary key="options">
+                                                                                <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="573" userLabel="IBAN">
+                                                                    <rect key="frame" x="215" y="9" width="213" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BJ11B00610100400271101192591" usesSingleLineMode="YES" id="3405">
+                                                                        <font key="font" metaFont="systemBold" size="12"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="value" keyPath="selection.iban" id="Kdv-rg-M0U">
+                                                                            <dictionary key="options">
+                                                                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                <string key="NSValueTransformerName">IBANTransformer</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.iban" id="Xb2-CV-P9n">
+                                                                            <dictionary key="options">
+                                                                                <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L9r-fR-5jU" userLabel="BIC Title">
+                                                                    <rect key="frame" x="442" y="9" width="28" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BIC:" usesSingleLineMode="YES" id="9oT-lB-AI5">
+                                                                        <font key="font" metaFont="cellTitle"/>
+                                                                        <color key="textColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.bic" id="IKo-U0-SMN">
+                                                                            <dictionary key="options">
+                                                                                <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbg-XW-nBA" userLabel="BIC">
+                                                                    <rect key="frame" x="474" y="9" width="97" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="GENODEFFXXX" usesSingleLineMode="YES" id="bmq-6H-jeQ">
+                                                                        <font key="font" metaFont="systemBold" size="12"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.bic" id="61m-v5-U19">
+                                                                            <dictionary key="options">
+                                                                                <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                                <integer key="NSNullPlaceholder" value="1"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                        <binding destination="911" name="value" keyPath="selection.bic" id="Gzo-q2-rNT">
+                                                                            <dictionary key="options">
+                                                                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6002" userLabel="Date Title">
+                                                                    <rect key="frame" x="584" y="9" width="115" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Letzter Umsatz am:" usesSingleLineMode="YES" id="6003">
+                                                                        <font key="font" metaFont="cellTitle"/>
+                                                                        <color key="textColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.accountNumber" id="6573">
+                                                                            <dictionary key="options">
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4746">
+                                                                    <rect key="frame" x="703" y="9" width="54" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="25.01.17" usesSingleLineMode="YES" id="4747">
+                                                                        <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="short" id="4755"/>
+                                                                        <font key="font" metaFont="systemBold" size="12"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" red="0.25490197539999998" green="0.25490197539999998" blue="0.25490197539999998" alpha="1" colorSpace="deviceRGB"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="911" name="hidden" keyPath="selection.accountNumber" id="6572">
+                                                                            <dictionary key="options">
+                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                        <binding destination="911" name="value" keyPath="selection.latestTransferDate" id="6062">
+                                                                            <dictionary key="options">
+                                                                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
-                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="lwF-Qy-Ve8" userLabel="Section Placeholder">
-                                                            <rect key="frame" x="0.0" y="0.0" width="775" height="650"/>
+                                                                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </textField>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="577" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="6hF-jv-gyz"/>
+                                                                <constraint firstItem="6002" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="7zd-Cf-Sme"/>
+                                                                <constraint firstItem="4746" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="91Q-0m-87x"/>
+                                                                <constraint firstItem="6002" firstAttribute="leading" secondItem="gbg-XW-nBA" secondAttribute="trailing" constant="17" id="9DO-pE-Xtp"/>
+                                                                <constraint firstItem="gbg-XW-nBA" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="DNM-Ul-DVS"/>
+                                                                <constraint firstItem="iL7-B7-Esb" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="FvQ-o2-mBY"/>
+                                                                <constraint firstItem="L9r-fR-5jU" firstAttribute="leading" secondItem="573" secondAttribute="trailing" constant="18" id="XLf-iJ-D9v"/>
+                                                                <constraint firstItem="573" firstAttribute="leading" secondItem="iL7-B7-Esb" secondAttribute="trailing" constant="8" id="YPI-5L-Bsg"/>
+                                                                <constraint firstItem="gbg-XW-nBA" firstAttribute="leading" secondItem="L9r-fR-5jU" secondAttribute="trailing" constant="8" id="dYX-kD-cVs"/>
+                                                                <constraint firstAttribute="height" constant="34" id="eFz-VE-Kim"/>
+                                                                <constraint firstAttribute="trailing" secondItem="4746" secondAttribute="trailing" constant="20" id="edo-Ad-uq6"/>
+                                                                <constraint firstItem="4746" firstAttribute="leading" secondItem="6002" secondAttribute="trailing" constant="8" id="kvn-6A-w5N"/>
+                                                                <constraint firstItem="L9r-fR-5jU" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="lb6-63-nq1"/>
+                                                                <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="577" secondAttribute="trailing" constant="15" id="nfb-76-WT9"/>
+                                                                <constraint firstItem="573" firstAttribute="centerY" secondItem="HB4-mJ-aOy" secondAttribute="centerY" id="nmo-SJ-5ci"/>
+                                                                <constraint firstItem="577" firstAttribute="leading" secondItem="HB4-mJ-aOy" secondAttribute="leading" constant="13" id="qP4-Vn-kl0"/>
+                                                            </constraints>
                                                         </customView>
-                                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8O0-fc-4lv">
-                                                            <rect key="frame" x="127" y="656" width="47" height="17"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Konto:" usesSingleLineMode="YES" id="bTv-fK-iza">
-                                                                <font key="font" metaFont="systemBold"/>
-                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="hidden2" keyPath="selection.accountNumber" previousBinding="Z24-L1-9ZY" id="Get-Oz-i6d">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Z24-L1-9ZY">
-                                                                    <dictionary key="options">
-                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
+                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="lwF-Qy-Ve8" userLabel="Section Placeholder">
+                                                            <rect key="frame" x="0.0" y="0.0" width="775" height="646"/>
+                                                        </customView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="cBW-1J-fam" secondAttribute="baseline" id="09R-1F-7wD"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="577" secondAttribute="trailing" constant="-1" id="0vH-tS-YpB"/>
-                                                        <constraint firstItem="4746" firstAttribute="leading" secondItem="6002" secondAttribute="trailing" constant="8" symbolic="YES" id="1qk-JO-v5b"/>
-                                                        <constraint firstAttribute="trailing" secondItem="6002" secondAttribute="trailing" constant="71" id="4Yn-oz-RoI"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="L9r-fR-5jU" secondAttribute="baseline" id="9bs-tw-vdu"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="577" secondAttribute="baseline" id="AvS-z7-DEM"/>
-                                                        <constraint firstItem="6002" firstAttribute="baseline" secondItem="573" secondAttribute="baseline" id="DrJ-e1-u3c"/>
-                                                        <constraint firstItem="L9r-fR-5jU" firstAttribute="leading" secondItem="573" secondAttribute="trailing" constant="8" symbolic="YES" id="E7Y-UZ-xW9"/>
-                                                        <constraint firstItem="6002" firstAttribute="leading" secondItem="gbg-XW-nBA" secondAttribute="trailing" constant="8" symbolic="YES" id="NnX-IS-eOY"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="8O0-fc-4lv" secondAttribute="baseline" id="QAF-ab-m9R"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="leading" secondItem="8O0-fc-4lv" secondAttribute="leading" id="RTc-dI-cJQ"/>
+                                                        <constraint firstItem="HB4-mJ-aOy" firstAttribute="top" secondItem="6323" secondAttribute="top" id="FMM-kd-HA5"/>
                                                         <constraint firstAttribute="trailing" secondItem="lwF-Qy-Ve8" secondAttribute="trailing" id="W36-Um-DMF"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="573" secondAttribute="baseline" id="WD4-es-A1d"/>
-                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="iL7-B7-Esb" secondAttribute="trailing" constant="8" id="Whz-xd-zBE"/>
-                                                        <constraint firstItem="577" firstAttribute="leading" secondItem="6323" secondAttribute="leading" constant="13" id="XWu-Ic-1E3"/>
-                                                        <constraint firstItem="L9r-fR-5jU" firstAttribute="leading" secondItem="cBW-1J-fam" secondAttribute="trailing" constant="8" symbolic="YES" id="Y9q-sj-WA0"/>
-                                                        <constraint firstItem="4746" firstAttribute="baseline" secondItem="6002" secondAttribute="baseline" id="aMi-O3-RHQ"/>
+                                                        <constraint firstItem="lwF-Qy-Ve8" firstAttribute="top" secondItem="HB4-mJ-aOy" secondAttribute="bottom" id="WTZ-IT-A6s"/>
                                                         <constraint firstItem="lwF-Qy-Ve8" firstAttribute="leading" secondItem="6323" secondAttribute="leading" id="aUh-jq-0z1"/>
-                                                        <constraint firstItem="6002" firstAttribute="top" secondItem="6323" secondAttribute="top" constant="7" id="aWd-FZ-Ybq"/>
-                                                        <constraint firstItem="cBW-1J-fam" firstAttribute="leading" secondItem="573" secondAttribute="leading" id="agr-YN-Eby"/>
-                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="8O0-fc-4lv" secondAttribute="trailing" constant="8" id="cZH-1E-XAJ"/>
-                                                        <constraint firstItem="573" firstAttribute="leading" secondItem="6323" secondAttribute="leading" constant="180" id="cn0-aF-tpo"/>
-                                                        <constraint firstItem="lwF-Qy-Ve8" firstAttribute="top" secondItem="6323" secondAttribute="top" constant="30" id="iYR-Vw-Jgh"/>
+                                                        <constraint firstItem="HB4-mJ-aOy" firstAttribute="leading" secondItem="6323" secondAttribute="leading" id="aXB-sU-su0"/>
+                                                        <constraint firstAttribute="trailing" secondItem="HB4-mJ-aOy" secondAttribute="trailing" id="lW4-zu-NeW"/>
                                                         <constraint firstAttribute="bottom" secondItem="lwF-Qy-Ve8" secondAttribute="bottom" id="lfW-EL-V2F"/>
-                                                        <constraint firstAttribute="trailing" secondItem="4746" secondAttribute="trailing" constant="7" id="qNI-54-vTA"/>
-                                                        <constraint firstItem="gbg-XW-nBA" firstAttribute="leading" secondItem="L9r-fR-5jU" secondAttribute="trailing" constant="7" id="tWQ-7u-1LO"/>
-                                                        <constraint firstItem="iL7-B7-Esb" firstAttribute="baseline" secondItem="gbg-XW-nBA" secondAttribute="baseline" id="umX-jS-chZ"/>
-                                                        <constraint firstItem="lwF-Qy-Ve8" firstAttribute="top" secondItem="4746" secondAttribute="bottom" constant="6" id="zRG-mO-2WV"/>
                                                     </constraints>
                                                 </customView>
                                             </subviews>
@@ -636,151 +635,88 @@ IA
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
-                    <progressIndicator hidden="YES" focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="4592" userLabel="Progress Indicator">
-                        <rect key="frame" x="5" y="2" width="16" height="16"/>
-                    </progressIndicator>
-                    <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4593" userLabel="Status Text">
-                        <rect key="frame" x="25" y="3" width="712" height="14"/>
-                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="4594">
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <imageView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4740" userLabel="Lock Image">
-                        <rect key="frame" x="1141" y="3" width="16" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="16" id="eis-zI-zWa"/>
-                        </constraints>
-                        <imageCell key="cell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSLockLockedTemplate" id="4741"/>
-                    </imageView>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6099" userLabel="Income Text">
-                        <rect key="frame" x="848" y="3" width="86" height="14"/>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6100">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6105"/>
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6103" userLabel="Spending Text">
-                        <rect key="frame" x="1035" y="3" width="86" height="14"/>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9,999,999,99 €" id="6104">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6106"/>
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="B96-no-ost" customClass="EDSideBar">
-                        <rect key="frame" x="0.0" y="20" width="80" height="680"/>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Rsn-ok-0L2" userLabel="Status Bar">
+                        <rect key="frame" x="0.0" y="0.0" width="1200" height="20"/>
                         <subviews>
-                            <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbf-EK-ccc" userLabel="Refresh Button">
-                                <rect key="frame" x="32" y="657" width="20" height="20"/>
-                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="enqueueRequest:" target="235" id="T0m-Uh-P2E"/>
-                                    <binding destination="911" name="enabled" keyPath="selection.isRequestable" id="Ww5-WJ-6qZ"/>
-                                </connections>
-                            </button>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="4Zn-pj-CrH" userLabel="Donate Button">
-                                <rect key="frame" x="55" y="657" width="20" height="20"/>
-                                <string key="toolTip">Für Pecunia spenden.
-Unterstütze die Entwicklung!</string>
+                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4593" userLabel="Status Text">
+                                <rect key="frame" x="8" y="3" width="817" height="14"/>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="4594">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wz9-K1-SAF" userLabel="Income Title">
+                                <rect key="frame" x="839" y="3" width="65" height="14"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Einnahmen:" id="HPg-lN-syK">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6099" userLabel="Income Text">
+                                <rect key="frame" x="908" y="3" width="86" height="14"/>
+                                <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6100">
+                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6105"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jgg-oi-JS7" userLabel="Spending Title">
+                                <rect key="frame" x="1008" y="3" width="60" height="14"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Ausgaben:" id="Aov-5W-w9P">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6103" userLabel="Spending Text">
+                                <rect key="frame" x="1072" y="3" width="86" height="14"/>
+                                <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9,999,999,99 €" id="6104">
+                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6106"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <imageView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4740" userLabel="Lock Image">
+                                <rect key="frame" x="1164" y="2" width="16" height="16"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="SCK-Tt-R98"/>
+                                    <constraint firstAttribute="width" constant="16" id="eis-zI-zWa"/>
+                                    <constraint firstAttribute="height" constant="16" id="kRV-N0-61m"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="favorite" imagePosition="only" alignment="center" inset="2" id="WSy-fx-agS">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="donate:" target="235" id="JyC-DI-8fJ"/>
-                                </connections>
-                            </button>
-                            <button toolTip="Schriftgröße um 10% verringern" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pdb-Az-wgq" userLabel="Decrease Font Button">
-                                <rect key="frame" x="32" y="9" width="20" height="20"/>
-                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="font-decrease" imagePosition="only" alignment="center" inset="2" id="r7w-Xu-mBc">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="changeFontSize:" target="235" id="96v-VX-nj7"/>
-                                </connections>
-                            </button>
-                            <button toolTip="Schriftgröße um 10% verringern" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GIO-bA-yvG" userLabel="Increase Font Button">
-                                <rect key="frame" x="55" y="9" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="cbR-FU-hF7"/>
-                                </constraints>
-                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="font-increase" imagePosition="only" alignment="center" inset="2" id="VXZ-f8-PXt">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="changeFontSize:" target="235" id="YWW-EM-6yT"/>
-                                </connections>
-                            </button>
+                                <imageCell key="cell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSLockLockedTemplate" id="4741"/>
+                            </imageView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="pdb-Az-wgq" secondAttribute="bottom" constant="9" id="BGb-pO-PTu"/>
-                            <constraint firstAttribute="bottom" secondItem="GIO-bA-yvG" secondAttribute="bottom" constant="9" id="IU1-eZ-80H"/>
-                            <constraint firstAttribute="trailing" secondItem="GIO-bA-yvG" secondAttribute="trailing" constant="5" id="NFw-aw-WVA"/>
-                            <constraint firstItem="4Zn-pj-CrH" firstAttribute="leading" secondItem="hbf-EK-ccc" secondAttribute="trailing" constant="3" id="O7m-6L-2VO"/>
-                            <constraint firstItem="4Zn-pj-CrH" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="top" constant="3" id="Ygf-Xp-yiY"/>
-                            <constraint firstItem="hbf-EK-ccc" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="top" constant="3" id="cdW-Ty-6cl"/>
-                            <constraint firstAttribute="width" constant="80" id="i6Z-lP-I6Q"/>
-                            <constraint firstItem="GIO-bA-yvG" firstAttribute="leading" secondItem="pdb-Az-wgq" secondAttribute="trailing" constant="3" id="jvx-aX-tTd"/>
-                            <constraint firstAttribute="trailing" secondItem="4Zn-pj-CrH" secondAttribute="trailing" constant="5" id="ktQ-1d-SlF"/>
+                            <constraint firstAttribute="trailing" secondItem="4740" secondAttribute="trailing" constant="20" id="9MX-IF-4cz"/>
+                            <constraint firstItem="Wz9-K1-SAF" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="9n5-vM-qYO"/>
+                            <constraint firstItem="6099" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="Eie-q6-uoX"/>
+                            <constraint firstAttribute="height" constant="20" id="HrC-Vm-QFN"/>
+                            <constraint firstItem="4740" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="L5u-rg-aBN"/>
+                            <constraint firstItem="jgg-oi-JS7" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="MjT-BQ-lbS"/>
+                            <constraint firstItem="4593" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="SG0-nS-AEB"/>
+                            <constraint firstItem="4593" firstAttribute="leading" secondItem="Rsn-ok-0L2" secondAttribute="leading" constant="10" id="STV-dw-TU8"/>
+                            <constraint firstItem="6103" firstAttribute="leading" secondItem="jgg-oi-JS7" secondAttribute="trailing" constant="8" id="Sbw-bC-Y6z"/>
+                            <constraint firstItem="jgg-oi-JS7" firstAttribute="leading" secondItem="6099" secondAttribute="trailing" constant="18" id="cCq-Oh-m4C"/>
+                            <constraint firstItem="Wz9-K1-SAF" firstAttribute="leading" secondItem="4593" secondAttribute="trailing" constant="18" id="f02-g7-p5y"/>
+                            <constraint firstItem="6103" firstAttribute="centerY" secondItem="Rsn-ok-0L2" secondAttribute="centerY" id="mMq-dG-6kg"/>
+                            <constraint firstItem="6099" firstAttribute="leading" secondItem="Wz9-K1-SAF" secondAttribute="trailing" constant="8" id="qYW-hd-aIs"/>
+                            <constraint firstItem="4740" firstAttribute="leading" secondItem="6103" secondAttribute="trailing" constant="8" id="vVb-dl-7Jf"/>
                         </constraints>
                     </customView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jgg-oi-JS7">
-                        <rect key="frame" x="971" y="3" width="60" height="14"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Ausgaben:" id="Aov-5W-w9P">
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wz9-K1-SAF">
-                        <rect key="frame" x="763" y="3" width="81" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="77" id="KTB-LT-AaY"/>
-                        </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Einnahmen:" id="HPg-lN-syK">
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="4593" firstAttribute="bottom" secondItem="4740" secondAttribute="bottom" id="1CY-0w-VJO"/>
-                    <constraint firstItem="393" firstAttribute="bottom" secondItem="B96-no-ost" secondAttribute="bottom" id="1do-EA-7uK"/>
+                    <constraint firstAttribute="trailing" secondItem="Rsn-ok-0L2" secondAttribute="trailing" id="0Y4-oZ-tG4"/>
                     <constraint firstAttribute="trailing" secondItem="393" secondAttribute="trailing" id="3E6-Sd-efe"/>
-                    <constraint firstItem="jgg-oi-JS7" firstAttribute="baseline" secondItem="6099" secondAttribute="baseline" id="4Iw-vF-Wjf"/>
-                    <constraint firstItem="Wz9-K1-SAF" firstAttribute="leading" secondItem="4593" secondAttribute="trailing" constant="30" id="4uB-uv-aNe"/>
-                    <constraint firstAttribute="trailing" secondItem="6099" secondAttribute="trailing" constant="268" id="4yx-V4-Ief"/>
-                    <constraint firstItem="6099" firstAttribute="leading" secondItem="Wz9-K1-SAF" secondAttribute="trailing" constant="8" id="6D4-h5-iJQ"/>
-                    <constraint firstItem="4593" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="27" id="6uB-eS-iA8"/>
-                    <constraint firstItem="jgg-oi-JS7" firstAttribute="leading" secondItem="6099" secondAttribute="trailing" constant="41" id="7eF-vQ-mwI"/>
-                    <constraint firstItem="4740" firstAttribute="top" secondItem="393" secondAttribute="bottom" constant="1" id="7fo-9z-FYM"/>
-                    <constraint firstItem="4593" firstAttribute="baseline" secondItem="6099" secondAttribute="baseline" id="8IT-rQ-k4O"/>
-                    <constraint firstAttribute="bottom" secondItem="393" secondAttribute="bottom" constant="20" id="DPX-FN-yjM"/>
-                    <constraint firstItem="4593" firstAttribute="leading" secondItem="4592" secondAttribute="trailing" constant="6" id="MMJ-Ip-tYF"/>
-                    <constraint firstItem="jgg-oi-JS7" firstAttribute="baseline" secondItem="6103" secondAttribute="baseline" id="OCa-Mn-Y5Z"/>
-                    <constraint firstAttribute="trailing" secondItem="4740" secondAttribute="trailing" constant="43" id="RWy-NT-fT8"/>
-                    <constraint firstItem="Wz9-K1-SAF" firstAttribute="baseline" secondItem="6099" secondAttribute="baseline" id="WWl-yq-Agq"/>
-                    <constraint firstItem="4593" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="bottom" constant="3" id="XKR-wY-xd2"/>
-                    <constraint firstItem="4593" firstAttribute="centerY" secondItem="4592" secondAttribute="centerY" id="a46-jR-48F"/>
-                    <constraint firstItem="6103" firstAttribute="leading" secondItem="jgg-oi-JS7" secondAttribute="trailing" constant="8" id="fiP-DV-RCF"/>
-                    <constraint firstItem="4740" firstAttribute="leading" secondItem="6103" secondAttribute="trailing" constant="22" id="gql-jh-Wyx"/>
+                    <constraint firstItem="Rsn-ok-0L2" firstAttribute="top" secondItem="393" secondAttribute="bottom" id="4U8-Gz-CCA"/>
+                    <constraint firstItem="Rsn-ok-0L2" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="bottom" id="A9S-L0-BAR"/>
+                    <constraint firstAttribute="bottom" secondItem="Rsn-ok-0L2" secondAttribute="bottom" id="AUb-fq-Sa2"/>
+                    <constraint firstItem="Rsn-ok-0L2" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="LQr-e5-6ea"/>
+                    <constraint firstItem="B96-no-ost" firstAttribute="top" secondItem="2" secondAttribute="top" id="frC-XZ-fvf"/>
                     <constraint firstItem="B96-no-ost" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="hKg-nb-Ymq"/>
                     <constraint firstItem="393" firstAttribute="top" secondItem="2" secondAttribute="top" id="hes-WH-veE"/>
-                    <constraint firstItem="393" firstAttribute="top" secondItem="B96-no-ost" secondAttribute="top" id="sCg-fI-UZj"/>
                     <constraint firstItem="393" firstAttribute="leading" secondItem="B96-no-ost" secondAttribute="trailing" id="wm1-fh-yIy"/>
                 </constraints>
             </view>
@@ -1313,13 +1249,21 @@ CA
             <connections>
                 <outlet property="accountsOutline" destination="I39-Kk-HLZ" id="mrL-eF-pEv"/>
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
+                <outlet property="bankNameField" destination="577" id="fB6-wD-Myy"/>
+                <outlet property="bicField" destination="gbg-XW-nBA" id="bLa-jA-AJ7"/>
+                <outlet property="bicTitle" destination="L9r-fR-5jU" id="fkt-CL-hpi"/>
                 <outlet property="categoryController" destination="911" id="930"/>
                 <outlet property="comTraceMenuItem" destination="suc-Py-BAh" id="j6I-1K-Ktn"/>
                 <outlet property="comTracePanel" destination="P69-4S-tSe" id="Ng2-5I-81W"/>
+                <outlet property="dateField" destination="4746" id="IR4-8i-QcJ"/>
+                <outlet property="dateTitle" destination="6002" id="mQm-sa-ARK"/>
                 <outlet property="decreaseFontButton" destination="pdb-Az-wgq" id="UPj-SP-V9P"/>
                 <outlet property="developerMenu" destination="6506" id="6509"/>
                 <outlet property="earningsField" destination="6099" id="6117"/>
-                <outlet property="earningsFieldLabel" destination="Wz9-K1-SAF" id="M52-A1-h1y"/>
+                <outlet property="earningsTitle" destination="Wz9-K1-SAF" id="s6d-fZ-mvg"/>
+                <outlet property="headerHeightConstraint" destination="eFz-VE-Kim" id="63E-Vu-iP3"/>
+                <outlet property="ibanField" destination="573" id="ovM-qt-vGe"/>
+                <outlet property="ibanTitle" destination="iL7-B7-Esb" id="K46-ai-PFB"/>
                 <outlet property="increaseButton" destination="GIO-bA-yvG" id="pim-TH-M32"/>
                 <outlet property="lockImage" destination="4740" id="4742"/>
                 <outlet property="mainTabView" destination="393" id="476"/>
@@ -1331,7 +1275,9 @@ CA
                 <outlet property="sidebar" destination="B96-no-ost" id="ndF-xC-rco"/>
                 <outlet property="sidebarWidthConstraint" destination="i6Z-lP-I6Q" id="lGN-7X-gsN"/>
                 <outlet property="spendingsField" destination="6103" id="6108"/>
-                <outlet property="spendingsFieldLabel" destination="jgg-oi-JS7" id="5uc-Vp-xiZ"/>
+                <outlet property="spendingsTitle" destination="jgg-oi-JS7" id="dHP-ui-BXZ"/>
+                <outlet property="statusField" destination="4593" id="oYc-cO-Wxj"/>
+                <outlet property="statusbarHeightConstraint" destination="HrC-Vm-QFN" id="x1B-K2-zF2"/>
                 <outlet property="timeSlicer" destination="4624" id="4672"/>
                 <outlet property="waitOverlay" destination="RtS-rA-3Gv" id="aH4-YN-jUN"/>
                 <outlet property="waitViewController" destination="UlU-NN-NGf" id="lmm-G5-KTx"/>
@@ -1340,12 +1286,6 @@ CA
         <customObject id="3601" customClass="ExportController">
             <connections>
                 <outlet property="accessoryView" destination="3592" id="3613"/>
-            </connections>
-        </customObject>
-        <customObject id="4595" userLabel="StatusBarController" customClass="StatusBarController">
-            <connections>
-                <outlet property="messageField" destination="4593" id="4597"/>
-                <outlet property="progressIndicator" destination="4592" id="4596"/>
             </connections>
         </customObject>
         <customObject id="RtS-rA-3Gv" userLabel="Wait Overlay" customClass="JMModalOverlay">

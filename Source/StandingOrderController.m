@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#import "BankingController.h"
+
 #import "StandingOrderController.h"
 #import "MOAssistant.h"
 #import "StandingOrder.h"
@@ -25,7 +27,6 @@
 #import "TransactionLimits.h"
 #import "AmountCell.h"
 #import "PecuniaError.h"
-#import "StatusBarController.h"
 #import "ShortDate.h"
 #import "TransferFormularView.h"
 #import "SupportedTransactionInfo.h"
@@ -633,10 +634,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             return;
         }
     }
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
     self.requestRunning = @YES;
-    [sc setMessage: NSLocalizedString(@"AP460", nil) removeAfter: 0];
+    [BankingController setStatusText: NSLocalizedString(@"AP460", nil)];
 
     NSMutableArray *sendOrders = [NSMutableArray arrayWithCapacity: [orders count]];
     for (StandingOrder *stord in orders) {
@@ -654,8 +653,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     }
     PecuniaError *hbciError = [[HBCIController controller] sendStandingOrders: sendOrders];
     if (hbciError != nil) {
-        [sc stopSpinning];
-        [sc clearMessage];
+        [BankingController clearStatusText];
         self.requestRunning = @NO;
 
         [hbciError alertPanel];
@@ -679,8 +677,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         }
     }
 
-    [sc stopSpinning];
-    [sc clearMessage];
+    [BankingController clearStatusText];
     self.requestRunning = @NO;
 
     // save updates
@@ -735,10 +732,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     }
     
     if (accountList.count > 0) {
-        StatusBarController *sc = [StatusBarController controller];
-        [sc startSpinning];
         self.requestRunning = @YES;
-        [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
+        [BankingController setStatusText: NSLocalizedString(@"AP459", nil)];
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(ordersNotification:)
                                                      name: PecuniaStatementsNotification
@@ -756,8 +751,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     }
 }
 
-#pragma mark -
-#pragma mark Other notifications
+#pragma mark - Other notifications
 
 - (IBAction)sourceAccountChanged: (id)sender {
     BOOL accountSelected = [sender selectedItem] != nil;
@@ -843,13 +837,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
     [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsFinalizeNotification object: nil];
 
-    StatusBarController *status = [StatusBarController controller];
-
     [self validateNewOrders];
     [orderController prepareContent];
 
-    [status stopSpinning];
-    [status clearMessage];
+    [BankingController clearStatusText];
     self.requestRunning = @NO;
 }
 

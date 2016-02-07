@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +19,7 @@
 
 #import "HBCIController.h"
 
+#import "BankingController.h"
 #import "PecuniaError.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
@@ -33,7 +34,6 @@
 #import "ShortDate.h"
 #import "CustomerMessage.h"
 #import "TanMediaList.h"
-#import "StatusBarController.h"
 #import "SigningOptionsController.h"
 #import "CallbackHandler.h"
 #import "SystemNotification.h"
@@ -1963,17 +1963,14 @@ static HBCIController *controller = nil;
         return error;
     }
 
-    StatusBarController *sbController = [StatusBarController controller];
-    NSMutableString     *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">"];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">"];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [cmd appendString: @"</command>"];
 
-    [sbController setMessage: NSLocalizedString(@"AP213", nil) removeAfter: 0];
-    [sbController startSpinning];
+    [BankingController setStatusText: NSLocalizedString(@"AP213", nil)];
     TanMediaList *mediaList = [bridge syncCommand: cmd error: &error];
-    [sbController stopSpinning];
-    [sbController clearMessage];
+    [BankingController clearStatusText];
     if (error) {
         return error;
     }
