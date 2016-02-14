@@ -418,7 +418,12 @@ static ShortDate *endReportDate = nil;
     NSDate *from = fromDate.lowDate;
     NSDate *to = toDate.highDate;
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
+    NSMutableString *format = [NSMutableString stringWithString: @"category = %@ and statement.date >= %@ and statement.date <= %@"];
+    if (![NSUserDefaults.standardUserDefaults boolForKey: @"showPreliminaryStatements"]) {
+        [format appendString: @" and (statement.isPreliminary == nil || statement.isPreliminary == NO)"];
+    }
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: format, self, from, to];
     [fetchRequest setPredicate: predicate];
 
     NSError *error = nil;
@@ -428,19 +433,7 @@ static ShortDate *endReportDate = nil;
 
         // Update the balance value for this category while we have the filtered assignments at hand and this
         // is not a bank account.
-        // For bank accounts remove preliminary statements if set by the user.
-        if (self.isBankAccount) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            if (![defaults boolForKey: @"showPreliminaryStatements"]) {
-                NSMutableArray *candidates = [NSMutableArray new];
-                for (StatCatAssignment *assignment in fetchedObjects) {
-                    if (assignment.statement.isPreliminary.boolValue) {
-                        [candidates addObject: assignment];
-                    }
-                }
-                [result removeObjectsInArray: candidates];
-            }
-        } else {
+        if (!self.isBankAccount || self.isNotAssignedCategory) {
             NSDecimalNumber *balance = NSDecimalNumber.zero;
 
             for (StatCatAssignment *assignment in fetchedObjects) {
@@ -451,6 +444,7 @@ static ShortDate *endReportDate = nil;
                 }
             }
             self.balance = balance;
+            [self updateCategorySums];
         }
     }
 
