@@ -3383,6 +3383,15 @@ static BankingController *singleton;
                 [category invalidateCacheIncludeParents: YES recursive: YES];
                 [category updateAssignmentsForReportRange];
                 currentSection.selectedCategory = category;
+
+                // The not-assigned category can also include preliminary statements (other categories can not, because
+                // we don't allow assigning preliminary statements to them). This requires to update the nass root
+                // and it's parent, the category root.
+                [BankingCategory.nassRoot invalidateCacheIncludeParents: NO recursive: NO];
+                [BankingCategory.nassRoot updateAssignmentsForReportRange];
+                [BankingCategory.catRoot invalidateCacheIncludeParents: NO recursive: NO];
+                [BankingCategory.catRoot updateAssignmentsForReportRange];
+
                 return;
             }
         }
