@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -2247,8 +2247,7 @@ static BankingController *bankinControllerInstance;
         // Update category values including rollup for all categories.
         [BankingCategory updateBalancesAndSums];
         
-        // remove selection in statementsListView after item was dropped
-        [overviewController removeSelection];
+        [overviewController reload];
 
         if (needBankRootUpdate) {
             [[BankingCategory bankRoot] updateCategorySums];
@@ -3510,6 +3509,15 @@ static BankingController *bankinControllerInstance;
                 [category invalidateCacheIncludeParents: YES recursive: YES];
                 [category updateAssignmentsForReportRange];
                 currentSection.selectedCategory = category;
+
+                // The not-assigned category can also include preliminary statements (other categories can not, because
+                // we don't allow assigning preliminary statements to them). This requires to update the nass root
+                // and it's parent, the category root.
+                [BankingCategory.nassRoot invalidateCacheIncludeParents: NO recursive: NO];
+                [BankingCategory.nassRoot updateAssignmentsForReportRange];
+                [BankingCategory.catRoot invalidateCacheIncludeParents: NO recursive: NO];
+                [BankingCategory.catRoot updateAssignmentsForReportRange];
+
                 return;
             }
         }
