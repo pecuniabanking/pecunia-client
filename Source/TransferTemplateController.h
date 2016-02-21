@@ -40,7 +40,6 @@
 
 - (IBAction)segButtonPressed: (id)sender;
 - (IBAction)finished: (id)sender;
-- (IBAction)countryChanged: (id)sender;
 - (IBAction)cancel: (id)sender;
 
 @end

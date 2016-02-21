@@ -72,7 +72,6 @@
 - (void)setTanMethod: (TanMethodOld *)tm
 {
     self.tanMethodNumber = tm.function;
-    //todo	[[HBCIController controller ] changePinTanMethodForUser:self method:tanMethodNumber ];
 }
 
 - (void)dealloc

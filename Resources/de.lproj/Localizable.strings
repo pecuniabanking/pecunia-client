@@ -813,6 +813,7 @@ AP2005 = "Die angegebene HBCI-Version (%@) ist ungültig bzw. wird nicht unterst
 AP2006 = "Interner Fehler bei der Verarbeitung der HBCI-Syntax-Informationen. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
 AP2007 = "Ein interner Fehler ist aufgetreten. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
 AP2008 = "Es konnten nicht alle Überweisungen verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
+AP2009 = "Es konnten nicht alle Daueraufträge verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
 
 
 

@@ -359,9 +359,10 @@
 
     for (BankUser *user in self.users) {
         if ([user.userId isEqualToString: self.userId]) {
-            PecuniaError *error = [[HBCIController controller] updateSupportedTransactionsForUser:user];
+            NSError *error = [[HBCIBackend backend] updateSupportedTransactions:user];
             if (error != nil) {
-                [error alertPanel];
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
                 success = NO;
             }
         }

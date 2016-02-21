@@ -153,20 +153,6 @@ static BankingController *bankinControllerInstance;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity: 10];
         currentPage = -1;
         currentSectionIndex = -1;
-
-        @try {
-            PecuniaError *error = [[HBCIController controller] initalizeHBCI];
-            if (error != nil) {
-                [error alertPanel];
-                [NSApp terminate: self];
-            }
-        }
-        @catch (NSError *error) {
-            LogError(@"%@", error.debugDescription);
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            [NSApp terminate: self];
-        }
     }
 
     LogLeave;
@@ -547,31 +533,6 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)setHBCIAccounts {
-    LogEnter;
-
-    NSError             *error = nil;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND userId != nil"];
-    [request setPredicate: predicate];
-    NSArray *accounts = [managedObjectContext executeFetchRequest: request error: &error];
-    if (error != nil || accounts == nil) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-
-        LogLeave;
-        return;
-    }
-    PecuniaError *pecError = [[HBCIController controller] setAccounts: accounts];
-    if (pecError) {
-        [pecError alertPanel];
-    }
-
-    LogLeave;
-}
-
 - (NSIndexPath *)indexPathForCategory: (BankingCategory *)cat inArray: (NSArray *)nodes {
     LogEnter;
 
@@ -910,7 +871,7 @@ static BankingController *bankinControllerInstance;
                         );
     }
     
-    // We need to filter userId == nil accounts out (the manual ones) as this will cause an exception on HBCIController controller] getStatements
+    // We need to filter userId == nil accounts out (the manual ones)
     NSMutableArray *accountsToKeep = [NSMutableArray arrayWithCapacity:[selectedAccounts count]];
     for (BankAccount *account in selectedAccounts) {
         if (account.userId != nil) {
@@ -1283,7 +1244,6 @@ static BankingController *bankinControllerInstance;
 - (IBAction)getAccountBalance: (id)sender {
     LogEnter;
 
-    PecuniaError *pec_err = nil;
     BankAccount  *account = nil;
     BankingCategory     *cat = [self currentSelection];
     if (cat == nil || cat.accountNumber == nil) {
@@ -1291,8 +1251,10 @@ static BankingController *bankinControllerInstance;
     }
     account = (BankAccount *)cat;
 
-    pec_err = [[HBCIController controller] getBalanceForAccount: account];
-    if (pec_err) {
+    NSError *error = [[HBCIBackend backend] getBalanceForAccount: account];
+    if (error) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
         return;
     }
 
@@ -2579,12 +2541,12 @@ static BankingController *bankinControllerInstance;
                     return NO;
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
-                    if ([[HBCIController controller] isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
+                    if ([SupportedTransactionInfo isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
                         return NO;
                     }
                 }
                 if ([item action] == @selector(accountStatements:)) {
-                    if ([[HBCIController controller] isTransactionSupported: TransactionType_AccountStatements forAccount: account] == NO) {
+                    if ([SupportedTransactionInfo isTransactionSupported: TransactionType_AccountStatements forAccount: account] == NO) {
                         return NO;
                     }
                 }
@@ -3648,109 +3610,6 @@ static BankingController *bankinControllerInstance;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     NSManagedObjectContext  *context = MOAssistant.sharedAssistant.context;
-
-    BOOL migrated10 = [settings boolForKey: @"Migrated10"];
-
-    if (!migrated10) {
-        NSError *error = nil;
-        NSArray *bankUsers = BankUser.allUsers;
-        NSArray *users = [[HBCIController controller] getOldBankUsers];
-
-        for (User *user in users) {
-            BOOL found = NO;
-            for (BankUser *bankUser in bankUsers) {
-                if ([user.userId isEqualToString: bankUser.userId] &&
-                    [user.bankCode isEqualToString: bankUser.bankCode] &&
-                    (user.customerId == nil || [user.customerId isEqualToString: bankUser.customerId])) {
-                    found = YES;
-                }
-            }
-            if (!found) {
-                // Create new bank user.
-                BankUser *bankUser = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
-                                                                   inManagedObjectContext: context];
-                bankUser.name = user.name;
-                bankUser.bankCode = user.bankCode;
-                bankUser.bankName = user.bankName;
-                bankUser.bankURL = user.bankURL;
-                bankUser.port = user.port;
-                bankUser.hbciVersion = user.hbciVersion;
-                bankUser.checkCert = @(user.checkCert);
-                bankUser.country = user.country;
-                bankUser.userId = user.userId;
-                bankUser.customerId = user.customerId;
-                bankUser.secMethod = @(SecMethod_PinTan);
-            }
-        }
-        // BankUser assign accounts
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount"
-                                                             inManagedObjectContext: context];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-
-        [request setEntity: entityDescription];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId != nil", self];
-        [request setPredicate: predicate];
-        NSArray *accounts = [context executeFetchRequest: request error: &error];
-
-        // assign users to accounts and issue a message if an assigned user is not found
-        NSMutableSet *invalidUsers = [NSMutableSet setWithCapacity: 10];
-        for (BankAccount *account in accounts) {
-            if ([invalidUsers containsObject: account.userId]) {
-                continue;
-            }
-            BankUser *user = [BankUser findUserWithId: account.userId bankCode: account.bankCode];
-            if (user) {
-                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                [users addObject: user];
-            } else {
-                [invalidUsers addObject: account.userId];
-            }
-        }
-        if ([self save]) {
-            // BankUser update BPD.
-            bankUsers = [BankUser allUsers];
-            if ([bankUsers count] > 0) {
-                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                                NSLocalizedString(@"AP203", nil),
-                                NSLocalizedString(@"AP1", nil),
-                                nil, nil
-                                );
-                for (BankUser *user in [BankUser allUsers]) {
-                    [[HBCIController controller] updateBankDataForUser: user];
-                }
-            }
-
-            settings[@"Migrated10"] = @YES;
-            settings[@"Migrated110"] = @YES;
-
-            // success message
-            if ([users count] > 0 && [bankUsers count] > 0) {
-                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                                NSLocalizedString(@"AP156", nil),
-                                NSLocalizedString(@"AP1", nil),
-                                nil, nil
-                                );
-            }
-        }
-    }
-
-    BOOL migrated110 = [settings boolForKey: @"Migrated110"];
-    if (!migrated110) {
-        // BankUser update BPD
-        NSArray *bankUsers = [BankUser allUsers];
-        if ([bankUsers count] > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                            NSLocalizedString(@"AP203", nil),
-                            NSLocalizedString(@"AP1", nil),
-                            nil, nil
-                            );
-            for (BankUser *user in [BankUser allUsers]) {
-                [[HBCIController controller] updateSupportedTransactionsForUser: user];
-            }
-        }
-
-        settings[@"Migrated110"] = @YES;
-    }
 
     BOOL migrated112 = [settings boolForKey: @"Migrated112"];
     if (!migrated112) {

@@ -822,7 +822,7 @@
     }
 
     /* todo: support PIN change
-    PecuniaError *error = [[HBCIController controller] changePinForUser: user toPin: [pinController result]];
+    PecuniaError *error = [[HBCIBackend backend] changePinForUser: user toPin: [pinController result]];
     if (error) {
         [error alertPanel];
         return;

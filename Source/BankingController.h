@@ -164,7 +164,6 @@
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;
-- (void)setHBCIAccounts;
 
 + (BankingController *)controller;
 

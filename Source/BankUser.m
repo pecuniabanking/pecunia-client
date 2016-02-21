@@ -119,8 +119,6 @@ static NSMutableDictionary *users = nil;
     if ([self.secMethod intValue] != SecMethod_PinTan) {
         return nil;
     }
-    // first get TAN Media if not already fetched
-    //if ([self.tanMediaFetched boolValue ] == NO) [[HBCIController controller ] updateTanMediaForUser:self ];
 
     NSSet          *methods = [self tanMethods];
     NSSet          *media = [self tanMedia];
