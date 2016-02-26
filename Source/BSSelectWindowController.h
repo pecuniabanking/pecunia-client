@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BSSelectWindowController : NSWindowController {
+@interface BSSelectWindowController : NSWindowController <NSWindowDelegate> {
     NSMutableArray             *resultList;
     IBOutlet NSArrayController *statController;
     IBOutlet NSTableView       *statementsView;
