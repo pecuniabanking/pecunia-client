@@ -840,6 +840,8 @@ static BankingController *bankinControllerInstance;
 
     [self startRefreshAnimation];
 
+    selectWindowController = nil;
+
     if (category.accountNumber != nil) {
         // A bank account.
         [selectedAccounts addObject: category];
