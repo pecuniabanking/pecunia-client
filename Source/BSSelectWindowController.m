@@ -70,6 +70,16 @@
     [statController setContent: statements];
     [[self window] center];
     [[self window] makeKeyAndOrderFront: self];
+    [[self window] setDelegate:self];
+
+}
+
+- (BOOL)windowShouldClose: (id)sender
+{
+    if ([NSApp modalWindow] == self.window)
+        [NSApp stopModal];
+    
+    return @YES;
 }
 
 - (IBAction)ok: (id)sender

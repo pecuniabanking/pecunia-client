@@ -66,10 +66,6 @@
             argument = "-f accounts4"
             isEnabled = "YES">
          </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-loglevel debug"
-            isEnabled = "YES">
-         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>

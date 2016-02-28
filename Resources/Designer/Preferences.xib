@@ -140,6 +140,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="805">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="2" maximumFractionDigits="2" id="806"/>
+
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -220,6 +221,42 @@
                                                 <binding destination="88" name="value" keyPath="values.autoResetNew" id="dzB-p8-9Sq"/>
                                             </connections>
                                         </button>
+                                        <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="AqD-nH-0gu" userLabel="Separator">
+                                            <rect key="frame" x="9" y="52" width="486" height="5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                            <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <font key="titleFont" metaFont="system"/>
+                                        </box>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="NCH-Ff-YQd" userLabel="Support Label">
+                                            <rect key="frame" x="22" y="29" width="172" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Zur Fehlersuche, Log Level:" id="NPM-Kk-GfL">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <popUpButton verticalHuggingPriority="750" id="hq1-Ls-o7e" userLabel="Log Level Dropdown">
+                                            <rect key="frame" x="318" y="24" width="128" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <popUpButtonCell key="cell" type="push" title="Alles" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="bq5-mx-VGC" id="mNN-Ez-LPV">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" id="5hd-LD-mSj">
+                                                    <items>
+                                                        <menuItem title="Nur Fehler" id="HRl-Fe-pm6" userLabel="Nur Fehler"/>
+                                                        <menuItem title="Warnungen" id="FpK-lY-Pdd"/>
+                                                        <menuItem title="Info (Standard)" id="xEd-h6-Sbw"/>
+                                                        <menuItem title="Debug" id="TPu-Yu-7aq"/>
+                                                        <menuItem title="Alles" state="on" id="bq5-mx-VGC"/>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                            <connections>
+                                                <binding destination="88" name="selectedIndex" keyPath="values.logLevel" id="wud-tt-K3q"/>
+                                            </connections>
+                                        </popUpButton>
                                     </subviews>
                                 </view>
                             </tabViewItem>
