@@ -419,6 +419,10 @@ static BankingController *bankinControllerInstance;
         [defaults setBool: YES forKey: @"showPreliminaryStatements"];
     }
 
+    if ([defaults objectForKey: @"logLevel"] == nil) {
+        [defaults setInteger: 2 forKey: @"logLevel"]; // 0 - errors, 1 - warnings, 2 - info, 3 - debug, 4 - verbose
+    }
+
     // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {

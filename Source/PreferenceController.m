@@ -238,7 +238,7 @@ static NSDictionary *heightMappings;
 
 + (void)initialize
 {
-    heightMappings = @{@"general": @355,
+    heightMappings = @{@"general": @385,
                        @"home": @400,
                        @"security": @270,
                        @"persistence": @260,
