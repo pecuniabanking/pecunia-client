@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2016, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,14 +17,11 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 @interface LaunchParameters : NSObject {
 }
 
 @property (nonatomic, strong) NSString *dataFile;
 @property (nonatomic, assign) BOOL     debugServer;
-@property (nonatomic, assign) int      customLogLevel;
 
 + (LaunchParameters *)parameters;
 

@@ -87,10 +87,8 @@
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
         [DDLog addLogger: fileLogger];
 
-        if (LaunchParameters.parameters.customLogLevel > -1) {
-            logLevel = LaunchParameters.parameters.customLogLevel;
-            DDLog.logLevel = LaunchParameters.parameters.customLogLevel;
-        }
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        [defaults addObserver: self forKeyPath: @"logLevel" options: NSKeyValueObservingOptionInitial context: nil];
 
         fileLogger.doNotReuseLogFiles = YES; // Start with a new log file at each application launch.
 
@@ -98,6 +96,47 @@
         [self cleanUp]; // In case we were not shutdown properly on last run.
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    [defaults removeObserver: self forKeyPath: @"logLevel"];
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary<NSString *,id> *)change context: (void *)context {
+    if ([keyPath isEqualToString: @"logLevel"]) {
+        NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+        int level = [defaults integerForKey: @"logLevel"];
+        switch (level) {
+            case 0:
+                logLevel = LOG_LEVEL_ERROR;
+                DDLog.logLevel = DDLogLevelError;
+                break;
+
+            case 1:
+                logLevel = LOG_LEVEL_WARN;
+                DDLog.logLevel = DDLogLevelWarning;
+                break;
+
+            case 3:
+                logLevel = LOG_LEVEL_DEBUG;
+                DDLog.logLevel = DDLogLevelDebug;
+                break;
+
+            case 4:
+                logLevel = LOG_LEVEL_VERBOSE;
+                DDLog.logLevel = DDLogLevelVerbose;
+                break;
+
+            default:
+                logLevel = LOG_LEVEL_INFO;
+                DDLog.logLevel = DDLogLevelInfo;
+                break;
+        }
+        return;
+    }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (void)setIsComTraceActive: (BOOL)flag {

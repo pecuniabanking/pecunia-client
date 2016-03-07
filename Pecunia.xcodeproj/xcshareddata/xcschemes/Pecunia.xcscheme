@@ -63,10 +63,6 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-loglevel info"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "-f accounts-1.2"
             isEnabled = "YES">
          </CommandLineArgument>
