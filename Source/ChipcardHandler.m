@@ -182,15 +182,17 @@ ChipcardHandler *_handler = nil;
     int useBio = [params[1] intValue];
     
     if (useSoftPin!=0 && useSoftPin!=1) {
-        unsigned short int fus=BCS_requestFunctionalUnits();
-        useSoftPin=(fus&BCS_HAS_FU_KEYBD)?0:1;
+        //unsigned short int fus=BCS_requestFunctionalUnits();
+        //useSoftPin=(fus&BCS_HAS_FU_KEYBD)?0:1;
+        useSoftPin = 0;
         
         LogInfo(@"using softpin: %s", (useSoftPin==0)?"no":"yes");
     }
 
     if (useBio!=0 && useBio!=1) {
-        unsigned short int fus=BCS_requestFunctionalUnits();
-        useBio=(fus&BCS_HAS_FU_BIO_FINGER)?1:0;
+        //unsigned short int fus=BCS_requestFunctionalUnits();
+        //useBio=(fus&BCS_HAS_FU_BIO_FINGER)?1:0;
+        useBio = 0;
         
         LogInfo(@"using bio: %s", (useBio==0)?"no":"yes");
     }

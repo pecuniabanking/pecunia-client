@@ -331,7 +331,9 @@
 
         s = [NSString stringWithFormat: @"\n%@: ", NSLocalizedString(@"AP410", nil)];
         [mas appendAttributedString: [s attributedStringWithFont: normalFont]];
-        [mas appendAttributedString: [statement.remoteBIC attributedStringWithFont: boldFont]];
+        if (statement.remoteBIC != nil) {
+            [mas appendAttributedString: [statement.remoteBIC attributedStringWithFont: boldFont]];
+        }
         return mas;
     } else {
         if (statement.remoteAccount.length == 0) {

@@ -477,6 +477,7 @@ AP836 = "Fehlerbereinigung";
 AP837 = "Erlaubte Geschäftsvorfälle wurden erfolgreich aktualisiert";
 AP838 = "Eine Bankkennung mit der Benutzerkennung %@ existiert bereits. Bitte löschen Sie zuerst die alte Bankkennung";
 AP839 = "Bankkennung existiert bereits";
+AP840 = "Laden der Kontoauszüge nicht möglich, die Bank unterstützt weder PDF noch MT940";
 
 
 // Tags

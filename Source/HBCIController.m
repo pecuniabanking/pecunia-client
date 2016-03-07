@@ -950,6 +950,7 @@ static HBCIController *controller = nil;
         } else {
             // todo: Alert
             LogError(@"Account statement format is not supported");
+            return nil;
         }
     }
     

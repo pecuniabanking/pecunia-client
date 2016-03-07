@@ -245,8 +245,38 @@
     return YES;
 }
 
+- (TransferType)convertTransferType: (TransferType)oldType {
+    TransferType type;
+    
+    switch (oldType) {
+        case TransferTypeOldStandard:
+            type = TransferTypeSEPA; break;
+        case TransferTypeOldStandardScheduled:
+            type = TransferTypeSEPAScheduled; break;
+        case TransferTypeInternal:
+            type = TransferTypeInternalSEPA; break;
+        default:
+            type = oldType;
+    }
+    return type;
+}
+
 - (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer {
-    if (![self newTransferOfType: [transfer.type intValue]]) {
+    TransferType type;
+    
+    switch (transfer.type.intValue) {
+        case TransferTypeOldStandard:
+        case TransferTypeEU:
+            type = TransferTypeSEPA; break;
+        case TransferTypeOldStandardScheduled:
+            type = TransferTypeSEPAScheduled; break;
+        case TransferTypeInternal:
+            type = TransferTypeInternalSEPA; break;
+        default:
+            type = transfer.type.intValue;
+    }
+    
+    if (![self newTransferOfType: [self convertTransferType: transfer.type.intValue ]]) {
         return NO;
     }
 
@@ -273,7 +303,7 @@
 }
 
 - (BOOL)newTransferFromTemplate: (TransferTemplate *)template {
-    if (![self newTransferOfType: [template.type intValue]]) {
+    if (![self newTransferOfType: [self convertTransferType:template.type.intValue]]) {
         return NO;
     }
 

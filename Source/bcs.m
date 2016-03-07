@@ -49,7 +49,7 @@ bool BCS_resetCT()
     // request and store available FUs
     BCS_FUs=0;
     if (ret) {
-        BCS_FUs=BCS_requestFunctionalUnits();
+        //BCS_FUs=BCS_requestFunctionalUnits();
     }
     
     return ret;

@@ -666,6 +666,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
 
+        /*
         case TransferTypeOldStandard:
         case TransferTypeOldStandardScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP404", nil)];
@@ -686,7 +687,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
-
+        */
+            
+        case TransferTypeEU:
+        case TransferTypeOldStandard:
+        case TransferTypeOldStandardScheduled:
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP406", nil)];
@@ -707,7 +712,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
-
         case TransferTypeCollectiveCredit:
         case TransferTypeCollectiveDebit:
         case TransferTypeCollectiveCreditSEPA:
@@ -722,7 +726,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [bankCodeText setHidden: isInternal];
     [bankCode setHidden: isInternal];
 
-    BOOL isEUTransfer = (type == TransferTypeEU);
+    BOOL isEUTransfer = false;
     [targetCountryText setHidden: !isEUTransfer];
     [targetCountrySelector setHidden: !isEUTransfer];
     [feeText setHidden: !isEUTransfer];
@@ -732,8 +736,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [remoteBankLabel setHidden: !isEUTransfer];
     [bankDescription setHidden: isEUTransfer];
 
-    [bankDescription setHidden: type == TransferTypeEU];
-
+    [bankDescription setHidden: false];
+    
     if (remoteAccountKey != nil) {
         NSDictionary *options = @{
             NSValueTransformerNameBindingOption: @"RemoveWhitespaceTransformer"
