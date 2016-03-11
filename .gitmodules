@@ -6,4 +6,4 @@ url=https://github.com/mike-lischke/ExSwift.git
 	url = https://github.com/mike-lischke/IBANTools
 [submodule "Submodules/HBCI4Swift"]
 	path = Submodules/HBCI4Swift
-	url = https://macemmi@github.com/macemmi/HBCI4Swift.git
+url=https://github.com/macemmi/HBCI4Swift.git
