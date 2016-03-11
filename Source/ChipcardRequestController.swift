@@ -8,6 +8,7 @@
 
 import Foundation
 import Cocoa
+import HBCI4Swift
 
 // RequestController is called when
 // -no card inserted

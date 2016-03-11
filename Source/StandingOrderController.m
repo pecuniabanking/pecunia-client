@@ -781,11 +781,11 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         // re-calculate limits and check
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
-            self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+            self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
         } else {
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
-                self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+                self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
             }
         }
 
@@ -891,12 +891,12 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
-            self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+            self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
             editable = YES;
         } else {
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
             if (transactionInfo != nil) {
-                self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+                self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
                 editable = [transactionInfo.allowsChange boolValue];
             } else {
                 editable = NO;

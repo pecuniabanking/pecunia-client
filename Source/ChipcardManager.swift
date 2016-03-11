@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HBCI4Swift
 
 var _manager:ChipcardManager!
 
@@ -192,6 +193,7 @@ var _manager:ChipcardManager!
             return nil;
         }
         
+        /*
         if !card.getCardID() {
             logError("Card ID could not be read");
             return nil;
@@ -200,6 +202,7 @@ var _manager:ChipcardManager!
         if let cid = card.cardID, cnumber = card.cardNumber {
             return NSString(format: "%@|%@", bytesToString(cid), cnumber);
         }
+        */
         return nil;
     }
     
@@ -220,6 +223,7 @@ var _manager:ChipcardManager!
     }
     
     public func readKeyData(paramString:NSString) ->NSString? {
+        /*
         let sigid = card.getSignatureId();
         
         if sigid == 0xffff {
@@ -232,8 +236,9 @@ var _manager:ChipcardManager!
             logError("Error reading key information from chipcard");
             return nil;
         }
-        
         return NSString(format: "%d|%i|%i|%i|%i", sigid, keys[0].keyNumber, keys[0].keyVersion, keys[1].keyNumber, keys[1].keyVersion);
+        */
+        return nil;
     }
     
     public func enterPin(paramString:NSString) ->Bool {
@@ -244,29 +249,32 @@ var _manager:ChipcardManager!
     
     public func saveSigId(paramString:NSString) ->Bool {
         let sigid = paramString.integerValue;
-        
+        /*
         if !card.writeSignatureId(sigid) {
             logError("Error while saving new signature id to chipcard");
             return false;
         }
+        */
         return true;
     }
     
     public func sign(paramString:NSString) ->NSString? {
         let hash = stringToBytes(paramString);
-        
+        /*
         if let sig = card.sign(hash) {
             return bytesToString(sig);
         }
+        */
         return nil;
     }
     
     public func encrypt(paramString:NSString) ->NSString? {
         let keyNum = paramString.integerValue;
-        
+        /*
         if let keys = card.getEncryptionKeys(UInt8(keyNum)) {
             return NSString(format: "%@|%@", bytesToString(keys.plain), bytesToString(keys.encrypted));
         }
+        */
         return nil;
     }
     
@@ -279,16 +287,18 @@ var _manager:ChipcardManager!
         
         let keyNum = Int(params[0])!;
         let encKey = params[1] as NSString;
-        
+        /*
         if let plain = card.decryptKey(UInt8(keyNum), encrypted: stringToBytes(encKey)) {
             return bytesToString(plain);
         }
+        */
         return nil;
     }
     
     public func close() {
         if card != nil {
             card.disconnect();
+            card = nil;
         }
     }
     

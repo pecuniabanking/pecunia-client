@@ -245,7 +245,7 @@ extern NSString *const CategoryKey;
 }
 
 - (IBAction)showSupportedBusinessTransactions: (id)sender {
-    NSArray *result = [[HBCIController controller] getSupportedBusinessTransactions: account];
+    NSArray *result = [HBCIBackend.backend supportedBusinessTransactions: changedAccount];
     if (result != nil) {
         if (supportedTransactionsSheet == nil) {
             transactionsController = [[BusinessTransactionsController alloc] initWithTransactions: result];

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Frank Emminghaus. All rights reserved.
 //
 
+/*
 import Foundation
 import PCSCard
 
@@ -432,3 +433,5 @@ class HBCISmartcard {
     }
     
 }
+
+*/

@@ -920,12 +920,12 @@ static BankingController *bankinControllerInstance;
 
     // get Proposals
     for (result in resultList) {
-        NSArray *stats = result.statements;
-        if ([stats count] > 0) {
-            noStatements = NO;
-            [result.account evaluateQueryResult: result];
-        }
         if (result.isImport) {
+            NSArray *stats = result.statements;
+            if ([stats count] > 0) {
+                noStatements = NO;
+                [result.account evaluateQueryResult: result];
+            }
             isImport = YES;
         }
         [result.account updateStandingOrders: result.standingOrders];

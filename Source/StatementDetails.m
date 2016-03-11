@@ -650,8 +650,6 @@ extern void *UserDefaultsBindingContext;
 
     [self createSEPAInfoTextInDetails: details forStatement: statement];
     self.sepaDetails = details; // Triggers KVO.
-
-    //BankInfo *info = [HBCIController.controller infoForBankCode: statement.remoteBankCode];
 }
 
 #pragma mark - User Actions

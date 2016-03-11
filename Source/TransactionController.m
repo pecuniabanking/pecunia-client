@@ -107,10 +107,10 @@
         if (template.remoteBIC == nil || template.remoteBankName == nil) {
             InstituteInfo *info = nil;
             if (template.remoteIBAN != nil) {
-                info = [HBCIController.controller infoForIBAN: template.remoteIBAN];
+                info = [HBCIBackend.backend infoForIBAN: template.remoteIBAN];
             } else {
                 if (template.remoteBankCode != nil) {
-                    info = [HBCIController.controller infoForBankCode: template.remoteBankCode];
+                    info = [HBCIBackend.backend infoForBankCode: template.remoteBankCode];
                 }
             }
 
@@ -123,7 +123,7 @@
 }
 
 - (void)updateLimits {
-    limits = [[HBCIController controller] limitsForType: currentTransfer.type.intValue account: account country: selectedCountry];
+    limits = [[HBCIBackend backend] transferLimits: account.defaultBankUser type: currentTransfer.type.intValue];
 }
 
 - (void)prepareTransfer {

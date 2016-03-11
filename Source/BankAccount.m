@@ -600,8 +600,11 @@
     // If there are multiple user ids per bank account this might need adjustment.
     NSSet *users = self.users;
     if (users.count == 0) {
-        LogError(@"Account %@: no assigned users", self.accountNumber);
-        return nil;
+        users = [self mutableSetValueForKey: @"users"];
+        if (users.count == 0) {
+            LogError(@"Account %@: no assigned users", self.accountNumber);
+            return nil;
+        }
     }
 
     if (self.userId == nil) {
