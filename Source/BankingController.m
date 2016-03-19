@@ -37,7 +37,6 @@
 #import "StatusBarController.h"
 #import "DonationMessageController.h"
 #import "CategoryView.h"
-#import "HBCIController.h"
 #import "StatCatAssignment.h"
 #import "PecuniaError.h"
 #import "ShortDate.h"
@@ -3655,7 +3654,29 @@ static BankingController *bankinControllerInstance;
 
         settings[@"Migrated121"] = @YES;
     }
-
+    
+    // check for users that are not converted to HBCI4Swift yet
+    BOOL migrationMessageSent = false;
+    for (BankUser *user in BankUser.allUsers) {
+        if (user.sysId == nil || user.hbciParameters == nil) {
+            if (!migrationMessageSent) {
+                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                                NSLocalizedString(@"AP203", nil),
+                                NSLocalizedString(@"AP1", nil),
+                                nil, nil
+                                );
+                migrationMessageSent = true;
+            }
+            
+            // Synchronize user
+            NSError *error = [HBCIBackend.backend syncBankUser:user];
+            if (error != nil) {
+                NSAlert *alert = [NSAlert alertWithError: error];
+                [alert runModal];
+            }
+        }
+    }
+    
     LogLeave;
 }
 

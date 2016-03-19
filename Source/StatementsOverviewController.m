@@ -34,7 +34,6 @@
 #import "AttachmentImageView.h"
 #import "BankingController.h"
 #import "BankStatementController.h"
-#import "HBCIController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"

@@ -27,8 +27,6 @@
 #import "LaunchParameters.h"
 #import "CallbackHandler.h"
 
-#import "HBCIController.h" // for -asyncCommandCompletedWithResult
-
 #import "NSString+PecuniaAdditions.h"
 
 @interface HBCIBridge () {

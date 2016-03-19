@@ -21,7 +21,6 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankUser.h"
-#import "HBCIController.h"
 #import "BankingController.h"
 
 #import "BWGradientBox.h"

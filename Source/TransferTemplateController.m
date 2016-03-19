@@ -22,7 +22,6 @@
 #import "TransferTemplateController.h"
 #import "TransferTemplate.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "Transfer.h"
 
 @interface TransferTemplateController ()

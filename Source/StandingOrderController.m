@@ -20,7 +20,6 @@
 #import "StandingOrderController.h"
 #import "MOAssistant.h"
 #import "StandingOrder.h"
-#import "HBCIController.h"
 #import "BankAccount.h"
 #import "TransactionLimits.h"
 #import "MCEMTableView.h"

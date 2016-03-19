@@ -21,7 +21,6 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "ShortDate.h"
 
 @implementation BankStatementController

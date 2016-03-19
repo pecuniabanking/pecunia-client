@@ -38,7 +38,6 @@
 #import "NSImage+PecuniaAdditions.h"
 
 #import "MOAssistant.h"
-#import "HBCIController.h"
 
 extern void *UserDefaultsBindingContext;
 

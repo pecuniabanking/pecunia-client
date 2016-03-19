@@ -22,8 +22,6 @@
 #import "ShortDate.h"
 #import "StandingOrder.h"
 #import "BankingCategory.h"
-
-#import "HBCIController.h"
 #import "BankAccount.h"
 
 extern NSString *StatementDateKey;             // Here the next execution date.

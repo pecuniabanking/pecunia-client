@@ -22,7 +22,6 @@
 #import "BankingController.h"
 
 #import "PecuniaError.h"
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "BankStatement.h"

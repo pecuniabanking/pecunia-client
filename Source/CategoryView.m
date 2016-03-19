@@ -21,7 +21,6 @@
 #import "BankingCategory.h"
 
 #import "BankingController.h"
-#import "HBCIController.h"
 #import "BankAccount.h"
 
 #import "PreferenceController.h"

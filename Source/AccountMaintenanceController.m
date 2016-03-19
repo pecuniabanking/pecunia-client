@@ -20,7 +20,6 @@
 #import "AccountMaintenanceController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "BankingController.h"
 #import "PecuniaError.h"
 #import "BankUser.h"

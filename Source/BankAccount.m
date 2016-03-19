@@ -29,8 +29,6 @@
 #import "SupportedTransactionInfo.h"
 #import "PecuniaError.h"
 
-#import "HBCIController.h"
-
 @implementation BankAccount
 
 @dynamic latestTransferDate;

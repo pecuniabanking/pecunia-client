@@ -19,7 +19,6 @@
 
 #import "User.h"
 #import "TanMethodOld.h"
-#import "HBCIController.h"
 
 @implementation User
 

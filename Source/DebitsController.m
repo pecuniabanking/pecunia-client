@@ -19,7 +19,6 @@
 
 #import "DebitsController.h"
 #import "PecuniaError.h"
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "TransferPrintView.h"

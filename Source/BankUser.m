@@ -23,7 +23,6 @@
 #import "TanMedium.h"
 #import "SigningOption.h"
 #import "MessageLog.h"
-#import "HBCIController.h"
 #import "BankAccount.h"
 
 @implementation BankUser

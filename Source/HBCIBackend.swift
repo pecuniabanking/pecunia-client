@@ -8,7 +8,7 @@
 
 import Foundation
 import HBCI4Swift
-
+import CommonCrypto
 
 var _backend:HBCIBackend!
 
@@ -146,6 +146,7 @@ class HBCIBackend : NSObject {
     var pluginsRunning = 0;
     var hbciQueriesRunning = 0;
     var currentSmartcard:HBCISmartcardDDV?
+    var ccman:ChipcardManager?
     
     static var backend:HBCIBackend {
         get {
@@ -539,6 +540,16 @@ class HBCIBackend : NSObject {
         }
         
         do {
+            // DDV
+            if SecurityMethod(bankUser.secMethod.unsignedIntValue) == SecMethod_DDV {
+                self.ccman = ChipcardManager.manager();
+                if self.ccman!.requestCardForUser(bankUser) {
+                    self.currentSmartcard = self.ccman!.card;
+                }
+            } else {
+                self.ccman = nil;
+            }
+            
             let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
             
             // get PIN
@@ -553,7 +564,15 @@ class HBCIBackend : NSObject {
             } // todo: DDV
 
             let dialog = try HBCIDialog(user: user);
-            if let result = try dialog.syncInit() {
+            
+            var result:HBCIResultMessage?
+            if SecurityMethod(bankUser.secMethod.unsignedIntValue) == SecMethod_PinTan {
+                result = try dialog.syncInit();
+            } else {
+                result = try dialog.dialogInit();
+            }
+            
+            if let result = result {
                 if result.isOk() {
                     let context = MOAssistant.sharedAssistant().context;
                     
@@ -595,6 +614,10 @@ class HBCIBackend : NSObject {
                     try updateBankAccounts(accounts, user: bankUser);
                     
                     try context.save();
+
+                    if let ccman = self.ccman {
+                        ccman.close();
+                    }
                     return nil;
                 }
             }
@@ -612,6 +635,9 @@ class HBCIBackend : NSObject {
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo);
         }
         catch {}
+        if let ccman = self.ccman {
+            ccman.close();
+        }
         return NSError.errorWithMsg(msgId: "AP127", titleId: "AP128");
     }
     
@@ -692,15 +718,11 @@ class HBCIBackend : NSObject {
     }
     
     func checkGetStatementsFinalization() {
-        objc_sync_enter(self.pluginsRunning);
-        objc_sync_enter(self.hbciQueriesRunning);
         if self.pluginsRunning == 0 && self.hbciQueriesRunning == 0 {
             // important: nofifications must be sent in main thread!
             let notification = NSNotification(name: PecuniaStatementsFinalizeNotification, object: nil);
             NSNotificationCenter.defaultCenter().postNotification(notification);
         }
-        objc_sync_exit(self.hbciQueriesRunning);
-        objc_sync_exit(self.pluginsRunning);
     }
     
     func getPluginStatements(accounts:[BankAccount]) {
@@ -734,24 +756,27 @@ class HBCIBackend : NSObject {
                     self.orderStatements(result);
                 }
                 
-                // important: nofifications must be sent in main thread!
-                let notification = NSNotification(name: PecuniaStatementsNotification, object: results);
-                NSNotificationCenter.defaultCenter().postNotification(notification);
-                
-                objc_sync_enter(self.pluginsRunning);
-                --self.pluginsRunning;
-                objc_sync_exit(self.pluginsRunning);
-                
-                self.checkGetStatementsFinalization();
+                dispatch_async(dispatch_get_main_queue(), {
+                    // important: nofifications must be sent in main thread!
+                    let notification = NSNotification(name: PecuniaStatementsNotification, object: results);
+                    NSNotificationCenter.defaultCenter().postNotification(notification);
+                    self.pluginsRunning--;
+                    self.checkGetStatementsFinalization();
+                });
             });
         }
     }
     
     func getStandingOrders(accounts:[BankAccount]) {
+        // first reset memory context
+        MOAssistant.sharedAssistant().memContext.reset();
+
         self.getStatements(accounts, userFunc: self.getUserStandingOrders);
     }
     
     func getStatements(accounts:[BankAccount]) {
+        // first reset memory context
+        MOAssistant.sharedAssistant().memContext.reset();
         
         self.getPluginStatements(accounts);
         self.getStatements(accounts, userFunc: self.getUserStatements);
@@ -1000,13 +1025,9 @@ class HBCIBackend : NSObject {
             // important: nofifications must be sent in main thread!
             let notification = NSNotification(name: PecuniaStatementsNotification, object: bqResult);
             NSNotificationCenter.defaultCenter().postNotification(notification);
+            self.hbciQueriesRunning--;
+            self.checkGetStatementsFinalization();
         });
-        
-        objc_sync_enter(self.hbciQueriesRunning);
-        --self.hbciQueriesRunning;
-        objc_sync_exit(self.hbciQueriesRunning);
-        
-        self.checkGetStatementsFinalization();
     }
     
     func getUserStatements(accounts:[BankAccount]) {
@@ -1080,17 +1101,9 @@ class HBCIBackend : NSObject {
             // important: nofifications must be sent in main thread!
             let notification = NSNotification(name: PecuniaStatementsNotification, object: bqResult);
             NSNotificationCenter.defaultCenter().postNotification(notification);
-        });
-        
-        objc_sync_enter(self.hbciQueriesRunning);
-        self.hbciQueriesRunning--;
-        objc_sync_exit(self.hbciQueriesRunning);
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            // important: nofifications must be sent in main thread!
+            self.hbciQueriesRunning--;
             self.checkGetStatementsFinalization();
         });
-
     }
     
     func signingOptionForUser(user:BankUser) ->SigningOption? {
@@ -1483,6 +1496,102 @@ class HBCIBackend : NSObject {
         }
         catch {}
         return nil;
+    }
+    
+    func decryptPassportFile(file:String) {
+        func getLength(buffer:UnsafeMutablePointer<UInt8>) ->Int {
+            var res = 0;
+            var p = buffer;
+            let x = p.memory;
+            res = Int(x) << 8;
+            p = p.advancedBy(1);
+            res += Int(p.memory);
+            return res;
+        }
+        func read(buffer:UnsafeMutablePointer<UInt8>) ->(String?, UnsafeMutablePointer<UInt8>) {
+            var p = buffer;
+            if p.memory == 0x74 {
+                p = p.advancedBy(1);
+                let len = getLength(p);
+                p = p.advancedBy(2);
+                return (String(bytesNoCopy: p, length: len, encoding: NSISOLatin1StringEncoding, freeWhenDone: false), p.advancedBy(len));
+            }
+            return (nil, buffer);
+        }
+        
+        let iterations = 987;
+        let bytes:[UInt8] = [0x26,0x19,0x38,0xa7,0x99,0xbc,0xf1,0x55];
+        let md5Hash = UnsafeMutablePointer<UInt8>.alloc(16);
+        let salt = NSData(bytes: bytes, length: 8);
+        if let pwData = "PecuniaData".dataUsingEncoding(NSISOLatin1StringEncoding)?.mutableCopy() {
+            pwData.appendData(salt);
+            
+            // apply MD5 hash
+            for var j=0; j<iterations; j++ {
+                if j==0 {
+                    CC_MD5(pwData.bytes, pwData.length, md5Hash);
+                } else {
+                    CC_MD5(md5Hash, 16, md5Hash);
+                }
+            }
+            
+            guard let enc = NSData(contentsOfFile: file) else {
+                md5Hash.dealloc(16);
+                logError("Passport file \(file) could not be opened");
+                return;
+            }
+            
+            var length = enc.length;
+            let plain = UnsafeMutablePointer<UInt8>.alloc(enc.length);
+            let rv = CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmDES), 0, md5Hash, kCCKeySizeDES, md5Hash.advancedBy(8), enc.bytes, enc.length, plain, length, &length);
+            md5Hash.dealloc(16);
+            if rv == 0 {
+                var p = UnsafeMutablePointer<UInt8>(plain).advancedBy(4);
+                var bankCode, userId, sysId:String?
+                
+                (_, p) = read(p);
+                (bankCode, p) = read(p);
+                (_, p) = read(p);
+                (userId, p) = read(p);
+                (sysId, p) = read(p);
+                
+                guard bankCode != nil && userId != nil && sysId != nil else {
+                    plain.dealloc(enc.length);
+                    logError("Passport data is not readable \(bankCode) \(userId) \(sysId)");
+                    return;
+                }
+                
+                if let bankUser = BankUser.findUserWithId(userId, bankCode: bankCode) {
+                    bankUser.sysId = sysId;
+                }
+            } else {
+                logError("Decryption of \(file) was not successful");
+            }
+            plain.dealloc(enc.length);
+        }
+    }
+    
+    func migrateHBCI4JavaUsers() throws {
+        let passportDir = MOAssistant.sharedAssistant().passportDirectory;
+        let fm = NSFileManager.defaultManager();
+        
+        let files = try fm.contentsOfDirectoryAtPath(passportDir);
+        for file in files {
+            if file.hasSuffix(".dat") {
+                let name = file.substringToIndex(file.endIndex.advancedBy(-4));
+                let info = name.componentsSeparatedByString("_");
+                if info.count == 2 {
+                    if let bankUser = BankUser.findUserWithId(info[1], bankCode: info[0]) {
+                        if bankUser.sysId == nil {
+                            decryptPassportFile(file);
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        
     }
     
 }

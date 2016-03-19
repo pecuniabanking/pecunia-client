@@ -24,7 +24,6 @@
 #import "TransactionLimits.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
-#import "HBCIController.h"
 #import "TransferTemplate.h"
 
 /**
