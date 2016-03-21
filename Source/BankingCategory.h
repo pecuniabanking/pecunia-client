@@ -19,8 +19,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-NSCalendarDate * normalizeDate(NSDate *date);
-
 typedef NS_ENUM(NSUInteger, CatValueType) {
     cat_earnings,
     cat_spendings,

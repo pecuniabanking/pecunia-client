@@ -313,11 +313,9 @@ static NSMutableDictionary *users = nil;
     }
 }
 
-/*
 - (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
-*/
 
 /**
  * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).

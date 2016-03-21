@@ -248,7 +248,7 @@ var _manager:ChipcardManager!
     }
     
     public func saveSigId(paramString:NSString) ->Bool {
-        let sigid = paramString.integerValue;
+        //let sigid = paramString.integerValue;
         /*
         if !card.writeSignatureId(sigid) {
             logError("Error while saving new signature id to chipcard");
@@ -259,7 +259,7 @@ var _manager:ChipcardManager!
     }
     
     public func sign(paramString:NSString) ->NSString? {
-        let hash = stringToBytes(paramString);
+        //let hash = stringToBytes(paramString);
         /*
         if let sig = card.sign(hash) {
             return bytesToString(sig);
@@ -269,7 +269,7 @@ var _manager:ChipcardManager!
     }
     
     public func encrypt(paramString:NSString) ->NSString? {
-        let keyNum = paramString.integerValue;
+        //let keyNum = paramString.integerValue;
         /*
         if let keys = card.getEncryptionKeys(UInt8(keyNum)) {
             return NSString(format: "%@|%@", bytesToString(keys.plain), bytesToString(keys.encrypted));
@@ -285,8 +285,8 @@ var _manager:ChipcardManager!
             return nil;
         }
         
-        let keyNum = Int(params[0])!;
-        let encKey = params[1] as NSString;
+        //let keyNum = Int(params[0])!;
+        //let encKey = params[1] as NSString;
         /*
         if let plain = card.decryptKey(UInt8(keyNum), encrypted: stringToBytes(encKey)) {
             return bytesToString(plain);

@@ -872,11 +872,11 @@
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
-		B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
 		B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
 		B13CE5771C1250B000B5B750 /* HBCI4Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; };
 		B13CE5781C1250B000B5B750 /* HBCI4Swift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
@@ -1079,6 +1079,13 @@
 			remoteInfo = PCSCard;
 		};
 		B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B19B35911AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+		B174E8971CA08F12004FD3F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
 			proxyType = 1;
@@ -3262,6 +3269,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B174E8981CA08F12004FD3F0 /* PBXTargetDependency */,
 			);
 			name = Pecunia;
 			productInstallPath = "$(HOME)/Applications";
@@ -4442,6 +4450,11 @@
 			name = HBCI4Swift;
 			targetProxy = B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */;
 		};
+		B174E8981CA08F12004FD3F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HBCI4Swift;
+			targetProxy = B174E8971CA08F12004FD3F0 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -4616,8 +4629,8 @@
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4678,8 +4691,8 @@
 				COPY_PHASE_STRIP = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4727,8 +4740,8 @@
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
