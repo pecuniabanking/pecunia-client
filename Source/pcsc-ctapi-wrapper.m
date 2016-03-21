@@ -25,9 +25,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
+typedef uint32_t DWORD;
+typedef uint8_t BYTE;
+typedef int32_t LONG;
+
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <PCSC/wintypes.h>		// provided by pcsc-lite
+//#include <PCSC/wintypes.h>		// provided by pcsc-lite
 #include <PCSC/winscard.h>		// provided by pcsc-lite
 #include "reader.h"			// provided by pcsc-lite
 #include <string.h>
@@ -36,6 +42,7 @@
 #include <arpa/inet.h>
 #include <time.h>
 #include "ctapi-tools.h"
+
 
 
 

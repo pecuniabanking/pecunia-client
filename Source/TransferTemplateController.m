@@ -22,13 +22,10 @@
 #import "TransferTemplateController.h"
 #import "TransferTemplate.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "Transfer.h"
-#import "Country.h"
 
 @interface TransferTemplateController ()
 
-- (void)countryChanged: (id)sender;
 - (BOOL)checkTemplate: (TransferTemplate *)t;
 - (void)closeEditAnimate: (BOOL)animate;
 - (void)openEditAnimate: (BOOL)animate;
@@ -52,16 +49,6 @@
 - (void)awakeFromNib
 {
     [templateController setManagedObjectContext: context];
-
-    // sort descriptor for transactions view
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
-    NSArray          *sds = @[sd];
-    [countryController setSortDescriptors: sds];
-
-    NSDictionary *countries = [[HBCIController controller] countries];
-    [countryController setContent: [countries allValues]];
-    // sort descriptor for transactions view
-    [countryController rearrangeObjects];
 
     currentView = standardView;
     subViewPos.x = 18; subViewPos.y = 14;
@@ -245,18 +232,6 @@
     }
 }
 
-- (void)toggleCountryFieldsForType: (TransferType)type
-{
-    BOOL hidden = (type == TransferTypeSEPA);
-
-    NSArray *subviews = [currentView subviews];
-    for (NSView *view in subviews) {
-        if ([view tag] >= 100) {
-            [view setHidden: hidden];
-        }
-    }
-}
-
 - (void)tableViewSelectionDidChange: (NSNotification *)aNotification
 {
     NSArray *sel = [templateController selectedObjects];
@@ -264,39 +239,14 @@
         return;
     }
     TransferTemplate *template = [sel lastObject];
-    if (([template.type intValue] == TransferTypeEU || [template.type intValue] == TransferTypeSEPA) && currentView == standardView) {
+    if (([template.type intValue] == TransferTypeSEPA) && currentView == standardView) {
         [boxView replaceSubview: standardView with: euView];
         [euView setFrameOrigin: subViewPos];
         currentView = euView;
-        [self toggleCountryFieldsForType: [template.type intValue]];
     }
-    if (([template.type intValue] != TransferTypeEU || [template.type intValue] != TransferTypeSEPA) && currentView == euView) {
+    if (([template.type intValue] != TransferTypeSEPA) && currentView == euView) {
         [boxView replaceSubview: euView with: standardView];
         currentView = standardView;
-    }
-
-    if ([template.type intValue] == TransferTypeEU) {
-        NSArray *countries = [countryController arrangedObjects];
-        int     idx = 0;
-        for (Country *country in countries) {
-            if ([country.code isEqualToString: template.remoteCountry]) {
-                [countryController setSelectionIndex: idx];
-                break;
-            } else {idx++; }
-        }
-    }
-}
-
-- (IBAction)countryChanged: (id)sender
-{
-    Country *country = [[countryController selectedObjects] lastObject];
-    if (country) {
-        NSArray *sel = [templateController selectedObjects];
-        if (sel == nil || [sel count] == 0) {
-            return;
-        }
-        TransferTemplate *template = [sel lastObject];
-        template.remoteCountry = country.code;
     }
 }
 

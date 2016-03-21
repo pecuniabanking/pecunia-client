@@ -71,6 +71,49 @@
     return result.lastObject;
 }
 
++ (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account {
+    SupportedTransactionInfo *info = [SupportedTransactionInfo infoForType:tt account:account];
+    return info != nil;
+}
+
++ (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user {
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND type = %d", user, tt];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSError *error = nil;
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
+}
+
++ (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account {
+    TransactionType transactionType;
+    switch (tt) {
+        case TransferTypeInternalSEPA: transactionType = TransactionType_TransferInternalSEPA; break;
+            
+        case TransferTypeCollectiveCreditSEPA: transactionType = TransactionType_TransferCollectiveCreditSEPA; break;
+            
+        case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
+            
+        case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
+            
+        default: return NO; // default is needed because of OLD transfer types which are not supported any longer
+            
+    }
+    
+    return [self isTransactionSupported:transactionType forAccount:account];
+}
+
 + (NSArray*)supportedTransactionsForAccount: (BankAccount*)account
 {
     NSError                *error = nil;
@@ -135,7 +178,7 @@
             [self insertInContext: context user: user account: account type: TransactionType_TransferEU jobName: jobName];
         }
 
-        if ([jobName isEqualToString:@"UebSEPA"] || [jobName isEqualToString:@"TermUebSEPA"]) {
+        if ([jobName isEqualToString:@"SepaTransfer"] || [jobName isEqualToString:@"SepaDatedTransfer"]) {
             SupportedTransactionInfo *info = [self insertInContext: context
                                                               user: user
                                                            account: account
@@ -143,19 +186,19 @@
                                                            jobName: jobName];
 
             // Parameters
-            if ([supportedJobNames containsObject: @"TermUebSEPA"]) {
+            if ([supportedJobNames containsObject: @"SepaDatedTransfer"]) {
                 info.allowsDated = @YES;
             }
-            if ([supportedJobNames containsObject: @"MultiUebSEPA"]) {
+            if ([supportedJobNames containsObject: @"SepaCollectiveTransfer"]) {
                 info.allowsCollective = @YES;
             }
         }
 
-        if ([jobName isEqualToString:@"TermUebSEPA"]) {
+        if ([jobName isEqualToString:@"SepaDatedTransfer"]) {
             [self insertInContext: context user: user account: account type: TransactionType_TransferSEPAScheduled jobName: jobName];
         }
 
-        if ([jobName isEqualToString:@"MultiUebSEPA"]) {
+        if ([jobName isEqualToString:@"SepaCollectiveTransfer"]) {
             [self insertInContext: context user: user account: account type: TransactionType_TransferCollectiveCreditSEPA jobName: jobName];
         }
 
@@ -163,32 +206,32 @@
             [self insertInContext: context user: user account: account type: TransactionType_TransferInternal jobName: jobName];
         }
 
-        if ([jobName isEqualToString:@"UmbSEPA"]) {
+        if ([jobName isEqualToString:@"SepaInternalTransfer"]) {
             [self insertInContext: context user: user account: account type: TransactionType_TransferInternalSEPA  jobName: jobName];
         }
 
-        if ([jobName isEqualToString:@"DauerSEPANew"]) {
+        if ([jobName isEqualToString:@"SepaStandingOrderNew"]) {
             SupportedTransactionInfo *info = [self insertInContext: context
                                                               user: user
                                                            account: account
                                                               type: TransactionType_StandingOrderSEPA
                                                            jobName: jobName];
             // Parameters.
-            if ([supportedJobNames containsObject: @"DauerSEPAEdit"]) {
+            if ([supportedJobNames containsObject: @"SepaStandingOrderEdit"]) {
                 info.allowsChange = @YES;
-                LogDebug(@"Add supported transaction DAUERSEPAEDIT");
+                LogDebug(@"Add supported transaction SepaStandingOrderEdit");
             }
-            if ([supportedJobNames containsObject: @"DauerSEPADel"]) {
+            if ([supportedJobNames containsObject: @"SepaStandingOrderDel"]) {
                 info.allowesDelete = @YES;
-                LogDebug(@"Add supported transaction DAUERSEPADEL");
+                LogDebug(@"Add supported transaction SepaStandingOrderDel");
             }
-            if ([supportedJobNames containsObject: @"DauerSEPAList"]) {
+            if ([supportedJobNames containsObject: @"SepaStandingOrderList"]) {
                 info.allowsList = @YES;
-                LogDebug(@"Add supported transaction DAUERSEPALIST");
+                LogDebug(@"Add supported transaction SepaStandingOrderList");
             }
         }
 
-        if ([jobName isEqualToString: @"KUmsAll"]) {
+        if ([jobName isEqualToString: @"Statements"]) {
             [self insertInContext: context user: user account: account type: TransactionType_BankStatements jobName: jobName];
         }
 

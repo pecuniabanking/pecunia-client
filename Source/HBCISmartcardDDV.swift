@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+/*
 class HBCISmartcardDDV : HBCISmartcard {
     var cardType:CardType;
     var cardID:NSData?
@@ -304,3 +304,5 @@ class HBCISmartcardDDV : HBCISmartcard {
         return nil;
     }
 }
+
+*/

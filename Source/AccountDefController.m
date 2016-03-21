@@ -21,7 +21,6 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankUser.h"
-#import "HBCIController.h"
 #import "BankingController.h"
 
 #import "BWGradientBox.h"
@@ -106,7 +105,7 @@
     if (idx > 0) {
         account.bankName = user.bankName;
         account.bankCode = user.bankCode;
-        InstituteInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode];
+        InstituteInfo *info = [[HBCIBackend backend] infoForBankCode: user.bankCode];
         if (info) {
             account.bic = info.bic;
             account.bankName = info.name;
@@ -237,10 +236,6 @@
         [alert runModal];
     }
 
-    if (newAccount.userId) {
-        [[HBCIController controller] addAccount: newAccount forUser: user];
-    }
-
     [moc reset];
     success = YES;
     [self close];
@@ -257,7 +252,7 @@
         [bankNameField setBezeled: NO];
         bankNameField.drawsBackground = NO;
         if (bankRoot == nil) {
-            NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
+            NSString *name = [[HBCIBackend backend] bankNameForCode: [te stringValue]];
             if ([name isEqualToString: NSLocalizedString(@"AP13", nil)]) {
                 [bankNameField setEditable: YES];
                 [bankNameField setBezeled: YES];

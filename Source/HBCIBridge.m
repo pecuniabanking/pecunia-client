@@ -23,11 +23,9 @@
 #import "LogParser.h"
 #import "HBCIError.h"
 #import "PecuniaError.h"
-#import "HBCIBackend.h"
+#import "HBCICommon.h"
 #import "LaunchParameters.h"
 #import "CallbackHandler.h"
-
-#import "HBCIController.h" // for -asyncCommandCompletedWithResult
 
 #import "NSString+PecuniaAdditions.h"
 
@@ -46,7 +44,7 @@
     id result;
     id asyncSender;
 
-    HBCIError *error;
+    HBCI_Error *error;
 
     NSMutableString *asyncString;
 }
@@ -74,7 +72,7 @@
 
 // Returns NO if the result was an error.
 - (BOOL)setResult: (id)res {
-    if ([res isKindOfClass: [HBCIError class]]) {
+    if ([res isKindOfClass: [HBCI_Error class]]) {
         result = nil;
         error = res;
         return NO;
@@ -89,7 +87,7 @@
     return result;
 }
 
-- (HBCIError *)error {
+- (HBCI_Error *)error {
     return error;
 }
 

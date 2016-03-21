@@ -23,7 +23,6 @@
 #import "TanMedium.h"
 #import "SigningOption.h"
 #import "MessageLog.h"
-#import "HBCIController.h"
 #import "BankAccount.h"
 
 @implementation BankUser
@@ -47,6 +46,9 @@
 @dynamic ddvReaderIdx;
 @dynamic secMethod;
 @dynamic chipCardId;
+@dynamic sysId;
+@dynamic hbciParameters;
+@dynamic ddvReaderName;
 @dynamic accounts;
 
 @synthesize isRegistered;
@@ -116,8 +118,6 @@ static NSMutableDictionary *users = nil;
     if ([self.secMethod intValue] != SecMethod_PinTan) {
         return nil;
     }
-    // first get TAN Media if not already fetched
-    //if ([self.tanMediaFetched boolValue ] == NO) [[HBCIController controller ] updateTanMediaForUser:self ];
 
     NSSet          *methods = [self tanMethods];
     NSSet          *media = [self tanMedia];
@@ -129,6 +129,7 @@ static NSMutableDictionary *users = nil;
         option.tanMethod = method.method;
         option.userId = self.userId;
         option.userName = self.name;
+        option.user = self;
         option.tanMethodName = method.name;
         NSString *zkamethod = method.zkaMethodName;
 
@@ -180,6 +181,7 @@ static NSMutableDictionary *users = nil;
                     option.secMethod = SecMethod_PinTan;
                     option.tanMethod = method.method;
                     option.tanMethodName = method.name;
+                    option.user = self;
                     option.userId = self.userId;
                     option.userName = self.name;
                 }
@@ -206,6 +208,7 @@ static NSMutableDictionary *users = nil;
     NSMutableArray *options = [NSMutableArray arrayWithCapacity: 10];
     SigningOption  *option = [[SigningOption alloc] init];
     option.secMethod = SecMethod_DDV;
+    option.user = self;
     option.userId = self.userId;
     option.userName = self.name;
     option.cardId = self.chipCardId;
@@ -244,6 +247,7 @@ static NSMutableDictionary *users = nil;
     SigningOption *option = [[SigningOption alloc] init];
     option.tanMethod = method.method;
     option.tanMethodName = method.name;
+    option.user = self;
     option.userId = self.userId;
     option.userName = self.name;
     option.secMethod = SecMethod_PinTan;
@@ -309,9 +313,11 @@ static NSMutableDictionary *users = nil;
     }
 }
 
+/*
 - (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
+*/
 
 /**
  * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).

@@ -34,7 +34,6 @@
 #import "AttachmentImageView.h"
 #import "BankingController.h"
 #import "BankStatementController.h"
-#import "HBCIController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
@@ -463,12 +462,12 @@ extern void *UserDefaultsBindingContext;
             break;
 
         case MenuActionStartTransfer:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPA forAccount: account]) {
                 [BankingController.controller startTransferOfType: TransferTypeSEPA
                                                       fromAccount: account
                                                         statement: assignment.statement];
             } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                if ([SupportedTransactionInfo isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
                     [BankingController.controller startTransferOfType: TransferTypeInternalSEPA
                                                           fromAccount: account
                                                             statement: assignment.statement];
@@ -477,10 +476,10 @@ extern void *UserDefaultsBindingContext;
             break;
 
         case MenuActionCreateTemplate:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPA forAccount: account]) {
                 [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
             } else {
-                if ([[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                if ([SupportedTransactionInfo isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
                     [BankingController.controller createTemplateOfType: TransferTypeInternalSEPA fromStatement: assignment.statement];
                 }
             }

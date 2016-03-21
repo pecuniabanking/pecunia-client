@@ -29,8 +29,6 @@
 #import "SupportedTransactionInfo.h"
 #import "PecuniaError.h"
 
-#import "HBCIController.h"
-
 @implementation BankAccount
 
 @dynamic latestTransferDate;
@@ -359,9 +357,10 @@
 
     for (BankUser *user in self.users) {
         if ([user.userId isEqualToString: self.userId]) {
-            PecuniaError *error = [[HBCIController controller] updateSupportedTransactionsForUser:user];
+            NSError *error = [[HBCIBackend backend] updateSupportedTransactions:user];
             if (error != nil) {
-                [error alertPanel];
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
                 success = NO;
             }
         }
@@ -597,11 +596,28 @@
 
 - (BankUser *)defaultBankUser {
     // If there are multiple user ids per bank account this might need adjustment.
-    if (self.userId == nil) {
-        LogError(@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber);
-        return nil;
+    NSSet *users = self.users;
+    if (users.count == 0) {
+        users = [self mutableSetValueForKey: @"users"];
+        if (users.count == 0) {
+            LogError(@"Account %@: no assigned users", self.accountNumber);
+            return nil;
+        }
     }
-    return [BankUser findUserWithId: self.userId bankCode: self.bankCode];
+
+    if (self.userId == nil) {
+        BankUser *user = [[users allObjects] firstObject];
+        self.userId = user.userId;
+        return user;
+    }
+    for (BankUser *user in users) {
+        if ([user.userId isEqualToString:self.userId]) {
+            return user;
+        }
+    }
+    BankUser *user = [[users allObjects] firstObject];
+    self.userId = user.userId;
+    return user;
 }
 
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code {

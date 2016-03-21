@@ -26,7 +26,6 @@
 #import "ZipException.h"
 
 #import "LaunchParameters.h"
-#import "HBCIController.h"
 #import "ResultWindowController.h"
 
 #define LOG_FLAG_COM_TRACE (1 << 5)
@@ -152,9 +151,6 @@
 
             [DDLog removeLogger: comTraceLogger];
             comTraceLogger = nil;
-
-            // Only log errors now.
-            [HBCIController.controller setLogLevel: HBCILogError];
         }
 
         isComTraceActive = flag;
@@ -167,9 +163,6 @@
             comTraceLogger.rollingFrequency = 0;
 
             [DDLog addLogger: comTraceLogger withLogLevel: LOG_FLAG_COM_TRACE];
-
-            // Enable maximum logging in the server.
-            [HBCIController.controller setLogLevel: HBCILogIntern];
         }
     }
 }

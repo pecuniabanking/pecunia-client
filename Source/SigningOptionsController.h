@@ -28,6 +28,7 @@
 
     NSArray  *options;
     NSString *accountNumber;
+    NSString *userName;
 
 }
 

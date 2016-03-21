@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Frank Emminghaus. All rights reserved.
 //
 
+/*
 import Foundation
-//import PCSC
+import PCSCard
 
 class HBCISmartcard {
     let readerName:String;
@@ -432,3 +433,5 @@ class HBCISmartcard {
     }
     
 }
+
+*/

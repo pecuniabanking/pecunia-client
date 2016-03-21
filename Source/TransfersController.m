@@ -22,13 +22,11 @@
 #import "BankingController.h"
 
 #import "PecuniaError.h"
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "TransferPrintView.h"
 #import "TransferTemplate.h"
-#import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
 #import "ShadowedTextField.h"
@@ -560,7 +558,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             }
 
             // check if the accout supports the current transfer type
-            if (![[HBCIController controller] isTransferSupported: transferType forAccount: account]) {
+            if (![SupportedTransactionInfo isTransferSupported: transferType forAccount: account]) {
                 LogDebug(@"skip account %@, job %d not supported", account.accountNumber, transferType);
                 continue;
             }
@@ -1277,9 +1275,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [transfersByAccount removeObjectForKey: account];
         } else {
             // now send collective transfer
-            PecuniaError *error = [[HBCIController controller] sendCollectiveTransfer: collTransfers];
+            NSError *error = [[HBCIBackend backend] sendCollectiveTransfer: collTransfers];
             if (error) {
-                [error logMessage];
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
             }
         }
     }
@@ -1298,17 +1297,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
-    if (sent) {
-        // Save updates and refresh UI.
-        NSError                *error = nil;
-        NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
-        if (![context save: &error]) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
+    [[HBCIBackend backend] sendTransfers: transfers];
+    
+    // Save updates and refresh UI.
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
     }
+    
     [pendingTransfers prepareContent];
     [finishedTransfers prepareContent];
 }
@@ -1323,7 +1322,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         transfer.remoteIBAN = @"DE43120300001016381558";
         transfer.remoteBIC = @"BYLADEM1001";
-        transfer.remoteBankName = [[HBCIController controller] bankNameForCode: @"12030000"];
+        transfer.remoteBankName = [[HBCIBackend backend] bankNameForCode: @"12030000"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
 
@@ -1531,7 +1530,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     }
     [self updateTargetAccountSelector];
-    [self updateLimits];
+    [self checkCanBeScheduled];
 }
 
 - (IBAction)targetAccountChanged: (id)sender {
@@ -1707,63 +1706,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 #pragma mark - Other application logic
 
-- (void)updateLimits {
-    
-    //BOOL isSEPAorEU = [transactionController.currentTransfer isSEPAorEU];
-
-    // currentTransfer must be valid
-    limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
-                                                account: transactionController.currentTransfer.account
-                                                country: transactionController.currentTransfer.remoteCountry];
-
-    /*
-    [purpose2 setHidden: (limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0) || isSEPAorEU];
-    [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || isSEPAorEU];
-    [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || isSEPAorEU];
-
-    if (isSEPAorEU) {
-        NSRect frame = purpose1.frame;
-        frame.size.height = 50;
-        frame.size.width = 542;
-        frame.origin.y = 106;
-        [purpose1 setFrame: frame];
-    } else {
-        NSRect frame = purpose1.frame;
-        frame.size.height = 24;
-        frame.size.width = 270;
-        frame.origin.y = 132;
-        [purpose1 setFrame: frame];
-    }
-
-    if (limits.maxLinesPurpose > 0) {
-        if (limits.maxLinesPurpose < 2 && transactionController.currentTransfer.purpose2 && [transactionController.currentTransfer.purpose2 length] > 0) {
-            transactionController.currentTransfer.purpose2 = nil;
-        }
-        if (limits.maxLinesPurpose < 3 && transactionController.currentTransfer.purpose3 && [transactionController.currentTransfer.purpose3 length] > 0) {
-            transactionController.currentTransfer.purpose3 = nil;
-        }
-        if (limits.maxLinesPurpose < 4 && transactionController.currentTransfer.purpose4 && [transactionController.currentTransfer.purpose4 length] > 0) {
-            transactionController.currentTransfer.purpose4 = nil;
-        }
-    }
-     */
-
+- (void)checkCanBeScheduled {
     // Check if scheduling is allowed.
     // At the moment possible for old standard and SEPA transfers.
     BOOL canBeScheduled = NO;
     switch (transactionController.currentTransfer.type.intValue) {
-        case TransferTypeOldStandard:
-        case TransferTypeOldStandardScheduled:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeOldStandardScheduled
-                                                      forAccount: transactionController.currentTransfer.account]) {
-                [executeAtDateRadioButton setEnabled: YES];
-                canBeScheduled = YES;
-            }
-            break;
-
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
-            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPAScheduled
+            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPAScheduled
                                                       forAccount: transactionController.currentTransfer.account]) {
                 [executeAtDateRadioButton setEnabled: YES];
                 canBeScheduled = YES;
@@ -1869,9 +1819,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         // Lookup the bank name.
         NSString *bankName;
         if ([transactionController.currentTransfer isSEPAorEU]) {
-            bankName = [[HBCIController controller] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
+            bankName = [[HBCIBackend backend] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
         } else {
-            bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode];
+            bankName = [[HBCIBackend backend] bankNameForCode: transactionController.currentTransfer.remoteBankCode];
         }
         if (bankName != nil) {
             transactionController.currentTransfer.remoteBankName = bankName;
@@ -1886,10 +1836,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSTextField *te = [aNotification object];
     NSUInteger  maxLen;
 
-    if (te == purpose1 || te == purpose2 || te == purpose3 || te == purpose4) {
-        maxLen = limits.maxLenPurpose;
+    if (te == purpose1) {
+        maxLen = 140;
     } else if (te == receiverComboBox) {
-        maxLen = limits.maxLengthRemoteName;
+        maxLen = 70;
     } else {
         return;
     }
@@ -1915,8 +1865,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     if ([transactionController.currentTransfer isSEPAorEU]) {
         if (textField == accountNumber) {
-            bankName = [[HBCIController controller] bankNameForIBAN: textField.stringValue];
-            NSString *bic = [[HBCIController controller] bicForIBAN: [aNotification.object stringValue]];
+            bankName = [[HBCIBackend backend] bankNameForIBAN: textField.stringValue];
+            NSString *bic = [[HBCIBackend backend] bicForIBAN: [aNotification.object stringValue]];
             if (bic != nil) {
                 transactionController.currentTransfer.remoteBIC = bic;
             }
@@ -1924,7 +1874,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]];
+            bankName = [[HBCIBackend backend] bankNameForCode: [textField stringValue]];
         }
     }
     if (bankName != nil) {

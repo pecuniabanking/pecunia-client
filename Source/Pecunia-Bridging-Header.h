@@ -79,7 +79,6 @@
 #import "GenerateDataController.h"
 #import "GradientButtonCell.h"
 #import "GraphicsAdditions.h"
-#import "HBCIBackend.h"
 #import "HBCIBridge.h"
 #import "HBCIController.h"
 #import "HBCIError.h"
@@ -199,7 +198,7 @@
 #import "ZipException.h"
 #import "FileInZipInfo.h"
 
-#import <PCSC/winscard.h>
+//#import <PCSC/winscard.h>
 #import "reader.h"
 typedef uint32_t DWORD;
 

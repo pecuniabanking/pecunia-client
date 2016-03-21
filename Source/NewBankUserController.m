@@ -19,7 +19,6 @@
 
 #import "NewBankUserController.h"
 #import "BankingController.h"
-#import "HBCIController.h"
 #import "PecuniaError.h"
 #import "BankParameter.h"
 #import "BankAccount.h"
@@ -27,7 +26,7 @@
 #import "BankSetupInfo.h"
 #import "TanSigningOption.h"
 #import "NewPinController.h"
-
+#import "SupportedTransactionInfo.h"
 #import "AnimationHelper.h"
 #import "BWGradientBox.h"
 #import "MessageLog.h"
@@ -53,7 +52,7 @@
 }
 
 - (void)awakeFromNib {
-    [hbciVersions setContent: [[HBCIController controller] supportedVersions]];
+    [hbciVersions setContent: [[HBCIBackend backend] supportedVersions]];
     [hbciVersions setSelectedObjects: @[@"220"]];
 
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
@@ -104,20 +103,20 @@
 - (void)getBankSetupInfo {
     BankUser *currentUser = [currentUserController content];
 
-    BankSetupInfo *info = [[HBCIController controller] getBankSetupInfo: currentUser.bankCode];
+    BankSetupInfo *info = [[HBCIBackend backend] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {
-            NSTextField *field = [[groupBox contentView] viewWithTag: 100];
+            NSTextField *field = [[currentBox contentView] viewWithTag: 100];
             [field setStringValue: info.info_userid];
         }
         if (info.info_customerid) {
-            NSTextField *field = [[groupBox contentView] viewWithTag: 120];
+            NSTextField *field = [[currentBox contentView] viewWithTag: 120];
             [field setStringValue: info.info_customerid];
         }
     }
     [self stopProgress];
     step = 2;
-    NSView *view = [[groupBox contentView] viewWithTag: 110];
+    NSView *view = [[currentBox contentView] viewWithTag: 110];
     [userSheet makeFirstResponder: view];
 
     [self prepareUserSheet];
@@ -181,7 +180,7 @@
             && (secMethod != SecMethod_Script)) //we do not want HBCI for scripts
         {
             // look if we have bank infos
-            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -213,20 +212,20 @@
                 bankUserCreated = YES;
             }
 
-
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
 
-            
-            if ((currentUser.hbciVersion != nil && currentUser.bankURL != nil)
-                || (secMethod == SecMethod_Script)){
+            currentUser.bankURL = [currentUser.bankURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            if ((currentUser.hbciVersion != nil && currentUser.hbciVersion.length > 0 &&
+                 currentUser.bankURL != nil && currentUser.bankURL.length > 0) || (secMethod == SecMethod_Script)) {
                 // now we work with the real user
-                PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
+                NSError *error = [[HBCIBackend backend] syncBankUser: currentUser];
                 if (error) {
                     [self stopProgress];
-                    [error alertPanel];
+                    NSAlert *alert = [NSAlert alertWithError:error];
+                    [alert runModal];
                 } else {
                     // update TAN options
-                    [self updateTanMethods];
+                    [self updateSigningOptions];
                     [self stopProgress];
                     
                     [userSheet orderOut: sender];
@@ -283,7 +282,7 @@
                         currentUser.name = data.name;
                         
                         // get further bank infos
-                        InstituteInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
+                        InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
                         if (bi) {
                             currentUser.hbciVersion = bi.hbciVersion;
                             if (bi.name != nil) {
@@ -341,10 +340,12 @@
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
             
             // now we work with the real user
-            PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
+            currentUser.bankURL = [currentUser.bankURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSError *error = [[HBCIBackend backend] syncBankUser: currentUser];
             if (error) {
                 [self stopProgress];
-                [error alertPanel];
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
             } else {
                 [self stopProgress];
                 [userSheet orderOut: sender];
@@ -450,7 +451,7 @@
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
-            InstituteInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
+            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];
@@ -469,21 +470,9 @@
 }
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification {
-    /*
-       NSTextField	*te = [aNotification object];
-       NSString *bankCode = [te stringValue];
-       BankUser *currentUser = [currentUserController content ];
-
-       BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
-       if (bi) {
-       currentUser.bankName = bi.name;
-       currentUser.bankURL = bi.pinTanURL;
-       currentUser.hbciVersion = bi.pinTanVersion;
-       }
-     */
 }
 
-- (void)updateTanMethods {
+- (void)updateSigningOptions {
     BankUser *user = [self selectedUser];
     if (user) {
         if ([user.secMethod intValue] == SecMethod_PinTan) {
@@ -508,11 +497,11 @@
 }
 
 - (void)tableViewSelectionDidChange: (NSNotification *)aNotification {
-    [self updateTanMethods];
+    [self updateSigningOptions];
 
     BankUser *user = [self selectedUser];
     if (user != nil) {
-        [changePinButton setEnabled: [[HBCIController controller] isTransactionSupported: TransactionType_ChangePin forUser: user]];
+        [changePinButton setEnabled: [SupportedTransactionInfo isTransactionSupported: TransactionType_ChangePin forUser: user]];
     } else {
         [changePinButton setEnabled: NO];
     }
@@ -739,49 +728,38 @@
                 return;
             }
 
-            if ([[HBCIController controller] deleteBankUser: user]) {
-                // remove user from all related bank accounts
-                NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
-                for (BankAccount *account in accounts) {
-                    // check if userId must be deleted or changed
-                    if ([account.userId isEqualToString: user.userId]) {
-                        NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                        account.userId = nil;
-                        account.customerId = nil;
-                        for (BankUser *accUser in users) {
-                            if (![accUser.userId isEqualToString: user.userId]) {
-                                account.userId = accUser.userId;
-                                account.customerId = accUser.customerId;
-                            }
+            // remove user from all related bank accounts
+            NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
+            for (BankAccount *account in accounts) {
+                // check if userId must be deleted or changed
+                if ([account.userId isEqualToString: user.userId]) {
+                    NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+                    account.userId = nil;
+                    account.customerId = nil;
+                    for (BankUser *accUser in users) {
+                        if (![accUser.userId isEqualToString: user.userId]) {
+                            account.userId = accUser.userId;
+                            account.customerId = accUser.customerId;
                         }
                     }
                 }
-                [BankUser removeUser: user];
-                [self updateTanMethods];
-                
-                // save updates
-                NSError *error = nil;
-                if (![context save: &error]) {
-                    NSAlert *alert = [NSAlert alertWithError: error];
-                    [alert runModal];
-                    return;
-                }
+            }
+            [BankUser removeUser: user];
+            [self updateSigningOptions];
+            
+            NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId];
+            [Security deletePasswordForService: @"Pecunia PIN" account: s];
+            
+            // save updates
+            NSError *error = nil;
+            if (![context save: &error]) {
+                NSAlert *alert = [NSAlert alertWithError: error];
+                [alert runModal];
+                return;
             }
         }
     }];
 
-}
-
-- (IBAction)changePinTanMethod: (id)sender {
-    BankUser *user = [self selectedUser];
-    if (user == nil) {
-        return;
-    }
-    PecuniaError *error = [[HBCIController controller] changePinTanMethodForUser: user];
-    if (error) {
-        [error alertPanel];
-        return;
-    }
 }
 
 - (IBAction)printBankParameter: (id)sender {
@@ -789,51 +767,23 @@
     if (user == nil) {
         return;
     }
-    BankParameter *bp = [[HBCIController controller] getBankParameterForUser: user];
-    if (bp == nil) {
+    
+    NSString *descr = [[HBCIBackend backend] getParameterDescription: user];
+    if (descr == nil) {
         LogError(@"Couldn't determine bank parameter data");
         return;
     }
 
     if (MessageLog.log.isComTraceActive == YES) {
-        LogInfo(@"Bankparameterdaten:\n%@", bp.bpd_raw);
-        LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
+        LogInfo(@"Bankparameterdaten:\n%@", descr);
+        //LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
     } else {
         MessageLog.log.isComTraceActive = YES;
-        LogInfo(@"Bankparameterdaten:\n%@", bp.bpd_raw);
-        LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
+        LogInfo(@"Bankparameterdaten:\n%@", descr);
+        //LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
         [MessageLog.log sendLog];
         MessageLog.log.isComTraceActive = NO;
     }
-}
-
-- (IBAction)updateBankParameter: (id)sender {
-    BankUser *user = [self selectedUser];
-    if (user == nil) {
-        return;
-    }
-
-    PecuniaError *error = [[HBCIController controller] updateBankDataForUser: user];
-    if (error) {
-        [error alertPanel];
-        return;
-    }
-
-    // update TAN methods list
-    if ([user.secMethod intValue] == SecMethod_PinTan) {
-        [self updateTanMethods];
-    }
-
-    // save updates
-    if ([context save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
-
-    NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
-                    NSLocalizedString(@"AP100", nil),
-                    NSLocalizedString(@"AP1", nil), nil, nil);
 }
 
 - (IBAction)synchronize: (id)sender {
@@ -842,20 +792,9 @@
         return;
     }
 
-    PecuniaError *error = [[HBCIController controller] synchronizeUser: user];
+    NSError *error = [[HBCIBackend backend] syncBankUser: user];
     if (error) {
-        [error alertPanel];
-        return;
-    }
-
-    // update TAN methods list
-    if ([user.secMethod intValue] == SecMethod_PinTan) {
-        [self updateTanMethods];
-    }
-
-    // save updates
-    if ([context save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
+        NSAlert *alert = [NSAlert alertWithError:error];
         [alert runModal];
         return;
     }
@@ -882,11 +821,13 @@
         return;
     }
 
-    PecuniaError *error = [[HBCIController controller] changePinForUser: user toPin: [pinController result]];
+    /* todo: support PIN change
+    PecuniaError *error = [[HBCIBackend backend] changePinForUser: user toPin: [pinController result]];
     if (error) {
         [error alertPanel];
         return;
     }
+     */
 }
 
 @end

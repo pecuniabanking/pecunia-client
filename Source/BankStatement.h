@@ -95,7 +95,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *customerReference;
 @property (nonatomic, strong) NSString *bankReference;
 @property (nonatomic, strong) NSString *transactionText;
-@property (nonatomic, strong) NSNumber *transactionCode;
+@property (nonatomic, strong) NSString *transactionCode;
 @property (nonatomic, strong) NSString *currency;
 @property (nonatomic, strong) NSString *primaNota;
 

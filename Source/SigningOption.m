@@ -32,6 +32,7 @@
 @synthesize tanMediumCategory;
 @synthesize mobileNumber;
 @synthesize secMethod;
+@synthesize user;
 
 - (id)copyWithZone: (NSZone *)zone
 {
@@ -59,6 +60,7 @@
     option.userName = user.name;
     option.tanMethod = @"999";
     option.tanMethodName = @"unbekannt";
+    option.user = user;
     return option;
 }
 
