@@ -20,7 +20,6 @@
 #import "Transfer.h"
 #import "TransferTemplate.h"
 #import "TransactionLimits.h"
-#import "HBCIController.h"
 
 @implementation Transfer
 
@@ -189,7 +188,7 @@
             self.remoteIBAN = ibanResult[@"iban"];
             
             if (self.remoteIBAN != nil) {
-                InstituteInfo *info = [HBCIController.controller infoForIBAN: self.remoteIBAN];
+                InstituteInfo *info = [HBCIBackend.backend infoForIBAN: self.remoteIBAN];
                 if (info != nil) {
                     self.remoteBIC = info.bic;
                 }

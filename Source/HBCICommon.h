@@ -14,6 +14,7 @@
 #import "Transfer.h"
 #import "StandingOrder.h"
 #import "SupportedTransactionInfo.h"
+#import "AccountStatement.h"
 
 #define PecuniaStatementsNotification         @"PecuniaStatementsNotification"
 #define PecuniaStatementsFinalizeNotification @"PecuniaStatementsFinalizeNotification"

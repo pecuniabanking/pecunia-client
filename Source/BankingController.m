@@ -2550,6 +2550,7 @@ static BankingController *bankinControllerInstance;
                     }
                 }
                 if ([item action] == @selector(accountStatements:)) {
+                    return YES;
                     if ([SupportedTransactionInfo isTransactionSupported: TransactionType_AccountStatements forAccount: account] == NO) {
                         return NO;
                     }

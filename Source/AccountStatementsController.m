@@ -19,7 +19,6 @@
 
 #import "AccountStatementsController.h"
 
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "AccountStatement.h"
 #import "BankAccount.h"
@@ -212,7 +211,7 @@
         while (true) {
             // The returned statement is always valid, but contains no values if there's no data returned from the bank.
             [self setProgress: NSLocalizedString(@"AP831", nil) number: 1 year: year];
-            AccountStatement *statement = [HBCIController.controller getAccountStatement: 1 year: year account: account];
+            AccountStatement *statement = [HBCIBackend.backend getAccountStatement: 1 year: year bankAccount: account];
 
             // If there's no first document for a year then we have found something to start from. Except it fails for
             // the current year. In that case it could be that there's no document yet. Try the previous year too then.
@@ -233,7 +232,7 @@
         // As an arbitrary maximum count per year we use 104 (twice a week). That should be fairly enough.
         while (true) {
             [self setProgress: NSLocalizedString(@"AP831", nil) number: number year: year];
-            AccountStatement *statement = [HBCIController.controller getAccountStatement: number year: year account: account];
+            AccountStatement *statement = [HBCIBackend.backend getAccountStatement: number year: year bankAccount: account];
             if (statement == nil || statement.document != nil) {
                 break;
             }
@@ -258,7 +257,7 @@
         // Read the next statement. It will be placed into our memory store.
         // Below we create a persistent instance from it in our main store.
         [self setProgress: NSLocalizedString(@"AP834", nil) number: number year: year];
-        AccountStatement *statement = [HBCIController.controller getAccountStatement: number year: year account: account];
+        AccountStatement *statement = [HBCIBackend.backend getAccountStatement: number year: year bankAccount: account];
         if (statement == nil || statement.document == nil) {
             // We either went beyond the available documents for the year or there's no more at all.
             // Try with the next year to decide.
@@ -365,7 +364,7 @@
 - (IBAction)updateStatements: (id)sender {
     
     // which format?
-    AccountStatementParameters *params = [HBCIController.controller getAccountStatementParametersForUser:account.defaultBankUser];
+    AccountStatementParameters *params = [HBCIBackend.backend getAccountStatementParametersForUser:account.defaultBankUser];
     if (params == nil) {
         return;
     }

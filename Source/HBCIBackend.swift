@@ -534,21 +534,25 @@ class HBCIBackend : NSObject {
         return ["220", "300"];
     }
     
+    func checkNeedsSmartcard(bankUser:BankUser) {
+        // DDV
+        if SecurityMethod(bankUser.secMethod.unsignedIntValue) == SecMethod_DDV {
+            self.ccman = ChipcardManager.manager();
+            if self.ccman!.requestCardForUser(bankUser) {
+                self.currentSmartcard = self.ccman!.card;
+            }
+        } else {
+            self.ccman = nil;
+        }
+    }
+    
     func syncBankUser(bankUser:BankUser) ->NSError? {
         if bankUser.customerId == nil {
             bankUser.customerId = "";
         }
         
         do {
-            // DDV
-            if SecurityMethod(bankUser.secMethod.unsignedIntValue) == SecMethod_DDV {
-                self.ccman = ChipcardManager.manager();
-                if self.ccman!.requestCardForUser(bankUser) {
-                    self.currentSmartcard = self.ccman!.card;
-                }
-            } else {
-                self.ccman = nil;
-            }
+            checkNeedsSmartcard(bankUser);
             
             let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
             
@@ -662,9 +666,13 @@ class HBCIBackend : NSObject {
         }
         
         do {
+            checkNeedsSmartcard(bankUser);
+
             let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
             
             if user.securityMethod.code == .PinTan {
+                user.tanMethod = user.parameters.getTanMethods().first?.secfunc;
+
                 // get PIN
                 let request = AuthRequest();
                 user.pin = request.getPin(user.bankCode, userId: user.userId);
@@ -1155,6 +1163,8 @@ class HBCIBackend : NSObject {
         }
         
         do {
+            checkNeedsSmartcard(bankUser);
+
             let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
             
             if user.securityMethod.code == .PinTan {
@@ -1250,6 +1260,8 @@ class HBCIBackend : NSObject {
 
             // open dialog once for user
             do {
+                checkNeedsSmartcard(bankUser);
+
                 let user = try HBCIUser(bankUser: option.user, card: currentSmartcard);
                 
                 if user.securityMethod.code == .PinTan {
@@ -1354,6 +1366,8 @@ class HBCIBackend : NSObject {
             
             // open dialog once for user
             do {
+                checkNeedsSmartcard(bankUser);
+
                 let user = try HBCIUser(bankUser: option.user, card: currentSmartcard);
                 
                 if user.securityMethod.code == .PinTan {
@@ -1590,8 +1604,118 @@ class HBCIBackend : NSObject {
                 
             }
         }
+    }
+    
+    func getAccountStatementParametersForUser(bankUser:BankUser) ->AccountStatementParameters? {
+        do {
+            let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
+            if let params = HBCIAccountStatementOrder.getParameters(user) {
+                let par = AccountStatementParameters();
+                par.canIndex = NSNumber(bool: params.supportsNumber);
+                par.needsReceipt = NSNumber(bool: params.needsReceipt);
+                var f = "";
+                for format in params.formats {
+                    f = f + String(format.rawValue);
+                }
+                par.formats = f;
+                return par;
+            }
+        }
+        catch {}
+        return nil;
+    }
+    
+    func convertAccountStatement(statement:HBCIAccountStatement) ->AccountStatement {
+        let context = MOAssistant.sharedAssistant().context;
+        let stat = NSEntityDescription.insertNewObjectForEntityForName("AccountStatement", inManagedObjectContext: context) as! AccountStatement;
+        stat.document = statement.booked;
+        stat.format = NSNumber(unsignedInt: statement.format.rawValue);
+        stat.startDate = statement.startDate;
+        stat.endDate = statement.endDate;
+        stat.info = statement.closingInfo;
+        stat.conditions = statement.conditionInfo;
+        stat.advertisement = statement.advertisement;
+        stat.iban = statement.iban;
+        stat.bic = statement.bic;
+        stat.name = statement.name;
+        stat.number = statement.number;
+        return stat;
+    }
+    
+    func getAccountStatement(number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
+        guard let bankUser = bankAccount.defaultBankUser() else {
+            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            return nil;
+        }
         
-        
+        do {
+            checkNeedsSmartcard(bankUser);
+
+            let user = try HBCIUser(bankUser: bankUser, card: currentSmartcard);
+            
+            if user.securityMethod.code == .PinTan {
+                user.tanMethod = user.parameters.getTanMethods().first?.secfunc;
+
+                // get PIN
+                let request = AuthRequest();
+                user.pin = request.getPin(user.bankCode, userId: user.userId);
+            }
+            
+            let dialog = try HBCIDialog(user: user);
+            guard let result = try dialog.dialogInit() else {
+                logError("Could not initialize dialog for user \(user.userId)");
+                return nil;
+            }
+            
+            if result.isOk() {
+                let account = HBCIAccount(account: bankAccount);
+                guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                    logError("Failed to create HBCI message");
+                    return nil;
+                }
+                if let order = HBCIAccountStatementOrder(message: msg, account: account) {
+                    order.number = number;
+                    order.year = year;
+                    
+                    // which format?
+                    guard let params = HBCIAccountStatementOrder.getParameters(user) else {
+                        return nil;
+                    }
+                    
+                    if params.formats.contains(HBCIAccountStatementFormat.PDF) {
+                        order.format = HBCIAccountStatementFormat.PDF;
+                    } else {
+                        if params.formats.contains(HBCIAccountStatementFormat.MT940) {
+                            order.format = HBCIAccountStatementFormat.MT940;
+                        } else {
+                            logError("AccountStatement: format not supported");
+                            return nil;
+                        }
+                    }
+                    
+                    order.enqueue();
+                    guard msg.orders.count > 0 else {
+                        return nil;
+                    }
+                    if try msg.send() {
+                        if let stat = order.statements.first {
+                            return convertAccountStatement(stat);
+                        }
+                    } else {
+                        logError("Failed to get account statement for account \(account.number)");
+                        return nil;
+                    }
+                }
+                dialog.dialogEnd();
+            }
+            
+        }
+        catch HBCIError.UserAbort {
+            // do nothing
+            return nil;
+        }
+        catch {}
+        return nil;
     }
     
 }

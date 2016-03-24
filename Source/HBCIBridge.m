@@ -26,7 +26,7 @@
 #import "HBCICommon.h"
 #import "LaunchParameters.h"
 #import "CallbackHandler.h"
-
+#import "HBCIController.h"
 #import "NSString+PecuniaAdditions.h"
 
 @interface HBCIBridge () {
