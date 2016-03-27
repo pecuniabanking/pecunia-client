@@ -451,7 +451,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
             }
 
             // check if the accout supports the current transfer type
-            if (![SupportedTransactionInfo isTransferSupported: transferType forAccount: account]) {
+            if (![HBCIBackend.backend isTransferSupportedForAccount: transferType account: account]) {
                 continue;
             }
 
@@ -1267,7 +1267,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     TransferType tt = transactionController.currentTransfer.type.intValue;
     BOOL allowsDated = NO;
     if (tt == TransferTypeOldStandard || tt == TransferTypeOldStandardScheduled) {
-        if ([SupportedTransactionInfo isTransferSupported: TransferTypeOldStandardScheduled forAccount: transactionController.currentTransfer.account]) {
+        if ([HBCIBackend.backend isTransferSupportedForAccount: TransferTypeOldStandardScheduled account: transactionController.currentTransfer.account]) {
             [executeAtDateRadioButton setEnabled: YES];
             allowsDated = YES;
         }

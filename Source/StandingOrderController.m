@@ -399,7 +399,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             BankAccount *account = (BankAccount *)currentAccount;
 
             // Exclude manual accounts and those that don't support standing orders from the list.
-            if ([[account isManual] boolValue] || ![SupportedTransactionInfo isTransactionSupported: TransactionType_StandingOrderSEPA forAccount: account]) {
+            if ([[account isManual] boolValue] || ![HBCIBackend.backend isTransactionSupportedForAccount: TransactionType_StandingOrderSEPA account: account]) {
                 continue;
             }
 
@@ -720,7 +720,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         BankAccount *account = (BankAccount *)currentAccount;
 
         // Exclude manual accounts and those that don't support standing orders from the list.
-        if ([[account isManual] boolValue] || ![SupportedTransactionInfo isTransactionSupported: TransactionType_StandingOrderSEPA forAccount: account]) {
+        if ([[account isManual] boolValue] || ![HBCIBackend.backend isTransactionSupportedForAccount: TransactionType_StandingOrderSEPA account: account]) {
             continue;
         }
 
@@ -782,10 +782,12 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
         } else {
+            /* todo
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
                 self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
             }
+            */
         }
 
         // update to new limits
@@ -893,6 +895,8 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
             editable = YES;
         } else {
+            editable = NO;
+            /*
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
             if (transactionInfo != nil) {
                 self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
@@ -900,6 +904,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             } else {
                 editable = NO;
             }
+            */
         }
 
         // source account cannot be changed after order is created

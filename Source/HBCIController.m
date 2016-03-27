@@ -1990,11 +1990,13 @@ static HBCIController *controller = nil;
         return nil;
     }
 
+    /*
     if (user.secMethod.intValue == SecMethod_DDV) {
         if (![[ChipcardManager manager] requestCardForUser:user]) {
             return nil;
         }
     }
+    */
 
     PecuniaError *err = nil;
     if (![self registerBankUser: user error: &err]) {

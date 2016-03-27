@@ -558,7 +558,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             }
 
             // check if the accout supports the current transfer type
-            if (![SupportedTransactionInfo isTransferSupported: transferType forAccount: account]) {
+            if (![HBCIBackend.backend isTransferSupportedForAccount: transferType account: account]) {
                 LogDebug(@"skip account %@, job %d not supported", account.accountNumber, transferType);
                 continue;
             }
@@ -1713,8 +1713,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     switch (transactionController.currentTransfer.type.intValue) {
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
-            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPAScheduled
-                                                      forAccount: transactionController.currentTransfer.account]) {
+            if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferSEPAScheduled account:transactionController.currentTransfer.account]) {
                 [executeAtDateRadioButton setEnabled: YES];
                 canBeScheduled = YES;
             }

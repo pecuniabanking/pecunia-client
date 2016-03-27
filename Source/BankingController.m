@@ -2545,15 +2545,14 @@ static BankingController *bankinControllerInstance;
                     return NO;
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
+                    /* todo:
                     if ([SupportedTransactionInfo isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
                         return NO;
                     }
+                    */
                 }
                 if ([item action] == @selector(accountStatements:)) {
-                    return YES;
-                    if ([SupportedTransactionInfo isTransactionSupported: TransactionType_AccountStatements forAccount: account] == NO) {
-                        return NO;
-                    }
+                    return [HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_AccountStatements account:account];
                 }
             }
         }

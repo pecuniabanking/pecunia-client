@@ -744,9 +744,9 @@
 
     [s appendFormat: NSLocalizedString(@"AP1010", @""), indent];
 
-    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount: self];
-    for (SupportedTransactionInfo *info in infos) {
-        [s appendFormat: @"    %@", [info descriptionWithIndent: indent]];
+    NSArray *codes = [HBCIBackend.backend supportedBusinessTransactions:self];
+    for (NSString *code in codes) {
+        [s appendFormat: @"    %@", code];
     }
     [s appendFormat: @"%@}", indent];
     return s;

@@ -69,24 +69,30 @@ var _manager:ChipcardManager!
         return HBCISmartcardDDV.readers();
     }
     
-    public func connectCard(userIdName:String?) ->Bool {
+    public func connectCard(userIdName:String?) throws {
         // check if reader is still available
         if !card.isReaderConnected() {
+            throw NSError.errorWithMsg(msgId: "AP366", titleId: "AP368");
+            /*
             let alert = NSAlert();
             alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
             alert.messageText = NSLocalizedString("AP366", comment: "");
             alert.runModal();
-            return false;            
+            return false;
+            */
         }
         
         if !card.isConnected() {
             var result = card.connect(1);
             if result == HBCISmartcard.ConnectResult.not_supported {
+                throw NSError.errorWithMsg(msgId: "AP365", titleId: "AP368");
+                /*
                 let alert = NSAlert();
                 alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
                 alert.messageText = NSLocalizedString("AP365", comment: "");
                 alert.runModal();
                 return false;
+                */
             }
             if result == HBCISmartcard.ConnectResult.no_card {
                 // no card inserted. Open dialog to wait for it
@@ -94,7 +100,8 @@ var _manager:ChipcardManager!
                 controller._userIdName = userIdName;
                 if NSApp.runModalForWindow(controller.window!) == 1 {
                     // cancelled
-                    return false;
+                    throw HBCIError.UserAbort;
+                    //return false;
                 }
                 result = controller.connectResult;
             }
@@ -105,70 +112,80 @@ var _manager:ChipcardManager!
             notificationController.window?.makeKeyAndOrderFront(self);
             if !card.verifyPin() {
                 notificationController.window?.close();
-                return false;
+                throw NSError.errorWithMsg(msgId: "AP369", titleId: "AP368");
             }
             notificationController.window?.close();
         }
-        return true;
     }
     
-    public func requestCardForUser(user:BankUser) ->Bool {
+    public func requestCardForUser(user:BankUser) throws {
         if card == nil {
             // no card  object created yet
             if let readers = HBCISmartcardDDV.readers() {
                 if readers.count == 0 {
                     // no card readers found
+                    throw NSError.errorWithMsg(msgId: "AP364", titleId: "AP368");
+                    /*
                     let alert = NSAlert();
                     alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
                     alert.messageText = NSLocalizedString("AP364", comment: "");
                     alert.runModal();
                     return false;
+                    */
                 }
-                let idx = user.ddvReaderIdx.integerValue
+                var idx = user.ddvReaderIdx.integerValue
                 if idx >= readers.count {
-                    return false;
+                    logWarning("Index in user information is wrong");
+                    idx = 0;
                 }
                 let readerName = readers[idx];
                 card = HBCISmartcardDDV(readerName: readerName);
             } else {
+                throw NSError.errorWithMsg(msgId: "AP364", titleId: "AP368");
+                /*
                 let alert = NSAlert();
                 alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
                 alert.messageText = NSLocalizedString("AP364", comment: "");
                 alert.runModal();
                 return false;
+                */
             }
         }
         
         // connect card
-        if !connectCard(user.name) {
-            return false;
-        }
+        try connectCard(user.name);
         
         // check user
         if let bankData = card.getBankData(1) {
             if bankData.userId == user.userId {
-                return true;
+                return;
             } else {
                 // card is connected but wrong user
                 logError("HBCIChipcard: card inserted but wrong user(%@)", bankData.userId);
+                throw NSError.errorWithMsg(msgId: "AP362", titleId: "AP368");
+                /*
                 let alert = NSAlert();
                 alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
                 let msg = String(format: NSLocalizedString("AP362", comment: ""), bankData.userId, user.userId);
                 alert.messageText = msg;
                 alert.runModal();
                 return false;
+                */
             }
         } else {
             logError("Chipcard: bank data could not be read");
+            throw NSError.errorWithMsg(msgId: "AP363", titleId: "AP368");
+            /*
             let alert = NSAlert();
             alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
             alert.messageText = NSLocalizedString("AP363", comment: "");
             alert.runModal();
             return false;
+            */
         }
     }
     
-    public func requestCardForReader(readerName:String) ->Bool {
+    public func requestCardForReader(readerName:String) throws {
         if card == nil {
             card = HBCISmartcardDDV(readerName: readerName);
         } else if card.readerName != readerName {
@@ -177,7 +194,7 @@ var _manager:ChipcardManager!
         }
         
         // connect card
-        return connectCard(nil);
+        try connectCard(nil);
     }
     
     public func initializeChipcard(paramString:NSString) ->NSString? {
@@ -302,15 +319,16 @@ var _manager:ChipcardManager!
         }
     }
     
-    public class func manager() ->ChipcardManager {
-        if let manager = _manager {
-            return manager;
-        } else {
-            _manager = ChipcardManager();
-            return _manager;
+    public static var manager:ChipcardManager {
+        get {
+            if let manager = _manager {
+                return manager;
+            } else {
+                _manager = ChipcardManager();
+                return _manager;
+            }
         }
     }
-    
     
     
     

@@ -462,12 +462,12 @@ extern void *UserDefaultsBindingContext;
             break;
 
         case MenuActionStartTransfer:
-            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPA forAccount: account]) {
+            if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferSEPA account:account]) {
                 [BankingController.controller startTransferOfType: TransferTypeSEPA
                                                       fromAccount: account
                                                         statement: assignment.statement];
             } else {
-                if ([SupportedTransactionInfo isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferInternalSEPA account:account]) {
                     [BankingController.controller startTransferOfType: TransferTypeInternalSEPA
                                                           fromAccount: account
                                                             statement: assignment.statement];
@@ -476,10 +476,10 @@ extern void *UserDefaultsBindingContext;
             break;
 
         case MenuActionCreateTemplate:
-            if ([SupportedTransactionInfo isTransferSupported: TransferTypeSEPA forAccount: account]) {
+            if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferSEPA account:account]) {
                 [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
             } else {
-                if ([SupportedTransactionInfo isTransferSupported: TransferTypeInternalSEPA forAccount: account]) {
+                if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferInternalSEPA account:account]) {
                     [BankingController.controller createTemplateOfType: TransferTypeInternalSEPA fromStatement: assignment.statement];
                 }
             }

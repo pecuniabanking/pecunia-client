@@ -291,6 +291,7 @@ AP365 = "Dieser Kartentyp wird nicht unterstützt (es werden nur DDV-Karten unte
 AP366 = "Der Chipkartenleser %@ ist nicht mehr verfügbar. Bitte prüfen Sie ob der Leser korrekt angeschlossen ist";
 AP367 = "Kein Kartenleser gefunden";
 AP368 = "Chipkarten-Fehler";
+AP369 = "Fehler bei der PIN-Überprüfung";
 
 // Transfers (sent statements)
 // AP400..AP449
@@ -816,6 +817,8 @@ AP2007 = "Ein interner Fehler ist aufgetreten. Nähere Informationen finden Sie 
 AP2008 = "Es konnten nicht alle Überweisungen verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
 AP2009 = "Es konnten nicht alle Daueraufträge verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
 AP2010 = "Die Aktion konnte nicht abgeschlossen werden. Nähere Informationen finden Sie im Fehlerlog";
+AP2011 = "Fehler beim Starten des HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
+AP2012 = "Die Bank verweigert den HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
 
 
 

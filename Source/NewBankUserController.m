@@ -272,7 +272,10 @@
                 [NSApp endSheet: userSheet returnCode: 0];
                 return;
             } else {
-                if ([manager requestCardForReader:readerName]) {
+                NSError *error = nil;
+
+                [manager requestCardForReader:readerName error: &error];
+                if (error == nil) {
                     CardBankData *data = [manager getBankData];
                     if (data != nil) {
                         currentUser.bankCode = data.bankCode;
@@ -303,6 +306,9 @@
                         return;
                     }
                 } else {
+                    NSAlert *alert = [NSAlert alertWithError:error];
+                    [alert runModal];
+                    
                     // abort
                     [userSheet orderOut: sender];
                     [NSApp endSheet: userSheet returnCode: 0];
@@ -501,7 +507,8 @@
 
     BankUser *user = [self selectedUser];
     if (user != nil) {
-        [changePinButton setEnabled: [SupportedTransactionInfo isTransactionSupported: TransactionType_ChangePin forUser: user]];
+        // todo:
+        //[changePinButton setEnabled: [SupportedTransactionInfo isTransactionSupported: TransactionType_ChangePin forUser: user]];
     } else {
         [changePinButton setEnabled: NO];
     }

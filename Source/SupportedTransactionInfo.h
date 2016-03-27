@@ -57,14 +57,14 @@ typedef NS_ENUM(NSInteger, TransactionType) {
 @property (nonatomic, strong) BankAccount *account;
 @property (nonatomic, strong) BankUser    *user;
 
-+ (SupportedTransactionInfo *)infoForType: (TransactionType)type account: (BankAccount *)account;
-+ (NSArray *)supportedTransactionsForAccount: (BankAccount *)account;
+//+ (SupportedTransactionInfo *)infoForType: (TransactionType)type account: (BankAccount *)account;
+//+ (NSArray *)supportedTransactionsForAccount: (BankAccount *)account;
 + (PecuniaError *)updateSupportedTransactionInfoForUser: (BankUser *)user
                                                 account: (BankAccount *)account
                                                withJobs: (NSArray *)supportedJobNames;
-+ (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
-+ (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user;
-+ (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
+//+ (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
+//+ (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user;
+//+ (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
 
 
 - (NSString *)description;
