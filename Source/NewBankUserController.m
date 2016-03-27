@@ -20,7 +20,6 @@
 #import "NewBankUserController.h"
 #import "BankingController.h"
 #import "PecuniaError.h"
-#import "BankParameter.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankSetupInfo.h"

@@ -17,10 +17,6 @@
  * 02110-1301  USA
  */
 
-@class ResultParser;
-@class CallbackParser;
-@class LogParser;
-
 @class HBCI_Error;
 @class PecuniaError;
 @class CallbackData;

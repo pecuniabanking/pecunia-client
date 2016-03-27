@@ -35,7 +35,6 @@
 #import "BankDetailsParser.h"
 #import "BankingCategory.h"
 #import "BankMessage.h"
-#import "BankParameter.h"
 #import "BankSetupInfo.h"
 #import "BankStatement.h"
 #import "BankStatementController.h"
@@ -47,7 +46,6 @@
 #import "CCSettlementList.h"
 #import "CallbackData.h"
 #import "CallbackHandler.h"
-#import "CallbackParser.h"
 #import "CategoryAnalysisWindowController.h"
 #import "CategoryBudget.h"
 #import "CategoryDefWindowController.h"
@@ -60,7 +58,6 @@
 #import "ChipTanWindowController.h"
 #import "ClickableImageView.h"
 #import "ColorPopup.h"
-#import "ColumnInfo.h"
 #import "ColumnLayoutCorePlotLayer.h"
 #import "ComTraceHelper.h"
 #import "Country.h"
@@ -90,7 +87,6 @@
 #import "LaunchParameters.h"
 #import "LocalSettingsController.h"
 #import "LockViewController.h"
-#import "LogParser.h"
 #import "MCEMBorderedView.h"
 #import "MCEMTableView.h"
 #import "MCEMTransparentTableView.h"
@@ -115,7 +111,6 @@
 #import "NotificationWindowController.h"
 #import "OrdersListView.h"
 #import "OrdersListViewCell.h"
-#import "Passport.h"
 #import "PasswordController.h"
 #import "PecuniaApplication.h"
 #import "PecuniaComboBoxCell.h"
@@ -131,7 +126,6 @@
 #import "PurposeSplitController.h"
 #import "PurposeSplitData.h"
 #import "PurposeSplitRule.h"
-#import "ResultParser.h"
 #import "ResultWindowController.h"
 #import "RoundedInnerShadowView.h"
 #import "RoundedOuterShadowView.h"
@@ -197,9 +191,5 @@
 #import "ZipWriteStream.h"
 #import "ZipException.h"
 #import "FileInZipInfo.h"
-
-//#import <PCSC/winscard.h>
-#import "reader.h"
-typedef uint32_t DWORD;
 
 
