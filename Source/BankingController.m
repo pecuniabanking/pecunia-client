@@ -1226,25 +1226,6 @@ static BankingController *bankinControllerInstance;
     [waitOverlay performSelector: @selector(performClose:) withObject: nil afterDelay: 5 inModes: @[NSModalPanelRunLoopMode]];
 }
 
-- (IBAction)updateSupportedTransactions: (id)sender {
-    LogEnter;
-
-    BankingCategory *category = self.currentSelection;
-    if (category == nil || category.accountNumber == nil) {
-        return;
-    }
-    BankAccount *account = (BankAccount *)category;
-    BOOL success = [account updateSupportedTransactions];
-    if (success) {
-        NSRunAlertPanel(NSLocalizedString(@"AP836", nil),
-                        NSLocalizedString(@"AP837", nil),
-                        NSLocalizedString(@"AP1", nil), nil, nil);
-    }
-    
-    [self save];
- 
-    LogLeave;
-}
 
 - (IBAction)getAccountBalance: (id)sender {
     LogEnter;

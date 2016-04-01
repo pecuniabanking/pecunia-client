@@ -135,10 +135,8 @@
 
 - (IBAction)getAccountBalance: (id)sender;
 
-
 - (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
-- (IBAction)updateSupportedTransactions: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
 

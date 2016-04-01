@@ -476,9 +476,9 @@ static HBCIController *controller = nil;
         if (restr) {
             limits = (TransactionLimits *)[NSEntityDescription insertNewObjectForEntityForName: @"TransactionLimits" inManagedObjectContext: context];
             limits.jobName = jobName;
-            limits.account = account;
-            limits.user = [account defaultBankUser];
-            [limits setLimitsWithData: restr];
+            //limits.account = account;
+            //limits.user = [account defaultBankUser];
+            //[limits setLimitsWithData: restr];
 
             [context save: &error];
         }
@@ -1636,7 +1636,7 @@ static HBCIController *controller = nil;
             LogError(@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode);
             continue;
         }
-        error = [SupportedTransactionInfo updateSupportedTransactionInfoForUser:user account:account withJobs:acc.supportedJobs];
+        //error = [SupportedTransactionInfo updateSupportedTransactionInfoForUser:user account:account withJobs:acc.supportedJobs];
         if (error != nil) {
             return error;
         }

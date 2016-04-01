@@ -24,33 +24,29 @@
 
 @implementation TransactionLimits
 
-@dynamic maxLenPurpose;
-@dynamic weekCyclesString;
-@dynamic allowChangeLastExecDate;
-@dynamic maxSetupTime;
-@dynamic allowChangeCycle;
-@dynamic execDaysMonthString;
-@dynamic allowWeekly;
-@dynamic monthCyclesString;
-@dynamic allowChangeRemoteAccount;
-@dynamic allowChangePurpose;
-@dynamic localLimit;
-@dynamic jobName;
-@dynamic maxLinesRemoteName;
-@dynamic foreignLimit;
-@dynamic allowChangeExecDay;
-@dynamic allowedTextKeysString;
-@dynamic allowChangePeriod;
-@dynamic minSetupTime;
-@dynamic allowChangeValue;
-@dynamic maxLenRemoteName;
-@dynamic allowChangeFirstExecDate;
-@dynamic maxLinesPurpose;
-@dynamic execDaysWeekString;
-@dynamic allowMonthly;
-@dynamic allowChangeRemoteName;
-@dynamic account;
-@dynamic user;
+@synthesize maxLenPurpose;
+@synthesize weekCyclesString;
+@synthesize allowChangeLastExecDate;
+@synthesize maxSetupTime;
+@synthesize allowChangeCycle;
+@synthesize execDaysMonthString;
+@synthesize allowWeekly;
+@synthesize monthCyclesString;
+@synthesize allowChangeRemoteAccount;
+@synthesize allowChangePurpose;
+@synthesize jobName;
+@synthesize maxLinesRemoteName;
+@synthesize allowChangeExecDay;
+@synthesize allowedTextKeysString;
+@synthesize allowChangePeriod;
+@synthesize minSetupTime;
+@synthesize allowChangeValue;
+@synthesize maxLenRemoteName;
+@synthesize allowChangeFirstExecDate;
+@synthesize maxLinesPurpose;
+@synthesize execDaysWeekString;
+@synthesize allowMonthly;
+@synthesize allowChangeRemoteName;
 
 - (int)maxLengthRemoteName
 {
@@ -60,145 +56,6 @@
 - (int)maxLengthPurpose
 {
     return self.maxLenPurpose * self.maxLinesPurpose;
-}
-
-- (void)setLimitsWithData: (NSDictionary *)limits
-{
-    NSArray *textKeys = [limits valueForKey: @"textKeys"];
-    if (textKeys) {
-        self.allowedTextKeysString = [textKeys componentsJoinedByString: @":"];
-    }
-    
-    NSString *s = [limits valueForKey: @"maxusage"];
-    if (s) {
-        self.maxLinesPurpose = [s intValue];
-    } else {
-        self.maxLinesPurpose = 2;
-    }
-    
-    if ([self.jobName hasSubstring:@"SEPA"]) {
-        self.maxLinesPurpose = 1;
-        self.maxLenPurpose = 140;
-        self.maxLinesRemoteName = 1;
-        self.maxLenRemoteName = 70;
-    }
-    
-    s = [limits valueForKey: @"minpreptime"];
-    if (s) {
-        self.minSetupTime = [s intValue];
-    }
-    s = [limits valueForKey: @"maxpreptime"];
-    if (s) {
-        self.maxSetupTime = [s intValue];
-    }
-
-    // now check all limits for Standing orders
-    if ([self.jobName hasPrefix: @"Dauer"] == NO) {
-        return;
-    }
-
-    s = [limits valueForKey: @"dayspermonth"];
-    if (s) {
-        self.execDaysMonthString = s;
-    }
-
-    s = [limits valueForKey: @"daysperweek"];
-    if (s) {
-        self.execDaysWeekString = s;
-    }
-
-    s = [limits valueForKey: @"turnusmonths"];
-    if (s) {
-        self.monthCyclesString = s;
-    }
-
-    s = [limits valueForKey: @"turnusweeks"];
-    if (s) {
-        self.weekCyclesString = s;
-    }
-
-    self.allowMonthly = YES;
-    if (self.execDaysWeekString == nil || self.weekCyclesString == nil) {
-        self.allowWeekly = NO;
-    } else {
-        self.allowWeekly = YES;
-    }
-
-    if ([self.jobName isEqualToString: @"DauerSEPAEdit"]) {
-        s = [limits valueForKey: @"recktoeditable"];
-        self.allowChangeRemoteAccount = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeRemoteAccount = YES;
-            }
-        }
-        s = [limits valueForKey: @"recnameeditable"];
-        self.allowChangeRemoteName = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeRemoteName = YES;
-            }
-        }
-        s = [limits valueForKey: @"usageeditable"];
-        self.allowChangePurpose = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangePurpose = YES;
-            }
-        }
-        s = [limits valueForKey: @"firstexeceditable"];
-        self.allowChangeFirstExecDate = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeFirstExecDate = YES;
-            }
-        }
-        s = [limits valueForKey: @"lastexeceditable"];
-        self.allowChangeLastExecDate = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeLastExecDate = YES;
-            }
-        }
-        s = [limits valueForKey: @"timeuniteditable"];
-        self.allowChangePeriod = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangePeriod = YES;
-            }
-        }
-        s = [limits valueForKey: @"turnuseditable"];
-        self.allowChangeCycle = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeCycle = YES;
-            }
-        }
-        s = [limits valueForKey: @"execdayeditable"];
-        self.allowChangeExecDay = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeExecDay = YES;
-            }
-        }
-        s = [limits valueForKey: @"valueeditable"];
-        self.allowChangeValue = NO;
-        if (s) {
-            if ([s isEqualToString: @"J"]) {
-                self.allowChangeValue = YES;
-            }
-        }
-    } else {
-        self.allowChangeRemoteName = YES;
-        self.allowChangeRemoteAccount = YES;
-        self.allowChangePurpose = YES;
-        self.allowChangeValue = YES;
-        self.allowChangePeriod = YES;
-        self.allowChangeLastExecDate = YES;
-        self.allowChangeFirstExecDate = YES;
-        self.allowChangeExecDay = YES;
-        self.allowChangeCycle = YES;
-    }
 }
 
 - (NSArray *)monthCycles

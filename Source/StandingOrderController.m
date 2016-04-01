@@ -782,12 +782,9 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
         } else {
-            /* todo
-            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType: TransactionType_StandingOrderSEPA account: currentOrder.account];
-            if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
-                self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
+            if ([HBCIBackend.backend isOrderSupportedForAccount:@"SepaStandingOrderEdit" account:currentOrder.account]) {
+                self.currentLimits = [HBCIBackend.backend standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
             }
-            */
         }
 
         // update to new limits
@@ -798,7 +795,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             period = stord_monthly;
         }
 
-        if (currentLimits != nil && currentLimits.allowChangePeriod) {
+        if (currentLimits != nil) {
             if (period == stord_weekly) {
                 [self enableWeekly: YES];
                 [weekCell setState: NSOnState];
@@ -814,9 +811,14 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
                 [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
                 [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
             }
-
+            
             [weekCell setEnabled: currentLimits.allowWeekly];
             [monthCell setEnabled: currentLimits.allowMonthly];
+            
+            if (!currentLimits.allowChangePeriod) {
+                [weekCell setEnabled: NO];
+                [monthCell setEnabled: NO];
+            }
         }
     } else {
         [weekCell setEnabled: NO];
@@ -896,15 +898,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             editable = YES;
         } else {
             editable = NO;
-            /*
-            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
-            if (transactionInfo != nil) {
-                self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
-                editable = [transactionInfo.allowsChange boolValue];
-            } else {
-                editable = NO;
+            if ([HBCIBackend.backend isOrderSupportedForAccount:@"SepaStandingOrderEdit" account:currentOrder.account]) {
+                self.currentLimits = [HBCIBackend.backend standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
+                editable = YES;
             }
-            */
         }
 
         // source account cannot be changed after order is created
@@ -917,7 +914,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             }
         }
 
-        if (currentLimits != nil && currentLimits.allowChangePeriod) {
+        if (currentLimits != nil) {
             StandingOrderPeriod period = [currentOrder.period intValue];
             if (period == stord_weekly) {
                 [self enableWeekly: YES];
@@ -937,6 +934,11 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
             [weekCell setEnabled: currentLimits.allowWeekly];
             [monthCell setEnabled: currentLimits.allowMonthly];
+            
+            if (!currentLimits.allowChangePeriod) {
+                [weekCell setEnabled: NO];
+                [monthCell setEnabled: NO];
+            }
         }
 
         // (Re)Load the set of previously entered text for the receiver combo box.

@@ -311,32 +311,6 @@ class HBCIBackend : NSObject {
         }
     }
     
-    func updateSupportedTransactions(user:BankUser, parameters:HBCIParameters) throws {
-        let accounts = parameters.getAccounts();
-        
-        for account in accounts {
-            if let bankAccount = BankAccount.findAccountWithNumber(account.number, subNumber: account.subNumber, bankCode: account.bankCode) {
-                let supportedJobs = parameters.supportedOrdersForAccount(account.number, subNumber: account.subNumber);
-                let error = SupportedTransactionInfo.updateSupportedTransactionInfoForUser(user, account: bankAccount, withJobs: supportedJobs );
-                if error != nil {
-                    throw error;
-                }
-            }
-        }
-    }
-    
-    func updateSupportedTransactions(bankUser:BankUser) ->NSError? {
-        do {
-            let user = try HBCIUser(bankUser: bankUser);
-            try self.updateSupportedTransactions(bankUser, parameters: user.parameters);
-        }
-        catch let error as NSError {
-            return error;
-        }
-        return nil;
-        
-    }
-    
     func transactionTypeToOrderName(tt:TransactionType) ->String? {
         switch(tt) {
         case TransactionType.AccountStatements:
@@ -357,17 +331,22 @@ class HBCIBackend : NSObject {
         }
     }
     
-    func isTransactionSupportedForAccount(tt:TransactionType, account:BankAccount) ->Bool {
+    func isOrderSupportedForAccount(orderName:String, account:BankAccount) ->Bool {
         guard let bankUser = account.defaultBankUser() else {
             return false;
         }
         do {
             let user = try HBCIUser(bankUser: bankUser);
-            if let orderName = transactionTypeToOrderName(tt) {
-                return user.parameters.isOrderSupportedForAccount(orderName, number: account.accountNumber(), subNumber: account.accountSuffix);
-            }
+            return user.parameters.isOrderSupportedForAccount(orderName, number: account.accountNumber(), subNumber: account.accountSuffix);
         }
         catch {}
+        return false;
+    }
+    
+    func isTransactionSupportedForAccount(tt:TransactionType, account:BankAccount) ->Bool {
+        if let orderName = transactionTypeToOrderName(tt) {
+            return self.isOrderSupportedForAccount(orderName, account: account);
+        }
         return false;
     }
     
@@ -597,9 +576,6 @@ class HBCIBackend : NSObject {
                     
                     // end sync dialog
                     dialog.dialogEnd();
-                    
-                    //todo: update supported transactions
-                    try updateSupportedTransactions(bankUser, parameters: user.parameters);
                     
                     if SecurityMethod(bankUser.secMethod.unsignedIntValue) == SecMethod_PinTan {
                         if let secfunc = user.parameters.getTanMethods().first?.secfunc {
@@ -927,6 +903,14 @@ class HBCIBackend : NSObject {
                 result.standingOrders.append(stord);
             }
         }
+        
+        // get account reference
+        if account.subNumber == nil {
+            result.account = BankAccount.findAccountWithNumber(account.number, bankCode: account.bankCode);
+        } else {
+            result.account = BankAccount.findAccountWithNumber(account.number, subNumber: account.subNumber, bankCode: account.bankCode);
+        }
+
         return result;
     }
     
@@ -1547,9 +1531,27 @@ class HBCIBackend : NSObject {
                                 }
                             }
                         } else if stord.toDelete.boolValue == true {
-                            // delete standing order
+                            if let msg = HBCICustomMessage.newInstance(dialog) {
+                                if let order = HBCISepaStandingOrderDeleteOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
+                                    order.enqueue();
+                                    if try msg.send() {
+                                        let context = MOAssistant.sharedAssistant().context;
+                                        context.deleteObject(stord);
+                                        continue;
+                                    }
+                                }
+                            }
                         } else {
                             // change standing order
+                            if let msg = HBCICustomMessage.newInstance(dialog) {
+                                if let order = HBCISepaStandingOrderEditOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
+                                    order.enqueue();
+                                    if try msg.send() {
+                                        stord.isSent = NSNumber(bool: true);
+                                        continue;
+                                    }
+                                }
+                            }
                         }
                         
                         
@@ -1671,8 +1673,33 @@ class HBCIBackend : NSObject {
                     limits.execDaysWeekString = params.daysPerWeek;
                     return limits;
                 }
-            case stord_change: break
-            case stord_delete: break
+            case stord_change:
+                if let params = HBCISepaStandingOrderEditOrder.getParameters(user) {
+                    let limits = TransactionLimits();
+                    limits.minSetupTime = Int16(params.minPreDays);
+                    limits.maxSetupTime = Int16(params.maxPreDays);
+                    limits.allowChangeRemoteAccount = params.creditorAccountChangeable;
+                    limits.allowChangeRemoteName = params.creditorChangeable;
+                    limits.allowChangeValue = params.amountChangeable;
+                    limits.allowChangePurpose = params.usageChangeable;
+                    limits.allowChangeFirstExecDate = params.firstExecChangeable;
+                    limits.allowChangePeriod = params.timeunitChangeable;
+                    limits.allowChangeCycle = params.cycleChangeable;
+                    limits.allowChangeExecDay = params.execDayChangeable;
+                    limits.allowChangeLastExecDate = params.lastExecChangeable;
+                    limits.monthCyclesString = params.cycleMonths;
+                    limits.execDaysMonthString = params.daysPerMonth;
+                    limits.weekCyclesString = params.cycleWeeks;
+                    limits.execDaysWeekString = params.daysPerWeek;
+                    return limits;
+                }
+            case stord_delete:
+                if let params = HBCISepaStandingOrderDeleteOrder.getParameters(user) {
+                    let limits = TransactionLimits();
+                    limits.minSetupTime = Int16(params.minPreDays);
+                    limits.maxSetupTime = Int16(params.maxPreDays);
+                    return limits;
+                }
             default: break;
             }
             

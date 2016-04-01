@@ -352,22 +352,6 @@
     }
 }
 
-- (BOOL)updateSupportedTransactions {
-    BOOL success = YES;
-
-    for (BankUser *user in self.users) {
-        if ([user.userId isEqualToString: self.userId]) {
-            NSError *error = [[HBCIBackend backend] updateSupportedTransactions:user];
-            if (error != nil) {
-                NSAlert *alert = [NSAlert alertWithError:error];
-                [alert runModal];
-                success = NO;
-            }
-        }
-    }
-    return success;
-}
-
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value {
     if ([self.balance compare: value] != NSOrderedSame) {
         self.balance = value;
