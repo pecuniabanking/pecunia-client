@@ -166,6 +166,9 @@
 - (void)checkBalances: (NSArray *)resultList;
 - (void)setHBCIAccounts;
 
+- (void)stopHomescreenUpdates;
+- (void)resumeHomescreenUpdates;
+
 + (BankingController *)controller;
 
 @end

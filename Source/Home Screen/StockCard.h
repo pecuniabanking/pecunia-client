@@ -23,4 +23,7 @@
 {
 }
 
+- (void)stopUpdate;
+- (void)resumeUpdate;
+
 @end

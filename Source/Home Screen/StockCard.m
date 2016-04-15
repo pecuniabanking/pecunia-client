@@ -75,6 +75,7 @@ typedef enum {
 
     BOOL forceUpdate;
     BOOL updatePending;
+    BOOL canUpdate;
 
     CPTLayerAnnotation *titleAnnotation;
 
@@ -85,6 +86,10 @@ typedef enum {
 @property (nonatomic, assign) StocksTimeInterval interval;
 @property (nonatomic, copy) NSString *symbol;
 @property (nonatomic, strong) NSColor *color;
+
+- (void)stopUpdate;
+- (void)resumeUpdate;
+
 
 @end
 
@@ -102,6 +107,7 @@ typedef enum {
     LogEnter;
 
     self = [super initWithFrame: frame];
+    canUpdate = YES;
     if (self) {
         currency = @"EUR";
         firstTimeUpdate = YES;
@@ -124,6 +130,13 @@ typedef enum {
     LogLeave;
 
     return self;
+}
+
+- (void)stopUpdate {
+    canUpdate = NO;
+}
+- (void)resumeUpdate {
+    canUpdate = YES;
 }
 
 - (void)dealloc
@@ -442,6 +455,10 @@ typedef enum {
 - (void)onTimer: (id)timer
 {
     LogEnter;
+    
+    if (!canUpdate) {
+        return;
+    }
 
     // If the progress indicator is visible then we already run a query.
     // Take a note of that and run onTimer again after finishing the current run.
@@ -946,6 +963,18 @@ typedef enum {
 
     return self;
 }
+
+- (void)stopUpdate {
+    for (StockGraph *graph in graphs) {
+        [graph stopUpdate];
+    }
+}
+- (void)resumeUpdate {
+    for (StockGraph *graph in graphs) {
+        [graph resumeUpdate];
+    }
+}
+
 
 - (void)dealloc
 {

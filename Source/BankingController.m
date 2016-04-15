@@ -3363,10 +3363,12 @@ static BankingController *bankinControllerInstance;
     }
 
     // send transfers
+    [homeScreenController stopUpdate];
     BOOL sent = [[HBCIController controller] sendTransfers: transfers];
     if (sent) {
         [self save];
     }
+    [homeScreenController resumeUpdate];
 
     LogLeave;
 
@@ -3820,6 +3822,15 @@ static BankingController *bankinControllerInstance;
 
     return YES;
 }
+
+- (void)stopHomescreenUpdates {
+    [homeScreenController stopUpdate];
+}
+
+- (void)resumeHomescreenUpdates {
+    [homeScreenController resumeUpdate];
+}
+
 
 + (BankingController *)controller {
     return bankinControllerInstance;

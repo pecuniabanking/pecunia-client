@@ -1296,10 +1296,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
+    [[BankingController controller] stopHomescreenUpdates];
+
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
     BOOL sent = [[HBCIController controller] sendTransfers: transfers];
+
+    [[BankingController controller] resumeHomescreenUpdates];
+
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
