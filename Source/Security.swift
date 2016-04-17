@@ -131,6 +131,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         return password!;
     }
 
+    /*
     public static func getNewPassword(data: CallbackData) -> String {
         if let password = passwordForService("Pecunia", account: "DataFile") {
             return password;
@@ -218,6 +219,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
             return "<abort>";
         }
     }
+    */
     
     // TODO: for all keychain functions, they could use a more generic implementation like Locksmith (see Github).
     public static func setPassword(password: String, forService service: String, account: String, store: Bool) -> Bool {

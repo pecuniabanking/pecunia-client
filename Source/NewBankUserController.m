@@ -23,7 +23,6 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankSetupInfo.h"
-#import "TanSigningOption.h"
 #import "NewPinController.h"
 #import "SupportedTransactionInfo.h"
 #import "AnimationHelper.h"

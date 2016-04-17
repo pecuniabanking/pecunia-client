@@ -729,6 +729,102 @@ class HBCIBackend : NSObject {
         return NSError.genericHBCI;
     }
     
+    func getCCSettlementListForAccount(bankAccount:BankAccount) ->CCSettlementList? {
+        guard let bankUser = bankAccount.defaultBankUser() else {
+            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            return nil;
+        }
+
+        do {
+            try processHBCIDialog(bankUser) { user, dialog in
+                let account = HBCIAccount(account: bankAccount);
+                guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                    logError("Failed to create HBCI message");
+                    return nil;
+                }
+                if let order = CCSettlementListOrder(message: msg, account: account) {
+                    order.enqueue();
+                    guard msg.orders.count > 0 else {
+                        return nil;
+                    }
+                    if try msg.send() {
+                        return order.settlementList;
+                    } else {
+                        logError("Failed to get credit card settlement list for account \(account.number)");
+                        return nil;
+                    }
+                }
+                return nil;
+            }
+        }
+        catch HBCIError.UserAbort {
+            return nil;
+        }
+        catch let error as HBCIError {
+            let error = NSError.fromHBCIError(error);
+            logError(error.localizedDescription);
+            return nil;
+        }
+        catch let error as NSError {
+            var userInfo = error.userInfo;
+            userInfo[NSError.titleKey] = NSLocalizedString("AP53", comment: "HBCI-Fehler");
+            let error = NSError(domain: error.domain, code: error.code, userInfo: userInfo);
+            logError(error.localizedDescription);
+            return nil;
+        }
+        catch {}
+        return nil;
+
+    }
+    
+    func getCreditCardSettlement(settleID:String, bankAccount:BankAccount) ->CreditCardSettlement? {
+        guard let bankUser = bankAccount.defaultBankUser() else {
+            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            return nil;
+        }
+        
+        do {
+            try processHBCIDialog(bankUser) { user, dialog in
+                let account = HBCIAccount(account: bankAccount);
+                guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                    logError("Failed to create HBCI message");
+                    return nil;
+                }
+                if let order = CCSettlementOrder(message: msg, account: account, settleID:settleID) {
+                    order.enqueue();
+                    guard msg.orders.count > 0 else {
+                        return nil;
+                    }
+                    if try msg.send() {
+                        return order.settlement;
+                    } else {
+                        logError("Failed to get credit card settlement for account \(account.number)");
+                        return nil;
+                    }
+                }
+                return nil;
+            }
+
+        }
+        catch HBCIError.UserAbort {
+            return nil;
+        }
+        catch let error as HBCIError {
+            let error = NSError.fromHBCIError(error);
+            logError(error.localizedDescription);
+            return nil;
+        }
+        catch let error as NSError {
+            var userInfo = error.userInfo;
+            userInfo[NSError.titleKey] = NSLocalizedString("AP53", comment: "HBCI-Fehler");
+            let error = NSError(domain: error.domain, code: error.code, userInfo: userInfo);
+            logError(error.localizedDescription);
+            return nil;
+        }
+        catch {}
+        return nil;
+    }
+    
     func checkGetStatementsFinalization() {
         if self.pluginsRunning == 0 && self.hbciQueriesRunning == 0 {
             // important: nofifications must be sent in main thread!

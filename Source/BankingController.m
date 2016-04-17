@@ -81,7 +81,6 @@
 #import "WaitViewController.h"
 
 #import "Tag.h"
-#import "User.h"
 #import "AssignmentController.h"
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"

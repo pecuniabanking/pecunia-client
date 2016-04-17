@@ -18,7 +18,6 @@
  */
 
 #import "CreditCardSettlementController.h"
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "CCSettlementList.h"
 #import "CreditCardSettlement.h"
@@ -122,10 +121,13 @@
     int                    oldNum = [settlements count];
     int                    newNum = 0;
 
-    CCSettlementList *settleList = [[HBCIController controller] getCCSettlementListForAccount: account];
+    CCSettlementList *settleList = [HBCIBackend.backend getCCSettlementListForAccount: account];
     if (settleList == nil) {
+        NSAlert *alert = [NSAlert alertWithError:[NSError genericHBCI]];
+        [alert runModal];
         return;
     }
+    
     newNum = [settleList.settlementInfos count];
 
     for (CCSettlementInfo *info in settleList.settlementInfos) {
@@ -138,7 +140,7 @@
         }
         if (found == NO) {
             // get new settlement
-            CreditCardSettlement *memSettlement = [[HBCIController controller] getCreditCardSettlement: info.settleID forAccount: account];
+            CreditCardSettlement *memSettlement = [HBCIBackend.backend getCreditCardSettlement: info.settleID bankAccount: account];
 
             // copy from memory to real context
             if (memSettlement != nil) {
@@ -152,6 +154,11 @@
                 newSettlement.settleDate = info.settleDate;
                 newSettlement.account = account;
                 newSettlement.firstReceive = info.firstReceive;
+            } else {
+                // failed
+                NSAlert *alert = [NSAlert alertWithError:[NSError genericHBCI]];
+                [alert runModal];
+                return;
             }
         }
     }

@@ -652,13 +652,13 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
         [sendOrders addObject: stord];
     }
-    NSError *hbciError = [[HBCIBackend backend] sendStandingOrders: sendOrders];
-    if (hbciError != nil) {
+    error = [[HBCIBackend backend] sendStandingOrders: sendOrders];
+    if (error != nil) {
         [sc stopSpinning];
         [sc clearMessage];
         self.requestRunning = @NO;
 
-        NSAlert *alert = [NSAlert alertWithError:hbciError];
+        NSAlert *alert = [NSAlert alertWithError:error];
         [alert runModal];
         return;
     }
