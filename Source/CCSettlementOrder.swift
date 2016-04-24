@@ -44,21 +44,6 @@ class CCSettlementOrder : HBCIOrder {
         return true;
     }
     
-    func getBalance(elem:HBCISyntaxElement) ->(value:NSDecimalNumber, currency:String)? {
-        if let debitCredit = elem.elementValueForPath("debitcredit") as? String {
-            if let currency = elem.elementValueForPath("currency") as? String {
-                if var value = elem.elementValueForPath("value") as? NSDecimalNumber {
-                    if debitCredit == "D" {
-                        value = NSDecimalNumber.zero().decimalNumberBySubtracting(value);
-                    }
-                    return (value, currency);
-                }
-            }
-        }
-        return nil;
-    }
-
-    
     override func updateResult(result:HBCIResultMessage) {
         super.updateResult(result);
         
@@ -75,15 +60,15 @@ class CCSettlementOrder : HBCIOrder {
             settle.settleID = seg.elementValueForPath("settleID") as? String;
             
             if let elem = seg.elementForPath("saldo_start") {
-                if let (value, currency) = self.getBalance(elem) {
-                    settle.startBalance = value;
-                    settle.currency = currency;
+                if let val = HBCIValue(element: elem) {
+                    settle.startBalance = val.value;
+                    settle.currency = val.currency;
                 }
             }
             if let elem = seg.elementForPath("saldo_settle") {
-                if let (value, currency) = self.getBalance(elem) {
-                    settle.endBalance = value;
-                    settle.currency = currency;
+                if let val = HBCIValue(element: elem) {
+                    settle.endBalance = val.value;
+                    settle.currency = val.currency;
                 }
             }
             

@@ -138,6 +138,21 @@ class HBCIBackend : NSObject {
             if _backend == nil {
                 _backend = HBCIBackend();
                 HBCILogManager.setLog(HBCIConsoleLog());
+                
+                // load syntax extension
+                if var path = NSBundle.mainBundle().resourcePath {
+                    path = path + "/hbci_cc_300.xml";
+                    let fm = NSFileManager.defaultManager();
+                    if fm.fileExistsAtPath(path) {
+                        do {
+                            try HBCISyntaxExtension.instance.add(path, version: "300");
+                            try HBCISyntaxExtension.instance.add(path, version: "220");
+                        }
+                        catch {
+                            logError("Failed to process syntax extension");
+                        }
+                    }
+                }
             }
             return _backend;
         }
@@ -327,6 +342,16 @@ class HBCIBackend : NSObject {
             return "SepaDatedTransfer";
         case TransactionType.TransferCollectiveCreditSEPA:
             return "SepaCollectiveTransfer";
+        case TransactionType.CCSettlementList:
+            return "CCSettlementList";
+        case TransactionType.CCSettlement:
+            return "CCSettlement";
+        case TransactionType.CCStatements:
+            return "CCStatement";
+        case TransactionType.AccountBalance:
+            return "AccountBalance";
+        case TransactionType.StandingOrderSEPAEdit:
+            return "SepaStandingOrderEdit";
         default: return nil;
         }
     }
@@ -1084,12 +1109,6 @@ class HBCIBackend : NSObject {
         // check the order - oldest statement must be first
         orderStatements(result);
         
-        // get account reference
-        if account.subNumber == nil {
-            result.account = BankAccount.findAccountWithNumber(account.number, bankCode: account.bankCode);
-        } else {
-            result.account = BankAccount.findAccountWithNumber(account.number, subNumber: account.subNumber, bankCode: account.bankCode);            
-        }
         return result;
     }
     
@@ -1211,33 +1230,82 @@ class HBCIBackend : NSObject {
                     for account in accounts {
                         if let msg = HBCICustomMessage.newInstance(dialog) {
                             let hbciAccount = HBCIAccount(account: account);
-                            if let order = HBCIStatementsOrder(message: msg, account: hbciAccount) {
+                            var dateFrom:NSDate?
+                            
+                            // find out how many days to read from the past
+                            var maxStatDays = 0;
+                            if NSUserDefaults.standardUserDefaults().boolForKey("limitStatsAge") {
+                                maxStatDays = NSUserDefaults.standardUserDefaults().integerForKey("maxStatDays");
+                            }
+                            
+                            if account.latestTransferDate == nil && maxStatDays > 0 {
+                                account.latestTransferDate = NSDate(timeInterval: NSTimeInterval(-86400 * maxStatDays), sinceDate: NSDate());
+                            }
+                            
+                            if let latestDate = account.latestTransferDate {
+                                let fromDate = NSDate(timeInterval: -605000, sinceDate: latestDate);
+                                dateFrom = fromDate;
+                            }
+                            
+                            if isTransactionSupportedForAccount(TransactionType.CCStatements, account: account) {
+                                // credit card statements
+                                if let order = CCStatementOrder(message: msg, account: hbciAccount) {
+                                    
+                                    order.dateFrom = dateFrom;
+                                    order.enqueue();
+                                    
+                                    try msg.send();
+                                    
+                                    for order in msg.orders {
+                                        if let order = order as? CCStatementOrder {
+                                            if let statements = order.statements {
+                                                let result = convertStatements(order.account, statements:statements);
+                                                result.account = account;
+                                                bqResult.append(result);
+                                            } else {
+                                                logError("Credit card statements could not be retrieved for account \(order.account.number)");
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if isTransactionSupportedForAccount(TransactionType.BankStatements, account: account) {
+                                // normal statements
+                                if let order = HBCIStatementsOrder(message: msg, account: hbciAccount) {
+                                    
+                                    order.dateFrom = dateFrom;
+                                    order.enqueue();
+                                    
+                                    try msg.send();
+                                    
+                                    for order in msg.orders {
+                                        if let order = order as? HBCIStatementsOrder {
+                                            if let statements = order.statements {
+                                                let result = convertStatements(order.account, statements:statements);
+                                                result.account = account;
+                                                bqResult.append(result);
+                                            } else {
+                                                logError("Statements could not be retrieved for account \(order.account.number)");
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if isTransactionSupportedForAccount(TransactionType.AccountBalance, account: account) {
+                                // Statement are not supported but Account Balance
+                                if let order = HBCIBalanceOrder(message: msg, account: hbciAccount) {
 
-                                // find out how many days to read from the past
-                                var maxStatDays = 0;
-                                if NSUserDefaults.standardUserDefaults().boolForKey("limitStatsAge") {
-                                    maxStatDays = NSUserDefaults.standardUserDefaults().integerForKey("maxStatDays");
-                                }
-                                
-                                if account.latestTransferDate == nil && maxStatDays > 0 {
-                                    account.latestTransferDate = NSDate(timeInterval: NSTimeInterval(-86400 * maxStatDays), sinceDate: NSDate());
-                                }
-                                
-                                if let latestDate = account.latestTransferDate {
-                                    let fromDate = NSDate(timeInterval: -605000, sinceDate: latestDate);
-                                    order.dateFrom = fromDate;
-                                }
-                                
-                                order.enqueue();
-                                
-                                try msg.send();
-                                
-                                for order in msg.orders {
-                                    if let order = order as? HBCIStatementsOrder {
-                                        if let statements = order.statements {
-                                            bqResult.append(convertStatements(order.account, statements:statements));
-                                        } else {
-                                            logError("Statements could not be retrieved for account \(order.account.number)");
+                                    order.enqueue();
+
+                                    if try msg.send() {
+                                        if let balance = order.bookedBalance {
+                                            let result = BankQueryResult();
+                                            
+                                            result.bankCode = hbciAccount.bankCode;
+                                            result.accountNumber = hbciAccount.number;
+                                            result.accountSuffix = hbciAccount.subNumber;
+                                            
+                                            result.balance = balance.value;
+                                            result.account = account;
+                                            bqResult.append(result);
                                         }
                                     }
                                 }

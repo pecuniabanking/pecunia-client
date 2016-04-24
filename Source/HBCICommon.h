@@ -9,13 +9,6 @@
 #ifndef HBCICommon_h
 #define HBCICommon_h
 
-#import <Cocoa/Cocoa.h>
-#import "MessageLog.h"
-#import "Transfer.h"
-#import "StandingOrder.h"
-#import "SupportedTransactionInfo.h"
-#import "AccountStatement.h"
-
 #define PecuniaStatementsNotification         @"PecuniaStatementsNotification"
 #define PecuniaStatementsFinalizeNotification @"PecuniaStatementsFinalizeNotification"
 #define PecuniaInstituteMessageNotification   @"PecuniaInstMessageNotification"

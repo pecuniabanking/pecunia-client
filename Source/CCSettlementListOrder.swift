@@ -58,13 +58,10 @@ class CCSettlementListOrder : HBCIOrder {
                     info.settleDate = deg.elementValueForPath("settleDate") as? NSDate;
                     info.firstReceive = deg.elementValueForPath("firstReceive") as? NSDate;
                     
-                    if let debitCredit = deg.elementValueForPath("value.debitcredit") as? String {
-                        info.value = deg.elementValueForPath("value.value") as? NSDecimalNumber;
-                        info.currency = deg.elementValueForPath("value.curr") as? String;
-                        if info.value != nil {
-                            if debitCredit == "D" {
-                                info.value = NSDecimalNumber.zero().decimalNumberBySubtracting(info.value!);
-                            }
+                    if let elem = deg.elementForPath("value") {
+                        if let val = HBCIValue(element: elem) {
+                            info.value = val.value;
+                            info.currency = val.currency;
                         }
                     }
                 }

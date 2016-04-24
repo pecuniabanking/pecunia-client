@@ -361,7 +361,6 @@
 		27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27778904173CE22700430EBC /* OrdersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5115F3C9340043BB68 /* OrdersListView.m */; };
 		27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
-		27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		27778908173CE22700430EBC /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27778909173CE22700430EBC /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */; };
@@ -864,6 +863,8 @@
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
 		B163F0D21CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */; };
 		B163F0D31CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */; };
+		B163F0DC1CC955D3001E1009 /* CCStatementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */; };
+		B163F0DD1CC955D3001E1009 /* CCStatementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */; };
 		B165B51F0D340C5800447DD8 /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
 		B165B5210D340C7D00447DD8 /* minus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B5200D340C7D00447DD8 /* minus-8.png */; };
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
@@ -876,7 +877,6 @@
 		B17728FD1504C33F00256898 /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
-		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
 		B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */; };
@@ -1604,6 +1604,7 @@
 		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B159010A129310E40053CB9C /* PecuniaSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSectionItem.h; sourceTree = "<group>"; tabWidth = 4; };
 		B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementOrder.swift; sourceTree = "<group>"; };
+		B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCStatementOrder.swift; sourceTree = "<group>"; };
 		B165B51E0D340C5800447DD8 /* plus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-8.png"; sourceTree = "<group>"; };
 		B165B5200D340C7D00447DD8 /* minus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus-8.png"; sourceTree = "<group>"; };
 		B17072D30D4BD35D00FBF186 /* TransactionLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionLimits.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1630,7 +1631,6 @@
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
 		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
 		B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportedTransactionInfo.h; sourceTree = "<group>"; };
-		B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportedTransactionInfo.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2434,6 +2434,7 @@
 				B17B296A13E366C800739E7A /* Dialogs */,
 				B1A6AA221A26722E00141C39 /* Chipcards */,
 				B13CE57B1C12FD3D00B5B750 /* HBCICommon.h */,
+				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
 				B17728AE1502D0D300256898 /* BankSetupInfo.h */,
 				B17728AF1502D0D300256898 /* BankSetupInfo.m */,
 				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
@@ -2452,6 +2453,7 @@
 				B17072D40D4BD35D00FBF186 /* TransactionLimits.m */,
 				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
 				B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */,
+				B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */,
 				B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */,
 				B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */,
 			);
@@ -2891,8 +2893,6 @@
 				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
 				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
 				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
-				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
-				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 				27548B8E1705D98D00C4BF9B /* Tag.h */,
 				27548B8F1705D98E00C4BF9B /* Tag.m */,
 				B1927D230C52B5CD00B4D390 /* Transfer.h */,
@@ -3707,6 +3707,7 @@
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
+				B163F0DD1CC955D3001E1009 /* CCStatementOrder.swift in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
@@ -3762,7 +3763,6 @@
 				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
 				275DAADE17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
-				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
 				B10C41B7196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
 				27778909173CE22700430EBC /* SystemNotification.m in Sources */,
@@ -3940,6 +3940,7 @@
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
+				B163F0DC1CC955D3001E1009 /* CCStatementOrder.swift in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
@@ -3995,7 +3996,6 @@
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
-				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
 				B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
