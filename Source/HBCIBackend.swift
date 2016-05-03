@@ -887,8 +887,13 @@ class HBCIBackend : NSObject {
             PluginRegistry.getStatements(accounts, completion: { (results: [BankQueryResult]) -> Void in
                 for result in results {
                     self.orderStatements(result);
+					if result.statements.count > 0 {
+						if let account = result.account {
+							account.evaluateQueryResult(result);
+						}
+					}
                 }
-                
+				
                 dispatch_async(dispatch_get_main_queue(), {
                     // important: nofifications must be sent in main thread!
                     let notification = NSNotification(name: PecuniaStatementsNotification, object: results);
@@ -1935,7 +1940,7 @@ class HBCIBackend : NSObject {
             // apply MD5 hash
             for var j=0; j<iterations; j++ {
                 if j==0 {
-                    CC_MD5(pwData.bytes, pwData.length, md5Hash);
+                    CC_MD5(pwData.bytes, UInt32((pwData as! NSData).length), md5Hash);
                 } else {
                     CC_MD5(md5Hash, 16, md5Hash);
                 }
