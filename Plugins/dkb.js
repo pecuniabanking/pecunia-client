@@ -26,7 +26,7 @@ var dkbUnreadMailCheck = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanki
 var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=3&tree=menu&treeAction=selectNode";
 
 // Credit card URLs.
-var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
+var dkbCardSelectionURL = "https://banking.dkb.de/banking/finanzstatus/kreditkartenumsaetze?$event=init";
 var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.transaction.CreditCard.CreditcardTransactionSearch&$event=csvExport";
 
 // Optionial function to support auto account type determination.
@@ -210,9 +210,9 @@ function navigateToCreditCardPage() {
     logger.logDebug("Navigating to credit card page");
 
     var url = webClient.URL;
-    if (url.indexOf("/banking") !== -1) {
-        url = "https://banking.dkb.de/banking/finanzstatus/kreditkartenumsaetze?$event=init";
-    } else if (url.indexOf("/dkb") !== -1) {
+    if (url.indexOf("/portal") !== -1) {
+        // todo: url = dkbBaseURL + ActiveContent.getAnchorByText("Kreditkartenums\u00E4tze").getHrefAttribute();
+    } else if (url.indexOf("/banking") !== -1) {
         url = dkbCardSelectionURL;
     } else {
         throw "Unknown URL, couldn't get credit card overview";
