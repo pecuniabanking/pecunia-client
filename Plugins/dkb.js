@@ -10,7 +10,7 @@ var author = "Mike Lischke";
 var description = "DKB Kreditkartenkonto"; // Short string for plugin selection.
 var homePage = "http://pecuniabanking.de";
 var license = "CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de";
-var version = "1.0";
+var version = "1.01";
 
 // --- Internal variables.
 var currentState = 0; // Used in the callback to determine what to do next (state machine).
@@ -19,16 +19,14 @@ var thePassword = "";
 
 // Various URLs for the DKB banking site.
 var dkbBaseURL = "https://banking.dkb.de";
-var dkbOldLoginURL = "https://banking.dkb.de/dkb/-";
-var dkbNewLoginURL = "https://banking.dkb.de/portal/portal";
-var dkbLogoutURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.infobar.logout-button&$event=logout";
+var dkbLogoutURL = "/DkbTransactionBanking/banner.xhtml?$event=logout";
 
 // Mailbox URLs
 var dkbUnreadMailCheck = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.infobar.PostboxStatus&$event=updateNumberOfUnreadMessages";
 var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=3&tree=menu&treeAction=selectNode";
 
 // Credit card URLs.
-var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
+var dkbCardSelectionURL = "https://banking.dkb.de/banking/finanzstatus/kreditkartenumsaetze?$event=init";
 var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.transaction.CreditCard.CreditcardTransactionSearch&$event=csvExport";
 
 // Optionial function to support auto account type determination.
@@ -48,7 +46,7 @@ function logOut() {
     currentState = 99;
     userName = "";
     thePassword = "";
-    webClient.URL = dkbLogoutURL;
+    webClient.URL = dkbBaseURL + dkbLogoutURL;
 }
 
 // Cache variables to allow for async loading.
@@ -79,7 +77,7 @@ function getStatements(user, bankCode, password, from, to, creditCardNumbers) {
     thePassword = password;
     currentState = 11;
     webClient.callback = navigationCallback;
-    webClient.URL = dkbBaseURL;
+    webClient.URL = dkbBaseURL  + "/banking";
 
     return true;
 }
@@ -182,9 +180,8 @@ function startLogin() {
          var submitLogin = formLogin.getInputByValue("Anmelden");
          */
 
-    } else if (LoginURL.indexOf("/dkb") !== -1) {
-        logger.logDebug("Running old standard login");
-        var formLogin = webClient.mainFrame.document.forms.item(0);
+    } else if (LoginURL.indexOf("/banking") !== -1) {
+        var formLogin = webClient.mainFrame.document.forms.item(1);
 
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
         formLogin.elements.namedItem("j_username").value = userName;
@@ -215,7 +212,7 @@ function navigateToCreditCardPage() {
     var url = webClient.URL;
     if (url.indexOf("/portal") !== -1) {
         // todo: url = dkbBaseURL + ActiveContent.getAnchorByText("Kreditkartenums\u00E4tze").getHrefAttribute();
-    } else if (url.indexOf("/dkb") !== -1) {
+    } else if (url.indexOf("/banking") !== -1) {
         url = dkbCardSelectionURL;
     } else {
         throw "Unknown URL, couldn't get credit card overview";
@@ -247,7 +244,7 @@ function readNextCreditCard() {
     var url = webClient.URL;
     if (url.indexOf("/portal") !== -1) {
         // todo
-    } else if (url.indexOf("/dkb") !== -1) {
+    } else if (url.indexOf("/banking") !== -1) {
         for (var i = 0; i < webClient.mainFrameDocument.forms.length; ++i) {
             var form = webClient.mainFrameDocument.forms.item(i);
             if (form.name == "form1579108072_1")
@@ -392,7 +389,7 @@ function errorExit(message) {
 
 function sleepFor(sleepDuration) { // Debugging helper.
     var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration) { /* do nothing */ } 
+    while(new Date().getTime() < now + sleepDuration) { /* do nothing */ }
 }
 
 function unquote(text) {
