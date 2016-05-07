@@ -940,6 +940,8 @@ static BankingController *bankinControllerInstance;
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
 
+    [self stopHomescreenUpdates];
+
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(statementsNotification:)
                                                  name: PecuniaStatementsNotification
@@ -1034,6 +1036,7 @@ static BankingController *bankinControllerInstance;
 
     [self stopRefreshAnimation];
     [self updateUnread];
+    [self resumeHomescreenUpdates];
 
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
