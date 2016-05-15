@@ -50,7 +50,8 @@ extension NSString {
                 } else {
                     // Not a whitespace. See if that is a known word.
                     // TODO: needs localization.
-                    let key = item.stringWithNormalizedGermanChars().lowercaseString;
+                    var key = item.stringWithNormalizedGermanChars().lowercaseString;
+                    key = key.stringByReplacingOccurrencesOfString("'", withString: "");
                     let predicate = NSPredicate(format: "wordKey = '\(key)'");
                     request.predicate = predicate;
                     do {

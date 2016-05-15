@@ -84,6 +84,12 @@
 }
 
 - (void)checkTemplates {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"skipTemplateConversion"]) {
+        return;
+    }
+    
     // Convert old style of templates.
     for (TransferTemplate *template in templateController.arrangedObjects) {
         if (template.type.intValue == TransferTypeOldStandard
@@ -98,6 +104,7 @@
                     template.type = @(TransferTypeSEPAScheduled);
                 }
 
+                LogInfo(@"Convert account %@, BLZ %@ to IBAN", template.remoteAccount, template.remoteBankCode);
                 NSDictionary *ibanResult = [IBANtools convertToIBAN: template.remoteAccount
                                                            bankCode: template.remoteBankCode
                                                         countryCode: @"de"
@@ -105,6 +112,7 @@
                 if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
                     [ibanResult[@"result"] intValue] == IBANToolsResultOK) {
                     template.remoteIBAN = ibanResult[@"iban"];
+                    LogInfo(@"IBAN found: %@", template.remoteIBAN);
                 }
             }
         }

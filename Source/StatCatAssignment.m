@@ -69,7 +69,7 @@
         if ([field isEqualToString: @"value"]) {
             obj = self.value;
         } else if ([field isEqualToString: @"note"]) {
-            obj = [NSString stringWithFormat: @"\"%@\"", self.userInfo];
+            obj = self.userInfo == nil?nil:[NSString stringWithFormat: @"\"%@\"", self.userInfo];
         } else if ([field isEqualToString: @"localName"]) {
             obj = self.statement.account.localName;
         } else if ([field isEqualToString: @"localCountry"]) {
