@@ -688,7 +688,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     if (!passwordKeyValid) {
         BOOL passwordOk = NO;
-        passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        passwd = [Security passwordForService: @"Pecunia" account: @"DataFile"];
 
         while (!passwordOk) {
             if (passwd == nil) {
