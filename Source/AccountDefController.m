@@ -87,7 +87,7 @@
 
     // fill proposal values
     [self dropChanged: self];
-
+    
     // Manually set up properties which cannot be set via user defined runtime attributes
     // (Color type is not available pre 10.7).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
@@ -132,6 +132,12 @@
             [boxView replaceSubview: accountAddView with: manAccountAddView];
             currentAddView = manAccountAddView;
             [currentAddView setFrame: frame];
+        }
+        
+        // propose account number
+        if (account.accountNumber == nil) {
+            account.accountNumber = [BankAccount findFreeAccountNumber];
+            [accountNumberField setStringValue:account.accountNumber];            
         }
     }
 }
@@ -254,18 +260,14 @@
         BOOL        wasEditable = [bankNameField isEditable];
         BankAccount *bankRoot = [BankAccount bankRootForCode: [te stringValue]];
         [bankNameField setEditable: NO];
-        [bankNameField setBezeled: NO];
-        bankNameField.drawsBackground = NO;
         if (bankRoot == nil) {
             NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
             if ([name isEqualToString: NSLocalizedString(@"AP13", nil)]) {
                 [bankNameField setEditable: YES];
-                [bankNameField setBezeled: YES];
-                bankNameField.drawsBackground = YES;
-                if (wasEditable == NO) {
+                if (wasEditable == NO || account.bankName == nil) {
                     account.bankName = name;
                 }
-            } else {account.bankName = name; }
+            } else { account.bankName = name; }
         } else {
             account.bankName = bankRoot.name;
         }
@@ -299,12 +301,6 @@
         account.currency = @"EUR";
     }
 
-
-    // For manual accounts we don't need a valid account number, bank code or IBAN.
-    if (dropDown.indexOfSelectedItem == 0) {
-        return YES;
-    }
-
     if (account.accountNumber == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP55", nil),
@@ -317,6 +313,11 @@
                         NSLocalizedString(@"AP56", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
+    }
+
+    // For manual accounts we don't need a valid account number, bank code or IBAN.
+    if (dropDown.indexOfSelectedItem == 0) {
+        return YES;
     }
 
     if (![IBANtools isValidIBAN: account.iban]) {

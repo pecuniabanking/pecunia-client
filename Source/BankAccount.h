@@ -77,6 +77,7 @@ typedef enum {
 - (void)updateStatementBalances;
 - (void)doMaintenance;
 - (BOOL)updateSupportedTransactions;
+- (void)repairManualAccounts;
 
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
@@ -89,6 +90,7 @@ typedef enum {
 + (BankAccount *)findAccountWithNumber: (NSString *)number bankCode: (NSString *)code;
 + (BankAccount *)findAccountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
 + (NSInteger)maxUnread;
++ (NSString *)findFreeAccountNumber;
 
 @end
 

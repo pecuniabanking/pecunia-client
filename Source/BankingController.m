@@ -1261,6 +1261,20 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)repairManualAccounts:(id)sender {
+    BankingCategory *category = self.currentSelection;
+    if (category == nil) {
+        return;
+    }
+    if ([category isKindOfClass:[BankAccount class]]) {
+        BankAccount *account = (BankAccount *)category;
+        if (account.isManual.boolValue) {
+            [account repairManualAccounts];
+        }
+    }
+    [self save];
+}
+
 - (void)cleanupAfterMaintenance: (NSDictionary *)details {
     [self save];
     [overviewController reload];
@@ -2518,11 +2532,14 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(accountMaintenance:)) {
             return NO;
         }
+        if ([item action] == @selector(repairManualAccounts:)) {
+            return NO;
+        }
     }
 
     if (idx == 0 && currentSectionIndex == 0) {
         BankingCategory *cat = [self currentSelection];
-        if (cat == nil || [cat accountNumber] == nil) {
+        if (cat == nil || ![cat isKindOfClass: [BankAccount class]]) {
             if ([item action] == @selector(showProperties:)) {
                 return NO;
             }
@@ -2557,6 +2574,9 @@ static BankingController *bankinControllerInstance;
                 return NO;
             }
             if ([item action] == @selector(accountMaintenance:)) {
+                return NO;
+            }
+            if ([item action] == @selector(repairManualAccounts:)) {
                 return NO;
             }
         }

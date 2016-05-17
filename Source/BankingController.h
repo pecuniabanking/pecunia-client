@@ -139,6 +139,7 @@
 - (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
 - (IBAction)updateSupportedTransactions: (id)sender;
+- (IBAction)repairManualAccounts: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
 
