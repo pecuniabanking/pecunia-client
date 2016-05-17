@@ -654,6 +654,41 @@
     return nil;
 }
 
++ (NSString *)findFreeAccountNumber {
+    NSError *error = nil;
+    
+    NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 1)"];
+    [request setPredicate: predicate];
+    NSArray *accounts = [context executeFetchRequest: request error: &error];
+    if (error) {
+        LogError(error.localizedDescription);
+        return nil;
+    }
+    if (accounts == nil || [accounts count] == 0) {
+        return @"1";
+    }
+    
+    for (int i=1; i<200;i++) {
+        NSString *num = [NSString stringWithFormat:@"%d", i ];
+        BOOL found = NO;
+        for (BankAccount *account in accounts) {
+            if ([account.accountNumber isEqualToString: num]) {
+                found = YES;
+                break;
+            }
+        }
+        if (!found) {
+            return num;
+        }
+    }
+    
+    return nil;
+}
+
 + (NSInteger)maxUnread {
     NSError   *error = nil;
     NSInteger unread = 0;

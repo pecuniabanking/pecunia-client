@@ -31,6 +31,7 @@
     IBOutlet NSTextField        *bicField;
     IBOutlet NSTextField        *bankCodeField;
     IBOutlet NSTextField        *bankNameField;
+    IBOutlet NSTextField        *accountNumberField;
     IBOutlet NSTextField        *balanceField;
     IBOutlet NSTextField        *balanceLabel;
     IBOutlet NSPredicateEditor  *predicateEditor;
