@@ -25,6 +25,9 @@
 
 static ExportController *exportController = nil;
 
+static NSArray *exportFields = nil;
+
+
 @implementation ExportController
 
 - (id)init
@@ -40,10 +43,29 @@ static ExportController *exportController = nil;
     return exportController;
 }
 
++ (NSArray *)getExportFields {
+    if (exportFields == nil) {
+        exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount",
+                         @"localBankCode", @"localName", @"localCountry",
+                         @"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode",
+                         @"remoteBankName", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
+                         @"customerReference", @"bankReference", @"transactionText", @"primaNota",
+                         @"transactionCode", @"categoriesDescription"];
+    }
+    return exportFields;
+}
+
 - (NSArray *)exportedFields
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults objectForKey: @"Exporter.fields"];
+    NSArray *fields = [defaults objectForKey: @"Exporter.fields"];
+    NSMutableArray *allowedFields = [NSMutableArray array];
+    for (NSString *s in fields) {
+        if ([exportFields containsObject:s]) {
+            [allowedFields addObject:s];
+        }
+    }
+    return allowedFields;
 }
 
 - (void)startExport: (BankingCategory *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to

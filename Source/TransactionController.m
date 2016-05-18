@@ -122,7 +122,9 @@
 }
 
 - (void)updateLimits {
-    limits = [[HBCIBackend backend] transferLimits: account.defaultBankUser type: currentTransfer.type.intValue];
+    if (account != nil) {
+        limits = [[HBCIBackend backend] transferLimits: account.defaultBankUser type: currentTransfer.type.intValue];
+    }
 }
 
 - (void)prepareTransfer {
