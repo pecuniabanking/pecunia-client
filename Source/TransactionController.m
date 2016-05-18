@@ -136,7 +136,9 @@
 }
 
 - (void)updateLimits {
-    limits = [[HBCIController controller] limitsForType: currentTransfer.type.intValue account: account country: selectedCountry];
+    if (account != nil) {
+        limits = [[HBCIController controller] limitsForType: currentTransfer.type.intValue account: account country: selectedCountry];
+    }
 }
 
 - (void)prepareTransfer {
