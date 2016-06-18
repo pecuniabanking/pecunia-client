@@ -3408,17 +3408,14 @@ static BankingController *singleton;
         }
 
         if ([keyPath isEqualToString: @"fontScale"]) {
-            if (accountsOutline.numberOfRows > 0) {
-                NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
-                CGFloat rowHeight = ceil([font boundingRectForFont].size.height) + 2;
-                accountsOutline.rowHeight = rowHeight;
+            NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
+            accountsOutline.rowHeight = ceil([font boundingRectForFont].size.height) + 2;
 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [accountsOutline noteHeightOfRowsWithIndexesChanged: [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0, accountsOutline.numberOfRows - 1)]];
-                });
-            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [accountsOutline noteHeightOfRowsWithIndexesChanged: [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0, accountsOutline.numberOfRows - 1)]];
+            });
 
-            NSFont *font = [PreferenceController mainFontOfSize: 11 bold: NO];
+            font = [PreferenceController mainFontOfSize: 11 bold: NO];
             CGFloat maxWidth = 70; // Default with of the side bar minus padding.
             for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
                 id cell = [sidebar cellForItem: i];

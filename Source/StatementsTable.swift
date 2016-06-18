@@ -48,6 +48,7 @@ public class StatementsTableRowView : NSTableRowView {
     static var gradientSelected: NSGradient!;
     static var gradientPaleSelected: NSGradient!;
     static var gradientInactive: NSGradient!;
+    static var gradientNotAssigned: NSGradient!;
 
     public class func updateGradients() {
         gradientSelected = NSGradient(colorsAndLocations:
@@ -64,6 +65,15 @@ public class StatementsTableRowView : NSTableRowView {
             (NSColor.secondarySelectedControlColor(), 1),
             (NSColor.secondarySelectedControlColor(), 0)
         );
+
+        if let color = NSColor.applicationColorForKey("Uncategorized Transfer").colorUsingColorSpace(NSColorSpace.genericRGBColorSpace()) {
+            gradientNotAssigned = NSGradient(colorsAndLocations:
+                (color.colorWithAlphaComponent(0.5), 1),
+                (color.colorWithAlphaComponent(0.4), 0)
+            );
+        }
+
+
     }
 
     public override func drawBackgroundInRect(dirtyRect: NSRect) {
@@ -106,10 +116,7 @@ public class StatementsTableRowView : NSTableRowView {
             if !selected {
                 if !preliminary {
                     if hasUnassignedValue && drawNotAssignedGradient {
-                        let color = NSColor.applicationColorForKey("Uncategorized Transfer");
-                        if let gradient = NSGradient(colorsAndLocations: (NSColor.whiteColor(), -0.1), (color, 1.1)) {
-                            gradient.drawInBezierPath(path, angle: 90.0);
-                        }
+                        StatementsTableRowView.gradientNotAssigned.drawInBezierPath(path, angle: 90.0);
                     }
                     if new && drawNewStatementsGradient {
                         let color = NSColor.applicationColorForKey("Unread Transfer");

@@ -406,19 +406,11 @@
                                                             <binding destination="viz-ss-VNt" name="value" keyPath="objectValue.statement.saldo" id="uVC-v5-7Ck"/>
                                                         </connections>
                                                     </textField>
-                                                    <imageView toolTip="Zugewiesene Kategorien" wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U5Y-FA-ufP" userLabel="Categories Arrow">
-                                                        <rect key="frame" x="53" y="2" width="14" height="14"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="14" id="0Hu-US-a7F"/>
-                                                            <constraint firstAttribute="height" constant="14" id="Gm7-87-SWX"/>
-                                                        </constraints>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="lead-arrow" id="C8n-z2-KtD"/>
-                                                    </imageView>
-                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VdW-GI-Rrc">
-                                                        <rect key="frame" x="75" y="2" width="520" height="14"/>
+                                                    <textField verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VdW-GI-Rrc">
+                                                        <rect key="frame" x="129" y="3" width="466" height="17"/>
                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Categories" usesSingleLineMode="YES" id="rLP-ha-utx">
-                                                            <font key="font" metaFont="smallSystemBold"/>
-                                                            <color key="textColor" red="0.45737179490000002" green="0.45737179490000002" blue="0.45737179490000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <font key="font" metaFont="systemBold"/>
+                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <connections>
@@ -467,18 +459,26 @@
                                                             </binding>
                                                         </connections>
                                                     </imageView>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YKQ-5V-H5A">
+                                                        <rect key="frame" x="51" y="3" width="74" height="17"/>
+                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kategorien:" id="80g-vv-xWz">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="VdW-GI-Rrc" firstAttribute="leading" secondItem="U5Y-FA-ufP" secondAttribute="trailing" constant="10" id="1nj-S0-d89"/>
                                                     <constraint firstAttribute="bottom" secondItem="Cgf-oW-YX9" secondAttribute="bottom" constant="5" id="25n-RU-mpW"/>
                                                     <constraint firstItem="Sb5-SC-d47" firstAttribute="top" secondItem="iAg-7L-YF5" secondAttribute="bottom" constant="-5" id="4hj-mj-6lo"/>
                                                     <constraint firstItem="OJ6-QA-LRj" firstAttribute="leading" secondItem="E9P-we-oYA" secondAttribute="trailing" constant="4" id="6jz-Ct-1PY"/>
                                                     <constraint firstItem="iAg-7L-YF5" firstAttribute="top" secondItem="viz-ss-VNt" secondAttribute="top" id="7dK-e0-HXe"/>
+                                                    <constraint firstItem="VdW-GI-Rrc" firstAttribute="baseline" secondItem="YKQ-5V-H5A" secondAttribute="baseline" id="7kg-KK-GZT"/>
                                                     <constraint firstItem="Qzu-Ke-cmd" firstAttribute="trailing" secondItem="Vqc-co-Rq3" secondAttribute="trailing" id="8kV-9p-u3q"/>
                                                     <constraint firstAttribute="trailing" secondItem="OJ6-QA-LRj" secondAttribute="trailing" constant="11" id="93o-ih-aS3"/>
                                                     <constraint firstAttribute="trailing" secondItem="j9I-4m-neb" secondAttribute="trailing" constant="11" id="C4K-29-Vh4"/>
+                                                    <constraint firstItem="VdW-GI-Rrc" firstAttribute="leading" secondItem="YKQ-5V-H5A" secondAttribute="trailing" constant="8" id="Dbu-ZJ-Bxo"/>
                                                     <constraint firstItem="Qzu-Ke-cmd" firstAttribute="leading" secondItem="Vqc-co-Rq3" secondAttribute="leading" id="EHs-aj-Lln"/>
-                                                    <constraint firstItem="U5Y-FA-ufP" firstAttribute="leading" secondItem="Cgf-oW-YX9" secondAttribute="trailing" constant="9" id="Id2-c2-Qho"/>
                                                     <constraint firstItem="j9I-4m-neb" firstAttribute="top" secondItem="viz-ss-VNt" secondAttribute="top" constant="34" id="OpL-Gi-ADz"/>
                                                     <constraint firstItem="Cgf-oW-YX9" firstAttribute="leading" secondItem="iAg-7L-YF5" secondAttribute="trailing" constant="3" id="QWf-Di-mrc"/>
                                                     <constraint firstItem="eXP-4I-bMd" firstAttribute="leading" secondItem="8Zu-Yf-etz" secondAttribute="leading" id="T4G-Ey-Grz"/>
@@ -492,14 +492,14 @@
                                                     <constraint firstItem="Vqc-co-Rq3" firstAttribute="baseline" secondItem="8Zu-Yf-etz" secondAttribute="baseline" id="aWx-pm-eul"/>
                                                     <constraint firstItem="OJ6-QA-LRj" firstAttribute="top" secondItem="j9I-4m-neb" secondAttribute="bottom" id="b7E-Km-CAQ"/>
                                                     <constraint firstItem="8Zu-Yf-etz" firstAttribute="baseline" secondItem="iAg-7L-YF5" secondAttribute="baseline" constant="-6" id="d4V-Y0-aMm"/>
-                                                    <constraint firstAttribute="bottom" secondItem="U5Y-FA-ufP" secondAttribute="bottom" constant="2" id="du3-ge-hsp"/>
-                                                    <constraint firstItem="VdW-GI-Rrc" firstAttribute="centerY" secondItem="U5Y-FA-ufP" secondAttribute="centerY" id="gtG-jK-0oI"/>
                                                     <constraint firstItem="Vqc-co-Rq3" firstAttribute="leading" secondItem="8Zu-Yf-etz" secondAttribute="trailing" constant="24" id="jz5-Tk-0fY"/>
+                                                    <constraint firstAttribute="bottom" secondItem="YKQ-5V-H5A" secondAttribute="bottom" constant="3" id="mlx-MO-92C"/>
                                                     <constraint firstItem="eXP-4I-bMd" firstAttribute="trailing" secondItem="8Zu-Yf-etz" secondAttribute="trailing" id="ntH-Kz-1mG"/>
                                                     <constraint firstItem="Cgf-oW-YX9" firstAttribute="leading" secondItem="viz-ss-VNt" secondAttribute="leading" constant="43" id="oc6-y0-1Sx"/>
                                                     <constraint firstAttribute="trailing" secondItem="Vqc-co-Rq3" secondAttribute="trailing" constant="129" id="qFw-vc-lyy"/>
                                                     <constraint firstItem="Xdu-Dn-k5G" firstAttribute="leading" secondItem="Eed-P9-tlG" secondAttribute="trailing" constant="3" id="sjs-ae-k82"/>
                                                     <constraint firstItem="VdW-GI-Rrc" firstAttribute="trailing" secondItem="8Zu-Yf-etz" secondAttribute="trailing" id="ssk-GG-Ra3"/>
+                                                    <constraint firstItem="YKQ-5V-H5A" firstAttribute="leading" secondItem="8Zu-Yf-etz" secondAttribute="leading" id="uSg-2E-rpf"/>
                                                     <constraint firstItem="OJ6-QA-LRj" firstAttribute="baseline" secondItem="E9P-we-oYA" secondAttribute="baseline" id="vte-bv-47G"/>
                                                     <constraint firstItem="Cgf-oW-YX9" firstAttribute="top" secondItem="viz-ss-VNt" secondAttribute="top" constant="5" id="wjS-e4-rde"/>
                                                 </constraints>
@@ -584,7 +584,6 @@
         </menu>
     </objects>
     <resources>
-        <image name="lead-arrow" width="14" height="14"/>
         <image name="new-small" width="16" height="16"/>
         <image name="preliminary" width="16" height="16"/>
         <image name="sort-indicator-dec" width="8" height="8"/>

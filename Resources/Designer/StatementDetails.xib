@@ -931,7 +931,7 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="nMx-VY-N4o">
-                        <rect key="frame" x="382" y="0.0" width="16" height="58"/>
+                        <rect key="frame" x="383" y="0.0" width="15" height="58"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
