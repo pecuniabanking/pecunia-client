@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="AboutWindowController">
@@ -19,14 +19,14 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" deferred="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" id="35" userLabel="About Panel" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" nonactivatingPanel="YES"/>
-            <rect key="contentRect" x="610" y="418" width="610" height="280"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="contentRect" x="610" y="418" width="610" height="287"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="36" customClass="BWGradientBox">
-                <rect key="frame" x="0.0" y="0.0" width="610" height="280"/>
+                <rect key="frame" x="0.0" y="0.0" width="610" height="287"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20">
-                        <rect key="frame" x="398" y="-80" width="270" height="472"/>
+                    <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20">
+                        <rect key="frame" x="398" y="-73" width="270" height="472"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="472" id="aH6-Ig-hN7"/>
                             <constraint firstAttribute="width" constant="266" id="ska-OG-M7n"/>
@@ -38,7 +38,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="26">
-                        <rect key="frame" x="419" y="233" width="173" height="19"/>
+                        <rect key="frame" x="419" y="240" width="173" height="19"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="169" id="WoL-zz-OWh"/>
                         </constraints>
@@ -48,19 +48,8 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="24">
-                        <rect key="frame" x="24" y="18" width="235" height="15"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="231" id="ldQ-do-Gea"/>
-                        </constraints>
-                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Copyright" id="25">
-                            <font key="font" size="11" name="HelveticaNeue"/>
-                            <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="12">
-                        <rect key="frame" x="254" y="227" width="163" height="49"/>
+                        <rect key="frame" x="254" y="234" width="163" height="49"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="159" id="T3z-j6-QDl"/>
                         </constraints>
@@ -70,17 +59,17 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14">
-                        <rect key="frame" x="257" y="48" width="353" height="175"/>
+                    <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14">
+                        <rect key="frame" x="257" y="39" width="353" height="191"/>
                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="TRO-Vp-ZdG">
-                            <rect key="frame" x="0.0" y="0.0" width="353" height="175"/>
+                            <rect key="frame" x="0.0" y="0.0" width="353" height="191"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" findStyle="panel" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" linkDetection="YES" id="17">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="175"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="191"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                                    <size key="minSize" width="353" height="175"/>
+                                    <size key="minSize" width="353" height="191"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                     <attributedString key="textStorage">
                                         <fragment content="Lorem ipsum dolor sit amet">
@@ -91,7 +80,7 @@
                                         </fragment>
                                     </attributedString>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="353" height="175"/>
+                                    <size key="minSize" width="353" height="191"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                 </textView>
                             </subviews>
@@ -102,14 +91,25 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="15">
-                            <rect key="frame" x="337" y="0.0" width="16" height="175"/>
+                            <rect key="frame" x="337" y="0.0" width="16" height="191"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <imageView translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                        <rect key="frame" x="20" y="48" width="205" height="193"/>
+                    <imageView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10">
+                        <rect key="frame" x="20" y="55" width="205" height="193"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="NSApplicationIcon" id="11"/>
                     </imageView>
+                    <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="24">
+                        <rect key="frame" x="18" y="39" width="235" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="231" id="ldQ-do-Gea"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Copyright" id="25">
+                            <font key="font" size="11" name="HelveticaNeue"/>
+                            <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="26" firstAttribute="leading" secondItem="12" secondAttribute="trailing" constant="6" id="0pw-oP-C4F"/>
@@ -136,7 +136,7 @@
                     </userDefinedRuntimeAttribute>
                 </userDefinedRuntimeAttributes>
             </view>
-            <point key="canvasLocation" x="21" y="29"/>
+            <point key="canvasLocation" x="21" y="32.5"/>
         </window>
     </objects>
     <resources>

@@ -1095,15 +1095,22 @@ static HBCIController *controller = nil;
     // are in the same order as the accounts for which they had been requested.
     // Plugin results don't need this extra handling.
     if (err == nil && [result count] > 0) {
-        if ([result[0] account] == nil) {
-            NSUInteger currentAccount = 0;
-            NSArray *accounts = userList[userList.allKeys[0]];
-            if (accounts.count != [result count]) {
-                LogWarning(@"asyncCommandCompletedWithResult: account list size and result list size differ.");
-            }
-            for (BankQueryResult *queryResult in result) {
-                if (currentAccount < accounts.count) {
-                    queryResult.account = accounts[currentAccount++];
+        NSArray *accounts = userList[userList.allKeys[0]];
+        for (BankQueryResult *queryResult in result) {
+            if (queryResult.account == nil) {
+                // assign the right account
+                BOOL found = NO;
+                for (BankAccount *account in accounts) {
+                    if ([account.accountNumber isEqualToString:queryResult.accountNumber] && [account.bankCode isEqualToString:queryResult.bankCode]) {
+                        if ((account.accountSuffix == nil && queryResult.accountSuffix == nil) ||
+                            (account.accountSuffix != nil && queryResult.accountSuffix != nil && [account.accountSuffix isEqualToString:queryResult.accountSuffix])) {
+                            queryResult.account = account;
+                            found = YES;
+                        }
+                    }
+                }
+                if (!found) {
+                    LogError(@"asyncCommandCompletedWithResult: no acocunt found for %@ %@ %@", queryResult.bankCode, queryResult.accountNumber, queryResult.accountSuffix);
                 }
             }
         }

@@ -274,6 +274,7 @@
 
         NSBundle *mainBundle = [NSBundle mainBundle];
         LogInfo(@"Pecunia version: %@", [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"]);
+        LogInfo(@"Pecunia build version: %@", [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]);
 
         LogInfo(@"Machine + OS: %@, %@", [MessageLog getStringInfoFor: "hw.model"], info.operatingSystemVersionString);
         LogInfo(@"Mem size: %.01fGB", [MessageLog getNumberInfoFor: "hw.memsize"].doubleValue / 1024 / 1024 / 1024);
