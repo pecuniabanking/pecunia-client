@@ -977,22 +977,11 @@ CA
             </items>
         </menu>
         <customView id="3592" userLabel="ExportAccessory">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="93"/>
+            <rect key="frame" x="0.0" y="0.0" width="379" height="67"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button id="4389">
-                    <rect key="frame" x="17" y="18" width="233" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Umsätze untergeordneter Knoten" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="4390">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="3601" name="value" keyPath="withChildren" id="4393"/>
-                    </connections>
-                </button>
                 <textField verticalHuggingPriority="750" id="3596">
-                    <rect key="frame" x="222" y="54" width="31" height="14"/>
+                    <rect key="frame" x="222" y="28" width="31" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="bis" id="3597">
                         <font key="font" metaFont="smallSystem"/>
@@ -1001,7 +990,7 @@ CA
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="3595">
-                    <rect key="frame" x="17" y="54" width="88" height="14"/>
+                    <rect key="frame" x="17" y="28" width="88" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Umsätze vom" id="3598">
                         <font key="font" metaFont="smallSystem"/>
@@ -1010,7 +999,7 @@ CA
                     </textFieldCell>
                 </textField>
                 <datePicker verticalHuggingPriority="750" id="3594">
-                    <rect key="frame" x="258" y="51" width="104" height="27"/>
+                    <rect key="frame" x="258" y="25" width="104" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" controlSize="small" borderStyle="bezel" alignment="left" id="3599">
                         <font key="font" metaFont="smallSystem"/>
@@ -1026,7 +1015,7 @@ CA
                     </connections>
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" id="3593">
-                    <rect key="frame" x="110" y="51" width="104" height="27"/>
+                    <rect key="frame" x="110" y="25" width="104" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" controlSize="small" borderStyle="bezel" alignment="left" id="3600">
                         <font key="font" metaFont="smallSystem"/>
@@ -1042,6 +1031,7 @@ CA
                     </connections>
                 </datePicker>
             </subviews>
+            <point key="canvasLocation" x="-431.5" y="-38.5"/>
         </customView>
         <customObject id="4624" userLabel="AccMainSlicer" customClass="TimeSliceManager">
             <connections>

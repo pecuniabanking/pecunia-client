@@ -161,7 +161,7 @@ static HBCIController *controller = nil;
     PecuniaError *error = nil;
     NSString     *ppDir = [[MOAssistant sharedAssistant] passportDirectory];
     NSString     *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString     *libPath = [bundlePath stringByAppendingString: @"/Contents/"];
+    NSString     *libPath = [bundlePath stringByAppendingString: @"/Contents/Resources/"];
 
     NSMutableString *cmd = [NSMutableString stringWithString: @"<command name=\"init\">"];
     [self appendTag: @"passportPath" withValue: ppDir to: cmd];

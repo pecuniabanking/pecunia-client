@@ -35,6 +35,9 @@ static NSArray *exportFields = nil;
     self = [super init];
     exportController = self;
     selectedFields = [NSMutableArray arrayWithCapacity: 10];
+    
+    // ensure that export fields are defined
+    [ExportController getExportFields];
     return self;
 }
 
@@ -60,6 +63,7 @@ static NSArray *exportFields = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *fields = [defaults objectForKey: @"Exporter.fields"];
     NSMutableArray *allowedFields = [NSMutableArray array];
+    
     for (NSString *s in fields) {
         if ([exportFields containsObject:s]) {
             [allowedFields addObject:s];
@@ -122,20 +126,17 @@ static NSArray *exportFields = nil;
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
 
         NSMutableString *res = [NSMutableString stringWithCapacity: 1000];
-        NSArray         *cats = [[cat allCategories] allObjects];
 
         ShortDate *from_Date = [ShortDate dateWithDate: fromDate];
         ShortDate *to_Date = [ShortDate dateWithDate: toDate];
 
         // addObjectsFromArray
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
-        for (BankingCategory *currentCategory in cats) {
-            NSArray *stats = [currentCategory assignmentsFrom: from_Date to: to_Date withChildren: withChildren];
-            stats = [stats sortedArrayUsingDescriptors: @[sd]];
-            for (StatCatAssignment *stat in stats) {
-                NSString *s = [stat stringForFields: fields usingDateFormatter: dateFormatter numberFormatter: numberFormatter];
-                [res appendString: s];
-            }
+        NSArray *stats = [cat assignmentsFrom: from_Date to: to_Date withChildren: YES];
+        stats = [stats sortedArrayUsingDescriptors: @[sd]];
+        for (StatCatAssignment *stat in stats) {
+            NSString *s = [stat stringForFields: fields usingDateFormatter: dateFormatter numberFormatter: numberFormatter];
+            [res appendString: s];
         }
         if ([res writeToFile: [[sp URL] path] atomically: NO encoding: NSUTF8StringEncoding error: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
