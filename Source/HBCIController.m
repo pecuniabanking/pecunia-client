@@ -40,6 +40,7 @@
 #import "NSString+PecuniaAdditions.h"
 #import "AccountStatement.h"
 #import "ResultWindowController.h"
+#import "BankMessage.h"
 
 static HBCIController *controller = nil;
 
@@ -2126,6 +2127,28 @@ static HBCIController *controller = nil;
         if (user.bankName != nil) {
             title = [title stringByAppendingString:user.bankName];
         }
+        
+        // remove bank messages older than 4 weeks
+        entityDescription = [NSEntityDescription entityForName: @"BankMessage" inManagedObjectContext: context];
+        request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        predicate = [NSPredicate predicateWithFormat: @"date < %@", [NSDate dateWithTimeIntervalSinceNow:-2500000]];
+        [request setPredicate: predicate];
+        NSArray *messages = [context executeFetchRequest: request error: &error];
+        if (error) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            return;
+        }
+        for (BankMessage *message in messages) {
+            [context deleteObject:message];
+        }
+        
+        // write bank message to database
+        BankMessage *msg = (BankMessage *)[NSEntityDescription insertNewObjectForEntityForName: @"BankMessage" inManagedObjectContext: context];
+        msg.bankCode = bankCode;
+        msg.date = [NSDate date];
+        msg.message = info[@"message"];
     }
     NSString *message = info[@"message"];
     if (message != nil) {
@@ -2133,6 +2156,8 @@ static HBCIController *controller = nil;
                               withTitle: title];
 
     }
+    
+    
 }
 
 @end

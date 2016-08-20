@@ -28,6 +28,7 @@
 #import "StatCatAssignment.h"
 #import "SupportedTransactionInfo.h"
 #import "PecuniaError.h"
+#import "NSString+PecuniaAdditions.h"
 
 #import "HBCIController.h"
 
@@ -750,16 +751,16 @@
     switch (self.type.intValue) {
         case AccountType_Standard: {
             NSString *fs = NSLocalizedString(@"AP1000", @"");
-            [s appendFormat: fs, indent, self.accountNumber, self.accountSuffix, self.bankCode];
+            [s appendFormat: fs, indent, [self.accountNumber anonymizedString], self.accountSuffix, self.bankCode];
 
             fs = NSLocalizedString(@"AP1001", @"");
-            [s appendFormat: fs, indent, self.userId, self.iban, self.bic];
+            [s appendFormat: fs, indent, [self.userId anonymizedString], [self.iban anonymizedString], self.bic];
 
             break;
         }
 
         case AccountType_CreditCart: {
-            [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, self.accountNumber];
+            [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, [self.accountNumber anonymizedString]];
             break;
         }
 

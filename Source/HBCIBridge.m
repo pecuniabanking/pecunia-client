@@ -282,7 +282,7 @@
     NSString *command = [cmd stringByAppendingString: @".\n"];
 
     authRequest.errorOccured = NO;
-    LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
+    //LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [self receive];
 
@@ -305,7 +305,7 @@
         return;
     }
     NSString *command = [cmd stringByAppendingString: @".\n"];
-    LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
+    //LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
 
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(getData:) name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];

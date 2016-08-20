@@ -1016,6 +1016,10 @@
 		B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
 		B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
+		B1C03D231D5FCA45006C5360 /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */; };
+		B1C03D241D5FCA45006C5360 /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */; };
+		B1C03D251D5FCA45006C5360 /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */; };
+		B1C03D261D5FCA45006C5360 /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -1846,6 +1850,9 @@
 		B1B41C8A14005B5B00BEEC8F /* BankParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankParameter.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B41C8B14005B5B00BEEC8F /* BankParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankParameter.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
+		B1C03D201D5FCA45006C5360 /* BankMessageWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BankMessageWindowController.h; path = Source/BankMessageWindowController.h; sourceTree = SOURCE_ROOT; };
+		B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BankMessageWindowController.m; path = Source/BankMessageWindowController.m; sourceTree = SOURCE_ROOT; };
+		B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankMessageWindow.xib; path = Source/BankMessageWindow.xib; sourceTree = SOURCE_ROOT; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -2412,6 +2419,7 @@
 				27E845BB19E17D2F0026464E /* TransferTemplateListViewCell.xib */,
 				27E845BC19E17D2F0026464E /* TransferTemplates.xib */,
 				27E845BD19E17D2F0026464E /* WaitView.xib */,
+				B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -3066,6 +3074,8 @@
 				27E68C49165CF7DA005EBE66 /* GenerateDataController.m */,
 				B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */,
 				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
+				B1C03D201D5FCA45006C5360 /* BankMessageWindowController.h */,
+				B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -3386,6 +3396,7 @@
 				276D9C9A18CB79FF002BEDA8 /* magnify-busy1.png in Resources */,
 				27778995173CE22700430EBC /* java.entitlements in Resources */,
 				27778997173CE22700430EBC /* Collections in Resources */,
+				B1C03D261D5FCA45006C5360 /* BankMessageWindow.xib in Resources */,
 				275AC7E1186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
 				27778999173CE22700430EBC /* edit-large.png in Resources */,
 				2777899A173CE22700430EBC /* edit-large@2x.png in Resources */,
@@ -3628,6 +3639,7 @@
 				2704B8481573D3A800CB1320 /* eu-transfer-icon.png in Resources */,
 				27AA566B186C389900B113E7 /* distribution@2x.png in Resources */,
 				27DF7E1019C49A54009E2101 /* zoom-out.png in Resources */,
+				B1C03D251D5FCA45006C5360 /* BankMessageWindow.xib in Resources */,
 				276D9C9218CB70C0002BEDA8 /* magnify@2x.png in Resources */,
 				2704B84A1573D3BD00CB1320 /* sepa-transfer-icon.png in Resources */,
 				27E8460219E17D300026464E /* OrdersListViewCell.xib in Resources */,
@@ -4051,6 +4063,7 @@
 				2790160517B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEC17C531A700C67EEC /* TransfersCellView.m in Sources */,
 				2759D8A81A0133FB002AE07E /* Float.swift in Sources */,
+				B1C03D241D5FCA45006C5360 /* BankMessageWindowController.m in Sources */,
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AC1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100717D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
@@ -4326,6 +4339,7 @@
 				2790160417B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEB17C531A700C67EEC /* TransfersCellView.m in Sources */,
 				2759D8A71A0133FB002AE07E /* Float.swift in Sources */,
+				B1C03D231D5FCA45006C5360 /* BankMessageWindowController.m in Sources */,
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AB1A0133FB002AE07E /* Int.swift in Sources */,
 				273E100617D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,

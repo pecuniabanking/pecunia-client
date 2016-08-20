@@ -43,6 +43,7 @@
 @class DebitsController;
 @class CategoryHeatMapController;
 @class BSSelectWindowController;
+@class BankMessageWindowController;
 
 @class JMModalOverlay;
 @class WaitViewController;
@@ -93,6 +94,7 @@
     DebitsController                 *debitsController;
     CategoryHeatMapController        *heatMapController;
     BSSelectWindowController         *selectWindowController;
+    BankMessageWindowController      *bankMessageController;
 }
 
 @property (strong) IBOutlet CategoryView *accountsView;
@@ -148,6 +150,7 @@
 
 - (IBAction)creditCardSettlements: (id)sender;
 - (IBAction)accountStatements:(id)sender;
+- (IBAction)bankMessages:(id)sender;
 
 - (void)statementsNotification: (NSNotification *)notification;
 - (BankingCategory *)getBankingRoot;

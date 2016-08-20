@@ -205,8 +205,7 @@
 - (void)parser: (NSXMLParser *)parser didEndElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName
 {
     if ([elementName isEqualToString: @"result"]) {
-        NSString *msg = [NSString stringWithFormat: @"Parsed message result: %@",
-                         [MessageLog prettyPrintServerMessage: resultXmlString]];
+        NSString *msg = [NSString stringWithFormat: @"Parsed message result: %@", [MessageLog prettyPrintServerMessage: resultXmlString]];
         LogComTrace(HBCILogIntern, msg);
     } else {
         [resultXmlString appendFormat:@"</%@>", elementName ];

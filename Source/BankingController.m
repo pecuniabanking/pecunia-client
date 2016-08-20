@@ -86,6 +86,7 @@
 #import "AssignmentController.h"
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
+#import "BankMessageWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -3682,6 +3683,16 @@ static BankingController *bankinControllerInstance;
 
     LogLeave;
 }
+
+- (IBAction)bankMessages:(id)sender {
+    LogEnter;
+    
+    if (bankMessageController == nil) {
+        bankMessageController = [[BankMessageWindowController alloc] init];
+    }
+    [bankMessageController showWindow:self];
+}
+
 
 - (void)migrate {
     LogEnter;

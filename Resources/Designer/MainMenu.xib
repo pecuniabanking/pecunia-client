@@ -710,6 +710,12 @@ Unterstütze die Entwicklung!</string>
                                     <action selector="editBankUsers:" target="235" id="1120"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Banknachrichten" id="HSA-vZ-VEL">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="bankMessages:" target="235" id="uJ4-5L-6lW"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -1148,6 +1154,9 @@ CA
             </connections>
         </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="6577" userLabel="Shared User Defaults Controller"/>
+        <menuItem title="Item" id="ECa-DD-2zU">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
     <resources>
         <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>

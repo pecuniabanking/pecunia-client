@@ -38,6 +38,7 @@ AP33 = "Daueraufträge";
 // Other base strings
 AP34 = "Beenden nicht möglich";
 AP35 = "nicht angegeben";
+AP36 = "Weiter";
 
 // Validation strings
 // AP50..AP99
@@ -584,6 +585,8 @@ AP1023 = "%@TAN-Medien: {\n%@%@}\n";
 AP1024 = "%@Keine TAN-Medien vorhanden\n";
 AP1025 = "%@Konten: {\n%@%@}\n";
 AP1026 = "%@Keine Konten vorhanden\n";
+AP1027 = "Datenschutz";
+AP1028 = "Der Nachrichtenmitschnitt zeichnet die Kommunikation mit der Bank auf um eventuell auftretende Probleme bei dieser Kommunikation analysieren zu können. Dabei werden auch sensible bzw. persönliche Daten aufgezeichnet. Bitte klicken Sie auf 'Weiter' wenn Sie dieser Aufzeichnung zustimmen.\nDie Aufzeichnung können Sie dann per Mail an den Pecunia Support senden (vorher haben Sie auch nochmal die Möglichkeit die aufgezeichneten Daten im Anhang zu prüfen). Wir empfehlen diese Mail verschlüsselt zu senden. Wir verwenden GPG (GNU Privacy Guard), Sie können den Schlüssel von Pecunia Support über den GPG Schlüsselbund suchen und importieren.\nWir verwenden die Daten selbstverständlich ausschließlich zur Problemanalyse! Sie werden im Anschluss sofort gelöscht.";
 
 // Business Transactions
 // AP1200..AP1299

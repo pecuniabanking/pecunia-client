@@ -193,4 +193,20 @@ static NSData *receivedTmpData = nil;
     return res;
 }
 
+- (NSString *)anonymizedString {
+    int len = self.length / 3;
+    if(len == 0 && self.length > 0) {
+        len = 1;
+    }
+    if(len > 4) {
+        len = 4;
+    }
+    NSMutableString *s = [NSMutableString stringWithString:@"*"];
+    for(unsigned long i=1; i<self.length-len; i++) {
+        [s appendString:@"*"];
+    }
+    NSRange r = NSMakeRange(0, self.length-len);
+    return [self stringByReplacingCharactersInRange:r withString:s];
+}
+
 @end
