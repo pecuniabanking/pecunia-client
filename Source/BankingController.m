@@ -87,6 +87,7 @@
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
 #import "BankMessageWindowController.h"
+#import "ChipcardDataWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -3691,7 +3692,44 @@ static BankingController *bankinControllerInstance;
         bankMessageController = [[BankMessageWindowController alloc] init];
     }
     [bankMessageController showWindow:self];
+    
+    LogLeave;
 }
+
+- (IBAction)chipcardData:(id)sender {
+    LogEnter;
+    
+    ChipcardManager *manager = [ChipcardManager manager];
+    
+    NSArray *readers = [[ChipcardManager manager] getReaders];
+    if (readers == nil || readers.count == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP367", nil),
+                        NSLocalizedString(@"AP364", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return;
+    }
+    
+    NSString *readerName = readers.firstObject;
+    if (readerName == nil) {
+        // abort
+        return;
+    } else {
+        if ([manager requestCardForReader:readerName]) {
+            CardBankData *data = [manager getBankData];
+            
+            if (data != nil) {
+                ChipcardDataWindowController *controller = [[ChipcardDataWindowController alloc] initWithWindowNibName:@"ChipcardDataWindow"];
+                controller.manager = manager;
+                controller.bankData = data;
+                [NSApp runModalForWindow: [controller window]];
+            }
+            
+        }
+    }
+    
+    LogLeave;
+}
+
 
 
 - (void)migrate {

@@ -15,6 +15,7 @@ public struct HBCICardBankData {
     public var host:String;
     public var hostAdd:String;
     public var userId:String;
+    public var commtype:UInt8;
 }
 
 struct HBCICardKeyData {

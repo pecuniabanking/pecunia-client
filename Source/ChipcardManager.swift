@@ -15,10 +15,12 @@ var _manager:ChipcardManager!
     var bankCode:String;
     var country:String;
     var host:String;
+    var hostAdd:String;
     var userId:String;
+    var commtype:UInt8;
     
-    init(name:String, bankCode:String, country:String, host:String, userId:String) {
-        self.name = name; self.bankCode = bankCode; self.country = country; self.host = host; self.userId = userId;
+    init(name:String, bankCode:String, country:String, host:String, hostAdd:String, userId:String, commtype:UInt8) {
+        self.name = name; self.bankCode = bankCode; self.country = country; self.host = host; self.userId = userId; self.hostAdd = hostAdd; self.commtype = commtype;
     }
     
     
@@ -205,9 +207,14 @@ var _manager:ChipcardManager!
     
     public func getBankData() ->CardBankData? {
         if let data = card.getBankData(1) {
-            return CardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, userId: data.userId);
+            return CardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, hostAdd: data.hostAdd, userId: data.userId, commtype: data.commtype);
         }
         return nil;
+    }
+    
+    public func writeBankData(data:CardBankData) ->Bool {
+        let hbciData = HBCICardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, hostAdd: data.hostAdd, userId: data.userId, commtype: data.commtype);
+        return card.writeBankData(1, data: hbciData);
     }
     
     public func readBankData(paramString:NSString) ->NSString? {

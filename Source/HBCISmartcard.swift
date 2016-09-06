@@ -118,6 +118,8 @@ class HBCISmartcard {
             
             if status & 0xFFFF == 0x9000 {
                 return true;
+            } else {
+                logError("Smartcard command failed with result %d", arguments: status);
             }
         }
         return false;

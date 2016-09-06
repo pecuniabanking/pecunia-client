@@ -1020,6 +1020,10 @@
 		B1C03D241D5FCA45006C5360 /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */; };
 		B1C03D251D5FCA45006C5360 /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */; };
 		B1C03D261D5FCA45006C5360 /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */; };
+		B1C03D2A1D6A43C9006C5360 /* ChipcardDataWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C03D281D6A43C9006C5360 /* ChipcardDataWindowController.m */; };
+		B1C03D2B1D6A43C9006C5360 /* ChipcardDataWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C03D281D6A43C9006C5360 /* ChipcardDataWindowController.m */; };
+		B1C03D2C1D6A43C9006C5360 /* ChipcardDataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D291D6A43C9006C5360 /* ChipcardDataWindow.xib */; };
+		B1C03D2D1D6A43C9006C5360 /* ChipcardDataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C03D291D6A43C9006C5360 /* ChipcardDataWindow.xib */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -1853,6 +1857,9 @@
 		B1C03D201D5FCA45006C5360 /* BankMessageWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BankMessageWindowController.h; path = Source/BankMessageWindowController.h; sourceTree = SOURCE_ROOT; };
 		B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BankMessageWindowController.m; path = Source/BankMessageWindowController.m; sourceTree = SOURCE_ROOT; };
 		B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BankMessageWindow.xib; path = Source/BankMessageWindow.xib; sourceTree = SOURCE_ROOT; };
+		B1C03D271D6A43C9006C5360 /* ChipcardDataWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChipcardDataWindowController.h; path = ../Resources/Designer/ChipcardDataWindowController.h; sourceTree = "<group>"; };
+		B1C03D281D6A43C9006C5360 /* ChipcardDataWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChipcardDataWindowController.m; path = ../Resources/Designer/ChipcardDataWindowController.m; sourceTree = "<group>"; };
+		B1C03D291D6A43C9006C5360 /* ChipcardDataWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardDataWindow.xib; sourceTree = "<group>"; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -2420,6 +2427,7 @@
 				27E845BC19E17D2F0026464E /* TransferTemplates.xib */,
 				27E845BD19E17D2F0026464E /* WaitView.xib */,
 				B1C03D221D5FCA45006C5360 /* BankMessageWindow.xib */,
+				B1C03D291D6A43C9006C5360 /* ChipcardDataWindow.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -3076,6 +3084,8 @@
 				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
 				B1C03D201D5FCA45006C5360 /* BankMessageWindowController.h */,
 				B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */,
+				B1C03D271D6A43C9006C5360 /* ChipcardDataWindowController.h */,
+				B1C03D281D6A43C9006C5360 /* ChipcardDataWindowController.m */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -3401,6 +3411,7 @@
 				27778999173CE22700430EBC /* edit-large.png in Resources */,
 				2777899A173CE22700430EBC /* edit-large@2x.png in Resources */,
 				2777899B173CE22700430EBC /* csv.png in Resources */,
+				B1C03D2D1D6A43C9006C5360 /* ChipcardDataWindow.xib in Resources */,
 				272F6E731955D72300096734 /* sequence-type-repeat@2x.png in Resources */,
 				2794FF6A1972D5BA000B69EC /* new-small-white.png in Resources */,
 				B1A6AA211A251D8B00141C39 /* StatSplitController.xib in Resources */,
@@ -3644,6 +3655,7 @@
 				2704B84A1573D3BD00CB1320 /* sepa-transfer-icon.png in Resources */,
 				27E8460219E17D300026464E /* OrdersListViewCell.xib in Resources */,
 				270CA2F51900359E00DCF0DB /* font-increase@2x.png in Resources */,
+				B1C03D2C1D6A43C9006C5360 /* ChipcardDataWindow.xib in Resources */,
 				27B56887159743B10064A28B /* basket.png in Resources */,
 				275AC7F3186B62BD002E6BED /* overview-active@2x.png in Resources */,
 				27465178159B795E00D774FE /* shield.png in Resources */,
@@ -3963,6 +3975,7 @@
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				27FCA9261B1F592C006B590A /* Security.swift in Sources */,
+				B1C03D2B1D6A43C9006C5360 /* ChipcardDataWindowController.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
@@ -4239,6 +4252,7 @@
 				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
+				B1C03D2A1D6A43C9006C5360 /* ChipcardDataWindowController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				27FCA9251B1F592C006B590A /* Security.swift in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,

@@ -858,6 +858,19 @@ CA
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Chipkarte" id="tQr-Fy-4gq" userLabel="Chipkarte">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Chipkarte" id="kDJ-3X-IM9">
+                        <items>
+                            <menuItem title="Chipkartendaten..." id="gGp-tm-U0l">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="chipcardData:" target="235" id="kub-pB-pe6"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Developer" hidden="YES" id="6506">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Developer" id="6507">

@@ -117,7 +117,7 @@ class HBCISmartcardDDV : HBCISmartcard {
         if let result = readRecordWithSFI(idx, sfi: DDV_EF_BANK) {
             var p = UnsafeMutablePointer<UInt8>(result.bytes);
             var name, host, hostAdd, country, userId, bankCode:NSString!
-
+            
             name = NSString(bytes: p, length: 20, encoding: NSISOLatin1StringEncoding);
             if name == nil {
                 return nil;
@@ -144,7 +144,7 @@ class HBCISmartcardDDV : HBCISmartcard {
             }
             
             p = UnsafeMutablePointer<UInt8>(result.bytes).advancedBy(20);
-            let blz = UnsafeMutablePointer<UInt8>.alloc(8);
+            var blz = [UInt8](count:8, repeatedValue:0);
             for var i = 0; i < 4; i++ {
                 var nibble:UInt8 = 0;
                 nibble=(p[i]>>4)&0x0F;
@@ -159,16 +159,58 @@ class HBCISmartcardDDV : HBCISmartcard {
                 }
                 blz[(i<<1)+1]=nibble+0x30;
             }
-            blz.destroy();
             bankCode = NSString(bytes: blz, length: 8, encoding: NSISOLatin1StringEncoding);
             if bankCode == nil {
                 return nil;
             }
             
-            return HBCICardBankData(name: trim(name), bankCode: trim(bankCode), country: trim(country), host: trim(host), hostAdd: trim(hostAdd), userId: trim(userId));
+            let ct = UnsafeMutablePointer<UInt8>(result.bytes)[24];
+            
+            return HBCICardBankData(name: trim(name), bankCode: trim(bankCode), country: trim(country), host: trim(host), hostAdd: trim(hostAdd), userId: trim(userId), commtype: ct);
         }
         return nil;
     }
+    
+    func writeBankData(idx:Int, data:HBCICardBankData) ->Bool {
+        let raw = UnsafeMutablePointer<UInt8>.alloc(88);
+        for var i=0; i<88; i++ {
+            raw[i] = 0x20;
+        }
+        
+        if let name = data.name.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            memcpy(raw, name.bytes, name.length>20 ? 20:name.length);
+        }
+        if let host = data.host.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            memcpy(raw.advancedBy(25), host.bytes, host.length>28 ? 28:host.length);
+        }
+        if let hostAdd = data.hostAdd.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            memcpy(raw.advancedBy(53), hostAdd.bytes, hostAdd.length>2 ? 2:hostAdd.length);
+        }
+        if let country = data.country.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            memcpy(raw.advancedBy(55), country.bytes, country.length>3 ? 3:country.length);
+        }
+        if let userId = data.userId.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            memcpy(raw.advancedBy(58), userId.bytes, userId.length>30 ? 30:userId.length);
+        }
+        if let bankCode = data.bankCode.dataUsingEncoding(NSISOLatin1StringEncoding) {
+            let p = UnsafeMutablePointer<UInt8>(bankCode.bytes);
+            for var i=0; i<4; i++ {
+                var c1 = p[i<<1] - 0x30;
+                let c2 = p[i<<1 + 1] - 0x30;
+                
+                if c1 == 2 && c2 == 0 {
+                    c1 ^= 0x0F;
+                }
+                raw[20+i] = (c1<<4) | c2;
+            }
+        }
+        raw[24] = data.commtype;
+        let recordData = NSData(bytes: raw, length: 88);
+        let success = writeRecordWithSFI(idx, sfi: DDV_EF_BANK, data: recordData);
+        raw.destroy(88);
+        return success;
+    }
+
     
     func getKeyData() ->Array<HBCICardKeyData> {
         var keys = Array<HBCICardKeyData>();
