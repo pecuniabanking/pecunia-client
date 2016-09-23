@@ -187,10 +187,23 @@ function startLogin() {
         var formLogin = webClient.mainFrame.document.forms.item(1);
 
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
-		logger.logDebug(formLogin.elements.item(12).idName);
-        formLogin.elements.item(10).value = userName;
-        formLogin.elements.item(11).value = thePassword;
-        var submitLogin = formLogin.elements.item(12);
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var j_username = formLogin.elements.item(i);
+            if (j_username.name == "j_username")
+                break;
+        }
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var j_password = formLogin.elements.item(i);
+            if (j_password.name == "j_password")
+                break;
+        }
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var submitLogin = formLogin.elements.item(i);
+            if (submitLogin.idName == "buttonlogin")
+                break;
+        }
+		j_username.value = userName;
+        j_password.value = thePassword;
         logger.logDebug("submit button: " + submitLogin + ", id: " + submitLogin.idName);
 
     } else if (LoginURL.indexOf("wartung") !== -1) {
