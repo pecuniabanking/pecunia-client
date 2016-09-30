@@ -784,12 +784,6 @@ Unterstütze die Entwicklung!</string>
                                                 <action selector="accountMaintenance:" target="235" id="7064"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Manuelle Konten" id="UME-BY-gn6">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="repairManualAccounts:" target="235" id="X3S-Sb-sH7"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

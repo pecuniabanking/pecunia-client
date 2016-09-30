@@ -5,14 +5,16 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3" : 0,
-    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : 0,
-    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : 0
+    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : 0,
+    "ACC5123B749BA800BE62A7A53DFE49BAFA2D026D" : 0,
+    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "53A9B936-33B8-417D-B23C-CB8BF2470C4D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3" : "client",
-    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : "clientSubmodules\/IBANtools",
-    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : "clientSubmodules\/ExSwift"
+    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : "clientSubmodules\/ExSwift",
+    "ACC5123B749BA800BE62A7A53DFE49BAFA2D026D" : "PecuniaMaster\/Submodules\/HBCI4Swift\/",
+    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : "clientSubmodules\/IBANtools"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Pecunia",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -22,6 +24,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pecuniabanking\/pecunia-client",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/macemmi\/HBCI4Swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ACC5123B749BA800BE62A7A53DFE49BAFA2D026D"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pNre\/ExSwift",
