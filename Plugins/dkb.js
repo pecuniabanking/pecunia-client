@@ -270,7 +270,7 @@ function readNextCreditCard() {
         //var form = webClient.mainFrameDocument.forms.namedItem("form1579108072_1"); namedItem doesn't work on forms it seems.
         for (var i = 0; i < form.elements.length; ++i) {
             var creditCardSelector = form.elements.item(i);
-            if (creditCardSelector.name == "slCreditCard")
+            if (creditCardSelector.name == "slAllAccounts")
                 break;
         }
     } else {
