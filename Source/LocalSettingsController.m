@@ -72,6 +72,13 @@
 - (id)valueForKey: (id)aKey
 {
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    
+    // check if context is ready - in Sierra it is not ready at startup (after password entry)
+    if (context == nil) {
+        LogWarning(@"Local settings: context is nil when requesting key %@", aKey);
+        return nil;
+    }
+    
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
                                                          inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
@@ -115,6 +122,12 @@
     [self willChangeValueForKey: aKey];
 
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    
+    if (context == nil) {
+        LogWarning(@"Local settings: context is nil when saving key %@", aKey);
+        return;
+    }
+
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
                                                          inManagedObjectContext: context];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
