@@ -216,12 +216,6 @@ static BankingController *bankinControllerInstance;
 
     [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
-
     NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
@@ -258,35 +252,12 @@ static BankingController *bankinControllerInstance;
     splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"split-cursor"] hotSpot: NSMakePoint(0, 0)];
     [WorkerThread init];
 
-    [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
-
     MOAssistant.sharedAssistant.mainWindow = mainWindow;
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(contextChanged)
-                                                 name: @"contextDataChanged"
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(encryptionChanged)
-                                                 name: @"dataFileEncryptionChanged"
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(homeScreenCardClicked:)
-                                                 name: HomeScreenCardClickedNotification
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(resourceUpdated:)
-                                                 name: RemoteResourceManager.pecuniaResourcesUpdatedNotification
-                                               object: nil];
-
 #ifdef DEBUG
     [developerMenu setHidden: NO];
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    RemoteResourceManager *resourceManager = RemoteResourceManager.sharedManager; // Creates singleton.
-    if ([userDefaults boolForKey: @"autoCasing"]) {
-        [resourceManager addManagedFile: @"words.zip"];
-    }
 
     [PluginRegistry startup];
     
@@ -511,7 +482,32 @@ static BankingController *bankinControllerInstance;
     if ([[NSUserDefaults standardUserDefaults] boolForKey: @"autoCasing"]) {
         [resourceManager addManagedFile: @"words.zip"];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(contextChanged)
+                                                 name: @"contextDataChanged"
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(encryptionChanged)
+                                                 name: @"dataFileEncryptionChanged"
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(homeScreenCardClicked:)
+                                                 name: HomeScreenCardClickedNotification
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(resourceUpdated:)
+                                                 name: RemoteResourceManager.pecuniaResourcesUpdatedNotification
+                                               object: nil];
 
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"showPreliminaryStatements" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
+
+    [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
+    
     LogLeave;
 }
 

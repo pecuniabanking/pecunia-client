@@ -687,7 +687,6 @@
 		27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */; };
-		27E844DE19E173830026464E /* HBCIServer.jar in Copy external libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27E844E719E173FD0026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
 		27E844E819E1740A0026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
 		27E845BE19E17D2F0026464E /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E8458919E17D2F0026464E /* About.xib */; };
@@ -1087,17 +1086,6 @@
 				27A85F8D1B1A096A0017D863 /* dkb.js in Copy Pecunia Plugins */,
 			);
 			name = "Copy Pecunia Plugins";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27E844DD19E173510026464E /* Copy external libs */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				27E844DE19E173830026464E /* HBCIServer.jar in Copy external libs */,
-			);
-			name = "Copy external libs";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		27E8466019E1815D0026464E /* Copy external libs */ = {
@@ -3215,7 +3203,6 @@
 				27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
-				27E844DD19E173510026464E /* Copy external libs */,
 				27E844EB19E179490026464E /* Unzip Java */,
 			);
 			buildRules = (
@@ -3243,6 +3230,11 @@
 					};
 					8D1107260486CEB800E47090 = {
 						DevelopmentTeam = JY3Q678PYA;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -3772,7 +3764,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n";
+			shellScript = "#test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\n#if [ $? -ne 0 ]; then\n#echo \"Create plugins directory\"\n#mkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\n#fi\n\n#test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\n#if [ $? -ne 0 ]; then\n#echo \"Extracting java runtime\"\n#unzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\n#fi\n";
 			showEnvVarsInLog = 0;
 		};
 		27E8466419E1819E0026464E /* Unzip Java */ = {
@@ -4525,7 +4517,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4558,7 +4550,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4586,7 +4578,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4610,7 +4602,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
@@ -4634,7 +4626,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -4658,7 +4650,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
