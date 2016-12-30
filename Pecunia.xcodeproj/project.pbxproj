@@ -871,7 +871,6 @@
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
-		B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
@@ -1037,6 +1036,10 @@
 		B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
 		B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
+		B1F061361E166A14008DF458 /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F061351E166A14008DF458 /* ChipcardPinRequestController.swift */; };
+		B1F061371E166A14008DF458 /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F061351E166A14008DF458 /* ChipcardPinRequestController.swift */; };
+		B1F061391E166A75008DF458 /* ChipcardPinRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F061381E166A75008DF458 /* ChipcardPinRequestController.xib */; };
+		B1F0613A1E166A75008DF458 /* ChipcardPinRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F061381E166A75008DF458 /* ChipcardPinRequestController.xib */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
@@ -1094,7 +1097,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
 				27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */,
 			);
 			name = "Copy external libs";
@@ -1866,6 +1868,8 @@
 		B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaComboBoxCell.m; sourceTree = "<group>"; };
 		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
 		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
+		B1F061351E166A14008DF458 /* ChipcardPinRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardPinRequestController.swift; sourceTree = "<group>"; };
+		B1F061381E166A75008DF458 /* ChipcardPinRequestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardPinRequestController.xib; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountMaintenanceController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -2689,7 +2693,9 @@
 				B183572915CC5091003B93ED /* NotificationWindowController.h */,
 				B183572A15CC5091003B93ED /* NotificationWindowController.m */,
 				B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */,
+				B1F061381E166A75008DF458 /* ChipcardPinRequestController.xib */,
 				B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */,
+				B1F061351E166A14008DF458 /* ChipcardPinRequestController.swift */,
 			);
 			name = Dialogs;
 			sourceTree = "<group>";
@@ -3279,6 +3285,7 @@
 				274365BA19BB35C400722380 /* disclosure-open.pdf in Resources */,
 				274365B619BB35C400722380 /* disclosure-clicked.pdf in Resources */,
 				27778925173CE22700430EBC /* dsa_pub.pem in Resources */,
+				B1F0613A1E166A75008DF458 /* ChipcardPinRequestController.xib in Resources */,
 				27F975E51956F8E700FF9DA0 /* cross-mark@2x.png in Resources */,
 				27778926173CE22700430EBC /* ins-8.png in Resources */,
 				27F975E31956F8E700FF9DA0 /* cross-mark.png in Resources */,
@@ -3523,6 +3530,7 @@
 				B165B5210D340C7D00447DD8 /* minus-8.png in Resources */,
 				2732F6B0186B21E900809CF2 /* graph3@2x.png in Resources */,
 				2732F6A0186B06CE00809CF2 /* home@2x.png in Resources */,
+				B1F061391E166A75008DF458 /* ChipcardPinRequestController.xib in Resources */,
 				B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */,
 				274365B919BB35C400722380 /* disclosure-open.pdf in Resources */,
 				274365B519BB35C400722380 /* disclosure-clicked.pdf in Resources */,
@@ -4045,6 +4053,7 @@
 				27778911173CE22700430EBC /* CCSettlementList.m in Sources */,
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
+				B1F061371E166A14008DF458 /* ChipcardPinRequestController.swift in Sources */,
 				270ED6CB1AE3C50E001D3B8C /* Bool.swift in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
@@ -4322,6 +4331,7 @@
 				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
+				B1F061361E166A14008DF458 /* ChipcardPinRequestController.swift in Sources */,
 				270ED6CA1AE3C50E001D3B8C /* Bool.swift in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,

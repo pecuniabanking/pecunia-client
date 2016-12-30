@@ -1729,6 +1729,13 @@ static HBCIController *controller = nil;
 - (PecuniaError *)synchronizeUser: (BankUser *)user
 {
     PecuniaError *error = nil;
+
+    if (user.secMethod.intValue == SecMethod_DDV) {
+        if (![[ChipcardManager manager] requestCardForUser:user]) {
+            return nil;
+        }
+    }
+    
     if ([self registerBankUser: user error: &error] == NO) {
         return error;
     }
