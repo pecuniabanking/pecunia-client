@@ -36,33 +36,7 @@ typedef NS_ENUM(NSInteger, TransactionType) {
     TransactionType_TransferSEPAScheduled,
     TransactionType_TransferCollectiveCreditSEPA,
     TransactionType_AccountStatements,
-    TransactionType_TransferInternalSEPA
+    TransactionType_TransferInternalSEPA,
+    TransactionType_AccountBalance,
+    TransactionType_StandingOrderSEPAEdit
 };
-
-@class BankAccount;
-@class BankUser;
-@class PecuniaError;
-
-@interface SupportedTransactionInfo : NSManagedObject {
-}
-
-@property (nonatomic, strong) NSNumber *allowsChange;
-@property (nonatomic, strong) NSNumber *allowsCollective;
-@property (nonatomic, strong) NSNumber *allowsDated;
-@property (nonatomic, strong) NSNumber *allowsList;
-@property (nonatomic, strong) NSNumber *type;
-@property (nonatomic, strong) NSNumber *allowesDelete;
-
-@property (nonatomic, strong) BankAccount *account;
-@property (nonatomic, strong) BankUser    *user;
-
-+ (SupportedTransactionInfo *)infoForType: (TransactionType)type account: (BankAccount *)account;
-+ (NSArray *)supportedTransactionsForAccount: (BankAccount *)account;
-+ (PecuniaError *)updateSupportedTransactionInfoForUser: (BankUser *)user
-                                                account: (BankAccount *)account
-                                               withJobs: (NSArray *)supportedJobNames;
-
-- (NSString *)description;
-- (NSString *)descriptionWithIndent: (NSString *)indent;
-
-@end

@@ -20,7 +20,6 @@
 #import "AccountMaintenanceController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "BankingController.h"
 #import "PecuniaError.h"
 #import "BankUser.h"
@@ -124,7 +123,7 @@ extern NSString *const CategoryKey;
         }
         
         // check if collective transfers are available - if not, disable collection transfer method popup
-        BOOL collTransferSupported = [[HBCIController controller] isTransferSupported: TransferTypeCollectiveCreditSEPA forAccount: changedAccount];
+        BOOL collTransferSupported = [HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferCollectiveCreditSEPA account:changedAccount];
         if (collTransferSupported == NO) {
             NSMenuItem *item = [collTransferButton itemAtIndex: 0];
             [item setTitle: NSLocalizedString(@"AP428", nil)];
@@ -209,14 +208,6 @@ extern NSString *const CategoryKey;
         [alert runModal];
     }
 
-    if (changedAccount.userId) {
-        if (oldUserId && [changedAccount.userId isEqualToString:oldUserId]) {
-            [[HBCIController controller] changeAccount: changedAccount];
-        } else {
-            [[HBCIController controller] setAccounts:@[changedAccount]];
-        }
-    }
-
     [moc reset];
     [NSApp stopModalWithCode: 1];
 }
@@ -253,7 +244,7 @@ extern NSString *const CategoryKey;
 }
 
 - (IBAction)showSupportedBusinessTransactions: (id)sender {
-    NSArray *result = [[HBCIController controller] getSupportedBusinessTransactions: account];
+    NSArray *result = [HBCIBackend.backend supportedBusinessTransactions: changedAccount];
     if (result != nil) {
         if (supportedTransactionsSheet == nil) {
             transactionsController = [[BusinessTransactionsController alloc] initWithTransactions: result];

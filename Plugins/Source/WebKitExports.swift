@@ -463,10 +463,10 @@ extension DOMEntityReference : DOMEntityReferenceJSExport {
 @objc protocol DOMXPathExpressionJSExport : JSExport {
     func evaluate(contextNode: DOMNode!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
 }
-
+/*
 extension DOMXPathExpression : DOMXPathExpressionJSExport {
 }
-
+*/
 @objc protocol DOMXPathResultJSExport : JSExport {
     var resultType: UInt16 { get };
     var numberValue: Double { get };
@@ -479,10 +479,10 @@ extension DOMXPathExpression : DOMXPathExpressionJSExport {
     func iterateNext() -> DOMNode!;
     func snapshotItem(index: UInt32) -> DOMNode!;
 }
-
+/*
 extension DOMXPathResult : DOMXPathResultJSExport {
 }
-
+*/
 @objc protocol DOMDocumentJSExport : JSExport {
     var doctype: DOMDocumentType! { get };
     var implementation: DOMImplementation! { get };

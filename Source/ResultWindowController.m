@@ -50,7 +50,7 @@
     }
     */
     
-    if (![info hasPrefix:@"HBCI error"] ) {
+    if (![info hasPrefix:@"Message from Bank:"] ) {
         return;
     }
     

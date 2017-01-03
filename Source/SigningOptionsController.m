@@ -21,16 +21,18 @@
 #import "SigningOptionsViewCell.h"
 #import "SigningOption.h"
 #import "BankAccount.h"
-#import "User.h"
+#import "BankUser.h"
 
 @implementation SigningOptionsController
 
-- (id)initWithSigningOptions: (NSArray *)opts forAccount: (BankAccount *)acc
+- (id)initWithSigningOptions: (NSArray *)opts forAccount: (BankAccount *)acc //todo: remove account
 {
     self = [super initWithWindowNibName: @"SigningOptions"];
 
     options = opts;
     accountNumber = acc.accountNumber;
+    SigningOption *option = opts.firstObject;
+    userName = option.user.name;
     return self;
 }
 

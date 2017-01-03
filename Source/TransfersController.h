@@ -30,7 +30,6 @@
 @class DeleteTransferTargetView;
 @class BankAccount;
 @class BankStatement;
-@class TransactionLimits;
 @class TimeSliceManager;
 @class ShadowedTextField;
 
@@ -109,7 +108,6 @@
     IBOutlet NSTabView *transferTab;
 
 @private
-    TransactionLimits *limits;
     NSArray           *draggedTransfers;
     NSUInteger        rowPositions[4];
 

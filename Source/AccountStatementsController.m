@@ -19,7 +19,6 @@
 
 #import "AccountStatementsController.h"
 
-#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "AccountStatement.h"
 #import "BankAccount.h"
@@ -212,11 +211,11 @@
         while (true) {
             // The returned statement is always valid, but contains no values if there's no data returned from the bank.
             [self setProgress: NSLocalizedString(@"AP831", nil) number: 1 year: year];
-            AccountStatement *statement = [HBCIController.controller getAccountStatement: 1 year: year account: account];
+            AccountStatement *statement = [HBCIBackend.backend getAccountStatement: 1 year: year bankAccount: account];
 
             // If there's no first document for a year then we have found something to start from. Except it fails for
             // the current year. In that case it could be that there's no document yet. Try the previous year too then.
-            if (statement.document == nil && year < currentYear) {
+            if ((statement == nil || statement.document == nil) && year < currentYear) {
                 break;
             }
 
@@ -233,8 +232,8 @@
         // As an arbitrary maximum count per year we use 104 (twice a week). That should be fairly enough.
         while (true) {
             [self setProgress: NSLocalizedString(@"AP831", nil) number: number year: year];
-            AccountStatement *statement = [HBCIController.controller getAccountStatement: number year: year account: account];
-            if (statement.document != nil) {
+            AccountStatement *statement = [HBCIBackend.backend getAccountStatement: number year: year bankAccount: account];
+            if (statement == nil || statement.document != nil) {
                 break;
             }
             if (++number > 104) {
@@ -258,8 +257,8 @@
         // Read the next statement. It will be placed into our memory store.
         // Below we create a persistent instance from it in our main store.
         [self setProgress: NSLocalizedString(@"AP834", nil) number: number year: year];
-        AccountStatement *statement = [HBCIController.controller getAccountStatement: number year: year account: account];
-        if (statement.document == nil) {
+        AccountStatement *statement = [HBCIBackend.backend getAccountStatement: number year: year bankAccount: account];
+        if (statement == nil || statement.document == nil) {
             // We either went beyond the available documents for the year or there's no more at all.
             // Try with the next year to decide.
             if (year < currentYear) {
@@ -274,16 +273,18 @@
             ++count;
         }
 
-        // Now insert a new instance in our main store.
-        NSEntityDescription *entity = statement.entity;
-
-        NSArray      *attributeKeys = entity.attributesByName.allKeys;
-        NSDictionary *attributeValues = [statement dictionaryWithValuesForKeys: attributeKeys];
-
-        AccountStatement *newStatement = [NSEntityDescription insertNewObjectForEntityForName: @"AccountStatement" inManagedObjectContext: context];
-
-        newStatement.valuesForKeysWithDictionary = attributeValues;
-        newStatement.account = account;
+        if (statement) {
+            // Now insert a new instance in our main store.
+            NSEntityDescription *entity = statement.entity;
+            
+            NSArray      *attributeKeys = entity.attributesByName.allKeys;
+            NSDictionary *attributeValues = [statement dictionaryWithValuesForKeys: attributeKeys];
+            
+            AccountStatement *newStatement = [NSEntityDescription insertNewObjectForEntityForName: @"AccountStatement" inManagedObjectContext: context];
+            
+            newStatement.valuesForKeysWithDictionary = attributeValues;
+            newStatement.account = account;
+        }
     }
     switch (count) {
         case 0:
@@ -361,7 +362,23 @@
 }
 
 - (IBAction)updateStatements: (id)sender {
-    [self performSelector: @selector(retrieveStatements) withObject: nil afterDelay: 0.1 inModes: @[NSModalPanelRunLoopMode]];
+    
+    // which format?
+    AccountStatementParameters *params = [HBCIBackend.backend getAccountStatementParametersForUser:account.defaultBankUser];
+    if (params == nil) {
+        return;
+    }
+    if ([params supportsFormat:AccountStatement_PDF] || [params supportsFormat:AccountStatement_MT940]) {
+        [self performSelector: @selector(retrieveStatements) withObject: nil afterDelay: 0.1 inModes: @[NSModalPanelRunLoopMode]];
+    } else {
+        NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedString(@"AP83", nil)
+                                         defaultButton: NSLocalizedString(@"AP1", nil)
+                                       alternateButton:nil
+                                           otherButton:nil
+                             informativeTextWithFormat:NSLocalizedString(@"AP840", nil) ];
+        [alert runModal];
+    }
+    
 }
 
 - (IBAction)zoomIn: (id)sender {

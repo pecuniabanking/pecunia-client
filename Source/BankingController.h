@@ -93,7 +93,6 @@
 
 - (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
-- (IBAction)updateSupportedTransactions: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
 
@@ -120,7 +119,6 @@
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;
-- (void)setHBCIAccounts;
 
 + (BankingController *)controller;
 

@@ -35,5 +35,6 @@
 
 - (void)startExport: (BankingCategory *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to;
 + (ExportController *)controller;
++ (NSArray *)getExportFields;
 
 @end

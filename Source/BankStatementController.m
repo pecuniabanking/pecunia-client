@@ -21,7 +21,6 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "HBCIController.h"
 #import "ShortDate.h"
 
 @implementation BankStatementController
@@ -261,7 +260,7 @@
     NSControl *te = [aNotification object];
 
     if ([te tag] == 100) {
-        NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
+        NSString *name = [[HBCIBackend backend] bankNameForCode: [te stringValue]];
         if (name) {
             [self setValue: name forKey: @"bankName"];
         }

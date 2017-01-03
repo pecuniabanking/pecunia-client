@@ -22,7 +22,7 @@
 
 @class BankAccount, BankUser;
 
-@interface TransactionLimits : NSManagedObject
+@interface TransactionLimits : NSObject
 
 @property (nonatomic)           BOOL     allowChangeLastExecDate;
 @property (nonatomic)           BOOL     allowChangeCycle;
@@ -48,11 +48,6 @@
 @property (nonatomic, strong)   NSString *execDaysWeekString;
 @property (nonatomic, strong)   NSString *weekCyclesString;
 
-@property (nonatomic)           double localLimit;
-@property (nonatomic)           double      foreignLimit;
-@property (nonatomic, strong)   BankAccount *account;
-@property (nonatomic, strong)   BankUser    *user;
-
 @property (nonatomic, readonly, strong)   NSArray *weekCycles;
 @property (nonatomic, readonly, strong)   NSArray *monthCycles;
 @property (nonatomic, readonly, strong)   NSArray *execDaysWeek;
@@ -61,9 +56,6 @@
 
 - (int)maxLengthRemoteName;
 - (int)maxLengthPurpose;
-
-- (void)setLimitsWithData: (NSDictionary *)limits;
-
 
 
 @end

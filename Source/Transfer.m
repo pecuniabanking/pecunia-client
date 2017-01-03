@@ -175,10 +175,29 @@
         self.purpose4 = s;
     }
 
-    self.remoteAccount = other.remoteAccount;
-    self.remoteBankCode = other.remoteBankCode;
-    self.remoteIBAN = other.remoteIBAN;
-    self.remoteBIC = other.remoteBIC;
+    //self.remoteAccount = other.remoteAccount;
+    //self.remoteBankCode = other.remoteBankCode;
+    if (other.remoteIBAN == nil) {
+        // try to convert
+        NSDictionary *ibanResult = [IBANtools convertToIBAN: other.remoteAccount
+                                                   bankCode: other.remoteBankCode
+                                                countryCode: @"de"
+                                            validateAccount: YES];
+        if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
+            [ibanResult[@"result"] intValue] == IBANToolsResultOK) {
+            self.remoteIBAN = ibanResult[@"iban"];
+            
+            if (self.remoteIBAN != nil) {
+                InstituteInfo *info = [HBCIBackend.backend infoForIBAN: self.remoteIBAN];
+                if (info != nil) {
+                    self.remoteBIC = info.bic;
+                }
+            }
+        }
+    } else {
+        self.remoteIBAN = other.remoteIBAN;
+        self.remoteBIC = other.remoteBIC;
+    }
     self.value = other.value;
 }
 

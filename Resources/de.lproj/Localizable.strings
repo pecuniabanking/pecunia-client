@@ -291,6 +291,7 @@ AP365 = "Dieser Kartentyp wird nicht unterstützt (es werden nur DDV-Karten unte
 AP366 = "Der Chipkartenleser ist nicht mehr verfügbar. Bitte prüfen Sie ob der Leser korrekt angeschlossen ist";
 AP367 = "Kein Kartenleser gefunden";
 AP368 = "Chipkarten-Fehler";
+AP369 = "Fehler bei der PIN-Überprüfung";
 
 // Transfers (sent statements)
 // AP400..AP449
@@ -493,6 +494,7 @@ AP836 = "Fehlerbereinigung";
 AP837 = "Erlaubte Geschäftsvorfälle wurden erfolgreich aktualisiert";
 AP838 = "Eine Bankkennung mit der Benutzerkennung %@ existiert bereits. Bitte löschen Sie zuerst die alte Bankkennung";
 AP839 = "Bankkennung existiert bereits";
+AP840 = "Laden der Kontoauszüge nicht möglich, die Bank unterstützt weder PDF noch MT940";
 
 
 // Tags
@@ -803,5 +805,22 @@ AP1800 = "Bei der Bearbeitung des Kontos %@ (%@) trat ein Fehler auf.";
 
 // Use a new block of IDs for the next set of strings!
 // AP1850..AP1899
+
+// HBCI4Swift
+AP2000 = "Fehler beim Parsen der von der Bank gesendeten Daten. Nähere Informationen finden Sie im Fehlerlog";
+AP2001 = "Die angegebene URL (%@) ist nicht gültig";
+AP2002 = "Es konnte keine Verbindung mit der Bank aufgenommen werden (Adresse: %@). Nähere Informationen finden Sie im Fehlerlog. Möglicherweise handelt es sich nur um ein temporäres Problem (z.B. wenn die Bank Wartungsarbeiten durchführt)";
+AP2003 = "Beim Versuch eine Verbindung zur Bank (%@) aufzubauen ist ein Timeout aufgetreten. Nähere Informationen finden Sie im Fehlerlog. Möglicherweise handelt es sich nur um ein temporäres Problem (z.B. wenn die Bank Wartungsarbeiten durchführt)";
+AP2004 = "Eine für HBCI erforderliche Information fehlt (%@). Dies ist ein interer Fehler, bitte kontaktieren Sie den Pecunia-Support";
+AP2005 = "Die angegebene HBCI-Version (%@) ist ungültig bzw. wird nicht unterstützt";
+AP2006 = "Interner Fehler bei der Verarbeitung der HBCI-Syntax-Informationen. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
+AP2007 = "Ein interner Fehler ist aufgetreten. Nähere Informationen finden Sie im Fehlerlog. Bitte kontaktieren Sie den Pecunia-Support";
+AP2008 = "Es konnten nicht alle Überweisungen verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
+AP2009 = "Es konnten nicht alle Daueraufträge verarbeitet werden. Nähere Informationen finden Sie im Fehlerlog";
+AP2010 = "Die Aktion konnte nicht abgeschlossen werden. Nähere Informationen finden Sie im Fehlerlog";
+AP2011 = "Fehler beim Starten des HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
+AP2012 = "Die Bank verweigert den HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
+
+
 
 

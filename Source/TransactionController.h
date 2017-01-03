@@ -51,8 +51,6 @@
 - (void)cancelCurrentTransfer;
 - (BOOL)finishCurrentTransferValidatingValue: (BOOL)valueValidation;
 
-- (IBAction)countryDidChange: (id)sender;
-
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context;
 
 @end

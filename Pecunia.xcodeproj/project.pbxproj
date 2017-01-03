@@ -269,7 +269,7 @@
 		27778883173CE22700430EBC /* ExportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18EA3690E4B8C0100A53FD4 /* ExportController.m */; };
 		27778884173CE22700430EBC /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */; };
-		27778887173CE22700430EBC /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
+		27778886173CE22700430EBC /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */; };
 		27778888173CE22700430EBC /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		2777888C173CE22700430EBC /* NSTreeController+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F8D00F93DC0D00263F3B /* NSTreeController+PecuniaAdditions.m */; };
@@ -282,10 +282,8 @@
 		27778895173CE22700430EBC /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
 		27778896173CE22700430EBC /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
 		27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
-		27778899173CE22700430EBC /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
 		2777889B173CE22700430EBC /* NewPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A4D4E10C869F0002CC63E /* NewPasswordController.m */; };
 		2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
-		2777889D173CE22700430EBC /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
 		2777889E173CE22700430EBC /* StatSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A59495113165BC00FD8CB8 /* StatSplitController.m */; };
 		2777889F173CE22700430EBC /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
 		277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
@@ -310,20 +308,9 @@
 		277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
 		277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
-		277788BC173CE22700430EBC /* HBCIBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */; };
-		277788BD173CE22700430EBC /* CallbackData.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6113DB5FC200843BE6 /* CallbackData.m */; };
-		277788BE173CE22700430EBC /* CallbackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6313DB5FC200843BE6 /* CallbackParser.m */; };
-		277788BF173CE22700430EBC /* HBCIError.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6713DB600400843BE6 /* HBCIError.m */; };
-		277788C0173CE22700430EBC /* LogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6913DB600400843BE6 /* LogParser.m */; };
-		277788C1173CE22700430EBC /* ResultParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6B13DB600400843BE6 /* ResultParser.m */; };
-		277788C2173CE22700430EBC /* TanMethodListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C7213DB608D00843BE6 /* TanMethodListController.m */; };
-		277788C3173CE22700430EBC /* Passport.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4CD913DB712A00843BE6 /* Passport.m */; };
-		277788C4173CE22700430EBC /* HBCIController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2313DC5F6E00843BE6 /* HBCIController.m */; };
-		277788C5173CE22700430EBC /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2A13DCA0E000843BE6 /* User.m */; };
 		277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		277788C7173CE22700430EBC /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
 		277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
-		277788C9173CE22700430EBC /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
 		277788CA173CE22700430EBC /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		277788CB173CE22700430EBC /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
 		277788CD173CE22700430EBC /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
@@ -347,11 +334,8 @@
 		277788DF173CE22700430EBC /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
 		277788E0173CE22700430EBC /* TanMediaList.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728EF1504B14500256898 /* TanMediaList.m */; };
 		277788E1173CE22700430EBC /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
-		277788E2173CE22700430EBC /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
 		277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
-		277788E4173CE22700430EBC /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */; };
-		277788E6173CE22700430EBC /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
 		277788E7173CE22700430EBC /* BWGradientBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4AFD150B6F84006C2370 /* BWGradientBox.m */; };
 		277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */; };
 		277788E9173CE22700430EBC /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
@@ -383,7 +367,6 @@
 		27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27778904173CE22700430EBC /* OrdersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5115F3C9340043BB68 /* OrdersListView.m */; };
 		27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
-		27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		27778908173CE22700430EBC /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27778909173CE22700430EBC /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */; };
@@ -452,7 +435,6 @@
 		2777898D173CE22700430EBC /* container-migration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */; };
 		27778991173CE22700430EBC /* hide.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763C16626C5300761132 /* hide.png */; };
 		27778992173CE22700430EBC /* hide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763D16626C5300761132 /* hide@2x.png */; };
-		27778995173CE22700430EBC /* java.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B170C16D167689310047FD42 /* java.entitlements */; };
 		27778997173CE22700430EBC /* Collections in Resources */ = {isa = PBXBuildFile; fileRef = 27649721167D2A73006770A9 /* Collections */; };
 		27778999173CE22700430EBC /* edit-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23532168A16290050276E /* edit-large.png */; };
 		2777899A173CE22700430EBC /* edit-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23533168A16290050276E /* edit-large@2x.png */; };
@@ -699,7 +681,6 @@
 		27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */; };
-		27E844DE19E173830026464E /* HBCIServer.jar in Copy external libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27E844E719E173FD0026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
 		27E844E819E1740A0026464E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27334AE614C20BF600268FD9 /* Quartz.framework */; };
 		27E845BE19E17D2F0026464E /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E8458919E17D2F0026464E /* About.xib */; };
@@ -745,7 +726,6 @@
 		27E8461219E17D300026464E /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B319E17D2F0026464E /* StatementsOverview.xib */; };
 		27E8461619E17D300026464E /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B519E17D2F0026464E /* TagRuleEditor.xib */; };
 		27E8461819E17D300026464E /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B619E17D2F0026464E /* TanMediaWindow.xib */; };
-		27E8461A19E17D300026464E /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B719E17D2F0026464E /* TanMethods.xib */; };
 		27E8461C19E17D300026464E /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B819E17D2F0026464E /* TanWindow.xib */; };
 		27E8461E19E17D300026464E /* Transfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B919E17D2F0026464E /* Transfers.xib */; };
 		27E8462019E17D300026464E /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BA19E17D2F0026464E /* TransfersListViewCell.xib */; };
@@ -794,13 +774,11 @@
 		27E8465519E181280026464E /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B319E17D2F0026464E /* StatementsOverview.xib */; };
 		27E8465719E181280026464E /* TagRuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B519E17D2F0026464E /* TagRuleEditor.xib */; };
 		27E8465819E181280026464E /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B619E17D2F0026464E /* TanMediaWindow.xib */; };
-		27E8465919E181280026464E /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B719E17D2F0026464E /* TanMethods.xib */; };
 		27E8465A19E181280026464E /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B819E17D2F0026464E /* TanWindow.xib */; };
 		27E8465B19E181280026464E /* Transfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845B919E17D2F0026464E /* Transfers.xib */; };
 		27E8465C19E181280026464E /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BA19E17D2F0026464E /* TransfersListViewCell.xib */; };
 		27E8465D19E181280026464E /* TransferTemplateListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BB19E17D2F0026464E /* TransferTemplateListViewCell.xib */; };
 		27E8465F19E181280026464E /* WaitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E845BD19E17D2F0026464E /* WaitView.xib */; };
-		27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27E98CC51B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */; };
 		27E98CC61B529B4800D3FFB0 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */; };
 		27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EA7D551816ED25000D9B30 /* LocalSettingsController.m */; };
@@ -863,7 +841,6 @@
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
 		B126CC22157018FC0065EAC1 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = B126CC21157018FC0065EAC1 /* printer.png */; };
-		B12A497710BDD23D002CC63E /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
 		B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A4D4E10C869F0002CC63E /* NewPasswordController.m */; };
 		B132F84B0F8FE9DB00263F3B /* ins-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B132F84A0F8FE9DB00263F3B /* ins-8.png */; };
@@ -876,41 +853,36 @@
 		B138AC4B1391946E0026BEE2 /* money_sync_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC481391946E0026BEE2 /* money_sync_18.png */; };
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
-		B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */ = {isa = PBXBuildFile; fileRef = 27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
+		B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
+		B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
+		B13CE5771C1250B000B5B750 /* HBCI4Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; };
+		B13CE5781C1250B000B5B750 /* HBCI4Swift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
 		B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
 		B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B14C6224115C04FA009324A6 /* 030.xcmappingmodel */; };
 		B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C630D11629C7D009324A6 /* CategoryPolicy030.m */; };
-		B14D4C5F13DB5F3200843BE6 /* HBCIBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */; };
-		B14D4C6413DB5FC200843BE6 /* CallbackData.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6113DB5FC200843BE6 /* CallbackData.m */; };
-		B14D4C6513DB5FC200843BE6 /* CallbackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6313DB5FC200843BE6 /* CallbackParser.m */; };
-		B14D4C6C13DB600400843BE6 /* HBCIError.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6713DB600400843BE6 /* HBCIError.m */; };
-		B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6913DB600400843BE6 /* LogParser.m */; };
-		B14D4C6E13DB600400843BE6 /* ResultParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6B13DB600400843BE6 /* ResultParser.m */; };
-		B14D4C7313DB608D00843BE6 /* TanMethodListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C7213DB608D00843BE6 /* TanMethodListController.m */; };
-		B14D4CDA13DB712A00843BE6 /* Passport.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4CD913DB712A00843BE6 /* Passport.m */; };
-		B14D4D2413DC5F6E00843BE6 /* HBCIController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2313DC5F6E00843BE6 /* HBCIController.m */; };
-		B14D4D2B13DCA0E000843BE6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2A13DCA0E000843BE6 /* User.m */; };
-		B14D6DEF0DEC9C9100C2B220 /* CategoryOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D6DEE0DEC9C9100C2B220 /* CategoryOutlineView.m */; };
+		B14D6DEF0DEC9C9100C2B220 /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */; };
 		B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
+		B163F0D21CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */; };
+		B163F0D31CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */; };
+		B163F0DC1CC955D3001E1009 /* CCStatementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */; };
+		B163F0DD1CC955D3001E1009 /* CCStatementOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */; };
 		B165B51F0D340C5800447DD8 /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
 		B165B5210D340C7D00447DD8 /* minus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B5200D340C7D00447DD8 /* minus-8.png */; };
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
-		B170C16E167689310047FD42 /* java.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B170C16D167689310047FD42 /* java.entitlements */; };
 		B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransfersController.m */; };
 		B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728AF1502D0D300256898 /* BankSetupInfo.m */; };
 		B17728D71504ABC700256898 /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
 		B17728F01504B14500256898 /* TanMediaList.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728EF1504B14500256898 /* TanMediaList.m */; };
 		B17728FD1504C33F00256898 /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
-		B17729141504C9B200256898 /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
-		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
 		B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */; };
@@ -929,14 +901,11 @@
 		B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
 		B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
 		B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
-		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
 		B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18EA3690E4B8C0100A53FD4 /* ExportController.m */; };
 		B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
 		B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */; };
-		B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */; };
-		B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */; };
 		B19669F91B39EFB400D690B0 /* HBCISmartcardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */; };
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
@@ -948,66 +917,11 @@
 		B19EBD771B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */; };
 		B19EBD781B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */; };
 		B19EBD791B3B4172001DEC8E /* HBCISmartcardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */; };
-		B19EBD7A1B3B4176001DEC8E /* HBCISmartcardDDV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */; };
-		B19EBD7B1B3B4A15001DEC8E /* HBCISmartcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A1377311B6FD9400622D6C /* AccountDefController.m */; };
-		B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
 		B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A59495113165BC00FD8CB8 /* StatSplitController.m */; };
 		B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
 		B1A6AA211A251D8B00141C39 /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */; };
-		B1A6AA491A2672C400141C39 /* atr.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA241A2672C400141C39 /* atr.m */; };
-		B1A6AA4A1A2672C400141C39 /* atr.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA241A2672C400141C39 /* atr.m */; };
-		B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA261A2672C400141C39 /* bcs.m */; };
-		B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA261A2672C400141C39 /* bcs.m */; };
-		B1A6AA4D1A2672C400141C39 /* ChipcardHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA281A2672C400141C39 /* ChipcardHandler.m */; };
-		B1A6AA4E1A2672C400141C39 /* ChipcardHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA281A2672C400141C39 /* ChipcardHandler.m */; };
-		B1A6AA511A2672C400141C39 /* ctapi-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */; };
-		B1A6AA521A2672C400141C39 /* ctapi-tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */; };
-		B1A6AA531A2672C400141C39 /* ddv_decrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */; };
-		B1A6AA541A2672C400141C39 /* ddv_decrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */; };
-		B1A6AA551A2672C400141C39 /* ddv_encrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */; };
-		B1A6AA561A2672C400141C39 /* ddv_encrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */; };
-		B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2F1A2672C400141C39 /* ddv_pins.m */; };
-		B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA2F1A2672C400141C39 /* ddv_pins.m */; };
-		B1A6AA591A2672C400141C39 /* ddv_readbankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */; };
-		B1A6AA5A1A2672C400141C39 /* ddv_readbankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */; };
-		B1A6AA5B1A2672C400141C39 /* ddv_readkeydata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */; };
-		B1A6AA5C1A2672C400141C39 /* ddv_readkeydata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */; };
-		B1A6AA5D1A2672C400141C39 /* ddv_readsigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA321A2672C400141C39 /* ddv_readsigid.m */; };
-		B1A6AA5E1A2672C400141C39 /* ddv_readsigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA321A2672C400141C39 /* ddv_readsigid.m */; };
-		B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA331A2672C400141C39 /* ddv_signdata.m */; };
-		B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA331A2672C400141C39 /* ddv_signdata.m */; };
-		B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */; };
-		B1A6AA621A2672C400141C39 /* ddv_writebankdata.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */; };
-		B1A6AA631A2672C400141C39 /* ddv_writesigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA351A2672C400141C39 /* ddv_writesigid.m */; };
-		B1A6AA641A2672C400141C39 /* ddv_writesigid.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA351A2672C400141C39 /* ddv_writesigid.m */; };
-		B1A6AA651A2672C400141C39 /* get_challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA371A2672C400141C39 /* get_challenge.m */; };
-		B1A6AA661A2672C400141C39 /* get_challenge.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA371A2672C400141C39 /* get_challenge.m */; };
-		B1A6AA671A2672C400141C39 /* get_keyinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA381A2672C400141C39 /* get_keyinfo.m */; };
-		B1A6AA681A2672C400141C39 /* get_keyinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA381A2672C400141C39 /* get_keyinfo.m */; };
-		B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA391A2672C400141C39 /* hbci_cardtype.m */; };
-		B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA391A2672C400141C39 /* hbci_cardtype.m */; };
-		B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */; };
-		B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */; };
-		B1A6AA6D1A2672C400141C39 /* modify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3C1A2672C400141C39 /* modify_pin.m */; };
-		B1A6AA6E1A2672C400141C39 /* modify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3C1A2672C400141C39 /* modify_pin.m */; };
-		B1A6AA6F1A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */; };
-		B1A6AA701A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */; };
-		B1A6AA711A2672C400141C39 /* put_data.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3E1A2672C400141C39 /* put_data.m */; };
-		B1A6AA721A2672C400141C39 /* put_data.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3E1A2672C400141C39 /* put_data.m */; };
-		B1A6AA731A2672C400141C39 /* read_binary.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3F1A2672C400141C39 /* read_binary.m */; };
-		B1A6AA741A2672C400141C39 /* read_binary.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA3F1A2672C400141C39 /* read_binary.m */; };
-		B1A6AA751A2672C400141C39 /* read_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA401A2672C400141C39 /* read_record.m */; };
-		B1A6AA761A2672C400141C39 /* read_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA401A2672C400141C39 /* read_record.m */; };
-		B1A6AA771A2672C400141C39 /* select_file.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA431A2672C400141C39 /* select_file.m */; };
-		B1A6AA781A2672C400141C39 /* select_file.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA431A2672C400141C39 /* select_file.m */; };
-		B1A6AA791A2672C400141C39 /* tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA461A2672C400141C39 /* tools.m */; };
-		B1A6AA7A1A2672C400141C39 /* tools.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA461A2672C400141C39 /* tools.m */; };
-		B1A6AA7B1A2672C400141C39 /* verify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA471A2672C400141C39 /* verify_pin.m */; };
-		B1A6AA7C1A2672C400141C39 /* verify_pin.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA471A2672C400141C39 /* verify_pin.m */; };
-		B1A6AA7D1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
-		B1A6AA7E1A2672C400141C39 /* write_record.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6AA481A2672C400141C39 /* write_record.m */; };
 		B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1A6AA7F1A26750500141C39 /* PCSC.framework */; };
 		B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
@@ -1017,11 +931,12 @@
 		B1AFC67117F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
 		B1AFC67217F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
 		B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
-		B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
+		B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
+		B1D1A0DB1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
 		B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
 		B1E80EC91B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
 		B1E80ECA1B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
@@ -1031,7 +946,6 @@
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
 		B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
 		B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
-		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F527050C3C1D5800BE3DFC /* BankingCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* BankingCategory.m */; };
@@ -1043,8 +957,52 @@
 		B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */; };
 		B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */; };
 		C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */; };
-		C13152B1150A0B260037958E /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B11E61441C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B19B35921AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+		B11E61461C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B19B359D1AF1792B00F20B9A;
+			remoteInfo = HBCI4SwiftTests;
+		};
+		B11E61481C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B1AFEC491B5B9E7D002F1DDF;
+			remoteInfo = CommonCrypto;
+		};
+		B11E614A1C0125770031F368 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B1AF0FF81BC45A6D00365496;
+			remoteInfo = PCSCard;
+		};
+		B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B19B35911AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+		B174E8971CA08F12004FD3F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B19B35911AF1792A00F20B9A;
+			remoteInfo = HBCI4Swift;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		277789C2173CE22700430EBC /* Copy Frameworks */ = {
@@ -1055,6 +1013,7 @@
 			files = (
 				277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */,
 				2797E22419F2864200CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */,
+				B13CE5781C1250B000B5B750 /* HBCI4Swift.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1080,29 +1039,6 @@
 				27A85F8D1B1A096A0017D863 /* dkb.js in Copy Pecunia Plugins */,
 			);
 			name = "Copy Pecunia Plugins";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27E844DD19E173510026464E /* Copy external libs */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				27E844DE19E173830026464E /* HBCIServer.jar in Copy external libs */,
-			);
-			name = "Copy external libs";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27E8466019E1815D0026464E /* Copy external libs */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				B13CE57D1C25690C00B5B750 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy external libs */,
-				27E8466119E1816C0026464E /* HBCIServer.jar in Copy external libs */,
-			);
-			name = "Copy external libs";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */ = {
@@ -1550,13 +1486,11 @@
 		27E845B319E17D2F0026464E /* StatementsOverview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatementsOverview.xib; sourceTree = "<group>"; };
 		27E845B519E17D2F0026464E /* TagRuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagRuleEditor.xib; sourceTree = "<group>"; };
 		27E845B619E17D2F0026464E /* TanMediaWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanMediaWindow.xib; sourceTree = "<group>"; };
-		27E845B719E17D2F0026464E /* TanMethods.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanMethods.xib; sourceTree = "<group>"; };
 		27E845B819E17D2F0026464E /* TanWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanWindow.xib; sourceTree = "<group>"; };
 		27E845B919E17D2F0026464E /* Transfers.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Transfers.xib; sourceTree = "<group>"; };
 		27E845BA19E17D2F0026464E /* TransfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransfersListViewCell.xib; sourceTree = "<group>"; };
 		27E845BB19E17D2F0026464E /* TransferTemplateListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransferTemplateListViewCell.xib; sourceTree = "<group>"; };
 		27E845BD19E17D2F0026464E /* WaitView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WaitView.xib; sourceTree = "<group>"; };
-		27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
 		27E98CC41B529B4800D3FFB0 /* NSDecimalNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumber.swift; sourceTree = "<group>"; };
 		27EA7D541816ED25000D9B30 /* LocalSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalSettingsController.h; sourceTree = "<group>"; };
 		27EA7D551816ED25000D9B30 /* LocalSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalSettingsController.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -1626,14 +1560,13 @@
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HBCI4Swift.xcodeproj; path = Submodules/HBCI4Swift/HBCI4Swift/HBCI4Swift.xcodeproj; sourceTree = "<group>"; };
 		B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "container-migration.plist"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F1100C371384001065C2 /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B126CC21157018FC0065EAC1 /* printer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = printer.png; sourceTree = "<group>"; };
-		B12A496910BDD23D002CC63E /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; tabWidth = 4; };
-		B12A496A10BDD23D002CC63E /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; tabWidth = 4; };
 		B12A4D4D10C869F0002CC63E /* NewPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = NewPasswordController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B12A4D4E10C869F0002CC63E /* NewPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = NewPasswordController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B132F84A0F8FE9DB00263F3B /* ins-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ins-8.png"; sourceTree = "<group>"; };
@@ -1653,6 +1586,8 @@
 		B138B259139D52690026BEE2 /* DateAndValutaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DateAndValutaCell.m; sourceTree = "<group>"; tabWidth = 4; };
 		B138B314139D6B390026BEE2 /* AmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AmountCell.h; sourceTree = "<group>"; tabWidth = 4; };
 		B138B315139D6B390026BEE2 /* AmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AmountCell.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCIBackend.swift; sourceTree = "<group>"; };
+		B13CE57B1C12FD3D00B5B750 /* HBCICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCICommon.h; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1664,34 +1599,13 @@
 		B14C6224115C04FA009324A6 /* 030.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030.xcmappingmodel; sourceTree = "<group>"; };
 		B14C630C11629C7D009324A6 /* CategoryPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C630D11629C7D009324A6 /* CategoryPolicy030.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPolicy030.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C5D13DB5F3200843BE6 /* HBCIBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBridge.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIBridge.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B14D4C6013DB5FC200843BE6 /* CallbackData.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CallbackData.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6113DB5FC200843BE6 /* CallbackData.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackData.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6213DB5FC200843BE6 /* CallbackParser.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CallbackParser.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6313DB5FC200843BE6 /* CallbackParser.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackParser.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6613DB600400843BE6 /* HBCIError.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIError.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6713DB600400843BE6 /* HBCIError.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIError.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6813DB600400843BE6 /* LogParser.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = LogParser.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6913DB600400843BE6 /* LogParser.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = LogParser.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6A13DB600400843BE6 /* ResultParser.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ResultParser.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C6B13DB600400843BE6 /* ResultParser.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ResultParser.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C7113DB608D00843BE6 /* TanMethodListController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMethodListController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4C7213DB608D00843BE6 /* TanMethodListController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethodListController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4CD813DB712A00843BE6 /* Passport.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Passport.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4CD913DB712A00843BE6 /* Passport.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Passport.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4D2213DC5F6E00843BE6 /* HBCIController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4D2313DC5F6E00843BE6 /* HBCIController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B14D4D2913DCA0E000843BE6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D4D2A13DCA0E000843BE6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14D6DED0DEC9C9100C2B220 /* CategoryOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryOutlineView.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14D6DEE0DEC9C9100C2B220 /* CategoryOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryOutlineView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B152B5121025FE2400EE06D6 /* MCEMBorderedView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMBorderedView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMBorderedView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B155D92C0BFD04B300904051 /* TransactionController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B159010A129310E40053CB9C /* PecuniaSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSectionItem.h; sourceTree = "<group>"; tabWidth = 4; };
-		B15FCCEE141422A3000738B6 /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
+		B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementOrder.swift; sourceTree = "<group>"; };
+		B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCStatementOrder.swift; sourceTree = "<group>"; };
 		B165B51E0D340C5800447DD8 /* plus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-8.png"; sourceTree = "<group>"; };
 		B165B5200D340C7D00447DD8 /* minus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus-8.png"; sourceTree = "<group>"; };
 		B17072D30D4BD35D00FBF186 /* TransactionLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionLimits.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1700,7 +1614,6 @@
 		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B170C16D167689310047FD42 /* java.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = java.entitlements; sourceTree = "<group>"; };
 		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
@@ -1711,17 +1624,14 @@
 		B17728EF1504B14500256898 /* TanMediaList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaList.m; sourceTree = "<group>"; };
 		B17728FB1504C33F00256898 /* BankUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankUser.h; sourceTree = "<group>"; };
 		B17728FC1504C33F00256898 /* BankUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankUser.m; sourceTree = "<group>"; wrapsLines = 0; };
-		B17729121504C9B200256898 /* TanMethodOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMethodOld.h; sourceTree = "<group>"; };
-		B17729131504C9B200256898 /* TanMethodOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethodOld.m; sourceTree = "<group>"; };
 		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
+		B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 17.xcdatamodel"; sourceTree = "<group>"; };
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
 		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
 		B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportedTransactionInfo.h; sourceTree = "<group>"; };
-		B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportedTransactionInfo.m; sourceTree = "<group>"; wrapsLines = 0; };
-		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1754,8 +1664,6 @@
 		B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		B1872EFC163DD7B7003A8C14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
-		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
 		B18978860ED0B2E800D20503 /* StatementDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementDetails.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B18B20540CC6A51B00B0B02C /* NewBankUserController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = NewBankUserController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1766,8 +1674,6 @@
 		B1927D240C52B5CD00B4D390 /* Transfer.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Transfer.m; sourceTree = "<group>"; tabWidth = 4; };
 		B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryRepWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryRepWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcard.swift; sourceTree = "<group>"; };
-		B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcardDDV.swift; sourceTree = "<group>"; };
 		B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HBCISmartcardData.swift; sourceTree = "<group>"; };
 		B196E03B0FABA2CC00509748 /* WorkerThread.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = WorkerThread.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E03C0FABA2CC00509748 /* WorkerThread.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerThread.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1785,48 +1691,9 @@
 		B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaError.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1A1377211B6FD9400622D6C /* AccountDefController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountDefController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A1377311B6FD9400622D6C /* AccountDefController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountDefController.m; sourceTree = "<group>"; tabWidth = 4; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		B1A5940C112A8D8500FD8CB8 /* TransferResult.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferResult.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1A5940D112A8D8500FD8CB8 /* TransferResult.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferResult.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59494113165BC00FD8CB8 /* StatSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59495113165BC00FD8CB8 /* StatSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatSplitController.xib; sourceTree = "<group>"; };
-		B1A6AA231A2672C400141C39 /* atr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atr.h; sourceTree = "<group>"; };
-		B1A6AA241A2672C400141C39 /* atr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = atr.m; sourceTree = "<group>"; };
-		B1A6AA251A2672C400141C39 /* bcs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bcs.h; sourceTree = "<group>"; };
-		B1A6AA261A2672C400141C39 /* bcs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bcs.m; sourceTree = "<group>"; };
-		B1A6AA271A2672C400141C39 /* ChipcardHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipcardHandler.h; sourceTree = "<group>"; };
-		B1A6AA281A2672C400141C39 /* ChipcardHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipcardHandler.m; sourceTree = "<group>"; };
-		B1A6AA291A2672C400141C39 /* ColumnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnInfo.h; sourceTree = "<group>"; };
-		B1A6AA2B1A2672C400141C39 /* ctapi-tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ctapi-tools.h"; sourceTree = "<group>"; };
-		B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ctapi-tools.m"; sourceTree = "<group>"; wrapsLines = 0; };
-		B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_decrypt.m; sourceTree = "<group>"; };
-		B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_encrypt.m; sourceTree = "<group>"; };
-		B1A6AA2F1A2672C400141C39 /* ddv_pins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_pins.m; sourceTree = "<group>"; };
-		B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readbankdata.m; sourceTree = "<group>"; };
-		B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readkeydata.m; sourceTree = "<group>"; };
-		B1A6AA321A2672C400141C39 /* ddv_readsigid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_readsigid.m; sourceTree = "<group>"; };
-		B1A6AA331A2672C400141C39 /* ddv_signdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_signdata.m; sourceTree = "<group>"; };
-		B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_writebankdata.m; sourceTree = "<group>"; };
-		B1A6AA351A2672C400141C39 /* ddv_writesigid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ddv_writesigid.m; sourceTree = "<group>"; };
-		B1A6AA361A2672C400141C39 /* ddvcard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ddvcard.h; sourceTree = "<group>"; };
-		B1A6AA371A2672C400141C39 /* get_challenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = get_challenge.m; sourceTree = "<group>"; };
-		B1A6AA381A2672C400141C39 /* get_keyinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = get_keyinfo.m; sourceTree = "<group>"; };
-		B1A6AA391A2672C400141C39 /* hbci_cardtype.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hbci_cardtype.m; sourceTree = "<group>"; };
-		B1A6AA3A1A2672C400141C39 /* hbci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hbci.h; sourceTree = "<group>"; };
-		B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = internal_authenticate.m; sourceTree = "<group>"; };
-		B1A6AA3C1A2672C400141C39 /* modify_pin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = modify_pin.m; sourceTree = "<group>"; };
-		B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "pcsc-ctapi-wrapper.m"; sourceTree = "<group>"; wrapsLines = 0; };
-		B1A6AA3E1A2672C400141C39 /* put_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = put_data.m; sourceTree = "<group>"; };
-		B1A6AA3F1A2672C400141C39 /* read_binary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = read_binary.m; sourceTree = "<group>"; };
-		B1A6AA401A2672C400141C39 /* read_record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = read_record.m; sourceTree = "<group>"; };
-		B1A6AA411A2672C400141C39 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
-		B1A6AA421A2672C400141C39 /* seccos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = seccos.h; sourceTree = "<group>"; };
-		B1A6AA431A2672C400141C39 /* select_file.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = select_file.m; sourceTree = "<group>"; };
-		B1A6AA441A2672C400141C39 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		B1A6AA451A2672C400141C39 /* tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tools.h; sourceTree = "<group>"; };
-		B1A6AA461A2672C400141C39 /* tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tools.m; sourceTree = "<group>"; };
-		B1A6AA471A2672C400141C39 /* verify_pin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = verify_pin.m; sourceTree = "<group>"; };
-		B1A6AA481A2672C400141C39 /* write_record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = write_record.m; sourceTree = "<group>"; };
 		B1A6AA7F1A26750500141C39 /* PCSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCSC.framework; path = System/Library/Frameworks/PCSC.framework; sourceTree = SDKROOT; };
 		B1A6E8330FC890E400566C55 /* PasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6E8340FC890E400566C55 /* PasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1842,15 +1709,15 @@
 		B1AFC67017F62A980046B625 /* NewPinController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPinController.m; sourceTree = "<group>"; };
 		B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1B41C8A14005B5B00BEEC8F /* BankParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankParameter.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1B41C8B14005B5B00BEEC8F /* BankParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankParameter.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		B1DE0768165FB554004FFC8A /* jre.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = jre.zip; sourceTree = "<group>"; };
+		B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementListOrder.swift; sourceTree = "<group>"; };
+		B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
+		B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlementController.h; sourceTree = "<group>"; };
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
 		B1E3E4BD16BC6DE500DC1638 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
@@ -1859,8 +1726,6 @@
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaComboBoxCell.h; sourceTree = "<group>"; };
 		B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaComboBoxCell.m; sourceTree = "<group>"; };
-		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
-		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountMaintenanceController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1878,8 +1743,6 @@
 		B1FD3B4D198C2A5B00781197 /* ResultWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultWindowController.h; sourceTree = "<group>"; };
 		B1FD3B4E198C2A5B00781197 /* ResultWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultWindowController.m; sourceTree = "<group>"; };
 		C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 100.xcmappingmodel; sourceTree = "<group>"; };
-		C13152AF150A0B260037958E /* CallbackHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackHandler.h; sourceTree = "<group>"; };
-		C13152B0150A0B260037958E /* CallbackHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1890,6 +1753,7 @@
 				B1A6AA801A26750500141C39 /* PCSC.framework in Frameworks */,
 				27E844E819E1740A0026464E /* Quartz.framework in Frameworks */,
 				277CBA2D19F2848600B26789 /* CocoaLumberjack.framework in Frameworks */,
+				B13CE5771C1250B000B5B750 /* HBCI4Swift.framework in Frameworks */,
 				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
@@ -2393,7 +2257,6 @@
 				B1A6AA1F1A251D8B00141C39 /* StatSplitController.xib */,
 				27E845B519E17D2F0026464E /* TagRuleEditor.xib */,
 				27E845B619E17D2F0026464E /* TanMediaWindow.xib */,
-				27E845B719E17D2F0026464E /* TanMethods.xib */,
 				27E845B819E17D2F0026464E /* TanWindow.xib */,
 				27E845B919E17D2F0026464E /* Transfers.xib */,
 				27E845BA19E17D2F0026464E /* TransfersListViewCell.xib */,
@@ -2406,9 +2269,6 @@
 		27E844E019E173AD0026464E /* External Libs */ = {
 			isa = PBXGroup;
 			children = (
-				27E8462819E17F960026464E /* libhbci4java-card-mac-os-x-10.6.jnilib */,
-				B1DE0768165FB554004FFC8A /* jre.zip */,
-				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 			);
 			name = "External Libs";
 			sourceTree = "<group>";
@@ -2493,6 +2353,7 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */,
 				27A85F861B1A07D20017D863 /* Plugins */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2533,7 +2394,6 @@
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 				B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */,
-				B170C16D167689310047FD42 /* java.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2547,20 +2407,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B11E613E1C0125770031F368 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B11E61451C0125770031F368 /* HBCI4Swift.framework */,
+				B11E61471C0125770031F368 /* HBCI4SwiftTests.xctest */,
+				B11E61491C0125770031F368 /* CommonCrypto.framework */,
+				B11E614B1C0125770031F368 /* PCSCard.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B12A497E10BDD242002CC63E /* Banking Backend */ = {
 			isa = PBXGroup;
 			children = (
-				B17B294613E35BF900739E7A /* HBCI4Java */,
-				B12A496910BDD23D002CC63E /* Account.h */,
-				B12A496A10BDD23D002CC63E /* Account.m */,
-				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
+				B17B296A13E366C800739E7A /* Dialogs */,
+				B1A6AA221A26722E00141C39 /* Chipcards */,
+				B13CE57B1C12FD3D00B5B750 /* HBCICommon.h */,
+				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
 				B17728AE1502D0D300256898 /* BankSetupInfo.h */,
 				B17728AF1502D0D300256898 /* BankSetupInfo.m */,
 				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
 				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
-				B189782C0ECF47CA00D20503 /* Country.h */,
-				B189782D0ECF47CA00D20503 /* Country.m */,
-				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
 				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
 				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
 				B183586015CDC064003B93ED /* SigningOption.h */,
@@ -2571,16 +2439,13 @@
 				B17728D61504ABC700256898 /* TanMedium.m */,
 				B1014AEC101643C800ABA1FF /* TanMethod.h */,
 				B1014AED101643C800ABA1FF /* TanMethod.m */,
-				B17729121504C9B200256898 /* TanMethodOld.h */,
-				B17729131504C9B200256898 /* TanMethodOld.m */,
-				B1EC7B251508077100813E1A /* TanSigningOption.h */,
-				B1EC7B261508077100813E1A /* TanSigningOption.m */,
 				B17072D30D4BD35D00FBF186 /* TransactionLimits.h */,
 				B17072D40D4BD35D00FBF186 /* TransactionLimits.m */,
-				B1A5940C112A8D8500FD8CB8 /* TransferResult.h */,
-				B1A5940D112A8D8500FD8CB8 /* TransferResult.m */,
-				B14D4D2913DCA0E000843BE6 /* User.h */,
-				B14D4D2A13DCA0E000843BE6 /* User.m */,
+				27F1F03F1AEBE656000495CC /* BankQueryResult.swift */,
+				B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */,
+				B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */,
+				B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */,
+				B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */,
 			);
 			name = "Banking Backend";
 			sourceTree = "<group>";
@@ -2630,35 +2495,6 @@
 			name = Migration;
 			sourceTree = "<group>";
 		};
-		B17B294613E35BF900739E7A /* HBCI4Java */ = {
-			isa = PBXGroup;
-			children = (
-				B1A6AA221A26722E00141C39 /* Chipcards */,
-				B17B296A13E366C800739E7A /* Dialogs */,
-				B1B41C8A14005B5B00BEEC8F /* BankParameter.h */,
-				B1B41C8B14005B5B00BEEC8F /* BankParameter.m */,
-				B14D4C6013DB5FC200843BE6 /* CallbackData.h */,
-				B14D4C6113DB5FC200843BE6 /* CallbackData.m */,
-				C13152AF150A0B260037958E /* CallbackHandler.h */,
-				C13152B0150A0B260037958E /* CallbackHandler.m */,
-				B14D4C6213DB5FC200843BE6 /* CallbackParser.h */,
-				B14D4C6313DB5FC200843BE6 /* CallbackParser.m */,
-				B14D4C5D13DB5F3200843BE6 /* HBCIBridge.h */,
-				B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */,
-				B14D4D2213DC5F6E00843BE6 /* HBCIController.h */,
-				B14D4D2313DC5F6E00843BE6 /* HBCIController.m */,
-				B14D4C6613DB600400843BE6 /* HBCIError.h */,
-				B14D4C6713DB600400843BE6 /* HBCIError.m */,
-				B14D4C6813DB600400843BE6 /* LogParser.h */,
-				B14D4C6913DB600400843BE6 /* LogParser.m */,
-				B14D4CD813DB712A00843BE6 /* Passport.h */,
-				B14D4CD913DB712A00843BE6 /* Passport.m */,
-				B14D4C6A13DB600400843BE6 /* ResultParser.h */,
-				B14D4C6B13DB600400843BE6 /* ResultParser.m */,
-			);
-			name = HBCI4Java;
-			sourceTree = "<group>";
-		};
 		B17B296A13E366C800739E7A /* Dialogs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2668,8 +2504,6 @@
 				B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */,
 				B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */,
 				B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */,
-				B14D4C7113DB608D00843BE6 /* TanMethodListController.h */,
-				B14D4C7213DB608D00843BE6 /* TanMethodListController.m */,
 				B183572915CC5091003B93ED /* NotificationWindowController.h */,
 				B183572A15CC5091003B93ED /* NotificationWindowController.m */,
 				B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */,
@@ -2856,47 +2690,8 @@
 		B1A6AA221A26722E00141C39 /* Chipcards */ = {
 			isa = PBXGroup;
 			children = (
-				B1A6AA351A2672C400141C39 /* ddv_writesigid.m */,
-				B19669F41B39EFB400D690B0 /* HBCISmartcard.swift */,
-				B19669F51B39EFB400D690B0 /* HBCISmartcardDDV.swift */,
 				B19669F61B39EFB400D690B0 /* HBCISmartcardData.swift */,
 				B19EBD761B3B3FA2001DEC8E /* ChipcardManager.swift */,
-				B1A6AA231A2672C400141C39 /* atr.h */,
-				B1A6AA241A2672C400141C39 /* atr.m */,
-				B1A6AA251A2672C400141C39 /* bcs.h */,
-				B1A6AA261A2672C400141C39 /* bcs.m */,
-				B1A6AA271A2672C400141C39 /* ChipcardHandler.h */,
-				B1A6AA281A2672C400141C39 /* ChipcardHandler.m */,
-				B1A6AA291A2672C400141C39 /* ColumnInfo.h */,
-				B1A6AA2B1A2672C400141C39 /* ctapi-tools.h */,
-				B1A6AA2C1A2672C400141C39 /* ctapi-tools.m */,
-				B1A6AA2D1A2672C400141C39 /* ddv_decrypt.m */,
-				B1A6AA2E1A2672C400141C39 /* ddv_encrypt.m */,
-				B1A6AA2F1A2672C400141C39 /* ddv_pins.m */,
-				B1A6AA301A2672C400141C39 /* ddv_readbankdata.m */,
-				B1A6AA311A2672C400141C39 /* ddv_readkeydata.m */,
-				B1A6AA321A2672C400141C39 /* ddv_readsigid.m */,
-				B1A6AA331A2672C400141C39 /* ddv_signdata.m */,
-				B1A6AA341A2672C400141C39 /* ddv_writebankdata.m */,
-				B1A6AA361A2672C400141C39 /* ddvcard.h */,
-				B1A6AA371A2672C400141C39 /* get_challenge.m */,
-				B1A6AA381A2672C400141C39 /* get_keyinfo.m */,
-				B1A6AA391A2672C400141C39 /* hbci_cardtype.m */,
-				B1A6AA3A1A2672C400141C39 /* hbci.h */,
-				B1A6AA3B1A2672C400141C39 /* internal_authenticate.m */,
-				B1A6AA3C1A2672C400141C39 /* modify_pin.m */,
-				B1A6AA3D1A2672C400141C39 /* pcsc-ctapi-wrapper.m */,
-				B1A6AA3E1A2672C400141C39 /* put_data.m */,
-				B1A6AA3F1A2672C400141C39 /* read_binary.m */,
-				B1A6AA401A2672C400141C39 /* read_record.m */,
-				B1A6AA411A2672C400141C39 /* reader.h */,
-				B1A6AA421A2672C400141C39 /* seccos.h */,
-				B1A6AA431A2672C400141C39 /* select_file.m */,
-				B1A6AA441A2672C400141C39 /* test.h */,
-				B1A6AA451A2672C400141C39 /* tools.h */,
-				B1A6AA461A2672C400141C39 /* tools.m */,
-				B1A6AA471A2672C400141C39 /* verify_pin.m */,
-				B1A6AA481A2672C400141C39 /* write_record.m */,
 			);
 			name = Chipcards;
 			sourceTree = "<group>";
@@ -3033,7 +2828,6 @@
 			children = (
 				B1C7B193130B12870091CD72 /* Accounts */,
 				27DFFD9316739C9900848CD2 /* Categories */,
-				27A3DA1C16A1C96A00FD7335 /* Debits */,
 				B1C7B194130B12F80091CD72 /* ImExport */,
 				B1C7B189130B10BF0091CD72 /* MainWindow */,
 				27BB3B7F190D4A6F006F15CB /* Orders */,
@@ -3092,8 +2886,6 @@
 				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
 				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
 				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
-				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
-				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 				27548B8E1705D98D00C4BF9B /* Tag.h */,
 				27548B8F1705D98E00C4BF9B /* Tag.m */,
 				B1927D230C52B5CD00B4D390 /* Transfer.h */,
@@ -3108,6 +2900,7 @@
 		B1FE0DD610658759005B3800 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				27A3DA1C16A1C96A00FD7335 /* Debits */,
 				279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */,
 				B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */,
 				B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */,
@@ -3161,12 +2954,11 @@
 				27A85F8C1B1A095D0017D863 /* Copy Pecunia Plugins */,
 				277789B7173CE22700430EBC /* Frameworks */,
 				277789C2173CE22700430EBC /* Copy Frameworks */,
-				27E8466019E1815D0026464E /* Copy external libs */,
-				27E8466419E1819E0026464E /* Unzip Java */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B13CE57A1C1250B000B5B750 /* PBXTargetDependency */,
 			);
 			name = "Pecunia AppStore";
 			productInstallPath = "$(HOME)/Applications";
@@ -3184,12 +2976,11 @@
 				27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
-				27E844DD19E173510026464E /* Copy external libs */,
-				27E844EB19E179490026464E /* Unzip Java */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B174E8981CA08F12004FD3F0 /* PBXTargetDependency */,
 			);
 			name = Pecunia;
 			productInstallPath = "$(HOME)/Applications";
@@ -3229,6 +3020,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Pecunia */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B11E613E1C0125770031F368 /* Products */;
+					ProjectRef = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Pecunia */,
@@ -3236,6 +3033,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B11E61451C0125770031F368 /* HBCI4Swift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = HBCI4Swift.framework;
+			remoteRef = B11E61441C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E61471C0125770031F368 /* HBCI4SwiftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HBCI4SwiftTests.xctest;
+			remoteRef = B11E61461C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E61491C0125770031F368 /* CommonCrypto.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CommonCrypto.framework;
+			remoteRef = B11E61481C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B11E614B1C0125770031F368 /* PCSCard.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PCSCard.framework;
+			remoteRef = B11E614A1C0125770031F368 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2777891A173CE22700430EBC /* Resources */ = {
@@ -3378,7 +3206,6 @@
 				271861571971846000229978 /* settled@2x.png in Resources */,
 				27778992173CE22700430EBC /* hide@2x.png in Resources */,
 				276D9C9A18CB79FF002BEDA8 /* magnify-busy1.png in Resources */,
-				27778995173CE22700430EBC /* java.entitlements in Resources */,
 				27778997173CE22700430EBC /* Collections in Resources */,
 				275AC7E1186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
 				27778999173CE22700430EBC /* edit-large.png in Resources */,
@@ -3475,7 +3302,6 @@
 				27E8465519E181280026464E /* StatementsOverview.xib in Resources */,
 				27E8465719E181280026464E /* TagRuleEditor.xib in Resources */,
 				27E8465819E181280026464E /* TanMediaWindow.xib in Resources */,
-				27E8465919E181280026464E /* TanMethods.xib in Resources */,
 				27E8465A19E181280026464E /* TanWindow.xib in Resources */,
 				27E8465B19E181280026464E /* Transfers.xib in Resources */,
 				27E8465C19E181280026464E /* TransfersListViewCell.xib in Resources */,
@@ -3526,7 +3352,6 @@
 				27E8460819E17D300026464E /* PurposeSplitWindow.xib in Resources */,
 				B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */,
 				272F6E6E1955D72300096734 /* sequence-type-end@2x.png in Resources */,
-				27E8461A19E17D300026464E /* TanMethods.xib in Resources */,
 				27E8461819E17D300026464E /* TanMediaWindow.xib in Resources */,
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
 				27E845E419E17D300026464E /* DebitsListViewCell.xib in Resources */,
@@ -3662,7 +3487,6 @@
 				271861561971846000229978 /* settled@2x.png in Resources */,
 				27D5763F16626C5300761132 /* hide@2x.png in Resources */,
 				276D9C9918CB79FF002BEDA8 /* magnify-busy1.png in Resources */,
-				B170C16E167689310047FD42 /* java.entitlements in Resources */,
 				27649722167D2A73006770A9 /* Collections in Resources */,
 				27E23534168A16290050276E /* edit-large.png in Resources */,
 				275AC7E0186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
@@ -3733,36 +3557,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		27E844EB19E179490026464E /* Unzip Java */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Unzip Java";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		27E8466419E1819E0026464E /* Unzip Java */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Unzip Java";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "test -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nif [ $? -ne 0 ]; then\necho \"Create plugins directory\"\nmkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre\"\nif [ $? -ne 0 ]; then\necho \"Extracting java runtime\"\nunzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java\"\ncodesign --force --entitlements \"$SRCROOT/Resources/java.entitlements\" -s \"3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/Java/jre/Contents/Home/bin/java\"\n\nfi\n\n";
-			showEnvVarsInLog = 0;
-		};
 		27F975DD1956DBBD00FF9DA0 /* Check duplicate localizable strings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3785,10 +3579,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1A6AA721A2672C400141C39 /* put_data.m in Sources */,
 				27778874173CE22700430EBC /* main.m in Sources */,
 				27778875173CE22700430EBC /* BankingController.m in Sources */,
-				B1A6AA5E1A2672C400141C39 /* ddv_readsigid.m in Sources */,
 				2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
@@ -3804,7 +3596,6 @@
 				27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				2777887D173CE22700430EBC /* PreferenceController.m in Sources */,
 				27778880173CE22700430EBC /* MOAssistant.m in Sources */,
-				B1A6AA641A2672C400141C39 /* ddv_writesigid.m in Sources */,
 				27778881173CE22700430EBC /* CategoryOutlineView.m in Sources */,
 				27778882173CE22700430EBC /* CategoryDefWindowController.m in Sources */,
 				27778883173CE22700430EBC /* ExportController.m in Sources */,
@@ -3813,7 +3604,6 @@
 				27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */,
 				279C166618E8317600A4306F /* LockViewController.m in Sources */,
 				2759D8B01A0133FB002AE07E /* Range.swift in Sources */,
-				27778887173CE22700430EBC /* Country.m in Sources */,
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27593DA51AB458A70009A91E /* DERules.swift in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
@@ -3823,38 +3613,28 @@
 				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
 				27593DA31AB458A20009A91E /* Converter.swift in Sources */,
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
-				B1A6AA781A2672C400141C39 /* select_file.m in Sources */,
 				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
 				27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				27921A1D1C3C028F00D746BD /* StatementsTable.swift in Sources */,
 				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
 				27778893173CE22700430EBC /* PasswordController.m in Sources */,
-				B1A6AA5A1A2672C400141C39 /* ddv_readbankdata.m in Sources */,
 				27778895173CE22700430EBC /* TanMethod.m in Sources */,
-				B1A6AA6E1A2672C400141C39 /* modify_pin.m in Sources */,
 				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
 				27F1F0411AEBE656000495CC /* BankQueryResult.swift in Sources */,
-				B1A6AA581A2672C400141C39 /* ddv_pins.m in Sources */,
-				B1A6AA4A1A2672C400141C39 /* atr.m in Sources */,
 				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
 				27686E44193B5B3E0038067D /* JMOverlayView.m in Sources */,
-				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
-				B1A6AA601A2672C400141C39 /* ddv_signdata.m in Sources */,
 				27593DA41AB458A40009A91E /* DEAccountCheck.swift in Sources */,
-				B1A6AA701A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B50198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
 				2758542419FFFB9100571251 /* WordMapping.swift in Sources */,
+				B163F0D31CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */,
 				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
-				B1A6AA4C1A2672C400141C39 /* bcs.m in Sources */,
-				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
+				B1D1A0DB1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				270ED6CF1AE3C50E001D3B8C /* NSDate.swift in Sources */,
-				B1A6AA6A1A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
-				B1A6AA741A2672C400141C39 /* read_binary.m in Sources */,
 				279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				27A062321B18DAD500EC6749 /* PluginWorker.swift in Sources */,
@@ -3876,40 +3656,32 @@
 				277788AE173CE22700430EBC /* MessageLog.m in Sources */,
 				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
 				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
-				B1A6AA541A2672C400141C39 /* ddv_decrypt.m in Sources */,
 				B19EBD791B3B4172001DEC8E /* HBCISmartcardData.swift in Sources */,
 				277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */,
 				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
-				B1A6AA6C1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
+				B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */,
 				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
 				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
-				277788BC173CE22700430EBC /* HBCIBridge.m in Sources */,
-				277788BD173CE22700430EBC /* CallbackData.m in Sources */,
 				2788D7B718421195000B59AF /* PecuniaSplitView.m in Sources */,
-				277788BE173CE22700430EBC /* CallbackParser.m in Sources */,
-				B1A6AA561A2672C400141C39 /* ddv_encrypt.m in Sources */,
-				277788BF173CE22700430EBC /* HBCIError.m in Sources */,
-				277788C0173CE22700430EBC /* LogParser.m in Sources */,
 				27686E4B193B5E860038067D /* WaitViewController.m in Sources */,
 				271394D919FD16F30099FB27 /* ShortDate.swift in Sources */,
-				277788C1173CE22700430EBC /* ResultParser.m in Sources */,
-				277788C2173CE22700430EBC /* TanMethodListController.m in Sources */,
 				27686E42193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
-				277788C3173CE22700430EBC /* Passport.m in Sources */,
 				B19EBD781B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */,
+<<<<<<< HEAD
 				277788C4173CE22700430EBC /* HBCIController.m in Sources */,
 				277788C5173CE22700430EBC /* User.m in Sources */,
 				270544371C391FAA00C3D217 /* NSNumberFormatter.swift in Sources */,
+=======
+>>>>>>> master
 				277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */,
 				277788C7173CE22700430EBC /* FlickerView.m in Sources */,
 				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
 				276AED0E195B2F61005D5E06 /* SliderView.m in Sources */,
 				27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
-				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
 				B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
 				277788CA173CE22700430EBC /* ImportSettings.m in Sources */,
 				27F69B7D18BA3EFB002CBE06 /* ZipFile.m in Sources */,
@@ -3933,8 +3705,8 @@
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
+				B163F0DD1CC955D3001E1009 /* CCStatementOrder.swift in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
-				B1A6AA621A2672C400141C39 /* ddv_writebankdata.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				2759D8A21A0133FB002AE07E /* Dictionary.swift in Sources */,
@@ -3945,21 +3717,13 @@
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
-				B1A6AA681A2672C400141C39 /* get_keyinfo.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
-				B1A6AA761A2672C400141C39 /* read_record.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				2759D8A61A0133FB002AE07E /* ExSwift.swift in Sources */,
-				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
-				B19EBD7A1B3B4176001DEC8E /* HBCISmartcardDDV.swift in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
-				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
-				B19EBD7B1B3B4A15001DEC8E /* HBCISmartcard.swift in Sources */,
 				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
-				B1A6AA7C1A2672C400141C39 /* verify_pin.m in Sources */,
 				2759D8A41A0133FB002AE07E /* Double.swift in Sources */,
-				277788E6173CE22700430EBC /* CallbackHandler.m in Sources */,
 				277788E7173CE22700430EBC /* BWGradientBox.m in Sources */,
 				277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */,
 				277788E9173CE22700430EBC /* MBTableGrid.m in Sources */,
@@ -3967,7 +3731,6 @@
 				277788EB173CE22700430EBC /* MBTableGridContentView.m in Sources */,
 				278EC8231915251D005091E8 /* ShadowedTextField.m in Sources */,
 				277788EC173CE22700430EBC /* MBTableGridHeaderCell.m in Sources */,
-				B1A6AA7A1A2672C400141C39 /* tools.m in Sources */,
 				277788ED173CE22700430EBC /* MBTableGridHeaderView.m in Sources */,
 				277788EE173CE22700430EBC /* SynchronousScrollView.m in Sources */,
 				277788EF173CE22700430EBC /* TransfersBackgroundView.m in Sources */,
@@ -3975,9 +3738,6 @@
 				27320ADB17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */,
 				277788F1173CE22700430EBC /* TransfersListViewCell.m in Sources */,
 				277788F2173CE22700430EBC /* BankingController+Tabs.m in Sources */,
-				B1A6AA7E1A2672C400141C39 /* write_record.m in Sources */,
-				B1A6AA521A2672C400141C39 /* ctapi-tools.m in Sources */,
-				B1A6AA5C1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				27A062341B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */,
 				27B42C381C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */,
@@ -3993,7 +3753,6 @@
 				277788FB173CE22700430EBC /* SigningOptionsViewCell.m in Sources */,
 				277788FC173CE22700430EBC /* SigningOptionsController.m in Sources */,
 				277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */,
-				B1A6AA4E1A2672C400141C39 /* ChipcardHandler.m in Sources */,
 				277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */,
 				277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */,
 				27778900173CE22700430EBC /* TanWindow.m in Sources */,
@@ -4004,14 +3763,12 @@
 				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
 				275DAADE17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
-				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
 				B10C41B7196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
 				27778909173CE22700430EBC /* SystemNotification.m in Sources */,
 				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7718BA3EFB002CBE06 /* zip.c in Sources */,
 				2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */,
-				B1A6AA661A2672C400141C39 /* get_challenge.m in Sources */,
 				2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
 				2777890E173CE22700430EBC /* DebitsListView.m in Sources */,
@@ -4056,10 +3813,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1A6AA711A2672C400141C39 /* put_data.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */,
-				B1A6AA5D1A2672C400141C39 /* ddv_readsigid.m in Sources */,
 				2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
@@ -4076,8 +3831,12 @@
 				B19EBD771B3B3FA2001DEC8E /* ChipcardManager.swift in Sources */,
 				B17074870D55104000FBF186 /* PreferenceController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
+<<<<<<< HEAD
 				B1A6AA631A2672C400141C39 /* ddv_writesigid.m in Sources */,
 				B14D6DEF0DEC9C9100C2B220 /* CategoryOutlineView.m in Sources */,
+=======
+				B14D6DEF0DEC9C9100C2B220 /* CategoryView.m in Sources */,
+>>>>>>> master
 				B1029E120E3FA1D700CC681B /* CategoryDefWindowController.m in Sources */,
 				B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */,
 				2747C5911944750C0089A7C9 /* PecuniaListView.m in Sources */,
@@ -4085,7 +3844,6 @@
 				B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */,
 				279C166518E8317600A4306F /* LockViewController.m in Sources */,
 				2759D8AF1A0133FB002AE07E /* Range.swift in Sources */,
-				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				27F5911D1AA38214005FA793 /* DERules.swift in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
@@ -4095,38 +3853,33 @@
 				B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */,
 				27F5911B1AA38214005FA793 /* Converter.swift in Sources */,
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
-				B1A6AA771A2672C400141C39 /* select_file.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
 				27921A1C1C3C028F00D746BD /* StatementsTable.swift in Sources */,
 				27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */,
+<<<<<<< HEAD
 				B1A6AA591A2672C400141C39 /* ddv_readbankdata.m in Sources */,
+=======
+				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
+>>>>>>> master
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
-				B1A6AA6D1A2672C400141C39 /* modify_pin.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
 				27F1F0401AEBE656000495CC /* BankQueryResult.swift in Sources */,
-				B1A6AA571A2672C400141C39 /* ddv_pins.m in Sources */,
-				B1A6AA491A2672C400141C39 /* atr.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
-				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
-				B1A6AA5F1A2672C400141C39 /* ddv_signdata.m in Sources */,
 				27F5911C1AA38214005FA793 /* DEAccountCheck.swift in Sources */,
-				B1A6AA6F1A2672C400141C39 /* pcsc-ctapi-wrapper.m in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
+				B163F0D21CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */,
 				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
+				B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */,
 				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
-				B1A6AA4B1A2672C400141C39 /* bcs.m in Sources */,
-				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
 				270ED6CE1AE3C50E001D3B8C /* NSDate.swift in Sources */,
-				B1A6AA691A2672C400141C39 /* hbci_cardtype.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
-				B1A6AA731A2672C400141C39 /* read_binary.m in Sources */,
 				279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				27A062311B18DAD500EC6749 /* PluginWorker.swift in Sources */,
@@ -4149,40 +3902,36 @@
 				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
 				B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */,
 				B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */,
-				B1A6AA531A2672C400141C39 /* ddv_decrypt.m in Sources */,
 				B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */,
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
-				B1A6AA6B1A2672C400141C39 /* internal_authenticate.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
+<<<<<<< HEAD
 				B19669F81B39EFB400D690B0 /* HBCISmartcardDDV.swift in Sources */,
+=======
+				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
+				B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */,
+>>>>>>> master
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
-				B19669F71B39EFB400D690B0 /* HBCISmartcard.swift in Sources */,
 				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
 				27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */,
 				27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */,
-				B14D4C5F13DB5F3200843BE6 /* HBCIBridge.m in Sources */,
-				B14D4C6413DB5FC200843BE6 /* CallbackData.m in Sources */,
 				2788D7B618421195000B59AF /* PecuniaSplitView.m in Sources */,
-				B14D4C6513DB5FC200843BE6 /* CallbackParser.m in Sources */,
-				B1A6AA551A2672C400141C39 /* ddv_encrypt.m in Sources */,
-				B14D4C6C13DB600400843BE6 /* HBCIError.m in Sources */,
-				B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */,
 				27686E4A193B5E860038067D /* WaitViewController.m in Sources */,
 				271394D819FD16F30099FB27 /* ShortDate.swift in Sources */,
-				B14D4C6E13DB600400843BE6 /* ResultParser.m in Sources */,
-				B14D4C7313DB608D00843BE6 /* TanMethodListController.m in Sources */,
 				27686E41193B5B3E0038067D /* JMModalOverlayView.m in Sources */,
+<<<<<<< HEAD
 				B14D4CDA13DB712A00843BE6 /* Passport.m in Sources */,
 				270544361C391FAA00C3D217 /* NSNumberFormatter.swift in Sources */,
 				B14D4D2413DC5F6E00843BE6 /* HBCIController.m in Sources */,
 				B14D4D2B13DCA0E000843BE6 /* User.m in Sources */,
+=======
+>>>>>>> master
 				B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */,
 				B17B2B4313EC921200739E7A /* FlickerView.m in Sources */,
 				B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */,
 				276AED0D195B2F61005D5E06 /* SliderView.m in Sources */,
 				27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
-				B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */,
 				B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
 				B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */,
 				27F69B7C18BA3EFB002CBE06 /* ZipFile.m in Sources */,
@@ -4206,8 +3955,8 @@
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
+				B163F0DC1CC955D3001E1009 /* CCStatementOrder.swift in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
-				B1A6AA611A2672C400141C39 /* ddv_writebankdata.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
 				2759D8A11A0133FB002AE07E /* Dictionary.swift in Sources */,
@@ -4218,20 +3967,18 @@
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
-				B1A6AA671A2672C400141C39 /* get_keyinfo.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
-				B1A6AA751A2672C400141C39 /* read_record.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				2759D8A51A0133FB002AE07E /* ExSwift.swift in Sources */,
+<<<<<<< HEAD
 				27AFAF071C5E6E7F002A7C50 /* Transformers.swift in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
+=======
+>>>>>>> master
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
-				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,
 				C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */,
-				B1A6AA7B1A2672C400141C39 /* verify_pin.m in Sources */,
 				2759D8A31A0133FB002AE07E /* Double.swift in Sources */,
-				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 				27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */,
 				27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */,
 				2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */,
@@ -4239,7 +3986,6 @@
 				2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */,
 				278EC8221915251D005091E8 /* ShadowedTextField.m in Sources */,
 				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
-				B1A6AA791A2672C400141C39 /* tools.m in Sources */,
 				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
 				2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */,
 				27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */,
@@ -4247,9 +3993,6 @@
 				27320ADA17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */,
 				279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */,
 				27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */,
-				B1A6AA7D1A2672C400141C39 /* write_record.m in Sources */,
-				B1A6AA511A2672C400141C39 /* ctapi-tools.m in Sources */,
-				B1A6AA5B1A2672C400141C39 /* ddv_readkeydata.m in Sources */,
 				27A062331B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				2706F2091556C3BE0011A20E /* OnOffSwitchControl.m in Sources */,
 				27B42C371C3014CA00DF8BA9 /* NSOutlineView+PecuniaAdditions.m in Sources */,
@@ -4265,7 +4008,6 @@
 				B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */,
 				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
-				B1A6AA4D1A2672C400141C39 /* ChipcardHandler.m in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
@@ -4276,14 +4018,12 @@
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
-				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
 				B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7618BA3EFB002CBE06 /* zip.c in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,
-				B1A6AA651A2672C400141C39 /* get_challenge.m in Sources */,
 				270C1A0F168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
 				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,
@@ -4326,6 +4066,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B13CE57A1C1250B000B5B750 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HBCI4Swift;
+			targetProxy = B13CE5791C1250B000B5B750 /* PBXContainerItemProxy */;
+		};
+		B174E8981CA08F12004FD3F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HBCI4Swift;
+			targetProxy = B174E8971CA08F12004FD3F0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		277789C8173CE22700430EBC /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -4333,12 +4086,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4351,6 +4106,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "__APPSTORE=1";
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
@@ -4369,6 +4125,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4395,8 +4152,8 @@
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4406,6 +4163,7 @@
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "__APPSTORE=1";
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -4418,6 +4176,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4439,11 +4198,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4452,6 +4213,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				GCC_VERSION = "";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -4464,6 +4226,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
@@ -4483,12 +4246,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4544,12 +4308,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4592,12 +4357,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Build/Products/Debug",
 					"$(SRCROOT)/Frameworks",
-					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4641,10 +4407,12 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4658,8 +4426,10 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				VALID_ARCHS = "i386 x86_64";
@@ -4673,8 +4443,10 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -4719,6 +4491,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */,
 				27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */,
 				27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
@@ -4737,7 +4510,7 @@
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */;
+			currentVersion = B178C6131C3489020082E25F /* Accounts 17.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

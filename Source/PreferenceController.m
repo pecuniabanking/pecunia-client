@@ -25,6 +25,7 @@
 #import "MOAssistant.h"
 #import "BankingController.h"
 #import "PasswordController.h"
+#import "ExportController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
@@ -263,12 +264,7 @@ static NSDictionary *heightMappings;
 {
     self = [super initWithWindowNibName: @"Preferences"];
     if (self != nil) {
-        exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount",
-                         @"localBankCode", @"localName", @"localCountry",
-                         @"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode",
-                         @"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
-                         @"customerReference", @"bankReference", @"transactionText", @"primaNota",
-                         @"transactionCode", @"categoriesDescription"];
+        exportFields = [ExportController getExportFields];
 
         roundUp = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundUp
                                                                          scale: 2
@@ -306,9 +302,11 @@ static NSDictionary *heightMappings;
 
         for (NSString *field in fields) {
             int                 idx = [exportFields indexOfObject: field];
-            NSString            *name = [cell itemObjectValueAtIndex: idx];
-            NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject: name forKey: @"fieldName"];
-            [fieldController addObject: item];
+            if (idx >= 0) {
+                NSString            *name = [cell itemObjectValueAtIndex: idx];
+                NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject: name forKey: @"fieldName"];
+                [fieldController addObject: item];
+            }
         }
     }
     MOAssistant *assistant = [MOAssistant sharedAssistant];

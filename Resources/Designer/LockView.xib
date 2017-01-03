@@ -42,9 +42,6 @@
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="highlighted" value="YES"/>
-                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="continue:" target="-2" id="epi-Lh-j5j"/>
                             </connections>

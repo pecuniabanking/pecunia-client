@@ -38,11 +38,13 @@ typedef enum {
     NSString *userId;
     NSString *userName;
     NSString *cardId;
+    BankUser *user;
 
 }
 
 @property (nonatomic, copy) NSString         *userId;
 @property (nonatomic, copy) NSString         *userName;
+@property (nonatomic, retain) BankUser       *user;
 @property (nonatomic, copy) NSString         *cardId;
 @property (nonatomic, copy) NSString         *tanMethod;
 @property (nonatomic, copy) NSString         *tanMethodName;

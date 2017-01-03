@@ -61,13 +61,10 @@
 }
 
 - (id)initForController: (BankingController *)con;
-- (void)updateTanMethods;
-
 
 - (IBAction)close: (id)sender;
 - (IBAction)addEntry: (id)sender;
 - (IBAction)removeEntry: (id)sender;
-- (IBAction)updateBankParameter: (id)sender;
 - (IBAction)synchronize: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
 - (IBAction)secMethodChanged: (id)sender;

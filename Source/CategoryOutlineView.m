@@ -21,7 +21,6 @@
 #import "BankingCategory.h"
 
 #import "BankingController.h"
-#import "HBCIController.h"
 #import "BankAccount.h"
 
 #import "PreferenceController.h"
@@ -88,8 +87,8 @@ extern void *UserDefaultsBindingContext;
                 item.indentationLevel = 1;
 
                 // Check if the account supports SEPA transfers or at least internal transfers.
-                BOOL flag = [[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]
-                    || [[HBCIController controller] isTransferSupported: TransferTypeInternalSEPA forAccount: account];
+                BOOL flag = [HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferSEPA account:account]
+                    || [HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferInternalSEPA account:account];
                 if (!flag) {
                     [item setAction: nil];
                 }
@@ -174,7 +173,7 @@ extern void *UserDefaultsBindingContext;
 - (void)startTransfer: (id)sender {
     id          item = [self itemAtRow: self.selectedRow];
     BankAccount *account = [item representedObject];
-    if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+    if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_TransferSEPA account:account]) {
         if ([self.delegate respondsToSelector: @selector(startSepaTransfer:)]) {
             [(id)self.delegate startSepaTransfer : sender];
         }

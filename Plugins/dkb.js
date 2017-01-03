@@ -10,7 +10,7 @@ var author = "Mike Lischke";
 var description = "DKB Kreditkartenkonto"; // Short string for plugin selection.
 var homePage = "http://pecuniabanking.de";
 var license = "CC BY-NC-ND 4.0 - http://creativecommons.org/licenses/by-nc-nd/4.0/deed.de";
-var version = "1.0";
+var version = "1.01";
 
 // --- Internal variables.
 var currentState = 0; // Used in the callback to determine what to do next (state machine).
@@ -18,18 +18,18 @@ var userName = "";
 var thePassword = "";
 
 // Various URLs for the DKB banking site.
-var dkbBaseURL = "https://banking.dkb.de";
-var dkbOldLoginURL = "https://banking.dkb.de/dkb/-";
-var dkbNewLoginURL = "https://banking.dkb.de/portal/portal";
-var dkbLogoutURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.infobar.logout-button&$event=logout";
+var dkbBaseURL = "https://www.dkb.de/banking";
+var dkbOldLoginURL = "https://www.dkb.de/banking";
+var dkbNewLoginURL = "https://www.dkb.de/banking";
+var dkbLogoutURL = "https://www.dkb.de/DkbTransactionBanking/banner.xhtml?$event=logout";
 
 // Mailbox URLs
 var dkbUnreadMailCheck = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.infobar.PostboxStatus&$event=updateNumberOfUnreadMessages";
 var dkbMailBox = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=3&tree=menu&treeAction=selectNode";
 
 // Credit card URLs.
-var dkbCardSelectionURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.index.menu&node=0.1&tree=menu&treeAction=selectNode";
-var dkbCsvURL = "https://banking.dkb.de/dkb/-?$part=DkbTransactionBanking.content.transaction.CreditCard.CreditcardTransactionSearch&$event=csvExport";
+var dkbCardSelectionURL = "https://www.dkb.de/banking/finanzstatus/kreditkartenumsaetze?$event=init";
+var dkbCsvURL = "https://www.dkb.de/banking/finanzstatus/kreditkartenumsaetze?$event=csvExport";
 
 // Optionial function to support auto account type determination.
 function canHandle(account, bankCode) {
@@ -182,14 +182,28 @@ function startLogin() {
          var submitLogin = formLogin.getInputByValue("Anmelden");
          */
 
-    } else if (LoginURL.indexOf("/dkb") !== -1) {
+    } else if (LoginURL.indexOf("/banking") !== -1) {
         logger.logDebug("Running old standard login");
-        var formLogin = webClient.mainFrame.document.forms.item(0);
+        var formLogin = webClient.mainFrame.document.forms.item(1);
 
         logger.logDebug("formLogin: " + formLogin + ", name: " + formLogin.name + ", action: " + formLogin.action);
-        formLogin.elements.namedItem("j_username").value = userName;
-        formLogin.elements.namedItem("j_password").value = thePassword;
-        var submitLogin = formLogin.elements.namedItem("buttonlogin");
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var j_username = formLogin.elements.item(i);
+            if (j_username.name == "j_username")
+                break;
+        }
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var j_password = formLogin.elements.item(i);
+            if (j_password.name == "j_password")
+                break;
+        }
+        for (var i = 0; i < formLogin.elements.length; ++i) {
+            var submitLogin = formLogin.elements.item(i);
+            if (submitLogin.idName == "buttonlogin")
+                break;
+        }
+		j_username.value = userName;
+        j_password.value = thePassword;
         logger.logDebug("submit button: " + submitLogin + ", id: " + submitLogin.idName);
 
     } else if (LoginURL.indexOf("wartung") !== -1) {
@@ -215,7 +229,7 @@ function navigateToCreditCardPage() {
     var url = webClient.URL;
     if (url.indexOf("/portal") !== -1) {
         // todo: url = dkbBaseURL + ActiveContent.getAnchorByText("Kreditkartenums\u00E4tze").getHrefAttribute();
-    } else if (url.indexOf("/dkb") !== -1) {
+    } else if (url.indexOf("/banking") !== -1) {
         url = dkbCardSelectionURL;
     } else {
         throw "Unknown URL, couldn't get credit card overview";
@@ -247,14 +261,18 @@ function readNextCreditCard() {
     var url = webClient.URL;
     if (url.indexOf("/portal") !== -1) {
         // todo
-    } else if (url.indexOf("/dkb") !== -1) {
+    } else if (url.indexOf("/banking") !== -1) {
         for (var i = 0; i < webClient.mainFrameDocument.forms.length; ++i) {
             var form = webClient.mainFrameDocument.forms.item(i);
             if (form.name == "form1579108072_1")
                 break;
         }
         //var form = webClient.mainFrameDocument.forms.namedItem("form1579108072_1"); namedItem doesn't work on forms it seems.
-        var creditCardSelector = form.elements.namedItem("slCreditCard");
+        for (var i = 0; i < form.elements.length; ++i) {
+            var creditCardSelector = form.elements.item(i);
+            if (creditCardSelector.name == "slAllAccounts")
+                break;
+        }
     } else {
         throw "Unknown URL, couldn't get credit card overview";
     };
@@ -292,9 +310,17 @@ function readNextCreditCard() {
         }
     }
 
-    var postingDate = form.elements.namedItem("postingDate");
+    for (var i = 0; i < form.elements.length; ++i) {
+        var postingDate = form.elements.item(i);
+        if (postingDate.name == "postingDate")
+            break;
+    }
+    for (var i = 0; i < form.elements.length; ++i) {
+        var toPostingDate = form.elements.item(i);
+        if (toPostingDate.name == "toPostingDate")
+            break;
+    }
     logger.logDebug("From posting element: " + postingDate);
-    var toPostingDate = form.elements.namedItem("toPostingDate");
     logger.logDebug("To posting element: " + toPostingDate);
 
     postingDate.value = padDatePart(startFrom.getDate()) + "." + padDatePart(startFrom.getMonth() + 1) + "." + startFrom.getFullYear();
@@ -303,7 +329,12 @@ function readNextCreditCard() {
     logger.logDebug("Date range: " + postingDate.value + " .. " + toPostingDate.value);
 
     currentState = 14;
-    var button = form.elements.namedItem("searchbutton");
+    for (var i = 0; i < form.elements.length; ++i) {
+        var button = form.elements.item(i);
+        if (button.idName == "searchbutton")
+            break;
+    }
+	logger.logDebug("Button: " + button + ", " + button.idName)
     button.click();
 }
 

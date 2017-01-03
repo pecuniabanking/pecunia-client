@@ -19,6 +19,7 @@
 
 import Foundation
 import Cocoa
+import HBCI4Swift
 
 // RequestController is called when
 // -no card inserted
@@ -45,7 +46,7 @@ class ChipcardRequestController : NSWindowController {
     
     func checkCard(timer:NSTimer) {
         if card == nil {
-            card = ChipcardManager.manager().card;
+            card = ChipcardManager.manager.card;
         }
         connectResult = card.connect(1);
         
