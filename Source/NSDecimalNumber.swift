@@ -18,24 +18,24 @@
 import Foundation
 
 extension NSDecimalNumber : Comparable {
-    private static var numberHandler: NSDecimalNumberHandler? = nil;
-    private static var outboundHandler: NSDecimalNumberHandler? = nil;
-    private static var roundDownHandler: NSDecimalNumberHandler? = nil;
-    private static let separators = NSCharacterSet.init(charactersInString: ".,");
+    fileprivate static var numberHandler: NSDecimalNumberHandler? = nil;
+    fileprivate static var outboundHandler: NSDecimalNumberHandler? = nil;
+    fileprivate static var roundDownHandler: NSDecimalNumberHandler? = nil;
+    fileprivate static let separators = CharacterSet.init(charactersIn: ".,");
 
-    override public class func initialize() {
+    override open class func initialize() {
         super.initialize();
 
-        numberHandler = NSDecimalNumberHandler(roundingMode: .RoundPlain, scale: 2,
+        numberHandler = NSDecimalNumberHandler(roundingMode: .plain, scale: 2,
             raiseOnExactness: true, raiseOnOverflow: true, raiseOnUnderflow: true,
             raiseOnDivideByZero: true);
 
-        outboundHandler = NSDecimalNumberHandler(roundingMode: .RoundPlain, scale: 0,
+        outboundHandler = NSDecimalNumberHandler(roundingMode: .plain, scale: 0,
             raiseOnExactness: true, raiseOnOverflow: true, raiseOnUnderflow: true,
             raiseOnDivideByZero: true);
 
         // Like the default handler, but with round down mode.
-        roundDownHandler = NSDecimalNumberHandler(roundingMode: .RoundDown, scale: Int16(NSDecimalNoScale),
+        roundDownHandler = NSDecimalNumberHandler(roundingMode: .down, scale: Int16(NSDecimalNoScale),
             raiseOnExactness: false, raiseOnOverflow: true, raiseOnUnderflow: true,
             raiseOnDivideByZero: true);
     }
@@ -48,12 +48,12 @@ extension NSDecimalNumber : Comparable {
     // separator, otherwise the group separator. Since in financial data we additionally only
     // have 2 separator values (comma and dot, at least in those values Pecunia can deal with),
     // it's easy to continue from that decision.
-    class func fromString(input: String) -> NSDecimalNumber? {
-        let formatter = NSNumberFormatter();
+    class func fromString(_ input: String) -> NSDecimalNumber? {
+        let formatter = NumberFormatter();
         formatter.generatesDecimalNumbers = true;
 
         // Split input by space char in order to strip off potential currency values.
-        let values = (input as NSString).componentsSeparatedByString(" ");
+        let values = (input as NSString).components(separatedBy: " ");
         if values.isEmpty {
             return nil;
         }
@@ -83,7 +83,7 @@ extension NSDecimalNumber : Comparable {
         var object: AnyObject?;
         var range: NSRange = NSMakeRange(0, input.characters.count);
         do {
-            try formatter.getObjectValue(&object, forString: input, range: &range);
+            try formatter.getObjectValue(&object, for: input, range: &range);
 
             if let number = object as? NSDecimalNumber {
                 return number;
@@ -96,11 +96,11 @@ extension NSDecimalNumber : Comparable {
 
     func isNegative() -> Bool {
         // Useful mostly for legacy Obj-C code.
-        return self < NSDecimalNumber.zero();
+        return self < NSDecimalNumber.zero;
     }
 
     func abs() -> NSDecimalNumber {
-        if self < NSDecimalNumber.zero() {
+        if self < NSDecimalNumber.zero {
             return -self;
         }
         return self;
@@ -112,10 +112,10 @@ extension NSDecimalNumber : Comparable {
         var value = abs();
 
         var result = 0;
-        let one = NSDecimalNumber.one();
+        let one = NSDecimalNumber.one;
         while value >= one {
-            result++;
-            value = value.decimalNumberByMultiplyingByPowerOf10(-1, withBehavior: NSDecimalNumber.roundDownHandler);
+            result += 1;
+            value = value.multiplying(byPowerOf10: -1, withBehavior: NSDecimalNumber.roundDownHandler);
         }
 
         return result;
@@ -132,10 +132,10 @@ extension NSDecimalNumber : Comparable {
 
         var value = self.decimalValue;
         var zero = 0.decimalValue;
-        let isNegative = (NSDecimalCompare(&value, &zero) == .OrderedAscending);
+        let isNegative = (NSDecimalCompare(&value, &zero) == .orderedAscending);
         if isNegative {
             var minusOne = (-1).decimalValue;
-            NSDecimalMultiply(&value, &value, &minusOne, .RoundPlain);
+            NSDecimalMultiply(&value, &value, &minusOne, .plain);
         }
 
         var second = value;
@@ -144,82 +144,82 @@ extension NSDecimalNumber : Comparable {
         // value is >= 10.
         var ten = 10.decimalValue;
         var five = 5.decimalValue;
-        if (NSDecimalCompare(&second, &ten) == .OrderedAscending) {
-            NSDecimalRound(&value, &value, 1, .RoundUp);
+        if (NSDecimalCompare(&second, &ten) == .orderedAscending) {
+            NSDecimalRound(&value, &value, 1, .up);
         } else {
-            NSDecimalRound(&value, &value, -digits + 1, .RoundDown);
+            NSDecimalRound(&value, &value, -digits + 1, .down);
 
             // Get the second MSD as this is used to determine where we round to.
             // If the MSD is however 5 or more then we just round that up.
-            NSDecimalSubtract(&second, &second, &value, .RoundDown);
-            NSDecimalMultiplyByPowerOf10(&second, &second, -digits + 2, .RoundDown);
+            NSDecimalSubtract(&second, &second, &value, .down);
+            NSDecimalMultiplyByPowerOf10(&second, &second, -digits + 2, .down);
 
-            var first = NSDecimal();
-            NSDecimalMultiplyByPowerOf10(&first, &value, -digits + 1, .RoundDown);
-            let msdIs5Orlarger = NSDecimalCompare(&first, &five) != .OrderedAscending;
+            var first = Decimal();
+            NSDecimalMultiplyByPowerOf10(&first, &value, -digits + 1, .down);
+            let msdIs5Orlarger = NSDecimalCompare(&first, &five) != .orderedAscending;
 
             // See if the second MSD is below or above 5. In the latter case increase the MSD by one
             // and return this as the rounded value.
-            if (msdIs5Orlarger || NSDecimalCompare(&second, &five) == .OrderedDescending) {
+            if (msdIs5Orlarger || NSDecimalCompare(&second, &five) == .orderedDescending) {
                 var offset = 1.decimalValue;
-                NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 1), .RoundDown);
-                NSDecimalAdd(&value, &value, &offset, .RoundDown);
+                NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 1), .down);
+                NSDecimalAdd(&value, &value, &offset, .down);
             } else {
                 // The second MSD is < 5, so we round it up to 5 and add this to the overall value.
                 var offset = 5.decimalValue;
-                NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 2), .RoundDown);
-                NSDecimalAdd(&value, &value, &offset, .RoundDown);
+                NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 2), .down);
+                NSDecimalAdd(&value, &value, &offset, .down);
             }
         }
 
         if isNegative {
             var minusOne = (-1).decimalValue;
-            NSDecimalMultiply(&value, &value, &minusOne, .RoundPlain);
+            NSDecimalMultiply(&value, &value, &minusOne, .plain);
         }
         
         return NSDecimalNumber(decimal: value);
     }
 
     func rounded() -> NSDecimalNumber {
-        return decimalNumberByRoundingAccordingToBehavior(NSDecimalNumber.numberHandler);
+        return rounding(accordingToBehavior: NSDecimalNumber.numberHandler);
     }
 
     func outboundNumber() -> NSDecimalNumber {
-        return decimalNumberByMultiplyingByPowerOf10(2, withBehavior: NSDecimalNumber.outboundHandler);
+        return multiplying(byPowerOf10: 2, withBehavior: NSDecimalNumber.outboundHandler);
     }
 
 }
 
 public func == (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> Bool {
-    return lhs.compare(rhs) == .OrderedSame
+    return lhs.compare(rhs) == .orderedSame
 }
 
 public func < (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> Bool {
-    return lhs.compare(rhs) == .OrderedAscending
+    return lhs.compare(rhs) == .orderedAscending
 }
 
 // MARK: - Arithmetic Operators
 
 public prefix func - (value: NSDecimalNumber) -> NSDecimalNumber {
-    return value.decimalNumberByMultiplyingBy(NSDecimalNumber(mantissa: 1, exponent: 0, isNegative: true))
+    return value.multiplying(by: NSDecimalNumber(mantissa: 1, exponent: 0, isNegative: true))
 }
 
 public func + (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> NSDecimalNumber {
-    return lhs.decimalNumberByAdding(rhs)
+    return lhs.adding(rhs)
 }
 
 public func - (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> NSDecimalNumber {
-    return lhs.decimalNumberBySubtracting(rhs)
+    return lhs.subtracting(rhs)
 }
 
 public func * (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> NSDecimalNumber {
-    return lhs.decimalNumberByMultiplyingBy(rhs)
+    return lhs.multiplying(by: rhs)
 }
 
 public func / (lhs: NSDecimalNumber, rhs: NSDecimalNumber) -> NSDecimalNumber {
-    return lhs.decimalNumberByDividingBy(rhs)
+    return lhs.dividing(by: rhs)
 }
 
 public func ^ (lhs: NSDecimalNumber, rhs: Int) -> NSDecimalNumber {
-    return lhs.decimalNumberByRaisingToPower(rhs)
+    return lhs.raising(toPower: rhs)
 }

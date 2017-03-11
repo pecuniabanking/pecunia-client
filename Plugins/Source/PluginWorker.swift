@@ -24,11 +24,11 @@ import WebKit
 import AppKit
 
 @objc protocol JSLogger : JSExport {
-    func logError(message: String) -> Void;
-    func logWarning(message: String) -> Void;
-    func logInfo(message: String) -> Void;
-    func logDebug(message: String) -> Void;
-    func logVerbose(message: String) -> Void;
+    func logError(_ message: String) -> Void;
+    func logWarning(_ message: String) -> Void;
+    func logInfo(_ message: String) -> Void;
+    func logDebug(_ message: String) -> Void;
+    func logVerbose(_ message: String) -> Void;
 }
 
 internal class UserQueryEntry {
@@ -46,8 +46,8 @@ internal class UserQueryEntry {
 };
 
 class WebClient: WebView, WebViewJSExport {
-    private var redirecting: Bool = false;
-    private var pluginDescription: String = ""; // The plugin description for error messages.
+    fileprivate var redirecting: Bool = false;
+    fileprivate var pluginDescription: String = ""; // The plugin description for error messages.
 
     var URL: String {
         get {
@@ -55,8 +55,8 @@ class WebClient: WebView, WebViewJSExport {
         }
         set {
             redirecting = false;
-            if let url = NSURL(string: newValue) {
-                mainFrame.loadRequest(NSURLRequest(URL: url));
+            if let url = Foundation.URL(string: newValue) {
+                mainFrame.load(URLRequest(url: url));
             }
         }
     }
@@ -67,11 +67,11 @@ class WebClient: WebView, WebViewJSExport {
         }
         set {
             redirecting = false;
-            if let url = NSURL(string: newValue) {
-                let request = NSMutableURLRequest(URL: url);
-                request.HTTPMethod = "POST";
+            if let url = Foundation.URL(string: newValue) {
+                let request = NSMutableURLRequest(url: url);
+                request.httpMethod = "POST";
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type");
-                mainFrame.loadRequest(request);
+                mainFrame.load(request);
             }
         }
     }
@@ -82,18 +82,18 @@ class WebClient: WebView, WebViewJSExport {
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
 
-    func reportError(account: String, _ message: String) {
+    func reportError(_ account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
 
         let alert = NSAlert();
-        alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: ""),
+        alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: "") as NSString,
             account, pluginDescription) as String;
         alert.informativeText = message;
-        alert.alertStyle = .WarningAlertStyle;
+        alert.alertStyle = .warning;
         alert.runModal();
     }
 
-    func resultsArrived(results: JSValue) -> Void {
+    func resultsArrived(_ results: JSValue) -> Void {
         query!.authRequest.finishPasswordEntry();
 
         if let entries = results.toArray() as? [[String: AnyObject]] {
@@ -105,22 +105,22 @@ class WebClient: WebView, WebViewJSExport {
                 let queryResult = BankQueryResult();
 
                 if  let type = entry["isCreditCard"] as? Bool {
-                    queryResult.type = type ? .CreditCard : .BankStatement;
+                    queryResult.type = type ? .creditCard : .bankStatement;
                 }
 
-                if let lastSettleDate = entry["lastSettleDate"] as? NSDate {
+                if let lastSettleDate = entry["lastSettleDate"] as? Date {
                     queryResult.lastSettleDate = lastSettleDate;
                 }
 
                 if let account = entry["account"] as? String {
-                    queryResult.account = BankAccount.findAccountWithNumber(account, bankCode: query!.bankCode);
-                    if queryResult.type == .CreditCard {
+                    queryResult.account = BankAccount.find(withNumber: account, bankCode: query!.bankCode);
+                    if queryResult.type == .creditCard {
                         queryResult.ccNumber = account;
                     }
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                if let value = entry["balance"] as? String where value.characters.count > 0 {
+                if let value = entry["balance"] as? String, value.characters.count > 0 {
                     if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
                         queryResult.balance = number;
                     }
@@ -130,17 +130,17 @@ class WebClient: WebView, WebViewJSExport {
                 for jsonStatement in statements {
                     let statement: BankStatement = BankStatement.createTemporary(); // Created in memory context.
                     if let final = jsonStatement["final"] as? Bool {
-                        statement.isPreliminary = !final;
+                        statement.isPreliminary = !final as NSNumber!;
                     }
 
-                    if let date = jsonStatement["valutaDate"] as? NSDate {
-                        statement.valutaDate = date.dateByAddingTimeInterval(12 * 3600); // Add 12hrs so we start at noon.
+                    if let date = jsonStatement["valutaDate"] as? Date {
+                        statement.valutaDate = date.addingTimeInterval(12 * 3600); // Add 12hrs so we start at noon.
                     } else {
-                        statement.valutaDate = NSDate();
+                        statement.valutaDate = Date();
                     }
 
-                    if let date = jsonStatement["date"] as? NSDate {
-                        statement.date = date.dateByAddingTimeInterval(12 * 3600);
+                    if let date = jsonStatement["date"] as? Date {
+                        statement.date = date.addingTimeInterval(12 * 3600);
                     } else {
                         statement.date = statement.valutaDate;
                     }
@@ -149,7 +149,7 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    if let value = jsonStatement["value"] as? String  where value.characters.count > 0 {
+                    if let value = jsonStatement["value"] as? String, value.characters.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
@@ -157,11 +157,11 @@ class WebClient: WebView, WebViewJSExport {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.setValue(number, forKey: "value");
                         } else {
-                            statement.setValue(NSDecimalNumber(int: 0), forKey: "value");
+                            statement.setValue(NSDecimalNumber(value: 0 as Int32), forKey: "value");
                         }
                     }
 
-                    if let value = jsonStatement["originalValue"] as? String where value.characters.count > 0 {
+                    if let value = jsonStatement["originalValue"] as? String, value.characters.count > 0 {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.origValue = number;
                         }
@@ -181,12 +181,12 @@ class WebClient: WebView, WebViewJSExport {
 }
 
 class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
-    private let webClient: WebClient;
-    private let workContext: JSContext; // The context on which we run the script.
+    fileprivate let webClient: WebClient;
+    fileprivate let workContext: JSContext; // The context on which we run the script.
                                         // WebView's context is recreated on loading a new page,
                                         // stopping so any running JS code.
-    private var jsLogger: JSLogger;
-    private var debugScript: String = "";
+    fileprivate var jsLogger: JSLogger;
+    fileprivate var debugScript: String = "";
 
     init?(pluginFile: String, logger: JSLogger, hostWindow: NSWindow?) {
         jsLogger = logger;
@@ -198,9 +198,9 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         prepareContext();
 
         do {
-            let script = try String(contentsOfFile: pluginFile, encoding: NSUTF8StringEncoding);
+            let script = try String(contentsOfFile: pluginFile, encoding: String.Encoding.utf8);
             let parseResult = workContext.evaluateScript(script);
-            if parseResult.toString() != "true" {
+            if parseResult?.toString() != "true" {
                 logger.logError("Script loaded but did not return \"true\"");
                 return nil;
             }
@@ -221,7 +221,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         prepareContext();
 
         let parseResult = workContext.evaluateScript(script);
-        if parseResult.toString() != "true" {
+        if parseResult?.toString() != "true" {
             return nil;
         }
         setupWebClient(hostWindow);
@@ -229,52 +229,52 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
 
     // MARK: - Setup
 
-    private func prepareContext() {
-        workContext.setObject(false, forKeyedSubscript: "JSError");
+    fileprivate func prepareContext() {
+        workContext.setObject(false, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)!);
         workContext.exceptionHandler = { workContext, exception in
-            self.jsLogger.logError(exception.toString());
-            workContext.setObject(true, forKeyedSubscript: "JSError");
+            self.jsLogger.logError((exception?.toString())!);
+            workContext?.setObject(true, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)!);
         }
 
-        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger");
-        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger");
+        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)!);
+        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)!);
 
         // Export Webkit to the work context, so that plugins can use it to work with data/the DOM
         // from the web client.
-        workContext.setObject(DOMNodeList.self, forKeyedSubscript: "DOMNodeList");
-        workContext.setObject(DOMCSSStyleDeclaration.self, forKeyedSubscript: "DOMCSSStyleDeclaration");
-        workContext.setObject(DOMCSSRuleList.self, forKeyedSubscript: "DOMCSSRuleList");
-        workContext.setObject(DOMNamedNodeMap.self, forKeyedSubscript: "DOMNamedNodeMap");
-        workContext.setObject(DOMNode.self, forKeyedSubscript: "DOMNode");
-        workContext.setObject(DOMAttr.self, forKeyedSubscript: "DOMAttr");
-        workContext.setObject(DOMElement.self, forKeyedSubscript: "DOMElement");
-        workContext.setObject(DOMHTMLCollection.self, forKeyedSubscript: "DOMHTMLCollection");
-        workContext.setObject(DOMHTMLElement.self, forKeyedSubscript: "DOMHTMLElement");
-        workContext.setObject(DOMDocumentType.self, forKeyedSubscript: "DOMDocumentType");
-        workContext.setObject(DOMHTMLFormElement.self, forKeyedSubscript: "DOMHTMLFormElement");
-        workContext.setObject(DOMHTMLInputElement.self, forKeyedSubscript: "DOMHTMLInputElement");
-        workContext.setObject(DOMHTMLButtonElement.self, forKeyedSubscript: "DOMHTMLButtonElement");
-        workContext.setObject(DOMHTMLAnchorElement.self, forKeyedSubscript: "DOMHTMLAnchorElement");
-        workContext.setObject(DOMHTMLOptionElement.self, forKeyedSubscript: "DOMHTMLOptionElement");
-        workContext.setObject(DOMHTMLOptionsCollection.self, forKeyedSubscript: "DOMHTMLOptionsCollection");
-        workContext.setObject(DOMHTMLSelectElement.self, forKeyedSubscript: "DOMHTMLSelectElement");
-        workContext.setObject(DOMImplementation.self, forKeyedSubscript: "DOMImplementation");
-        workContext.setObject(DOMStyleSheetList.self, forKeyedSubscript: "DOMStyleSheetList");
-        workContext.setObject(DOMDocumentFragment.self, forKeyedSubscript: "DOMDocumentFragment");
-        workContext.setObject(DOMCharacterData.self, forKeyedSubscript: "DOMCharacterData");
-        workContext.setObject(DOMText.self, forKeyedSubscript: "DOMText");
-        workContext.setObject(DOMComment.self, forKeyedSubscript: "DOMComment");
-        workContext.setObject(DOMCDATASection.self, forKeyedSubscript: "DOMCDATASection");
-        workContext.setObject(DOMProcessingInstruction.self, forKeyedSubscript: "DOMProcessingInstruction");
-        workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference");
-        workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument");
-        workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame");
-        workContext.setObject(webClient.self, forKeyedSubscript: "webClient");
+        workContext.setObject(DOMNodeList.self, forKeyedSubscript: "DOMNodeList" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMCSSStyleDeclaration.self, forKeyedSubscript: "DOMCSSStyleDeclaration" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMCSSRuleList.self, forKeyedSubscript: "DOMCSSRuleList" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMNamedNodeMap.self, forKeyedSubscript: "DOMNamedNodeMap" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMNode.self, forKeyedSubscript: "DOMNode" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMAttr.self, forKeyedSubscript: "DOMAttr" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMElement.self, forKeyedSubscript: "DOMElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLCollection.self, forKeyedSubscript: "DOMHTMLCollection" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLElement.self, forKeyedSubscript: "DOMHTMLElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMDocumentType.self, forKeyedSubscript: "DOMDocumentType" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLFormElement.self, forKeyedSubscript: "DOMHTMLFormElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLInputElement.self, forKeyedSubscript: "DOMHTMLInputElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLButtonElement.self, forKeyedSubscript: "DOMHTMLButtonElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLAnchorElement.self, forKeyedSubscript: "DOMHTMLAnchorElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLOptionElement.self, forKeyedSubscript: "DOMHTMLOptionElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLOptionsCollection.self, forKeyedSubscript: "DOMHTMLOptionsCollection" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMHTMLSelectElement.self, forKeyedSubscript: "DOMHTMLSelectElement" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMImplementation.self, forKeyedSubscript: "DOMImplementation" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMStyleSheetList.self, forKeyedSubscript: "DOMStyleSheetList" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMDocumentFragment.self, forKeyedSubscript: "DOMDocumentFragment" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMCharacterData.self, forKeyedSubscript: "DOMCharacterData" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMText.self, forKeyedSubscript: "DOMText" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMComment.self, forKeyedSubscript: "DOMComment" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMCDATASection.self, forKeyedSubscript: "DOMCDATASection" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMProcessingInstruction.self, forKeyedSubscript: "DOMProcessingInstruction" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(webClient.self, forKeyedSubscript: "webClient" as (NSCopying & NSObjectProtocol)!);
     }
 
-    private func setupWebClient(hostWindow: NSWindow?) {
+    fileprivate func setupWebClient(_ hostWindow: NSWindow?) {
         webClient.frameLoadDelegate = self;
-        webClient.UIDelegate = self;
+        webClient.uiDelegate = self;
         webClient.preferences.javaScriptCanOpenWindowsAutomatically = true;
         webClient.hostWindow = hostWindow;
         if hostWindow != nil {
@@ -282,20 +282,20 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         }
         webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
 
-        let version = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString");
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString");
         webClient.applicationNameForUserAgent = "Pecunia/\(version) (Safari)";
     }
 
     // MARK: - Plugin Logic
 
     // Allows to add any additional script to the plugin context.
-    func addScript(script: String) {
+    func addScript(_ script: String) {
         workContext.evaluateScript(script);
     }
 
     // Like addScript but for both contexts. Applied on the webclient context each time
     // it is recreated.
-    func addDebugScript(script: String) {
+    func addDebugScript(_ script: String) {
         debugScript = script;
         workContext.evaluateScript(script);
     }
@@ -313,24 +313,24 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     }
 
     // Calls the getStatements() plugin function and translates results from JSON to a BankQueryResult list.
-    func getStatements(userId: String, query: UserQueryEntry, fromDate: NSDate, toDate: NSDate,
-        completion: ([BankQueryResult]) -> Void) -> Void {
+    func getStatements(_ userId: String, query: UserQueryEntry, fromDate: Date, toDate: Date,
+        completion: @escaping ([BankQueryResult]) -> Void) -> Void {
             let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
             let pluginId = workContext.objectForKeyedSubscript("name").toString();
             if scriptFunction.isUndefined {
-                jsLogger.logError("Error: getStatements() not found in plugin " + pluginId);
+                jsLogger.logError("Error: getStatements() not found in plugin " + pluginId!);
                 return;
             }
 
             webClient.completion = completion;
             webClient.query = query;
-            if !(scriptFunction.callWithArguments([userId, query.bankCode, query.passwords, fromDate,
+            if !(scriptFunction.call(withArguments: [userId, query.bankCode, query.passwords, fromDate,
                 toDate, query.accountNumbers]) != nil) {
-                jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId);
+                jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId!);
             }
     }
 
-    func getFunction(name: String) -> JSValue {
+    func getFunction(_ name: String) -> JSValue {
         return workContext.objectForKeyedSubscript(name);
     }
 
@@ -339,46 +339,46 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         return webClient.mainFrame.document.body.outerHTML;
     }
 
-    func canHandle(account: String, bankCode: String) -> Bool {
+    func canHandle(_ account: String, bankCode: String) -> Bool {
         let function = workContext.objectForKeyedSubscript("canHandle");
-        if function.isUndefined {
+        if (function?.isUndefined)! {
             return false;
         }
 
-        let result = function.callWithArguments([account, bankCode]);
-        if result.isBoolean {
-            return result.toBool();
+        let result = function?.call(withArguments: [account, bankCode]);
+        if (result?.isBoolean)! {
+            return result!.toBool();
         }
         return false;
     }
 
     // MARK: - webView delegate methods.
 
-    internal func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, didStartProvisionalLoadFor frame: WebFrame!) {
         jsLogger.logVerbose("(*) Start loading");
         webClient.redirecting = false; // Gets set when we get redirected while processing the provisional frame.
     }
 
-    internal func webView(sender: WebView!, didReceiveServerRedirectForProvisionalLoadForFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, didReceiveServerRedirectForProvisionalLoadFor frame: WebFrame!) {
         jsLogger.logVerbose("(*) Received server redirect for frame");
     }
 
-    internal func webView(sender: WebView!, didCommitLoadForFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, didCommitLoadFor frame: WebFrame!) {
         jsLogger.logVerbose("(*) Committed load for frame");
     }
 
-    internal func webView(sender: WebView!, willPerformClientRedirectToURL URL: NSURL!,
-        delay seconds: NSTimeInterval, fireDate date: NSDate!, forFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, willPerformClientRedirectTo URL: URL!,
+        delay seconds: TimeInterval, fire date: Date!, for frame: WebFrame!) {
             jsLogger.logVerbose("(*) Performing client redirection...");
             webClient.redirecting = true;
     }
 
-    internal func webView(sender: WebView!, didCreateJavaScriptContext context: JSContext, forFrame: WebFrame!) {
+    internal func webView(_ sender: WebView!, didCreateJavaScriptContext context: JSContext, for forFrame: WebFrame!) {
         jsLogger.logVerbose("(*) JS create");
     }
 
-    internal func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString);
+    internal func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
+        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.url!.absoluteString);
         if webClient.redirecting {
             webClient.redirecting = false;
             return;
@@ -386,19 +386,19 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
 
         if !webClient.callback.isUndefined && !webClient.callback.isNull {
             jsLogger.logVerbose("(*) Calling callback...");
-            webClient.callback.callWithArguments([false]);
+            webClient.callback.call(withArguments: [false]);
         }
     }
 
-    internal func webView(sender: WebView!, willCloseFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, willClose frame: WebFrame!) {
         jsLogger.logVerbose("(*) Closing frame...");
     }
 
-    internal func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!) {
+    internal func webView(_ sender: WebView!, didFailLoadWithError error: Error!, for frame: WebFrame!) {
         jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
     }
     
-    internal func webView(sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame: WebFrame!) {
+    internal func webView(_ sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedBy initiatedByFrame: WebFrame!) {
         let alert = NSAlert();
         alert.messageText = message;
         alert.runModal();

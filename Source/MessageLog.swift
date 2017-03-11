@@ -34,7 +34,7 @@ import Foundation
 
 // Use those class properties insted of `#define LOG_LEVEL_DEF` and `LOG_ASYNC_ENABLED`
 extension DDLog {
-    private struct Static {
+    fileprivate struct Static {
         // Class variables are not yet supported in Swift. So temporarly use static vars instead.
         static var logLevel : DDLogLevel?
         static var logAsync : Bool?
@@ -42,7 +42,7 @@ extension DDLog {
 
     class var logLevel: DDLogLevel {
         get {
-            return Static.logLevel ?? DDLogLevel.Error
+            return Static.logLevel ?? DDLogLevel.error
         }
         set(logLevel) {
             Static.logLevel = logLevel
@@ -51,41 +51,41 @@ extension DDLog {
 
     class var logAsync: Bool {
         get {
-            return (self.logLevel != DDLogLevel.Error) && (Static.logAsync ?? true)
+            return (self.logLevel != DDLogLevel.error) && (Static.logAsync ?? true)
         }
         set(logAsync) {
             Static.logAsync = logAsync
         }
     }
 
-    class func doLog(flag: DDLogFlag, message: String, function: String?, file: String?, line: Int32, arguments: [CVarArgType]) {
+    class func doLog(_ flag: DDLogFlag, message: String, function: String?, file: String?, line: Int32, arguments: [CVarArg]) {
         let level: DDLogLevel = DDLog.logLevel
-        let async: Bool = (level != DDLogLevel.Error) && DDLog.logAsync
+        let async: Bool = (level != DDLogLevel.error) && DDLog.logAsync
 
         if (flag.rawValue & level.rawValue) != 0 {
 
-            let fileName : UnsafePointer<Int8> = (file != nil) ? UnsafePointer(file!.dataUsingEncoding(NSUTF8StringEncoding)!.bytes) : nil
-            let functionName : UnsafePointer<Int8> = (function != nil) ? UnsafePointer(function!.dataUsingEncoding(NSUTF8StringEncoding)!.bytes) : nil
+            let fileName : UnsafePointer<Int8> = (file != nil) ? (file!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: file!.data(using: String.Encoding.utf8)!.count) : nil
+            let functionName : UnsafePointer<Int8> = (function != nil) ? (function!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: function!.data(using: String.Encoding.utf8)!.count) : nil
 
             var format : String;
             switch (flag) {
-            case DDLogFlag.Error:
+            case DDLogFlag.error:
                 format = "[Error] " + message;
                 break;
 
-            case DDLogFlag.Warning:
+            case DDLogFlag.warning:
                 format = "[Warning] " + message;
                 break;
 
-            case DDLogFlag.Info:
+            case DDLogFlag.info:
                 format = "[Info] " + message;
                 break;
 
-            case DDLogFlag.Debug:
+            case DDLogFlag.debug:
                 format = "[Debug] " + message;
                 break;
 
-            case DDLogFlag.Verbose:
+            case DDLogFlag.verbose:
                 format = "[Verbose] " + message;
                 break;
 
@@ -108,30 +108,30 @@ extension DDLog {
     }
 }
 
-func logError(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
-    DDLog.doLog(DDLogFlag.Error, message: message, function: function, file: file, line: line, arguments: arguments)
+func logError(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
+    DDLog.doLog(DDLogFlag.error, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logWarning(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
-    DDLog.doLog(DDLogFlag.Warning, message: message, function: function, file: file, line: line, arguments: arguments)
+func logWarning(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
+    DDLog.doLog(DDLogFlag.warning, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logInfo(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
-    DDLog.doLog(DDLogFlag.Info, message: message, function: function, file: file, line: line, arguments: arguments)
+func logInfo(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
+    DDLog.doLog(DDLogFlag.info, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logDebug(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
-    DDLog.doLog(DDLogFlag.Debug, message: message, function: function, file: file, line: line, arguments: arguments)
+func logDebug(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
+    DDLog.doLog(DDLogFlag.debug, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logVerbose(message: String, _ function: String = __FUNCTION__, _ file: String = __FILE__, _ line: Int32 = __LINE__, arguments: CVarArgType ...) {
-    DDLog.doLog(DDLogFlag.Verbose, message: message, function: function, file: file, line: line, arguments: arguments)
+func logVerbose(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
+    DDLog.doLog(DDLogFlag.verbose, message: message, function: function, file: file, line: line, arguments: arguments)
 }
 
-func logEnter(f: String = __FUNCTION__) {
-    DDLog.doLog(DDLogFlag.Debug, message: "Entering \(f)", function: nil, file: nil, line: -1, arguments: [])
+func logEnter(_ f: String = #function) {
+    DDLog.doLog(DDLogFlag.debug, message: "Entering \(f)", function: nil, file: nil, line: -1, arguments: [])
 }
 
-func logLeave(f: String = __FUNCTION__ ) {
-    DDLog.doLog(DDLogFlag.Debug, message: "Leaving \(f)", function: nil, file: nil, line: -1, arguments: [])
+func logLeave(_ f: String = #function ) {
+    DDLog.doLog(DDLogFlag.debug, message: "Leaving \(f)", function: nil, file: nil, line: -1, arguments: [])
 }

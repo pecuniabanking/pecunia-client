@@ -20,33 +20,36 @@
 let RemoteResourcePath = "http://www.pecuniabanking.de/downloads/resources/"
 let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
 
-@objc public class RemoteResourceManager : NSObject {
-    private let mandatoryFiles = ["eu_all_mfi.zip", "bank_codes.zip", "fints_institute.zip", "mappings.zip"];
-    private var downloadableFiles : Array<Dictionary<String, String>>?
+@objc open class RemoteResourceManager : NSObject {
+    private static var __once: () = {
+            RemoteResourceManager.singleton = RemoteResourceManager()
+        }()
+    fileprivate let mandatoryFiles = ["eu_all_mfi.zip", "bank_codes.zip", "fints_institute.zip", "mappings.zip"];
+    fileprivate var downloadableFiles : Array<Dictionary<String, String>>?
 
-    static var instance_token : dispatch_once_t = 0;
+    static var instance_token : Int = 0;
     static var singleton : RemoteResourceManager? = nil;
 
     override init() {
         super.init();
 
         // Trigger updating files in the background.
-        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-        dispatch_async(queue) {
+        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background);
+        queue.async {
             objc_sync_enter(self);
 
-            let url : NSURL? = NSURL(string: RemoteResourceUpdateInfo);
-            let xmlData : NSData? = NSData(contentsOfURL: url!);
+            let url : URL? = URL(string: RemoteResourceUpdateInfo);
+            let xmlData : Data? = try? Data(contentsOf: url!);
             if xmlData != nil {
 	            do {
-	                let updateInfo : NSDictionary = try NSDictionary.dictForXMLData(xmlData);
+	                let updateInfo : NSDictionary = try NSDictionary.dict(forXMLData: xmlData) as NSDictionary;
 	                let filesEntry = updateInfo["files"] as? NSDictionary;
 	                if (filesEntry != nil) {
 	                    self.downloadableFiles = filesEntry!["file"] as? Array;
 	                }
 
 	                // Trigger updating files in the background.
-	                dispatch_after(0, dispatch_get_main_queue()) {
+	                DispatchQueue.main.asyncAfter(deadline: 0) {
 	                    self.updateFiles();
 	                }
 	            }
@@ -64,37 +67,35 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         }
     }
 
-    public class var sharedManager: RemoteResourceManager {
-        dispatch_once(&instance_token) {
-            self.singleton = RemoteResourceManager()
-        }
+    open class var sharedManager: RemoteResourceManager {
+        _ = RemoteResourceManager.__once
         return singleton!
     }
 
-    public class var pecuniaResourcesUpdatedNotification : String {
+    open class var pecuniaResourcesUpdatedNotification : String {
         return "PecuniaResourcesUpdatedNotification";
     }
 
-    public func addManagedFile(fileName: String) {
+    open func addManagedFile(_ fileName: String) {
         logEnter();
         
-        let backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-        dispatch_async(backgroundQueue, {
+        let backgroundQueue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background);
+        backgroundQueue.async(execute: {
             self.updateFileAndNotify(fileName);
         })
 
         logLeave();
     }
 
-    public func removeManagedFile(fileName: String) -> Bool {
+    open func removeManagedFile(_ fileName: String) -> Bool {
         logEnter();
-        let fm = NSFileManager.defaultManager();
-        let assistant = MOAssistant.sharedAssistant();
-        let targetPath = assistant.resourcesDir + "/" + fileName;
+        let fm = FileManager.default;
+        let assistant = MOAssistant.shared();
+        let targetPath = (assistant?.resourcesDir)! + "/" + fileName;
 
-        if fm.fileExistsAtPath(targetPath) {
+        if fm.fileExists(atPath: targetPath) {
             do {
-                try fm.removeItemAtPath(targetPath);
+                try fm.removeItem(atPath: targetPath);
             }
             catch let error as NSError {
                 NSAlert(error: error).runModal();
@@ -110,10 +111,10 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
      * Checks if the given file would need an update, which requires that it must be one of
      * the downloadable files (but not necessarily be managed).
      */
-    public func fileNeedsUpdate(fileName: String) -> Bool {
-        let resourcePath = MOAssistant.sharedAssistant().resourcesDir;
-        let fm = NSFileManager.defaultManager();
-        let dateFormatter = NSDateFormatter();
+    open func fileNeedsUpdate(_ fileName: String) -> Bool {
+        let resourcePath = MOAssistant.shared().resourcesDir;
+        let fm = FileManager.default;
+        let dateFormatter = DateFormatter();
         dateFormatter.dateFormat = "yyyy-MM-dd";
 
         // Check that the given file is one of the remote files we can download.
@@ -123,7 +124,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         if downloadableFiles != nil {
             for info in downloadableFiles! {
                 if info["name"] == fileName {
-                    fileInfo = info;
+                    fileInfo = info as Dictionary<String, AnyObject>?;
                     break;
                 }
             }
@@ -135,20 +136,20 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             return false;
         }
 
-        let targetPath = resourcePath + "/" + fileName;
-        if fm.fileExistsAtPath(targetPath) {
+        let targetPath = resourcePath! + "/" + fileName;
+        if fm.fileExists(atPath: targetPath) {
             // File exists already. Check if it is older than the last update date.
             do {
-                let fileAttrs: NSDictionary = try fm.attributesOfItemAtPath(targetPath);
-                var date: NSDate? = fileAttrs.fileModificationDate();
+                let fileAttrs: NSDictionary = try fm.attributesOfItem(atPath: targetPath) as NSDictionary;
+                var date: Date? = fileAttrs.fileModificationDate();
                 if (date == nil) {
                     date = fileAttrs.fileCreationDate();
                 }
                 if date != nil {
                     let fileDate = ShortDate(date: date);
                     if fileInfo!["updated"] != nil {
-                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as! String));
-                        if updateDate <= fileDate {
+                        let updateDate = ShortDate(date: dateFormatter.date(from: fileInfo!["updated"]! as! String));
+                        if updateDate! <= fileDate! {
                             return false;
                         }
                     }
@@ -167,10 +168,10 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
      * @param fileName Contains the pure file name without path information.
      * @return true, if the file has been updated.
      */
-    private func updateFile(fileName: String) -> Bool {
-        let resourcePath = MOAssistant.sharedAssistant().resourcesDir;
-        let fm = NSFileManager.defaultManager();
-        let dateFormatter = NSDateFormatter();
+    fileprivate func updateFile(_ fileName: String) -> Bool {
+        let resourcePath = MOAssistant.shared().resourcesDir;
+        let fm = FileManager.default;
+        let dateFormatter = DateFormatter();
         dateFormatter.dateFormat = "yyyy-MM-dd";
 
         // Check that the given file is one of the remote files we can download.
@@ -180,7 +181,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         if downloadableFiles != nil {
             for info in downloadableFiles! {
                 if info["name"] == fileName {
-                    fileInfo = info;
+                    fileInfo = info as Dictionary<String, AnyObject>?;
                     break;
                 }
             }
@@ -193,25 +194,25 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             return false;
         }
 
-        let targetPath = resourcePath + "/" + fileName;
-        if fm.fileExistsAtPath(targetPath) {
+        let targetPath = resourcePath! + "/" + fileName;
+        if fm.fileExists(atPath: targetPath) {
             // File exists already. Check if it is older than the last update date.
             do {
-                let fileAttrs: NSDictionary = try fm.attributesOfItemAtPath(targetPath);
-                var date: NSDate? = fileAttrs.fileModificationDate();
+                let fileAttrs: NSDictionary = try fm.attributesOfItem(atPath: targetPath) as NSDictionary;
+                var date: Date? = fileAttrs.fileModificationDate();
                 if (date == nil) {
                     date = fileAttrs.fileCreationDate();
                 }
                 if date != nil {
                     let fileDate = ShortDate(date: date);
                     if fileInfo!["updated"] != nil {
-                        let updateDate = ShortDate(date: dateFormatter.dateFromString(fileInfo!["updated"]! as! String));
-                        if updateDate <= fileDate {
+                        let updateDate = ShortDate(date: dateFormatter.date(from: fileInfo!["updated"]! as! String));
+                        if updateDate! <= fileDate! {
                             return false;
                         }
                     }
                 }
-                try fm.removeItemAtPath(targetPath);
+                try fm.removeItem(atPath: targetPath);
             }
             catch {
 
@@ -219,13 +220,13 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         }
 
         // Copy file from remote location.
-        var sourceURL : NSURL = NSURL(string: RemoteResourcePath)!;
-        sourceURL = sourceURL.URLByAppendingPathComponent(fileName);
-        let targetURL = NSURL(fileURLWithPath: targetPath);
+        var sourceURL : URL = URL(string: RemoteResourcePath)!;
+        sourceURL = sourceURL.appendingPathComponent(fileName);
+        let targetURL = URL(fileURLWithPath: targetPath);
 
         do {
-            let fileData: NSData = try NSData(contentsOfURL: sourceURL, options: .DataReadingUncached);
-            if !fileData.writeToURL(targetURL, atomically: true) {
+            let fileData: Data = try Data(contentsOf: sourceURL, options: .uncached);
+            if !((try? fileData.write(to: targetURL, options: [.atomic])) != nil) {
                 logError("Could not copy remote resource %@", arguments: sourceURL.path!);
                 return false;
             }
@@ -238,36 +239,36 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         return true;
     }
 
-    private func updateFileAndNotify(fileName: String) {
+    fileprivate func updateFileAndNotify(_ fileName: String) {
         if updateFile(fileName) {
-            let notification = NSNotification(name: RemoteResourceManager.pecuniaResourcesUpdatedNotification,
+            let notification = Notification(name: Notification.Name(rawValue: RemoteResourceManager.pecuniaResourcesUpdatedNotification),
                 object: [fileName]);
-            NSNotificationCenter.defaultCenter().postNotification(notification);
+            NotificationCenter.default.post(notification);
         }
     }
 
-    private func updateFiles() {
+    fileprivate func updateFiles() {
         logEnter();
 
         // First check if we already did this today.
-        let defaults = NSUserDefaults.standardUserDefaults();
-        let lastUpdated = defaults.objectForKey("remoteFilesLastUpdate") as? NSDate;
+        let defaults = UserDefaults.standard;
+        let lastUpdated = defaults.object(forKey: "remoteFilesLastUpdate") as? Date;
         var last: ShortDate? = (lastUpdated != nil) ? ShortDate(date: lastUpdated) : nil;
-        let today = ShortDate.currentDate();
+        let today = ShortDate.current();
 
         // Ignore last update date if any of the mandatory files is missing.
-        let fm = NSFileManager.defaultManager();
+        let fm = FileManager.default;
         for fileName in mandatoryFiles {
-            if !fm.fileExistsAtPath(MOAssistant.sharedAssistant().resourcesDir + "/" + fileName) {
+            if !fm.fileExists(atPath: MOAssistant.shared().resourcesDir + "/" + fileName) {
                 last = nil;
                 break;
             }
         }
 
-        if (last == nil) || (last! < today) {
+        if (last == nil) || (last! < today!) {
             var updatedFiles : Array<String> = [];
             do {
-                let existingFiles = try fm.contentsOfDirectoryAtPath(MOAssistant.sharedAssistant().resourcesDir);
+                let existingFiles = try fm.contentsOfDirectory(atPath: MOAssistant.shared().resourcesDir);
 
                 let files = existingFiles | mandatoryFiles; // Union of all existing and mandatory files.
 
@@ -279,11 +280,11 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
                     }
                 }
 
-                defaults.setObject(today.lowDate(), forKey: "remoteFilesLastUpdate");
+                defaults.set(today?.lowDate(), forKey: "remoteFilesLastUpdate");
                 if updatedFiles.count > 0 {
-                    let notification = NSNotification(name: RemoteResourceManager.pecuniaResourcesUpdatedNotification,
+                    let notification = Notification(name: Notification.Name(rawValue: RemoteResourceManager.pecuniaResourcesUpdatedNotification),
                         object: updatedFiles);
-                    NSNotificationCenter.defaultCenter().postNotification(notification);
+                    NotificationCenter.default.post(notification);
                 }
             }
             catch {

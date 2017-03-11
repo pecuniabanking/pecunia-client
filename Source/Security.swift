@@ -20,18 +20,18 @@
 import Foundation
 
 // Class for parallel running banking requests each with its own authentication need.
-internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.auth-queue", DISPATCH_QUEUE_SERIAL);
+internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-queue", attributes: []);
 
-@objc public class AuthRequest : NSObject {
+@objc open class AuthRequest : NSObject {
 
-    private var service: String = "";
-    private var account: String = "";
+    fileprivate var service: String = "";
+    fileprivate var account: String = "";
 
-    private var passwordController: PasswordController?;
+    fileprivate var passwordController: PasswordController?;
 
-    public var errorOccured = false;
+    open var errorOccured = false;
 
-    public func finishPasswordEntry() -> Void {
+    open func finishPasswordEntry() -> Void {
         if errorOccured {
             Security.deletePasswordForService(service, account: account);
         }
@@ -39,7 +39,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         if passwordController != nil {
             if !errorOccured {
                 let password = passwordController!.result();
-                Security.setPassword(password, forService: service, account: account,
+                Security.setPassword(password!, forService: service, account: account,
                     store: passwordController!.savePassword);
             }
 
@@ -48,7 +48,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         }
     }
     
-    public func getPin(bankCode: String, userId: String) -> String {
+    open func getPin(_ bankCode: String, userId: String) -> String {
         service = "Pecunia PIN";
         let s = "PIN_\(bankCode)_\(userId)";
         if s != account {
@@ -60,7 +60,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
 
         // Serialize password retrieval (especially password dialogs).
         var result = "<abort>";
-        dispatch_sync(serialQueue) {
+        serialQueue.sync {
             let password = Security.passwordForService(self.service, account: self.account);
             if password != nil {
                 result = password!;
@@ -68,19 +68,19 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
             }
 
             if self.passwordController == nil {
-                let user = BankUser.findUserWithId(userId, bankCode: bankCode);
+                let user = BankUser.find(withId: userId, bankCode: bankCode);
                 self.passwordController = PasswordController(text: String(format: NSLocalizedString("AP171", comment: ""),
                     user != nil ? user!.name : userId), title: NSLocalizedString( "AP181", comment: ""));
             } else {
                 self.passwordController!.retry();
             }
 
-            let res = NSApp.runModalForWindow(self.passwordController!.window!);
+            let res = NSApp.runModal(for: self.passwordController!.window!);
             self.passwordController!.closeWindow();
             if res == 0 {
                 let pin = self.passwordController!.result();
-                Security.setPassword(pin, forService: self.service, account: self.account, store: false);
-                result = pin;
+                Security.setPassword(pin!, forService: self.service, account: self.account, store: false);
+                result = pin!;
             } else {
                 Security.deletePasswordForService(self.service, account: self.account);
                 self.errorOccured = true; // Don't save the PIN.
@@ -93,17 +93,17 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
 
 }
 
-@objc public class Security : NSObject {
+@objc open class Security : NSObject {
 
-    public static var currentSigningOption: SigningOption? = nil;
+    open static var currentSigningOption: SigningOption? = nil;
 
-    private static var currentPwService = "";
-    private static var currentPwAccount = "";
+    fileprivate static var currentPwService = "";
+    fileprivate static var currentPwAccount = "";
 
-    private static var passwordCache: [String: String] = [:];
-    private static var passwordController: PasswordController?;
+    fileprivate static var passwordCache: [String: String] = [:];
+    fileprivate static var passwordController: PasswordController?;
 
-    public static func getPasswordForDataFile() -> String {
+    open static func getPasswordForDataFile() -> String {
         currentPwService = "Pecunia";
         currentPwAccount = "DataFile";
         var password = passwordForService(currentPwService, account: currentPwAccount);
@@ -115,7 +115,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
                 passwordController!.retry();
             }
 
-            if NSApp.runModalForWindow(passwordController!.window!) > 0 {
+            if NSApp.runModal(for: passwordController!.window!) > 0 {
                 password = nil;
             } else {
                 password = passwordController!.result();
@@ -222,41 +222,41 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
     */
     
     // TODO: for all keychain functions, they could use a more generic implementation like Locksmith (see Github).
-    public static func setPassword(password: String, forService service: String, account: String, store: Bool) -> Bool {
+    open static func setPassword(_ password: String, forService service: String, account: String, store: Bool) -> Bool {
         let key = service + "/" + account;
         passwordCache[key] = password;
         if !store {
             return true;
         }
 
-        let serviceAsUtf8 = (service as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let serviceLength = UInt32(service.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
-        let accountAsUtf8 = (account as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let accountLength = UInt32(account.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
-        let passwordAsUtf8 = (password as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let passwordLength = UInt32(password.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
+        let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
+        let accountAsUtf8 = (account as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let accountLength = UInt32(account.lengthOfBytes(using: String.Encoding.utf8));
+        let passwordAsUtf8 = (password as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let passwordLength = UInt32(password.lengthOfBytes(using: String.Encoding.utf8));
 
         let status = SecKeychainAddGenericPassword(nil, serviceLength, serviceAsUtf8,
-            accountLength, accountAsUtf8, passwordLength + 1, passwordAsUtf8, nil); // TODO: why passwordlength + 1?
+            accountLength, accountAsUtf8, passwordLength + 1, passwordAsUtf8!, nil); // TODO: why passwordlength + 1?
         if status != noErr {
-            passwordCache.removeValueForKey(key);
+            passwordCache.removeValue(forKey: key);
         }
         return status == noErr;
     }
 
-    public static func passwordForService(service: String, account: String) -> String? {
+    open static func passwordForService(_ service: String, account: String) -> String? {
         let key = service + "/" + account;
         if let password = passwordCache[key] {
             return password;
         }
 
-        let serviceAsUtf8 = (service as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let serviceLength = UInt32(service.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
-        let accountAsUtf8 = (account as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let accountLength = UInt32(account.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
+        let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
+        let accountAsUtf8 = (account as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let accountLength = UInt32(account.lengthOfBytes(using: String.Encoding.utf8));
 
         var passwordLength: UInt32 = 0;
-        var passwordData: UnsafeMutablePointer<Void> = nil;
+        var passwordData: UnsafeMutableRawPointer? = nil;
 
         let status = SecKeychainFindGenericPassword(nil, serviceLength, serviceAsUtf8, accountLength, accountAsUtf8,
             &passwordLength, &passwordData, nil);
@@ -266,7 +266,7 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
             return nil;
         }
 
-        if let password = NSString(UTF8String: UnsafeMutablePointer<Int8>(passwordData)) {
+        if let password = NSString(utf8String: UnsafeMutablePointer<Int8>(passwordData)) {
             passwordCache[key] = password as String;
 
             SecKeychainItemFreeContent(nil, passwordData);
@@ -275,14 +275,14 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         return nil;
     }
 
-    public static func deletePasswordForService(service: String, account: String) -> Void {
+    open static func deletePasswordForService(_ service: String, account: String) -> Void {
         let key = service + "/" + account;
-        passwordCache.removeValueForKey(key);
+        passwordCache.removeValue(forKey: key);
 
-        let serviceAsUtf8 = (service as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let serviceLength = UInt32(service.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
-        let accountAsUtf8 = (account as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let accountLength = UInt32(account.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
+        let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
+        let accountAsUtf8 = (account as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let accountLength = UInt32(account.lengthOfBytes(using: String.Encoding.utf8));
 
         var itemRef: SecKeychainItem? = nil;
         let status = SecKeychainFindGenericPassword(nil, serviceLength, serviceAsUtf8, accountLength,
@@ -295,13 +295,13 @@ internal var serialQueue: dispatch_queue_t = dispatch_queue_create("de.pecunia.a
         }
     }
 
-    public static func deletePasswordsForService(service: String) -> Void {
-        let serviceAsUtf8 = (service as NSString).cStringUsingEncoding(NSUTF8StringEncoding);
-        let serviceLength = UInt32(service.lengthOfBytesUsingEncoding(NSUTF8StringEncoding));
+    open static func deletePasswordsForService(_ service: String) -> Void {
+        let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
+        let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
         var status: OSStatus;
         var itemRef: SecKeychainItem? = nil;
 
-        passwordCache.removeAll(keepCapacity: false);
+        passwordCache.removeAll(keepingCapacity: false);
 
         repeat {
             status = SecKeychainFindGenericPassword(nil, serviceLength, serviceAsUtf8, 0, nil, nil,

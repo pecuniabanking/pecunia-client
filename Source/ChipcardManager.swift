@@ -11,7 +11,7 @@ import HBCI4Swift
 
 var _manager:ChipcardManager!
 
-@objc public class CardBankData : NSObject  {
+@objc open class CardBankData : NSObject  {
     var name:String;
     var bankCode:String;
     var country:String;
@@ -25,39 +25,39 @@ var _manager:ChipcardManager!
     
 }
 
-@objc public class ChipcardManager : NSObject {
+@objc open class ChipcardManager : NSObject {
     var card: HBCISmartcardDDV!;
     
     public override init() {
         super.init();
     }
     
-    func stringToBytes(s:NSString) ->NSData {
-        let buffer = UnsafeMutablePointer<UInt8>.alloc(s.length/2);
+    func stringToBytes(_ s:NSString) ->Data {
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: s.length/2);
         
-        for var i = 0; i < s.length/2; i++ {
+        for i in 0 ..< s.length/2 {
             var value:UInt32 = 0;
-            let hexString = s.substringWithRange(NSMakeRange(2*i, 2));
-            let scanner = NSScanner(string: hexString);
-            scanner.scanHexInt(&value);
+            let hexString = s.substring(with: NSMakeRange(2*i, 2));
+            let scanner = Scanner(string: hexString);
+            scanner.scanHexInt32(&value);
             buffer[i] = UInt8(value & 0xff);
         }
         
-        let result = NSData(bytes: buffer, length: s.length/2);
-        buffer.destroy();
+        let result = Data(bytes: UnsafePointer<UInt8>(buffer), count: s.length/2);
+        buffer.deinitialize();
         return result;
     }
     
-    func bytesToString(data:NSData) ->NSString {
+    func bytesToString(_ data:Data) ->NSString {
         let ret = NSMutableString();
-        let p = UnsafeMutablePointer<UInt8>(data.bytes);
-        for var i = 0; i<data.length; i++ {
+        let p = UnsafeMutablePointer<UInt8>(mutating: (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count));
+        for i in 0 ..< data.count {
             ret.appendFormat("%0.2X", p[i]);
         }
         return ret;
     }
     
-    public func isCardConnected() ->Bool {
+    open func isCardConnected() ->Bool {
         if card != nil {
             return card.isConnected();
         }
@@ -65,11 +65,11 @@ var _manager:ChipcardManager!
     }
     
     
-    public func getReaders() ->Array<String>? {
+    open func getReaders() ->Array<String>? {
         return HBCISmartcardDDV.readers();
     }
     
-    public func connectCard(userIdName:String?) throws {
+    open func connectCard(_ userIdName:String?) throws {
         // check if reader is still available
         if !card.isReaderConnected() {
             throw NSError.errorWithMsg(msgId: "AP366", titleId: "AP368");
@@ -98,7 +98,7 @@ var _manager:ChipcardManager!
                 // no card inserted. Open dialog to wait for it
                 let controller = ChipcardRequestController(windowNibName: "ChipcardRequestController");
                 controller._userIdName = userIdName;
-                if NSApp.runModalForWindow(controller.window!) == 1 {
+                if NSApp.runModal(for: controller.window!) == 1 {
                     // cancelled
                     throw HBCIError.UserAbort;
                     //return false;
@@ -108,17 +108,17 @@ var _manager:ChipcardManager!
             
             // verify card
             let notificationController = NotificationWindowController(message: NSLocalizedString("AP351", comment:""), title: NSLocalizedString("AP357", comment:""));
-            notificationController.showWindow(self);
-            notificationController.window?.makeKeyAndOrderFront(self);
+            notificationController?.showWindow(self);
+            notificationController?.window?.makeKeyAndOrderFront(self);
             if !card.verifyPin() {
-                notificationController.window?.close();
+                notificationController?.window?.close();
                 throw NSError.errorWithMsg(msgId: "AP369", titleId: "AP368");
             }
-            notificationController.window?.close();
+            notificationController?.window?.close();
         }
     }
     
-    public func requestCardForUser(user:BankUser) throws {
+    open func requestCardForUser(_ user:BankUser) throws {
         if card == nil {
             // no card  object created yet
             if let readers = HBCISmartcardDDV.readers() {
@@ -133,7 +133,7 @@ var _manager:ChipcardManager!
                     return false;
                     */
                 }
-                var idx = user.ddvReaderIdx.integerValue
+                var idx = user.ddvReaderIdx.intValue
                 if idx >= readers.count {
                     logWarning("Index in user information is wrong");
                     idx = 0;
@@ -185,7 +185,7 @@ var _manager:ChipcardManager!
         }
     }
     
-    public func requestCardForReader(readerName:String) throws {
+    open func requestCardForReader(_ readerName:String) throws {
         if card == nil {
             card = HBCISmartcardDDV(readerName: readerName);
         } else if card.readerName != readerName {
@@ -197,8 +197,8 @@ var _manager:ChipcardManager!
         try connectCard(nil);
     }
     
-    public func initializeChipcard(paramString:NSString) ->NSString? {
-        let params = paramString.componentsSeparatedByString("|");
+    open func initializeChipcard(_ paramString:NSString) ->NSString? {
+        let params = paramString.components(separatedBy: "|");
         
         if params.count != 2 {
             logError("wrong parameters for chipcard initialization");
@@ -223,14 +223,14 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func getBankData() ->CardBankData? {
+    open func getBankData() ->CardBankData? {
         if let data = card.getBankData(1) {
             return CardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, userId: data.userId);
         }
         return nil;
     }
     
-    public func readBankData(paramString:NSString) ->NSString? {
+    open func readBankData(_ paramString:NSString) ->NSString? {
         let idx = paramString.integerValue;
         
         if let data = card.getBankData(idx) {
@@ -239,7 +239,7 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func readKeyData(paramString:NSString) ->NSString? {
+    open func readKeyData(_ paramString:NSString) ->NSString? {
         /*
         let sigid = card.getSignatureId();
         
@@ -258,13 +258,13 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func enterPin(paramString:NSString) ->Bool {
+    open func enterPin(_ paramString:NSString) ->Bool {
         //return card.verifyPin();
         // card should already been verified
         return true;
     }
     
-    public func saveSigId(paramString:NSString) ->Bool {
+    open func saveSigId(_ paramString:NSString) ->Bool {
         //let sigid = paramString.integerValue;
         /*
         if !card.writeSignatureId(sigid) {
@@ -275,7 +275,7 @@ var _manager:ChipcardManager!
         return true;
     }
     
-    public func sign(paramString:NSString) ->NSString? {
+    open func sign(_ paramString:NSString) ->NSString? {
         //let hash = stringToBytes(paramString);
         /*
         if let sig = card.sign(hash) {
@@ -285,7 +285,7 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func encrypt(paramString:NSString) ->NSString? {
+    open func encrypt(_ paramString:NSString) ->NSString? {
         //let keyNum = paramString.integerValue;
         /*
         if let keys = card.getEncryptionKeys(UInt8(keyNum)) {
@@ -295,8 +295,8 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func decrypt(paramString:NSString) ->NSString? {
-        let params = paramString.componentsSeparatedByString("|");
+    open func decrypt(_ paramString:NSString) ->NSString? {
+        let params = paramString.components(separatedBy: "|");
         if params.count != 2 {
             logError("missing parameters for decrypt");
             return nil;
@@ -312,14 +312,14 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    public func close() {
+    open func close() {
         if card != nil {
             card.disconnect();
             card = nil;
         }
     }
     
-    public static var manager:ChipcardManager {
+    open static var manager:ChipcardManager {
         get {
             if let manager = _manager {
                 return manager;

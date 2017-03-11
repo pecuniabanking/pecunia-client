@@ -42,7 +42,7 @@ class CCSettlementListOrder : HBCIOrder {
         return true;
     }
     
-    override func updateResult(result:HBCIResultMessage) {
+    override func updateResult(_ result:HBCIResultMessage) {
         super.updateResult(result);
         
         let ccList = CCSettlementList();

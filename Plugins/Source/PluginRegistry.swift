@@ -20,53 +20,53 @@
 import Foundation;
 import WebKit;
 
-@objc public class PluginRegistry : NSObject, JSLogger {
+@objc open class PluginRegistry : NSObject, JSLogger {
 
-    private var plugins: [String: (description: String, context: PluginContext)] = [:];
-    private static var registry: PluginRegistry?;
+    fileprivate var plugins: [String: (description: String, context: PluginContext)] = [:];
+    fileprivate static var registry: PluginRegistry?;
 
-    public class func startup() {
+    open class func startup() {
         registry = PluginRegistry();
         registry!.setup();
     }
 
-    private func setup() {
+    fileprivate func setup() {
         logDebug("Starting up plugin registry");
 
-        let pluginPath = MOAssistant.sharedAssistant().pluginDir;
-        let fileManager = NSFileManager.defaultManager();
+        let pluginPath = MOAssistant.shared().pluginDir;
+        let fileManager = FileManager.default;
 
         // For standard plugins (non-existing, out-of-date) checks.
-        let defaultPluginPaths = NSBundle.mainBundle().pathsForResourcesOfType("js", inDirectory: "Plugins");
+        let defaultPluginPaths = Bundle.main.paths(forResourcesOfType: "js", inDirectory: "Plugins");
 
         var isDir: ObjCBool = false;
-        if fileManager.fileExistsAtPath(pluginPath, isDirectory: &isDir) && isDir {
+        if fileManager.fileExists(atPath: pluginPath!, isDirectory: &isDir) && isDir {
             do {
-                var contents = try fileManager.contentsOfDirectoryAtPath(pluginPath);
+                var contents = try fileManager.contentsOfDirectory(atPath: pluginPath!);
 
                 // First check if any of the default plugins is missing or newer and copy it to the
                 // target plugin folder if so.
                 var needRescan = false;
                 for defaultPluginPath in defaultPluginPaths {
-                    let pluginName = NSURL(fileURLWithPath: defaultPluginPath).lastPathComponent!;
+                    let pluginName = URL(fileURLWithPath: defaultPluginPath).lastPathComponent;
                     let pluginNameCopy : NSString = pluginName as NSString; // To avoid frequent casts.
                     if !contents.contains(pluginName) {
                         needRescan = true;
-                        try fileManager.copyItemAtPath(defaultPluginPath, toPath: pluginPath + "/" + pluginName);
+                        try fileManager.copyItem(atPath: defaultPluginPath, toPath: pluginPath! + "/" + pluginName);
                     } else {
                         // Check last modified date and if the default is newer backup existing file + copy.
                         // If there's any error accessing the files then ignore them.
                         do {
-                            let sourceAttributes = try fileManager.attributesOfItemAtPath(defaultPluginPath) as NSDictionary;
-                            let targetName = pluginPath + "/" + pluginName;
-                            let targetAttributes = try fileManager.attributesOfItemAtPath(targetName) as NSDictionary;
+                            let sourceAttributes = try fileManager.attributesOfItem(atPath: defaultPluginPath) as NSDictionary;
+                            let targetName = pluginPath! + "/" + pluginName;
+                            let targetAttributes = try fileManager.attributesOfItem(atPath: targetName) as NSDictionary;
                             if let sourceDate = sourceAttributes.fileModificationDate(),
                                 let targetDate = targetAttributes.fileModificationDate() {
                                     if sourceDate > targetDate {
                                         // A newer version of the plugin exists. Backup the exsting one
                                         // (don't touch existing backups) and then copy the new one.
                                         var newBackupName = "";
-                                        let baseName = pluginNameCopy.stringByDeletingPathExtension;
+                                        let baseName = pluginNameCopy.deletingPathExtension;
                                         let ext = pluginNameCopy.pathExtension;
                                         var counter = 1;
 
@@ -83,7 +83,7 @@ import WebKit;
                                         // the current file.
                                         if newBackupName.isEmpty {
                                             do {
-                                                try fileManager.removeItemAtPath(targetName);
+                                                try fileManager.removeItem(atPath: targetName);
                                             } catch let error as NSError {
                                                 logError("Cannot delete existing plugin: \(error.localizedDescription)");
                                                 continue;
@@ -91,7 +91,7 @@ import WebKit;
 
                                         } else {
                                             do {
-                                                try fileManager.moveItemAtPath(targetName, toPath: pluginPath + "/" + newBackupName);
+                                                try fileManager.moveItem(atPath: targetName, toPath: pluginPath! + "/" + newBackupName);
                                             } catch let error as NSError {
                                                 logError("Cannot backup existing plugin: \(error.localizedDescription)");
                                                 continue;
@@ -99,7 +99,7 @@ import WebKit;
                                         }
 
                                         do {
-                                            try fileManager.copyItemAtPath(defaultPluginPath, toPath: targetName);
+                                            try fileManager.copyItem(atPath: defaultPluginPath, toPath: targetName);
                                         } catch let error as NSError {
                                             NSAlert(error: error).runModal();
                                         }
@@ -113,7 +113,7 @@ import WebKit;
 
                 // Re-read folder content if we copied files.
                 if needRescan {
-                    contents = try fileManager.contentsOfDirectoryAtPath(pluginPath);
+                    contents = try fileManager.contentsOfDirectory(atPath: pluginPath!);
                 }
 
                 for entry in contents {
@@ -129,7 +129,7 @@ import WebKit;
                         continue;
                     }
 
-                    if let context = PluginContext(pluginFile: pluginPath + "/" + entry, logger: PluginRegistry.registry!, hostWindow: nil) {
+                    if let context = PluginContext(pluginFile: pluginPath! + "/" + entry, logger: PluginRegistry.registry!, hostWindow: nil) {
                         let (name, _, description, _, _, _) = context.pluginInfo();
                         if name.hasPrefix("pecunia.plugin.") {
                             if plugins[name] != nil {
@@ -150,7 +150,7 @@ import WebKit;
         logDebug("Done loading scripts in plugin registry");
     }
 
-    public static func getPluginList() -> [[String: String]] {
+    open static func getPluginList() -> [[String: String]] {
         var result: [[String: String]] = [];
         for (key, entry) in registry!.plugins {
             result.append(["id": key, "name": entry.description]);
@@ -160,7 +160,7 @@ import WebKit;
 
     // Checks all registered plugins if any of them can handle the given combination.
     // The first hit wins.
-    public static func pluginForAccount(account: String, bankCode: String) -> String {
+    open static func pluginForAccount(_ account: String, bankCode: String) -> String {
         for (key, entry) in registry!.plugins {
             if entry.context.canHandle(account, bankCode: bankCode) {
                 return key;
@@ -173,27 +173,27 @@ import WebKit;
      * Takes a list of accounts (which all must be handled by the same plugin) and runs the associated
      * plugin for them. The account list is split by user ids.
      */
-    public static func getStatements(accounts: [BankAccount], completion: ([BankQueryResult]) -> Void) -> Void {
+    open static func getStatements(_ accounts: [BankAccount], completion: ([BankQueryResult]) -> Void) -> Void {
         logEnter();
 
         // The HBCI part of the statement retrieval computes an own start date for each account.
         // We don't do this kind of granularity here. Instead we use the lowest start date found for all
         // accounts which might return a few more results for accounts that have been updated later
         // than others (but nobody would notice anyway, as the unwanted older statements exist already in the db).
-        var fromDate: NSDate?;
-        var maxStatDays: NSTimeInterval = 0;
-        if NSUserDefaults.standardUserDefaults().boolForKey("limitStatsAge") {
-            maxStatDays = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("maxStatDays"));
+        var fromDate: Date?;
+        var maxStatDays: TimeInterval = 0;
+        if UserDefaults.standard.bool(forKey: "limitStatsAge") {
+            maxStatDays = TimeInterval(UserDefaults.standard.integer(forKey: "maxStatDays"));
         }
 
         var queryList: [String: UserQueryEntry] = [:];
         for account in accounts {
             if account.latestTransferDate == nil && maxStatDays > 0 {
-                account.latestTransferDate = NSDate(timeInterval: -86400.0 * maxStatDays, sinceDate: NSDate());
+                account.latestTransferDate = Date(timeInterval: -86400.0 * maxStatDays, since: Date());
             }
 
             if (account.latestTransferDate != nil) {
-                let startDate = NSDate(timeInterval: -2592000, sinceDate: account.latestTransferDate);
+                let startDate = Date(timeInterval: -2592000, since: account.latestTransferDate);
                 if fromDate == nil || startDate.isBefore(fromDate!) {
                     fromDate = startDate;
                 }
@@ -220,44 +220,44 @@ import WebKit;
         // Use a fixed interval of 30 days if none of the accounts has a latest transfer date and no max stat days
         // value is specified.
         if fromDate == nil {
-            fromDate = NSDate(timeIntervalSinceNow: -2592000)
+            fromDate = Date(timeIntervalSinceNow: -2592000)
         }
 
         let pluginId = accounts[0].plugin;
-        if let (_, pluginContext) = registry?.plugins[pluginId] {
+        if let (_, pluginContext) = registry?.plugins[pluginId!] {
             if queryList.count == 0 {
                 completion([]);
             } else {
                 for (userId, query) in queryList {
                     pluginContext.getStatements(userId, query: query, fromDate: fromDate!,
-                        toDate: NSDate(), completion: completion);
+                        toDate: Date(), completion: completion);
                 }
             }
         } else {
-            registry!.logError("Couldn't find plugin " + pluginId);
+            registry!.logError("Couldn't find plugin " + pluginId!);
             completion([]);
         }
 
         logLeave();
     }
 
-    func logError(message: String) -> Void {
-        DDLog.doLog(DDLogFlag.Error, message: message, function: nil, file: nil, line: -1, arguments: []);
+    func logError(_ message: String) -> Void {
+        DDLog.doLog(DDLogFlag.error, message: message, function: nil, file: nil, line: -1, arguments: []);
     };
 
-    func logWarning(message: String) -> Void {
-        DDLog.doLog(DDLogFlag.Warning, message: message, function: nil, file: nil, line: -1, arguments: []);
+    func logWarning(_ message: String) -> Void {
+        DDLog.doLog(DDLogFlag.warning, message: message, function: nil, file: nil, line: -1, arguments: []);
     };
 
-    func logInfo(message: String) -> Void {
-        DDLog.doLog(DDLogFlag.Info, message: message, function: nil, file: nil, line: -1, arguments: []);
+    func logInfo(_ message: String) -> Void {
+        DDLog.doLog(DDLogFlag.info, message: message, function: nil, file: nil, line: -1, arguments: []);
     };
 
-    func logDebug(message: String) -> Void {
-        DDLog.doLog(DDLogFlag.Debug, message: message, function: nil, file: nil, line: -1, arguments: []);
+    func logDebug(_ message: String) -> Void {
+        DDLog.doLog(DDLogFlag.debug, message: message, function: nil, file: nil, line: -1, arguments: []);
     };
 
-    func logVerbose(message: String) -> Void {
-        DDLog.doLog(DDLogFlag.Verbose, message: message, function: nil, file: nil, line: -1, arguments: []);
+    func logVerbose(_ message: String) -> Void {
+        DDLog.doLog(DDLogFlag.verbose, message: message, function: nil, file: nil, line: -1, arguments: []);
     };
 }

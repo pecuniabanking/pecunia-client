@@ -11,8 +11,8 @@ import HBCI4Swift
 
 class CCStatementOrder: HBCIOrder {
     let account:HBCIAccount;
-    var dateFrom:NSDate?
-    var dateTo:NSDate?
+    var dateFrom:Date?
+    var dateTo:Date?
     var statements:Array<HBCIStatement>?
     
     init?(message: HBCICustomMessage, account:HBCIAccount) {
@@ -35,10 +35,10 @@ class CCStatementOrder: HBCIOrder {
             values["KTV.subnumber"] = account.subNumber!
         }
         if let date = dateFrom {
-            values["startdate"] = date;
+            values["startdate"] = date as AnyObject?;
         }
         if let date = dateTo {
-            values["enddate"] = date;
+            values["enddate"] = date as AnyObject?;
         }
         
         if !segment.setElementValues(values) {
@@ -51,7 +51,7 @@ class CCStatementOrder: HBCIOrder {
         return true;
     }
 
-    override func updateResult(result:HBCIResultMessage) {
+    override func updateResult(_ result:HBCIResultMessage) {
         super.updateResult(result);
         
         if !result.isOk() {

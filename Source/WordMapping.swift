@@ -23,25 +23,25 @@ import CoreData
 // Number of entries in one batch of a dispatch_apply invocation.
 let wordsLoadStride : Int = 50000;
 
-@objc public class WordMapping: NSManagedObject {
+@objc open class WordMapping: NSManagedObject {
 
     @NSManaged var wordKey: String
     @NSManaged var translated: String
 
-    static private var mappingsAvailable : Bool?;
+    static fileprivate var mappingsAvailable : Bool?;
 
-    public class func pecuniaWordsLoadedNotification() -> String {
+    open class func pecuniaWordsLoadedNotification() -> String {
         return "PecuniaWordsLoadedNotification";
     }
 
-    public class var wordMappingsAvailable : Bool {
+    open class var wordMappingsAvailable : Bool {
         if mappingsAvailable == nil {
-            let request = NSFetchRequest();
-            request.entity = NSEntityDescription.entityForName("WordMapping",
-                inManagedObjectContext: MOAssistant.sharedAssistant().context);
+            let request = NSFetchRequest<NSFetchRequestResult>();
+            request.entity = NSEntityDescription.entity(forEntityName: "WordMapping",
+                in: MOAssistant.shared().context);
             request.includesSubentities = false;
 
-            let count = MOAssistant.sharedAssistant().context.countForFetchRequest(request, error: nil);
+            let count = MOAssistant.shared().context.count(for: request, error: nil);
             mappingsAvailable = count > 0;
         }
         return mappingsAvailable!;
@@ -50,13 +50,13 @@ let wordsLoadStride : Int = 50000;
     /**
     * Called when a new (or first-time) word list was downloaded and updates the shared data store.
     */
-    public class func updateWordMappings() {
+    open class func updateWordMappings() {
         logEnter();
 
         // First check if there's a word.zip file before removing the existing values.
-        let fm = NSFileManager.defaultManager();
-        let zipPath = MOAssistant.sharedAssistant().resourcesDir + "/words.zip";
-        if !fm.fileExistsAtPath(zipPath) {
+        let fm = FileManager.default;
+        let zipPath = MOAssistant.shared().resourcesDir + "/words.zip";
+        if !fm.fileExists(atPath: zipPath) {
             logLeave();
             return;
         }
@@ -71,11 +71,11 @@ let wordsLoadStride : Int = 50000;
         if info.length < 100000000 { // Sanity check. Not more than 100MB.
             var buffer = NSMutableData(length: Int(info.length));
             let stream = file.readCurrentFileInZip();
-            let length = stream.readDataWithBuffer(buffer);
+            let length = stream?.readData(withBuffer: buffer);
             if (length == info.length) {
-                var text = NSString(data: buffer!, encoding: NSUTF8StringEncoding);
+                var text = NSString(data: buffer! as Data, encoding: String.Encoding.utf8.rawValue);
                 buffer = nil; // Free buffer to lower mem consuption.
-                let lines = text!.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet());
+                let lines = text!.components(separatedBy: CharacterSet.newlines);
                 text = nil;
 
                 // Convert to lower case and decompose diacritics (e.g. umlauts).
@@ -83,15 +83,15 @@ let wordsLoadStride : Int = 50000;
                 let lineCount = lines.count;
                 var blockCount = lineCount / wordsLoadStride;
                 if lineCount % wordsLoadStride != 0 {
-                    ++blockCount; // One more (incomplete) block for the remainder.
+                    blockCount += 1; // One more (incomplete) block for the remainder.
                 }
 
                 // Create an own managed context for each block, so we don't get into concurrency issues.
-                dispatch_apply(blockCount, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { index in
+                DispatchQueue.concurrentPerform(iterations: blockCount, execute: { index in
 
                     // Create a local managed context for this thread.
-                    let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
-                    let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
+                    let coordinator = MOAssistant.shared().context.persistentStoreCoordinator;
+                    let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType);
                     context.persistentStoreCoordinator = coordinator;
 
                     let start = index * wordsLoadStride;
@@ -99,10 +99,10 @@ let wordsLoadStride : Int = 50000;
                     if (end > lineCount) {
                         end = lineCount;
                     }
-                    for (var i = start; i < end; ++i) {
-                        let key = lines[Int(i)].stringWithNormalizedGermanChars().lowercaseString;
-                        let mapping = NSEntityDescription.insertNewObjectForEntityForName("WordMapping",
-                            inManagedObjectContext: context) as! WordMapping;
+                    for i in start..<end += 1 {
+                        let key = lines[Int(i)].stringWithNormalizedGermanChars().lowercased;
+                        let mapping = NSEntityDescription.insertNewObject(forEntityName: "WordMapping",
+                            into: context) as! WordMapping;
                         mapping.wordKey = key;
                         mapping.translated = lines[Int(i)] as String;
                     }
@@ -119,11 +119,11 @@ let wordsLoadStride : Int = 50000;
             }
 
             mappingsAvailable = true;
-            let notification = NSNotification(name: pecuniaWordsLoadedNotification(), object: nil);
-            NSNotificationCenter.defaultCenter().postNotification(notification);
+            let notification = Notification(name: Notification.Name(rawValue: pecuniaWordsLoadedNotification()), object: nil);
+            NotificationCenter.default.post(notification);
         }
 
-        logDebug("Word list loading done in: %.2fs", arguments: Mathematics.timeDifferenceSince(startTime) / 1000000000);
+        logDebug("Word list loading done in: %.2fs", arguments: Mathematics.timeDifference(since: startTime) / 1000000000);
         logLeave();
     }
 
@@ -131,25 +131,25 @@ let wordsLoadStride : Int = 50000;
     * Removes all shared word list data (e.g. for updates or if the user decided not to want
     * the overhead anymore.
     */
-    public class func removeWordMappings() {
+    open class func removeWordMappings() {
         logDebug("Clearing word list");
 
         mappingsAvailable = false;
         
         let startTime = Mathematics.beginTimeMeasure();
 
-        let coordinator = MOAssistant.sharedAssistant().context.persistentStoreCoordinator;
-        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType);
+        let coordinator = MOAssistant.shared().context.persistentStoreCoordinator;
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType);
         context.persistentStoreCoordinator = coordinator;
 
-        let allMappings = NSFetchRequest();
-        allMappings.entity = NSEntityDescription.entityForName("WordMapping", inManagedObjectContext: context);
+        let allMappings = NSFetchRequest<NSFetchRequestResult>();
+        allMappings.entity = NSEntityDescription.entity(forEntityName: "WordMapping", in: context);
         allMappings.includesPropertyValues = false; // Fetch only IDs.
 
         do {
-            let mappings = try context.executeFetchRequest(allMappings);
+            let mappings = try context.fetch(allMappings);
             for mapping in mappings {
-                context.deleteObject(mapping as! WordMapping);
+                context.delete(mapping as! WordMapping);
             }
             try context.save();
         }
@@ -157,6 +157,6 @@ let wordsLoadStride : Int = 50000;
             let alert = NSAlert(error: error);
             alert.runModal();
         }
-        logDebug("Word list truncation done in: %.2fs", arguments: Mathematics.timeDifferenceSince(startTime) / 1000000000);
+        logDebug("Word list truncation done in: %.2fs", arguments: Mathematics.timeDifference(since: startTime) / 1000000000);
     }
 }

@@ -17,7 +17,7 @@ import HBCI4Swift
 class ChipcardRequestController : NSWindowController {
     @IBOutlet var messageField:NSTextField!
     var _userIdName:String?
-    var _timer:NSTimer?
+    var _timer:Timer?
     var card:HBCISmartcardDDV!
     var connectResult = HBCISmartcard.ConnectResult.no_card;
     
@@ -28,12 +28,12 @@ class ChipcardRequestController : NSWindowController {
             messageField.stringValue = NSLocalizedString("AP361", comment: "");
         }
         
-        let timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkCard:"), userInfo: nil, repeats: true);
-        NSRunLoop.currentRunLoop().addTimer(timer, forMode: NSModalPanelRunLoopMode);
+        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ChipcardRequestController.checkCard(_:)), userInfo: nil, repeats: true);
+        RunLoop.current.add(timer, forMode: RunLoopMode.modalPanelRunLoopMode);
         _timer = timer;
     }
     
-    func checkCard(timer:NSTimer) {
+    func checkCard(_ timer:Timer) {
         if card == nil {
             card = ChipcardManager.manager.card;
         }
@@ -47,20 +47,20 @@ class ChipcardRequestController : NSWindowController {
             self.close();
             if connectResult == HBCISmartcard.ConnectResult.connected ||
                connectResult == HBCISmartcard.ConnectResult.reconnected {
-                NSApp.stopModalWithCode(0);
+                NSApp.stopModal(withCode: 0);
             } else {
-                NSApp.stopModalWithCode(1);
+                NSApp.stopModal(withCode: 1);
             }
             return;
         }
     }
     
-    @IBAction override func cancelOperation(sender: AnyObject?) {
+    @IBAction override func cancelOperation(_ sender: Any?) {
         if let timer = _timer {
             timer.invalidate();
         }
         self.close();
-        NSApp.stopModalWithCode(1);
+        NSApp.stopModal(withCode: 1);
     }
     
 }

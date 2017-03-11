@@ -22,16 +22,16 @@ import AppKit;
 // Helper code for working with blocks (especially when using GCD).
 // Original cancelable block code from Sebastien Thiebaud.
 
-typealias dispatch_cancelable_block_t = (cancel: Bool) -> Void;
+typealias dispatch_cancelable_block_t = (_ cancel: Bool) -> Void;
 
-func dispatch_after_delay(queue: dispatch_queue_t, delay: CGFloat, block: dispatch_block_t) -> dispatch_cancelable_block_t {
+func dispatch_after_delay(_ queue: DispatchQueue, delay: CGFloat, block: @escaping ()->()) -> dispatch_cancelable_block_t {
     var cancelableBlock: dispatch_cancelable_block_t? = nil;
-    var originalBlock: dispatch_block_t? = block;
+    var originalBlock: ()->()? = block;
 
     // This block will be executed in NOW() + delay
     let delayBlock: dispatch_cancelable_block_t = { cancel in
         if !cancel {
-            dispatch_async(dispatch_get_main_queue(), originalBlock!);
+            DispatchQueue.main.async(execute: originalBlock as! @convention(block) () -> Void);
         }
 
         // We don't want to hold any objects in memory.
@@ -41,17 +41,17 @@ func dispatch_after_delay(queue: dispatch_queue_t, delay: CGFloat, block: dispat
 
     cancelableBlock = delayBlock;
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * CGFloat(NSEC_PER_SEC))), queue) {
+    queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * CGFloat(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
         // We are now in the future (NOW() + delay).
         // It means the block hasn't been canceled so we can execute it.
         if cancelableBlock != nil {
-          cancelableBlock!(cancel: false);
+          cancelableBlock!(false);
         }
     };
 
     return cancelableBlock!;
 }
 
-func cancel_block(block: dispatch_cancelable_block_t) -> Void {
-    block(cancel: true);
+func cancel_block(_ block: dispatch_cancelable_block_t) -> Void {
+    block(true);
 }

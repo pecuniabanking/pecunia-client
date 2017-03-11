@@ -24,7 +24,7 @@ import WebKit
 
 @objc protocol DOMNodeListJSExport: JSExport {
     var length: UInt32 { get };
-    func item(index: UInt32) -> DOMNode!;
+    func item(_ index: UInt32) -> DOMNode!;
 }
 
 extension DOMNodeList: DOMNodeListJSExport {
@@ -44,14 +44,14 @@ extension DOMNodeList: DOMNodeListJSExport {
     var length: UInt32 { get };
     var parentRule: DOMCSSRule! { get };
 
-    func getPropertyValue(propertyName: String!) -> String!;
-    func getPropertyCSSValue(propertyName: String!) -> DOMCSSValue!;
-    func removeProperty(propertyName: String!) -> String!;
-    func getPropertyPriority(propertyName: String!) -> String!;
-    func setProperty(propertyName: String!, value: String!, priority: String!);
-    func item(index: UInt32) -> String!;
+    func getPropertyValue(_ propertyName: String!) -> String!;
+    func getPropertyCSSValue(_ propertyName: String!) -> DOMCSSValue!;
+    func removeProperty(_ propertyName: String!) -> String!;
+    func getPropertyPriority(_ propertyName: String!) -> String!;
+    func setProperty(_ propertyName: String!, value: String!, priority: String!);
+    func item(_ index: UInt32) -> String!;
 
-    func isPropertyImplicit(propertyName: String!) -> Bool;
+    func isPropertyImplicit(_ propertyName: String!) -> Bool;
 }
 
 extension DOMCSSStyleDeclaration : DOMCSSStyleDeclarationJSExport {
@@ -60,7 +60,7 @@ extension DOMCSSStyleDeclaration : DOMCSSStyleDeclarationJSExport {
 @objc protocol DOMCSSRuleListJSExport : JSExport {
     var length: UInt32 { get };
 
-    func item(index: UInt32) -> DOMCSSRule!;
+    func item(_ index: UInt32) -> DOMCSSRule!;
 }
 
 extension DOMCSSRuleList : DOMCSSRuleListJSExport {
@@ -69,13 +69,13 @@ extension DOMCSSRuleList : DOMCSSRuleListJSExport {
 @objc protocol DOMNamedNodeMapJSExport : JSExport {
     var length: UInt32 { get };
 
-    func getNamedItem(name: String!) -> DOMNode!;
-    func setNamedItem(node: DOMNode!) -> DOMNode!;
-    func removeNamedItem(name: String!) -> DOMNode!;
-    func item(index: UInt32) -> DOMNode!;
-    func getNamedItemNS(namespaceURI: String!, localName: String!) -> DOMNode!;
-    func setNamedItemNS(node: DOMNode!) -> DOMNode!;
-    func removeNamedItemNS(namespaceURI: String!, localName: String!) -> DOMNode!;
+    func getNamedItem(_ name: String!) -> DOMNode!;
+    func setNamedItem(_ node: DOMNode!) -> DOMNode!;
+    func removeNamedItem(_ name: String!) -> DOMNode!;
+    func item(_ index: UInt32) -> DOMNode!;
+    func getNamedItemNS(_ namespaceURI: String!, localName: String!) -> DOMNode!;
+    func setNamedItemNS(_ node: DOMNode!) -> DOMNode!;
+    func removeNamedItemNS(_ namespaceURI: String!, localName: String!) -> DOMNode!;
 }
 
 extension DOMNamedNodeMap : DOMNamedNodeMapJSExport {
@@ -101,22 +101,22 @@ extension DOMNamedNodeMap : DOMNamedNodeMapJSExport {
     var parentElement: DOMElement! { get };
     var isContentEditable: Bool { get };
 
-    func insertBefore(newChild: DOMNode!, refChild: DOMNode!) -> DOMNode!;
-    func replaceChild(newChild: DOMNode!, oldChild: DOMNode!) -> DOMNode!;
-    func removeChild(oldChild: DOMNode!) -> DOMNode!;
-    func appendChild(newChild: DOMNode!) -> DOMNode!;
+    func insertBefore(_ newChild: DOMNode!, refChild: DOMNode!) -> DOMNode!;
+    func replaceChild(_ newChild: DOMNode!, oldChild: DOMNode!) -> DOMNode!;
+    func removeChild(_ oldChild: DOMNode!) -> DOMNode!;
+    func appendChild(_ newChild: DOMNode!) -> DOMNode!;
     func hasChildNodes() -> Bool;
-    func cloneNode(deep: Bool) -> DOMNode!;
+    func cloneNode(_ deep: Bool) -> DOMNode!;
     func normalize();
-    func isSupported(feature: String!, version: String!) -> Bool;
+    func isSupported(_ feature: String!, version: String!) -> Bool;
     func hasAttributes() -> Bool;
-    func isSameNode(other: DOMNode!) -> Bool;
-    func isEqualNode(other: DOMNode!) -> Bool;
-    func lookupPrefix(namespaceURI: String!) -> String!;
-    func isDefaultNamespace(namespaceURI: String!) -> Bool;
-    func lookupNamespaceURI(prefix: String!) -> String!;
-    func compareDocumentPosition(other: DOMNode!) -> UInt16;
-    func contains(other: DOMNode!) -> Bool;
+    func isSameNode(_ other: DOMNode!) -> Bool;
+    func isEqualNode(_ other: DOMNode!) -> Bool;
+    func lookupPrefix(_ namespaceURI: String!) -> String!;
+    func isDefaultNamespace(_ namespaceURI: String!) -> Bool;
+    func lookupNamespaceURI(_ prefix: String!) -> String!;
+    func compareDocumentPosition(_ other: DOMNode!) -> UInt16;
+    func contains(_ other: DOMNode!) -> Bool;
 }
 
 extension DOMNode: DOMNodeJSExport {
@@ -158,31 +158,31 @@ extension DOMAttr : DOMAttrJSExport {
     var childElementCount: UInt32 { get };
     var innerText: String! { get };
 
-    func getAttribute(name: String!) -> String!;
-    func setAttribute(name: String!, value: String!);
-    func removeAttribute(name: String!);
-    func getAttributeNode(name: String!) -> DOMAttr!;
-    func setAttributeNode(newAttr: DOMAttr!) -> DOMAttr!;
-    func removeAttributeNode(oldAttr: DOMAttr!) -> DOMAttr!;
-    func getElementsByTagName(name: String!) -> DOMNodeList!;
-    func getAttributeNS(namespaceURI: String!, localName: String!) -> String!;
-    func setAttributeNS(namespaceURI: String!, qualifiedName: String!, value: String!);
-    func removeAttributeNS(namespaceURI: String!, localName: String!);
-    func getElementsByTagNameNS(namespaceURI: String!, localName: String!) -> DOMNodeList!;
-    func getAttributeNodeNS(namespaceURI: String!, localName: String!) -> DOMAttr!;
-    func setAttributeNodeNS(newAttr: DOMAttr!) -> DOMAttr!;
-    func hasAttribute(name: String!) -> Bool;
-    func hasAttributeNS(namespaceURI: String!, localName: String!) -> Bool;
+    func getAttribute(_ name: String!) -> String!;
+    func setAttribute(_ name: String!, value: String!);
+    func removeAttribute(_ name: String!);
+    func getAttributeNode(_ name: String!) -> DOMAttr!;
+    func setAttributeNode(_ newAttr: DOMAttr!) -> DOMAttr!;
+    func removeAttributeNode(_ oldAttr: DOMAttr!) -> DOMAttr!;
+    func getElementsByTagName(_ name: String!) -> DOMNodeList!;
+    func getAttributeNS(_ namespaceURI: String!, localName: String!) -> String!;
+    func setAttributeNS(_ namespaceURI: String!, qualifiedName: String!, value: String!);
+    func removeAttributeNS(_ namespaceURI: String!, localName: String!);
+    func getElementsByTagNameNS(_ namespaceURI: String!, localName: String!) -> DOMNodeList!;
+    func getAttributeNodeNS(_ namespaceURI: String!, localName: String!) -> DOMAttr!;
+    func setAttributeNodeNS(_ newAttr: DOMAttr!) -> DOMAttr!;
+    func hasAttribute(_ name: String!) -> Bool;
+    func hasAttributeNS(_ namespaceURI: String!, localName: String!) -> Bool;
     func focus();
     func blur();
-    func scrollIntoView(alignWithTop: Bool);
-    func scrollIntoViewIfNeeded(centerIfNeeded: Bool);
-    func scrollByLines(lines: Int32);
-    func scrollByPages(pages: Int32);
-    func getElementsByClassName(name: String!) -> DOMNodeList!;
-    func querySelector(selectors: String!) -> DOMElement!;
-    func querySelectorAll(selectors: String!) -> DOMNodeList!;
-    func webkitRequestFullScreen(flags: UInt16);
+    func scrollIntoView(_ alignWithTop: Bool);
+    func scrollIntoViewIfNeeded(_ centerIfNeeded: Bool);
+    func scrollByLines(_ lines: Int32);
+    func scrollByPages(_ pages: Int32);
+    func getElementsByClassName(_ name: String!) -> DOMNodeList!;
+    func querySelector(_ selectors: String!) -> DOMElement!;
+    func querySelectorAll(_ selectors: String!) -> DOMNodeList!;
+    func webkitRequestFullScreen(_ flags: UInt16);
 }
 
 extension DOMElement : DOMElementJSExport {
@@ -191,9 +191,9 @@ extension DOMElement : DOMElementJSExport {
 @objc protocol DOMHTMLCollectionJSExport : JSExport {
     var length: UInt32 { get };
 
-    func item(index: UInt32) -> DOMNode!;
-    func namedItem(name: String!) -> DOMNode!;
-    func tags(name: String!) -> DOMNodeList!;
+    func item(_ index: UInt32) -> DOMNode!;
+    func namedItem(_ name: String!) -> DOMNode!;
+    func tags(_ name: String!) -> DOMNodeList!;
 }
 
 extension DOMHTMLCollection : DOMHTMLCollectionJSExport {
@@ -247,10 +247,10 @@ extension DOMHTMLElement : DOMHTMLElementJExport {
     var useMap: String! { get set };
 
     var altDisplayString: String! { get };
-    var absoluteImageURL: NSURL! { get };
+    var absoluteImageURL: URL! { get };
 
     func select();
-    func setSelectionRange(start: Int32, end: Int32);
+    func setSelectionRange(_ start: Int32, end: Int32);
     func click();
     var value: String! { get set };
 }
@@ -294,7 +294,7 @@ extension DOMHTMLButtonElement : DOMHTMLButtonElementJSExport {
     var `protocol`: String! { get };
     var search: String! { get };
     var text: String! { get };
-    var absoluteLinkURL: NSURL! { get };
+    var absoluteLinkURL: URL! { get };
 }
 
 extension DOMHTMLAnchorElement : DOMHTMLAnchorElementJSExport {
@@ -320,10 +320,10 @@ extension DOMHTMLOptionElement : DOMHTMLOptionElementJSExport {
     var selectedIndex: Int32 { get set };
     var length: UInt32 { get set };
 
-    func namedItem(name: String!) -> DOMNode!;
-    func add(option: DOMHTMLOptionElement!, index: UInt32);
-    func remove(index: UInt32);
-    func item(index: UInt32) -> DOMNode!;
+    func namedItem(_ name: String!) -> DOMNode!;
+    func add(_ option: DOMHTMLOptionElement!, index: UInt32);
+    func remove(_ index: UInt32);
+    func item(_ index: UInt32) -> DOMNode!;
 }
 
 extension DOMHTMLOptionsCollection : DOMHTMLOptionsCollectionJSExport {
@@ -343,10 +343,10 @@ extension DOMHTMLOptionsCollection : DOMHTMLOptionsCollectionJSExport {
 
     var willValidate: Bool { get };
 
-    func item(index: UInt32) -> DOMNode!;
-    func namedItem(name: String!) -> DOMNode!;
-    func add(element: DOMHTMLElement!, before: DOMHTMLElement!);
-    func remove(index: Int32);
+    func item(_ index: UInt32) -> DOMNode!;
+    func namedItem(_ name: String!) -> DOMNode!;
+    func add(_ element: DOMHTMLElement!, before: DOMHTMLElement!);
+    func remove(_ index: Int32);
     var value: String! { get set };
 }
 
@@ -385,11 +385,11 @@ extension DOMDocumentType : DOMDocumentTypeJSExport {
 }
 
 @objc protocol DOMImplementationJSExport : JSExport {
-    func hasFeature(feature: String!, version: String!) -> Bool;
-    func createDocumentType(qualifiedName: String!, publicId: String!, systemId: String!) -> DOMDocumentType!;
-    func createDocument(namespaceURI: String!, qualifiedName: String!, doctype: DOMDocumentType!) -> DOMDocument!;
-    func createCSSStyleSheet(title: String!, media: String!) -> DOMCSSStyleSheet!;
-    func createHTMLDocument(title: String!) -> DOMHTMLDocument!;
+    func hasFeature(_ feature: String!, version: String!) -> Bool;
+    func createDocumentType(_ qualifiedName: String!, publicId: String!, systemId: String!) -> DOMDocumentType!;
+    func createDocument(_ namespaceURI: String!, qualifiedName: String!, doctype: DOMDocumentType!) -> DOMDocument!;
+    func createCSSStyleSheet(_ title: String!, media: String!) -> DOMCSSStyleSheet!;
+    func createHTMLDocument(_ title: String!) -> DOMHTMLDocument!;
 }
 
 extension DOMImplementation : DOMImplementationJSExport {
@@ -398,7 +398,7 @@ extension DOMImplementation : DOMImplementationJSExport {
 @objc protocol DOMStyleSheetListJSExport : JSExport {
     var length: UInt32 { get };
 
-    func item(index: UInt32) -> DOMStyleSheet!;
+    func item(_ index: UInt32) -> DOMStyleSheet!;
 }
 
 extension DOMStyleSheetList : DOMStyleSheetListJSExport {
@@ -414,11 +414,11 @@ extension DOMDocumentFragment : DOMDocumentFragmentJSExport {
     var data: String! { get };
     var length: UInt32 { get };
 
-    func substringData(offset: UInt32, length: UInt32) -> String!;
-    func appendData(data: String!);
-    func insertData(offset: UInt32, data: String!);
-    func deleteData(offset: UInt32, length: UInt32);
-    func replaceData(offset: UInt32, length: UInt32, data: String!);
+    func substringData(_ offset: UInt32, length: UInt32) -> String!;
+    func appendData(_ data: String!);
+    func insertData(_ offset: UInt32, data: String!);
+    func deleteData(_ offset: UInt32, length: UInt32);
+    func replaceData(_ offset: UInt32, length: UInt32, data: String!);
 }
 
 extension DOMCharacterData : DOMCharacterDataJSExport {
@@ -427,8 +427,8 @@ extension DOMCharacterData : DOMCharacterDataJSExport {
 @objc protocol DOMTextJSExport : JSExport {
     var wholeText: String! { get };
 
-    func splitText(offset: UInt32) -> DOMText!;
-    func replaceWholeText(content: String!) -> DOMText!;
+    func splitText(_ offset: UInt32) -> DOMText!;
+    func replaceWholeText(_ content: String!) -> DOMText!;
 }
 
 extension DOMText : DOMTextJSExport {
@@ -461,7 +461,7 @@ extension DOMEntityReference : DOMEntityReferenceJSExport {
 }
 
 @objc protocol DOMXPathExpressionJSExport : JSExport {
-    func evaluate(contextNode: DOMNode!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
+    func evaluate(_ contextNode: DOMNode!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
 }
 /*
 extension DOMXPathExpression : DOMXPathExpressionJSExport {
@@ -477,7 +477,7 @@ extension DOMXPathExpression : DOMXPathExpressionJSExport {
     var snapshotLength: UInt32 { get };
 
     func iterateNext() -> DOMNode!;
-    func snapshotItem(index: UInt32) -> DOMNode!;
+    func snapshotItem(_ index: UInt32) -> DOMNode!;
 }
 /*
 extension DOMXPathResult : DOMXPathResultJSExport {
@@ -514,37 +514,37 @@ extension DOMXPathResult : DOMXPathResultJSExport {
     var selectedStylesheetSet: String! { get };
     var activeElement: DOMElement! { get };
 
-    func createElement(tagName: String!) -> DOMElement!;
+    func createElement(_ tagName: String!) -> DOMElement!;
     func createDocumentFragment() -> DOMDocumentFragment!;
-    func createTextNode(data: String!) -> DOMText!;
-    func createComment(data: String!) -> DOMComment!;
-    func createCDATASection(data: String!) -> DOMCDATASection!;
-    func createProcessingInstruction(target: String!, data: String!) -> DOMProcessingInstruction!;
-    func createAttribute(name: String!) -> DOMAttr!;
-    func createEntityReference(name: String!) -> DOMEntityReference!;
-    func getElementsByTagName(tagname: String!) -> DOMNodeList!;
-    func importNode(importedNode: DOMNode!, deep: Bool) -> DOMNode!;
-    func createElementNS(namespaceURI: String!, qualifiedName: String!) -> DOMElement!;
-    func createAttributeNS(namespaceURI: String!, qualifiedName: String!) -> DOMAttr!;
-    func getElementsByTagNameNS(namespaceURI: String!, localName: String!) -> DOMNodeList!;
-    func getElementById(elementId: String!) -> DOMElement!;
-    func adoptNode(source: DOMNode!) -> DOMNode!;
-    func createEvent(eventType: String!) -> DOMEvent!;
+    func createTextNode(_ data: String!) -> DOMText!;
+    func createComment(_ data: String!) -> DOMComment!;
+    func createCDATASection(_ data: String!) -> DOMCDATASection!;
+    func createProcessingInstruction(_ target: String!, data: String!) -> DOMProcessingInstruction!;
+    func createAttribute(_ name: String!) -> DOMAttr!;
+    func createEntityReference(_ name: String!) -> DOMEntityReference!;
+    func getElementsByTagName(_ tagname: String!) -> DOMNodeList!;
+    func importNode(_ importedNode: DOMNode!, deep: Bool) -> DOMNode!;
+    func createElementNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMElement!;
+    func createAttributeNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMAttr!;
+    func getElementsByTagNameNS(_ namespaceURI: String!, localName: String!) -> DOMNodeList!;
+    func getElementById(_ elementId: String!) -> DOMElement!;
+    func adoptNode(_ source: DOMNode!) -> DOMNode!;
+    func createEvent(_ eventType: String!) -> DOMEvent!;
     func createRange() -> DOMRange!;
-    func createNodeIterator(root: DOMNode!, whatToShow: UInt32, filter: DOMNodeFilter!, expandEntityReferences: Bool) -> DOMNodeIterator!;
-    func createTreeWalker(root: DOMNode!, whatToShow: UInt32, filter: DOMNodeFilter!, expandEntityReferences: Bool) -> DOMTreeWalker!;
-    func getOverrideStyle(element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
-    func createExpression(expression: String!, resolver: DOMXPathNSResolver!) -> DOMXPathExpression!;
-    func createNSResolver(nodeResolver: DOMNode!) -> DOMXPathNSResolver!;
-    func evaluate(expression: String!, contextNode: DOMNode!, resolver: DOMXPathNSResolver!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
-    func getElementsByName(elementName: String!) -> DOMNodeList!;
+    func createNodeIterator(_ root: DOMNode!, whatToShow: UInt32, filter: DOMNodeFilter!, expandEntityReferences: Bool) -> DOMNodeIterator!;
+    func createTreeWalker(_ root: DOMNode!, whatToShow: UInt32, filter: DOMNodeFilter!, expandEntityReferences: Bool) -> DOMTreeWalker!;
+    func getOverrideStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
+    func createExpression(_ expression: String!, resolver: DOMXPathNSResolver!) -> DOMXPathExpression!;
+    func createNSResolver(_ nodeResolver: DOMNode!) -> DOMXPathNSResolver!;
+    func evaluate(_ expression: String!, contextNode: DOMNode!, resolver: DOMXPathNSResolver!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
+    func getElementsByName(_ elementName: String!) -> DOMNodeList!;
     func createCSSStyleDeclaration() -> DOMCSSStyleDeclaration!;
-    func getComputedStyle(element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
-    func getMatchedCSSRules(element: DOMElement!, pseudoElement: String!) -> DOMCSSRuleList!;
-    func getMatchedCSSRules(element: DOMElement!, pseudoElement: String!, authorOnly: Bool) -> DOMCSSRuleList!;
-    func getElementsByClassName(tagname: String!) -> DOMNodeList!;
-    func querySelector(selectors: String!) -> DOMElement!;
-    func querySelectorAll(selectors: String!) -> DOMNodeList!;
+    func getComputedStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
+    func getMatchedCSSRules(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSRuleList!;
+    func getMatchedCSSRules(_ element: DOMElement!, pseudoElement: String!, authorOnly: Bool) -> DOMCSSRuleList!;
+    func getElementsByClassName(_ tagname: String!) -> DOMNodeList!;
+    func querySelector(_ selectors: String!) -> DOMElement!;
+    func querySelectorAll(_ selectors: String!) -> DOMNodeList!;
 }
 
 extension DOMDocument : DOMDocumentJSExport {
@@ -558,7 +558,7 @@ extension DOMDocument : DOMDocumentJSExport {
     func stopLoading();
     func reload();
     func reloadFromOrigin();
-    func findFrameNamed(name: String!) -> WebFrame!;
+    func findFrameNamed(_ name: String!) -> WebFrame!;
     var parentFrame: WebFrame! { get };
     var childFrames: [AnyObject]! { get };
 }
@@ -566,7 +566,7 @@ extension DOMDocument : DOMDocumentJSExport {
 extension WebFrame: WebFrameJSExport {
     var document: WebKit.DOMDocument! {
         get {
-            return DOMDocument;
+            return domDocument;
         }
     }
 }
@@ -577,17 +577,17 @@ extension WebFrame: WebFrameJSExport {
     var postURL: String { get set }; // if written it's an URL for POST requests otherwise the same as mainFrameURL
     var callback: JSValue { get set };
 
-    func resultsArrived(results: JSValue) -> Void;
-    func reportError(account: String, _ message: String) -> Void;
+    func resultsArrived(_ results: JSValue) -> Void;
+    func reportError(_ account: String, _ message: String) -> Void;
     
     // WebView exports.
-    static func canShowMIMEType(MIMEType: String!) -> Bool;
-    static func canShowMIMETypeAsHTML(MIMEType: String!) -> Bool;
+    static func canShowMIMEType(_ MIMEType: String!) -> Bool;
+    static func canShowMIMETypeAsHTML(_ MIMEType: String!) -> Bool;
     static func MIMETypesShownAsHTML() -> [AnyObject]!;
-    static func setMIMETypesShownAsHTML(MIMETypes: [AnyObject]!);
-    static func URLFromPasteboard(pasteboard: NSPasteboard!) -> NSURL!;
-    static func URLTitleFromPasteboard(pasteboard: NSPasteboard!) -> String!;
-    static func registerURLSchemeAsLocal(scheme: String!);
+    static func setMIMETypesShownAsHTML(_ MIMETypes: [AnyObject]!);
+    static func URLFromPasteboard(_ pasteboard: NSPasteboard!) -> Foundation.URL!;
+    static func URLTitleFromPasteboard(_ pasteboard: NSPasteboard!) -> String!;
+    static func registerURLSchemeAsLocal(_ scheme: String!);
 
     func close()
 
@@ -596,29 +596,29 @@ extension WebFrame: WebFrameJSExport {
     var selectedFrame: WebFrame! { get };
     var backForwardList: WebBackForwardList! { get };
 
-    func setMaintainsBackForwardList(flag: Bool);
+    func setMaintainsBackForwardList(_ flag: Bool);
     func goBack() -> Bool;
     func goForward() -> Bool;
-    func goToBackForwardItem(item: WebHistoryItem!) -> Bool;
+    func goToBackForwardItem(_ item: WebHistoryItem!) -> Bool;
 
     var textSizeMultiplier: Float { get set };
     var applicationNameForUserAgent: String! { get set };
     var customUserAgent: String! { get set };
     
-    func userAgentForURL(URL: NSURL!) -> String!;
+    func userAgentForURL(_ URL: Foundation.URL!) -> String!;
     
     var supportsTextEncoding: Bool { get }
     var customTextEncodingName: String! { get set };
     var mediaStyle: String! { get set };
     
-    func stringByEvaluatingJavaScriptFromString(script: String!) -> String!;
-    func searchFor(string: String!, direction forward: Bool, caseSensitive caseFlag: Bool, wrap wrapFlag: Bool) -> Bool
+    func stringByEvaluatingJavaScriptFromString(_ script: String!) -> String!;
+    func searchFor(_ string: String!, direction forward: Bool, caseSensitive caseFlag: Bool, wrap wrapFlag: Bool) -> Bool
     
     var groupName: String! { get set };
     var estimatedProgress: Double { get };
     var loading: Bool { @objc(isLoading) get }
     
-    func elementAtPoint(point: NSPoint) -> [NSObject : AnyObject]!;
+    func elementAtPoint(_ point: NSPoint) -> [AnyHashable: Any]!;
     
     var mainFrameURL: String! { get set };
     var mainFrameDocument: DOMDocument! { get };

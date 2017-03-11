@@ -20,15 +20,15 @@
 import Foundation
 
 @objc public enum BankQueryType: Int {
-    case BankStatement;
-    case CreditCard;
-    case StandingOrder;
+    case bankStatement;
+    case creditCard;
+    case standingOrder;
 }
 
-@objc public class BankQueryResult: NSObject {
-    var type: BankQueryType = .BankStatement;
+@objc open class BankQueryResult: NSObject {
+    var type: BankQueryType = .bankStatement;
     var ccNumber: String?;
-    var lastSettleDate: NSDate?;
+    var lastSettleDate: Date?;
     var balance: NSDecimalNumber?;
     var oldBalance: NSDecimalNumber?;
     var statements: [BankStatement] = [];
@@ -50,7 +50,7 @@ import Foundation
 
     // Only used to find a specific result in the HBCIController. Can go when we reworked result
     // handling there.
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         if let other = object! as? BankQueryResult { // In this specific context is the other object always valid with only an account set.
             if accountNumber == other.account!.accountNumber() && bankCode == other.account!.bankCode {
                     return (accountSuffix == nil && other.account!.accountSuffix == nil) ||

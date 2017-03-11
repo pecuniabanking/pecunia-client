@@ -29,54 +29,54 @@ extension NSString {
     public func stringWithNaturalText() -> NSString {
         if !WordMapping.wordMappingsAvailable {
             // While our word list is being loaded return a simple capitalized string.
-            return self.capitalizedStringWithLocale(NSLocale.currentLocale());
+            return self.capitalized(with: Locale.current);
         }
 
-        let context = MOAssistant.sharedAssistant().context;
-        let request = NSFetchRequest();
-        request.entity = NSEntityDescription.entityForName("WordMapping", inManagedObjectContext: context);
+        let context = MOAssistant.shared().context;
+        let request = NSFetchRequest<NSFetchRequestResult>();
+        request.entity = NSEntityDescription.entity(forEntityName: "WordMapping", in: context!);
 
         let result = NSMutableString();
         let range = NSMakeRange(0, self.length);
-        self.enumerateLinguisticTagsInRange(range, scheme: NSLinguisticTagSchemeLexicalClass,
-            options: NSLinguisticTaggerOptions(rawValue: 0), orthography: nil,  usingBlock:
+        self.enumerateLinguisticTags(in: range, scheme: NSLinguisticTagSchemeLexicalClass,
+            options: NSLinguisticTagger.Options(rawValue: 0), orthography: nil,  using:
             { (tag: String, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
-                let item : NSString = self.substringWithRange(tokenRange);
+                let item : NSString = self.substring(with: tokenRange) as NSString;
                 if tag == NSLinguisticTagOtherWhitespace {
                     // Copy over any whitespace.
                     if result.length > 0 {
-                        result.appendString(item as String);
+                        result.append(item as String);
                     }
                 } else {
                     // Not a whitespace. See if that is a known word.
                     // TODO: needs localization.
-                    let key = item.stringWithNormalizedGermanChars().lowercaseString;
+                    let key = item.stringWithNormalizedGermanChars().lowercased;
                     let predicate = NSPredicate(format: "wordKey = '\(key)'");
                     request.predicate = predicate;
                     do {
-                        let mappings = try context.executeFetchRequest(request);
-                        if (mappings.count > 0) {
-                            let mapping = mappings[0] as! WordMapping;
-                            let word: NSString = mapping.translated;
+                        let mappings = try context?.fetch(request);
+                        if ((mappings?.count)! > 0) {
+                            let mapping = mappings?[0] as! WordMapping;
+                            let word: NSString = mapping.translated as NSString;
 
                             // If the original word contains lower case characters then it was probably
                             // already in true case. We only use the lookup then for replacing diacritics/sharp-s.
-                            if item.rangeOfCharacterFromSet(NSCharacterSet.lowercaseLetterCharacterSet()).length > 0 {
-                                result.appendString(item.substringToIndex(1));
-                                result.appendString(word.substringFromIndex(1));
+                            if item.rangeOfCharacter(from: CharacterSet.lowercaseLetters).length > 0 {
+                                result.append(item.substring(to: 1));
+                                result.append(word.substring(from: 1));
                             } else {
                                 // Make the first letter upper case if it is the first entry.
                                 // Don't touch the other letters, though!
                                 if result.length == 0 {
-                                    let firstLetter: NSString = word.substringToIndex(1);
-                                    result.appendString(firstLetter.capitalizedString);
-                                    result.appendString(word.substringFromIndex(1));
+                                    let firstLetter: NSString = word.substring(to: 1) as NSString;
+                                    result.append(firstLetter.capitalized);
+                                    result.append(word.substring(from: 1));
                                 } else {
-                                    result.appendString(word as String);
+                                    result.append(word as String);
                                 }
                             }
                         } else {
-                            result.appendString(item as String);
+                            result.append(item as String);
                         }
                     }
                     catch {
@@ -93,7 +93,7 @@ extension NSString {
     */
     public func stringWithNormalizedGermanChars() -> NSString {
         var result = self.decomposedStringWithCanonicalMapping;
-        result = result.stringByReplacingOccurrencesOfString("ß", withString: "ss");
-        return result.stringByReplacingOccurrencesOfString("\u{0308}", withString: "e"); // Combining diaresis.
+        result = result.replacingOccurrences(of: "ß", with: "ss");
+        return result.replacingOccurrences(of: "\u{0308}", with: "e") as NSString; // Combining diaresis.
     }
 }

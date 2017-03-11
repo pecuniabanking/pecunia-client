@@ -44,15 +44,15 @@ class CCSettlementOrder : HBCIOrder {
         return true;
     }
     
-    override func updateResult(result:HBCIResultMessage) {
+    override func updateResult(_ result:HBCIResultMessage) {
         super.updateResult(result);
         
         if !result.isOk() {
             return;
         }
         
-        let context = MOAssistant.sharedAssistant().memContext;
-        let settle = NSEntityDescription.insertNewObjectForEntityForName("CreditCardSettlement", inManagedObjectContext: context) as! CreditCardSettlement;
+        let context = MOAssistant.shared().memContext;
+        let settle = NSEntityDescription.insertNewObject(forEntityName: "CreditCardSettlement", into: context!) as! CreditCardSettlement;
 
         for seg in resultSegments {
             settle.ccNumber = seg.elementValueForPath("cc_number") as? String;
