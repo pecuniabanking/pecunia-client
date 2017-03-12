@@ -22,15 +22,15 @@ import Foundation
 // Mockup code created from the same BankQueryResult class in Pecunia.
 
 @objc enum BankQueryType: Int {
-  case BankStatement;
-  case CreditCard;
-  case StandingOrder;
+  case bankStatement;
+  case creditCard;
+  case standingOrder;
 }
 
 @objc class BankQueryResult : NSObject {
-  var type: BankQueryType = .BankStatement;
+  var type: BankQueryType = .bankStatement;
   var ccNumber: String?;
-  var lastSettleDate: NSDate?;
+  var lastSettleDate: Date?;
   var balance: NSNumber?;
   var oldBalance: NSNumber?;
   var statements: [BankStatement] = [];

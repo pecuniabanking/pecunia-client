@@ -22,6 +22,19 @@
 import Foundation
 import WebKit
 import AppKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 @objc protocol JSLogger : JSExport {
     func logError(_ message: String) -> Void;
@@ -46,6 +59,10 @@ internal class UserQueryEntry {
 };
 
 class WebClient: WebView, WebViewJSExport {
+    internal static func MIMETypesShownAsHTML() -> [AnyObject]! {
+        return [];
+    }
+
     fileprivate var redirecting: Bool = false;
     fileprivate var pluginDescription: String = ""; // The plugin description for error messages.
 
@@ -113,7 +130,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 if let account = entry["account"] as? String {
-                    queryResult.account = BankAccount.find(withNumber: account, bankCode: query!.bankCode);
+                    queryResult.account = BankAccount.findAccount(number: account, bankCode: query!.bankCode);
                     if queryResult.type == .creditCard {
                         queryResult.ccNumber = account;
                     }
@@ -130,7 +147,7 @@ class WebClient: WebView, WebViewJSExport {
                 for jsonStatement in statements {
                     let statement: BankStatement = BankStatement.createTemporary(); // Created in memory context.
                     if let final = jsonStatement["final"] as? Bool {
-                        statement.isPreliminary = !final as NSNumber!;
+                        statement.isPreliminary = NSNumber(final);
                     }
 
                     if let date = jsonStatement["valutaDate"] as? Date {
@@ -171,7 +188,7 @@ class WebClient: WebView, WebViewJSExport {
 
                 // Explicitly sort by date, as it might happen that statements have a different
                 // sorting (e.g. by valuta date).
-                queryResult.statements.sortInPlace({ $0.date < $1.date });
+                queryResult.statements.sort(by: { $0.date < $1.date });
                 queryResults.append(queryResult);
             }
             completion(queryResults);

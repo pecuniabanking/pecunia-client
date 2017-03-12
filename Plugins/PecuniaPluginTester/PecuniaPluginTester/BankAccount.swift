@@ -30,7 +30,7 @@ import Foundation
     bankCode = code;
   }
 
-  class func findAccountWithNumber(number: String, bankCode code: String) -> BankAccount? {
+  class func findAccountWithNumber(_ number: String, bankCode code: String) -> BankAccount? {
     return BankAccount(number: number, code: code);
   }
 }

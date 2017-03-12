@@ -20,20 +20,20 @@
 import Cocoa;
 import WebKit;
 
-public class AuthRequest {
+open class AuthRequest {
 
   var passwordTextField: NSTextField!;
 
-  public var errorOccured = false;
+  open var errorOccured = false;
 
-  public static func new() -> AuthRequest {
+  open static func new() -> AuthRequest {
     return AuthRequest();
   }
 
-  public func finishPasswordEntry() -> Void {
+  open func finishPasswordEntry() -> Void {
   }
 
-  public func getPin(bankCode: String, userId: String) -> String {
+  open func getPin(_ bankCode: String, userId: String) -> String {
     return passwordTextField.stringValue;
   }
 
@@ -56,29 +56,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   @IBOutlet weak var accountsTextField: NSTextField!
   @IBOutlet weak var logLevelSelector: NSPopUpButton!
 
-  private var context: PluginContext? = nil;
-  private var webBrowser: NSWindow? = nil;
-  private let authRequest = AuthRequest();
+  fileprivate var context: PluginContext? = nil;
+  fileprivate var webBrowser: NSWindow? = nil;
+  fileprivate let authRequest = AuthRequest();
 
-  private var redirecting = false;
-  private var lastChangeDate: NSDate? = nil;
+  fileprivate var redirecting = false;
+  fileprivate var lastChangeDate: Date? = nil;
 
-  func applicationDidFinishLaunching(aNotification: NSNotification) {
+  func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-    toDatePicker.dateValue = NSDate();
+    toDatePicker.dateValue = Date();
     authRequest.passwordTextField = passwordTextField;
 
-    let defaults = NSUserDefaults.standardUserDefaults();
+    let defaults = UserDefaults.standard;
 
     // Initialize webInspector.
-    defaults.setBool(true, forKey: "WebKitDeveloperExtras");
+    defaults.set(true, forKey: "WebKitDeveloperExtras");
     defaults.synchronize();
 
-    if let name = defaults.stringForKey("pptScriptPath") {
+    if let name = defaults.string(forKey: "pptScriptPath") {
       pluginFileTextField.stringValue = name;
 
         do {
-            if let attributes : NSDictionary? = try NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue) {
+            if let attributes : NSDictionary? = try FileManager.default.attributesOfItem(atPath: pluginFileTextField.stringValue) as NSDictionary?? {
                 if let _attr = attributes {
                     lastChangeDate = _attr.fileModificationDate();// as! NSDate?;
                 }
@@ -88,39 +88,39 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
         }
     }
 
-    if let user = defaults.stringForKey("pptLoginUser") {
+    if let user = defaults.string(forKey: "pptLoginUser") {
       userNameTextField.stringValue = user;
     }
 
-    if let password = defaults.stringForKey("pptLoginPassword") {
+    if let password = defaults.string(forKey: "pptLoginPassword") {
       passwordTextField.stringValue = password;
     }
 
-    if let bankCode = defaults.stringForKey("pptBankCode") {
+    if let bankCode = defaults.string(forKey: "pptBankCode") {
       bankCodeTextField.stringValue = bankCode;
     }
 
-    if let fromDate: AnyObject = defaults.objectForKey("pptFromDate") where fromDate.isKindOfClass(NSDate) {
-      fromDatePicker.dateValue = fromDate as! NSDate;
+    if let fromDate: AnyObject = defaults.object(forKey: "pptFromDate"), as AnyObject? fromDate.isKind(of: Date) {
+      fromDatePicker.dateValue = fromDate as! Date;
     }
 
-    if let toDate: AnyObject = defaults.objectForKey("pptToDate")  where toDate.isKindOfClass(NSDate) {
-      toDatePicker.dateValue = toDate as! NSDate;
+    if let toDate: AnyObject = defaults.object(forKey: "pptToDate"), as AnyObject? toDate.isKind(of: Date) {
+      toDatePicker.dateValue = toDate as! Date;
     }
 
-    if let accounts = defaults.stringForKey("pptAccounts") {
+    if let accounts = defaults.string(forKey: "pptAccounts") {
       accountsTextField.stringValue = accounts;
     }
 
-    if let logLevel: AnyObject = defaults.objectForKey("pptLogLevel") {
-      logLevelSelector.selectItemAtIndex((logLevel as! NSNumber).integerValue);
+    if let logLevel: AnyObject = defaults.object(forKey: "pptLogLevel") as AnyObject? {
+      logLevelSelector.selectItem(at: (logLevel as! NSNumber).intValue);
     } else {
-      logLevelSelector.selectItemAtIndex(3);
+      logLevelSelector.selectItem(at: 3);
     }
 
-    if defaults.boolForKey("pptAutoLoad") {
+    if defaults.bool(forKey: "pptAutoLoad") {
       autoLoadCheckbox.state = NSOnState;
-      if NSFileManager.defaultManager().fileExistsAtPath(pluginFileTextField.stringValue) {
+      if FileManager.default.fileExists(atPath: pluginFileTextField.stringValue) {
         loadScript(self);
         NSFileCoordinator.addFilePresenter(self);
       }
@@ -129,12 +129,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     logIntern("Ready");
   }
 
-  func applicationWillTerminate(aNotification: NSNotification) {
+  func applicationWillTerminate(_ aNotification: Notification) {
     // Insert code here to tear down your application
     NSFileCoordinator.removeFilePresenter(self);
   }
 
-  @IBAction func selectScriptFile(sender: AnyObject) {
+  @IBAction func selectScriptFile(_ sender: AnyObject) {
     NSFileCoordinator.removeFilePresenter(self);
 
     let panel = NSOpenPanel();
@@ -145,28 +145,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     panel.allowedFileTypes = ["js"];
 
     let runResult = panel.runModal();
-    if runResult == NSModalResponseOK && panel.URL != nil {
-      pluginFileTextField.stringValue = panel.URL!.path!;
+    if runResult == NSModalResponseOK && panel.url != nil {
+      pluginFileTextField.stringValue = panel.url!.path;
 
-      let defaults = NSUserDefaults.standardUserDefaults();
-      defaults.setObject(panel.URL!.path!, forKey: "pptScriptPath");
+      let defaults = UserDefaults.standard;
+      defaults.set(panel.url!.path, forKey: "pptScriptPath");
 
       NSFileCoordinator.addFilePresenter(self);
     }
   }
 
-  @IBAction func close(sender: AnyObject) {
-    NSApplication.sharedApplication().terminate(self);
+  @IBAction func close(_ sender: AnyObject) {
+    NSApplication.shared().terminate(self);
   }
 
   // MARK: - File Presenter protocol
 
-  var presentedItemURL: NSURL? {
-    return NSURL(fileURLWithPath: pluginFileTextField.stringValue);
+  var presentedItemURL: URL? {
+    return URL(fileURLWithPath: pluginFileTextField.stringValue);
   }
 
-  var operationQueue = NSOperationQueue();
-  var presentedItemOperationQueue: NSOperationQueue {
+  var operationQueue = OperationQueue();
+  var presentedItemOperationQueue: OperationQueue {
     return operationQueue;
   }
 
@@ -174,9 +174,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
   func presentedItemDidChange() {
     do {
-        if let attributes : NSDictionary? = try NSFileManager.defaultManager().attributesOfItemAtPath(pluginFileTextField.stringValue) {
+        if let attributes : NSDictionary? = try FileManager.default.attributesOfItem(atPath: pluginFileTextField.stringValue) as NSDictionary?? {
             
-            var date : NSDate?;
+            var date : Date?;
             if let _attr = attributes {
                 date = _attr.fileModificationDate();// as! NSDate?;
             }
@@ -190,7 +190,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
         
     }
 
-    dispatch_async(dispatch_get_main_queue(), {
+    DispatchQueue.main.async(execute: {
       self.pendingRefresh = nil;
       self.logIntern("Reloading plugin");
       self.loadScript(self);
@@ -199,80 +199,80 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
   // MARK: - Logging
 
-  private let logFont = NSFont(name: "Menlo", size: 13);
+  fileprivate let logFont = NSFont(name: "Menlo", size: 13);
 
-  @objc func logError(message: String) -> Void {
+  @objc func logError(_ message: String) -> Void {
     let text = String(format: "[Error] %@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.redColor()]));
+    logTextView.textStorage!.append(NSAttributedString(string: text,
+      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.red]));
   };
 
-  @objc func logWarning(message: String) -> Void {
+  @objc func logWarning(_ message: String) -> Void {
     if logLevelSelector.indexOfSelectedItem < 1 {
       return;
     }
 
     let text = String(format: "[Warning] %@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
+    logTextView.textStorage!.append(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(red: 0.95, green: 0.75, blue: 0, alpha: 1)]));
   };
 
-  @objc func logInfo(message: String) -> Void {
+  @objc func logInfo(_ message: String) -> Void {
     if logLevelSelector.indexOfSelectedItem < 2 {
       return;
     }
 
     let text = String(format: "[Info] %@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
+    logTextView.textStorage!.append(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!]));
   };
 
-  @objc func logDebug(message: String) -> Void {
+  @objc func logDebug(_ message: String) -> Void {
     if logLevelSelector.indexOfSelectedItem < 3 {
       return;
     }
 
     let text = String(format: "[Debug] %@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.darkGrayColor()]));
+    logTextView.textStorage!.append(NSAttributedString(string: text,
+      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.darkGray]));
   };
 
-  @objc func logVerbose(message: String) -> Void {
+  @objc func logVerbose(_ message: String) -> Void {
     if logLevelSelector.indexOfSelectedItem < 4 {
       return;
     }
 
     let text = String(format: "[Verbose] %@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.grayColor()]));
+    logTextView.textStorage!.append(NSAttributedString(string: text,
+      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.gray]));
   };
 
-  func logIntern(message: String) -> Void {
+  func logIntern(_ message: String) -> Void {
     let text = String(format: "%@\n", message);
-    logTextView.textStorage!.appendAttributedString(NSAttributedString(string: text,
+    logTextView.textStorage!.append(NSAttributedString(string: text,
       attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(calibratedRed: 0.3, green: 0.5, blue: 0.3, alpha: 1)]));
   };
 
   // MARK: - User Interaction
 
-  @IBAction func clearLog(sender: AnyObject) {
+  @IBAction func clearLog(_ sender: AnyObject) {
     logTextView.string = "";
   }
 
-  @IBAction func logLevelChanged(sender: AnyObject) {
-    let defaults = NSUserDefaults.standardUserDefaults();
-    defaults.setInteger(logLevelSelector.indexOfSelectedItem, forKey: "pptLogLevel");
+  @IBAction func logLevelChanged(_ sender: AnyObject) {
+    let defaults = UserDefaults.standard;
+    defaults.set(logLevelSelector.indexOfSelectedItem, forKey: "pptLogLevel");
   }
 
-  @IBAction func loadScript(sender: AnyObject) {
+  @IBAction func loadScript(_ sender: AnyObject) {
     logIntern("Loading script...");
 
     if webBrowser == nil {
       let frame = NSRect(x: 0, y: 0, width: 900, height: 900);
       webBrowser = NSWindow(contentRect: frame, styleMask: NSTitledWindowMask | NSClosableWindowMask
         | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask,
-        backing: .Buffered, `defer`: false);
-      webBrowser?.releasedWhenClosed = false;
+        backing: .buffered, defer: false);
+      webBrowser?.isReleasedWhenClosed = false;
     }
 
     context = PluginContext(pluginFile: pluginFileTextField.stringValue, logger: self,
@@ -283,10 +283,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       return;
     }
 
-    let bundle = NSBundle(forClass: AppDelegate.self);
+    let bundle = Bundle(for: AppDelegate.self);
     do {
-        if let scriptPath : String = bundle.pathForResource("debug-helper", ofType: "js", inDirectory: "") {
-            if let script : NSString = try NSString(contentsOfFile: scriptPath, encoding: NSUTF8StringEncoding) {
+        if let scriptPath : String = bundle.path(forResource: "debug-helper", ofType: "js", inDirectory: "") {
+            if let script : NSString = try NSString(contentsOfFile: scriptPath, encoding: String.Encoding.utf8.rawValue) {
                 context?.addDebugScript(script as String);
             }
         }
@@ -314,7 +314,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       logIntern("Warning: plugin description not found");
       text += ", <description not found>";
     } else {
-      text += ", " + description.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
+      text += ", " + description.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
     }
 
     detailsTextField.stringValue = text;
@@ -323,7 +323,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   }
 
 
-  @IBAction func getStatements(sender: AnyObject) {
+  @IBAction func getStatements(_ sender: AnyObject) {
     if context == nil {
       logError("Plugin not loaded");
       return;
@@ -336,16 +336,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     let toDate = toDatePicker.dateValue;
     let accountString = accountsTextField.stringValue;
 
-    let defaults = NSUserDefaults.standardUserDefaults();
-    defaults.setObject(user, forKey: "pptLoginUser");
-    defaults.setObject(password, forKey: "pptLoginPassword");
-    defaults.setObject(bankCode, forKey: "pptBankCode");
-    defaults.setObject(fromDate, forKey: "pptFromDate");
-    defaults.setObject(toDate, forKey: "pptToDate");
-    defaults.setObject(accountString, forKey: "pptAccounts");
+    let defaults = UserDefaults.standard;
+    defaults.set(user, forKey: "pptLoginUser");
+    defaults.set(password, forKey: "pptLoginPassword");
+    defaults.set(bankCode, forKey: "pptBankCode");
+    defaults.set(fromDate, forKey: "pptFromDate");
+    defaults.set(toDate, forKey: "pptToDate");
+    defaults.set(accountString, forKey: "pptAccounts");
 
     
-    var accounts = accountString.componentsSeparatedByString(",");
+    var accounts = accountString.components(separatedBy: ",");
     if accounts.count == 0 {
       logError("No accounts specified");
       return;
@@ -397,14 +397,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
   }
 
-  @IBAction func dumpHTML(sender: AnyObject) {
+  @IBAction func dumpHTML(_ sender: AnyObject) {
     if context != nil {
       let html = context!.getCurrentHTML();
       logIntern(html);
     }
   }
 
-  @IBAction func showBrowser(sender: AnyObject) {
+  @IBAction func showBrowser(_ sender: AnyObject) {
     if webBrowser != nil {
       webBrowser!.orderFrontRegardless();
     } else {
@@ -412,13 +412,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
   }
   
-  @IBAction func autoLoadChanged(sender: AnyObject) {
-    let defaults = NSUserDefaults.standardUserDefaults();
+  @IBAction func autoLoadChanged(_ sender: AnyObject) {
+    let defaults = UserDefaults.standard;
     if autoLoadCheckbox.state == NSOnState {
-      defaults.setBool(true, forKey: "pptAutoLoad");
+      defaults.set(true, forKey: "pptAutoLoad");
       NSFileCoordinator.addFilePresenter(self);
     } else {
-      defaults.setBool(false, forKey: "pptAutoLoad");
+      defaults.set(false, forKey: "pptAutoLoad");
       NSFileCoordinator.removeFilePresenter(self);
     }
   }

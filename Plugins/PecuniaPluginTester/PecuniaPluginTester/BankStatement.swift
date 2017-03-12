@@ -23,8 +23,8 @@ import Foundation
 
 @objc class BankStatement : NSObject {
   var isPreliminary: Bool = false;
-  var date: NSDate? = nil;
-  var valutaDate: NSDate? = nil;
+  var date: Date? = nil;
+  var valutaDate: Date? = nil;
   var value: NSDecimalNumber? = nil;
   var origValue: NSDecimalNumber? = nil;
   var purpose: String? = nil;
@@ -36,7 +36,7 @@ import Foundation
   // Due to conflicts with the member "value" and NSObject we cannot make our mock class
   // derive from NSObject. However that requires to explicitly implement setValue:forObject, which
   // is used by PluginWorker explicitly, again due to the value conflict.
-   override func setValue(value: AnyObject?, forKey key: String) {
+   override func setValue(_ value: Any?, forKey key: String) {
     if key == "value" {
       if let number = value as? NSDecimalNumber {
         self.value = number;
@@ -46,12 +46,12 @@ import Foundation
 }
 
 // Need to make NSDate comparable as we will sort statement arrays by date.
-public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
-  return lhs === rhs || lhs.compare(rhs) == .OrderedSame
+public func ==(lhs: Date, rhs: Date) -> Bool {
+  return lhs === rhs || lhs.compare(rhs) == .orderedSame
 }
 
-public func <(lhs: NSDate, rhs: NSDate) -> Bool {
-  return lhs.compare(rhs) == .OrderedAscending
+public func <(lhs: Date, rhs: Date) -> Bool {
+  return lhs.compare(rhs) == .orderedAscending
 }
 
-extension NSDate: Comparable { }
+extension Date: Comparable { }

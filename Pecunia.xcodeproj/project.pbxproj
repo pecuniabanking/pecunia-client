@@ -957,6 +957,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		27C999D41E74050800CD3039 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B1AFEC481B5B9E7D002F1DDF;
+			remoteInfo = CommonCrypto;
+		};
+		27C999D61E74050C00CD3039 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B1AF0FF71BC45A6D00365496;
+			remoteInfo = PCSCard;
+		};
 		B11E61441C0125770031F368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
@@ -2989,6 +3003,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				27C999D71E74050C00CD3039 /* PBXTargetDependency */,
+				27C999D51E74050800CD3039 /* PBXTargetDependency */,
 				B174E8981CA08F12004FD3F0 /* PBXTargetDependency */,
 			);
 			name = Pecunia;
@@ -4046,6 +4062,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		27C999D51E74050800CD3039 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CommonCrypto;
+			targetProxy = 27C999D41E74050800CD3039 /* PBXContainerItemProxy */;
+		};
+		27C999D71E74050C00CD3039 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCSCard;
+			targetProxy = 27C999D61E74050C00CD3039 /* PBXContainerItemProxy */;
+		};
 		B13CE57A1C1250B000B5B750 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = HBCI4Swift;
