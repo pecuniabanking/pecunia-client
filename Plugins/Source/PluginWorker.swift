@@ -149,6 +149,26 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
+                    if let remoteName = jsonStatement["remoteName"] as? String {
+                        statement.remoteName = remoteName;
+                    }
+
+                    if let remoteAccount = jsonStatement["remoteAccount"] as? String {
+                        statement.remoteAccount = remoteAccount;
+                    }
+
+                    if let remoteBankCode = jsonStatement["remoteBankCode"] as? String {
+                        statement.remoteBankCode = remoteBankCode;
+                    }
+
+                    if let remoteIBAN = jsonStatement["remoteIBAN"] as? String {
+                        statement.remoteIBAN = remoteIBAN;
+                    }
+
+                    if let remoteBIC = jsonStatement["remoteBIC"] as? String {
+                        statement.remoteBIC = remoteBIC;
+                    }
+
                     if let value = jsonStatement["value"] as? String  where value.characters.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
