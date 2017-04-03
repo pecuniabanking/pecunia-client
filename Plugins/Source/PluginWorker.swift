@@ -192,6 +192,9 @@ class WebClient: WebView, WebViewJSExport {
                 // Explicitly sort by date, as it might happen that statements have a different
                 // sorting (e.g. by valuta date).
                 queryResult.statements.sortInPlace({ $0.date < $1.date });
+                if let value = queryResult.statements.last as BankStatement? {
+                    queryResult.account?.latestTransferDate = value.date;
+                }
                 queryResults.append(queryResult);
             }
             completion(queryResults);
