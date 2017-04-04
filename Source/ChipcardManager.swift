@@ -74,7 +74,7 @@ var _manager:ChipcardManager!
         // check if reader is still available
         if !card.isReaderConnected() {
             let alert = NSAlert();
-            alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+            alert.alertStyle = NSAlertStyle.Critical;
             alert.messageText = NSLocalizedString("AP366", comment: "");
             alert.runModal();
             return false;            
@@ -84,7 +84,7 @@ var _manager:ChipcardManager!
             var result = card.connect(1);
             if result == HBCISmartcard.ConnectResult.not_supported {
                 let alert = NSAlert();
-                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                alert.alertStyle = NSAlertStyle.Critical;
                 alert.messageText = NSLocalizedString("AP365", comment: "");
                 alert.runModal();
                 return false;
@@ -127,7 +127,7 @@ var _manager:ChipcardManager!
                 if readers.count == 0 {
                     // no card readers found
                     let alert = NSAlert();
-                    alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                    alert.alertStyle = NSAlertStyle.Critical;
                     alert.messageText = NSLocalizedString("AP364", comment: "");
                     alert.runModal();
                     return false;
@@ -140,7 +140,7 @@ var _manager:ChipcardManager!
                 card = HBCISmartcardDDV(readerName: readerName);
             } else {
                 let alert = NSAlert();
-                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                alert.alertStyle = NSAlertStyle.Critical;
                 alert.messageText = NSLocalizedString("AP364", comment: "");
                 alert.runModal();
                 return false;
@@ -160,7 +160,7 @@ var _manager:ChipcardManager!
                 // card is connected but wrong user
                 logError("HBCIChipcard: card inserted but wrong user(%@)", bankData.userId);
                 let alert = NSAlert();
-                alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+                alert.alertStyle = NSAlertStyle.Critical;
                 let msg = String(format: NSLocalizedString("AP362", comment: ""), bankData.userId, user.userId);
                 alert.messageText = msg;
                 alert.runModal();
@@ -169,7 +169,7 @@ var _manager:ChipcardManager!
         } else {
             logError("Chipcard: bank data could not be read");
             let alert = NSAlert();
-            alert.alertStyle = NSAlertStyle.CriticalAlertStyle;
+            alert.alertStyle = NSAlertStyle.Critical;
             alert.messageText = NSLocalizedString("AP363", comment: "");
             alert.runModal();
             return false;
@@ -206,7 +206,7 @@ var _manager:ChipcardManager!
             return nil;
         }
             
-        if let cid = card.cardID, cnumber = card.cardNumber {
+        if let cid = card.cardID, let cnumber = card.cardNumber {
             return NSString(format: "%@|%@", bytesToString(cid), cnumber);
         }
         return nil;

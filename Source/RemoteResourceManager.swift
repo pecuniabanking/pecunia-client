@@ -220,7 +220,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
 
         // Copy file from remote location.
         var sourceURL : NSURL = NSURL(string: RemoteResourcePath)!;
-        sourceURL = sourceURL.URLByAppendingPathComponent(fileName);
+        sourceURL = sourceURL.URLByAppendingPathComponent(fileName)!;
         let targetURL = NSURL(fileURLWithPath: targetPath);
 
         do {

@@ -89,7 +89,7 @@ class WebClient: WebView, WebViewJSExport {
         alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: ""),
             account, pluginDescription) as String;
         alert.informativeText = message;
-        alert.alertStyle = .WarningAlertStyle;
+        alert.alertStyle = .Warning;
         alert.runModal();
     }
 
@@ -401,7 +401,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     }
 
     internal func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString);
+        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString!);
         if webClient.redirecting {
             webClient.redirecting = false;
             return;

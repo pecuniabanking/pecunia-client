@@ -41,7 +41,12 @@ let wordsLoadStride : Int = 50000;
                 inManagedObjectContext: MOAssistant.sharedAssistant().context);
             request.includesSubentities = false;
 
-            let count = MOAssistant.sharedAssistant().context.countForFetchRequest(request, error: nil);
+            var count = 0
+            do {
+                try count = MOAssistant.sharedAssistant().context.countForFetchRequest(request);
+            } catch _ {
+                return false
+            }
             mappingsAvailable = count > 0;
         }
         return mappingsAvailable!;
