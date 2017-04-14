@@ -49,7 +49,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
 	                }
 
 	                // Trigger updating files in the background.
-	                DispatchQueue.main.asyncAfter(deadline: 0) {
+	                DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 0) ) {
 	                    self.updateFiles();
 	                }
 	            }
@@ -227,12 +227,12 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         do {
             let fileData: Data = try Data(contentsOf: sourceURL, options: .uncached);
             if !((try? fileData.write(to: targetURL, options: [.atomic])) != nil) {
-                logError("Could not copy remote resource %@", arguments: sourceURL.path!);
+                logError("Could not copy remote resource %@", arguments: sourceURL.path);
                 return false;
             }
         }
         catch {
-            logError("Could not open remote resource %@", arguments: sourceURL.path!);
+            logError("Could not open remote resource %@", arguments: sourceURL.path);
             return false;
         }
 

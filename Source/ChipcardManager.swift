@@ -100,7 +100,7 @@ var _manager:ChipcardManager!
                 controller._userIdName = userIdName;
                 if NSApp.runModal(for: controller.window!) == 1 {
                     // cancelled
-                    throw HBCIError.UserAbort;
+                    throw HBCIError.userAbort;
                     //return false;
                 }
                 result = controller.connectResult;

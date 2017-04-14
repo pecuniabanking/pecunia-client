@@ -58,14 +58,16 @@ extension NSDecimalNumber : Comparable {
             return nil;
         }
 
-        if let separatorRange = values[0].rangeOfCharacterFromSet(separators, options: .BackwardsSearch) {
-            if separatorRange.count == 1 {
+        if let separatorRange = values[0].rangeOfCharacter(from: separators, options: .backwards) {
+            if values[0].distance(from: separatorRange.lowerBound, to: separatorRange.upperBound) == 1 {
+            //if separatorRange.count == 1 {
                 formatter.usesGroupingSeparator = true;
                 formatter.groupingSize = 3;
 
                 // One char separator length is the only one we accept.
-                let separator = String(values[0][separatorRange.startIndex]);
-                if separatorRange.startIndex.distanceTo(values[0].endIndex) == 3 {
+                let separator = String(values[0][separatorRange.lowerBound]);
+                if values[0].distance(from: separatorRange.lowerBound, to: values[0].endIndex) == 3 {
+//                if separatorRange.lowerBound.distanceTo(values[0].endIndex) == 3 {
                     // 2 digits
                     formatter.decimalSeparator = separator;
                     formatter.groupingSeparator = (separator == ".") ? "," : ".";
@@ -73,8 +75,6 @@ extension NSDecimalNumber : Comparable {
                     formatter.groupingSeparator = separator;
                     formatter.decimalSeparator = (separator == ".") ? "," : ".";
                 }
-            } else {
-                return nil;
             }
         }
 
@@ -131,10 +131,10 @@ extension NSDecimalNumber : Comparable {
         let digits = numberOfDigits();
 
         var value = self.decimalValue;
-        var zero = 0.decimalValue;
+        var zero = Decimal(0);
         let isNegative = (NSDecimalCompare(&value, &zero) == .orderedAscending);
         if isNegative {
-            var minusOne = (-1).decimalValue;
+            var minusOne = Decimal(-1);
             NSDecimalMultiply(&value, &value, &minusOne, .plain);
         }
 
@@ -142,8 +142,8 @@ extension NSDecimalNumber : Comparable {
 
         // First determine the most significant digit. That forms our base. But only if the overall
         // value is >= 10.
-        var ten = 10.decimalValue;
-        var five = 5.decimalValue;
+        var ten = Decimal(10);
+        var five = Decimal(5);
         if (NSDecimalCompare(&second, &ten) == .orderedAscending) {
             NSDecimalRound(&value, &value, 1, .up);
         } else {
@@ -161,19 +161,19 @@ extension NSDecimalNumber : Comparable {
             // See if the second MSD is below or above 5. In the latter case increase the MSD by one
             // and return this as the rounded value.
             if (msdIs5Orlarger || NSDecimalCompare(&second, &five) == .orderedDescending) {
-                var offset = 1.decimalValue;
+                var offset = Decimal(1);
                 NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 1), .down);
                 NSDecimalAdd(&value, &value, &offset, .down);
             } else {
                 // The second MSD is < 5, so we round it up to 5 and add this to the overall value.
-                var offset = 5.decimalValue;
+                var offset = Decimal(5);
                 NSDecimalMultiplyByPowerOf10(&offset, &offset, Int16(digits - 2), .down);
                 NSDecimalAdd(&value, &value, &offset, .down);
             }
         }
 
         if isNegative {
-            var minusOne = (-1).decimalValue;
+            var minusOne = Decimal(-1);
             NSDecimalMultiply(&value, &value, &minusOne, .plain);
         }
         

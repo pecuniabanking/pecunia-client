@@ -41,8 +41,13 @@ let wordsLoadStride : Int = 50000;
                 in: MOAssistant.shared().context);
             request.includesSubentities = false;
 
-            let count = MOAssistant.shared().context.count(for: request, error: nil);
-            mappingsAvailable = count > 0;
+            do {
+                let count = try MOAssistant.shared().context.count(for: request);
+                mappingsAvailable = count > 0;
+            }
+            catch {
+                mappingsAvailable = false;
+            }
         }
         return mappingsAvailable!;
     }
@@ -99,7 +104,7 @@ let wordsLoadStride : Int = 50000;
                     if (end > lineCount) {
                         end = lineCount;
                     }
-                    for i in start..<end += 1 {
+                    for i in start..<end + 1 {
                         let key = lines[Int(i)].stringWithNormalizedGermanChars().lowercased;
                         let mapping = NSEntityDescription.insertNewObject(forEntityName: "WordMapping",
                             into: context) as! WordMapping;

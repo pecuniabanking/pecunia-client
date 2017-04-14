@@ -59,14 +59,14 @@ extension NSError {
         
         var msg:String;
         switch error {
-        case .ParseError: msg = NSLocalizedString("AP2000", comment: "");
-        case .BadURL(let urlString): msg = String(format: NSLocalizedString("AP2001", comment: ""), urlString);
-        case .Connection(let path): msg = String(format: NSLocalizedString("AP2002", comment: ""), path);
-        case .ServerTimeout(let host): msg = String(format: NSLocalizedString("AP2003", comment: ""), host);
-        case .MissingData(let field): msg = String(format: NSLocalizedString("AP2004", comment: ""), field);
-        case .InvalidHBCIVersion(let version): msg = String(format: NSLocalizedString("AP2005", comment: ""), version);
-        case .SyntaxFileError: msg = NSLocalizedString("AP2006", comment: "");
-        case .UserAbort: msg = NSLocalizedString("AP106", comment: "");
+        case .parseError: msg = NSLocalizedString("AP2000", comment: "");
+        case .badURL(let urlString): msg = String(format: NSLocalizedString("AP2001", comment: ""), urlString);
+        case .connection(let path): msg = String(format: NSLocalizedString("AP2002", comment: ""), path);
+        case .serverTimeout(let host): msg = String(format: NSLocalizedString("AP2003", comment: ""), host);
+        case .missingData(let field): msg = String(format: NSLocalizedString("AP2004", comment: ""), field);
+        case .invalidHBCIVersion(let version): msg = String(format: NSLocalizedString("AP2005", comment: ""), version);
+        case .syntaxFileError: msg = NSLocalizedString("AP2006", comment: "");
+        case .userAbort: msg = NSLocalizedString("AP106", comment: "");
         }
         userInfo[NSLocalizedDescriptionKey] = msg;
         return NSError(domain: "de.pecuniabanking.ErrorDomain", code: 1000, userInfo: userInfo);
@@ -91,25 +91,28 @@ class HBCIBackendCallback : HBCICallback {
     init() {}
     
     func getTan(_ user:HBCIUser, challenge:String?, challenge_hdd_uc:String?) throws ->String {
-        let bankUser = BankUser.findUserWithId(user.userId, bankCode:user.bankCode);
+        let bankUser = BankUser.find(withId: user.userId, bankCode:user.bankCode);
         if challenge_hdd_uc != nil {
             // Flicker code.
-            let controller = ChipTanWindowController(code: challenge_hdd_uc!, message: challenge); // todo
-            if NSApp.runModal(for: (controller?.window!)!) == 0 {
-                return controller.tan;
-            } else {
-                throw HBCIError.UserAbort;
+            if let controller = ChipTanWindowController(code: challenge_hdd_uc!, message: challenge) {
+                if NSApp.runModal(for: (controller.window!)) == 0 {
+                    return controller.tan;
+                } else {
+                    throw HBCIError.userAbort;
+                }
             }
         }
         
-        let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""), bankUser != nil ? bankUser.name : user.userId, challenge!));
-        let res = NSApp.runModalForWindow(tanWindow.window!);
-        tanWindow.close();
-        if res == 0 {
-            return tanWindow.result();
-        } else {
-            throw HBCIError.UserAbort;
+        if let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""), bankUser != nil ? bankUser!.name: user.userId, challenge!)) {
+            let res = NSApp.runModal(for: tanWindow.window!);
+            tanWindow.close();
+            if res == 0 {
+                return tanWindow.result();
+            } else {
+                throw HBCIError.userAbort;
+            }
         }
+        return "";
     }
 }
 
@@ -118,14 +121,14 @@ open class BackendLog: HBCILog {
     
     public init() {}
     
-    open func logError(_ message: String, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.error, message: message, function: function, file: file, line: Int32(line), arguments:[]);
+    open func logError(_ message: String?, file:String, function:String, line:Int) {
+        DDLog.doLog(DDLogFlag.error, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
     }
-    open func logWarning(_ message: String, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.warning, message: message, function: function, file: file, line: Int32(line), arguments:[]);
+    open func logWarning(_ message: String?, file:String, function:String, line:Int) {
+        DDLog.doLog(DDLogFlag.warning, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
     }
-    open func logInfo(_ message: String, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.info, message: message, function: function, file: file, line: Int32(line), arguments:[]);
+    open func logInfo(_ message: String?, file:String, function:String, line:Int) {
+        DDLog.doLog(DDLogFlag.info, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
     }
 }
 
@@ -160,7 +163,7 @@ class HBCIBackend : NSObject {
     
     func infoForBankCode(_ bankCode:String) -> InstituteInfo? {
         let (bic, result) = IBANtools.bicForBankCode(bankCode, countryCode: "de");
-        if result == .NoBIC || result == .WrongValue {
+        if result == .noBIC || result == .wrongValue {
             return nil;
         }
         return IBANtools.instituteDetailsForBIC(bic);
@@ -197,18 +200,16 @@ class HBCIBackend : NSObject {
     }
     
     func bicForIBAN(_ iban:String) ->String? {
-        let bicInfo:NSDictionary = IBANtools.bicForIBAN(iban);
-        if let result = (bicInfo["result"]? as AnyObject).intValue {
-            if IBANToolsResult(rawValue: result) != IBANToolsResult.NoBIC {
-                return bicInfo["bic"] as? String;
-            }
+        let result:(String, IBANToolsResult) = IBANtools.bicForIBAN(iban);
+        if result.1 != IBANToolsResult.noBIC {
+            return result.0;
         }
         return nil;
     }
     
     func getBankNodeWithAccount(_ account:HBCIAccount) ->BankAccount? {
         let context = MOAssistant.shared().context;
-        var bankNode = BankAccount.bankRootForCode(account.bankCode);
+        var bankNode = BankAccount.bankRoot(forCode: account.bankCode);
 
         if bankNode == nil {
             let root = BankingCategory.bankRoot();
@@ -217,13 +218,15 @@ class HBCIBackend : NSObject {
             }
             
             // create bank node
-            bankNode = NSEntityDescription.insertNewObjectForEntityForName("BankAccount", inManagedObjectContext: context) as! BankAccount;
-            //bankNode.name = account.bankName;
-            bankNode.bankCode = account.bankCode;
-            bankNode.currency = account.currency;
-            bankNode.bic = account.bic;
-            bankNode.isBankAcc = NSNumber(bool: true);
-            bankNode.parent = root;
+            if let bankNode = NSEntityDescription.insertNewObject(forEntityName: "BankAccount", into: context!) as? BankAccount  {
+                //bankNode.name = account.bankName;
+                bankNode.bankCode = account.bankCode;
+                bankNode.currency = account.currency;
+                bankNode.bic = account.bic;
+                bankNode.isBankAcc = NSNumber(value: true);
+                bankNode.parent = root;
+                return bankNode;
+            }
         }
         return bankNode;
     }
@@ -264,7 +267,7 @@ class HBCIBackend : NSObject {
                         found = true;
 
                         // update the user if there is none assigned yet
-                        let users = bankAccount.mutableSetValueForKey("users");
+                        let users = bankAccount.mutableSetValue(forKey: "users");
                         if users.count > 0 {
                             // there is already another user id assigned...
                             break;
@@ -272,7 +275,7 @@ class HBCIBackend : NSObject {
                         
                         bankAccount.userId = user.userId;
                         bankAccount.customerId = user.customerId;
-                        users.addObject(user);
+                        users.add(user);
                         
                         if account.bic != nil {
                             bankAccount.bic = account.bic;
@@ -296,7 +299,7 @@ class HBCIBackend : NSObject {
                     }
                     bankAccounts.append(bankRoot);
                     
-                    let bankAccount = NSEntityDescription.insertNewObjectForEntityForName("BankAccount", inManagedObjectContext: context) as! BankAccount;
+                    let bankAccount = NSEntityDescription.insertNewObject(forEntityName: "BankAccount", into: context!) as! BankAccount;
                     bankAccount.bankCode = account.bankCode;
                     bankAccount.setAccountNumber(account.number);
                     bankAccount.name = account.name;
@@ -305,12 +308,12 @@ class HBCIBackend : NSObject {
                     bankAccount.owner = account.owner;
                     bankAccount.userId = user.userId;
                     bankAccount.customerId = user.customerId;
-                    bankAccount.isBankAcc = NSNumber(bool: true);
+                    bankAccount.isBankAcc = NSNumber(value: true);
                     bankAccount.accountSuffix = account.subNumber;
                     bankAccount.bic = account.bic;
                     bankAccount.iban = account.iban;
                     if let type = account.type, let typeNum = Int(type) {
-                        bankAccount.type = NSNumber(integer: typeNum);
+                        bankAccount.type = NSNumber(value: typeNum);
                     }
                     
                     bankAccount.plugin = PluginRegistry.pluginForAccount(account.number, bankCode: account.bankCode);
@@ -319,8 +322,8 @@ class HBCIBackend : NSObject {
                     }
                     
                     bankAccount.parent = bankRoot;
-                    let users = bankAccount.mutableSetValueForKey("users");
-                    users.addObject(user);
+                    let users = bankAccount.mutableSetValue(forKey: "users");
+                    users.add(user);
                 }
             }
         }
@@ -406,11 +409,11 @@ class HBCIBackend : NSObject {
         user.preferredTanMethod = nil;
         
         for method in methods {
-            let tanMethod = NSEntityDescription.insertNewObjectForEntityForName("TanMethod", inManagedObjectContext: context) as! TanMethod;
+            let tanMethod = NSEntityDescription.insertNewObject(forEntityName: "TanMethod", into: context!) as! TanMethod;
             tanMethod.identifier = method.identifier;
             tanMethod.inputInfo = method.inputInfo;
             tanMethod.name = method.name;
-            tanMethod.maxTanLength = NSNumber(integer: method.maxTanLength);
+            tanMethod.maxTanLength = NSNumber(value: method.maxTanLength);
             tanMethod.method = method.secfunc;
             tanMethod.needTanMedia = method.needTanMedia;
             tanMethod.process = method.process.rawValue;
@@ -475,19 +478,19 @@ class HBCIBackend : NSObject {
         
         let oldMedia = user.tanMedia.allObjects as! [TanMedium];
         for tanMedium in tanMedia {
-            let medium = NSEntityDescription.insertNewObjectForEntityForName("TanMedium", inManagedObjectContext: context) as! TanMedium;
+            let medium = NSEntityDescription.insertNewObject(forEntityName: "TanMedium", into: context!) as! TanMedium;
             medium.category = tanMedium.category;
             medium.status = tanMedium.status;
             medium.cardNumber = tanMedium.cardNumber;
             medium.cardSeqNumber = tanMedium.cardSeqNumber;
-            medium.cardType = tanMedium.cardType;
+            medium.cardType = tanMedium.cardType != nil ? NSNumber(value: tanMedium.cardType!) : nil;
             medium.validFrom = tanMedium.validFrom;
             medium.validTo = tanMedium.validTo;
             medium.tanListNumber = tanMedium.tanListNumber;
             medium.name = tanMedium.name;
             medium.mobileNumber = tanMedium.mobileNumber;
             medium.mobileNumberSecure = tanMedium.mobileNumberSecure;
-            medium.freeTans = tanMedium.freeTans == nil ? nil:NSNumber(integer: tanMedium.freeTans!);
+            medium.freeTans = tanMedium.freeTans == nil ? nil:NSNumber(value: tanMedium.freeTans!);
             medium.lastUse = tanMedium.lastUse;
             medium.activatedOn = tanMedium.activatedOn;
             medium.user = user;
@@ -565,7 +568,7 @@ class HBCIBackend : NSObject {
             let user = try HBCIUser(bankUser: bankUser);
             try setupSecurityMethod(bankUser, user: user);
             defer {
-                if user.securityMethod.code == .DDV {
+                if user.securityMethod.code == .ddv {
                     ChipcardManager.manager.close();
                 }
             }
@@ -633,7 +636,7 @@ class HBCIBackend : NSObject {
                 }
             }
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             // do nothing
             return nil;
         }
@@ -683,7 +686,7 @@ class HBCIBackend : NSObject {
                     }
                     if try msg.send() {
                         if let balance = order.bookedBalance {
-                            bankAccount.updateBalanceWithValue(balance.value);
+                            bankAccount.updateBalance(withValue: balance.value);
                             return nil;
                         }
                     } else {
@@ -738,7 +741,7 @@ class HBCIBackend : NSObject {
             */
             
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             // do nothing
             return nil;
         }
@@ -782,7 +785,7 @@ class HBCIBackend : NSObject {
                 return nil;
             }
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             return nil;
         }
         catch let error as HBCIError {
@@ -831,7 +834,7 @@ class HBCIBackend : NSObject {
             }
 
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             return nil;
         }
         catch let error as HBCIError {
@@ -896,9 +899,9 @@ class HBCIBackend : NSObject {
 				
                 DispatchQueue.main.async(execute: {
                     // important: nofifications must be sent in main thread!
-                    let notification = Notification(name: PecuniaStatementsNotification, object: results);
+                    let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: results);
                     NotificationCenter.default.post(notification);
-                    self.pluginsRunning--;
+                    self.pluginsRunning -= 1;
                     self.checkGetStatementsFinalization();
                 });
             });
@@ -1003,7 +1006,7 @@ class HBCIBackend : NSObject {
 
         for order in orders {
             for item in order.items {
-                let stord = NSEntityDescription.insertNewObjectForEntityForName("StandingOrder", inManagedObjectContext: context) as! StandingOrder;
+                let stord = NSEntityDescription.insertNewObject(forEntityName: "StandingOrder", into: context!) as! StandingOrder;
                 stord.localAccount = account.number;
                 stord.localBankCode = account.bankCode;
                 stord.currency = item.currency;
@@ -1018,13 +1021,13 @@ class HBCIBackend : NSObject {
                 
                 stord.firstExecDate = order.startDate;
                 stord.lastExecDate = order.lastDate;
-                stord.cycle = NSNumber(integer: order.cycle);
-                stord.executionDay = NSNumber(integer: order.executionDay);
+                stord.cycle = NSNumber(value: order.cycle);
+                stord.executionDay = NSNumber(value: order.executionDay);
                 stord.orderKey = order.orderId;
                 if order.cycleUnit == .monthly {
-                    stord.period = NSNumber(unsignedInt: stord_monthly.rawValue);
+                    stord.period = NSNumber(value: stord_monthly.rawValue);
                 } else {
-                    stord.period = NSNumber(unsignedInt: stord_weekly.rawValue);
+                    stord.period = NSNumber(value: stord_weekly.rawValue);
                 }
                 result.standingOrders.append(stord);
             }
@@ -1032,9 +1035,9 @@ class HBCIBackend : NSObject {
         
         // get account reference
         if account.subNumber == nil {
-            result.account = BankAccount.findAccountWithNumber(account.number, bankCode: account.bankCode);
+            result.account = BankAccount.find(withNumber: account.number, bankCode: account.bankCode);
         } else {
-            result.account = BankAccount.findAccountWithNumber(account.number, subNumber: account.subNumber, bankCode: account.bankCode);
+            result.account = BankAccount.find(withNumber: account.number, subNumber: account.subNumber, bankCode: account.bankCode);
         }
 
         return result;
@@ -1055,9 +1058,11 @@ class HBCIBackend : NSObject {
         }
         // calculate intermediate balances
         if var balance = result.balance {
-            for var i = result.statements.count-1; i>=0; i -= 1 {
+            var i = result.statements.count-1;
+            while i >= 0 {
                 result.statements[i].saldo = balance;
                 balance = balance - result.statements[i].value;
+                i -= 1;
             }
         }
     }
@@ -1081,7 +1086,7 @@ class HBCIBackend : NSObject {
             }
             
             for item in statement.items {
-                let stat = NSEntityDescription.insertNewObjectForEntityForName("BankStatement", inManagedObjectContext: context) as! BankStatement;
+                let stat = NSEntityDescription.insertNewObject(forEntityName: "BankStatement", into: context!) as! BankStatement;
                 stat.localAccount = account.number;
                 stat.localSuffix = account.subNumber;
                 stat.localBankCode = account.bankCode;
@@ -1106,8 +1111,8 @@ class HBCIBackend : NSObject {
                 let transCode = item.transactionCode == nil ? 999:item.transactionCode;
                 stat.transactionCode = String(format: "%0.3d", transCode!);
                 stat.transactionText = item.transactionText;
-                stat.isStorno = NSNumber(bool: (item.isCancellation ?? false));
-                stat.isPreliminary = NSNumber(bool: false);
+                stat.isStorno = NSNumber(value: (item.isCancellation ?? false));
+                stat.isPreliminary = NSNumber(value: false);
                 result.statements.append(stat);
             }
         }
@@ -1382,15 +1387,19 @@ class HBCIBackend : NSObject {
         
         HBCIDialog.callback = HBCIBackendCallback();
         
-        let bankAccount = firstTransfer.account;
-        let bankUser = bankAccount?.defaultBankUser();
+        guard let bankAccount = firstTransfer.account else {
+            logError("Bank account in transfer is initial");
+            return nil;
+        }
+        
+        let bankUser = bankAccount.defaultBankUser();
         
         guard let option = signingOptionForUser(bankUser!) else {
             return nil;
         }
         
         do {
-            try processHBCIDialog(bankUser, signingOption: option) { user, dialog in
+            try processHBCIDialog(bankUser!, signingOption: option) { user, dialog in
                 // now collect transfers
                 let account = HBCIAccount(account: bankAccount);
                 let sepaTransfer = HBCISepaTransfer(account:account);
@@ -1417,7 +1426,7 @@ class HBCIBackend : NSObject {
                 
                 if try msg.send() {
                     for transfer in transfers {
-                        transfer.isSent = NSNumber(bool: true);
+                        transfer.isSent = NSNumber(value: true);
                     }
                     return nil;
                 }
@@ -1478,7 +1487,7 @@ class HBCIBackend : NSObject {
             }
             */
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             // do nothing
             return nil;
         }
@@ -1504,7 +1513,7 @@ class HBCIBackend : NSObject {
         for transfer in transfers {
             let account = transfer.account;
             guard let bankUser = account?.defaultBankUser() else {
-                logError("Skip transfer: no bank user found for bank account \(account.accountNumber())");
+                logError("Skip transfer: no bank user found for bank account \(account?.accountNumber())");
                 errorOccured = true;
                 continue;
             }
@@ -1529,7 +1538,7 @@ class HBCIBackend : NSObject {
                         
                         let sepaTransfer = HBCISepaTransfer(account: account);
                         
-                        if TransferType(transfer.type.unsignedIntValue) == TransferTypeSEPAScheduled  && transfer.valutaDate != nil {
+                        if TransferType(transfer.type.uint32Value) == TransferTypeSEPAScheduled  && transfer.valutaDate != nil {
                             sepaTransfer.date = transfer.valutaDate!;
                         }
                         
@@ -1550,7 +1559,7 @@ class HBCIBackend : NSObject {
                             
                             if msg.orders.count > 0 {
                                 if try msg.send() {
-                                    transfer.isSent = NSNumber(bool: true);
+                                    transfer.isSent = NSNumber(value: true);
                                     continue;
                                 }
                             }
@@ -1627,7 +1636,7 @@ class HBCIBackend : NSObject {
                 */
                 
             } // do
-            catch HBCIError.UserAbort {
+            catch HBCIError.userAbort {
                 // do nothing
                 return;
             }
@@ -1659,7 +1668,7 @@ class HBCIBackend : NSObject {
         for stord in standingOrders {
             let bankAccount = stord.account;
             guard let bankUser = bankAccount?.defaultBankUser() else {
-                logError("Skip standing order: no bank user found for bank account \(bankAccount.accountNumber())");
+                logError("Skip standing order: no bank user found for bank account \(bankAccount?.accountNumber())");
                 errorOccured = true;
                 continue;
             }
@@ -1694,7 +1703,7 @@ class HBCIBackend : NSObject {
                                 if let order = HBCISepaStandingOrderNewOrder(message: msg, order: self.convertStandingOrder(stord)) {
                                     order.enqueue();
                                     if try msg.send() {
-                                        stord.isSent = NSNumber(bool: true);
+                                        stord.isSent = NSNumber(value: true);
                                         continue;
                                     }
                                 }
@@ -1704,8 +1713,8 @@ class HBCIBackend : NSObject {
                                 if let order = HBCISepaStandingOrderDeleteOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
                                     order.enqueue();
                                     if try msg.send() {
-                                        let context = MOAssistant.sharedAssistant().context;
-                                        context.deleteObject(stord);
+                                        let context = MOAssistant.shared().context;
+                                        context?.delete(stord);
                                         continue;
                                     }
                                 }
@@ -1716,7 +1725,7 @@ class HBCIBackend : NSObject {
                                 if let order = HBCISepaStandingOrderEditOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
                                     order.enqueue();
                                     if try msg.send() {
-                                        stord.isSent = NSNumber(bool: true);
+                                        stord.isSent = NSNumber(value: true);
                                         continue;
                                     }
                                 }
@@ -1792,7 +1801,7 @@ class HBCIBackend : NSObject {
                 dialog.dialogEnd();
                 */
             }
-            catch HBCIError.UserAbort {
+            catch HBCIError.userAbort {
                 // do nothing
                 return nil;
             }
@@ -1815,11 +1824,11 @@ class HBCIBackend : NSObject {
         var unit = HBCIStandingOrderCycleUnit.monthly;
         
         
-        if StandingOrderPeriod(stord.period.unsignedIntValue) == stord_weekly {
+        if StandingOrderPeriod(stord.period.uint32Value) == stord_weekly {
             unit = .weekly;
         }
         
-        let result = HBCIStandingOrder(account: account, startDate: stord.firstExecDate, cycle: stord.cycle.integerValue, day: stord.executionDay.integerValue, cycleUnit: unit);
+        let result = HBCIStandingOrder(account: account, startDate: stord.firstExecDate, cycle: stord.cycle.intValue, day: stord.executionDay.intValue, cycleUnit: unit);
         
         let item = HBCISepaTransfer.Item(iban:stord.remoteIBAN, bic:stord.remoteBIC, name:stord.remoteName, value:stord.value, currency:stord.currency);
         item.purpose = stord.purpose();
@@ -1934,13 +1943,13 @@ class HBCIBackend : NSObject {
         let bytes:[UInt8] = [0x26,0x19,0x38,0xa7,0x99,0xbc,0xf1,0x55];
         let md5Hash = UnsafeMutablePointer<UInt8>.allocate(capacity: 16);
         let salt = Data(bytes: UnsafePointer<UInt8>(bytes), count: 8);
-        if let pwData = ("PecuniaData".data(using: String.Encoding.isoLatin1) as NSData?)?.mutableCopy() {
-            (pwData as AnyObject).append(salt);
+        if var pwData = "PecuniaData".data(using: String.Encoding.isoLatin1) {
+            pwData.append(salt);
             
             // apply MD5 hash
             for j in 0 ..< iterations {
                 if j==0 {
-                    CC_MD5(pwData.bytes, UInt32((pwData as! NSData).length), md5Hash);
+                    CC_MD5((pwData as NSData).bytes, UInt32(pwData.count), md5Hash);
                 } else {
                     CC_MD5(md5Hash, 16, md5Hash);
                 }
@@ -1954,7 +1963,7 @@ class HBCIBackend : NSObject {
             
             var length = enc.count;
             let plain = UnsafeMutablePointer<UInt8>.allocate(capacity: enc.count);
-            let rv = CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmDES), 0, md5Hash, kCCKeySizeDES, md5Hash.advancedBy(8), enc.bytes, enc.length, plain, length, &length);
+            let rv = CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmDES), 0, md5Hash, kCCKeySizeDES, md5Hash.advanced(by:8), (enc as NSData).bytes, enc.count, plain, length, &length);
             md5Hash.deallocate(capacity: 16);
             if rv == 0 {
                 var p = UnsafeMutablePointer<UInt8>(plain).advanced(by: 4);
@@ -2008,8 +2017,8 @@ class HBCIBackend : NSObject {
             let user = try HBCIUser(bankUser: bankUser);
             if let params = HBCIAccountStatementOrder.getParameters(user) {
                 let par = AccountStatementParameters();
-                par.canIndex = NSNumber(bool: params.supportsNumber);
-                par.needsReceipt = NSNumber(bool: params.needsReceipt);
+                par.canIndex = NSNumber(value: params.supportsNumber);
+                par.needsReceipt = NSNumber(value: params.needsReceipt);
                 var f = "";
                 for format in params.formats {
                     f = f + String(format.rawValue);
@@ -2026,7 +2035,7 @@ class HBCIBackend : NSObject {
         let context = MOAssistant.shared().context;
         let stat = NSEntityDescription.insertNewObject(forEntityName: "AccountStatement", into: context!) as! AccountStatement;
         stat.document = statement.booked;
-        stat.format = NSNumber(unsignedInt: statement.format.rawValue);
+        stat.format = NSNumber(value: statement.format.rawValue);
         stat.startDate = statement.startDate;
         stat.endDate = statement.endDate;
         stat.info = statement.closingInfo;
@@ -2035,7 +2044,9 @@ class HBCIBackend : NSObject {
         stat.iban = statement.iban;
         stat.bic = statement.bic;
         stat.name = statement.name;
-        stat.number = statement.number;
+        if let number = statement.number {
+            stat.number = NSNumber(value: number);
+        }
         return stat;
     }
     
@@ -2043,12 +2054,12 @@ class HBCIBackend : NSObject {
         let user = try HBCIUser(bankUser: bankUser);
         try setupSecurityMethod(bankUser, user: user);
         defer {
-            if user.securityMethod.code == .DDV {
+            if user.securityMethod.code == .ddv {
                 ChipcardManager.manager.close();
             }
         }
         
-        if user.securityMethod.code == .PinTan {
+        if user.securityMethod.code == .pinTan {
             if let option = signingOption {
                 user.tanMethod = option.tanMethod;
                 user.tanMediumName = option.tanMediumName;
@@ -2072,7 +2083,7 @@ class HBCIBackend : NSObject {
                 dialog.dialogEnd();
             }
             
-            return try block(user: user, dialog: dialog);
+            return try block(user, dialog);
         } else {
             logError("Could not initialize dialog for user \(user.userId), result was not ok");
             throw NSError.errorWithMsg(msgId: "2012", params: user.userId);
@@ -2103,11 +2114,11 @@ class HBCIBackend : NSObject {
                         return nil;
                     }
                     
-                    if params.formats.contains(HBCIAccountStatementFormat.PDF) {
-                        order.format = HBCIAccountStatementFormat.PDF;
+                    if params.formats.contains(HBCIAccountStatementFormat.pdf) {
+                        order.format = HBCIAccountStatementFormat.pdf;
                     } else {
-                        if params.formats.contains(HBCIAccountStatementFormat.MT940) {
-                            order.format = HBCIAccountStatementFormat.MT940;
+                        if params.formats.contains(HBCIAccountStatementFormat.mt940) {
+                            order.format = HBCIAccountStatementFormat.mt940;
                         } else {
                             logError("AccountStatement: format not supported");
                             return nil;
@@ -2130,7 +2141,7 @@ class HBCIBackend : NSObject {
                 return nil;
                 } as? AccountStatement;
         }
-        catch HBCIError.UserAbort {
+        catch HBCIError.userAbort {
             // do nothing
             return nil;
         }

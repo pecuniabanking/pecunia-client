@@ -30,7 +30,7 @@ class CCStatementOrder: HBCIOrder {
             return false;
         }
         
-        var values:Dictionary<String,AnyObject> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number];
+        var values:Dictionary<String,Any> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number];
         if account.subNumber != nil {
             values["KTV.subnumber"] = account.subNumber!
         }
@@ -74,9 +74,9 @@ class CCStatementOrder: HBCIOrder {
             for stat in stats {
                 let item = HBCIStatementItem();
                 item.ccNumberUms = stat.elementValueForPath("cc_number") as? String;
-                item.valutaDate = stat.elementValueForPath("valutaDate") as? NSDate;
-                item.docDate = stat.elementValueForPath("docDate") as? NSDate;
-                item.date = stat.elementValueForPath("postingDate") as? NSDate;
+                item.valutaDate = stat.elementValueForPath("valutaDate") as? Date;
+                item.docDate = stat.elementValueForPath("docDate") as? Date;
+                item.date = stat.elementValueForPath("postingDate") as? Date;
                 
                 if let deg = stat.elementForPath("origValue") {
                     if let val = HBCIValue(element: deg) {

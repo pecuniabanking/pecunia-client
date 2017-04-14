@@ -265,12 +265,14 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         if (status != noErr) {
             return nil;
         }
-
-        if let password = NSString(utf8String: UnsafeMutablePointer<Int8>(passwordData)) {
-            passwordCache[key] = password as String;
-
-            SecKeychainItemFreeContent(nil, passwordData);
-            return password as String;
+        
+        if let passwordData = passwordData {
+            if let password = NSString(utf8String: passwordData.assumingMemoryBound(to: Int8.self)) {
+                passwordCache[key] = password as String;
+                
+                SecKeychainItemFreeContent(nil, passwordData);
+                return password as String;
+            }
         }
         return nil;
     }

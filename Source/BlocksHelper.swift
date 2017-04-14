@@ -35,7 +35,7 @@ func dispatch_after_delay(_ queue: DispatchQueue, delay: CGFloat, block: @escapi
         }
 
         // We don't want to hold any objects in memory.
-        originalBlock = nil;
+        //originalBlock = nil; does not work in Swift3
         cancelableBlock = nil;
     };
 

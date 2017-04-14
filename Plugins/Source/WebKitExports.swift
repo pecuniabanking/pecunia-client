@@ -560,7 +560,7 @@ extension DOMDocument : DOMDocumentJSExport {
     func reloadFromOrigin();
     func findFrameNamed(_ name: String!) -> WebFrame!;
     var parentFrame: WebFrame! { get };
-    var childFrames: [AnyObject]! { get };
+    var childFrames: [Any]! { get };
 }
 
 extension WebFrame: WebFrameJSExport {
@@ -571,7 +571,7 @@ extension WebFrame: WebFrameJSExport {
     }
 }
 
-@objc protocol WebViewJSExport : JSExport {
+protocol WebViewJSExport : JSExport {
 
     var URL: String { get set }; // Same as mainFrameURL below, just a nicer name.
     var postURL: String { get set }; // if written it's an URL for POST requests otherwise the same as mainFrameURL
@@ -583,8 +583,8 @@ extension WebFrame: WebFrameJSExport {
     // WebView exports.
     static func canShowMIMEType(_ MIMEType: String!) -> Bool;
     static func canShowMIMETypeAsHTML(_ MIMEType: String!) -> Bool;
-    static func MIMETypesShownAsHTML() -> [AnyObject]!;
-    static func setMIMETypesShownAsHTML(_ MIMETypes: [AnyObject]!);
+    static func mimeTypesShownAsHTML() -> [Any]!;
+    static func setMIMETypesShownAsHTML(_ MIMETypes: [Any]!);
     static func URLFromPasteboard(_ pasteboard: NSPasteboard!) -> Foundation.URL!;
     static func URLTitleFromPasteboard(_ pasteboard: NSPasteboard!) -> String!;
     static func registerURLSchemeAsLocal(_ scheme: String!);
@@ -616,7 +616,8 @@ extension WebFrame: WebFrameJSExport {
     
     var groupName: String! { get set };
     var estimatedProgress: Double { get };
-    var loading: Bool { @objc(isLoading) get }
+//    var loading: Bool { @objc(isLoading) get }
+    var loading: Bool { get }
     
     func elementAtPoint(_ point: NSPoint) -> [AnyHashable: Any]!;
     

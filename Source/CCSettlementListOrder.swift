@@ -28,7 +28,7 @@ class CCSettlementListOrder : HBCIOrder {
             return false;
         }
         
-        var values:Dictionary<String,AnyObject> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number];
+        var values:Dictionary<String,Any> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number];
         if account.subNumber != nil {
             values["KTV.subnumber"] = account.subNumber!
         }
@@ -53,10 +53,10 @@ class CCSettlementListOrder : HBCIOrder {
             for deg in degs {
                 let info = CCSettlementInfo();
                 info.settleID = deg.elementValueForPath("settleID") as? String;
-                info.received = NSNumber(bool: (deg.elementValueForPath("received") as? Bool) ?? false );
+                info.received = NSNumber(value: (deg.elementValueForPath("received") as? Bool) ?? false );
                 if seg.version == 3 {
-                    info.settleDate = deg.elementValueForPath("settleDate") as? NSDate;
-                    info.firstReceive = deg.elementValueForPath("firstReceive") as? NSDate;
+                    info.settleDate = deg.elementValueForPath("settleDate") as? Date;
+                    info.firstReceive = deg.elementValueForPath("firstReceive") as? Date;
                     
                     if let elem = deg.elementForPath("value") {
                         if let val = HBCIValue(element: elem) {

@@ -184,7 +184,7 @@
                                                 countryCode: @"de"
                                             validateAccount: YES];
         if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
-            [ibanResult[@"result"] intValue] == IBANToolsResultOK) {
+            [ibanResult[@"result"] intValue] == IBANToolsResultOk) {
             self.remoteIBAN = ibanResult[@"iban"];
             
             if (self.remoteIBAN != nil) {

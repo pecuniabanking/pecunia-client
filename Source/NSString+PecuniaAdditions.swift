@@ -29,7 +29,7 @@ extension NSString {
     public func stringWithNaturalText() -> NSString {
         if !WordMapping.wordMappingsAvailable {
             // While our word list is being loaded return a simple capitalized string.
-            return self.capitalized(with: Locale.current);
+            return self.capitalized as NSString;
         }
 
         let context = MOAssistant.shared().context;

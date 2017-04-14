@@ -64,8 +64,9 @@ extension DDLog {
 
         if (flag.rawValue & level.rawValue) != 0 {
 
-            let fileName : UnsafePointer<Int8> = (file != nil) ? (file!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: file!.data(using: String.Encoding.utf8)!.count) : nil
-            let functionName : UnsafePointer<Int8> = (function != nil) ? (function!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: function!.data(using: String.Encoding.utf8)!.count) : nil
+            
+            let fileName : UnsafePointer<Int8>? = (file != nil) ? (file!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: file!.data(using: String.Encoding.utf8)!.count):nil;
+            let functionName : UnsafePointer<Int8>? = (function != nil) ? (function!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: function!.data(using: String.Encoding.utf8)!.count) : nil
 
             var format : String;
             switch (flag) {

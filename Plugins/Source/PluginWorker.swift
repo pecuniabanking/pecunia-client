@@ -59,10 +59,7 @@ internal class UserQueryEntry {
 };
 
 class WebClient: WebView, WebViewJSExport {
-    internal static func MIMETypesShownAsHTML() -> [AnyObject]! {
-        return [];
-    }
-
+    
     fileprivate var redirecting: Bool = false;
     fileprivate var pluginDescription: String = ""; // The plugin description for error messages.
 
@@ -85,7 +82,7 @@ class WebClient: WebView, WebViewJSExport {
         set {
             redirecting = false;
             if let url = Foundation.URL(string: newValue) {
-                let request = NSMutableURLRequest(url: url);
+                var request = URLRequest(url: url);
                 request.httpMethod = "POST";
                 request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type");
                 mainFrame.load(request);
@@ -130,7 +127,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 if let account = entry["account"] as? String {
-                    queryResult.account = BankAccount.findAccount(number: account, bankCode: query!.bankCode);
+                    queryResult.account = BankAccount.find(withNumber: account, bankCode: query!.bankCode);
                     if queryResult.type == .creditCard {
                         queryResult.ccNumber = account;
                     }
@@ -147,7 +144,7 @@ class WebClient: WebView, WebViewJSExport {
                 for jsonStatement in statements {
                     let statement: BankStatement = BankStatement.createTemporary(); // Created in memory context.
                     if let final = jsonStatement["final"] as? Bool {
-                        statement.isPreliminary = NSNumber(final);
+                        statement.isPreliminary = NSNumber(value: final);
                     }
 
                     if let date = jsonStatement["valutaDate"] as? Date {

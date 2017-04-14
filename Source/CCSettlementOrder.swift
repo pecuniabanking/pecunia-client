@@ -30,7 +30,7 @@ class CCSettlementOrder : HBCIOrder {
             return false;
         }
         
-        var values:Dictionary<String,AnyObject> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number, "settleID":settleID];
+        var values:Dictionary<String,Any> = ["KTV.number":account.number, "KTV.KIK.country":"280", "KTV.KIK.blz":account.bankCode, "cc_number":account.number, "settleID":settleID];
         if account.subNumber != nil {
             values["KTV.subnumber"] = account.subNumber!
         }
@@ -72,9 +72,9 @@ class CCSettlementOrder : HBCIOrder {
                 }
             }
             
-            settle.nextSettleDate = seg.elementValueForPath("nextsettledate") as? NSDate;
-            settle.ackCode = seg.elementValueForPath("ackcode") as? NSData;
-            settle.document = seg.elementValueForPath("document") as? NSData;
+            settle.nextSettleDate = seg.elementValueForPath("nextsettledate") as? Date;
+            settle.ackCode = seg.elementValueForPath("ackcode") as? Data;
+            settle.document = seg.elementValueForPath("document") as? Data;
             
             if let texts = seg.elementValuesForPath("text.line") as? [String] {
                 var text = "";

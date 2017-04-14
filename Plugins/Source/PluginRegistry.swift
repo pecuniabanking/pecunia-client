@@ -39,8 +39,8 @@ import WebKit;
         // For standard plugins (non-existing, out-of-date) checks.
         let defaultPluginPaths = Bundle.main.paths(forResourcesOfType: "js", inDirectory: "Plugins");
 
-        var isDir: ObjCBool = false;
-        if fileManager.fileExists(atPath: pluginPath!, isDirectory: &isDir) && isDir {
+        var isDir:ObjCBool = false;
+        if fileManager.fileExists(atPath: pluginPath!, isDirectory: &isDir) && isDir.boolValue {
             do {
                 var contents = try fileManager.contentsOfDirectory(atPath: pluginPath!);
 
@@ -71,7 +71,8 @@ import WebKit;
                                         var counter = 1;
 
                                         while counter < 1000 {
-                                            let tempBackupName = baseName + ".backup \(counter++)." + ext;
+                                            let tempBackupName = baseName + ".backup \(counter)." + ext;
+                                            counter += 1;
                                             if !contents.contains(tempBackupName) {
                                                 // Unused backup name found.
                                                 newBackupName = tempBackupName;
@@ -173,7 +174,7 @@ import WebKit;
      * Takes a list of accounts (which all must be handled by the same plugin) and runs the associated
      * plugin for them. The account list is split by user ids.
      */
-    open static func getStatements(_ accounts: [BankAccount], completion: ([BankQueryResult]) -> Void) -> Void {
+    open static func getStatements(_ accounts: [BankAccount], completion: @escaping ([BankQueryResult]) -> Void) -> Void {
         logEnter();
 
         // The HBCI part of the statement retrieval computes an own start date for each account.

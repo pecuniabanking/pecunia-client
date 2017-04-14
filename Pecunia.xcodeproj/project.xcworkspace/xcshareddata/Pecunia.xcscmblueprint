@@ -11,10 +11,10 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "558B1DEE-5D99-40FF-A732-F84EDCDE05F1",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3" : "Pecunia12",
-    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : "Pecunia12Submodules\/ExSwift",
-    "ACC5123B749BA800BE62A7A53DFE49BAFA2D026D" : "PecuniaHBCI4Swift\/Submodules\/HBCI4Swift\/",
-    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : "Pecunia12Submodules\/IBANtools"
+    "0C87A7C15F728E3ABFD6A75F71FE91BF1254A5D3" : "PecuniaMaster\/",
+    "E2F476CE895D3596DBE8080E8F363F8F94823E70" : "PecuniaMaster\/Submodules\/ExSwift\/",
+    "ACC5123B749BA800BE62A7A53DFE49BAFA2D026D" : "PecuniaMaster\/Submodules\/HBCI4Swift\/",
+    "F61A447CE192EACDB0506E02DF8D2CE4BC1A2F0A" : "PecuniaMaster\/Submodules\/IBANtools\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Pecunia",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

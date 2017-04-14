@@ -564,7 +564,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 - (void)layoutCells
 {	
 	//Set the frames of the cells
-	for(id cell in _visibleCells)
+	for(PXListViewCell* cell in _visibleCells)
 	{
 		NSInteger row = [cell row];
 		[cell setFrame:[self rectOfRow:row]];
