@@ -162,6 +162,8 @@
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;
+- (void)stopHomescreenUpdates;
+- (void)resumeHomescreenUpdates;
 
 + (BankingController *)controller;
 

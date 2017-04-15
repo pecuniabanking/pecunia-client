@@ -45,8 +45,8 @@
     [aboutText pageDown: aboutText];
     [aboutText pageUp: aboutText];
 
-    [versionText setStringValue: [NSString stringWithFormat: @"Version %@",
-                                  [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"]
+    [versionText setStringValue: [NSString stringWithFormat: @"Version %@ (%@)",
+                                  [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"],[mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
                                   ]];
     [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
 }

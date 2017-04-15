@@ -32,5 +32,6 @@
 - (BOOL)hasSubstring: (NSString *)substring;
 
 - (NSString *)stringByEscapingXmlCharacters;
+- (NSString *)anonymizedString;
 
 @end

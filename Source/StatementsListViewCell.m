@@ -151,6 +151,11 @@ extern NSDictionary    *whiteAttributes;
             return;
         }
 
+        if ([keyPath isEqualToString: @"markNAStatements"]) {
+            [self setNeedsDisplay: YES];
+            return;
+        }
+        
         if ([keyPath isEqualToString: @"autoCasing"]) {
             [self updateLabelsWithCasing: [NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]];
             return;

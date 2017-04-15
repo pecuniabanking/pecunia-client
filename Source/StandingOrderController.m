@@ -31,6 +31,7 @@
 #import "SupportedTransactionInfo.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
+#import "BankingController.h"
 
 #import "NSButton+PecuniaAdditions.h"
 
@@ -652,7 +653,13 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
         [sendOrders addObject: stord];
     }
+
+    [[BankingController controller] stopHomescreenUpdates];
+
     error = [[HBCIBackend backend] sendStandingOrders: sendOrders];
+    
+    [[BankingController controller] resumeHomescreenUpdates];
+    
     if (error != nil) {
         [sc stopSpinning];
         [sc clearMessage];
