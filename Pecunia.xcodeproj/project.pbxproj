@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011DADD91EA373D500A44EFE /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011DADD81EA373D500A44EFE /* BankMessageWindowController.m */; };
+		011DADDC1EA3749A00A44EFE /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */; };
+		011DADDE1EA37D3200A44EFE /* ChipcardPinRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */; };
+		011DADE01EA37DD200A44EFE /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */; };
+		019702E11EA3CAC100E6B872 /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */; };
+		019702E31EA413F300E6B872 /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011DADD81EA373D500A44EFE /* BankMessageWindowController.m */; };
 		2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2704B8441573C3FC00CB1320 /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
@@ -1067,6 +1073,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		011DADD71EA373D500A44EFE /* BankMessageWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankMessageWindowController.h; sourceTree = "<group>"; };
+		011DADD81EA373D500A44EFE /* BankMessageWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankMessageWindowController.m; sourceTree = "<group>"; };
+		011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankMessageWindow.xib; sourceTree = "<group>"; };
+		011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardPinRequestController.xib; sourceTree = "<group>"; };
+		011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardPinRequestController.swift; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -2236,6 +2247,8 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */,
+				011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */,
 				27E8458919E17D2F0026464E /* About.xib */,
 				27E8458A19E17D2F0026464E /* AccountCreate.xib */,
 				27E8458B19E17D2F0026464E /* AccountMaintenance.xib */,
@@ -2531,6 +2544,7 @@
 				B183572915CC5091003B93ED /* NotificationWindowController.h */,
 				B183572A15CC5091003B93ED /* NotificationWindowController.m */,
 				B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */,
+				011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */,
 				B1E80ECB1B47350D00AB45B9 /* ChipcardRequestController.swift */,
 			);
 			name = Dialogs;
@@ -2731,6 +2745,8 @@
 		B1C7B18A130B11070091CD72 /* Transfers */ = {
 			isa = PBXGroup;
 			children = (
+				011DADD71EA373D500A44EFE /* BankMessageWindowController.h */,
+				011DADD81EA373D500A44EFE /* BankMessageWindowController.m */,
 				27E662B215A09BD9002F9277 /* TransferTemplatesListView.h */,
 				27E662B315A09BD9002F9277 /* TransferTemplatesListView.m */,
 				27E662B415A09BD9002F9277 /* TransferTemplateListViewCell.h */,
@@ -3379,6 +3395,7 @@
 				27E845E419E17D300026464E /* DebitsListViewCell.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit.png in Resources */,
 				27AA569B186C562300B113E7 /* send2-active@2x.png in Resources */,
+				011DADDC1EA3749A00A44EFE /* BankMessageWindow.xib in Resources */,
 				276D9C9D18CB79FF002BEDA8 /* magnify-busy2.png in Resources */,
 				276B5EFB194DAC1F00B12400 /* gray-hatch2.png in Resources */,
 				27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */,
@@ -3457,6 +3474,7 @@
 				27E8460419E17D300026464E /* PasswordDialog.xib in Resources */,
 				272F6E681955D0E600096734 /* sequence-type-start.png in Resources */,
 				272F6E801955E6A500096734 /* sequence-type-red@2x.png in Resources */,
+				011DADDE1EA37D3200A44EFE /* ChipcardPinRequestController.xib in Resources */,
 				27E845DA19E17D300026464E /* CategoryPeriods.xib in Resources */,
 				B126CC22157018FC0065EAC1 /* printer.png in Resources */,
 				279BF27D15726BF0006C1B9A /* green-slanted-stripes.png in Resources */,
@@ -3674,6 +3692,7 @@
 				277788AB173CE22700430EBC /* CategoryReportingNode.m in Sources */,
 				277788AC173CE22700430EBC /* StandingOrder.m in Sources */,
 				277788AD173CE22700430EBC /* StandingOrderController.m in Sources */,
+				019702E31EA413F300E6B872 /* BankMessageWindowController.m in Sources */,
 				277788AE173CE22700430EBC /* MessageLog.m in Sources */,
 				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
 				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
@@ -3810,6 +3829,7 @@
 				276B83C61811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */,
 				27778918173CE22700430EBC /* ColorPopup.m in Sources */,
 				27778919173CE22700430EBC /* BFIconTabBar.m in Sources */,
+				019702E11EA3CAC100E6B872 /* ChipcardPinRequestController.swift in Sources */,
 				A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */,
 				27D902F8178826F800B7452B /* HomeScreenController.m in Sources */,
 				27E11ED0178B14C500AD350A /* YahooStockData.m in Sources */,
@@ -3881,6 +3901,7 @@
 				27F5911C1AA38214005FA793 /* DEAccountCheck.swift in Sources */,
 				B1FD3B4F198C2A5B00781197 /* ResultWindowController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
+				011DADD91EA373D500A44EFE /* BankMessageWindowController.m in Sources */,
 				B163F0D21CC2CF18001E1009 /* CCSettlementOrder.swift in Sources */,
 				2758542319FFFB9100571251 /* WordMapping.swift in Sources */,
 				B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */,
@@ -4016,6 +4037,7 @@
 				B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
+				011DADE01EA37DD200A44EFE /* ChipcardPinRequestController.swift in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7618BA3EFB002CBE06 /* zip.c in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,

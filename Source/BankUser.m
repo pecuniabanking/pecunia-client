@@ -24,6 +24,7 @@
 #import "SigningOption.h"
 #import "MessageLog.h"
 #import "BankAccount.h"
+#import "NSString+PecuniaAdditions.h"
 
 @implementation BankUser
 
@@ -322,8 +323,8 @@ static NSMutableDictionary *users = nil;
  */
 - (NSString *)descriptionWithIndent: (NSString *)indent {
     NSString        *format = NSLocalizedString(@"AP1018", @"");
-    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName];
-    [s appendFormat: NSLocalizedString(@"AP1019", @""), indent, self.customerId, self.hbciVersion];
+    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, [self.userId anonymizedString], self.bankCode, self.bankName];
+    [s appendFormat: NSLocalizedString(@"AP1019", @""), indent, [self.customerId anonymizedString], self.hbciVersion];
     [s appendFormat: NSLocalizedString(@"AP1020", @""), indent, self.bankURL];
 
     if (self.tanMethods.count > 0) {

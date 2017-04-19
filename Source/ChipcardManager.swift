@@ -107,6 +107,12 @@ var _manager:ChipcardManager!
             }
             
             // verify card
+            let controller = ChipcardPinRequestController(windowNibName: "ChipcardPinRequestController");
+            if NSApp.runModal(for: controller.window!) == 1 {
+                // verification not o.k.
+                throw NSError.errorWithMsg(msgId: "AP369", titleId: "AP368");
+            }
+            /*
             let notificationController = NotificationWindowController(message: NSLocalizedString("AP351", comment:""), title: NSLocalizedString("AP357", comment:""));
             notificationController?.showWindow(self);
             notificationController?.window?.makeKeyAndOrderFront(self);
@@ -115,6 +121,7 @@ var _manager:ChipcardManager!
                 throw NSError.errorWithMsg(msgId: "AP369", titleId: "AP368");
             }
             notificationController?.window?.close();
+            */
         }
     }
     

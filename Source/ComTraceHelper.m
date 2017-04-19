@@ -84,6 +84,16 @@
         [SystemNotification showMessage: NSLocalizedString(@"AP505", nil)
                               withTitle: NSLocalizedString(@"AP503", nil)];
     } else {
+        // Data Privacy Check
+        NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP1027", @""),
+                                                NSLocalizedString(@"AP1028", @""),
+                                                NSLocalizedString(@"AP2", @""),
+                                                NSLocalizedString(@"AP36", @""),
+                                                nil);
+        if (res == NSAlertDefaultReturn) {
+            return;
+        }
+        
         magnifyButton.toolTip = NSLocalizedString(@"AP126", nil);
         MessageLog.log.isComTraceActive = YES;
         [self startMagnifyAnimation];
