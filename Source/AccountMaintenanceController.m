@@ -168,9 +168,33 @@ extern NSString *const CategoryKey;
     changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
     changedAccount.categoryColor = account.categoryColor;
-    changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
     changedAccount.plugin = account.plugin;
+    
+    if (account.isHidden.boolValue != changedAccount.isHidden.boolValue) {
+        if (account.isHidden.boolValue) {
+            // account should be hidden - check if parent should be hidden too
+            // if all siblings are hidden, parent should be hidden as well
+            NSMutableSet *siblings = [[changedAccount.parent mutableSetValueForKey: @"children"] mutableCopy];
+            
+            BOOL hide = true;
+            for (BankingCategory *sibling in siblings) {
+                if (![changedAccount.accountNumber isEqualToString:sibling.accountNumber]) {
+                    if (!sibling.isHidden.boolValue) {
+                        hide = false;
+                    }
+                }
+            }
+            if (hide) {
+                changedAccount.parent.isHidden = @YES;
+            }
+        } else {
+            // unhide -> also unhide parent
+            changedAccount.parent.isHidden = @NO;
+        }
+    }
+    changedAccount.isHidden = account.isHidden;
+    
     
     NSString *oldUserId = changedAccount.userId;
 

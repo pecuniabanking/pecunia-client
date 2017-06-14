@@ -264,7 +264,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
             }
         }
 
-        if (last == nil) || (last! < today) {
+        if (last == nil) || (last! <= today) {
             var updatedFiles : Array<String> = [];
             do {
                 let existingFiles = try fm.contentsOfDirectoryAtPath(MOAssistant.sharedAssistant().resourcesDir);

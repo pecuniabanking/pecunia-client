@@ -65,9 +65,9 @@ public func > (lhs: ShortDate, rhs: ShortDate) -> Bool {
 }
 
 public func <= (lhs: ShortDate, rhs: ShortDate) -> Bool {
-    return rhs > lhs;
+    return rhs > lhs || rhs == lhs;
 }
 
 public func >= (lhs: ShortDate, rhs: ShortDate) -> Bool {
-    return rhs < lhs;
+    return rhs < lhs || rhs == lhs;
 }

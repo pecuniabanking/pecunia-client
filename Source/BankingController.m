@@ -88,6 +88,9 @@
 #import "AccountStatementsController.h"
 #import "BankMessageWindowController.h"
 #import "ChipcardDataWindowController.h"
+#import "ZipFile.h"
+#import "ZipReadStream.h"
+#import "FileInZipInfo.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -535,6 +538,21 @@ static BankingController *bankinControllerInstance;
         [WordMapping updateWordMappings];
         self.updatingWordList = NO;
     }
+    /* cannot work yet as Converter class in IBANTools does not allow to change the path and we cannot change a file in the bundle path
+    if ([files containsObject: @"fints_institute.zip"]) {
+        NSString *zipPath = [MOAssistant.sharedAssistant.resourcesDir stringByAppendingPathComponent:@"fints_institute.zip"];
+        ZipFile *file = [[ZipFile alloc] initWithFileName:zipPath mode:ZipFileModeUnzip];
+        FileInZipInfo *info = [file getCurrentFileInZipInfo];
+        NSMutableData *buffer = [[NSMutableData alloc] initWithLength:info.length];
+        ZipReadStream *stream = [file readCurrentFileInZip];
+        NSUInteger len = [stream readDataWithBuffer:buffer];
+        if (len == info.length) {
+            // read successful
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"fints_institute" ofType:@"csv" inDirectory:@"de"];
+            [buffer writeToFile:path atomically:YES];
+        }
+    }
+    */
 }
 
 #pragma mark - User actions
@@ -2600,8 +2618,10 @@ static BankingController *bankinControllerInstance;
                     return NO;
                 }
             } else {
-                if ([item action] == @selector(addStatement:)) {
-                    return NO;
+                if (account.noAutomaticQuery.boolValue == NO) {
+                    if ([item action] == @selector(addStatement:)) {
+                        return NO;
+                    }
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
                     if ([[HBCIController controller] isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
