@@ -153,6 +153,8 @@
 - (IBAction)bankMessages:(id)sender;
 - (IBAction)chipcardData:(id)sender;
 
+- (IBAction)categoryBudgets:(id)sender;
+
 - (void)statementsNotification: (NSNotification *)notification;
 - (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;

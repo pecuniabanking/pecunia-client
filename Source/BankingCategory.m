@@ -25,7 +25,7 @@
 #import "StatCatAssignment.h"
 #import "CategoryReportingNode.h"
 #import "PreferenceController.h"
-
+#import "CategoryBudget.h"
 #import "NSColor+PecuniaAdditions.h"
 
 static BankingCategory *catRootSingleton = nil;
@@ -991,6 +991,17 @@ static ShortDate *endReportDate = nil;
         [self didChangeValueForKey: @"categoryColor"];
     }
 }
+
+- (NSDecimalNumber *)budgetForPeriod:(NSNumber *)period {
+    NSSet *budgets = [self mutableSetValueForKey:@"budget"];
+    for (CategoryBudget *budget in budgets) {
+        if ([budget.period isEqual:period]) {
+            return budget.budget;
+        }
+    }
+    return nil;
+}
+
 
 + (BankingCategory *)bankRoot {
     NSError *error = nil;

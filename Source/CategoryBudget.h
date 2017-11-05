@@ -24,8 +24,8 @@
 @interface CategoryBudget : NSManagedObject {
 }
 
-@property (nonatomic, strong) NSDecimalNumber *budget;
-@property (nonatomic, strong) NSDate          *date;
-@property (nonatomic, strong) BankingCategory        *category;
+@property (nonatomic, strong) NSDecimalNumber   *budget;
+@property (nonatomic, strong) NSNumber          *period;
+@property (nonatomic, strong) BankingCategory   *category;
 
 @end

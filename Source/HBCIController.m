@@ -1183,7 +1183,7 @@ static HBCIController *controller = nil;
             maxStatDays = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxStatDays"];
         }
 
-        if (account.latestTransferDate == nil && maxStatDays > 0) {
+        if (maxStatDays > 0) {
             account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: NSDate.date];
         }
 

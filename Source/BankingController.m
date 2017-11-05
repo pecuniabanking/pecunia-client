@@ -88,6 +88,8 @@
 #import "AccountStatementsController.h"
 #import "BankMessageWindowController.h"
 #import "ChipcardDataWindowController.h"
+#import "BudgetWindowController.h"
+
 #import "ZipFile.h"
 #import "ZipReadStream.h"
 #import "FileInZipInfo.h"
@@ -464,8 +466,28 @@ static BankingController *bankinControllerInstance;
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
     [categoryController setSortDescriptors: @[sd]];
 
+    /*
+    LocalSettingsController *shared = [LocalSettingsController sharedSettings];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL migrated = [shared boolForKey:@"DBMig17"];
+    if (!migrated) {
+        BOOL restarted = [defaults boolForKey:@"DBMigRestart"];
+        if (restarted) {
+            [shared setBool:YES forKey:@"DBMig17"];
+            [self save];
+            [defaults setBool:NO forKey:@"DBMigRestart"];
+        } else {
+            [defaults setBool:YES forKey:@"DBMigRestart"];
+            [NSApp terminate:self];
+        }
+    }
+    */
+
+    
+    
     // repair Category Root
     [self repairCategories];
+    
 
     [self setHBCIAccounts];
 
@@ -480,7 +502,7 @@ static BankingController *bankinControllerInstance;
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
-    
+        
     RemoteResourceManager *resourceManager = RemoteResourceManager.sharedManager; // Creates singleton.
     if ([[NSUserDefaults standardUserDefaults] boolForKey: @"autoCasing"]) {
         [resourceManager addManagedFile: @"words.zip"];
@@ -3746,6 +3768,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)categoryBudgets:(id)sender {
+    BudgetWindowController *controller = [[BudgetWindowController alloc] initWithWindowNibName:@"BudgetWindowController"];
+    [NSApp runModalForWindow: [controller window]];
+
+}
 
 
 - (void)migrate {

@@ -903,6 +903,10 @@
 		B17728FD1504C33F00256898 /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
 		B17729141504C9B200256898 /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
+		B1785B201EF1935900063399 /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1785B1E1EF1935900063399 /* BudgetWindowController.m */; };
+		B1785B211EF1935900063399 /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1785B1E1EF1935900063399 /* BudgetWindowController.m */; };
+		B1785B221EF1935900063399 /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1785B1F1EF1935900063399 /* BudgetWindowController.xib */; };
+		B1785B231EF1935900063399 /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1785B1F1EF1935900063399 /* BudgetWindowController.xib */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
 		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
@@ -1712,6 +1716,10 @@
 		B17729131504C9B200256898 /* TanMethodOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethodOld.m; sourceTree = "<group>"; };
 		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
+		B1785B1D1EF1935900063399 /* BudgetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BudgetWindowController.h; sourceTree = "<group>"; };
+		B1785B1E1EF1935900063399 /* BudgetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BudgetWindowController.m; sourceTree = "<group>"; };
+		B1785B1F1EF1935900063399 /* BudgetWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BudgetWindowController.xib; path = ../../Source/BudgetWindowController.xib; sourceTree = "<group>"; };
+		B1785B241EF3332900063399 /* Accounts 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 17.xcdatamodel"; sourceTree = "<group>"; };
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
@@ -2366,6 +2374,7 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				B1785B1F1EF1935900063399 /* BudgetWindowController.xib */,
 				27E8458919E17D2F0026464E /* About.xib */,
 				27E8458A19E17D2F0026464E /* AccountCreate.xib */,
 				27E8458B19E17D2F0026464E /* AccountMaintenance.xib */,
@@ -3080,6 +3089,8 @@
 				B1C03D211D5FCA45006C5360 /* BankMessageWindowController.m */,
 				B1C03D271D6A43C9006C5360 /* ChipcardDataWindowController.h */,
 				B1C03D281D6A43C9006C5360 /* ChipcardDataWindowController.m */,
+				B1785B1D1EF1935900063399 /* BudgetWindowController.h */,
+				B1785B1E1EF1935900063399 /* BudgetWindowController.m */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -3433,6 +3444,7 @@
 				277789AA173CE22700430EBC /* delete3@2x.png in Resources */,
 				277789AB173CE22700430EBC /* reset.png in Resources */,
 				277789AC173CE22700430EBC /* reset@2x.png in Resources */,
+				B1785B231EF1935900063399 /* BudgetWindowController.xib in Resources */,
 				27AA5666186C389900B113E7 /* distribution-active.png in Resources */,
 				27AA56A2186C562D00B113E7 /* send3-active@2x.png in Resources */,
 				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
@@ -3678,6 +3690,7 @@
 				27A659C51604D8C500C737E8 /* send.png in Resources */,
 				27AA5673186C3C7C00B113E7 /* table-active@2x.png in Resources */,
 				27AA568D186C4F4600B113E7 /* send3.png in Resources */,
+				B1785B221EF1935900063399 /* BudgetWindowController.xib in Resources */,
 				27A659CB1604D8D200C737E8 /* delete.png in Resources */,
 				2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */,
 				27E845DC19E17D300026464E /* CategoryReporting.xib in Resources */,
@@ -3950,6 +3963,7 @@
 				277788CD173CE22700430EBC /* StatementsListView.m in Sources */,
 				277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */,
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
+				B1785B211EF1935900063399 /* BudgetWindowController.m in Sources */,
 				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				2735D6D81A024C66008EED36 /* NSString+PecuniaAdditions.swift in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
@@ -4228,6 +4242,7 @@
 				27F69B7C18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */,
 				27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */,
+				B1785B201EF1935900063399 /* BudgetWindowController.m in Sources */,
 				275C07E91438779700D97415 /* PXListDocumentView.m in Sources */,
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
 				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
@@ -4764,6 +4779,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B1785B241EF3332900063399 /* Accounts 17.xcdatamodel */,
 				27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */,
 				27498AF71AAB55C50070CAE5 /* Accounts 15.xcdatamodel */,
 				27E2B96E19EAD32100310753 /* Accounts 14.xcdatamodel */,
@@ -4782,7 +4798,7 @@
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = 27A85F851B1A01190017D863 /* Accounts 16.xcdatamodel */;
+			currentVersion = B1785B241EF3332900063399 /* Accounts 17.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

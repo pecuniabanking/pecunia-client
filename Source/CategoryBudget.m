@@ -21,7 +21,7 @@
 
 @implementation CategoryBudget
 @dynamic budget;
-@dynamic date;
+@dynamic period;
 @dynamic category;
 
 @end

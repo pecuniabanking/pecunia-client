@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="Acc16" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="16F73" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="Acc17" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="16F73" minimumToolsVersion="Automatic">
     <entity name="AccountStatement" representedClassName="AccountStatement" syncable="YES">
         <attribute name="advertisement" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
@@ -146,7 +146,7 @@
     </entity>
     <entity name="CategoryBudget" representedClassName="CategoryBudget" syncable="YES">
         <attribute name="budget" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="period" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="budget" inverseEntity="Category" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="CreditCardSettlement" representedClassName="CreditCardSettlement" syncable="YES">

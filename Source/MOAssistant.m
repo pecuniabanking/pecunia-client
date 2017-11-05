@@ -26,7 +26,7 @@
 #import "PecuniaError.h"
 #import "LaunchParameters.h"
 #import "BankingController.h"
-
+#import "LocalSettingsController.h"
 #import "LockViewController.h"
 
 @interface MOAssistant () {
@@ -947,6 +947,8 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 }
 
 - (void)loadContext {
+    BOOL migrationNeeded = NO;
+    
     if (model == nil) {
         [self loadModel];
     }
@@ -986,6 +988,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     if (sourceMetadata != nil) {
         if (![model isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata]) {
             // create a backup of the source file
+            migrationNeeded = YES;
             [self backup];
         }
     }
@@ -1022,6 +1025,36 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
         context = [NSManagedObjectContext new];
         [context setPersistentStoreCoordinator: coordinator];
     }
+    
+    
+    LocalSettingsController *shared = [LocalSettingsController sharedSettings];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //[shared setBool:NO forKey:@"DBMig17"];
+    
+    NSSet *modelVersions = [model versionIdentifiers];
+    NSString *currentVersion = [modelVersions anyObject];
+    if ([currentVersion isEqualToString:@"Acc17"] && migrationNeeded) {
+        BOOL migrated = [shared boolForKey:@"DBMig17"];
+        if (!migrated) {
+            BOOL restarted = [defaults boolForKey:@"DBMigRestart"];
+            if (restarted) {
+                [shared setBool:YES forKey:@"DBMig17"];
+                [defaults setBool:NO forKey:@"DBMigRestart"];
+            } else {
+                [defaults setBool:YES forKey:@"DBMigRestart"];
+                // restart to finalize migration
+                NSRunCriticalAlertPanel(NSLocalizedString(@"AP150", nil),
+                                        NSLocalizedString(@"AP182", nil),
+                                        NSLocalizedString(@"AP1", nil),
+                                        nil,
+                                        nil
+                                        );
+
+                [NSApp terminate:self];
+            }
+        }
+    }
+
 }
 
 - (NSManagedObjectContext *)memContext {
