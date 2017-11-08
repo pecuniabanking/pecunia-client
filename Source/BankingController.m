@@ -1966,26 +1966,7 @@ static BankingController *bankinControllerInstance;
         return NO;
     }
     
-    // check if there are BankUsers. If not, don't show the donation popup
-    NSArray *users = [BankUser allUsers];
-    if ([users count] == 0) {
-        return YES;
-    }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           hideDonationMessage = [defaults boolForKey: @"DonationPopup100"];
-
-    if (!hideDonationMessage) {
-        DonationMessageController *controller = [[DonationMessageController alloc] init];
-        BOOL                      donate = [controller run];
-        if (donate) {
-            [self performSelector: @selector(donate:) withObject: self afterDelay: 0.0];
-            return NO;
-        }
-    }
-
     LogLeave;
-
     return YES;
 }
 

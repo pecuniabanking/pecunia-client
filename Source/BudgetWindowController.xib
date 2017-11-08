@@ -16,7 +16,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Budgeterfassung" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
+        <window title="Budgeterfassung" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="BudgetWindow" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="727" y="575" width="1497" height="593"/>
@@ -32,7 +32,7 @@
                             <rect key="frame" x="1" y="0.0" width="1455" height="483"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" autosaveName="" rowHeight="20" headerView="wlq-w9-Lt3" indentationPerLevel="17" outlineTableColumn="ypz-dN-hiG" id="02k-fQ-jtX">
+                                <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" autosaveName="BudgetView" rowHeight="20" headerView="wlq-w9-Lt3" indentationPerLevel="17" outlineTableColumn="ypz-dN-hiG" id="02k-fQ-jtX">
                                     <rect key="frame" x="0.0" y="0.0" width="1455" height="460"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="2" height="3"/>
@@ -307,7 +307,7 @@
                                             </connections>
                                         </tableColumn>
                                         <tableColumn identifier="delta" width="70" minWidth="10" maxWidth="3.4028234663852886e+38" id="lho-i6-HQe">
-                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Delta">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Über/Unterdeckung">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -388,7 +388,7 @@
                     <textField verticalHuggingPriority="750" id="Cfw-Pi-auv">
                         <rect key="frame" x="80" y="17" width="27" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="TgJ-sx-4LY">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="TgJ-sx-4LY">
                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" generatesDecimalNumbers="YES" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="qkR-nA-3tn"/>
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -407,7 +407,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="hideBudgetless:" target="-2" id="Sbz-Tf-aIq"/>
-                            <binding destination="-2" name="value" keyPath="hideBudgetless" id="EmH-hp-YQ6"/>
+                            <binding destination="O11-bL-glf" name="value" keyPath="values.hideBudgetless" id="PhD-WU-yT8"/>
                         </connections>
                     </button>
                     <segmentedControl verticalHuggingPriority="750" id="oZg-44-6Qh">
@@ -434,7 +434,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="1186.5" y="604.5"/>
+            <point key="canvasLocation" x="719.5" y="615.5"/>
         </window>
         <customObject id="b8Y-9R-y3S" customClass="BudgetWindowViewDelegate"/>
         <treeController automaticallyPreparesContent="YES" childrenKeyPath="children" id="Mmw-7v-mQR">

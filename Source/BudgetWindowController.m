@@ -14,6 +14,8 @@
 #import "BankStatement.h"
 #import "StatCatAssignment.h"
 #import "PreferenceController.h"
+#import "LocalSettingsController.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 
 @interface BudgetWindowController ()
 
@@ -47,7 +49,12 @@
 }
 
 - (void)loadWindow {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LocalSettingsController *lsc = LocalSettingsController.sharedSettings;
+
     [super loadWindow];
+
+    self.tolerance = [lsc objectForKeyedSubscript:@"BudgetTolerance"];
     
     // create Dictionary out of Category hierarchy
     BankingCategory *catRoot = [BankingCategory catRoot];
@@ -57,16 +64,31 @@
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     
+    // get year from current date
+    NSDate *date = [NSDate date];
+    year = [date year];
+    self.period = [NSNumber numberWithInteger:year * 100 + 1];
+
     [self addCategory:catRoot toDict:dict];
-    self.budgetData = dict[@"children"];
+    
+    if ([defaults boolForKey:@"hideBudgetless"] == YES) {
+        NSMutableArray *newData = [[NSMutableArray alloc] init];
+        for (NSDictionary *cdict in dict[@"children"]) {
+            if ([self hasBudget:cdict[@"cat"]]) {
+                [newData addObject:cdict];
+            }
+        }
+        self.budgetData = newData;
+    } else {
+        self.budgetData = dict[@"children"];
+    }
+
     [self addRowSum];
     
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"id" ascending: YES];
     [self.budgetContainer setSortDescriptors: @[sd]];
     
     // get year from current date
-    NSDate *date = [NSDate date];
-    year = [date year];
     [self updateYear];
     
     self.lightRed = [NSColor colorWithCalibratedRed:1.0 green:0.6 blue:0.6 alpha:1.0];
@@ -79,6 +101,8 @@
         NSTextFieldCell *cell = [tc dataCell];
         [cell setFont: [PreferenceController mainFontOfSize:13 bold:NO]];
     }
+    
+    [self.budgetView restoreState];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
@@ -90,13 +114,14 @@
 
 - (IBAction)hideBudgetless:(id)sender {
     BankingCategory *catRoot = [BankingCategory catRoot];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [self saveBudget];
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     
     [self addCategory:catRoot toDict:dict];
     
-    if (self.hideBudgetless.boolValue == YES) {
+    if ([defaults boolForKey:@"hideBudgetless"] == YES) {
         NSMutableArray *newData = [[NSMutableArray alloc] init];
         for (NSDictionary *cdict in dict[@"children"]) {
             if ([self hasBudget:cdict[@"cat"]]) {
@@ -548,6 +573,8 @@
         [self storeValues:dict];
     }
     
+    [self.budgetView saveState];
+    
     // save updates
     if (![MOAssistant.sharedAssistant.context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -556,6 +583,10 @@
 }
 
 - (void)ok:(id)sender {
+    LocalSettingsController *lsc = LocalSettingsController.sharedSettings;
+    
+    [lsc setObject:self.tolerance forKeyedSubscript:@"BudgetTolerance"];
+    
     [self saveBudget];
     [self.window close];
 }
