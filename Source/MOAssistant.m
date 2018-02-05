@@ -993,6 +993,8 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
         }
     }
 
+    error = nil;
+    
     LogInfo(@"Adding main store from %@", accountsURL);
     [coordinator addPersistentStoreWithType: NSSQLiteStoreType
                               configuration: @"MainConfiguration"

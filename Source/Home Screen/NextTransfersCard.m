@@ -520,6 +520,9 @@ static NSFont *smallNumberFont;
             yearLabelOffset = 40;
             font = [NSFont fontWithName: @"Impact" size: 100]; // Fallback.
         }
+        if (font == nil) {
+            font = [NSFont fontWithName: @"HelveticaNeue" size: 13]; // Fallback.
+        }
         yearAttributes = @{
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: [NSColor colorWithDeviceWhite: 0 alpha: 0.05]
