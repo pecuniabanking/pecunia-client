@@ -41,7 +41,7 @@
 
 @end
 
-@interface CALayer (PecuniaAdditions)
+@interface CALayer (PecuniaAdditions) <CAAnimationDelegate>
 
 - (void)fadeIn;
 - (void)fadeOut;

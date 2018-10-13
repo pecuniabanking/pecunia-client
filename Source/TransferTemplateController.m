@@ -100,11 +100,11 @@
                                 NSLocalizedString(@"AP1", nil), nil, nil);
                 return NO;
             }
-
-            BOOL valid = [IBANtools isValidAccount: template.remoteAccount
-                                          bankCode: template.remoteBankCode
-                                       countryCode: template.remoteCountry
-                                           forIBAN: NO];
+            NSDictionary *checkResult = [IBANtools isValidAccount: template.remoteAccount
+                                                         bankCode: template.remoteBankCode
+                                                      countryCode: template.remoteCountry
+                                                          forIBAN: NO];
+            BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
             if (!valid) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP60", nil),
@@ -133,10 +133,10 @@
 
 - (void)delete: (id)sender
 {
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP107", nil),
-                              NSLocalizedString(@"AP433", nil),
-                              NSLocalizedString(@"AP3", nil),
-                              NSLocalizedString(@"AP4", nil), nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP107", nil),
+                                    NSLocalizedString(@"AP433", nil),
+                                    NSLocalizedString(@"AP3", nil),
+                                    NSLocalizedString(@"AP4", nil), nil);
     if (res == NSAlertDefaultReturn) {
         [templateController remove: sender];
     }
@@ -219,8 +219,8 @@
 
 - (IBAction)segButtonPressed: (id)sender
 {
-    int clickedSegment = [sender selectedSegment];
-    int clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
+    NSInteger clickedSegment = [sender selectedSegment];
+    NSInteger clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
     switch (clickedSegmentTag) {
         case 0:[self add: sender]; break;
 

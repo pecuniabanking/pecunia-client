@@ -31,7 +31,7 @@
 - (BOOL)run
 {
     [[self window] center];
-    int res = [NSApp runModalForWindow: [self window]];
+    NSModalResponse res = [NSApp runModalForWindow: [self window]];
     if (res == 0) {
         return YES;
     } else {return NO; }

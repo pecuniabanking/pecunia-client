@@ -209,7 +209,7 @@ class HBCIBackend : NSObject {
     
     func getBankNodeWithAccount(_ account:HBCIAccount) ->BankAccount? {
         let context = MOAssistant.shared().context;
-        var bankNode = BankAccount.bankRoot(forCode: account.bankCode);
+        let bankNode = BankAccount.bankRoot(forCode: account.bankCode);
 
         if bankNode == nil {
             let root = BankingCategory.bankRoot();
@@ -1127,7 +1127,7 @@ class HBCIBackend : NSObject {
         var bqResult = [BankQueryResult]();
         
         guard let bankUser = bankAccounts.first?.defaultBankUser() else {
-            logError("No bank user defined for account \(bankAccounts.first?.accountNumber())");
+            logError("No bank user defined for account \(bankAccounts.first?.accountNumber() ?? "<unknown account>")");
             return;
         }
         
@@ -1199,7 +1199,7 @@ class HBCIBackend : NSObject {
         var bqResult = Array<BankQueryResult>();
         
         guard let bankUser = accounts.first?.defaultBankUser() else {
-            logError("No bank user defined for account \(accounts.first?.accountNumber())");
+            logError("No bank user defined for account \(accounts.first?.accountNumber() ?? "<unknown account>")");
             return;
         }
         
@@ -1323,6 +1323,8 @@ class HBCIBackend : NSObject {
                         }
                     }
                 }
+            } else {
+                logError("Statements could not be retrieved");
             }
         }
         catch {
@@ -1513,7 +1515,7 @@ class HBCIBackend : NSObject {
         for transfer in transfers {
             let account = transfer.account;
             guard let bankUser = account?.defaultBankUser() else {
-                logError("Skip transfer: no bank user found for bank account \(account?.accountNumber())");
+                logError("Skip transfer: no bank user found for bank account \(account?.accountNumber() ?? "<unknown account>")");
                 errorOccured = true;
                 continue;
             }
@@ -1668,7 +1670,7 @@ class HBCIBackend : NSObject {
         for stord in standingOrders {
             let bankAccount = stord.account;
             guard let bankUser = bankAccount?.defaultBankUser() else {
-                logError("Skip standing order: no bank user found for bank account \(bankAccount?.accountNumber())");
+                logError("Skip standing order: no bank user found for bank account \(bankAccount?.accountNumber() ?? "<unknown account>")");
                 errorOccured = true;
                 continue;
             }
@@ -1977,7 +1979,7 @@ class HBCIBackend : NSObject {
                 
                 guard bankCode != nil && userId != nil && sysId != nil else {
                     plain.deallocate(capacity: enc.count);
-                    logError("Passport data is not readable \(bankCode) \(userId) \(sysId)");
+                    logError("Passport data is not readable \(String(describing: bankCode)) \(String(describing: userId)) \(String(describing: sysId))");
                     return;
                 }
                 

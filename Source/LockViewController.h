@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-@interface LockViewController : NSViewController <NSTextFieldDelegate>
+@interface LockViewController : NSViewController <NSTextFieldDelegate, CAAnimationDelegate>
 
 @property (readonly) NSString *password;
 @property (readonly) BOOL savePassword;

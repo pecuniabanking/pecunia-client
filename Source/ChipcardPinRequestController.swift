@@ -19,7 +19,7 @@ class ChipcardPinRequestController : NSWindowController {
     override func awakeFromNib() {
         messageField.stringValue = String(format: NSLocalizedString("AP351", comment: ""));
         
-        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: Selector("checkPin:"), userInfo: nil, repeats: false);
+        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: Selector(("checkPin:")), userInfo: nil, repeats: false);
         RunLoop.current.add(timer, forMode: RunLoopMode.modalPanelRunLoopMode);
         _timer = timer;
     }

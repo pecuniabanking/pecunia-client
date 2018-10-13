@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "StatementsListviewCell.h"
+#import "StatementsListViewCell.h"
 #import "PecuniaListView.h"
 
 @class StatCatAssignment;

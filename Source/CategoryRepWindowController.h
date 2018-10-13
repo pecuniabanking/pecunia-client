@@ -27,8 +27,7 @@
 @class PecuniaGraphHost;
 @class BankingCategory;
 
-@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource,
-CPTBarPlotDelegate, CPTAnimationDelegate>
+@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource, CPTBarPlotDelegate, CPTAnimationDelegate, CALayerDelegate>
 {
     IBOutlet NSView           *topView;
     IBOutlet PecuniaGraphHost *pieChartHost;

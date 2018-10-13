@@ -106,7 +106,7 @@
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary<NSString *,id> *)change context: (void *)context {
     if ([keyPath isEqualToString: @"logLevel"]) {
         NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-        int level = [defaults integerForKey: @"logLevel"];
+        NSInteger level = [defaults integerForKey: @"logLevel"];
         switch (level) {
             case 0:
                 logLevel = LOG_LEVEL_ERROR;
@@ -279,6 +279,10 @@
     return _messageLog;
 }
 
++ (MessageLog*)getLog {
+    return [self log];
+}
+
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     self.hasError = YES;
     if ((logLevel & LOG_FLAG_ERROR) != 0) {
@@ -297,6 +301,12 @@
                 args: args];
     }
 }
+
+- (void)logError1: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line arguments:(va_list)args{
+    [ self logError:format file:file function:function line:line];
+    [self.resultWindow addMessage: format];
+}
+
 
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     if ((logLevel & LOG_FLAG_WARN) != 0) {

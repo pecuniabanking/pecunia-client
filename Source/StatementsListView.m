@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "StatementsListview.h"
+#import "StatementsListView.h"
 #import "StatementsListViewCell.h"
 
 #import "MessageLog.h"
@@ -58,7 +58,7 @@ extern void *UserDefaultsBindingContext;
     [self setDelegate: self];
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale: [NSLocale currentLocale]];
-    [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
+    [dateFormatter setDateStyle: NSDateFormatterFullStyle];
     [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
     disableSelection = NO;
 

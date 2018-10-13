@@ -96,7 +96,7 @@
 
 - (IBAction)dropChanged: (id)sender
 {
-    int idx = [dropDown indexOfSelectedItem];
+    NSInteger idx = [dropDown indexOfSelectedItem];
     if (idx < 0) {
         idx = 0;
     }
@@ -173,7 +173,7 @@
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
 
     BankUser *user = nil;
-    int      idx = [dropDown indexOfSelectedItem];
+    NSInteger idx = [dropDown indexOfSelectedItem];
     if (idx > 0) {
         user = [users arrangedObjects][idx];
     }
@@ -322,10 +322,11 @@
         return NO;
     }
 
-    BOOL valid = [IBANtools isValidAccount: account.accountNumber
-                                  bankCode: account.bankCode
-                               countryCode: @"DE"
-                                   forIBAN: NO];
+    NSDictionary *checkResult = [IBANtools isValidAccount: account.accountNumber
+                                                 bankCode: account.bankCode
+                                              countryCode: @"DE"
+                                                  forIBAN: NO];
+    BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
     if (!valid) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP60", nil),

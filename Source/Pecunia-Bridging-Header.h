@@ -26,7 +26,7 @@
 #import "AccountStatementsController.h"
 #import "AdditionalControls.h"
 #import "AmountCell.h"
-#import "AnimationHelper.h"
+//#import "AnimationHelper.h"
 #import "AssignmentController.h"
 #import "AttachmentImageView.h"
 #import "BSSelectWindowController.h"

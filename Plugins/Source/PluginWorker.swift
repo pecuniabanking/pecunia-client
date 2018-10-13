@@ -63,7 +63,7 @@ class WebClient: WebView, WebViewJSExport {
     fileprivate var redirecting: Bool = false;
     fileprivate var pluginDescription: String = ""; // The plugin description for error messages.
 
-    var URL: String {
+    var mainURL: String {
         get {
             return mainFrameURL;
         }
@@ -134,7 +134,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 // Balance string might contain a currency code (3 letters).
-                if let value = entry["balance"] as? String, value.characters.count > 0 {
+                if let value = entry["balance"] as? String, value.count > 0 {
                     if let number = NSDecimalNumber.fromString(value) {  // Returns the value up to the currency code (if any).
                         queryResult.balance = number;
                     }
@@ -163,7 +163,7 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
-                    if let value = jsonStatement["value"] as? String, value.characters.count > 0 {
+                    if let value = jsonStatement["value"] as? String, value.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
                         // call instead, but that crashes atm.
@@ -175,7 +175,7 @@ class WebClient: WebView, WebViewJSExport {
                         }
                     }
 
-                    if let value = jsonStatement["originalValue"] as? String, value.characters.count > 0 {
+                    if let value = jsonStatement["originalValue"] as? String, value.count > 0 {
                         if let number = NSDecimalNumber.fromString(value) {
                             statement.origValue = number;
                         }
@@ -244,46 +244,46 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     // MARK: - Setup
 
     fileprivate func prepareContext() {
-        workContext.setObject(false, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(false, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)?);
         workContext.exceptionHandler = { workContext, exception in
             self.jsLogger.logError((exception?.toString())!);
-            workContext?.setObject(true, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)!);
+            workContext?.setObject(true, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)?);
         }
 
-        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)!);
-        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)?);
+        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)?);
 
         // Export Webkit to the work context, so that plugins can use it to work with data/the DOM
         // from the web client.
-        workContext.setObject(DOMNodeList.self, forKeyedSubscript: "DOMNodeList" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMCSSStyleDeclaration.self, forKeyedSubscript: "DOMCSSStyleDeclaration" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMCSSRuleList.self, forKeyedSubscript: "DOMCSSRuleList" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMNamedNodeMap.self, forKeyedSubscript: "DOMNamedNodeMap" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMNode.self, forKeyedSubscript: "DOMNode" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMAttr.self, forKeyedSubscript: "DOMAttr" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMElement.self, forKeyedSubscript: "DOMElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLCollection.self, forKeyedSubscript: "DOMHTMLCollection" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLElement.self, forKeyedSubscript: "DOMHTMLElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMDocumentType.self, forKeyedSubscript: "DOMDocumentType" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLFormElement.self, forKeyedSubscript: "DOMHTMLFormElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLInputElement.self, forKeyedSubscript: "DOMHTMLInputElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLButtonElement.self, forKeyedSubscript: "DOMHTMLButtonElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLAnchorElement.self, forKeyedSubscript: "DOMHTMLAnchorElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLOptionElement.self, forKeyedSubscript: "DOMHTMLOptionElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLOptionsCollection.self, forKeyedSubscript: "DOMHTMLOptionsCollection" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMHTMLSelectElement.self, forKeyedSubscript: "DOMHTMLSelectElement" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMImplementation.self, forKeyedSubscript: "DOMImplementation" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMStyleSheetList.self, forKeyedSubscript: "DOMStyleSheetList" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMDocumentFragment.self, forKeyedSubscript: "DOMDocumentFragment" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMCharacterData.self, forKeyedSubscript: "DOMCharacterData" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMText.self, forKeyedSubscript: "DOMText" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMComment.self, forKeyedSubscript: "DOMComment" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMCDATASection.self, forKeyedSubscript: "DOMCDATASection" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMProcessingInstruction.self, forKeyedSubscript: "DOMProcessingInstruction" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame" as (NSCopying & NSObjectProtocol)!);
-        workContext.setObject(webClient.self, forKeyedSubscript: "webClient" as (NSCopying & NSObjectProtocol)!);
+        workContext.setObject(DOMNodeList.self, forKeyedSubscript: "DOMNodeList" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMCSSStyleDeclaration.self, forKeyedSubscript: "DOMCSSStyleDeclaration" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMCSSRuleList.self, forKeyedSubscript: "DOMCSSRuleList" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMNamedNodeMap.self, forKeyedSubscript: "DOMNamedNodeMap" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMNode.self, forKeyedSubscript: "DOMNode" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMAttr.self, forKeyedSubscript: "DOMAttr" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMElement.self, forKeyedSubscript: "DOMElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLCollection.self, forKeyedSubscript: "DOMHTMLCollection" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLElement.self, forKeyedSubscript: "DOMHTMLElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMDocumentType.self, forKeyedSubscript: "DOMDocumentType" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLFormElement.self, forKeyedSubscript: "DOMHTMLFormElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLInputElement.self, forKeyedSubscript: "DOMHTMLInputElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLButtonElement.self, forKeyedSubscript: "DOMHTMLButtonElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLAnchorElement.self, forKeyedSubscript: "DOMHTMLAnchorElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLOptionElement.self, forKeyedSubscript: "DOMHTMLOptionElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLOptionsCollection.self, forKeyedSubscript: "DOMHTMLOptionsCollection" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMHTMLSelectElement.self, forKeyedSubscript: "DOMHTMLSelectElement" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMImplementation.self, forKeyedSubscript: "DOMImplementation" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMStyleSheetList.self, forKeyedSubscript: "DOMStyleSheetList" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMDocumentFragment.self, forKeyedSubscript: "DOMDocumentFragment" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMCharacterData.self, forKeyedSubscript: "DOMCharacterData" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMText.self, forKeyedSubscript: "DOMText" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMComment.self, forKeyedSubscript: "DOMComment" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMCDATASection.self, forKeyedSubscript: "DOMCDATASection" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMProcessingInstruction.self, forKeyedSubscript: "DOMProcessingInstruction" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(webClient.self, forKeyedSubscript: "webClient" as (NSCopying & NSObjectProtocol)?);
     }
 
     fileprivate func setupWebClient(_ hostWindow: NSWindow?) {
@@ -297,7 +297,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         webClient.pluginDescription = workContext.objectForKeyedSubscript("description").toString();
 
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString");
-        webClient.applicationNameForUserAgent = "Pecunia/\(version) (Safari)";
+        webClient.applicationNameForUserAgent = "Pecunia/\(version ?? "1.3.3") (Safari)";
     }
 
     // MARK: - Plugin Logic

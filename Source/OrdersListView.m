@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "OrdersListview.h"
+#import "OrdersListView.h"
 #import "OrdersListViewCell.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
@@ -62,7 +62,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     if (self != nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
+        [dateFormatter setDateStyle: NSDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
 
         hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSCalendarUnitYear];

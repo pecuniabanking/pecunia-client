@@ -964,7 +964,7 @@
         BankStatement *last = [statements lastObject];
         if ([first.date compare: last.date] == NSOrderedDescending) {
             NSMutableArray *newStats = [NSMutableArray arrayWithCapacity: 100];
-            int            j;
+            NSInteger j;
             for (j = [statements count] - 1; j >= 0; j--) {
                 [newStats addObject: statements[j]];
             }
@@ -1042,7 +1042,7 @@
 }
 
 - (IBAction)addRemoveFile: (id)sender {
-    int clickedSegment = [sender selectedSegment];
+    NSInteger clickedSegment = [sender selectedSegment];
     switch (clickedSegment) {
         case 0: {
             // Add new files.
@@ -1052,7 +1052,7 @@
             panel.canChooseFiles = YES;
             panel.allowsMultipleSelection = YES;
 
-            int runResult = [panel runModal];
+            NSModalResponse runResult = [panel runModal];
             if (runResult == NSOKButton) {
                 for (NSURL *url in panel.URLs) {
                     [self addFileEntryForPath: url.path atParent: nil];
@@ -1108,12 +1108,12 @@
 
             // Check if file already exists and issue warning.
             if ([[NSFileManager defaultManager] fileExistsAtPath: fileName]) {
-                int res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
-                                          NSLocalizedString(@"AP600", nil),
-                                          NSLocalizedString(@"AP4", nil),
-                                          NSLocalizedString(@"AP3", nil),
-                                          nil,
-                                          fileName);
+                NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
+                                                NSLocalizedString(@"AP600", nil),
+                                                NSLocalizedString(@"AP4", nil),
+                                                NSLocalizedString(@"AP3", nil),
+                                                nil,
+                                                fileName);
                 if (res == NSAlertDefaultReturn) {
                     return;
                 }
@@ -1164,12 +1164,12 @@
 
     NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.sharedAssistant.importerDir, settingName];
 
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", nil),
-                                      NSLocalizedString(@"AP623", nil),
-                                      NSLocalizedString(@"AP2", nil),
-                                      NSLocalizedString(@"AP10", nil),
-                                      nil, nil
-                                      );
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", nil),
+                                            NSLocalizedString(@"AP623", nil),
+                                            NSLocalizedString(@"AP2", nil),
+                                            NSLocalizedString(@"AP10", nil),
+                                            nil, nil
+                                            );
     if (res != NSAlertAlternateReturn) {
         return;
     }

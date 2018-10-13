@@ -39,8 +39,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         if passwordController != nil {
             if !errorOccured {
                 let password = passwordController!.result();
-                Security.setPassword(password!, forService: service, account: account,
-                    store: passwordController!.savePassword);
+                if(!Security.setPassword(password!, forService: service, account: account, store: passwordController!.savePassword)) {};
             }
 
             passwordController!.close();
@@ -79,7 +78,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
             self.passwordController!.closeWindow();
             if res == 0 {
                 let pin = self.passwordController!.result();
-                Security.setPassword(pin!, forService: self.service, account: self.account, store: false);
+                if(!Security.setPassword(pin!, forService: self.service, account: self.account, store: false)) {};
                 result = pin!;
             } else {
                 Security.deletePasswordForService(self.service, account: self.account);

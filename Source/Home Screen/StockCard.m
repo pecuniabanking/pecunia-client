@@ -40,7 +40,7 @@ typedef enum {
     StocksIntervalAllTime
 } StocksTimeInterval;
 
-@interface StockGraph : CPTGraphHostingView  <CPTPlotDataSource>
+@interface StockGraph : CPTGraphHostingView  <CPTPlotDataSource, CALayerDelegate>
 {
 @private
     CPTXYGraph *graph;
@@ -1024,7 +1024,7 @@ typedef enum {
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     StocksTimeInterval initialInterval = StocksIntervalIntraday;
     if (settings[@"stocksInterval"] != nil) {
-        initialInterval = [settings integerForKey: @"stocksInterval"];
+        initialInterval = (StocksTimeInterval)[settings integerForKey: @"stocksInterval"];
     }
     intervalSelector.selectedSegment = initialInterval;
 

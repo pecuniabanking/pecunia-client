@@ -35,7 +35,7 @@
 #import "NSColor+PecuniaAdditions.h"
 #import "AnimationHelper.h"
 #import "SynchronousScrollView.h"
-#import "StatementsListview.h"
+#import "StatementsListView.h"
 
 extern void *UserDefaultsBindingContext;
 
@@ -534,7 +534,7 @@ extern void *UserDefaultsBindingContext;
 - (void)updateSorting
 {
     [sortControl setImage: nil forSegment: sortIndex];
-    sortIndex = [sortControl selectedSegment];
+    sortIndex = (int)[sortControl selectedSegment];
     if (sortIndex < 0) {
         sortIndex = 0;
     }

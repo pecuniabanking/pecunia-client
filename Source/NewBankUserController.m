@@ -821,7 +821,7 @@
     }
 
     NewPinController *pinController = [[NewPinController alloc] init];
-    int              res = [NSApp runModalForWindow: [pinController window]];
+    NSModalResponse res = [NSApp runModalForWindow: [pinController window]];
     if (res) {
         return;
     }

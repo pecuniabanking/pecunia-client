@@ -213,7 +213,7 @@ import WebKit;
             }
 
             if entry != nil {
-                let number = String(account.accountNumber().characters.filter { $0 != " " } ); // Remove all space chars.
+                let number = String(account.accountNumber().filter { $0 != " " } ); // Remove all space chars.
                 entry!.accountNumbers.append(number);
             }
         }

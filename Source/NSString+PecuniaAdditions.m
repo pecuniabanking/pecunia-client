@@ -194,7 +194,7 @@ static NSData *receivedTmpData = nil;
 }
 
 - (NSString *)anonymizedString {
-    int len = self.length / 3;
+    NSInteger len = self.length / 3;
     if(len == 0 && self.length > 0) {
         len = 1;
     }

@@ -20,7 +20,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "Transfer.h"
-#import "DebitsListview.h"
+#import "DebitsListView.h"
 #import "PecuniaTabItem.h"
 
 @class DebitDragImageView;

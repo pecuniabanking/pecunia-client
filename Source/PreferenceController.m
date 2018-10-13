@@ -217,8 +217,8 @@ static NSGradient *headerGradient;
 
 - (IBAction)dateChanged: (id)sender
 {
-    ShortDate *date = [ShortDate dateWithYear: yearButton.selectedTag
-                                        month: monthButton.selectedTag
+    ShortDate *date = [ShortDate dateWithYear: (unsigned int)yearButton.selectedTag
+                                        month: (unsigned int)monthButton.selectedTag
                                           day: 1];
     [delegate redemptionDateChanged: date cell: self];
 }
@@ -301,8 +301,8 @@ static NSDictionary *heightMappings;
         NSComboBoxCell *cell = [col dataCell];
 
         for (NSString *field in fields) {
-            int                 idx = [exportFields indexOfObject: field];
-            if (idx >= 0) {
+            NSUInteger idx = [exportFields indexOfObject: field];
+            if (idx != NSNotFound) {
                 NSString            *name = [cell itemObjectValueAtIndex: idx];
                 NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject: name forKey: @"fieldName"];
                 [fieldController addObject: item];
@@ -456,7 +456,7 @@ static NSDictionary *heightMappings;
 
 - (void)windowWillClose: (NSNotification *)aNotification
 {
-    int            idx;
+    NSInteger      idx;
     NSArray        *content = [fieldController content];
     NSArray        *columns = [fieldTable tableColumns];
     NSMutableArray *fields = [NSMutableArray arrayWithCapacity: 25];
@@ -479,12 +479,12 @@ static NSDictionary *heightMappings;
 // remove keychain values of all accounts
 - (IBAction)removePINs: (id)sender
 {
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP165", nil),
-                                      NSLocalizedString(@"AP166", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      nil
-                                      );
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP165", nil),
+                                            NSLocalizedString(@"AP166", nil),
+                                            NSLocalizedString(@"AP4", nil),
+                                            NSLocalizedString(@"AP3", nil),
+                                            nil
+                                            );
     if (res != NSAlertAlternateReturn) {
         return;
     }
@@ -498,7 +498,7 @@ static NSDictionary *heightMappings;
     
     NewPasswordController *pwController = [[NewPasswordController alloc] initWithText: NSLocalizedString(@"AP175", nil)
                                                                                 title: nil];
-    int res = [NSApp runModalForWindow: [pwController window]];
+    NSModalResponse res = [NSApp runModalForWindow: [pwController window]];
     if (res) {
         return;
     }
@@ -545,11 +545,11 @@ static NSDictionary *heightMappings;
 {
     if (encrypt) {
         // Backup reminder
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP173", nil),
-                                  NSLocalizedString(@"AP174", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  NSLocalizedString(@"AP4", nil),
-                                  nil);
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP173", nil),
+                                        NSLocalizedString(@"AP174", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        NSLocalizedString(@"AP4", nil),
+                                        nil);
         if (res != NSAlertDefaultReturn) {
             [encryptButton setState:NSOffState];
             return;
@@ -574,11 +574,11 @@ static NSDictionary *heightMappings;
         // stop encryption
         NSError *error = nil;
         
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
-                                  NSLocalizedString(@"AP161", nil),
-                                  NSLocalizedString(@"AP4", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  nil);
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                                        NSLocalizedString(@"AP161", nil),
+                                        NSLocalizedString(@"AP4", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        nil);
         if (res == NSAlertAlternateReturn) {
             MOAssistant *assistant = [MOAssistant sharedAssistant];
 
@@ -588,7 +588,7 @@ static NSDictionary *heightMappings;
             [pwWindow disablePasswordSave];
             while (passwordOk == NO) {
                 [[self window] makeKeyAndOrderFront: self];
-                int res = [NSApp runModalForWindow: [pwWindow window]];
+                NSModalResponse res = [NSApp runModalForWindow: [pwWindow window]];
                 if (res) {
                     [pwWindow closeWindow];
                     [[self window] makeKeyAndOrderFront: self];
@@ -687,7 +687,7 @@ static NSDictionary *heightMappings;
     password = passw1;
 
     if (savePassword) {
-        [Security setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
+        if(![Security setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword]) {};
     }
 
     [encryptionSheet orderOut: sender];
@@ -802,14 +802,14 @@ static NSDictionary *heightMappings;
         [indicator stopAnimation: self];
     }
 
-    int windowNumber = [self.window windowNumber];
+    long windowNumber = [self.window windowNumber];
     NSRect frame = button.frame;
 
     NSPoint wp = {0, NSHeight(frame)};
     wp = [button convertPoint: wp toView: nil];
     NSEvent* event = [NSEvent otherEventWithType: NSApplicationDefined
                                         location: wp
-                                   modifierFlags: NSApplicationDefined
+                                   modifierFlags: 0
                                        timestamp: 0
                                     windowNumber: windowNumber
                                          context: NSGraphicsContext.currentContext
@@ -875,8 +875,8 @@ static NSDictionary *heightMappings;
 
 - (IBAction)loanDateChanged: (id)sender
 {
-    NSDate *date = [[ShortDate dateWithYear: yearSelector.selectedTag
-                                      month: monthSelector.selectedTag
+    NSDate *date = [[ShortDate dateWithYear: (unsigned int)yearSelector.selectedTag
+                                      month: (unsigned int)monthSelector.selectedTag
                                         day: 1] lowDate];
     LocalSettingsController.sharedSettings[@"loanStartDate"] = date;
 }

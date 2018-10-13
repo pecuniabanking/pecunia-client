@@ -159,7 +159,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
     // Shuffle the info array and pick the first n values, where n itself is a random number.
     // Using http://en.wikipedia.org/wiki/Fisher-Yates_shuffle .
     NSMutableArray *shuffledInfo = [sepaInfo mutableCopy];
-    for (NSUInteger i = sepaInfo.count - 1; i > 0; --i) {
+    for (int i = (int)sepaInfo.count - 1; i > 0; --i) {
         [shuffledInfo exchangeObjectAtIndex: i
                           withObjectAtIndex: arc4random_uniform(i + 1)];
     }
@@ -168,7 +168,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
     [result appendString: purpose];
     [result appendString: @"\n"];
 
-    NSInteger numberOfRecords = arc4random_uniform(shuffledInfo.count) + 1;
+    NSInteger numberOfRecords = arc4random_uniform((unsigned)shuffledInfo.count) + 1;
     for (NSInteger i = 0; i < numberOfRecords; ++i) {
         NSArray *parts = [shuffledInfo[i] componentsSeparatedByString: @"+"];
         if ([parts[0] isEqualToString: @"SVWZ"]) {
@@ -177,14 +177,14 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
         if ([parts[0] isEqualToString: @"PURP"]) {
             [result appendString: @"PURP:"];
-            [result appendString: purposeCodes[arc4random_uniform(purposeCodes.count)]];
+            [result appendString: purposeCodes[arc4random_uniform((unsigned)purposeCodes.count)]];
             [result appendString: @"\n"];
             continue;
         }
 
         if ([parts[0] isEqualToString: @"SQTP"]) {
             [result appendString: @"SQTP:"];
-            [result appendString: sequenceTypes[arc4random_uniform(sequenceTypes.count)]];
+            [result appendString: sequenceTypes[arc4random_uniform((unsigned)sequenceTypes.count)]];
             [result appendString: @"\n"];
             continue;
         }
@@ -245,7 +245,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
                     // Randomly pick one of the accounts in this bank. Prefer the first one as most important.
                     // It gets most of the transactions.
-                    NSInteger randomIndex = (NSInteger)arc4random_uniform([bank.children count] + 6) - 6;
+                    NSInteger randomIndex = (NSInteger)arc4random_uniform((unsigned)[bank.children count] + 6) - 6;
                     if (randomIndex < 0) {
                         randomIndex = 0;
                     }
@@ -281,7 +281,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                     }
 
                     for (NSUInteger dateOffset = 0; dateOffset < dateUnitMax; dateOffset++) {
-                        NSUInteger      randomPart = arc4random_uniform(delta);
+                        NSUInteger      randomPart = arc4random_uniform((unsigned)delta);
                         NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0)decimalValue]];
 
                         NSDate *date;
@@ -293,7 +293,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                                                                      fromDate: firstDayOfYear
                                                                        toDate: firstDayOfNextYear
                                                                       options: 0];
-                                [components setDay: 1 + arc4random_uniform(temp.day)];
+                                [components setDay: 1 + arc4random_uniform((unsigned)temp.day)];
                                 date = [calendar dateFromComponents: components];
                                 break;
                             }
@@ -312,7 +312,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                                                                      fromDate: firstDayOfQuarter
                                                                        toDate: firstDayOfNextQuarter
                                                                       options: 0];
-                                [components setDay: tempBase.day + 1 + arc4random_uniform(temp.day)];
+                                [components setDay: tempBase.day + 1 + arc4random_uniform((unsigned)temp.day)];
                                 date = [calendar dateFromComponents: components];
                                 break;
                             }
@@ -322,7 +322,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                                 NSRange r = [calendar rangeOfUnit: NSCalendarUnitDay
                                                            inUnit: NSCalendarUnitMonth
                                                           forDate: [calendar dateFromComponents: components]];
-                                [components setDay: 1 + arc4random_uniform(r.length)];
+                                [components setDay: 1 + arc4random_uniform((unsigned)r.length)];
                                 date = [calendar dateFromComponents: components];
                                 break;
                             }
@@ -378,7 +378,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
                         [statement addToAccount: account];
 
-                        NSUInteger noteIndex = arc4random_uniform(notes.count);
+                        NSUInteger noteIndex = arc4random_uniform((unsigned)notes.count);
                         statement.bankAssignment.userInfo = notes[noteIndex];
 
                         NSArray *keywords = [dictionary[@"keywords"] componentsSeparatedByString: @","];
@@ -465,7 +465,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
 
         // To each bank root add a few accounts. The actual number depends on the data amount flag.
         NSMutableArray *accountList = [NSMutableArray array];
-        NSUInteger     accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
+        NSUInteger     accountCount = 1 + arc4random_uniform((unsigned)maxAccountsPerBank);
         for (NSUInteger index = 0; index < accountCount; ++index) {
             [accountList addObject: accounts[index]];
         }

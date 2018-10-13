@@ -54,6 +54,9 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 
 + (MessageLog *)log;
 + (NSString *)prettyPrintServerMessage: (NSString *)text;
++ (MessageLog*)getLog;
+
+- (void)logError1: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line arguments:(va_list)args;
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;

@@ -7,7 +7,7 @@
 
 @interface YRKSpinningProgressIndicator : NSView {
     int _position;
-    NSUInteger _numFins;
+    int _numFins;
     //NSColor **_finColors;
     NSMutableArray *_finColors;
     

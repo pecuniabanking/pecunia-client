@@ -1298,12 +1298,12 @@ static BankingController *bankinControllerInstance;
 - (IBAction)resetCategoryIcons: (id)sender {
     LogEnter;
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP301", nil),
-                              NSLocalizedString(@"AP302", nil),
-                              NSLocalizedString(@"AP4", nil),
-                              NSLocalizedString(@"AP3", nil),
-                              nil
-                              );
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP301", nil),
+                                    NSLocalizedString(@"AP302", nil),
+                                    NSLocalizedString(@"AP4", nil),
+                                    NSLocalizedString(@"AP3", nil),
+                                    nil
+                                    );
     if (res != NSAlertAlternateReturn) {
         return;
     }
@@ -1383,7 +1383,7 @@ static BankingController *bankinControllerInstance;
         [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
     }
 
-    int res = [NSApp runModalForWindow: [defController window]];
+    NSModalResponse res = [NSApp runModalForWindow: [defController window]];
     if (res) {
         // account was created
         [self save];
@@ -1447,13 +1447,13 @@ static BankingController *bankinControllerInstance;
     BankAccount *account = (BankAccount *)cat;
 
     // issue a confirmation
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
-                                      NSLocalizedString(@"AP812", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      nil,
-                                      account.accountNumber
-                                      );
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
+                                            NSLocalizedString(@"AP812", nil),
+                                            NSLocalizedString(@"AP3", nil),
+                                            NSLocalizedString(@"AP4", nil),
+                                            nil,
+                                            account.accountNumber
+                                            );
     if (res != NSAlertDefaultReturn) {
         return;
     }
@@ -1472,13 +1472,13 @@ static BankingController *bankinControllerInstance;
             }
         }
         if (hasAssignment) {
-            int alertResult = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
-                                                      NSLocalizedString(@"AP801", nil),
-                                                      NSLocalizedString(@"AP3", nil),
-                                                      NSLocalizedString(@"AP4", nil),
-                                                      NSLocalizedString(@"AP2", nil),
-                                                      account.accountNumber
-                                                      );
+            NSInteger alertResult = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
+                                                            NSLocalizedString(@"AP801", nil),
+                                                            NSLocalizedString(@"AP3", nil),
+                                                            NSLocalizedString(@"AP4", nil),
+                                                            NSLocalizedString(@"AP2", nil),
+                                                            account.accountNumber
+                                                            );
             if (alertResult == NSAlertDefaultReturn) {
                 keepAssignedStatements = YES;
             } else {
@@ -1806,7 +1806,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     ImportController *controller = [[ImportController alloc] init];
-    int              res = [NSApp runModalForWindow: [controller window]];
+    NSModalResponse res = [NSApp runModalForWindow: [controller window]];
     if (res == 0) {
         NSArray        *results = @[controller.importResult];
         NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
@@ -2140,7 +2140,7 @@ static BankingController *bankinControllerInstance;
                         }
 
                         AssignmentController *controller = [[AssignmentController alloc] initWithAmount: residual];
-                        int                  res = [NSApp runModalForWindow: controller.window];
+                        NSModalResponse res = [NSApp runModalForWindow: controller.window];
                         if (res) {
                             return NO;
                         }
@@ -2169,7 +2169,7 @@ static BankingController *bankinControllerInstance;
                     }
 
                     AssignmentController *controller = [[AssignmentController alloc] initWithAmount: amount];
-                    int                  res = [NSApp runModalForWindow: controller.window];
+                    NSModalResponse res = [NSApp runModalForWindow: controller.window];
                     if (res) {
                         return NO;
                     }
@@ -2403,7 +2403,7 @@ static BankingController *bankinControllerInstance;
 #pragma mark - Menu handling
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item {
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
+    NSInteger idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
 
     if (idx != 0 || currentSectionIndex != 0) {
         if ([item action] == @selector(export:)) {
@@ -2591,15 +2591,15 @@ static BankingController *bankinControllerInstance;
     StatCatAssignment *stat;
 
     if ([stats count] > 0) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP303", nil),
-                                          NSLocalizedString(@"AP304", nil),
-                                          NSLocalizedString(@"AP4", nil),
-                                          NSLocalizedString(@"AP3", nil),
-                                          nil,
-                                          [cat localName],
-                                          [stats count],
-                                          nil
-                                          );
+        NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP303", nil),
+                                                NSLocalizedString(@"AP304", nil),
+                                                NSLocalizedString(@"AP4", nil),
+                                                NSLocalizedString(@"AP3", nil),
+                                                nil,
+                                                [cat localName],
+                                                [stats count],
+                                                nil
+                                                );
         if (res != NSAlertAlternateReturn) {
             return;
         }
@@ -2659,8 +2659,8 @@ static BankingController *bankinControllerInstance;
 - (IBAction)manageCategories: (id)sender {
     LogEnter;
 
-    int clickedSegment = [sender selectedSegment];
-    int clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
+    NSInteger clickedSegment = [sender selectedSegment];
+    NSInteger clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
     switch (clickedSegmentTag) {
         case 0:[self addCategory: sender]; break;
 
@@ -2683,7 +2683,7 @@ static BankingController *bankinControllerInstance;
     if (managedObjectContext == nil) {
         return;
     }
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
+    NSInteger idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
     if (idx) {
         return;
     }
@@ -2765,7 +2765,7 @@ static BankingController *bankinControllerInstance;
 
     BankStatementController *statementController = [[BankStatementController alloc] initWithAccount: (BankAccount *)cat statement: nil];
 
-    int res = [NSApp runModalForWindow: [statementController window]];
+    NSModalResponse res = [NSApp runModalForWindow: [statementController window]];
     if (res) {
         [self save];
         [self.currentSelection updateAssignmentsForReportRange];
@@ -3142,12 +3142,12 @@ static BankingController *bankinControllerInstance;
 
     // Check if there are any bank users or at least manual accounts.
     if (BankUser.allUsers.count == 0 && [BankingCategory.bankRoot.children count] == 0) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP804", nil),
-                                  NSLocalizedString(@"AP151", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  NSLocalizedString(@"AP800", nil),
-                                  nil
-                                  );
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP804", nil),
+                                        NSLocalizedString(@"AP151", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        NSLocalizedString(@"AP800", nil),
+                                        nil
+                                        );
         if (res == NSAlertDefaultReturn) {
             [self editBankUsers: self];
         }
@@ -3257,12 +3257,12 @@ static BankingController *bankinControllerInstance;
 
     // Check for a new transfer not yet finished.
     if ([transfersController editingInProgress]) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
-                                  NSLocalizedString(@"AP431", nil),
-                                  NSLocalizedString(@"AP411", nil),
-                                  NSLocalizedString(@"AP412", nil),
-                                  nil
-                                  );
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
+                                        NSLocalizedString(@"AP431", nil),
+                                        NSLocalizedString(@"AP411", nil),
+                                        NSLocalizedString(@"AP412", nil),
+                                        nil
+                                        );
         if (res == NSAlertAlternateReturn) {
             sidebar.selectedIndex = 7;
             return NO;
@@ -3283,13 +3283,13 @@ static BankingController *bankinControllerInstance;
         return YES;
     }
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
-                              NSLocalizedString(@"AP430", nil),
-                              NSLocalizedString(@"AP7", nil),
-                              NSLocalizedString(@"AP412", nil),
-                              NSLocalizedString(@"AP432", nil),
-                              nil
-                              );
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
+                                    NSLocalizedString(@"AP430", nil),
+                                    NSLocalizedString(@"AP7", nil),
+                                    NSLocalizedString(@"AP412", nil),
+                                    NSLocalizedString(@"AP432", nil),
+                                    nil
+                                    );
     if (res == NSAlertDefaultReturn) {
         return YES;
     }
@@ -3541,12 +3541,12 @@ static BankingController *bankinControllerInstance;
 - (IBAction)deleteAllData: (id)sender {
     LogEnter;
 
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP114", nil),
-                                      NSLocalizedString(@"AP115", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      nil
-                                      );
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP114", nil),
+                                            NSLocalizedString(@"AP115", nil),
+                                            NSLocalizedString(@"AP4", nil),
+                                            NSLocalizedString(@"AP3", nil),
+                                            nil
+                                            );
     if (res != NSAlertAlternateReturn) {
         return;
     }

@@ -1064,13 +1064,13 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     // first check if data file already exists at target position
     if ([fm fileExistsAtPath: [newFilePathURL path]]) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP84", nil),
-                                          NSLocalizedString(@"AP164", nil),
-                                          NSLocalizedString(@"AP2", nil),
-                                          NSLocalizedString(@"AP15", nil),
-                                          NSLocalizedString(@"AP14", nil),
-                                          [newFilePathURL path]
-                                          );
+        NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP84", nil),
+                                                NSLocalizedString(@"AP164", nil),
+                                                NSLocalizedString(@"AP2", nil),
+                                                NSLocalizedString(@"AP15", nil),
+                                                NSLocalizedString(@"AP14", nil),
+                                                [newFilePathURL path]
+                                                );
 
         if (res == NSAlertDefaultReturn) {
             return;

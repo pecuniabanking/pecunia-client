@@ -18,7 +18,7 @@
  */
 
 #import "Transfer.h"
-#import "TransfersListview.h"
+#import "TransfersListView.h"
 #import "TransfersListViewCell.h"
 #import "ShortDate.h"
 #import "BankingCategory.h"
@@ -68,7 +68,7 @@ extern void *UserDefaultsBindingContext;
     if (self != nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
+        [dateFormatter setDateStyle: NSDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
     }
     return self;

@@ -73,9 +73,9 @@ static NSArray *exportFields = nil;
 
 - (void)startExport: (BankingCategory *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to
 {
-    NSSavePanel *sp;
-    NSError     *error = nil;
-    int         runResult;
+    NSSavePanel         *sp;
+    NSError             *error = nil;
+    NSModalResponse     runResult;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 

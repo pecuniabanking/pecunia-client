@@ -541,7 +541,7 @@
 - (void)drawPageDetails: (int)page includingHeader: (BOOL)withHeader {
     // Drawing coordinates are within page bounds. The set page margins are implicitly applied
     // and don't need to be considered by us.
-    int baseOffset = page * pageHeight + 1;
+    NSUInteger baseOffset = page * pageHeight + 1;
 
     // Page title.
     [title drawInRect: NSMakeRect(0, baseOffset, pageWidth, titleHeight)];
@@ -637,7 +637,7 @@
 }
 
 - (void)drawRect: (NSRect)dirtyRect {
-    NSUInteger page = -1;
+    int page = -1;
     NSUInteger currentPageHeight = pageHeight + 1; // Larger than the page height to trigger first page details drawing.
 
     NSDecimalNumber *debitSum = [NSDecimalNumber zero];

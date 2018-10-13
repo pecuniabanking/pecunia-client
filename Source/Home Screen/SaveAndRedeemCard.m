@@ -42,7 +42,7 @@ extern void *UserDefaultsBindingContext;
  * interest and redemption.
  */
 @interface RedemptionGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate,
-                                                   CPTPlotSpaceDelegate, CPTBarPlotDataSource>
+                                                   CPTPlotSpaceDelegate, CPTBarPlotDataSource, CALayerDelegate, CAAnimationDelegate>
 
 - (void)updateTrackLineAndInfoDisplay: (CGFloat)location;
 - (void)showInfoComponents;
@@ -53,7 +53,7 @@ extern void *UserDefaultsBindingContext;
 
 @end
 
-@interface PrincipalBalanceGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate, CPTPlotSpaceDelegate>
+@interface PrincipalBalanceGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate, CPTPlotSpaceDelegate, CALayerDelegate, CAAnimationDelegate>
 {
     @public
     RedemptionGraph *peerGraph;
@@ -615,7 +615,7 @@ extern void *UserDefaultsBindingContext;
     monthDebtValues = malloc(numberOfMonths * sizeof(double));
     monthDebtValues2 = malloc(numberOfMonths * sizeof(double));
 
-    ShortDate *endDate = [referenceDate dateByAddingUnits: numberOfMonths byUnit: NSCalendarUnitMonth];
+    ShortDate *endDate = [referenceDate dateByAddingUnits: (int)numberOfMonths byUnit: NSCalendarUnitMonth];
     endDate = [endDate dateByAddingUnits: -1 byUnit: NSCalendarUnitDay];
     numberOfYears = endDate.year - referenceDate.year + 1;
     yearTimePoints = malloc(numberOfYears * sizeof(double));
@@ -623,14 +623,14 @@ extern void *UserDefaultsBindingContext;
     yearDebtValues2 = malloc(numberOfYears * sizeof(double));
 
     // Select a meaningful initial display window for the entire range.
-    NSUInteger units = currentGrouping == NSCalendarUnitMonth ? 12 : 10;
+    int units = currentGrouping == NSCalendarUnitMonth ? 12 : 10;
     ShortDate  *now = [ShortDate currentDate];
     if ([referenceDate compare: now] == NSOrderedDescending) {
         // First date is after the current date. Our initial window is hence just the first "units" months/years.
         fromDate = referenceDate;
         toDate = [fromDate dateByAddingUnits: units byUnit: currentGrouping];
     } else {
-        NSUInteger count = currentGrouping == NSCalendarUnitMonth ? numberOfMonths : numberOfYears;
+        int count = currentGrouping == NSCalendarUnitMonth ? (int)numberOfMonths : (int)numberOfYears;
         toDate = [referenceDate dateByAddingUnits: count byUnit: currentGrouping];
         if ([toDate compare: now] == NSOrderedAscending) {
             // The end is already in the past. The initial window is hence the last "units" months/years.
@@ -929,7 +929,7 @@ extern void *UserDefaultsBindingContext;
     if (lastInfoTimePoint == 0) {
         month = referenceDate.month;
     }
-    fromDate = [ShortDate dateWithYear: referenceDate.year + lastInfoTimePoint month: month day: 1];
+    fromDate = [ShortDate dateWithYear: referenceDate.year + (unsigned)lastInfoTimePoint month: month day: 1];
     toDate = [fromDate dateByAddingUnits: 12 byUnit: NSCalendarUnitMonth];
 
     // We are still in year coordinates.
@@ -1090,7 +1090,7 @@ extern void *UserDefaultsBindingContext;
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
 - (float)intervalFromRange: (NSDecimalNumber *)range {
-    int digitCount = [range numberOfDigits];
+    NSInteger digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];
@@ -1699,7 +1699,7 @@ extern void *UserDefaultsBindingContext;
     monthRedemptionValues = malloc(numberOfMonths * sizeof(double));
     monthRedemptionValues2 = malloc(numberOfMonths * sizeof(double));
 
-    ShortDate *endDate = [referenceDate dateByAddingUnits: numberOfMonths byUnit: NSCalendarUnitMonth];
+    ShortDate *endDate = [referenceDate dateByAddingUnits: (int)numberOfMonths byUnit: NSCalendarUnitMonth];
     endDate = [endDate dateByAddingUnits: -1 byUnit: NSCalendarUnitDay];
     numberOfYears = endDate.year - referenceDate.year + 1;
     yearTimePoints = malloc(numberOfYears * sizeof(double));
@@ -1709,14 +1709,14 @@ extern void *UserDefaultsBindingContext;
     yearRedemptionValues2 = malloc(numberOfYears * sizeof(double));
 
     // Select a meaningful initial display window for the entire range.
-    NSUInteger units = currentGrouping == NSCalendarUnitMonth ? 12 : 10;
+    int units = currentGrouping == NSCalendarUnitMonth ? 12 : 10;
     ShortDate  *now = [ShortDate currentDate];
     if ([referenceDate compare: now] == NSOrderedDescending) {
         // First date is after the current date. Our initial window is hence just the first "units" months/years.
         fromDate = referenceDate;
         toDate = [fromDate dateByAddingUnits: units byUnit: currentGrouping];
     } else {
-        NSUInteger count = currentGrouping == NSCalendarUnitMonth ? numberOfMonths : numberOfYears;
+        int count = currentGrouping == NSCalendarUnitMonth ? (int)numberOfMonths : (int)numberOfYears;
         toDate = [referenceDate dateByAddingUnits: count byUnit: currentGrouping];
         if ([toDate compare: now] == NSOrderedAscending) {
             // The end is already in the past. The initial window is hence the last "units" months/years.
@@ -1942,7 +1942,7 @@ extern void *UserDefaultsBindingContext;
     if (lastInfoTimePoint == 0) {
         month = referenceDate.month;
     }
-    fromDate = [ShortDate dateWithYear: referenceDate.year + lastInfoTimePoint month: month day: 1];
+    fromDate = [ShortDate dateWithYear: referenceDate.year + (int)lastInfoTimePoint month: month day: 1];
     toDate = [fromDate dateByAddingUnits: 12 byUnit: NSCalendarUnitMonth];
 
     lastInfoTimePoint *= 12; // Convert to month index.
@@ -2048,7 +2048,7 @@ extern void *UserDefaultsBindingContext;
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
 - (float)intervalFromRange: (NSDecimalNumber *)range {
-    int digitCount = [range numberOfDigits];
+    NSInteger digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];

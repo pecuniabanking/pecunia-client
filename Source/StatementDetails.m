@@ -310,14 +310,14 @@ extern void *UserDefaultsBindingContext;
     [text appendAttributedString: [self createCellStringWithString: [prefixes[key] stringByAppendingString: @": \n"]
                                                              table: table
                                                          alignment: NSRightTextAlignment
-                                                               row: row
+                                                               row: (int)row
                                                             column: 0
                                                               font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
                                                              table: table
                                                          alignment: NSLeftTextAlignment
-                                                               row: row
+                                                               row: (int)row
                                                             column: 1
                                                               font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
@@ -335,14 +335,14 @@ extern void *UserDefaultsBindingContext;
     [text appendAttributedString: [self createCellStringWithString: [caption stringByAppendingString: @": \n"]
                                                              table: table
                                                          alignment: NSRightTextAlignment
-                                                               row: row
+                                                               row: (int)row
                                                             column: 0
                                                               font: [PreferenceController mainFontOfSize: 11 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
                                                              table: table
                                                          alignment: NSLeftTextAlignment
-                                                               row: row
+                                                               row: (int)row
                                                             column: 1
                                                               font: [PreferenceController mainFontOfSize: 12 bold: NO]
                                                              color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
@@ -678,7 +678,7 @@ extern void *UserDefaultsBindingContext;
         panel.canChooseFiles = YES;
         panel.allowsMultipleSelection = NO;
 
-        int runResult = [panel runModal];
+        NSModalResponse runResult = [panel runModal];
         if (runResult == NSOKButton) {
             [image processAttachment: panel.URL];
         }

@@ -331,12 +331,11 @@
         return NO;
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
-        BOOL valid = [IBANtools isValidAccount: currentStatement.remoteAccount
-                                      bankCode: currentStatement.remoteBankCode
-                                   countryCode: @"DE"
-                                       forIBAN: NO];
-
-
+        NSDictionary *checkResult = [IBANtools isValidAccount: currentStatement.remoteAccount
+                                                     bankCode: currentStatement.remoteBankCode
+                                                  countryCode: @"DE"
+                                                      forIBAN: NO];
+        BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
         if (!valid) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP60", nil),
@@ -349,10 +348,10 @@
     NSString *catString = categoryBox.stringValue;
     if (catString != nil && catString.length > 0) {
         if ([self getSelectedCategory] == nil) {
-            int result = NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                         NSLocalizedString(@"AP309", nil),
-                                         NSLocalizedString(@"AP4", nil),
-                                         NSLocalizedString(@"AP3", nil), nil, catString);
+            NSInteger result = NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                               NSLocalizedString(@"AP309", nil),
+                                               NSLocalizedString(@"AP4", nil),
+                                               NSLocalizedString(@"AP3", nil), nil, catString);
             if (result == NSAlertAlternateReturn) {
                 [BankingCategory createCategoryWithName:catString];
                 return YES;

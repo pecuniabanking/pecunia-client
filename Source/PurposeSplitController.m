@@ -87,11 +87,11 @@
 {
     NSError *error = nil;
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP102", nil),
-                              NSLocalizedString(@"AP103.a", nil),
-                              NSLocalizedString(@"AP4", nil),
-                              NSLocalizedString(@"AP3", nil),
-                              nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP102", nil),
+                                    NSLocalizedString(@"AP103.a", nil),
+                                    NSLocalizedString(@"AP4", nil),
+                                    NSLocalizedString(@"AP3", nil),
+                                    nil);
 
     if (res == NSAlertAlternateReturn) {
         for (PurposeSplitData *data in [purposeController arrangedObjects]) {
@@ -128,7 +128,7 @@
 
 - (IBAction)comboChanged: (id)sender
 {
-    int idx = [comboBox indexOfSelectedItem];
+    NSInteger idx = [comboBox indexOfSelectedItem];
     if (idx < 0) {
         idx = 0;
     }

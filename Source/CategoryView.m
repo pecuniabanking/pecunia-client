@@ -30,8 +30,8 @@
 @synthesize saveCatName;
 
 - (NSMenu *)menuForEvent: (NSEvent *)theEvent {
-    NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
-    int     row = [self rowAtPoint: location];
+    NSPoint     location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
+    NSInteger   row = [self rowAtPoint: location];
     if (row < 0) {
         return nil;
     }

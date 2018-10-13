@@ -110,7 +110,11 @@ extension DDLog {
 }
 
 func logError(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {
-    DDLog.doLog(DDLogFlag.error, message: message, function: function, file: file, line: line, arguments: arguments)
+    //DDLog.doLog(DDLogFlag.error, message: message, function: function, file: file, line: line, arguments: arguments)
+    return withVaList(arguments, { va_list in
+        MessageLog.getLog().logError1(message, file: (file as NSString).utf8String!, function: (function as NSString).utf8String, line: line, arguments: va_list);
+    })
+    
 }
 
 func logWarning(_ message: String, _ function: String = #function, _ file: String = #file, _ line: Int32 = #line, arguments: CVarArg ...) {

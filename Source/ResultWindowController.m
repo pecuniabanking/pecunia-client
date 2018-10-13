@@ -65,7 +65,7 @@
         [[logView textStorage] appendAttributedString: s];
         [logView moveToEndOfDocument: self];
     }
-    //[logView display];
+    [logView display];
 }
 
 - (void)showOnError

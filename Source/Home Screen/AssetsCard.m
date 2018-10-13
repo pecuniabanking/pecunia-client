@@ -35,7 +35,7 @@
 
 extern void *UserDefaultsBindingContext;
 
-@interface AssetGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate>
+@interface AssetGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate, CALayerDelegate>
 {
 @private
     CPTXYGraph *graph;
@@ -620,7 +620,7 @@ double trend(double x) {
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
 - (float)intervalFromRange: (NSDecimalNumber *)range forTurnovers: (BOOL)lesserValues {
-    int digitCount = [range numberOfDigits];
+    int digitCount = (int)[range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];

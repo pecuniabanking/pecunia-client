@@ -44,7 +44,7 @@
         _numFins = 12;
         //_finColors = calloc(_numFins, sizeof(NSColor*));
         _finColors = [NSMutableArray new];
-        for (NSUInteger i = 0; i < _numFins; ++i) {
+        for (int i = 0; i < _numFins; ++i) {
             [_finColors addObject: NSColor.blackColor];
         }
 
@@ -116,7 +116,7 @@
         [path moveToPoint: NSMakePoint(0, lineStart)];
         [path lineToPoint: NSMakePoint(0, lineEnd)];
 
-        for (NSUInteger i = 0; i < _numFins; i++) {
+        for (int i = 0; i < _numFins; i++) {
             if (_isAnimating) {
                 [(NSColor *)_finColors[i] set];
             } else {
@@ -181,7 +181,7 @@
 
         // generate all the fin colors, with the alpha components
         // they already have
-        for (NSUInteger i = 0; i < _numFins; i++) {
+        for (int i = 0; i < _numFins; i++) {
             CGFloat alpha = [_finColors[i] alphaComponent];
             _finColors[i] = [_foreColor colorWithAlphaComponent: alpha];
         }
@@ -261,7 +261,7 @@
 
     // update the colors
     CGFloat minAlpha = _displayedWhenStopped ? kAlphaWhenStopped : 0.01;
-    for (NSUInteger i = 0; i < _numFins; i++) {
+    for (int i = 0; i < _numFins; i++) {
         // want each fin to fade exponentially over _numFins frames of animation
         CGFloat newAlpha = [_finColors[i] alphaComponent] * kFadeMultiplier;
         if (newAlpha < minAlpha) {
@@ -272,7 +272,7 @@
     if (_isFadingOut) {
         // check if the fadeout is done
         BOOL done = YES;
-        for (NSUInteger i = 0; i < _numFins; i++) {
+        for (int i = 0; i < _numFins; i++) {
             if (fabs([_finColors[i] alphaComponent] - minAlpha) > 0.01) {
                 done = NO;
                 break;
@@ -352,7 +352,7 @@
 }
 
 - (void)generateFinColorsStartAtPosition: (int)startPosition {
-    for (NSUInteger i = 0; i < _numFins; i++) {
+    for (int i = 0; i < _numFins; i++) {
         NSColor *oldColor = _finColors[i];
         CGFloat alpha = [oldColor alphaComponent];
         _finColors[i] = [_foreColor colorWithAlphaComponent: alpha];

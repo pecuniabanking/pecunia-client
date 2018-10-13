@@ -173,7 +173,7 @@ extern void *UserDefaultsBindingContext;
 - (void)updateSorting
 {
     [sortControl setImage: nil forSegment: sortIndex];
-    sortIndex = [sortControl selectedSegment];
+    sortIndex = (int)[sortControl selectedSegment];
     if (sortIndex < 0) {
         sortIndex = 0;
     }
@@ -224,11 +224,11 @@ extern void *UserDefaultsBindingContext;
     BOOL    doDuplicateCheck = assignments.count == 1;
 
     if (!doDuplicateCheck) {
-        int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
-                                     NSLocalizedString(@"AP809", nil),
-                                     NSLocalizedString(@"AP4", nil),
-                                     NSLocalizedString(@"AP3", nil),
-                                     nil, assignments.count);
+        NSInteger result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
+                                           NSLocalizedString(@"AP809", nil),
+                                           NSLocalizedString(@"AP4", nil),
+                                           NSLocalizedString(@"AP3", nil),
+                                           nil, assignments.count);
         if (result != NSAlertAlternateReturn) {
             return;
         }
@@ -265,22 +265,21 @@ extern void *UserDefaultsBindingContext;
                     break;
                 }
             }
-            int res;
             if (hasDuplicate) {
-                res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
-                                      NSLocalizedString(@"AP807", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      nil);
+                NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
+                                                NSLocalizedString(@"AP807", nil),
+                                                NSLocalizedString(@"AP4", nil),
+                                                NSLocalizedString(@"AP3", nil),
+                                                nil);
                 if (res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
                 }
             } else {
-                res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
-                                              NSLocalizedString(@"AP808", nil),
-                                              NSLocalizedString(@"AP4", nil),
-                                              NSLocalizedString(@"AP3", nil),
-                                              nil);
+                NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
+                                                        NSLocalizedString(@"AP808", nil),
+                                                        NSLocalizedString(@"AP4", nil),
+                                                        NSLocalizedString(@"AP3", nil),
+                                                        nil);
                 if (res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
                 }
@@ -437,7 +436,7 @@ extern void *UserDefaultsBindingContext;
                 BankStatementController *controller = [[BankStatementController alloc] initWithAccount: (BankAccount *)category
                                                                                              statement: nil];
 
-                int res = [NSApp runModalForWindow: controller.window];
+                NSModalResponse res = [NSApp runModalForWindow: controller.window];
                 if (res != 0) {
                     [assignment.category updateAssignmentsForReportRange];
                 }

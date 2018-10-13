@@ -229,7 +229,7 @@
 }
 
 - (void)drawHeaderForPage: (int)page {
-    int baseHeight = page * pageHeight;
+    NSInteger baseHeight = page * pageHeight;
 
     // Attributes for header text.
     NSMutableParagraphStyle *style = [NSParagraphStyle.defaultParagraphStyle mutableCopy];
@@ -323,7 +323,7 @@
 }
 
 - (void)drawRect: (NSRect)dirtyRect {
-    NSUInteger page = -1;
+    int page = -1;
     NSUInteger currentPageHeight = pageHeight + 1;
 
     for (NSDictionary *entry in entries) {

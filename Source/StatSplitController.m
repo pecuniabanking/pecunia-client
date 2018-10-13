@@ -79,7 +79,7 @@
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
     if ([aNotification object] == splitView) {
-        int idx = [splitView editedColumn];
+        int idx = (int)[splitView editedColumn];
         if (idx < 0) {
             return;
         }
@@ -125,8 +125,8 @@
 
 - (IBAction)manageAssignments: (id)sender
 {
-    int clickedSegment = [sender selectedSegment];
-    int clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
+    NSUInteger clickedSegment = [sender selectedSegment];
+    NSUInteger clickedSegmentTag = [[sender cell] tagForSegment: clickedSegment];
     switch (clickedSegmentTag) {
         case 0:[self addAssignment: sender]; break;
 

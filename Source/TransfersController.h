@@ -18,8 +18,8 @@
  */
 
 #import "Transfer.h"
-#import "TransfersListview.h"
-#import "TransferTemplatesListview.h"
+#import "TransfersListView.h"
+#import "TransferTemplatesListView.h"
 #import "PecuniaTabItem.h"
 
 @class TransactionController;

@@ -202,7 +202,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 }
 
 - (int)stringToWeekDay: (NSString *)s {
-    return [weekDays indexOfObject: s] + 1;
+    return (int)[weekDays indexOfObject: s] + 1;
 }
 
 - (void)enableWeekly: (BOOL)weekly {
@@ -475,7 +475,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 }
 
 - (IBAction)monthCycleChanged: (id)sender {
-    int idx = [monthCyclesPopup indexOfSelectedItem];
+    NSInteger idx = [monthCyclesPopup indexOfSelectedItem];
     if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
         currentOrder.cycle = @(idx + 1);
     } else {
@@ -492,7 +492,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 }
 
 - (IBAction)weekCycleChanged: (id)sender {
-    int idx = [weekCyclesPopup indexOfSelectedItem];
+    NSInteger idx = [weekCyclesPopup indexOfSelectedItem];
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
         currentOrder.cycle = @(idx + 1);
     } else {
@@ -678,10 +678,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     [request setPredicate: predicate];
     NSArray *stords = [managedObjectContext executeFetchRequest: request error: &error];
     if ([stords count] > 0) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP463", nil),
-                                  NSLocalizedString(@"AP464", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  NSLocalizedString(@"AP4", nil), nil);
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP463", nil),
+                                        NSLocalizedString(@"AP464", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        NSLocalizedString(@"AP4", nil), nil);
         if (res == NSAlertDefaultReturn) {
             [self performSelector: @selector(getOrders:) withObject: self afterDelay: 0];
         }
@@ -706,10 +706,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
     for (StandingOrder *stord in [orderController arrangedObjects]) {
         if ([stord.isChanged boolValue]) {
-            int res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
-                                      NSLocalizedString(@"AP461", nil),
-                                      NSLocalizedString(@"AP462", nil),
-                                      NSLocalizedString(@"AP2", nil), nil);
+            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
+                                            NSLocalizedString(@"AP461", nil),
+                                            NSLocalizedString(@"AP462", nil),
+                                            NSLocalizedString(@"AP2", nil), nil);
             if (res == NSAlertAlternateReturn) {
                 return;
             } else {
@@ -978,11 +978,11 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     // If there is no order key yet then we are deleting a newly created standing order, which
     // has not yet been sent to the bank. So we can simply remove it from the controller.
     if (order.orderKey == nil) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
-                                  NSLocalizedString(@"AP458", nil),
-                                  NSLocalizedString(@"AP2", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  nil);
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
+                                        NSLocalizedString(@"AP458", nil),
+                                        NSLocalizedString(@"AP2", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        nil);
         if (res != NSAlertAlternateReturn) {
             return NO;
         }
@@ -992,11 +992,11 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 
     // Otherwise ask to mark the order for deletion. It gets then deleted when all changes are
     // sent to the bank.
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
-                              NSLocalizedString(@"AP455", nil),
-                              NSLocalizedString(@"AP2", nil),
-                              NSLocalizedString(@"AP456", nil),
-                              nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
+                                    NSLocalizedString(@"AP455", nil),
+                                    NSLocalizedString(@"AP2", nil),
+                                    NSLocalizedString(@"AP456", nil),
+                                    nil);
     if (res != NSAlertAlternateReturn) {
         return NO;
     }

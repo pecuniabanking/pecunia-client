@@ -355,8 +355,8 @@ extern void *UserDefaultsBindingContext;
 
     ShortDate *referenceDate;             // The date at which the time points start.
 
-    NSUInteger rawCount;                  // Raw number of values we have.
-    NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
+    int rawCount;                  // Raw number of values we have.
+    int selectionSampleCount;      // Number of values we use for the selection graph.
 
     double *timePoints;                   // Contains for each data point the relative distance in date units from the reference day.
                                           // This array actually contains integer values. The double data type is only
@@ -1039,7 +1039,7 @@ extern void *UserDefaultsBindingContext;
  */
 - (float)intervalFromRange: (NSDecimalNumber *)range forTurnovers: (BOOL)lesserValues
 {
-    int digitCount = [range numberOfDigits];
+    NSInteger digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];
@@ -1076,7 +1076,7 @@ extern void *UserDefaultsBindingContext;
 - (float)minorTicksFromInterval: (float)interval
 {
     NSDecimal value = CPTDecimalFromFloat(interval);
-    int       digitCount = [[NSDecimalNumber decimalNumberWithDecimal: value] numberOfDigits];
+    NSInteger digitCount = [[NSDecimalNumber decimalNumberWithDecimal: value] numberOfDigits];
     NSDecimal hundred = [@100 decimalValue];
     if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
         // The range is > 100 so scale it down so it falls into that range.
@@ -1190,8 +1190,8 @@ extern void *UserDefaultsBindingContext;
 {
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
-    NSUInteger startIndex = 0;
-    NSUInteger endIndex = 0;
+    int startIndex = 0;
+    int endIndex = 0;
 
     if (rawCount > 0) {
         // Round up to the next actually possible timepoint (and hence the first tick visible in the graph).
@@ -1202,7 +1202,7 @@ extern void *UserDefaultsBindingContext;
         // Scatter plot values go over a range (stepped plot), so even if the actual time point is out of view
         // parts of the area representing the value can still be visible.
         // Bar plots however appear around a time point (+-10%).
-        startIndex = [self findIndexForTimePoint: units];
+        startIndex = (int)[self findIndexForTimePoint: units];
 
         // Since our timePoints array contains double values which not always represent exact int values
         // we round here to the next int for always correct results.
@@ -1221,7 +1221,7 @@ extern void *UserDefaultsBindingContext;
         }
 
         units = ceil(plotSpace.xRange.endDouble) - 1; // There's an extra range step in the graph.
-        endIndex = [self findIndexForTimePoint: units];
+        endIndex = (int)[self findIndexForTimePoint: units];
 
         // If the end index is on a real data point then fine. Otherwise however we have to check
         // if the following data point is at least partially visible (even though its index/tick is out of view).
@@ -1777,7 +1777,7 @@ extern void *UserDefaultsBindingContext;
     }
 
     int low = 0;
-    int high = rawCount - 1;
+    int high = (int)rawCount - 1;
     while (low <= high) {
         int    mid = (low + high) / 2;
         NSUInteger midPoint = round(timePoints[mid]);
@@ -2222,7 +2222,7 @@ extern void *UserDefaultsBindingContext;
             // Convert the data to the internal representations.
             // We add one to the total number as we need it (mostly) in scatter plots to
             // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-            rawCount = dates.count + (extraEntry ? 1 : 0);
+            rawCount = (int)dates.count + (extraEntry ? 1 : 0);
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
@@ -2297,7 +2297,7 @@ extern void *UserDefaultsBindingContext;
                 selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
 
                 // Pick the largest value in the sample window as sampled representation.
-                for (NSUInteger i = 0; i < rawCount; i++) {
+                for (int i = 0; i < rawCount; i++) {
                     NSUInteger sampleIndex = i / datapointsPerSample;
                     if (i % datapointsPerSample == 0) {
                         selectionBalances[sampleIndex] = totalBalances[i];

@@ -30,11 +30,11 @@ typedef enum {
 @class ShortDate;
 
 @interface TimeSliceManager : NSObject {
-    NSUInteger year;
-    NSInteger  quarter;
-    NSUInteger month;
-    SliceType  type;
-    SliceType  lastType; // Cache for the type in year-mode.
+    unsigned    year;
+    unsigned    quarter;
+    unsigned    month;
+    SliceType   type;
+    SliceType   lastType; // Cache for the type in year-mode.
 
     IBOutlet NSDatePicker *fromPicker;
     IBOutlet NSDatePicker *toPicker;

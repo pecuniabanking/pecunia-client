@@ -979,11 +979,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     if (type == TransferReadyForUseDataType) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
-                                  NSLocalizedString(@"AP419", nil),
-                                  NSLocalizedString(@"AP2", nil),
-                                  NSLocalizedString(@"AP10", nil),
-                                  nil);
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
+                                        NSLocalizedString(@"AP419", nil),
+                                        NSLocalizedString(@"AP2", nil),
+                                        NSLocalizedString(@"AP10", nil),
+                                        nil);
         if (res != NSAlertAlternateReturn) {
             return NO;
         }
@@ -1013,11 +1013,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
     NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
-    int      res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
-                                   NSLocalizedString(warningText, nil),
-                                   NSLocalizedString(@"AP2", nil),
-                                   NSLocalizedString(@"AP10", nil),
-                                   nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                                    NSLocalizedString(warningText, nil),
+                                    NSLocalizedString(@"AP2", nil),
+                                    NSLocalizedString(@"AP10", nil),
+                                    nil);
     if (res != NSAlertAlternateReturn) {
         return NO;
     }
@@ -1452,11 +1452,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
-                              NSLocalizedString(@"AP419", nil),
-                              NSLocalizedString(@"AP2", nil),
-                              NSLocalizedString(@"AP10", nil),
-                              nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
+                                    NSLocalizedString(@"AP419", nil),
+                                    NSLocalizedString(@"AP2", nil),
+                                    NSLocalizedString(@"AP10", nil),
+                                    nil);
     if (res != NSAlertAlternateReturn) {
         return;
     }
@@ -1605,11 +1605,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
     NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
-    int      res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
-                                   NSLocalizedString(warningText, nil),
-                                   NSLocalizedString(@"AP2", nil),
-                                   NSLocalizedString(@"AP10", nil),
-                                   nil);
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                                    NSLocalizedString(warningText, nil),
+                                    NSLocalizedString(@"AP2", nil),
+                                    NSLocalizedString(@"AP10", nil),
+                                    nil);
     if (res != NSAlertAlternateReturn) {
         return;
     }

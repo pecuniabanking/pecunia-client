@@ -168,13 +168,13 @@
         return;
     }
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP307", nil),
-                              NSLocalizedString(@"AP308", nil),
-                              NSLocalizedString(@"AP3", nil),
-                              NSLocalizedString(@"AP4", nil),
-                              nil,
-                              [selectedCategory localName]
-                              );
+    NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP307", nil),
+                                    NSLocalizedString(@"AP308", nil),
+                                    NSLocalizedString(@"AP3", nil),
+                                    NSLocalizedString(@"AP4", nil),
+                                    nil,
+                                    [selectedCategory localName]
+                                    );
     if (res != NSAlertDefaultReturn) {
         return;
     }
@@ -311,13 +311,13 @@
     }
 
     if (self.ruleChanged) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP305", nil),
-                                  NSLocalizedString(@"AP306", nil),
-                                  NSLocalizedString(@"AP3", nil),
-                                  NSLocalizedString(@"AP4", nil),
-                                  nil,
-                                  [selectedCategory localName]
-                                  );
+        NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP305", nil),
+                                        NSLocalizedString(@"AP306", nil),
+                                        NSLocalizedString(@"AP3", nil),
+                                        NSLocalizedString(@"AP4", nil),
+                                        nil,
+                                        [selectedCategory localName]
+                                        );
         if (res == NSAlertDefaultReturn) {
             [self saveRule: self];
         }

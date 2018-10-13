@@ -26,7 +26,7 @@ typealias dispatch_cancelable_block_t = (_ cancel: Bool) -> Void;
 
 func dispatch_after_delay(_ queue: DispatchQueue, delay: CGFloat, block: @escaping ()->()) -> dispatch_cancelable_block_t {
     var cancelableBlock: dispatch_cancelable_block_t? = nil;
-    var originalBlock: ()->()? = block;
+    let originalBlock: ()->()? = block;
 
     // This block will be executed in NOW() + delay
     let delayBlock: dispatch_cancelable_block_t = { cancel in

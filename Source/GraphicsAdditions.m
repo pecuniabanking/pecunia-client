@@ -91,7 +91,7 @@ static void CGPathCallback(void *info, const CGPathElement *element) {
         return nil;
     }
 
-    unsigned int elementCount = [self elementCount];
+    unsigned int elementCount = (unsigned)[self elementCount];
 
     // The maximum number of points is 3 for a NSCurveToBezierPathElement.
     // (controlPoint1, controlPoint2, and endPoint)

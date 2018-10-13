@@ -42,8 +42,7 @@
 
 @end
 
-@interface CategoryAnalysisWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate,
-  CPTPlotDataSource, CPTBarPlotDelegate, CPTAnimationDelegate>
+@interface CategoryAnalysisWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate, CPTAnimationDelegate, CALayerDelegate>
 {
     IBOutlet NSView *topView;
 

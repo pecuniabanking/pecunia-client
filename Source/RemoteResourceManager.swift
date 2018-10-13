@@ -34,7 +34,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
         super.init();
 
         // Trigger updating files in the background.
-        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background);
+        let queue = DispatchQueue.global(qos: .background);
         queue.async {
             objc_sync_enter(self);
 
@@ -79,7 +79,7 @@ let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources
     open func addManagedFile(_ fileName: String) {
         logEnter();
         
-        let backgroundQueue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background);
+        let backgroundQueue = DispatchQueue.global(qos: .background);
         backgroundQueue.async(execute: {
             self.updateFileAndNotify(fileName);
         })

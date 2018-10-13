@@ -229,10 +229,10 @@ extern NSString *const CategoryKey;
 
     if (![changedAccount.accountSuffix isEqualToString: account.accountSuffix]) {
         if (changedAccount.accountSuffix != nil || account.accountSuffix != nil) {
-            int result = NSRunAlertPanel(NSLocalizedString(@"AP814", nil),
-                                         NSLocalizedString(@"AP205", nil),
-                                         NSLocalizedString(@"AP4", nil),
-                                         NSLocalizedString(@"AP3", nil), nil);
+            NSInteger result = NSRunAlertPanel(NSLocalizedString(@"AP814", nil),
+                                               NSLocalizedString(@"AP205", nil),
+                                               NSLocalizedString(@"AP4", nil),
+                                               NSLocalizedString(@"AP3", nil), nil);
             if (result == NSAlertDefaultReturn) {
                 account.accountSuffix = changedAccount.accountSuffix;
                 return NO;

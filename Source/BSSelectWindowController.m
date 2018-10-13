@@ -80,7 +80,7 @@
     if ([NSApp modalWindow] == self.window)
         [NSApp stopModal];
     
-    return @YES;
+    return YES;
 }
 
 - (IBAction)ok: (id)sender

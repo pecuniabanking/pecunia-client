@@ -165,7 +165,7 @@
 
         NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
         NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
-        ShortDate  *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
+        ShortDate  *date = [startDate dateByAddingUnits: (int)(week * 7 + weekDay) byUnit: NSCalendarUnitDay];
         if (date.month == month) {
             if (values[date] != nil) {
                 self.selectedDate = date;
@@ -247,7 +247,7 @@ static NSFont *smallNumberFont;
         return;
     }
 
-    ShortDate *firstDay = [ShortDate dateWithYear: year month: month day: 1];
+    ShortDate *firstDay = [ShortDate dateWithYear: (unsigned)year month: (unsigned)month day: 1];
     startDate = [firstDay firstDayInWeek];
 
     transparentTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.3];
@@ -553,7 +553,7 @@ static NSFont *smallNumberFont;
     if (self.listMode) {
     } else {
         NSInteger  height = NSHeight(self.bounds);
-        NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
+        unsigned monthDistance = (unsigned)self.scrollOffset / CALENDAR_HEIGHT;
         CGFloat    currentOffset = height - 30.5 + self.scrollOffset % CALENDAR_HEIGHT;
         if (currentOffset > height) {
             currentOffset -= CALENDAR_HEIGHT;
@@ -706,7 +706,7 @@ static NSFont *smallNumberFont;
 - (void)updateCalendarsWithFetch: (BOOL)fetch {
     LogEnter;
 
-    NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
+    unsigned monthDistance = (unsigned)self.scrollOffset / CALENDAR_HEIGHT;
     ShortDate  *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
                                                            byUnit: NSCalendarUnitMonth];
 

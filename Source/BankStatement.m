@@ -60,8 +60,8 @@ static NSRegularExpression *bicRE;
 @dynamic tags, sepa;
 
 BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b) {
-    int            i = 0, j = 0;
-    int            l1, l2;
+    NSUInteger     i = 0, j = 0;
+    NSUInteger     l1, l2;
     BOOL           done = NO;
     NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 

@@ -213,8 +213,8 @@
                 quarter = 0;
                 year++;
             }
-            NSUInteger l = quarter * 3 + 1;
-            NSUInteger u = quarter * 3 + 3;
+            unsigned l = quarter * 3 + 1;
+            unsigned u = quarter * 3 + 3;
             if (month < l || month > u) {
                 month = l;
             }
@@ -253,13 +253,13 @@
             break;
 
         case slice_quarter: {
-            quarter--;
-            if (quarter < 0) {
+            if (quarter == 0) {
                 quarter = 3;
                 year--;
-            }
-            NSUInteger l = quarter * 3 + 1;
-            NSUInteger u = quarter * 3 + 3;
+            } else quarter--;
+            
+            unsigned l = quarter * 3 + 1;
+            unsigned u = quarter * 3 + 3;
             if (month < l || month > u) {
                 month = l;
             }
@@ -317,7 +317,7 @@
 - (void)updateControl {
     if (type == slice_none) {
         // first deactivate timeSlicer
-        int idx = [control selectedSegment];
+        int idx = (int)[control selectedSegment];
         if (idx >= 0) {
             [control setSelected: NO forSegment: idx];
         }
@@ -327,7 +327,7 @@
     [control setLabel: [@((int)year)description] forSegment: slice_year];
 
     // quarter
-    NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", quarter + 1];
+    NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", (unsigned long)quarter + 1];
     [control setLabel: quarterString forSegment: slice_quarter];
 
     // month
@@ -382,15 +382,15 @@
 }
 
 - (IBAction)timeSliceChanged: (id)sender {
-    SliceType t = [sender selectedSegment];
+    SliceType t = (SliceType)[sender selectedSegment];
     switch (t) {
         case slice_year: break;
 
         case slice_month: break;
 
         case slice_quarter: {
-            NSUInteger l = quarter * 3 + 1;
-            NSUInteger u = quarter * 3 + 3;
+            unsigned l = quarter * 3 + 1;
+            unsigned u = quarter * 3 + 3;
             if (month < l || month > u) {
                 month = l;
             }

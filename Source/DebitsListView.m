@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "DebitsListview.h"
+#import "DebitsListView.h"
 #import "DebitsListViewCell.h"
 #import "ShortDate.h"
 #import "Transfer.h"
@@ -65,7 +65,7 @@ extern NSString *TransferReadyForUseDataType;
     if (self != nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
+        [dateFormatter setDateStyle: NSDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
 
         numberFormatter = [[NSNumberFormatter alloc] init];

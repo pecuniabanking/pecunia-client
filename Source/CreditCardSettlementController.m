@@ -118,7 +118,7 @@
 - (void)update
 {
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
-    int                    oldNum = [settlements count];
+    int                    oldNum = (int)[settlements count];
     int                    newNum = 0;
 
     CCSettlementList *settleList = [HBCIBackend.backend getCCSettlementListForAccount: account];
@@ -128,7 +128,7 @@
         return;
     }
     
-    newNum = [settleList.settlementInfos count];
+    newNum = (int)[settleList.settlementInfos count];
 
     for (CCSettlementInfo *info in settleList.settlementInfos) {
         BOOL found = NO;

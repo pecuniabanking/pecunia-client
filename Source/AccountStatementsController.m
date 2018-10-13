@@ -330,12 +330,12 @@
 }
 
 - (IBAction)clear: (id)sender {
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP833", nil),
-                                      NSLocalizedString(@"AP827", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      nil
-                                      );
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP833", nil),
+                                            NSLocalizedString(@"AP827", nil),
+                                            NSLocalizedString(@"AP4", nil),
+                                            NSLocalizedString(@"AP3", nil),
+                                            nil
+                                            );
     if (res != NSAlertAlternateReturn) {
         return;
     }

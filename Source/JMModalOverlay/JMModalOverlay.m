@@ -225,7 +225,7 @@ NSString * const JMModalOverlayDidCloseNotification = @"JMModalOverlayDidCloseNo
         
         // Make view visible
         // Attach to parent window and make the window modal
-        [_parentWindow addChildWindow:_modalWindow ordered:NSAboveTop];
+        [_parentWindow addChildWindow:_modalWindow ordered:NSWindowAbove];
         if(_animates){
             [NSAnimationContext beginGrouping];
             [[NSAnimationContext currentContext] setCompletionHandler:^{

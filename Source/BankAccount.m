@@ -332,7 +332,7 @@
 
     self.latestTransferDate = ltd;
     [self  calcUnread];
-    return [newStatements count];
+    return (int)[newStatements count];
 }
 
 - (void)updateStatementBalances {

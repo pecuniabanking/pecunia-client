@@ -201,7 +201,7 @@
 
             NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
             NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
-            self.selectedDate = [date dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
+            self.selectedDate = [date dateByAddingUnits: (int)(week * 7 + weekDay) byUnit: NSCalendarUnitDay];
 
             cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
             cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
@@ -210,7 +210,7 @@
             cellArea.size.height = floor((valueArea.size.height - 10) / 37.0);
             cellArea.size.width = valueArea.size.width;
             NSUInteger day = location.y / cellArea.size.height;
-            self.selectedDate = [date dateByAddingUnits: day byUnit: NSCalendarUnitDay];
+            self.selectedDate = [date dateByAddingUnits: (int)day byUnit: NSCalendarUnitDay];
             cellArea.origin.x = valueArea.origin.x;
             cellArea.origin.y = valueArea.origin.y + day * cellArea.size.height + 5;
         }
@@ -270,7 +270,7 @@ static NSFont *smallNumberFont;
         return;
     }
 
-    ShortDate *firstDay = [ShortDate dateWithYear: year month: month day: 1];
+    ShortDate *firstDay = [ShortDate dateWithYear: (unsigned)year month: (unsigned)month day: 1];
     date = [firstDay firstDayInWeek];
 
     [dateFormatter setDateFormat: @"MMMM"];
@@ -757,9 +757,9 @@ static NSFont *smallNumberFont;
 
     CGFloat calendarWidth = (bounds.size.width - 11 * HORIZONTAL_SPACING) / 12.0;
     CGFloat offsetX = bounds.origin.x + 6;
-    for (NSUInteger month = 1; month <= 12; month++) {
+    for (unsigned month = 1; month <= 12; month++) {
         CGFloat   offsetY = floor(bounds.origin.y) + 3 * cellHeight + 6;
-        ShortDate *workDate = [ShortDate dateWithYear: currentYear month: month day: 1];
+        ShortDate *workDate = [ShortDate dateWithYear: (unsigned)currentYear month: month day: 1];
         for (NSUInteger week = 0; week < 5; week++) {
             NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
 

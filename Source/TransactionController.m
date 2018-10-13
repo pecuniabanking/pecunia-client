@@ -518,7 +518,7 @@
         NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
         NSDateComponents *weekdayComponents =
             [gregorian components: NSCalendarUnitWeekday fromDate: currentTransfer.valutaDate];
-        int weekday = [weekdayComponents weekday];
+        NSInteger weekday = [weekdayComponents weekday];
         if (weekday == 1 || weekday == 7) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP425", nil),

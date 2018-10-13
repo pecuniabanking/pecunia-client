@@ -46,7 +46,7 @@ static NSMutableDictionary *userColors;
 + (void)loadApplicationColors
 {
     // Generate our random seed.
-    srandom(time(NULL));
+    srandom((unsigned)time(NULL));
 
     defaultColors = [NSMutableDictionary dictionaryWithCapacity: 10];
     userColors = [NSMutableDictionary dictionaryWithCapacity: 10];

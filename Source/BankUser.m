@@ -274,7 +274,7 @@ static NSMutableDictionary *users = nil;
 
     // Wenn nichts voreingestellt ist, Index des letzten Eintrags +1 zurückgeben, der zeigt dann automatisch auf den virtuellen Eintrag
     if (option == nil) {
-        return [options count];
+        return (int)[options count];
     }
 
     int idx = 0;
@@ -285,11 +285,11 @@ static NSMutableDictionary *users = nil;
             idx++;
         }
     }
-    return [options count];
+    return (int)[options count];
 }
 
 - (void)setpreferredSigningOptionIdx: (NSIndexSet *)iSet {
-    int idx = [iSet firstIndex];
+    NSInteger idx = [iSet firstIndex];
     if (idx < 0) {
         return;
     }
