@@ -240,13 +240,14 @@ class HBCIBackend : NSObject {
                     if result.isOk() {
                         if let msg = HBCICustomMessage.newInstance(dialog) {
                             if let order = HBCISepaInfoOrder(message: msg, accounts: accounts) {
-                                order.enqueue();
-                                try msg.send();
+                                guard order.enqueue() else {
+                                    return;
+                                }
+                                _ = try msg.send();
                             }
                         }
-                        
-                        dialog.dialogEnd();                        
                     }
+                    _ = dialog.dialogEnd();
                 }
             }
         }
@@ -456,19 +457,22 @@ class HBCIBackend : NSObject {
                         if let order = HBCITanMediaOrder(message: msg) {
                             order.mediaType = "1";
                             order.mediaCategory = "A";
-                            order.enqueue();
+                            guard order.enqueue() else {
+                                return;
+                            }
                             do {
-                                try msg.send();
-                                tanMedia = order.tanMedia;
+                                if try msg.send() {
+                                    tanMedia = order.tanMedia;
+                                }
                             }
                             catch {
-                                dialog.dialogEnd();
+                                _ = dialog.dialogEnd();
                                 return;
                             }
                         }
                     }
                     // end dialog
-                    dialog.dialogEnd();
+                    _ = dialog.dialogEnd();
                 }
             }
         }
@@ -603,7 +607,7 @@ class HBCIBackend : NSObject {
                     bankUser.bankName = user.bankName;
                     
                     // end sync dialog
-                    dialog.dialogEnd();
+                    _ = dialog.dialogEnd();
                     
                     if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_PinTan {
                         if let secfunc = user.parameters.getTanMethods().first?.secfunc {
@@ -673,14 +677,16 @@ class HBCIBackend : NSObject {
         }
         
         do {
-            try processHBCIDialog(bankUser) { user, dialog in
+            try _ = processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
                     logError("Failed to create HBCI message");
                     return NSError.genericHBCI;
                 }
                 if let order = HBCIBalanceOrder(message: msg, account: account) {
-                    order.enqueue();
+                    guard order.enqueue() else {
+                        return NSError.genericHBCI;
+                    }
                     guard msg.orders.count > 0 else {
                         return NSError.genericHBCI;
                     }
@@ -764,14 +770,16 @@ class HBCIBackend : NSObject {
         }
 
         do {
-            try processHBCIDialog(bankUser) { user, dialog in
+            try _ = processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
                     logError("Failed to create HBCI message");
                     return nil;
                 }
                 if let order = CCSettlementListOrder(message: msg, account: account) {
-                    order.enqueue();
+                    guard order.enqueue() else {
+                        return nil;
+                    }
                     guard msg.orders.count > 0 else {
                         return nil;
                     }
@@ -812,14 +820,16 @@ class HBCIBackend : NSObject {
         }
         
         do {
-            try processHBCIDialog(bankUser) { user, dialog in
+            return try processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
                     logError("Failed to create HBCI message");
                     return nil;
                 }
                 if let order = CCSettlementOrder(message: msg, account: account, settleID:settleID) {
-                    order.enqueue();
+                    guard order.enqueue() else {
+                        return nil;
+                    }
                     guard msg.orders.count > 0 else {
                         return nil;
                     }
@@ -831,8 +841,7 @@ class HBCIBackend : NSObject {
                     }
                 }
                 return nil;
-            }
-
+            } as? CreditCardSettlement
         }
         catch HBCIError.userAbort {
             return nil;
@@ -1162,15 +1171,19 @@ class HBCIBackend : NSObject {
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
                     defer {
-                        dialog.dialogEnd();
+                        _ = dialog.dialogEnd();
                     }
 
                     for account in accounts {
                         if let msg = HBCICustomMessage.newInstance(dialog) {
                             if let order = HBCISepaStandingOrderListOrder(message: msg, account: account) {
-                                order.enqueue();
+                                guard order.enqueue() else {
+                                    continue;
+                                }
                                 
-                                try msg.send();
+                                guard try msg.send() else {
+                                    continue;
+                                }
                                 
                                 for order in msg.orders {
                                     if let order = order as? HBCISepaStandingOrderListOrder {
@@ -1234,7 +1247,7 @@ class HBCIBackend : NSObject {
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
                     defer {
-                        dialog.dialogEnd();
+                        _ = dialog.dialogEnd();
                     }
                     
                     for account in accounts {
@@ -1262,18 +1275,20 @@ class HBCIBackend : NSObject {
                                 if let order = CCStatementOrder(message: msg, account: hbciAccount) {
                                     
                                     order.dateFrom = dateFrom;
-                                    order.enqueue();
+                                    guard order.enqueue() else {
+                                        continue;
+                                    }
                                     
-                                    try msg.send();
-                                    
-                                    for order in msg.orders {
-                                        if let order = order as? CCStatementOrder {
-                                            if let statements = order.statements {
-                                                let result = convertStatements(order.account, statements:statements);
-                                                result.account = account;
-                                                bqResult.append(result);
-                                            } else {
-                                                logError("Credit card statements could not be retrieved for account \(order.account.number)");
+                                    if try msg.send() {
+                                        for order in msg.orders {
+                                            if let order = order as? CCStatementOrder {
+                                                if let statements = order.statements {
+                                                    let result = convertStatements(order.account, statements:statements);
+                                                    result.account = account;
+                                                    bqResult.append(result);
+                                                } else {
+                                                    logError("Credit card statements could not be retrieved for account \(order.account.number)");
+                                                }
                                             }
                                         }
                                     }
@@ -1283,18 +1298,20 @@ class HBCIBackend : NSObject {
                                 if let order = HBCIStatementsOrder(message: msg, account: hbciAccount) {
                                     
                                     order.dateFrom = dateFrom;
-                                    order.enqueue();
+                                    guard order.enqueue() else {
+                                        continue;
+                                    }
                                     
-                                    try msg.send();
-                                    
-                                    for order in msg.orders {
-                                        if let order = order as? HBCIStatementsOrder {
-                                            if let statements = order.statements {
-                                                let result = convertStatements(order.account, statements:statements);
-                                                result.account = account;
-                                                bqResult.append(result);
-                                            } else {
-                                                logError("Statements could not be retrieved for account \(order.account.number)");
+                                    if try msg.send() {
+                                        for order in msg.orders {
+                                            if let order = order as? HBCIStatementsOrder {
+                                                if let statements = order.statements {
+                                                    let result = convertStatements(order.account, statements:statements);
+                                                    result.account = account;
+                                                    bqResult.append(result);
+                                                } else {
+                                                    logError("Statements could not be retrieved for account \(order.account.number)");
+                                                }
                                             }
                                         }
                                     }
@@ -1303,7 +1320,9 @@ class HBCIBackend : NSObject {
                                 // Statement are not supported but Account Balance
                                 if let order = HBCIBalanceOrder(message: msg, account: hbciAccount) {
 
-                                    order.enqueue();
+                                    guard order.enqueue() else {
+                                        continue;
+                                    }
 
                                     if try msg.send() {
                                         if let balance = order.bookedBalance {
@@ -1401,7 +1420,7 @@ class HBCIBackend : NSObject {
         }
         
         do {
-            try processHBCIDialog(bankUser!, signingOption: option) { user, dialog in
+            return try processHBCIDialog(bankUser!, signingOption: option) { user, dialog in
                 // now collect transfers
                 let account = HBCIAccount(account: bankAccount);
                 let sepaTransfer = HBCISepaTransfer(account:account);
@@ -1409,7 +1428,9 @@ class HBCIBackend : NSObject {
                 for transfer in transfers {
                     let item = HBCISepaTransfer.Item(iban:transfer.remoteIBAN, bic:transfer.remoteBIC, name:transfer.remoteName, value:transfer.value, currency:transfer.currency);
                     item.purpose = transfer.purpose();
-                    sepaTransfer.addItem(item);
+                    guard sepaTransfer.addItem(item) else {
+                        return NSError.genericHBCI;
+                    }
                 }
                 
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
@@ -1418,7 +1439,9 @@ class HBCIBackend : NSObject {
                 }
                 
                 if let order = HBCISepaCollectiveTransferOrder(message: msg, transfer: sepaTransfer) {
-                    order.enqueue();
+                    if !order.enqueue() {
+                        return NSError.genericHBCI;
+                    }
                 }
                 
                 guard msg.orders.count > 0 else {
@@ -1433,7 +1456,7 @@ class HBCIBackend : NSObject {
                     return nil;
                 }
                 return nil;
-            }
+                } as? NSError;
             
             /*
             let user = try HBCIUser(bankUser: bankUser);
@@ -1533,7 +1556,7 @@ class HBCIBackend : NSObject {
             
             // open dialog once for user
             do {
-                try processHBCIDialog(bankUser, signingOption: option) { user, dialog in
+                try _ = processHBCIDialog(bankUser, signingOption: option) { user, dialog in
                     // now send all transfers for user
                     for transfer in accountTransferRegister[bankUser]! {
                         let account = HBCIAccount(account: transfer.account);
@@ -1546,16 +1569,26 @@ class HBCIBackend : NSObject {
                         
                         let item = HBCISepaTransfer.Item(iban:transfer.remoteIBAN, bic:transfer.remoteBIC, name:transfer.remoteName, value:transfer.value, currency:transfer.currency);
                         item.purpose = transfer.purpose();
-                        sepaTransfer.addItem(item);
+                        
+                        if !sepaTransfer.addItem(item) {
+                            errorOccured = true;
+                            continue;
+                        }
                         
                         if let msg = HBCICustomMessage.newInstance(dialog) {
                             if sepaTransfer.date != nil {
                                 if let order = HBCISepaDatedTransferOrder(message: msg, transfer: sepaTransfer) {
-                                    order.enqueue();
+                                    if !order.enqueue() {
+                                        errorOccured = true;
+                                        continue;
+                                    }
                                 }
                             } else {
                                 if let order = HBCISepaTransferOrder(message: msg, transfer: sepaTransfer) {
-                                    order.enqueue();
+                                    if !order.enqueue() {
+                                        errorOccured = true;
+                                        continue;
+                                    }
                                 }
                             }
                             
@@ -1688,7 +1721,7 @@ class HBCIBackend : NSObject {
             
             // open dialog once for user
             do {
-                try processHBCIDialog(bankUser, signingOption: option) { user, dialog in
+                try _ = processHBCIDialog(bankUser, signingOption: option) { user, dialog in
                     // now send all standing orders for user
                     for stord in accountTransferRegister[bankUser]! {
                         if stord.isChanged.boolValue == false && stord.toDelete.boolValue == false {
@@ -1703,7 +1736,10 @@ class HBCIBackend : NSObject {
                             // create new standing order
                             if let msg = HBCICustomMessage.newInstance(dialog) {
                                 if let order = HBCISepaStandingOrderNewOrder(message: msg, order: self.convertStandingOrder(stord)) {
-                                    order.enqueue();
+                                    if(!order.enqueue()) {
+                                        errorOccured = true;
+                                        continue;
+                                    };
                                     if try msg.send() {
                                         stord.isSent = NSNumber(value: true);
                                         continue;
@@ -1713,7 +1749,10 @@ class HBCIBackend : NSObject {
                         } else if stord.toDelete.boolValue == true {
                             if let msg = HBCICustomMessage.newInstance(dialog) {
                                 if let order = HBCISepaStandingOrderDeleteOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
-                                    order.enqueue();
+                                    if(!order.enqueue()) {
+                                        errorOccured = true;
+                                        continue;
+                                    };
                                     if try msg.send() {
                                         let context = MOAssistant.shared().context;
                                         context?.delete(stord);
@@ -1725,7 +1764,10 @@ class HBCIBackend : NSObject {
                             // change standing order
                             if let msg = HBCICustomMessage.newInstance(dialog) {
                                 if let order = HBCISepaStandingOrderEditOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
-                                    order.enqueue();
+                                    if(!order.enqueue()) {
+                                        errorOccured = true;
+                                        continue;
+                                    };
                                     if try msg.send() {
                                         stord.isSent = NSNumber(value: true);
                                         continue;
@@ -1733,8 +1775,6 @@ class HBCIBackend : NSObject {
                                 }
                             }
                         }
-                        
-                        
                         errorOccured = true;
                     }
                     return nil;
@@ -1834,7 +1874,7 @@ class HBCIBackend : NSObject {
         
         let item = HBCISepaTransfer.Item(iban:stord.remoteIBAN, bic:stord.remoteBIC, name:stord.remoteName, value:stord.value, currency:stord.currency);
         item.purpose = stord.purpose();
-        result.addItem(item);
+        _ = result.addItem(item);
         return result;
     }
     
@@ -2000,7 +2040,7 @@ class HBCIBackend : NSObject {
         let files = try fm.contentsOfDirectory(atPath: passportDir!);
         for file in files {
             if file.hasSuffix(".dat") {
-                let name = file.substring(to: file.characters.index(file.endIndex, offsetBy: -4));
+                let name = file.substring(to: file.index(file.endIndex, offsetBy: -4));
                 let info = name.components(separatedBy: "_");
                 if info.count == 2 {
                     if let bankUser = BankUser.find(withId: info[1], bankCode: info[0]) {
@@ -2082,7 +2122,7 @@ class HBCIBackend : NSObject {
         
         if result.isOk() {
             defer {
-                dialog.dialogEnd();
+                _ = dialog.dialogEnd();
             }
             
             return try block(user, dialog);
@@ -2127,7 +2167,9 @@ class HBCIBackend : NSObject {
                         }
                     }
                     
-                    order.enqueue();
+                    guard order.enqueue() else {
+                        return nil;
+                    };
                     guard msg.orders.count > 0 else {
                         return nil;
                     }
@@ -2141,7 +2183,7 @@ class HBCIBackend : NSObject {
                     }
                 }
                 return nil;
-                } as? AccountStatement;
+            } as? AccountStatement;
         }
         catch HBCIError.userAbort {
             // do nothing

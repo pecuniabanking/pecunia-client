@@ -778,7 +778,11 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     // if everything was successful, we can save the password
     if (savePassword && passwd != nil) {
-        [Security setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword];
+        if(![Security setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword]) {
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP182", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+        }
     }
 
     decryptionDone = YES;

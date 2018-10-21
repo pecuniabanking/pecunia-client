@@ -3515,7 +3515,7 @@ static BankingController *bankinControllerInstance;
                     [alert addButtonWithTitle: NSLocalizedString(@"AP1702", nil)];
                     [alert beginSheetModalForWindow: mainWindow completionHandler: ^(NSModalResponse returnCode) {
                         if (returnCode == NSAlertSecondButtonReturn) {
-                            [RemoteResourceManager.sharedManager removeManagedFile: @"words.zip"];
+                            if(![RemoteResourceManager.sharedManager removeManagedFile: @"words.zip"]) {};
                             [WordMapping removeWordMappings];
                         }
                     }];

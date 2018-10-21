@@ -510,11 +510,15 @@ static NSDictionary *heightMappings;
         if (passwd) {
             passwordStored = YES;
         }
-        [Security setPassword: newPassword forService: @"Pecunia" account: @"DataFile" store: passwordStored];
-        
-        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
-                        NSLocalizedString(@"AP176", nil),
-                        NSLocalizedString(@"AP1", nil), nil, nil);
+        if([Security setPassword: newPassword forService: @"Pecunia" account: @"DataFile" store: passwordStored]) {
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP176", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+        } else {
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP182", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+        }
     }
 }
 

@@ -164,6 +164,7 @@ AP178 = "Die Verwendungszweckinformationen werden nach SEPA-Informationen durchs
 AP179 = "Die Bankkennung %@ jetzt löschen?";
 AP180 = "Bitte Passwort eingeben";
 AP181 = "Bitte PIN eingeben";
+AP182 = "Fehler beim Ändern des Pecunia-Passworts";
 
 // Banking common + business transactions
 // AP200..AP249
