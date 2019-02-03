@@ -100,6 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       bankCodeTextField.stringValue = bankCode;
     }
 
+    /*
     if let fromDate: AnyObject = defaults.object(forKey: "pptFromDate"), as AnyObject? fromDate.isKind(of: Date) {
       fromDatePicker.dateValue = fromDate as! Date;
     }
@@ -107,7 +108,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     if let toDate: AnyObject = defaults.object(forKey: "pptToDate"), as AnyObject? toDate.isKind(of: Date) {
       toDatePicker.dateValue = toDate as! Date;
     }
-
+    */
+    
     if let accounts = defaults.string(forKey: "pptAccounts") {
       accountsTextField.stringValue = accounts;
     }
@@ -269,9 +271,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     if webBrowser == nil {
       let frame = NSRect(x: 0, y: 0, width: 900, height: 900);
-      webBrowser = NSWindow(contentRect: frame, styleMask: NSTitledWindowMask | NSClosableWindowMask
-        | NSMiniaturizableWindowMask | NSResizableWindowMask | NSFullSizeContentViewWindowMask,
+        /*
+        webBrowser = NSWindow(contentRect: frame, styleMask: NSWindowStyleMask(rawValue: NSWindow.StyleMask.RawValue(UInt8(NSTitledWindowMask.rawValue) | UInt8(NSClosableWindowMask.rawValue)
+            | UInt8(NSMiniaturizableWindowMask.rawValue) | UInt8(NSResizableWindowMask.rawValue) | UInt8(NSFullSizeContentViewWindowMask.rawValue))),
         backing: .buffered, defer: false);
+        */
+        webBrowser = NSWindow(contentRect: frame, styleMask: [NSWindow.StyleMask.closable, NSWindow.StyleMask.fullSizeContentView, NSWindow.StyleMask.resizable, NSWindow.StyleMask.resizable, NSWindow.StyleMask.titled ],
+                              backing: .buffered, defer: false);
       webBrowser?.isReleasedWhenClosed = false;
     }
 

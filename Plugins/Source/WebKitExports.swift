@@ -22,7 +22,7 @@
 
 import WebKit
 
-protocol DOMNodeListJSExport: JSExport {
+@objc protocol DOMNodeListJSExport: JSExport {
     var length: UInt32 { get };
     func item(_ index: UInt32) -> DOMNode!;
 }
@@ -39,7 +39,7 @@ extension DOMNodeList: DOMNodeListJSExport {
 //     func createNodeIterator(root: DOMNode!, whatToShow: UInt32, filter: DOMNodeFilter!, expandEntityReferences: Bool)...
 // Javascript name
 //      createNodeIteratorRootWhatToShowFilterExpandEntityReferences(...);
-protocol DOMCSSStyleDeclarationJSExport : JSExport {
+@objc protocol DOMCSSStyleDeclarationJSExport : JSExport {
     var cssText: String! { get set };
     var length: UInt32 { get };
     var parentRule: DOMCSSRule! { get };
@@ -57,7 +57,7 @@ protocol DOMCSSStyleDeclarationJSExport : JSExport {
 extension DOMCSSStyleDeclaration : DOMCSSStyleDeclarationJSExport {
 }
 
-protocol DOMCSSRuleListJSExport : JSExport {
+@objc protocol DOMCSSRuleListJSExport : JSExport {
     var length: UInt32 { get };
 
     func item(_ index: UInt32) -> DOMCSSRule!;
@@ -66,7 +66,7 @@ protocol DOMCSSRuleListJSExport : JSExport {
 extension DOMCSSRuleList : DOMCSSRuleListJSExport {
 }
 
-protocol DOMNamedNodeMapJSExport : JSExport {
+@objc protocol DOMNamedNodeMapJSExport : JSExport {
     var length: UInt32 { get };
 
     func getNamedItem(_ name: String!) -> DOMNode!;
@@ -81,11 +81,11 @@ protocol DOMNamedNodeMapJSExport : JSExport {
 extension DOMNamedNodeMap : DOMNamedNodeMapJSExport {
 }
 
-protocol DOMNodeJSExport : JSExport {
+@objc protocol DOMNodeJSExport : JSExport {
     var nodeName: String! { get };
     var nodeValue: String! { get set };
     var nodeType: UInt16 { get };
-    var parent: DOMNode! { get };
+    var parentNode: DOMNode! { get };
     var childNodes: DOMNodeList! { get };
     var firstChild: DOMNode! { get };
     var lastChild: DOMNode! { get };
@@ -122,7 +122,7 @@ protocol DOMNodeJSExport : JSExport {
 extension DOMNode: DOMNodeJSExport {
 }
 
-protocol DOMAttrJSExport : JSExport {
+@objc protocol DOMAttrJSExport : JSExport {
     var name: String! { get };
     var specified: Bool { get };
 
@@ -134,7 +134,7 @@ protocol DOMAttrJSExport : JSExport {
 extension DOMAttr : DOMAttrJSExport {
 }
 
-protocol DOMElementJSExport : JSExport {
+@objc protocol DOMElementJSExport : JSExport {
     var tagName: String! { get };
     var style: DOMCSSStyleDeclaration! { get };
     var offsetLeft: Int32 { get };
@@ -188,7 +188,7 @@ protocol DOMElementJSExport : JSExport {
 extension DOMElement : DOMElementJSExport {
 }
 
-protocol DOMHTMLCollectionJSExport : JSExport {
+@objc protocol DOMHTMLCollectionJSExport : JSExport {
     var length: UInt32 { get };
 
     func item(_ index: UInt32) -> DOMNode!;
@@ -199,7 +199,7 @@ protocol DOMHTMLCollectionJSExport : JSExport {
 extension DOMHTMLCollection : DOMHTMLCollectionJSExport {
 }
 
-protocol DOMHTMLElementJExport : JSExport {
+@objc protocol DOMHTMLElementJExport : JSExport {
     var idName: String! { get set };
     var title: String! { get set };
     var lang: String! { get set };
@@ -221,7 +221,7 @@ protocol DOMHTMLElementJExport : JSExport {
 extension DOMHTMLElement : DOMHTMLElementJExport {
 }
 
-protocol DOMHTMLInputElementJSExport : JSExport {
+@objc protocol DOMHTMLInputElementJSExport : JSExport {
     var accept: String! { get set };
     var alt: String! { get set };
     var autofocus: Bool { get set };
@@ -258,7 +258,7 @@ protocol DOMHTMLInputElementJSExport : JSExport {
 extension DOMHTMLInputElement : DOMHTMLInputElementJSExport {
 }
 
-protocol DOMHTMLButtonElementJSExport : JSExport {
+@objc protocol DOMHTMLButtonElementJSExport : JSExport {
     var autofocus: Bool { get set };
     var disabled: Bool { get set };
     var form: DOMHTMLFormElement! { get };
@@ -274,7 +274,7 @@ protocol DOMHTMLButtonElementJSExport : JSExport {
 extension DOMHTMLButtonElement : DOMHTMLButtonElementJSExport {
 }
 
-protocol DOMHTMLAnchorElementJSExport : JSExport {
+@objc protocol DOMHTMLAnchorElementJSExport : JSExport {
     var charset: String! { get set };
     var coords: String! { get set };
     var href: String! { get set };
@@ -300,7 +300,7 @@ protocol DOMHTMLAnchorElementJSExport : JSExport {
 extension DOMHTMLAnchorElement : DOMHTMLAnchorElementJSExport {
 }
 
-protocol DOMHTMLOptionElementJSExport : JSExport {
+@objc protocol DOMHTMLOptionElementJSExport : JSExport {
     var disabled: Bool { get set };
     var form: DOMHTMLFormElement! { get }
     var label: String! { get set };
@@ -316,7 +316,7 @@ protocol DOMHTMLOptionElementJSExport : JSExport {
 extension DOMHTMLOptionElement : DOMHTMLOptionElementJSExport {
 }
 
-protocol DOMHTMLOptionsCollectionJSExport : JSExport {
+@objc protocol DOMHTMLOptionsCollectionJSExport : JSExport {
     var selectedIndex: Int32 { get set };
     var length: UInt32 { get set };
 
@@ -329,7 +329,7 @@ protocol DOMHTMLOptionsCollectionJSExport : JSExport {
 extension DOMHTMLOptionsCollection : DOMHTMLOptionsCollectionJSExport {
 }
 
-protocol DOMHTMLSelectElementJSExport : JSExport {
+@objc protocol DOMHTMLSelectElementJSExport : JSExport {
     var autofocus: Bool { get set };
     var disabled: Bool { get set };
     var form: DOMHTMLFormElement! { get };
@@ -354,7 +354,7 @@ extension DOMHTMLSelectElement : DOMHTMLSelectElementJSExport {
 
 }
 
-protocol DOMHTMLFormElementJSExport : JSExport {
+@objc protocol DOMHTMLFormElementJSExport : JSExport {
     var acceptCharset: String! { get set };
     var action: String! { get set };
     var enctype: String! { get set };
@@ -372,7 +372,7 @@ protocol DOMHTMLFormElementJSExport : JSExport {
 extension DOMHTMLFormElement : DOMHTMLFormElementJSExport {
 }
 
-protocol DOMDocumentTypeJSExport : JSExport {
+@objc protocol DOMDocumentTypeJSExport : JSExport {
     var name: String! { get };
     var entities: DOMNamedNodeMap! { get };
     var notations: DOMNamedNodeMap! { get };
@@ -384,7 +384,7 @@ protocol DOMDocumentTypeJSExport : JSExport {
 extension DOMDocumentType : DOMDocumentTypeJSExport {
 }
 
-protocol DOMImplementationJSExport : JSExport {
+@objc protocol DOMImplementationJSExport : JSExport {
     func hasFeature(_ feature: String!, version: String!) -> Bool;
     func createDocumentType(_ qualifiedName: String!, publicId: String!, systemId: String!) -> DOMDocumentType!;
     func createDocument(_ namespaceURI: String!, qualifiedName: String!, doctype: DOMDocumentType!) -> DOMDocument!;
@@ -395,7 +395,7 @@ protocol DOMImplementationJSExport : JSExport {
 extension DOMImplementation : DOMImplementationJSExport {
 }
 
-protocol DOMStyleSheetListJSExport : JSExport {
+@objc protocol DOMStyleSheetListJSExport : JSExport {
     var length: UInt32 { get };
 
     func item(_ index: UInt32) -> DOMStyleSheet!;
@@ -404,13 +404,13 @@ protocol DOMStyleSheetListJSExport : JSExport {
 extension DOMStyleSheetList : DOMStyleSheetListJSExport {
 }
 
-protocol DOMDocumentFragmentJSExport : JSExport {
+@objc protocol DOMDocumentFragmentJSExport : JSExport {
 }
 
 extension DOMDocumentFragment : DOMDocumentFragmentJSExport {
 }
 
-protocol DOMCharacterDataJSExport : JSExport {
+@objc protocol DOMCharacterDataJSExport : JSExport {
     var data: String! { get };
     var length: UInt32 { get };
 
@@ -424,7 +424,7 @@ protocol DOMCharacterDataJSExport : JSExport {
 extension DOMCharacterData : DOMCharacterDataJSExport {
 }
 
-protocol DOMTextJSExport : JSExport {
+@objc protocol DOMTextJSExport : JSExport {
     var wholeText: String! { get };
 
     func splitText(_ offset: UInt32) -> DOMText!;
@@ -434,19 +434,19 @@ protocol DOMTextJSExport : JSExport {
 extension DOMText : DOMTextJSExport {
 }
 
-protocol DOMCommentJSExport : JSExport {
+@objc protocol DOMCommentJSExport : JSExport {
 }
 
 extension DOMComment : DOMCommentJSExport {
 }
 
-protocol DOMCDATASectionJSExport : JSExport {
+@objc protocol DOMCDATASectionJSExport : JSExport {
 }
 
 extension DOMCDATASection : DOMCDATASectionJSExport {
 }
 
-protocol DOMProcessingInstructionJSExport : JSExport {
+@objc protocol DOMProcessingInstructionJSExport : JSExport {
     var target: String! { get };
     var sheet: DOMStyleSheet! { get };
 }
@@ -454,7 +454,7 @@ protocol DOMProcessingInstructionJSExport : JSExport {
 extension DOMProcessingInstruction : DOMProcessingInstructionJSExport {
 }
 
-protocol DOMEntityReferenceJSExport : JSExport {
+@objc protocol DOMEntityReferenceJSExport : JSExport {
 }
 
 extension DOMEntityReference : DOMEntityReferenceJSExport {
@@ -467,7 +467,7 @@ extension DOMEntityReference : DOMEntityReferenceJSExport {
 extension DOMXPathExpression : DOMXPathExpressionJSExport {
 }
 */
-protocol DOMXPathResultJSExport : JSExport {
+@objc protocol DOMXPathResultJSExport : JSExport {
     var resultType: UInt16 { get };
     var numberValue: Double { get };
     var stringValue: String! { get };
@@ -483,7 +483,7 @@ protocol DOMXPathResultJSExport : JSExport {
 extension DOMXPathResult : DOMXPathResultJSExport {
 }
 */
-protocol DOMDocumentJSExport : JSExport {
+@objc protocol DOMDocumentJSExport : JSExport {
     var doctype: DOMDocumentType! { get };
     var implementation: DOMImplementation! { get };
     var documentElement: DOMElement! { get };
@@ -497,7 +497,7 @@ protocol DOMDocumentJSExport : JSExport {
     var title: String! { get set };
     var referrer: String! { get };
     var domain: String! { get };
-    var url: String! { get };
+    var URL: String! { get };
     var cookie: String! { get set };
     var body: DOMHTMLElement! { get set };
     var images: DOMHTMLCollection! { get };
@@ -523,7 +523,7 @@ protocol DOMDocumentJSExport : JSExport {
     func createAttribute(_ name: String!) -> DOMAttr!;
     func createEntityReference(_ name: String!) -> DOMEntityReference!;
     func getElementsByTagName(_ tagname: String!) -> DOMNodeList!;
-    func `import`(_ importedNode: DOMNode!, deep: Bool) -> DOMNode!;
+    func importNode(_ importedNode: DOMNode!, deep: Bool) -> DOMNode!;
     func createElementNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMElement!;
     func createAttributeNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMAttr!;
     func getElementsByTagNameNS(_ namespaceURI: String!, localName: String!) -> DOMNodeList!;
@@ -536,7 +536,7 @@ protocol DOMDocumentJSExport : JSExport {
     func getOverrideStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
     func createExpression(_ expression: String!, resolver: DOMXPathNSResolver!) -> DOMXPathExpression!;
     func createNSResolver(_ nodeResolver: DOMNode!) -> DOMXPathNSResolver!;
-    func evaluate(_ expression: String!, contextNode: DOMNode!, resolver: DOMXPathNSResolver!, type: UInt16, in inResult: DOMXPathResult!) -> DOMXPathResult!
+    func evaluate(_ expression: String!, contextNode: DOMNode!, resolver: DOMXPathNSResolver!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
     func getElementsByName(_ elementName: String!) -> DOMNodeList!;
     func createCSSStyleDeclaration() -> DOMCSSStyleDeclaration!;
     func getComputedStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
@@ -550,7 +550,7 @@ protocol DOMDocumentJSExport : JSExport {
 extension DOMDocument : DOMDocumentJSExport {
 }
 
-protocol WebFrameJSExport : JSExport {
+@objc protocol WebFrameJSExport : JSExport {
     var name: String! { get };
     var webView: WebView! { get };
     var document: WebKit.DOMDocument! { get }; // Qualification needed here, as DOMDocument is both the var name and its type.
@@ -558,12 +558,13 @@ protocol WebFrameJSExport : JSExport {
     func stopLoading();
     func reload();
     func reloadFromOrigin();
-    func findNamed(_ name: String!) -> WebFrame!;
-    var parent: WebFrame! { get };
+    func findFrameNamed(_ name: String!) -> WebFrame!;
+    var parentFrame: WebFrame! { get };
     var childFrames: [Any]! { get };
 }
 
 extension WebFrame: WebFrameJSExport {
+    
     var document: WebKit.DOMDocument! {
         get {
             return domDocument;
@@ -571,9 +572,9 @@ extension WebFrame: WebFrameJSExport {
     }
 }
 
-protocol WebViewJSExport : JSExport {
+@objc protocol WebViewJSExport : JSExport {
 
-    var mainURL: String { get set }; // Same as mainFrameURL below, just a nicer name.
+    var URL: String { get set }; // Same as mainFrameURL below, just a nicer name.
     var postURL: String { get set }; // if written it's an URL for POST requests otherwise the same as mainFrameURL
     var callback: JSValue { get set };
 
@@ -582,12 +583,12 @@ protocol WebViewJSExport : JSExport {
     
     // WebView exports.
     static func canShowMIMEType(_ MIMEType: String!) -> Bool;
-    static func canShowMIMEType(asHTML: String!) -> Bool;
-    static func mimeTypesShownAsHTML() -> [Any]!;
-    static func setMIMETypesShownAsHTML(_ MIMETypes: [Any]!);
-    static func url(from pasteboard: NSPasteboard!) -> Foundation.URL!;
-    static func urlTitle(from pasteboard: NSPasteboard!) -> String!;
-    static func registerURLScheme(asLocal: String!);
+    static func canShowMIMETypeAsHTML(_ MIMEType: String!) -> Bool;
+    //static func MIMETypesShownAsHTML() -> [AnyObject]!;
+    //static func setMIMETypesShownAsHTML(_ MIMETypes: [AnyObject]!);
+    static func URLFromPasteboard(_ pasteboard: NSPasteboard!) -> Foundation.URL!;
+    static func URLTitleFromPasteboard(_ pasteboard: NSPasteboard!) -> String!;
+    static func registerURLSchemeAsLocal(_ scheme: String!);
 
     func close()
 
@@ -599,28 +600,28 @@ protocol WebViewJSExport : JSExport {
     func setMaintainsBackForwardList(_ flag: Bool);
     func goBack() -> Bool;
     func goForward() -> Bool;
-    func go(toBackForwardItem: WebHistoryItem!) -> Bool;
+    func goToBackForwardItem(_ item: WebHistoryItem!) -> Bool;
 
     var textSizeMultiplier: Float { get set };
     var applicationNameForUserAgent: String! { get set };
     var customUserAgent: String! { get set };
     
-    func userAgent(for: Foundation.URL!) -> String!;
-    
+    func userAgentForURL(_ URL: Foundation.URL!) -> String!;
+
     var supportsTextEncoding: Bool { get }
     var customTextEncodingName: String! { get set };
     var mediaStyle: String! { get set };
     
-    func stringByEvaluatingJavaScript(from: String!) -> String!;
-    func search(for: String!, direction forward: Bool, caseSensitive caseFlag: Bool, wrap wrapFlag: Bool) -> Bool
-    
+    func stringByEvaluatingJavaScriptFromString(_ script: String!) -> String!;
+    func searchFor(_ string: String!, direction forward: Bool, caseSensitive caseFlag: Bool, wrap wrapFlag: Bool) -> Bool
+
     var groupName: String! { get set };
     var estimatedProgress: Double { get };
-//    var loading: Bool { @objc(isLoading) get }
-    var isLoading: Bool { get }
+    var loading: Bool { @objc(isLoading) get }
+    //var isLoading: Bool { get }
     
-    func element(at: NSPoint) -> [AnyHashable: Any]!;
-    
+    func elementAtPoint(_ point: NSPoint) -> [AnyHashable: Any]!;
+
     var mainFrameURL: String! { get set };
     var mainFrameDocument: DOMDocument! { get };
     var mainFrameTitle: String! { get };

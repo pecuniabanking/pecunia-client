@@ -22,7 +22,7 @@ import Foundation
 // Mockup code created from the same BankStatement class in Pecunia.
 
 @objc class BankStatement : NSObject {
-  var isPreliminary: Bool = false;
+  var isPreliminary: NSNumber = NSNumber(booleanLiteral: false);
   var date: Date? = nil;
   var valutaDate: Date? = nil;
   var value: NSDecimalNumber? = nil;
@@ -47,7 +47,7 @@ import Foundation
 
 // Need to make NSDate comparable as we will sort statement arrays by date.
 public func ==(lhs: Date, rhs: Date) -> Bool {
-  return lhs === rhs || lhs.compare(rhs) == .orderedSame
+  return lhs.compare(rhs) == .orderedSame
 }
 
 public func <(lhs: Date, rhs: Date) -> Bool {

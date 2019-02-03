@@ -59,11 +59,12 @@ internal class UserQueryEntry {
 };
 
 class WebClient: WebView, WebViewJSExport {
+
     
     fileprivate var redirecting: Bool = false;
     fileprivate var pluginDescription: String = ""; // The plugin description for error messages.
 
-    var mainURL: String {
+    var URL: String {
         get {
             return mainFrameURL;
         }
@@ -95,7 +96,10 @@ class WebClient: WebView, WebViewJSExport {
     var callback: JSValue = JSValue();
     var completion: ([BankQueryResult]) -> Void = { (_: [BankQueryResult]) -> Void in }; // Block to call on results arrival.
 
-
+    func doTest() {
+        redirecting = false;
+    }
+    
     func reportError(_ account: String, _ message: String) {
         query!.authRequest.errorOccured = true; // Flag the error in the auth request, so it doesn't store the PIN.
 
@@ -144,7 +148,7 @@ class WebClient: WebView, WebViewJSExport {
                 for jsonStatement in statements {
                     let statement: BankStatement = BankStatement.createTemporary(); // Created in memory context.
                     if let final = jsonStatement["final"] as? Bool {
-                        statement.isPreliminary = NSNumber(value: final);
+                        statement.isPreliminary = NSNumber(value: !final);
                     }
 
                     if let date = jsonStatement["valutaDate"] as? Date {
@@ -250,8 +254,9 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
             workContext?.setObject(true, forKeyedSubscript: "JSError" as (NSCopying & NSObjectProtocol)?);
         }
 
-        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)?);
-        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as NSCopying & NSObjectProtocol);
+        webClient.mainFrame.javaScriptContext.setObject(jsLogger.self, forKeyedSubscript: "logger" as NSCopying & NSObjectProtocol);
+        //webClient.mainFrame.javaScriptContext.setObject(webClient.self, forKeyedSubscript: "webClient" as NSCopying & NSObjectProtocol);
 
         // Export Webkit to the work context, so that plugins can use it to work with data/the DOM
         // from the web client.
@@ -283,7 +288,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
         workContext.setObject(DOMEntityReference.self, forKeyedSubscript: "DOMEntityReference" as (NSCopying & NSObjectProtocol)?);
         workContext.setObject(DOMDocument.self, forKeyedSubscript: "DOMDocument" as (NSCopying & NSObjectProtocol)?);
         workContext.setObject(WebFrame.self, forKeyedSubscript: "WebFrame" as (NSCopying & NSObjectProtocol)?);
-        workContext.setObject(webClient.self, forKeyedSubscript: "webClient" as (NSCopying & NSObjectProtocol)?);
+        workContext.setObject(webClient.self, forKeyedSubscript: "webClient" as NSCopying & NSObjectProtocol);
     }
 
     fileprivate func setupWebClient(_ hostWindow: NSWindow?) {

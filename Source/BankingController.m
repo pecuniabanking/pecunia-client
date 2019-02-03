@@ -2421,12 +2421,6 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(enqueueRequest:)) {
             return NO;
         }
-        if ([item action] == @selector(startLocalTransfer:)) {
-            return NO;
-        }
-        if ([item action] == @selector(startEuTransfer:)) {
-            return NO;
-        }
         if ([item action] == @selector(startSepaTransfer:)) {
             return NO;
         }
@@ -2468,9 +2462,6 @@ static BankingController *bankinControllerInstance;
             if ([item action] == @selector(deleteAccount:)) {
                 return NO;
             }
-            if ([item action] == @selector(startLocalTransfer:)) {
-                return NO;
-            }
             if ([item action] == @selector(startEuTransfer:)) {
                 return NO;
             }
@@ -2502,12 +2493,6 @@ static BankingController *bankinControllerInstance;
         if ([cat isKindOfClass: [BankAccount class]]) {
             BankAccount *account = (BankAccount *)cat;
             if ([[account isManual] boolValue] == YES) {
-                if ([item action] == @selector(startLocalTransfer:)) {
-                    return NO;
-                }
-                if ([item action] == @selector(startEuTransfer:)) {
-                    return NO;
-                }
                 if ([item action] == @selector(startSepaTransfer:)) {
                     return NO;
                 }
