@@ -301,6 +301,7 @@ function readNextCreditCard() {
     
     // Somehow I cannot get getElementsByName and getElementById to work as expected.
     // logger.logDebug("Search element: " + webClient.mainFrameDocument.getElementById("searchPeriod.0"));
+    /*
     for (var i = 0; i < form.elements.length; ++i) {
         var element = form.elements.item(i);
         if (element.idName == "searchPeriod.0") {
@@ -309,6 +310,22 @@ function readNextCreditCard() {
             break;
         }
     }
+    */
+    for (var i = 0; i < form.elements.length; ++i) {
+        var periodSelector = form.elements.item(i);
+        if (periodSelector.name == "slSearchPeriod")
+            break;
+    }
+    logger.logDebug("Period selector: " + periodSelector);
+    var periods = periodSelector.options;
+    for (i = 0; i < periods.length; ++i) {
+        var periodEntry = periods.item(i);
+        logger.logVerbose("Period item: " + periodEntry.text);
+        if (periodEntry.value == "3") {
+            periodEntry.selected = true;
+            break;
+        };
+    };
 
     for (var i = 0; i < form.elements.length; ++i) {
         var postingDate = form.elements.item(i);
@@ -350,7 +367,7 @@ function convertCsvToResult() {
     // Balance value is in prefix lines.
     var balance = "0 EUR";
     var lastSettleDate = new Date();
-    for (var i = 0; i < 8; ++i) {
+    for (var i = 0; i < 7; ++i) {
         var currentLine = lines[i].split(";");
         logger.logVerbose("CSV line " + i + ", values: " + currentLine);
         
@@ -367,7 +384,7 @@ function convertCsvToResult() {
         }
     }
     
-    for (var i = 8; i < lines.length; ++i) {
+    for (var i = 7; i < lines.length; ++i) {
         var statement = {};
         var currentLine = lines[i].split(";");
         

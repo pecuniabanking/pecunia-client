@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="17G4015" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -158,7 +157,7 @@
         <window title="Pecunia Plugin Tester" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="pptMain" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <rect key="contentRect" x="309" y="236" width="900" height="641"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" identifier="pptMain" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="-1" width="900" height="641"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -268,7 +267,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4MH-uf-qaK">
+                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4MH-uf-qaK">
                         <rect key="frame" x="14" y="13" width="100" height="32"/>
                         <buttonCell key="cell" type="push" title="Clear Log" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="by8-EW-4sB">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -278,7 +277,7 @@
                             <action selector="clearLog:" target="Voe-Tx-rLC" id="bZS-H8-QdT"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0zy-vh-SzK">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0zy-vh-SzK">
                         <rect key="frame" x="127" y="23" width="69" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="65" id="9jg-i3-eNs"/>
@@ -289,7 +288,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j9t-ae-2G7">
+                    <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j9t-ae-2G7">
                         <rect key="frame" x="200" y="17" width="95" height="26"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="90" id="FXT-VV-oWs"/>
@@ -359,7 +358,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8eY-p1-lau">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8eY-p1-lau">
                         <rect key="frame" x="20" y="415" width="70" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="66" id="0fd-fk-yZB"/>
@@ -378,7 +377,7 @@
                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="TKP-rX-cC5">
                             <font key="font" metaFont="system"/>
                             <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                <!--1982-02-12 16:00:00 +0000-->
+                                <!--1982-02-12 08:00:00 -0800-->
                                 <timeZone key="timeZone" name="US/Pacific"/>
                             </calendarDate>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -413,7 +412,7 @@
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         </datePickerCell>
                     </datePicker>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7tO-t1-d0U">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7tO-t1-d0U">
                         <rect key="frame" x="20" y="355" width="70" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="66" id="IVH-bQ-R20"/>
@@ -444,7 +443,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ZJ-CW-gKc">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ZJ-CW-gKc">
                         <rect key="frame" x="216" y="415" width="70" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="66" id="O7f-AI-lKe"/>
@@ -459,7 +458,7 @@
                         <rect key="frame" x="22" y="111" width="858" height="234"/>
                         <clipView key="contentView" id="Sb5-cb-T4B">
                             <rect key="frame" x="1" y="1" width="223" height="133"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" findStyle="panel" incrementalSearchingEnabled="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" linkDetection="YES" id="s20-xX-PAc">
                                     <rect key="frame" x="0.0" y="0.0" width="223" height="294"/>
@@ -483,7 +482,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JSI-oQ-txV">
+                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSI-oQ-txV">
                         <rect key="frame" x="777" y="405" width="109" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="97" id="ney-Bf-YDZ"/>
@@ -496,7 +495,7 @@
                             <action selector="dumpHTML:" target="Voe-Tx-rLC" id="A35-Xr-YjW"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-Cp-x3R">
+                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-Cp-x3R">
                         <rect key="frame" x="640" y="405" width="137" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="125" id="HBL-yA-PrA"/>
@@ -509,7 +508,7 @@
                             <action selector="getStatements:" target="Voe-Tx-rLC" id="b1V-Yz-IOI"/>
                         </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="azm-E5-W51">
+                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="azm-E5-W51">
                         <rect key="frame" x="306" y="530" width="150" height="18"/>
                         <buttonCell key="cell" type="check" title="Auto load on change" bezelStyle="regularSquare" imagePosition="left" inset="2" id="1wa-za-Vaz">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -531,7 +530,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tU2-oJ-SzS">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tU2-oJ-SzS">
                         <rect key="frame" x="400" y="415" width="70" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="66" id="VPo-Br-fXW"/>
