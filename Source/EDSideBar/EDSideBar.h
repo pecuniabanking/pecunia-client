@@ -65,5 +65,5 @@ typedef NSUInteger ECSideBarLayoutMode;
 
 @property (nonatomic, readonly) NSUInteger buttonCount;
 @property (nonatomic, assign) NSInteger selectedIndex;
-
+@property (nonatomic, assign) NSInteger toSelectIndex;
 @end

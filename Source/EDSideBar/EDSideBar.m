@@ -64,6 +64,8 @@
 
 - (void)drawWithFrame:(NSRect)frame inView:(NSView *)view {
 	
+    if([NSGraphicsContext currentContext] == nil) return;
+    
 	NSColor *cellColor = nil;
 	if( [self state] == NSOnState )
 		cellColor = [NSColor colorWithDeviceWhite:54.0/255.0 alpha:1.0];
@@ -100,7 +102,8 @@
 
 - (void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)view {
 	
-	
+    if([NSGraphicsContext currentContext] == nil) return;
+
 	NSColor *cellColor = nil;
 	
 	if( [self state] == NSOnState )
@@ -172,12 +175,14 @@
 @synthesize animateSelection;
 @synthesize animationDuration;
 @synthesize noiseAlpha;
+@synthesize toSelectIndex;
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
 		
         // Initialization code here.
+        self.toSelectIndex = -1;
 		layoutMode = ECSideBarLayoutCenter;
 		self.backgroundColor = [NSColor colorWithDeviceWhite:60.0/255.0 alpha:1.0];
 		animationDuration = ED_DEFAULT_ANIM_DURATION;
@@ -186,6 +191,7 @@
 		[_matrix setBackgroundColor:_backgroundColor];
 		[_matrix setMode:NSRadioModeMatrix];
 		[_matrix setAllowsEmptySelection:NO];
+        
 		// Defaults
 		[_matrix setCellClass:[ECSideBarButtonCell class]];
 		[self addSubview:_matrix];
@@ -211,6 +217,11 @@
 
 -(void)drawBackground:(NSRect)rect
 {
+    if(self.toSelectIndex >=0 ) {
+        self.selectedIndex = self.toSelectIndex;
+        self.toSelectIndex = -1;
+    }
+    
 	[_backgroundColor set];
 	NSRectFill(rect);
 	if( self.noiseAlpha > 0 )
@@ -367,6 +378,10 @@
 
 -(void)setSelectedIndex: (NSInteger)row
 {
+    if([NSGraphicsContext currentContext] == nil) {
+        self.toSelectIndex = row;
+        return;
+    }
 	NSInteger rowToSelect = row;
 	if(  [_matrix numberOfRows] < row )
 		rowToSelect = 0;

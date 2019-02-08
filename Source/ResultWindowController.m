@@ -49,10 +49,11 @@
         return;
     }
     */
-    
+    /*
     if (![info hasPrefix:@"Message from Bank:"] ) {
         return;
     }
+    */
     
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
     [s addAttribute: NSForegroundColorAttributeName
@@ -60,11 +61,10 @@
               range: NSMakeRange(0, [s length])];
     
     if (logView == nil) {
-        [logString appendAttributedString: s];
-    } else {
-        [[logView textStorage] appendAttributedString: s];
-        [logView moveToEndOfDocument: self];
+        [self showWindow:nil];
     }
+    [[logView textStorage] appendAttributedString: s];
+    [logView moveToEndOfDocument: self];
     [logView display];
 }
 

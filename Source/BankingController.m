@@ -3104,7 +3104,7 @@ static BankingController *bankinControllerInstance;
     } else {
         [self switchMainPage: 0];
     }
-
+    
     [mainVSplit restorePosition];
 
     [self checkForAutoSync];

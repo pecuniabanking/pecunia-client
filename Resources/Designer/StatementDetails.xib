@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSViewController">
@@ -92,7 +93,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView focusRingType="none" editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" id="OlN-gN-N3d">
-                                <rect key="frame" x="0.0" y="-1" width="348" height="47"/>
+                                <rect key="frame" x="0.0" y="0.0" width="348" height="46"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -111,8 +112,6 @@ Line 3</string>
                                     </fragment>
                                 </attributedString>
                                 <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="348" height="46"/>
-                                <size key="maxSize" width="794" height="10000000"/>
                                 <connections>
                                     <binding destination="-2" name="value" keyPath="view.sepaDetails.description" id="3ya-OD-FqG">
                                         <dictionary key="options">
@@ -122,7 +121,6 @@ Line 3</string>
                                 </connections>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="1tE-JT-xlX"/>
@@ -131,7 +129,7 @@ Line 3</string>
                         <rect key="frame" x="0.0" y="30" width="348" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="30s-7t-nVD">
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0885009765625" horizontal="NO" id="30s-7t-nVD">
                         <rect key="frame" x="332" y="0.0" width="16" height="46"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -152,18 +150,15 @@ Line 3</string>
                         <binding destination="-2" name="toolTip" keyPath="view.sepaDetails.PURP" id="vEW-dl-wcu"/>
                     </connections>
                 </textField>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="XbG-6n-Cx7">
+                <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="XbG-6n-Cx7">
                     <rect key="frame" x="18" y="548" width="402" height="5"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="sdk-tT-ZU2"/>
                     </constraints>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="7Jf-eT-y79" userLabel="Notes Box">
                     <rect key="frame" x="122" y="391" width="276" height="72"/>
-                    <view key="contentView">
+                    <view key="contentView" id="0lO-Gv-oAi">
                         <rect key="frame" x="1" y="1" width="274" height="70"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -173,7 +168,7 @@ Line 3</string>
                                     <rect key="frame" x="0.0" y="0.0" width="265" height="60"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView focusRingType="none" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dataDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="K6c-5A-tNh" userLabel="Notes Text View">
+                                        <textView focusRingType="none" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" verticallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" quoteSubstitution="YES" linkDetection="YES" dataDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="K6c-5A-tNh" userLabel="Notes Text View">
                                             <rect key="frame" x="0.0" y="0.0" width="265" height="60"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
@@ -189,8 +184,6 @@ Line 3</string>
                                                 </fragment>
                                             </attributedString>
                                             <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="265" height="60"/>
-                                            <size key="maxSize" width="809" height="10000000"/>
                                             <connections>
                                                 <binding destination="-2" name="editable" keyPath="view.representedObject.statement.isPreliminary" id="Zm1-Ic-VBe">
                                                     <dictionary key="options">
@@ -218,11 +211,11 @@ Line 3</string>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstItem="5Zg-so-efZ" firstAttribute="leading" secondItem="7Jf-eT-y79" secondAttribute="leading" constant="5" id="0jm-Hm-zLD"/>
-                        <constraint firstAttribute="trailing" secondItem="5Zg-so-efZ" secondAttribute="trailing" constant="6" id="0wN-6H-HAT"/>
+                        <constraint firstItem="5Zg-so-efZ" firstAttribute="leading" secondItem="7Jf-eT-y79" secondAttribute="leading" constant="5" id="1Hm-2P-SX5"/>
                         <constraint firstAttribute="height" constant="72" id="VWY-z5-Zvx"/>
-                        <constraint firstItem="5Zg-so-efZ" firstAttribute="top" secondItem="7Jf-eT-y79" secondAttribute="top" constant="7" id="WuZ-R8-H9y"/>
-                        <constraint firstAttribute="bottom" secondItem="5Zg-so-efZ" secondAttribute="bottom" constant="5" id="fG8-i4-B65"/>
+                        <constraint firstAttribute="trailing" secondItem="5Zg-so-efZ" secondAttribute="trailing" constant="6" id="ehJ-c1-ZCJ"/>
+                        <constraint firstItem="5Zg-so-efZ" firstAttribute="top" secondItem="7Jf-eT-y79" secondAttribute="top" constant="7" id="ns9-8d-HwG"/>
+                        <constraint firstAttribute="bottom" secondItem="5Zg-so-efZ" secondAttribute="bottom" constant="5" id="qDi-qu-lZO"/>
                         <constraint firstAttribute="width" constant="276" id="uCo-f8-elO"/>
                     </constraints>
                     <color key="borderColor" red="0.858630538" green="0.84323823450000002" blue="0.80386048560000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -812,9 +805,9 @@ Line 3</string>
                         <action selector="showTagPopup:" target="c22-O7-iKe" id="UIq-9a-64g"/>
                     </connections>
                 </button>
-                <box autoresizesSubviews="NO" wantsLayer="YES" alphaValue="0.5" title="Box" boxType="custom" borderType="none" translatesAutoresizingMaskIntoConstraints="NO" id="bJK-fB-Hb6" userLabel="Color Box">
+                <box autoresizesSubviews="NO" wantsLayer="YES" alphaValue="0.5" boxType="custom" borderType="none" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="bJK-fB-Hb6" userLabel="Color Box">
                     <rect key="frame" x="8" y="561" width="4" height="70"/>
-                    <view key="contentView">
+                    <view key="contentView" id="rWk-rh-gB5">
                         <rect key="frame" x="0.0" y="0.0" width="4" height="70"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
@@ -822,7 +815,6 @@ Line 3</string>
                         <constraint firstAttribute="width" constant="4" id="NrA-YJ-gqr"/>
                         <constraint firstAttribute="height" constant="70" id="syc-e6-pJW"/>
                     </constraints>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.75294125079999996" green="0.35294118520000001" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
                 </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Iri-zX-Nan">
@@ -854,7 +846,7 @@ Line 3</string>
                 </textField>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="OQX-pP-jDK" userLabel="Categories Box">
                     <rect key="frame" x="20" y="203" width="393" height="31"/>
-                    <view key="contentView">
+                    <view key="contentView" id="hWA-TI-H6F">
                         <rect key="frame" x="1" y="1" width="391" height="29"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -876,9 +868,9 @@ Line 3</string>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="centerX" secondItem="rPS-BT-bh9" secondAttribute="centerX" id="Jbz-mb-TFy"/>
-                        <constraint firstItem="rPS-BT-bh9" firstAttribute="top" secondItem="OQX-pP-jDK" secondAttribute="top" constant="5" id="Sfr-4d-9Lq"/>
+                        <constraint firstAttribute="centerX" secondItem="rPS-BT-bh9" secondAttribute="centerX" id="SgC-Vq-ihN"/>
                         <constraint firstAttribute="height" constant="31" id="neV-P4-nYu"/>
+                        <constraint firstItem="rPS-BT-bh9" firstAttribute="top" secondItem="OQX-pP-jDK" secondAttribute="top" constant="5" id="tyN-79-2ua"/>
                     </constraints>
                     <color key="borderColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="fillColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -914,8 +906,6 @@ Line 3</string>
                                     </fragment>
                                 </attributedString>
                                 <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="398" height="58"/>
-                                <size key="maxSize" width="463" height="10000000"/>
                                 <connections>
                                     <binding destination="-2" name="attributedString" keyPath="view.sepaDetails.sepaInfo" id="WgI-ss-i4B"/>
                                 </connections>
@@ -935,9 +925,9 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Vat-Bh-isM" userLabel="Tag Box">
+                <box autoresizesSubviews="NO" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="Vat-Bh-isM" userLabel="Tag Box">
                     <rect key="frame" x="122" y="331" width="276" height="41"/>
-                    <view key="contentView">
+                    <view key="contentView" id="bD6-cR-dqT">
                         <rect key="frame" x="1" y="1" width="274" height="39"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -947,15 +937,13 @@ Line 3</string>
                                     <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView drawsBackground="NO" importsGraphics="NO" findStyle="panel" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="MUI-Mu-cgL" customClass="DetailsTagView">
+                                        <textView drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" findStyle="panel" allowsUndo="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="MUI-Mu-cgL" customClass="DetailsTagView">
                                             <rect key="frame" x="0.0" y="0.0" width="274" height="38"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="274" height="38"/>
                                             <size key="maxSize" width="463" height="10000000"/>
                                             <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="274" height="38"/>
-                                            <size key="maxSize" width="463" height="10000000"/>
                                             <connections>
                                                 <binding destination="-2" name="editable" keyPath="view.representedObject.statement.isPreliminary" id="HMA-bb-xhk">
                                                     <dictionary key="options">
@@ -979,11 +967,11 @@ Line 3</string>
                         </subviews>
                     </view>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="Jhv-p6-fgZ" secondAttribute="trailing" constant="1" id="G61-dE-Eam"/>
-                        <constraint firstAttribute="bottom" secondItem="Jhv-p6-fgZ" secondAttribute="bottom" constant="1" id="XMx-g5-kfI"/>
+                        <constraint firstItem="Jhv-p6-fgZ" firstAttribute="top" secondItem="Vat-Bh-isM" secondAttribute="top" constant="2" id="5Dm-tP-1no"/>
+                        <constraint firstAttribute="trailing" secondItem="Jhv-p6-fgZ" secondAttribute="trailing" constant="1" id="Vs4-C4-nq0"/>
                         <constraint firstAttribute="width" constant="276" id="XQl-4N-WtK"/>
-                        <constraint firstItem="Jhv-p6-fgZ" firstAttribute="leading" secondItem="Vat-Bh-isM" secondAttribute="leading" constant="1" id="azH-fa-Mh5"/>
-                        <constraint firstItem="Jhv-p6-fgZ" firstAttribute="top" secondItem="Vat-Bh-isM" secondAttribute="top" constant="2" id="egs-Gz-Z2V"/>
+                        <constraint firstAttribute="bottom" secondItem="Jhv-p6-fgZ" secondAttribute="bottom" constant="1" id="hGv-5Q-gq3"/>
+                        <constraint firstItem="Jhv-p6-fgZ" firstAttribute="leading" secondItem="Vat-Bh-isM" secondAttribute="leading" constant="1" id="jlA-o1-LIt"/>
                         <constraint firstAttribute="height" constant="41" id="x7n-UQ-amR"/>
                     </constraints>
                     <color key="borderColor" red="0.858630538" green="0.84323823450000002" blue="0.80386048560000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1021,7 +1009,7 @@ Line 3</string>
                             </configuration>
                         </ciFilter>
                     </contentFilters>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="icon87-1" id="oqC-xs-imJ"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" id="oqC-xs-imJ"/>
                 </imageView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="EIF-RJ-VhE" userLabel="Credit Card Details Container">
                     <rect key="frame" x="8" y="483" width="415" height="60"/>
@@ -1049,8 +1037,6 @@ Line 3</string>
                                             </fragment>
                                         </attributedString>
                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="375" height="58"/>
-                                        <size key="maxSize" width="463" height="10000000"/>
                                         <connections>
                                             <binding destination="-2" name="attributedString" keyPath="view.sepaDetails.creditCardInfo" id="j4t-Mj-eRB"/>
                                         </connections>
@@ -1179,7 +1165,7 @@ Line 3</string>
                                     </configuration>
                                 </ciFilter>
                             </contentFilters>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="icon66-1" id="PAj-yo-F02"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" id="PAj-yo-F02"/>
                         </imageView>
                         <imageView toolTip="Neuer Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rHU-z4-DIm" userLabel="New Transaction Indicator">
                             <rect key="frame" x="391" y="38" width="16" height="16"/>
@@ -1334,17 +1320,15 @@ Line 3</string>
                     <rect key="frame" x="10" y="10" width="250" height="300"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="nZV-Xy-qst">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="300"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textView drawsBackground="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="56p-Z7-Toj" customClass="TagView">
+                            <textView drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="56p-Z7-Toj" customClass="TagView">
                                 <rect key="frame" x="0.0" y="0.0" width="250" height="300"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="minSize" width="250" height="300"/>
                                 <size key="maxSize" width="463" height="10000000"/>
                                 <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <size key="minSize" width="250" height="300"/>
-                                <size key="maxSize" width="463" height="10000000"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1370,8 +1354,6 @@ Line 3</string>
     <resources>
         <image name="edit-large" width="64" height="64"/>
         <image name="gray-hatch2" width="34" height="34"/>
-        <image name="icon66-1" width="128" height="128"/>
-        <image name="icon87-1" width="128" height="128"/>
         <image name="new-small" width="16" height="16"/>
         <image name="sequence-type-repeat" width="32" height="32"/>
         <image name="settled" width="17" height="17"/>

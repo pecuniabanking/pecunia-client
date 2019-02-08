@@ -159,7 +159,7 @@ extension NSDecimalNumber : Comparable {
             // Get the second MSD as this is used to determine where we round to.
             // If the MSD is however 5 or more then we just round that up.
             NSDecimalSubtract(&result, &second, &value, .down);
-            value = result;
+            second = result;
             let power = 2 - Int16(digits);
             NSDecimalMultiplyByPowerOf10(&result, &second, power, .down);
             second = result;

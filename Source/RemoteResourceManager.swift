@@ -17,8 +17,8 @@
  * 02110-1301  USA
  */
 
-let RemoteResourcePath = "http://www.pecuniabanking.de/downloads/resources/"
-let RemoteResourceUpdateInfo = "http://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
+let RemoteResourcePath = "https://www.pecuniabanking.de/downloads/resources/"
+let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resources/updateInfo.xml"
 
 @objc open class RemoteResourceManager : NSObject {
     private static var __once: () = {

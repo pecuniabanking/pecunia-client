@@ -116,31 +116,16 @@ class HBCIBackendCallback : HBCICallback {
     }
 }
 
-
-open class BackendLog: HBCILog {
-    
-    public init() {}
-    
-    open func logError(_ message: String?, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.error, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
-    }
-    open func logWarning(_ message: String?, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.warning, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
-    }
-    open func logInfo(_ message: String?, file:String, function:String, line:Int) {
-        DDLog.doLog(DDLogFlag.info, message: message != nil ? message!:"<no message>", function: function, file: file, line: Int32(line), arguments:[]);
-    }
-}
-
-class HBCIBackend : NSObject {
+class HBCIBackend : NSObject, HBCILog {
     var pluginsRunning = 0;
     var hbciQueriesRunning = 0;
+    var resultWindow = ResultWindowController( );
     
     static var backend:HBCIBackend {
         get {
             if _backend == nil {
                 _backend = HBCIBackend();
-                HBCILogManager.setLog(HBCIConsoleLog());
+                HBCILogManager.setLog(_backend);
                 
                 // load syntax extension
                 if var path = Bundle.main.resourcePath {
@@ -152,7 +137,7 @@ class HBCIBackend : NSObject {
                             try HBCISyntaxExtension.instance.add(path, version: "220");
                         }
                         catch {
-                            logError("Failed to process syntax extension");
+                            _backend.logError("Failed to process syntax extension");
                         }
                     }
                 }
@@ -160,6 +145,22 @@ class HBCIBackend : NSObject {
             return _backend;
         }
     }
+    
+    // Logging
+    func logError(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
+        resultWindow.performSelector(onMainThread: #selector(ResultWindowController.addMessage(_:)), with: message ?? "<nil>", waitUntilDone: false);
+        //resultWindow.addMessage(message != nil ? message!:"<nil>");
+        DDLog.doLog(DDLogFlag.error, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[]);
+    }
+    
+    func logWarning(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
+        DDLog.doLog(DDLogFlag.warning, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[])
+    }
+    
+    func logInfo(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
+        DDLog.doLog(DDLogFlag.info, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[])
+    }
+    
     
     func infoForBankCode(_ bankCode:String) -> InstituteInfo? {
         let (bic, result) = IBANtools.bicForBankCode(bankCode, countryCode: "de");

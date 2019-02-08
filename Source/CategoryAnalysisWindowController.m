@@ -355,8 +355,8 @@ extern void *UserDefaultsBindingContext;
 
     ShortDate *referenceDate;             // The date at which the time points start.
 
-    int rawCount;                  // Raw number of values we have.
-    int selectionSampleCount;      // Number of values we use for the selection graph.
+    NSUInteger rawCount;                  // Raw number of values we have.
+    NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
 
     double *timePoints;                   // Contains for each data point the relative distance in date units from the reference day.
                                           // This array actually contains integer values. The double data type is only
@@ -1190,8 +1190,8 @@ extern void *UserDefaultsBindingContext;
 {
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
-    int startIndex = 0;
-    int endIndex = 0;
+    NSUInteger startIndex = 0;
+    NSUInteger endIndex = 0;
 
     if (rawCount > 0) {
         // Round up to the next actually possible timepoint (and hence the first tick visible in the graph).
@@ -1202,7 +1202,7 @@ extern void *UserDefaultsBindingContext;
         // Scatter plot values go over a range (stepped plot), so even if the actual time point is out of view
         // parts of the area representing the value can still be visible.
         // Bar plots however appear around a time point (+-10%).
-        startIndex = (int)[self findIndexForTimePoint: units];
+        startIndex = [self findIndexForTimePoint: units];
 
         // Since our timePoints array contains double values which not always represent exact int values
         // we round here to the next int for always correct results.
@@ -1777,7 +1777,7 @@ extern void *UserDefaultsBindingContext;
     }
 
     int low = 0;
-    int high = (int)rawCount - 1;
+    int high = (int)(rawCount - 1);
     while (low <= high) {
         int    mid = (low + high) / 2;
         NSUInteger midPoint = round(timePoints[mid]);
@@ -2222,7 +2222,7 @@ extern void *UserDefaultsBindingContext;
             // Convert the data to the internal representations.
             // We add one to the total number as we need it (mostly) in scatter plots to
             // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-            rawCount = (int)dates.count + (extraEntry ? 1 : 0);
+            rawCount = dates.count + (extraEntry ? 1 : 0);
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
@@ -2280,7 +2280,7 @@ extern void *UserDefaultsBindingContext;
             // Sample data for the selection plot. Use only as many values as needed to fill the window.
             CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
             selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
-            int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
+            NSUInteger datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
 
             // Don't sample the data if there aren't at least twice as many values as needed to show.
             if (datapointsPerSample > 1) {
@@ -2297,7 +2297,7 @@ extern void *UserDefaultsBindingContext;
                 selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
 
                 // Pick the largest value in the sample window as sampled representation.
-                for (int i = 0; i < rawCount; i++) {
+                for (NSUInteger i = 0; i < rawCount; i++) {
                     NSUInteger sampleIndex = i / datapointsPerSample;
                     if (i % datapointsPerSample == 0) {
                         selectionBalances[sampleIndex] = totalBalances[i];
