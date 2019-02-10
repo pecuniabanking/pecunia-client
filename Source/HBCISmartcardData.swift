@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+/*
 public struct HBCICardBankData {
     public var name:String;
     public var bankCode:String;
@@ -20,3 +20,4 @@ public struct HBCICardBankData {
 struct HBCICardKeyData {
     var keyNumber, keyVersion, keyLength, algorithm:UInt8;
 }
+*/

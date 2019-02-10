@@ -148,6 +148,9 @@
 - (IBAction)creditCardSettlements: (id)sender;
 - (IBAction)accountStatements:(id)sender;
 - (IBAction)bankMessages:(id)sender;
+- (IBAction)chipcardData:(id)sender;
+
+- (IBAction)categoryBudgets:(id)sender;
 
 - (void)statementsNotification: (NSNotification *)notification;
 - (BankingCategory *)getBankingRoot;

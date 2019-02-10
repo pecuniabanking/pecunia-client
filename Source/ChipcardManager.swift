@@ -237,6 +237,11 @@ var _manager:ChipcardManager!
         return nil;
     }
     
+    open func writeBankData(_ data:CardBankData) ->Bool {
+        let hbciData = HBCICardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, hostAdd: "", userId: data.userId, commtype: 0);
+        return card.writeBankData(1, data: hbciData);
+    }
+    
     open func readBankData(_ paramString:NSString) ->NSString? {
         let idx = paramString.integerValue;
         

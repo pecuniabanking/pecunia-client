@@ -939,6 +939,14 @@
 		B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
 		B1D1A0DB1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */; };
+		B1E26C49220E1AAD0033603E /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C46220E1AAC0033603E /* BudgetWindowController.m */; };
+		B1E26C4A220E1AAD0033603E /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C46220E1AAC0033603E /* BudgetWindowController.m */; };
+		B1E26C4C220E1AD00033603E /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */; };
+		B1E26C4D220E1AD00033603E /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */; };
+		B1E26C50220F1F140033603E /* ChipcardDataWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */; };
+		B1E26C51220F1F140033603E /* ChipcardDataWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */; };
+		B1E26C5322107FBE0033603E /* ChipcardDataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C5222107FBE0033603E /* ChipcardDataWindow.xib */; };
+		B1E26C5422107FBE0033603E /* ChipcardDataWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C5222107FBE0033603E /* ChipcardDataWindow.xib */; };
 		B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
 		B1E80EC91B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
 		B1E80ECA1B45CF3D00AB45B9 /* ChipcardRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E80EC61B45CF3D00AB45B9 /* ChipcardRequestController.xib */; };
@@ -1744,6 +1752,12 @@
 		B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementListOrder.swift; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1E26C46220E1AAC0033603E /* BudgetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BudgetWindowController.m; sourceTree = "<group>"; };
+		B1E26C48220E1AAC0033603E /* BudgetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BudgetWindowController.h; sourceTree = "<group>"; };
+		B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BudgetWindowController.xib; sourceTree = "<group>"; };
+		B1E26C4E220F1F130033603E /* ChipcardDataWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipcardDataWindowController.h; sourceTree = "<group>"; };
+		B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipcardDataWindowController.m; sourceTree = "<group>"; };
+		B1E26C5222107FBE0033603E /* ChipcardDataWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardDataWindow.xib; sourceTree = "<group>"; };
 		B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlementController.h; sourceTree = "<group>"; };
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
 		B1E3E4BD16BC6DE500DC1638 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
@@ -2247,6 +2261,8 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				B1E26C5222107FBE0033603E /* ChipcardDataWindow.xib */,
+				B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */,
 				011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */,
 				011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */,
 				27E8458919E17D2F0026464E /* About.xib */,
@@ -2888,6 +2904,10 @@
 				27E68C49165CF7DA005EBE66 /* GenerateDataController.m */,
 				B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */,
 				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
+				B1E26C48220E1AAC0033603E /* BudgetWindowController.h */,
+				B1E26C46220E1AAC0033603E /* BudgetWindowController.m */,
+				B1E26C4E220F1F130033603E /* ChipcardDataWindowController.h */,
+				B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -3183,6 +3203,7 @@
 				27A3C0CA17FF15D800FCF8BF /* time-zoom-out.png in Resources */,
 				27516820193B932700FE942F /* check-mark.png in Resources */,
 				27778952173CE22700430EBC /* Colors.acf in Resources */,
+				B1E26C4D220E1AD00033603E /* BudgetWindowController.xib in Resources */,
 				27778953173CE22700430EBC /* help-button.png in Resources */,
 				275AC7E3186B5BDC002E6BED /* graph4.png in Resources */,
 				27778956173CE22700430EBC /* hatch-1.png in Resources */,
@@ -3282,6 +3303,7 @@
 				27AA5666186C389900B113E7 /* distribution-active.png in Resources */,
 				27AA56A2186C562D00B113E7 /* send3-active@2x.png in Resources */,
 				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
+				B1E26C5422107FBE0033603E /* ChipcardDataWindow.xib in Resources */,
 				277789B4173CE22700430EBC /* gray-hatch.png in Resources */,
 				277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */,
 				27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */,
@@ -3555,6 +3577,7 @@
 				27E845F219E17D300026464E /* ImportWindow.xib in Resources */,
 				272F6E7A1955E6A500096734 /* sequence-type-blue.png in Resources */,
 				2765D42A16AAD7C100FF371E /* delete2.png in Resources */,
+				B1E26C4C220E1AD00033603E /* BudgetWindowController.xib in Resources */,
 				2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */,
 				27E845E219E17D300026464E /* Debits.xib in Resources */,
 				2791FBD616CFCA4C00953116 /* delete3.png in Resources */,
@@ -3591,6 +3614,7 @@
 				27AA567D186C3E9100B113E7 /* assign-active.png in Resources */,
 				27E845C619E17D2F0026464E /* AccountStatements.xib in Resources */,
 				27E845D819E17D300026464E /* CategoryMaintenance.xib in Resources */,
+				B1E26C5322107FBE0033603E /* ChipcardDataWindow.xib in Resources */,
 				277D1A701799B26900C0E4DF /* closed-sign.png in Resources */,
 				276D9CA318CB7A06002BEDA8 /* magnify-busy3.png in Resources */,
 				27E845F819E17D300026464E /* MainMenu.xib in Resources */,
@@ -3710,6 +3734,7 @@
 				277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */,
 				277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */,
 				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
+				B1E26C4A220E1AAD0033603E /* BudgetWindowController.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
@@ -3846,6 +3871,7 @@
 				27A6F364178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160517B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEC17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				B1E26C51220F1F140033603E /* ChipcardDataWindowController.m in Sources */,
 				2759D8A81A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AC1A0133FB002AE07E /* Int.swift in Sources */,
@@ -3945,6 +3971,7 @@
 				B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */,
 				B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */,
 				B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */,
+				B1E26C49220E1AAD0033603E /* BudgetWindowController.m in Sources */,
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
@@ -4081,6 +4108,7 @@
 				27A6F363178DCCD70015327B /* NSDictionary+PecuniaAdditions.m in Sources */,
 				2790160417B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEB17C531A700C67EEC /* TransfersCellView.m in Sources */,
+				B1E26C50220F1F140033603E /* ChipcardDataWindowController.m in Sources */,
 				2759D8A71A0133FB002AE07E /* Float.swift in Sources */,
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
 				2759D8AB1A0133FB002AE07E /* Int.swift in Sources */,

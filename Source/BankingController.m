@@ -85,6 +85,8 @@
 #import "AboutWindowController.h"
 #import "AccountStatementsController.h"
 #import "BankMessageWindowController.h"
+#import "BudgetWindowController.h"
+#import "ChipcardDataWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -3594,6 +3596,50 @@ static BankingController *bankinControllerInstance;
     [bankMessageController showWindow:self];
 }
 
+- (IBAction)chipcardData:(id)sender {
+    LogEnter;
+    
+    ChipcardManager *manager = [ChipcardManager manager];
+    
+    NSArray *readers = [[ChipcardManager manager] getReaders];
+    if (readers == nil || readers.count == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP367", nil),
+                        NSLocalizedString(@"AP364", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return;
+    }
+    
+    NSString *readerName = readers.firstObject;
+    if (readerName == nil) {
+        // abort
+        return;
+    } else {
+        NSError *error = NULL;
+        if ([manager requestCardForReader:readerName error: &error]) {
+            CardBankData *data = [manager getBankData];
+            
+            if (data != nil) {
+                ChipcardDataWindowController *controller = [[ChipcardDataWindowController alloc] initWithWindowNibName:@"ChipcardDataWindow"];
+                controller.manager = manager;
+                controller.bankData = data;
+                [NSApp runModalForWindow: [controller window]];
+            }
+        }
+        if (error) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+        }
+    }
+    
+    LogLeave;
+}
+
+- (IBAction)categoryBudgets:(id)sender {
+    BudgetWindowController *controller = [[BudgetWindowController alloc] initWithWindowNibName:@"BudgetWindowController"];
+    [NSApp runModalForWindow: [controller window]];
+    
+}
+
 - (void)migrate {
     LogEnter;
 
@@ -3659,6 +3705,10 @@ static BankingController *bankinControllerInstance;
             }
             
             // Synchronize user
+            if (![[user.bankURL substringToIndex:5] isEqualToString:@"https"]) {
+                user.bankURL = [@"https://" stringByAppendingString:user.bankURL];
+            }
+            
             NSError *error = [HBCIBackend.backend syncBankUser:user];
             if (error != nil) {
                 NSAlert *alert = [NSAlert alertWithError: error];

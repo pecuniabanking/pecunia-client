@@ -992,6 +992,16 @@ static ShortDate *endReportDate = nil;
     }
 }
 
+- (NSDecimalNumber *)budgetForPeriod:(NSNumber *)period {
+    NSSet *budgets = [self mutableSetValueForKey:@"budget"];
+    for (CategoryBudget *budget in budgets) {
+        if ([budget.period isEqual:period]) {
+            return budget.budget;
+        }
+    }
+    return nil;
+}
+
 + (BankingCategory *)bankRoot {
     NSError *error = nil;
     if (bankRootSingleton) {

@@ -294,6 +294,9 @@ AP366 = "Der Chipkartenleser %@ ist nicht mehr verfügbar. Bitte prüfen Sie ob 
 AP367 = "Kein Kartenleser gefunden";
 AP368 = "Chipkarten-Fehler";
 AP369 = "Fehler bei der PIN-Überprüfung";
+AP370 = "Möchten Sie die Daten auf der Chipkarte mit den vorliegenden Daten überschreiben?";
+AP371 = "Die Chipkarte wurde erfolgreich aktualisiert";
+AP372 = "Die Chipkarte konnte nicht geschrieben werden. Details finden Sie im Fehlerlog";
 
 // Transfers (sent statements)
 // AP400..AP449

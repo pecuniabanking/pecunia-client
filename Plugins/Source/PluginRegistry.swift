@@ -195,7 +195,8 @@ import WebKit;
 
             if (account.latestTransferDate != nil) {
                 let startDate = Date(timeInterval: -2592000, since: account.latestTransferDate);
-                if fromDate == nil || startDate.isBefore(fromDate!) {
+                //if fromDate == nil || startDate.isBefore(fromDate!) {
+                if fromDate == nil || startDate.compare(fromDate!) == .orderedAscending {
                     fromDate = startDate;
                 }
             }
