@@ -160,7 +160,11 @@ class HBCIBackend : NSObject, HBCILog {
     func logInfo(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
         DDLog.doLog(DDLogFlag.info, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[])
     }
-    
+
+    func logDebug(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
+        DDLog.doLog(DDLogFlag.debug, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[])
+    }
+
     
     func infoForBankCode(_ bankCode:String) -> InstituteInfo? {
         let (bic, result) = IBANtools.bicForBankCode(bankCode, countryCode: "de");
@@ -1212,8 +1216,15 @@ class HBCIBackend : NSObject, HBCILog {
         var hbciAccounts = Array<HBCIAccount>();
         var bqResult = Array<BankQueryResult>();
         
+        defer {
+            DispatchQueue.main.async(execute: {
+                self.hbciQueriesRunning -= 1;
+                self.checkGetStatementsFinalization();
+            });
+        }
+        
         guard let bankUser = accounts.first?.defaultBankUser() else {
-            logError("No bank user defined for account \(accounts.first?.accountNumber() ?? "<unknown account>")");
+            logError("Keine Bankkennung für Konto \(accounts.first?.accountNumber() ?? "<unknown account>") gefunden");
             return;
         }
         
@@ -1245,110 +1256,138 @@ class HBCIBackend : NSObject, HBCILog {
             }
             
             let dialog = try HBCIDialog(user: user);
-            if let result = try dialog.dialogInit() {
-                if result.isOk() {
-                    defer {
-                        _ = dialog.dialogEnd();
-                    }
-                    
-                    for account in accounts {
-                        if let msg = HBCICustomMessage.newInstance(dialog) {
-                            let hbciAccount = HBCIAccount(account: account);
-                            var dateFrom:Date?
-                            
-                            // find out how many days to read from the past
-                            var maxStatDays = 0;
-                            if UserDefaults.standard.bool(forKey: "limitStatsAge") {
-                                maxStatDays = UserDefaults.standard.integer(forKey: "maxStatDays");
-                            }
-                            
-                            if account.latestTransferDate == nil && maxStatDays > 0 {
-                                account.latestTransferDate = Date(timeInterval: TimeInterval(-86400 * maxStatDays), since: Date());
-                            }
-                            
-                            if let latestDate = account.latestTransferDate {
-                                let fromDate = Date(timeInterval: -605000, since: latestDate);
-                                dateFrom = fromDate;
-                            }
-                            
-                            if isTransactionSupportedForAccount(TransactionType.ccStatements, account: account) {
-                                // credit card statements
-                                if let order = CCStatementOrder(message: msg, account: hbciAccount) {
-                                    
-                                    order.dateFrom = dateFrom;
-                                    guard order.enqueue() else {
-                                        continue;
-                                    }
-                                    
-                                    if try msg.send() {
-                                        for order in msg.orders {
-                                            if let order = order as? CCStatementOrder {
-                                                if let statements = order.statements {
-                                                    let result = convertStatements(order.account, statements:statements);
-                                                    result.account = account;
-                                                    bqResult.append(result);
-                                                } else {
-                                                    logError("Credit card statements could not be retrieved for account \(order.account.number)");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
-                                // normal statements
-                                if let order = HBCIStatementsOrder(message: msg, account: hbciAccount) {
-                                    
-                                    order.dateFrom = dateFrom;
-                                    guard order.enqueue() else {
-                                        continue;
-                                    }
-                                    
-                                    if try msg.send() {
-                                        for order in msg.orders {
-                                            if let order = order as? HBCIStatementsOrder {
-                                                if let statements = order.statements {
-                                                    let result = convertStatements(order.account, statements:statements);
-                                                    result.account = account;
-                                                    bqResult.append(result);
-                                                } else {
-                                                    logError("Statements could not be retrieved for account \(order.account.number)");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if isTransactionSupportedForAccount(TransactionType.accountBalance, account: account) {
-                                // Statement are not supported but Account Balance
-                                if let order = HBCIBalanceOrder(message: msg, account: hbciAccount) {
-
-                                    guard order.enqueue() else {
-                                        continue;
-                                    }
-
-                                    if try msg.send() {
-                                        if let balance = order.bookedBalance {
-                                            let result = BankQueryResult();
-                                            
-                                            result.bankCode = hbciAccount.bankCode;
-                                            result.accountNumber = hbciAccount.number;
-                                            result.accountSuffix = hbciAccount.subNumber;
-                                            
-                                            result.balance = balance.value;
-                                            result.account = account;
-                                            bqResult.append(result);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            
+            guard let result = try dialog.dialogInit() else {
+                logError("Dialoginitialisierung für Bankkennung \(bankUser.userId) fehlgeschlagen");
+                return;
+            }
+            
+            guard result.isOk() else {
+                logError("Dialogausführung für Bankkennung \(bankUser.userId) fehlgeschlagen");
+                return;
+            }
+            
+            defer {
+                _ = dialog.dialogEnd();
+            }
+            
+            handleBankMessages(bankCode: user.bankCode, messages: result.bankMessages());
+            
+            for account in accounts {
+                guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                    logError("Fehler beim Erstellen der Umsatznachricht zu Konto \(account.accountNumber()!)");
+                    continue;
                 }
-            } else {
-                logError("Statements could not be retrieved");
+                
+                let hbciAccount = HBCIAccount(account: account);
+                var dateFrom:Date?
+                
+                // find out how many days to read from the past
+                var maxStatDays = 0;
+                if UserDefaults.standard.bool(forKey: "limitStatsAge") {
+                    maxStatDays = UserDefaults.standard.integer(forKey: "maxStatDays");
+                }
+                
+                if account.latestTransferDate == nil && maxStatDays > 0 {
+                    account.latestTransferDate = Date(timeInterval: TimeInterval(-86400 * maxStatDays), since: Date());
+                }
+                
+                if let latestDate = account.latestTransferDate {
+                    let fromDate = Date(timeInterval: -605000, since: latestDate);
+                    dateFrom = fromDate;
+                }
+                
+                if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
+                    // normal statements
+                    guard let order = HBCIStatementsOrder(message: msg, account: hbciAccount) else {
+                        logError("Fehler beim Aufbau der Umsatznachricht zu Konto \(account.accountNumber()!)");
+                        continue;
+                    }
+                    order.dateFrom = dateFrom;
+                    guard order.enqueue() else {
+                        logError("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber()!)")
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logError("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber()!)")
+                        continue;
+                    }
+                    for order in msg.orders {
+                        guard let order = order as? HBCIStatementsOrder else {
+                            logError("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber()!)")
+                            continue;
+                        }
+                        guard let statements = order.statements else {
+                            logError("Kontoumsätze für Konto \(account.accountNumber()!) konnten nicht ermittelt werden")
+                            continue;
+                        }
+                        let result = convertStatements(order.account, statements:statements);
+                        result.account = account;
+                        bqResult.append(result);
+                    }
+/*                } else if isTransactionSupportedForAccount(TransactionType.ccStatements, account: account) {
+                    // credit card statements
+                    guard let order = CCStatementOrder(message: msg, account: hbciAccount) else {
+                        logError("Fehler beim Aufbau der Umsatznachricht Kreditkarte zu Konto \(account.accountNumber())");
+                        continue;
+                    }
+                    order.dateFrom = dateFrom;
+                    guard order.enqueue() else {
+                        logError("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber())")
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logError("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber())")
+                        continue;
+                    }
+                    for order in msg.orders {
+                        guard let order = order as? CCStatementOrder else {
+                            logError("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber())")
+                            continue;
+                        }
+                        guard let statements = order.statements else {
+                            logError("Kontoumsätze für Konto \(account.accountNumber()) konnten nicht ermittelt werden")
+                            continue;
+                        }
+                        let result = convertStatements(order.account, statements:statements);
+                        result.account = account;
+                        bqResult.append(result);
+                    } */
+                } else if isTransactionSupportedForAccount(TransactionType.accountBalance, account: account) {
+                    // Statement are not supported but Account Balance
+                    guard let order = HBCIBalanceOrder(message: msg, account: hbciAccount) else {
+                        logError("Fehler beim Aufbau der Saldonachricht zu Konto \(account.accountNumber()!)");
+                        continue;
+                    }
+                    guard order.enqueue() else {
+                        logError("Fehler beim Registrieren der Saldonachricht zu Konto \(account.accountNumber()!)")
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logError("Fehler beim Senden der Saldonachricht zu Konto \(account.accountNumber()!)")
+                        continue;
+                    }
+                    guard let balance = order.bookedBalance else {
+                        logError("Fehler beim Ermitteln des Saldos zu Konto \(account.accountNumber()!)")
+                        continue;
+                    }
+                    let result = BankQueryResult();
+                    
+                    result.bankCode = hbciAccount.bankCode;
+                    result.accountNumber = hbciAccount.number;
+                    result.accountSuffix = hbciAccount.subNumber;
+                    
+                    result.balance = balance.value;
+                    result.account = account;
+                    bqResult.append(result);
+                } else {
+                    logError("Konto \(account.accountNumber()!) unterstützt weder Umsatz- noch Saldoabruf")
+                    continue;
+                }
             }
         }
         catch {
-            
+            logError("Beim Ermitteln der Umsätze zu Bankkennung \(bankUser.userId) sind Fehler aufgetreten");
         }
         
         for result in bqResult {
@@ -1363,8 +1402,8 @@ class HBCIBackend : NSObject, HBCILog {
             // important: nofifications must be sent in main thread!
             let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: bqResult);
             NotificationCenter.default.post(notification);
-            self.hbciQueriesRunning -= 1;
-            self.checkGetStatementsFinalization();
+//            self.hbciQueriesRunning -= 1;
+//            self.checkGetStatementsFinalization();
         });
     }
     
@@ -2193,5 +2232,52 @@ class HBCIBackend : NSObject, HBCILog {
         catch {}
         return nil;
     }
-    
+ 
+    func handleBankMessages(bankCode: String, messages:Array<HBCIBankMessage>) {
+        guard let context = MOAssistant.shared().context else {
+            return;
+        }
+        let request = NSFetchRequest<NSFetchRequestResult>.init();
+        var title = NSLocalizedString("AP502", comment: "");
+        request.predicate = NSPredicate(format: "bankCode = %@", bankCode);
+        request.entity = NSEntityDescription.entity(forEntityName: "BankUser", in: context);
+        do {
+            let bankUsers = try context.fetch(request) as! [BankUser];
+            if bankUsers.count == 0 {
+                return;
+            }
+            let user = bankUsers[0];
+            if user.bankName != nil {
+                title += user.bankName;
+            }
+        }
+        catch {
+            return;
+        }
+        
+        // remove bank messages older than 4 weeks
+        request.entity = NSEntityDescription.entity(forEntityName: "BankMessage", in: context);
+        request.predicate = NSPredicate(format: "date < %@", NSDate(timeIntervalSinceNow: -2500000));
+        do {
+            let oldMessages = try context.fetch(request) as! [BankMessage];
+            for message in oldMessages {
+                context.delete(message);
+            }
+        }
+        catch let error as NSError {
+            let alert = NSAlert(error: error);
+            alert.runModal();
+            return;
+        }
+        // write bank messages to database
+        for message in messages {
+            let msg = NSEntityDescription.insertNewObject(forEntityName: "BankMessage", into: context) as! BankMessage;
+            msg.bankCode = bankCode;
+            msg.date = Date();
+            msg.message = message.message;
+        }
+        if messages.count > 0 {
+            SystemNotification.showMessage("Es sind neue Nachrichten von Ihrer Bank verfügbar", withTitle: "Nachricht von der Bank");
+        }
+    }
 }

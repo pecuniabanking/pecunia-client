@@ -12,7 +12,7 @@
 }
 
 @property(nonatomic, retain) IBOutlet NSTextView *textView;
-@property(nonatomic, retain) IBOutlet NSAttributedString *content;
+@property(nonatomic, retain)          NSAttributedString *content;
 
 
 @end

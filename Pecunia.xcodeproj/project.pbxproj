@@ -933,6 +933,7 @@
 		B1AFC67217F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
 		B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
+		B1C56D4F2218A871006D9C6E /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -2761,8 +2762,6 @@
 		B1C7B18A130B11070091CD72 /* Transfers */ = {
 			isa = PBXGroup;
 			children = (
-				011DADD71EA373D500A44EFE /* BankMessageWindowController.h */,
-				011DADD81EA373D500A44EFE /* BankMessageWindowController.m */,
 				27E662B215A09BD9002F9277 /* TransferTemplatesListView.h */,
 				27E662B315A09BD9002F9277 /* TransferTemplatesListView.m */,
 				27E662B415A09BD9002F9277 /* TransferTemplateListViewCell.h */,
@@ -2908,6 +2907,8 @@
 				B1E26C46220E1AAC0033603E /* BudgetWindowController.m */,
 				B1E26C4E220F1F130033603E /* ChipcardDataWindowController.h */,
 				B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */,
+				011DADD71EA373D500A44EFE /* BankMessageWindowController.h */,
+				011DADD81EA373D500A44EFE /* BankMessageWindowController.m */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -3364,6 +3365,7 @@
 				27E8464F19E181280026464E /* Preferences.xib in Resources */,
 				27E8465019E181280026464E /* PurposeSplitWindow.xib in Resources */,
 				27E8465119E181280026464E /* ResultWindow.xib in Resources */,
+				B1C56D4F2218A871006D9C6E /* BankMessageWindow.xib in Resources */,
 				27E8465219E181280026464E /* SigningOptions.xib in Resources */,
 				27E8465319E181280026464E /* StatementDetails.xib in Resources */,
 				27E8465419E181280026464E /* StatementsListViewCell.xib in Resources */,

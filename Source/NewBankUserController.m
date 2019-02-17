@@ -779,6 +779,7 @@
         return;
     }
 
+    /*
     if (MessageLog.log.isComTraceActive == YES) {
         LogInfo(@"Bankparameterdaten:\n%@", descr);
         //LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
@@ -789,6 +790,9 @@
         [MessageLog.log sendLog];
         MessageLog.log.isComTraceActive = NO;
     }
+    */
+    LogInfo(@"Bankparameterdaten:\n%@", descr);
+    [MessageLog.log sendLog];
 }
 
 - (IBAction)synchronize: (id)sender {

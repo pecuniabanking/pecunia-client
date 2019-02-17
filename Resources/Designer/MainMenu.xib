@@ -710,6 +710,12 @@ Unterstütze die Entwicklung!</string>
                                     <action selector="editBankUsers:" target="235" id="1120"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Banknachrichten..." id="D25-BQ-6T9">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="bankMessages:" target="235" id="f6L-OP-x62"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

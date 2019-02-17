@@ -144,9 +144,11 @@
             // Going to switch off the com trace. Remove logger and log file.
             NSArray *filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
             NSError *error;
-            if (![NSFileManager.defaultManager removeItemAtPath: filePaths[0] error: &error]) {
-                // Removing the file faild. Take a notice.
-                LogError(@"Couldn't delete trace log at %@. The error is: %@", filePaths[0], error.localizedDescription);
+            if ([filePaths count] > 0) {
+                if (![NSFileManager.defaultManager removeItemAtPath: filePaths[0] error: &error]) {
+                    // Removing the file faild. Take a notice.
+                    LogError(@"Couldn't delete trace log at %@. The error is: %@", filePaths[0], error.localizedDescription);
+                }
             }
 
             [DDLog removeLogger: comTraceLogger];
@@ -509,10 +511,12 @@
     // The com trace if active.
     if (isComTraceActive) {
         filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
-        if ([NSFileManager.defaultManager fileExistsAtPath: filePaths[0]]) {
-            NSURL    *traceURL = [NSURL fileURLWithPath: filePaths[0]];
-            NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Com Trace.zip"];
-            [self compressFileAndAndAddToItems: mailItems sourceFile: traceURL targetFile: [NSURL fileURLWithPath: zip]];
+        if ([filePaths count] > 0) {
+            if ([NSFileManager.defaultManager fileExistsAtPath: filePaths[0]]) {
+                NSURL    *traceURL = [NSURL fileURLWithPath: filePaths[0]];
+                NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Com Trace.zip"];
+                [self compressFileAndAndAddToItems: mailItems sourceFile: traceURL targetFile: [NSURL fileURLWithPath: zip]];
+            }
         }
     }
 
