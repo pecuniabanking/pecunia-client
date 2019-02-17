@@ -89,7 +89,7 @@ class WebClient: WebView, WebViewJSExport {
         alert.messageText = NSString.localizedStringWithFormat(NSLocalizedString("AP1800", comment: ""),
             account, pluginDescription) as String;
         alert.informativeText = message;
-        alert.alertStyle = .WarningAlertStyle;
+        alert.alertStyle = .Warning;
         alert.runModal();
     }
 
@@ -149,6 +149,26 @@ class WebClient: WebView, WebViewJSExport {
                         statement.purpose = purpose;
                     }
 
+                    if let remoteName = jsonStatement["remoteName"] as? String {
+                        statement.remoteName = remoteName;
+                    }
+
+                    if let remoteAccount = jsonStatement["remoteAccount"] as? String {
+                        statement.remoteAccount = remoteAccount;
+                    }
+
+                    if let remoteBankCode = jsonStatement["remoteBankCode"] as? String {
+                        statement.remoteBankCode = remoteBankCode;
+                    }
+
+                    if let remoteIBAN = jsonStatement["remoteIBAN"] as? String {
+                        statement.remoteIBAN = remoteIBAN;
+                    }
+
+                    if let remoteBIC = jsonStatement["remoteBIC"] as? String {
+                        statement.remoteBIC = remoteBIC;
+                    }
+
                     if let value = jsonStatement["value"] as? String  where value.characters.count > 0 {
                         // Because there is a setValue function in NSObject we cannot write to the .value
                         // member in BankStatement. Using a custom setter would make this into a function
@@ -172,6 +192,9 @@ class WebClient: WebView, WebViewJSExport {
                 // Explicitly sort by date, as it might happen that statements have a different
                 // sorting (e.g. by valuta date).
                 queryResult.statements.sortInPlace({ $0.date < $1.date });
+                if let value = queryResult.statements.last as BankStatement? {
+                    queryResult.account?.latestTransferDate = value.date;
+                }
                 queryResults.append(queryResult);
             }
             completion(queryResults);
@@ -378,7 +401,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     }
 
     internal func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
-        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString);
+        jsLogger.logVerbose("(*) Finished loading frame from URL: " + frame.dataSource!.response.URL!.absoluteString!);
         if webClient.redirecting {
             webClient.redirecting = false;
             return;

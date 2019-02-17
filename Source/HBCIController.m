@@ -1073,7 +1073,7 @@ static HBCIController *controller = nil;
                 statement.saldo = balance;
                 balance = [balance decimalNumberBySubtracting: statement.value];
             }
-        } else {
+        } else if ([queryResult.account.plugin isEqualToString: @"hbci"]) {
             // Standard Statements.
             // Saldo of the last statement which is not preliminary becomes the current saldo.
             NSInteger i = queryResult.statements.count - 1;
