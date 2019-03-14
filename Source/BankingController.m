@@ -925,10 +925,11 @@ static BankingController *bankinControllerInstance;
 
     // get Proposals
     for (result in resultList) {
+        if ([result.statements count] > 0) {
+            noStatements = NO;
+        }
         if (result.isImport) {
-            NSArray *stats = result.statements;
-            if ([stats count] > 0) {
-                noStatements = NO;
+            if ([result.statements count] > 0) {
                 [result.account evaluateQueryResult: result];
             }
             isImport = YES;
@@ -2508,8 +2509,10 @@ static BankingController *bankinControllerInstance;
                     return NO;
                 }
             } else {
-                if ([item action] == @selector(addStatement:)) {
-                    return NO;
+                if (account.noAutomaticQuery.boolValue == NO) {
+                    if ([item action] == @selector(addStatement:)) {
+                        return NO;
+                    }
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
                     /* todo:
@@ -3589,11 +3592,24 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)bankMessages:(id)sender {
     LogEnter;
+    /*
+    NSString *filePath = [NSBundle.mainBundle.resourcePath stringByAppendingString:@"/TestMatrixCode-001.txt"];
+    NSData *code = [NSData dataWithContentsOfFile:filePath];
+    NSString *s = [code base64EncodedStringWithOptions:0];
+    
+    NSData *c = [[NSData alloc] initWithBase64EncodedString:s options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    */
+    /*
+    PhotoTanWindowController *controller = [[PhotoTanWindowController alloc] initWithCode:code message:@"test"];
+    [NSApp runModalForWindow:[controller window]];
+    */
     
     if (bankMessageController == nil) {
         bankMessageController = [[BankMessageWindowController alloc] init];
     }
     [bankMessageController showWindow:self];
+    
+    LogLeave;
 }
 
 - (IBAction)chipcardData:(id)sender {

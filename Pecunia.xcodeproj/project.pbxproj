@@ -934,6 +934,11 @@
 		B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
 		B1C56D4F2218A871006D9C6E /* BankMessageWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */; };
+		B1C56D53222B2629006D9C6E /* PhotoTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C56D52222B2629006D9C6E /* PhotoTanWindow.xib */; };
+		B1C56D54222B2629006D9C6E /* PhotoTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C56D52222B2629006D9C6E /* PhotoTanWindow.xib */; };
+		B1C56D57222B2BF6006D9C6E /* PhotoTanWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C56D56222B2BF6006D9C6E /* PhotoTanWindowController.swift */; };
+		B1C56D58222B2BF6006D9C6E /* PhotoTanWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C56D56222B2BF6006D9C6E /* PhotoTanWindowController.swift */; };
+		B1C56D622238402E006D9C6E /* HBCI4Swift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B11E61451C0125770031F368 /* HBCI4Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -1073,6 +1078,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B1C56D622238402E006D9C6E /* HBCI4Swift.framework in Copy Frameworks */,
 				2797E22319F2863B00CE9B88 /* CocoaLumberjack.framework in Copy Frameworks */,
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 			);
@@ -1745,6 +1751,8 @@
 		B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
+		B1C56D52222B2629006D9C6E /* PhotoTanWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoTanWindow.xib; sourceTree = "<group>"; };
+		B1C56D56222B2BF6006D9C6E /* PhotoTanWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoTanWindowController.swift; sourceTree = "<group>"; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -2282,6 +2290,7 @@
 				27E8459719E17D2F0026464E /* CategoryPeriods.xib */,
 				27E8459819E17D2F0026464E /* CategoryReporting.xib */,
 				27E8459919E17D2F0026464E /* ChipTanWindow.xib */,
+				B1C56D52222B2629006D9C6E /* PhotoTanWindow.xib */,
 				27E8459A19E17D2F0026464E /* CreditCardSettlement.xib */,
 				27E8459B19E17D2F0026464E /* Debits.xib */,
 				27E8459C19E17D2F0026464E /* DebitsListViewCell.xib */,
@@ -2858,6 +2867,7 @@
 				B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */,
 				279C166318E8317600A4306F /* LockViewController.h */,
 				279C166418E8317600A4306F /* LockViewController.m */,
+				B1C56D56222B2BF6006D9C6E /* PhotoTanWindowController.swift */,
 			);
 			name = Password;
 			sourceTree = "<group>";
@@ -3036,6 +3046,7 @@
 				27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
+				B1C56D612235BBB2006D9C6E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3273,6 +3284,7 @@
 				27778991173CE22700430EBC /* hide.png in Resources */,
 				271861571971846000229978 /* settled@2x.png in Resources */,
 				27778992173CE22700430EBC /* hide@2x.png in Resources */,
+				B1C56D54222B2629006D9C6E /* PhotoTanWindow.xib in Resources */,
 				276D9C9A18CB79FF002BEDA8 /* magnify-busy1.png in Resources */,
 				27778997173CE22700430EBC /* Collections in Resources */,
 				275AC7E1186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
@@ -3451,6 +3463,7 @@
 				27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */,
 				2732F6AC186B202400809CF2 /* overview@2x.png in Resources */,
 				2732F6A3186B084B00809CF2 /* home-active.png in Resources */,
+				B1C56D53222B2629006D9C6E /* PhotoTanWindow.xib in Resources */,
 				276D9C9F18CB79FF002BEDA8 /* magnify-busy2@2x.png in Resources */,
 				27AA5659186C330A00B113E7 /* graph3.png in Resources */,
 				27E8460C19E17D300026464E /* SigningOptions.xib in Resources */,
@@ -3643,6 +3656,20 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Checking keys in localizable strings\";\n\nc=`expr $SCRIPT_INPUT_FILE_COUNT - 1`\nfor i in $(seq 0 $c)\ndo\n  source=SCRIPT_INPUT_FILE_$i\n  source=${!source}\n\n  count=0\n  dupes=`cut -d' ' -f1 \"$source\" | sort | uniq -d`\n  while read -r line; do\n    if [ \"$line\" == \" \" ]; then\n      continue\n    fi\n    if [ \"$line\" == \"//\" ]; then\n      continue\n    fi\n    count=`expr $count + 1`\n    echo \"error: $line used multiple times\"\n  done <<< $dupes\n\n  if [ $count -ne 0 ]; then\n    exit 1;\n  fi\n\n  i=`expr $i + 1`\ndone";
 		};
+		B1C56D612235BBB2006D9C6E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "test -e \"$SRCROOT/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -eq 0 ]\nthen\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -ne 0 ]\nthen\ncp -n \"$SRCROOT/Resources/hbci_cc_300.xml\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nfi\nfi";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3740,6 +3767,7 @@
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
 				2759D8B41A0133FB002AE07E /* String.swift in Sources */,
+				B1C56D58222B2BF6006D9C6E /* PhotoTanWindowController.swift in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
 				B13CE5701C12397D00B5B750 /* HBCIBackend.swift in Sources */,
@@ -3977,6 +4005,7 @@
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
+				B1C56D57222B2BF6006D9C6E /* PhotoTanWindowController.swift in Sources */,
 				2759D8B31A0133FB002AE07E /* String.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */,

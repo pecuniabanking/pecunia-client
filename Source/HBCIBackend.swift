@@ -90,15 +90,30 @@ class HBCIBackendCallback : HBCICallback {
     
     init() {}
     
-    func getTan(_ user:HBCIUser, challenge:String?, challenge_hdd_uc:String?) throws ->String {
+    func getTan(_ user:HBCIUser, challenge:String?, challenge_hhd_uc:String?, type:HBCIChallengeType) throws ->String {
         let bankUser = BankUser.find(withId: user.userId, bankCode:user.bankCode);
-        if challenge_hdd_uc != nil {
-            // Flicker code.
-            if let controller = ChipTanWindowController(code: challenge_hdd_uc!, message: challenge) {
-                if NSApp.runModal(for: (controller.window!)) == 0 {
-                    return controller.tan;
+        if let challenge_hhd_uc = challenge_hhd_uc {
+            if type == .flicker {
+                // Flicker code.
+                if let controller = ChipTanWindowController(code: challenge_hhd_uc, message: challenge) {
+                    if NSApp.runModal(for: (controller.window!)) == 0 {
+                        return controller.tan;
+                    } else {
+                        throw HBCIError.userAbort;
+                    }
+                }
+            }
+            if type == .photo {
+                logInfo("Challenge: "+challenge_hhd_uc);
+                if let data = NSData(base64Encoded: challenge_hhd_uc, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) {
+                    let controller = PhotoTanWindowController(data as NSData, message: challenge);
+                    if NSApp.runModal(for: (controller.window!)) == 0 {
+                        return controller.tan ?? "";
+                    } else {
+                        throw HBCIError.userAbort;
+                    }
                 } else {
-                    throw HBCIError.userAbort;
+                    logInfo("Data from string was not successful");
                 }
             }
         }
@@ -139,6 +154,8 @@ class HBCIBackend : NSObject, HBCILog {
                         catch {
                             _backend.logError("Failed to process syntax extension");
                         }
+                    } else {
+                        _backend.logDebug("Failed to load syntax extension at" + path);
                     }
                 }
             }
@@ -149,7 +166,6 @@ class HBCIBackend : NSObject, HBCILog {
     // Logging
     func logError(_ message: String?, file function: String = #function, function file: String = #file, line: Int = #line) {
         resultWindow.performSelector(onMainThread: #selector(ResultWindowController.addMessage(_:)), with: message ?? "<nil>", waitUntilDone: false);
-        //resultWindow.addMessage(message != nil ? message!:"<nil>");
         DDLog.doLog(DDLogFlag.error, message:  message != nil ? message!:"<nil>", function: function, file: file, line: Int32(line), arguments:[]);
     }
     
@@ -676,23 +692,36 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func getBalanceForAccount(_ bankAccount:BankAccount) -> NSError? {
+        var error = false;
+        
         guard let bankUser = bankAccount.defaultBankUser() else {
-            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            logError("Konto \(bankAccount.accountNumber()!) konnte nicht verarbeitet werden da keine Bankkennung existiert");
             return NSError.genericHBCI;
+        }
+        
+        defer {
+            if error {
+                logError("Saldo für Konto \(bankAccount.accountNumber()!) konnte nicht ermittelt werden");
+            }
         }
         
         do {
             try _ = processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
+                    logInfo("Failed to create HBCI message");
+                    error = true;
                     return NSError.genericHBCI;
                 }
                 if let order = HBCIBalanceOrder(message: msg, account: account) {
                     guard order.enqueue() else {
+                        logInfo("Failed to enqueue order");
+                        error = true;
                         return NSError.genericHBCI;
                     }
                     guard msg.orders.count > 0 else {
+                        logInfo("Failed to create order");
+                        error = true;
                         return NSError.genericHBCI;
                     }
                     if try msg.send() {
@@ -701,56 +730,12 @@ class HBCIBackend : NSObject, HBCILog {
                             return nil;
                         }
                     } else {
-                        logError("Failed to get balance for account \(account.number)");
+                        error = true;
                         return NSError.genericHBCI;
                     }
                 }
                 return nil;
             }
-            
-            /*
-            let user = try HBCIUser(bankUser: bankUser);
-            try setupSecurityMethod(bankUser, user: user);
-
-            if user.securityMethod.code == .PinTan {
-                user.tanMethod = user.parameters.getTanMethods().first?.secfunc;
-
-                // get PIN
-                let request = AuthRequest();
-                user.pin = request.getPin(user.bankCode, userId: user.userId);
-            }
-            
-            let dialog = try HBCIDialog(user: user);
-            guard let result = try dialog.dialogInit() else {
-                logError("Could not initialize dialog for user \(user.userId)");
-                return NSError.genericHBCI;
-            }
-            
-            if result.isOk() {
-                let account = HBCIAccount(account: bankAccount);
-                guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
-                    return NSError.genericHBCI;
-                }
-                if let order = HBCIBalanceOrder(message: msg, account: account) {
-                    order.enqueue();
-                    guard msg.orders.count > 0 else {
-                        return NSError.genericHBCI;
-                    }
-                    if try msg.send() {
-                        if let balance = order.bookedBalance {
-                            bankAccount.updateBalanceWithValue(balance.value);
-                            return nil;
-                        }
-                    } else {
-                        logError("Failed to get balance for account \(account.number)");
-                        return NSError.genericHBCI;
-                    }
-                }
-                dialog.dialogEnd();
-            }
-            */
-            
         }
         catch HBCIError.userAbort {
             // do nothing
@@ -769,29 +754,43 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func getCCSettlementListForAccount(_ bankAccount:BankAccount) ->CCSettlementList? {
+        var error = false;
+        
         guard let bankUser = bankAccount.defaultBankUser() else {
-            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            logError("Konto \(bankAccount.accountNumber()!) konnte nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;
+        }
+        
+        defer {
+            if error {
+                logError("Kreditkartenabrechnungsliste für Konto \(bankAccount.accountNumber()!) konnte nicht ermittelt werden");
+            }
         }
 
         do {
             try _ = processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
+                
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
+                    logInfo("Failed to create HBCI message");
+                    error = true;
                     return nil;
                 }
                 if let order = CCSettlementListOrder(message: msg, account: account) {
                     guard order.enqueue() else {
+                        logInfo("Failed to enqueue order");
+                        error = true;
                         return nil;
                     }
                     guard msg.orders.count > 0 else {
+                        logInfo("Failed to create order");
+                        error = true;
                         return nil;
                     }
                     if try msg.send() {
                         return order.settlementList;
                     } else {
-                        logError("Failed to get credit card settlement list for account \(account.number)");
+                        error = true;
                         return nil;
                     }
                 }
@@ -819,29 +818,43 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func getCreditCardSettlement(_ settleID:String, bankAccount:BankAccount) ->CreditCardSettlement? {
+        var error = false;
+        
         guard let bankUser = bankAccount.defaultBankUser() else {
             logError("Skip account \(bankAccount.accountNumber()), no user found");
             return nil;
+        }
+        
+        defer {
+            if error {
+                logError("Kreditkartenabrechnung für Konto \(bankAccount.accountNumber()!) konnte nicht ermittelt werden");
+            }
         }
         
         do {
             return try processHBCIDialog(bankUser) { user, dialog in
                 let account = HBCIAccount(account: bankAccount);
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
+                    logInfo("Failed to create HBCI message");
+                    error = true;
                     return nil;
                 }
                 if let order = CCSettlementOrder(message: msg, account: account, settleID:settleID) {
                     guard order.enqueue() else {
+                        logInfo("Failed to enqueue order");
+                        error = true;
                         return nil;
                     }
                     guard msg.orders.count > 0 else {
+                        logInfo("Failed to create order");
+                        error = true;
                         return nil;
                     }
                     if try msg.send() {
                         return order.settlement;
                     } else {
-                        logError("Failed to get credit card settlement for account \(account.number)");
+                        logInfo("Failed to get credit card settlement for account \(account.number)");
+                        error = true;
                         return nil;
                     }
                 }
@@ -947,7 +960,7 @@ class HBCIBackend : NSObject, HBCILog {
         // Organize accounts by user in order to get all statements for all accounts of a given user.
         for account in accounts {
             guard let user = account.defaultBankUser() else {
-                logError("Skip account \(account.accountNumber()), no user found");
+                logError("Konto \(account.accountNumber()!) kann nicht verarbeitet werden da keine Bankkennung existiert");
                 continue;
             }
             
@@ -1127,6 +1140,18 @@ class HBCIBackend : NSObject, HBCILog {
                 stat.transactionText = item.transactionText;
                 stat.isStorno = NSNumber(value: (item.isCancellation ?? false));
                 stat.isPreliminary = NSNumber(value: false);
+                
+                if let ccNumber = item.ccNumberUms {
+                    stat.ccNumberUms = ccNumber;
+                    stat.ccChargeKey = item.ccChargeKey;
+                    stat.ccChargeForeign = item.ccChargeForeign;
+                    stat.ccChargeKey = item.ccChargeKey;
+                    stat.ccChargeTerminal = item.ccChargeTerminal;
+                    stat.ccSettlementRef = item.ccSettlementRef;
+                    stat.origCurrency = item.origCurrency;
+                    stat.isSettled = NSNumber(booleanLiteral: item.isSettled ?? true);
+                    stat.type = NSNumber(value: StatementType_CreditCard.rawValue);
+                }
                 result.statements.append(stat);
             }
         }
@@ -1139,15 +1164,17 @@ class HBCIBackend : NSObject, HBCILog {
     func getUserStandingOrders(_ bankAccounts:[BankAccount]) {
         var accounts = [HBCIAccount]();
         var bqResult = [BankQueryResult]();
-        
-        guard let bankUser = bankAccounts.first?.defaultBankUser() else {
-            logError("No bank user defined for account \(bankAccounts.first?.accountNumber() ?? "<unknown account>")");
-            return;
+
+        defer {
+            DispatchQueue.main.async(execute: {
+                self.hbciQueriesRunning -= 1;
+                self.checkGetStatementsFinalization();
+            });
         }
         
-        for bankAccount in bankAccounts {
-            let account = HBCIAccount(account: bankAccount);
-            accounts.append(account);
+        guard let bankUser = bankAccounts.first?.defaultBankUser() else {
+            logError("Konto \(bankAccounts.first?.accountNumber() ?? "<unknown account>") kann nicht verarbeitet werden da keine Bankkennung existiert");
+            return;
         }
         
         defer {
@@ -1158,6 +1185,13 @@ class HBCIBackend : NSObject, HBCILog {
 
         do {
             let user = try HBCIUser(bankUser: bankUser);
+            
+            for bankAccount in bankAccounts {
+                let account = HBCIAccount(account: bankAccount);
+                if user.parameters.isOrderSupportedForAccount("SepaStandingOrderList", number: account.number, subNumber: account.subNumber) {
+                    accounts.append(account);
+                }
+            }
             
             if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_PinTan {
                 user.setSecurityMethod(HBCISecurityMethodPinTan());
@@ -1175,18 +1209,32 @@ class HBCIBackend : NSObject, HBCILog {
             let dialog = try HBCIDialog(user: user);
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
+                    var error = false;
+                    
                     defer {
                         _ = dialog.dialogEnd();
                     }
 
                     for account in accounts {
+                        error = false;
+                        
+                        defer {
+                            if error {
+                                logError("Fehler beim Abruf der Daueraufträge für Konto \(account.number)");
+                            }
+                        }
+                        
                         if let msg = HBCICustomMessage.newInstance(dialog) {
                             if let order = HBCISepaStandingOrderListOrder(message: msg, account: account) {
                                 guard order.enqueue() else {
+                                    logInfo("Failed to enqueue order");
+                                    error = true;
                                     continue;
                                 }
                                 
                                 guard try msg.send() else {
+                                    logInfo("Failed to send message");
+                                    error = true;
                                     continue;
                                 }
                                 
@@ -1207,8 +1255,6 @@ class HBCIBackend : NSObject, HBCILog {
             // important: nofifications must be sent in main thread!
             let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: bqResult);
             NotificationCenter.default.post(notification);
-            self.hbciQueriesRunning -= 1;
-            self.checkGetStatementsFinalization();
         });
     }
     
@@ -1224,7 +1270,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         guard let bankUser = accounts.first?.defaultBankUser() else {
-            logError("Keine Bankkennung für Konto \(accounts.first?.accountNumber() ?? "<unknown account>") gefunden");
+            logError("Konto \(accounts.first?.accountNumber() ?? "<unknown account>") konnte nicht verarbeitet werden da keine Bankkennung existiert");
             return;
         }
         
@@ -1273,9 +1319,19 @@ class HBCIBackend : NSObject, HBCILog {
             
             handleBankMessages(bankCode: user.bankCode, messages: result.bankMessages());
             
+            var error = false;
             for account in accounts {
+                error = false;
+                
+                defer {
+                    if error {
+                        logError("Fehler beim Abruf der Kontoauszüge zu Konto \(account.accountNumber()!)");
+                    }
+                }
+                
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Fehler beim Erstellen der Umsatznachricht zu Konto \(account.accountNumber()!)");
+                    logInfo("Failed to create bank statemement message");
+                    error = true;
                     continue;
                 }
                 
@@ -1300,75 +1356,89 @@ class HBCIBackend : NSObject, HBCILog {
                 if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
                     // normal statements
                     guard let order = HBCIStatementsOrder(message: msg, account: hbciAccount) else {
-                        logError("Fehler beim Aufbau der Umsatznachricht zu Konto \(account.accountNumber()!)");
+                        logInfo("Failed to create order");
+                        error = true;
                         continue;
                     }
                     order.dateFrom = dateFrom;
                     guard order.enqueue() else {
-                        logError("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber()!)")
+                        logInfo("Failed to enqueue order");
+                        error = true;
                         continue;
                     }
                     guard try msg.send() else {
-                        logError("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber()!)")
+                        logInfo("Failed to send message");
+                        error = true;
                         continue;
                     }
                     for order in msg.orders {
                         guard let order = order as? HBCIStatementsOrder else {
-                            logError("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber()!)")
+                            logInfo("Failed to access order for account \(account.accountNumber()!)");
+                            error = true;
                             continue;
                         }
                         guard let statements = order.statements else {
-                            logError("Kontoumsätze für Konto \(account.accountNumber()!) konnten nicht ermittelt werden")
+                            logInfo("Failed to get statements for account \(account.accountNumber()!)");
+                            error = true;
                             continue;
                         }
                         let result = convertStatements(order.account, statements:statements);
                         result.account = account;
                         bqResult.append(result);
                     }
-/*                } else if isTransactionSupportedForAccount(TransactionType.ccStatements, account: account) {
+                } else if isTransactionSupportedForAccount(TransactionType.ccStatements, account: account) {
                     // credit card statements
                     guard let order = CCStatementOrder(message: msg, account: hbciAccount) else {
-                        logError("Fehler beim Aufbau der Umsatznachricht Kreditkarte zu Konto \(account.accountNumber())");
+                        logInfo("Fehler beim Aufbau der Umsatznachricht Kreditkarte zu Konto \(account.accountNumber())");
+                        error = true;
                         continue;
                     }
                     order.dateFrom = dateFrom;
                     guard order.enqueue() else {
-                        logError("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber())")
+                        logInfo("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber())")
+                        error = true;
                         continue;
                     }
                     guard try msg.send() else {
-                        logError("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber())")
+                        logInfo("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber())")
+                        error = true;
                         continue;
                     }
                     for order in msg.orders {
                         guard let order = order as? CCStatementOrder else {
-                            logError("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber())")
+                            logInfo("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber())")
+                            error = true;
                             continue;
                         }
                         guard let statements = order.statements else {
-                            logError("Kontoumsätze für Konto \(account.accountNumber()) konnten nicht ermittelt werden")
+                            logInfo("Kontoumsätze für Konto \(account.accountNumber()) konnten nicht ermittelt werden")
+                            error = true;
                             continue;
                         }
                         let result = convertStatements(order.account, statements:statements);
                         result.account = account;
                         bqResult.append(result);
-                    } */
+                    }
                 } else if isTransactionSupportedForAccount(TransactionType.accountBalance, account: account) {
                     // Statement are not supported but Account Balance
                     guard let order = HBCIBalanceOrder(message: msg, account: hbciAccount) else {
-                        logError("Fehler beim Aufbau der Saldonachricht zu Konto \(account.accountNumber()!)");
+                        logInfo("Failed to create balance order for account \(account.accountNumber()!)");
+                        error = true;
                         continue;
                     }
                     guard order.enqueue() else {
-                        logError("Fehler beim Registrieren der Saldonachricht zu Konto \(account.accountNumber()!)")
+                        logInfo("Failed to register balance order for account \(account.accountNumber()!)");
+                        error = true;
                         continue;
                     }
                     guard try msg.send() else {
-                        logError("Fehler beim Senden der Saldonachricht zu Konto \(account.accountNumber()!)")
+                        logInfo("Failed to send balance message for account \(account.accountNumber()!)");
+                        error = true;
                         continue;
                     }
                     guard let balance = order.bookedBalance else {
-                        logError("Fehler beim Ermitteln des Saldos zu Konto \(account.accountNumber()!)")
+                        logInfo("Failed to get balance for account \(account.accountNumber()!)");
+                        error = true;
                         continue;
                     }
                     let result = BankQueryResult();
@@ -1402,8 +1472,6 @@ class HBCIBackend : NSObject, HBCILog {
             // important: nofifications must be sent in main thread!
             let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: bqResult);
             NotificationCenter.default.post(notification);
-//            self.hbciQueriesRunning -= 1;
-//            self.checkGetStatementsFinalization();
         });
     }
     
@@ -1417,7 +1485,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         if options.count == 0 {
-            logDebug("signingOptionForAccount: no signing options defined by bank - use default");
+            logInfo("signingOptionForAccount: no signing options defined by bank - use default");
             return SigningOption.defaultOption(for: user);
         }
         if options.count == 1 {
@@ -1434,12 +1502,21 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func sendCollectiveTransfer(_ transfers: Array<Transfer>) ->NSError? {
+        var error = false;
+        
         if transfers.count == 0 {
             return nil;
         }
         
-        // check that all transfers have the same sender account
         let firstTransfer = transfers.first!
+        
+        defer {
+            if error {
+                logError("Fehler beim Senden der Sammelüberweisung für Konto \(firstTransfer.account.accountNumber()!)");
+            }
+        }
+
+        // check that all transfers have the same sender account
         for transfer in transfers {
             if transfer.account != firstTransfer.account {
                 return NSError.errorWithMsg(msgId: "424", titleId: "423");
@@ -1449,7 +1526,7 @@ class HBCIBackend : NSObject, HBCILog {
         HBCIDialog.callback = HBCIBackendCallback();
         
         guard let bankAccount = firstTransfer.account else {
-            logError("Bank account in transfer is initial");
+            logError("Bankkonto der Überweisung ist initial");
             return nil;
         }
         
@@ -1469,23 +1546,29 @@ class HBCIBackend : NSObject, HBCILog {
                     let item = HBCISepaTransfer.Item(iban:transfer.remoteIBAN, bic:transfer.remoteBIC, name:transfer.remoteName, value:transfer.value, currency:transfer.currency);
                     item.purpose = transfer.purpose();
                     guard sepaTransfer.addItem(item) else {
+                        logInfo("Failed to add item to transfer");
+                        error = true;
                         return NSError.genericHBCI;
                     }
                 }
                 
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
+                    logInfo("Failed to create HBCI message");
+                    error = true;
                     return NSError.genericHBCI;
                 }
                 
                 if let order = HBCISepaCollectiveTransferOrder(message: msg, transfer: sepaTransfer) {
                     if !order.enqueue() {
+                        logInfo("Failed to enqueue collective transfer order");
+                        error = true;
                         return NSError.genericHBCI;
                     }
                 }
                 
                 guard msg.orders.count > 0 else {
-                    logError("Failed to create collective transfer order");
+                    logInfo("Failed to create collective transfer order");
+                    error = true;
                     return NSError.genericHBCI;
                 }
                 
@@ -1578,7 +1661,7 @@ class HBCIBackend : NSObject, HBCILog {
         for transfer in transfers {
             let account = transfer.account;
             guard let bankUser = account?.defaultBankUser() else {
-                logError("Skip transfer: no bank user found for bank account \(account?.accountNumber() ?? "<unknown account>")");
+                logError("Überweisung wird nicht ausgeführt: für Bankkonto \(account?.accountNumber() ?? "<unknown account>") existiert keine Bankkennung");
                 errorOccured = true;
                 continue;
             }
@@ -1590,6 +1673,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         for bankUser in accountTransferRegister.keys {
             guard let option = signingOptionForUser(bankUser) else {
+                logInfo("Failed to get signing option for bank user \(bankUser.userId)");
                 errorOccured = true;
                 continue;
             }
@@ -1598,8 +1682,18 @@ class HBCIBackend : NSObject, HBCILog {
             do {
                 try _ = processHBCIDialog(bankUser, signingOption: option) { user, dialog in
                     // now send all transfers for user
+                    var error = false;
                     for transfer in accountTransferRegister[bankUser]! {
+                        error = false;
+                        
                         let account = HBCIAccount(account: transfer.account);
+                        
+                        defer {
+                            if error {
+                                logError("Überweisungen für Konto \(account.number) konnten nicht ausgeführt werden");
+                                errorOccured = true;
+                            }
+                        }
                         
                         let sepaTransfer = HBCISepaTransfer(account: account);
                         
@@ -1611,105 +1705,52 @@ class HBCIBackend : NSObject, HBCILog {
                         item.purpose = transfer.purpose();
                         
                         if !sepaTransfer.addItem(item) {
-                            errorOccured = true;
+                            error = true;
                             continue;
                         }
                         
-                        if let msg = HBCICustomMessage.newInstance(dialog) {
-                            if sepaTransfer.date != nil {
-                                if let order = HBCISepaDatedTransferOrder(message: msg, transfer: sepaTransfer) {
-                                    if !order.enqueue() {
-                                        errorOccured = true;
-                                        continue;
-                                    }
-                                }
-                            } else {
-                                if let order = HBCISepaTransferOrder(message: msg, transfer: sepaTransfer) {
-                                    if !order.enqueue() {
-                                        errorOccured = true;
-                                        continue;
-                                    }
-                                }
-                            }
-                            
-                            if msg.orders.count > 0 {
-                                if try msg.send() {
-                                    transfer.isSent = NSNumber(value: true);
-                                    continue;
-                                }
-                            }
+                        guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                            logInfo("Failed to create transfer message");
+                            error = true;
+                            continue;
                         }
-                        errorOccured = true;
-                    } // accounts
-                    return nil;
-                }
-                
-                
-                /*
-                let user = try HBCIUser(bankUser: bankUser);
-                try setupSecurityMethod(bankUser, user: user);
-                defer {
-                    if user.securityMethod.code == .DDV {
-                        ChipcardManager.manager.close();
-                    }
-                }
-                
-                if user.securityMethod.code == .PinTan {
-                    user.tanMethod = option.tanMethod;
-                    user.tanMediumName = option.tanMediumName;
-                    
-                    // get PIN
-                    let request = AuthRequest();
-                    user.pin = request.getPin(user.bankCode, userId: user.userId);
-                }
-
-                let dialog = try HBCIDialog(user: user);
-                guard let result = try dialog.dialogInit() else {
-                    errorOccured = true;
-                    continue;
-                }
-                guard result.isOk() else {
-                    errorOccured = true;
-                    continue;
-                }
-                // now send all transfers for user
-                for transfer in accountTransferRegister[bankUser]! {
-                    let account = HBCIAccount(account: transfer.account);
-                    
-                    let sepaTransfer = HBCISepaTransfer(account: account);
-                    
-                    if TransferType(transfer.type.unsignedIntValue) == TransferTypeSEPAScheduled  && transfer.valutaDate != nil {
-                        sepaTransfer.date = transfer.valutaDate!;
-                    }
-                    
-                    let item = HBCISepaTransfer.Item(iban:transfer.remoteIBAN, bic:transfer.remoteBIC, name:transfer.remoteName, value:transfer.value, currency:transfer.currency);
-                    item.purpose = transfer.purpose();
-                    sepaTransfer.addItem(item);
-                    
-                    if let msg = HBCICustomMessage.newInstance(dialog) {
+                        
                         if sepaTransfer.date != nil {
-                            if let order = HBCISepaDatedTransferOrder(message: msg, transfer: sepaTransfer) {
-                                order.enqueue();
+                            guard let order = HBCISepaDatedTransferOrder(message: msg, transfer: sepaTransfer) else {
+                                logInfo("Failed to create transfer order");
+                                error = true;
+                                continue;
+                            }
+                            if !order.enqueue() {
+                                logInfo("Failed to enqueue transfer order");
+                                error = true;
+                                continue;
                             }
                         } else {
-                            if let order = HBCISepaTransferOrder(message: msg, transfer: sepaTransfer) {
-                                order.enqueue();
+                            guard let order = HBCISepaTransferOrder(message: msg, transfer: sepaTransfer) else {
+                                logInfo("Failed to create transfer order");
+                                error = true;
+                                continue;
+                            }
+                            if !order.enqueue() {
+                                logInfo("Failed to enqueue transfer order");
+                                error = true;
+                                continue;
                             }
                         }
                         
                         if msg.orders.count > 0 {
                             if try msg.send() {
-                                transfer.isSent = NSNumber(bool: true);
+                                transfer.isSent = NSNumber(value: true);
                                 continue;
+                            } else {
+                                logInfo("Failed to send transfer message");
+                                error = true;
                             }
                         }
-                    }
-                    errorOccured = true;
-                } // accounts
-                // end dialog
-                dialog.dialogEnd();
-                */
-                
+                    } // accounts
+                    return nil;
+                }
             } // do
             catch HBCIError.userAbort {
                 // do nothing
@@ -1717,6 +1758,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
             catch let error as NSError {
                 logError(error.localizedDescription);
+                errorOccured = true;
             }
             catch {
                 errorOccured = true;
@@ -1743,7 +1785,7 @@ class HBCIBackend : NSObject, HBCILog {
         for stord in standingOrders {
             let bankAccount = stord.account;
             guard let bankUser = bankAccount?.defaultBankUser() else {
-                logError("Skip standing order: no bank user found for bank account \(bankAccount?.accountNumber() ?? "<unknown account>")");
+                logError("Dauerauftrag wird nicht ausgeführt: für Bankkonto \(bankAccount?.accountNumber() ?? "<unknown account>") existiert keine Bankkennung");
                 errorOccured = true;
                 continue;
             }
@@ -1755,6 +1797,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         for bankUser in accountTransferRegister.keys {
             guard let option = signingOptionForUser(bankUser) else {
+                logInfo("Failed to get signing option for bank user \(bankUser.userId)");
                 errorOccured = true;
                 continue;
             }
@@ -1763,7 +1806,9 @@ class HBCIBackend : NSObject, HBCILog {
             do {
                 try _ = processHBCIDialog(bankUser, signingOption: option) { user, dialog in
                     // now send all standing orders for user
+                    var error = false;
                     for stord in accountTransferRegister[bankUser]! {
+                        error = false;
                         if stord.isChanged.boolValue == false && stord.toDelete.boolValue == false {
                             continue;
                         }
@@ -1772,50 +1817,85 @@ class HBCIBackend : NSObject, HBCILog {
                             continue;
                         }
                         
-                        if stord.orderKey == nil {
-                            // create new standing order
-                            if let msg = HBCICustomMessage.newInstance(dialog) {
-                                if let order = HBCISepaStandingOrderNewOrder(message: msg, order: self.convertStandingOrder(stord)) {
-                                    if(!order.enqueue()) {
-                                        errorOccured = true;
-                                        continue;
-                                    };
-                                    if try msg.send() {
-                                        stord.isSent = NSNumber(value: true);
-                                        continue;
-                                    }
-                                }
-                            }
-                        } else if stord.toDelete.boolValue == true {
-                            if let msg = HBCICustomMessage.newInstance(dialog) {
-                                if let order = HBCISepaStandingOrderDeleteOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
-                                    if(!order.enqueue()) {
-                                        errorOccured = true;
-                                        continue;
-                                    };
-                                    if try msg.send() {
-                                        let context = MOAssistant.shared().context;
-                                        context?.delete(stord);
-                                        continue;
-                                    }
-                                }
-                            }
-                        } else {
-                            // change standing order
-                            if let msg = HBCICustomMessage.newInstance(dialog) {
-                                if let order = HBCISepaStandingOrderEditOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) {
-                                    if(!order.enqueue()) {
-                                        errorOccured = true;
-                                        continue;
-                                    };
-                                    if try msg.send() {
-                                        stord.isSent = NSNumber(value: true);
-                                        continue;
-                                    }
-                                }
+                        defer {
+                            if error {
+                                logError("Dauerauftrag \(stord.orderKey ?? "<neuer Auftrag>") konnte nicht verarbeitet werden");
+                                errorOccured = true;
                             }
                         }
-                        errorOccured = true;
+                        
+                        if stord.orderKey == nil {
+                            // create new standing order
+                            guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                                logInfo("Failed to create standing order create message");
+                                error = true;
+                                continue;
+                            }
+                            guard let order = HBCISepaStandingOrderNewOrder(message: msg, order: self.convertStandingOrder(stord)) else {
+                                logInfo("Failed to create standing order create order");
+                                error = true;
+                                continue;
+                            }
+                            guard order.enqueue() else {
+                                logInfo("Failed to enqueue standing order create order");
+                                error = true;
+                                continue;
+                            }
+                            guard try msg.send() else {
+                                logInfo("Failed to send standing order create message");
+                                error = true;
+                                continue;
+                            }
+                            stord.isSent = NSNumber(value: true);
+                            continue;
+                        } else if stord.toDelete.boolValue == true {
+                            guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                                logInfo("Failed to create standing order delete message");
+                                error = true;
+                                continue;
+                            }
+                            guard let order = HBCISepaStandingOrderDeleteOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) else {
+                                logInfo("Failed to create standing order delete order");
+                                error = true;
+                                continue;
+                            }
+                            guard order.enqueue() else {
+                                logInfo("Failed to enqueue standing order create order");
+                                error = true;
+                                continue;
+                            }
+                            guard try msg.send() else {
+                                logInfo("Failed to send standing order deleete message");
+                                error = true;
+                                continue;
+                            }
+                            let context = MOAssistant.shared().context;
+                            context?.delete(stord);
+                            continue;
+                        } else {
+                            guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                                logInfo("Failed to create standing order edit message");
+                                error = true;
+                                continue;
+                            }
+                            guard let order = HBCISepaStandingOrderEditOrder(message: msg, order: self.convertStandingOrder(stord), orderId:stord.orderKey) else {
+                                logInfo("Failed to create standing order edit order");
+                                error = true;
+                                continue;
+                            }
+                            guard order.enqueue() else {
+                                logInfo("Failed to enqueue standing order create order");
+                                error = true;
+                                continue;
+                            }
+                            guard try msg.send() else {
+                                logInfo("Failed to send standing order edit message");
+                                error = true;
+                                continue;
+                            }
+                            stord.isSent = NSNumber(value: true);
+                            continue;
+                        }
                     }
                     return nil;
                 }
@@ -1888,6 +1968,7 @@ class HBCIBackend : NSObject, HBCILog {
                 return nil;
             }
             catch let error as NSError {
+                errorOccured = true;
                 logError(error.localizedDescription);
             }
             catch {
@@ -1990,7 +2071,7 @@ class HBCIBackend : NSObject, HBCILog {
         do {
             let bankUser = bankAccount.defaultBankUser();
             if bankUser == nil {
-                logError("No bank user assigned to account \(bankAccount.accountNumber())");
+                logError("Für Bankkonto \(bankAccount.accountNumber()!) existiert keine Bankkennung");
                 return nil;
             }
             let user = try HBCIUser(bankUser: bankAccount.defaultBankUser());
@@ -2039,7 +2120,7 @@ class HBCIBackend : NSObject, HBCILog {
             
             guard let enc = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
                 md5Hash.deallocate(capacity: 16);
-                logError("Passport file \(file) could not be opened");
+                logError("Passport-Datei \(file) konnte nicht geöffnet werden");
                 return;
             }
             
@@ -2059,7 +2140,7 @@ class HBCIBackend : NSObject, HBCILog {
                 
                 guard bankCode != nil && userId != nil && sysId != nil else {
                     plain.deallocate(capacity: enc.count);
-                    logError("Passport data is not readable \(String(describing: bankCode)) \(String(describing: userId)) \(String(describing: sysId))");
+                    logError("Passport-Daten konnten nicht gelesen werden: \(String(describing: bankCode)) \(String(describing: userId)) \(String(describing: sysId))");
                     return;
                 }
                 
@@ -2067,7 +2148,7 @@ class HBCIBackend : NSObject, HBCILog {
                     bankUser.sysId = sysId;
                 }
             } else {
-                logError("Decryption of \(file) was not successful");
+                logError("Entschlüsselung von Datei \(file) ist fehlgeschlagen");
             }
             plain.deallocate(capacity: enc.count);
         }
@@ -2156,7 +2237,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         let dialog = try HBCIDialog(user: user);
         guard let result = try dialog.dialogInit() else {
-            logError("Could not initialize dialog for user \(user.userId)");
+            logInfo("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen");
             throw NSError.errorWithMsg(msgId: "2011", params: user.userId);
         }
         
@@ -2167,22 +2248,24 @@ class HBCIBackend : NSObject, HBCILog {
             
             return try block(user, dialog);
         } else {
-            logError("Could not initialize dialog for user \(user.userId), result was not ok");
+            logInfo("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen, Ergebnis fehlerhaft");
             throw NSError.errorWithMsg(msgId: "2012", params: user.userId);
         }
     }
     
     func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
         guard let bankUser = bankAccount.defaultBankUser() else {
-            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            logError("Konto \(bankAccount.accountNumber()) wird nicht verarbeitet, es existiert keine Bankkennung");
             return nil;
         }
+        let errorMsg = "Abholen des Kontoauszugs für Konto \(bankAccount.accountNumber()) ist fehlgeschlagen";
         
         do {
             return try processHBCIDialog(bankUser) {user, dialog in
                 guard let msg = HBCICustomMessage.newInstance(dialog) else {
-                    logError("Failed to create HBCI message");
-                    throw NSError.errorWithMsg(msgId: "2007");
+                    logInfo("Failed to create HBCI message");
+                    logError(errorMsg);
+                    return nil;
                 }
                 
                 let account = HBCIAccount(account: bankAccount);
@@ -2192,7 +2275,8 @@ class HBCIBackend : NSObject, HBCILog {
                     
                     // which format?
                     guard let params = HBCIAccountStatementOrder.getParameters(user) else {
-                        logError("AccountStatement: user parameters not found");
+                        logInfo("AccountStatement: user parameters not found");
+                        logError(errorMsg);
                         return nil;
                     }
                     
@@ -2202,7 +2286,8 @@ class HBCIBackend : NSObject, HBCILog {
                         if params.formats.contains(HBCIAccountStatementFormat.mt940) {
                             order.format = HBCIAccountStatementFormat.mt940;
                         } else {
-                            logError("AccountStatement: format not supported");
+                            logInfo("AccountStatement: format not supported");
+                            logError(errorMsg);
                             return nil;
                         }
                     }
@@ -2218,7 +2303,7 @@ class HBCIBackend : NSObject, HBCILog {
                             return self.convertAccountStatement(stat);
                         }
                     } else {
-                        logError("Failed to get account statement for account \(account.number)");
+                        logError(errorMsg);
                         return nil;
                     }
                 }
