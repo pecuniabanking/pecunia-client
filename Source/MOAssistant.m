@@ -94,7 +94,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
     dataFilename = [defaults valueForKey: dataFilenameKey];
     if (dataFilename == nil) {
-        dataFilename = @"accounts20.pecuniadata";
+        dataFilename = @"accounts.pecuniadata";
     }
 
     // customize data file name

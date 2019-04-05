@@ -686,7 +686,7 @@ class HBCIBackend : NSObject, HBCILog {
             catch {
                 return nil;
             }
-            return hbciUser.parameters.description;
+            return hbciUser.parameters.description + "/n" + user.hbciParameters.base64EncodedString();
         }
         return nil;
     }

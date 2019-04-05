@@ -3592,6 +3592,7 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)bankMessages:(id)sender {
     LogEnter;
+
     /*
     NSString *filePath = [NSBundle.mainBundle.resourcePath stringByAppendingString:@"/TestMatrixCode-001.txt"];
     NSData *code = [NSData dataWithContentsOfFile:filePath];
