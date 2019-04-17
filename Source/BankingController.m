@@ -3724,12 +3724,20 @@ static BankingController *bankinControllerInstance;
             // Synchronize user
             if (![[user.bankURL substringToIndex:5] isEqualToString:@"https"]) {
                 user.bankURL = [@"https://" stringByAppendingString:user.bankURL];
+                LogInfo(@"Bank URL changed to %@", user.bankURL);
             }
             
             NSError *error = [HBCIBackend.backend syncBankUser:user];
             if (error != nil) {
-                NSAlert *alert = [NSAlert alertWithError: error];
-                [alert runModal];
+                if (user.customerId == nil || user.customerId.length == 0) {
+                    user.customerId = user.userId;
+                    error = [HBCIBackend.backend syncBankUser:user];
+                    
+                    if (error != nil) {
+                        NSAlert *alert = [NSAlert alertWithError: error];
+                        [alert runModal];
+                    }
+                }
             }
         }
     }

@@ -474,6 +474,9 @@ class HBCIBackend : NSObject, HBCILog {
             let dialog = try HBCIDialog(user: hbciUser);
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
+                    if result.hbciParameterUpdated {
+                        user.hbciParameters = hbciUser.parameters.data();
+                    }
                     if let msg = HBCICustomMessage.newInstance(dialog) {
                         if let order = HBCITanMediaOrder(message: msg) {
                             order.mediaType = "1";
@@ -591,6 +594,9 @@ class HBCIBackend : NSObject, HBCILog {
         
         do {
             let user = try HBCIUser(bankUser: bankUser);
+            user.parameters.bpdVersion = 0;
+            user.parameters.updVersion = 0;
+            
             try setupSecurityMethod(bankUser, user: user);
             defer {
                 if user.securityMethod.code == .ddv {
@@ -655,7 +661,9 @@ class HBCIBackend : NSObject, HBCILog {
                     try checkSepaInfo(accounts, user:user);
                     
                     try updateBankAccounts(accounts, user: bankUser);
-                    
+
+                    bankUser.hbciParameters = user.parameters.data();
+
                     try context?.save();
                     return nil;
                 }
@@ -1210,6 +1218,9 @@ class HBCIBackend : NSObject, HBCILog {
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
                     var error = false;
+                    if result.hbciParameterUpdated {
+                        bankUser.hbciParameters = user.parameters.data();
+                    }
                     
                     defer {
                         _ = dialog.dialogEnd();
@@ -1317,6 +1328,10 @@ class HBCIBackend : NSObject, HBCILog {
                 _ = dialog.dialogEnd();
             }
             
+            if result.hbciParameterUpdated {
+                bankUser.hbciParameters = user.parameters.data();
+            }
+
             handleBankMessages(bankCode: user.bankCode, messages: result.bankMessages());
             
             var error = false;
@@ -2244,6 +2259,10 @@ class HBCIBackend : NSObject, HBCILog {
         if result.isOk() {
             defer {
                 _ = dialog.dialogEnd();
+            }
+            
+            if result.hbciParameterUpdated {
+                bankUser.hbciParameters = user.parameters.data();
             }
             
             return try block(user, dialog);
