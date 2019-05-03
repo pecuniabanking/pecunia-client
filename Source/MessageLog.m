@@ -483,7 +483,7 @@
         savedAsZip = YES;
     }
     @catch (NSException *e) {
-        LogError(@"Could not create zipped log (%@). Error: %@", source, e);
+        LogError(@"Fehler beim packen des Logs (%@). Fehler: %@", source, e);
     }
 
     if (!savedAsZip) {
@@ -578,7 +578,7 @@
         NSError *error = nil;
         [manager removeItemAtPath: [logFolder stringByAppendingPathComponent: file] error: &error];
         if (error != nil) {
-            LogError(@"Could not remove file. Reason: %@", error);
+            LogError(@"Datei konnte nicht gelöscht werden. Ursache: %@", error);
         }
     }
     filter = [NSPredicate predicateWithFormat: @"self CONTAINS 'com trace'"];
@@ -588,7 +588,7 @@
         NSError *error = nil;
         [manager removeItemAtPath: [logFolder stringByAppendingPathComponent: file] error: &error];
         if (error != nil) {
-            LogError(@"Could not remove file. Reason: %@", error);
+            LogError(@"Datei konnte nicht gelöscht werden. Ursache: %@", error);
         }
     }
 }

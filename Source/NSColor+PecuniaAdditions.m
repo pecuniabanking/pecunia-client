@@ -57,7 +57,7 @@ static NSMutableDictionary *userColors;
     NSError  *error = nil;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
     if (error) {
-        LogError(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
+        LogInfo(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
     } else {
         // Lines can be separated by Windows linebreaks, so we need to check explicitly.
         NSArray      *lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\n"]];

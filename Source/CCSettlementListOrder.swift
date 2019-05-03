@@ -33,7 +33,7 @@ class CCSettlementListOrder : HBCIOrder {
             values["KTV.subnumber"] = account.subNumber!
         }
         if !segment.setElementValues(values) {
-            logError(self.name + " values could not be set");
+            logError(self.name + ": Parameter konnten nicht gesetzt werden");
             return false;
         }
         

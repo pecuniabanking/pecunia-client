@@ -95,7 +95,7 @@
                                                 substitutionVariables: substitution];
     NSArray *tags = [context executeFetchRequest: request error: &error];
     if (error != nil) {
-        LogError(@"Error reading tags: %@", error.localizedDescription);
+        LogError(@"Fehler beim Lesen der Tags: %@", error.localizedDescription);
     }
     return tags.count == 0 ? nil : tags[0];
 }

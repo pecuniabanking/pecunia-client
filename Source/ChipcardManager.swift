@@ -168,7 +168,7 @@ var _manager:ChipcardManager!
                 return;
             } else {
                 // card is connected but wrong user
-                logError("HBCIChipcard: card inserted but wrong user(%@)", bankData.userId);
+                logError("HBCIChipcard: Karte vorhandne aber falscher Anwender(%@)", bankData.userId);
                 throw NSError.errorWithMsg(msgId: "AP362", titleId: "AP368");
                 /*
                 let alert = NSAlert();
@@ -180,7 +180,7 @@ var _manager:ChipcardManager!
                 */
             }
         } else {
-            logError("Chipcard: bank data could not be read");
+            logError("HBCIChipcard: Bankdaten konnten nicht gelesen werden");
             throw NSError.errorWithMsg(msgId: "AP363", titleId: "AP368");
             /*
             let alert = NSAlert();
@@ -208,7 +208,7 @@ var _manager:ChipcardManager!
         let params = paramString.components(separatedBy: "|");
         
         if params.count != 2 {
-            logError("wrong parameters for chipcard initialization");
+            logError("Falsche Parameter bei der Chipkarteninitialisierung");
             return nil;
         }
         
@@ -217,16 +217,6 @@ var _manager:ChipcardManager!
             return nil;
         }
         
-        /*
-        if !card.getCardID() {
-            logError("Card ID could not be read");
-            return nil;
-        }
-            
-        if let cid = card.cardID, cnumber = card.cardNumber {
-            return NSString(format: "%@|%@", bytesToString(cid), cnumber);
-        }
-        */
         return nil;
     }
     
@@ -310,7 +300,7 @@ var _manager:ChipcardManager!
     open func decrypt(_ paramString:NSString) ->NSString? {
         let params = paramString.components(separatedBy: "|");
         if params.count != 2 {
-            logError("missing parameters for decrypt");
+            logError("Fehlende Parameter zum Entschlüsseln");
             return nil;
         }
         

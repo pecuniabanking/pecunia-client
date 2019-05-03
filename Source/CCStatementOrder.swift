@@ -26,7 +26,7 @@ class CCStatementOrder: HBCIOrder {
     func enqueue() ->Bool {
         // check if order is supported
         if !user.parameters.isOrderSupportedForAccount(self, number: account.number, subNumber: account.subNumber) {
-            logError(self.name + " is not supported for account " + account.number);
+            logError("Segment \(self.name) wird für Konto \(account.number) nicht unterstützt");
             return false;
         }
         
@@ -42,7 +42,7 @@ class CCStatementOrder: HBCIOrder {
         }
         
         if !segment.setElementValues(values) {
-            logError(self.name + " values could not be set");
+            logError(self.name + ": Parameter konnten nicht gesetzt werden");
             return false;
         }
         
@@ -92,25 +92,39 @@ class CCStatementOrder: HBCIOrder {
                 }
                 item.remoteCountry = stat.elementValueForPath("country") as? String;
                 item.isSettled = stat.elementValueForPath("settled") as? Bool;
-                item.bankReference = stat.elementValueForPath("referebce") as? String;
+                item.bankReference = stat.elementValueForPath("reference") as? String;
                 item.ccChargeKey = stat.elementValueForPath("chargeKey") as? String;
                 item.ccSettlementRef = stat.elementValueForPath("settleRef") as? String;
                 item.ccChargeTerminal = stat.elementValueForPath("chargeTerminal") as? String;
                 item.ccChargeForeign = stat.elementValueForPath("chargeForeign") as? String;
                 
                 var purpose = "";
-                if let s = stat.elementValueForPath("transaction1") as? String {
+
+                if let s = stat.elementValueForPath("transaction1.text1") as? String {
                     purpose += s;
                 }
-                if let s = stat.elementValueForPath("transaction2") as? String {
+                if let s = stat.elementValueForPath("transaction1.text2") as? String {
                     purpose += s;
                 }
-                if let s = stat.elementValueForPath("transaction3") as? String {
+                if let s = stat.elementValueForPath("transaction2.text1") as? String {
                     purpose += s;
                 }
-                if let s = stat.elementValueForPath("transaction4") as? String {
+                if let s = stat.elementValueForPath("transaction2.text2") as? String {
                     purpose += s;
                 }
+                if let s = stat.elementValueForPath("transaction3.text1") as? String {
+                    purpose += s;
+                }
+                if let s = stat.elementValueForPath("transaction3.text2") as? String {
+                    purpose += s;
+                }
+                if let s = stat.elementValueForPath("transaction4.text1") as? String {
+                    purpose += s;
+                }
+                if let s = stat.elementValueForPath("transaction4.text2") as? String {
+                    purpose += s;
+                }
+                
                 item.purpose = purpose;
                 items.append(item);
             }

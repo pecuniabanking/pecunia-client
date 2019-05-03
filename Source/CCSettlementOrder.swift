@@ -26,7 +26,7 @@ class CCSettlementOrder : HBCIOrder {
     func enqueue() ->Bool {
         // check if order is supported
         if !user.parameters.isOrderSupportedForAccount(self, number: account.number, subNumber: account.subNumber) {
-            logError(self.name + " is not supported for account " + account.number);
+            logError("Segment \(self.name) wird für Konto \(account.number) nicht unterstützt");
             return false;
         }
         

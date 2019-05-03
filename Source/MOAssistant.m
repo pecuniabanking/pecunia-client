@@ -178,7 +178,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     NSError *error = nil;
     [context save: &error];
     if (error != nil) {
-        LogError(@"Pecunia save error: %@", error.localizedDescription);
+        LogError(@"Fehler beim Speichern der Daten: %@", error.localizedDescription);
         return;
     }
 
@@ -323,14 +323,14 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     if ([fm fileExistsAtPath:[targetURL path]]) {
         [fm removeItemAtURL:targetURL error:&error];
         if (error != nil) {
-            LogError(@"Backup of store was not possible, old backup file could not be removed");
+            LogError(@"Backup der Datendatei nicht möglich, die alte Backup-Datei konnte nicht entfernt werden");
             return;
         }
     }
     
     [fm copyItemAtURL:sourceURL toURL:targetURL error:&error];
     if (error != nil) {
-        LogError(@"Backup of store was not possible");
+        LogError(@"Backup der Datendatei war nicht möglich");
     }
 }
 
@@ -547,7 +547,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     if ([fm fileExistsAtPath: [oldURL path]]) {
         [fm moveItemAtPath: oldURL.path toPath: standardDataURL.path error: &error];
         if (error != nil) {
-            LogError(@"Move of old accounts file %@ to new location (%@) failed. Error is: %@",
+            LogError(@"Das Verschieben der Datendatei %@ zum neuen Speicherort (%@) war nicht möglich. Ursache: %@",
                      oldURL, standardDataURL, error.localizedDescription);
         }
     }
@@ -617,7 +617,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
                         NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
-        LogError(@"CCCrypt failure: %d", status);
+        LogError(@"CCCrypt Fehler: %d", status);
         free(encryptedBytes);
         return nil;
     }
@@ -715,7 +715,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
                                 NSLocalizedString(@"AP1", nil),
                                 nil,
                                 nil);
-                LogError(@"CCCrypt failure: %d", status);
+                LogError(@"CCCrypt Fehler: %d", status);
                 free(decryptedBytes);
 
                 LogLeave;
@@ -753,7 +753,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
                         NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
-        LogError(@"CCCrypt failure: %d", status);
+        LogError(@"CCCrypt Fehler: %d", status);
         free(decryptedBytes);
 
         LogLeave;
@@ -1181,7 +1181,7 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     NSError *error = nil;
     [context save: &error];
     if (error != nil) {
-        LogError(@"Pecunia save error: %@", error.localizedDescription);
+        LogError(@"Fehler beim Speichern der Daten: %@", error.localizedDescription);
         LogLeave;
         return;
     }

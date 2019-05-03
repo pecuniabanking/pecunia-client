@@ -227,7 +227,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
                 }
             }
             @catch (NSException *exception) {
-                LogError(@"Error in rule: %@. Reason: %@", cat.rule, exception.debugDescription);
+                LogError(@"Fehler in Regel: %@. Ursache: %@", cat.rule, exception.debugDescription);
             }
         }
     }
@@ -269,7 +269,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
                 if (iban != nil && iban.length <= 34) {
                     self.remoteIBAN = iban;
                 } else {
-                    LogError(@"Could not extract IBAN information from %@, IBAN %@ is not valid", self.purpose, iban);
+                    LogError(@"IBAN-Information konnte nicht ermittelt werden aus Verwendungszweck %@, IBAN %@ ist ungültig", self.purpose, iban);
                 }
             }
             NSString *bic = values[@"BIC"];
@@ -277,7 +277,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
                 if (bic != nil && bic.length <= 11) {
                     self.remoteBIC = bic;
                 } else {
-                    LogError(@"Could not extract BIC information from %@, BIC %@ is not valid", self.purpose, bic);
+                    LogError(@"BIC-Information konnte nicht ermittelt werden aus Verwendungszweck %@, BIC %@ ist ungültig", self.purpose, bic);
                 }
         }
         }

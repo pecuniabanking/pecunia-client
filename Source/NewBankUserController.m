@@ -775,7 +775,7 @@
     
     NSString *descr = [[HBCIBackend backend] getParameterDescription: user];
     if (descr == nil) {
-        LogError(@"Couldn't determine bank parameter data");
+        LogError(@"Bankparameter konnten nicht ermittelt werden");
         return;
     }
 

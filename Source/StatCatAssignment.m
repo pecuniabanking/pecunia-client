@@ -256,7 +256,7 @@
 }
 
 - (id)valueForUndefinedKey: (NSString *)key {
-    LogError(@"StatCatAssignment, undefined key: %@", key);
+    LogError(@"StatCatAssignment, ungültiger Schlüssel: %@", key);
     return [self.statement valueForKey: key];
 }
 

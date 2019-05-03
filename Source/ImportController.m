@@ -838,12 +838,12 @@
                                 }
                                 ShortDate *date = [ShortDate dateWithDate: object];
                                 if (date.year < 1970 || date.year > 2100) {
-                                    LogError(@"File: %@\n\tLine: %lu, date is out of bounds: %@", file, index, field);
+                                    LogError(@"Datei: %@\n\tZeile: %lu, Datum ist ungültig: %@", file, index, field);
                                     errorCount++;
                                     object = nil;
                                 }
                             } else {
-                                LogError(@"File: %@\n\tLine: %lu, date is invalid: %@", file, index, field);
+                                LogError(@"Datei: %@\n\tZeile: %lu, Datum ist ungültig: %@", file, index, field);
                                 errorCount++;
                                 object = nil;
                             }
@@ -852,7 +852,7 @@
                         if ([property isEqualToString: @"value"]) {
                             object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
                             if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
-                                LogError(@"File: %@\n\tLine: %lu, value is not a number: %@", file, index, field);
+                                LogError(@"Datei: %@\n\tZeile: %lu, Wert ist keine Nummer: %@", file, index, field);
                                 errorCount++;
                                 object = nil;
                             } else {
@@ -875,12 +875,12 @@
                                     entry[property] = [entry[property] decimalNumberByAdding: object];
                                 } else {
                                     errorCount++;
-                                    LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
+                                    LogError(@"Datei: %@\n\tZeile: %lu, mehrere Felder haben den gleichen Import-Typ, können aber nicht kombiniert werden: %@",
                                              file, index, property);
                                 }
                             } else {
                                 errorCount++;
-                                LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
+                                LogError(@"Datei: %@\n\tZeile: %lu, mehrere Felder haben den gleichen Import-Typ aber verschiedene Datentypen: %@",
                                          file, index, property);
                             }
                         }

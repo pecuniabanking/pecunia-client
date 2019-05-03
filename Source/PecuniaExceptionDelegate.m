@@ -30,7 +30,7 @@
       shouldLogException: (NSException *)exception
                     mask: (NSUInteger)mask
 {
-    LogError(@"An unhandled exception occurred: %@", exception.reason);
+    LogError(@"Ein unbehandelter Fehler ist aufgetreten: %@", exception.reason);
     id targetObject = exception.userInfo[@"NSTargetObjectUserInfoKey"];
     if (targetObject != nil) {
         LogInfo(@"Target object info:\n%@\n", targetObject);
@@ -44,7 +44,7 @@
     if ([MOAssistant.sharedAssistant.context save: &error]) {
         LogInfo(@"Successfully saved context.");
     } else {
-        LogError(@"Failed to save context. Reason: %@", error.description);
+        LogError(@"Daten konnten nicht gespeichert werden. Ursache: %@", error.description);
     }
 
     return NO; // Don't let the exception handler log this exception again.

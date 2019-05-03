@@ -154,7 +154,7 @@
         NSError *error;
         sepaRegex = [NSRegularExpression regularExpressionWithPattern: SEPA_PREFIX_RE options: 0 error: &error];
         if (error != nil) {
-            LogError(@"Error while compiling RE for SEPA data: %@", error.debugDescription);
+            LogError(@"Fehler beim Parsen der SEPA-Daten: %@", error.debugDescription);
         }
     }
 

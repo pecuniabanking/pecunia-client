@@ -410,7 +410,7 @@ static BankingController *bankinControllerInstance;
     if (error == nil) {
         LogInfo(@"    %i %@", count, message);
     } else {
-        LogError(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
+        LogInfo(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
     }
 }
 
@@ -1159,7 +1159,7 @@ static BankingController *bankinControllerInstance;
             details[@"details"] = NSLocalizedString(@"AP817", nil);
         }
         @catch (NSException *exception) {
-            LogError(@"Error while doing account maintenance:\n%@", exception.debugDescription);
+            LogInfo(@"Fehler bei der Kontenpflege:\n%@", exception.debugDescription);
 
             details[@"details"] = NSLocalizedString(@"AP824", nil);
             details[@"failed"] = @YES;
@@ -1204,7 +1204,7 @@ static BankingController *bankinControllerInstance;
             details[@"details"] = NSLocalizedString(@"AP817", nil);
         }
         @catch (NSException *exception) {
-            LogError(@"Error while updating statement balances:\n%@", exception.debugDescription);
+            LogInfo(@"Error while updating statement balances:\n%@", exception.debugDescription);
 
             details[@"details"] = NSLocalizedString(@"AP824", nil);
             details[@"failed"] = @YES;
@@ -2787,7 +2787,7 @@ static BankingController *bankinControllerInstance;
         NSError  *error = nil;
         NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
         if (error) {
-            LogError(@"Error reading default category icon assignments file at %@\n%@", path, [error localizedFailureReason]);
+            LogInfo(@"Error reading default category icon assignments file at %@\n%@", path, [error localizedFailureReason]);
         } else {
             NSArray *lines = [s componentsSeparatedByString: @"\n"];
             for (__strong NSString *line in lines) {
@@ -3752,6 +3752,7 @@ static BankingController *bankinControllerInstance;
 
     // save updates
     if (![managedObjectContext save: &error]) {
+        [error log];
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;

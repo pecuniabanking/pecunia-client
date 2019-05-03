@@ -219,11 +219,11 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
             let script = try String(contentsOfFile: pluginFile, encoding: String.Encoding.utf8);
             let parseResult = workContext.evaluateScript(script);
             if parseResult?.toString() != "true" {
-                logger.logError("Script loaded but did not return \"true\"");
+                logger.logError("Script konnte geladen werden, wurde aber nicht erfolgreich ausgeführt");
                 return nil;
             }
         } catch {
-            logger.logError("Failed to parse script");
+            logger.logError("Fehler beim Parsen des Scripts");
             return nil;
         }
         setupWebClient(hostWindow);
@@ -337,7 +337,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
             let scriptFunction: JSValue = workContext.objectForKeyedSubscript("getStatements");
             let pluginId = workContext.objectForKeyedSubscript("name").toString();
             if scriptFunction.isUndefined {
-                jsLogger.logError("Error: getStatements() not found in plugin " + pluginId!);
+                jsLogger.logError("Feler: getStatements() wurde in Plugin " + pluginId! + " nicht gefunden");
                 return;
             }
 
@@ -345,7 +345,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
             webClient.query = query;
             if !(scriptFunction.call(withArguments: [userId, query.bankCode, query.passwords, fromDate,
                 toDate, query.accountNumbers]) != nil) {
-                jsLogger.logError("getStatements() didn't properly start for plugin " + pluginId!);
+                jsLogger.logError("Fehler: getStatements() konnte für Plugin " + pluginId! + " nicht gestartet werden");
             }
     }
 
@@ -414,7 +414,7 @@ class PluginContext : NSObject, WebFrameLoadDelegate, WebUIDelegate {
     }
 
     internal func webView(_ sender: WebView!, didFailLoadWithError error: Error!, for frame: WebFrame!) {
-        jsLogger.logError("(*) Navigating to webpage failed with error: \(error.localizedDescription)")
+        jsLogger.logError("(*) Navigation zur Seite schlug fehl. Ursache: \(error.localizedDescription)")
     }
     
     internal func webView(_ sender: WebView!, runJavaScriptAlertPanelWithMessage message: String, initiatedBy initiatedByFrame: WebFrame!) {

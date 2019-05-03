@@ -124,6 +124,8 @@ static NSMutableDictionary *users = nil;
     NSSet          *media = [self tanMedia];
     NSMutableArray *options = [NSMutableArray arrayWithCapacity: 10];
 
+    LogDebug(@"getTanSigningOptions: we have %d TAN methods", methods.count);
+    
     for (TanMethod *method in methods) {
         SigningOption *option = [[SigningOption alloc] init];
         option.secMethod = SecMethod_PinTan;
@@ -170,12 +172,20 @@ static NSMutableDictionary *users = nil;
                     [options addObject: option];
                     added = YES;
                 }
+                if ([medium.category isEqualToString:@"A"]) {
+                    option.tanMediumName = medium.name;
+                    option.tanMediumCategory = medium.category;
+                    [options addObject: option];
+                    added = YES;
+                }
+                /*
                 if (([method.identifier rangeOfString:@"push"].location != NSNotFound) && [medium.category isEqualToString:@"A"] && ([medium.name rangeOfString: @"push"].location != NSNotFound)) {
                     option.tanMediumName = medium.name;
                     option.tanMediumCategory = medium.category;
                     [options addObject: option];
                     added = YES;
                 }
+                */
                 
                 if (added == YES) {
                     option = [[SigningOption alloc] init];
@@ -373,7 +383,7 @@ static NSMutableDictionary *users = nil;
     [request setEntity: entityDescription];
     NSArray *bankUsers = [context executeFetchRequest: request error: &error];
     if (error) {
-        LogError(@"Error retrieving all bank users: %@", error.localizedDescription);
+        LogError(@"Fehler beim Ermitteln der Bankkennungen: %@", error.localizedDescription);
         return nil;
     }
     return bankUsers;
@@ -403,7 +413,7 @@ static NSMutableDictionary *users = nil;
         [request setPredicate: predicate];
         bankUsers = [context executeFetchRequest: request error: &error];
         if (error) {
-            LogError(@"Retrieving bank user failed: %@", error.localizedDescription);
+            LogError(@"Fehler beim Ermitteln der Bankkennung: %@", error.localizedDescription);
             return nil;
         }
         if ([bankUsers count] == 0) {

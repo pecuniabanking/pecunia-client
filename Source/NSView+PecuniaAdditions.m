@@ -42,7 +42,7 @@
     CGColorSpaceRelease(colorSpace);
 
     if (context == NULL) {
-        LogError(@"getPrintViewForLayerBackedView: Failed to create context.");
+        LogInfo(@"getPrintViewForLayerBackedView: Failed to create context.");
         return nil;
     }
 

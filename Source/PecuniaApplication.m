@@ -36,7 +36,7 @@ static void signalHandler(int sig, siginfo_t *info, void *context)
     if ([MOAssistant.sharedAssistant.context save: &error]) {
         LogInfo(@"Successfully saved context.");
     } else {
-        LogError(@"Failed to save context. Reason: %@", error.description);
+        LogError(@"Daten konnten nicht gespeichert werden. Ursache: %@", error.description);
     }
 
     exit(102);

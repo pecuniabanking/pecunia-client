@@ -35,7 +35,7 @@ extension HBCIUser {
                 try setParameterData(bankUser.hbciParameters);
             }
             catch let error as NSError {
-                logError("Could not set parameters for user \(bankUser.userId)");
+                logError("Fehler beim Setzen der Parameter für Bankkennung \(bankUser.userId)");
                 throw error;
             }
         }
@@ -76,6 +76,17 @@ extension NSError {
         userInfo[titleKey] = NSLocalizedString(titleId, comment: "");
         userInfo[NSLocalizedDescriptionKey] = String(format: NSLocalizedString(msgId, comment: ""), arguments:params);
         return NSError(domain: "de.pecuniabanking.ErrorDomain", code: 1, userInfo: userInfo);
+    }
+    
+    func log() {
+        logInfo(self.description);
+        if (self.code == NSValidationMultipleErrorsError) {
+            if let errors = self.userInfo[NSDetailedErrorsKey] as? [NSError] {
+                for error in errors {
+                    logInfo(error.localizedDescription);
+                }
+            }
+        }
     }
     
     static var genericHBCI:NSError {
@@ -152,10 +163,10 @@ class HBCIBackend : NSObject, HBCILog {
                             try HBCISyntaxExtension.instance.add(path, version: "220");
                         }
                         catch {
-                            _backend.logError("Failed to process syntax extension");
+                            _backend.logError("Fehler beim Prozessieren der Syntaxerweiterung");
                         }
                     } else {
-                        _backend.logDebug("Failed to load syntax extension at" + path);
+                        _backend.logDebug("Fehler beim Laden der Syntaxerweiterung auf " + path);
                     }
                 }
             }
@@ -275,12 +286,17 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func updateBankAccounts(_ accounts: Array<HBCIAccount>, user:BankUser) throws {
-        let context = MOAssistant.shared().context;
+        guard let context = MOAssistant.shared().context else {
+            logError("Zugriff auf Datenbank-Kontext fehlgeschlagen");
+            return;
+        }
         let model = MOAssistant.shared().model;
         var found = false;
         
+        logDebug(accounts.description);
+        
         if let request = model?.fetchRequestTemplate(forName: "allBankAccounts") {
-            var bankAccounts = try context?.fetch(request) as! [BankAccount];
+            var bankAccounts = try context.fetch(request) as! [BankAccount];
             
             for account in accounts {
                 found = false;
@@ -321,7 +337,7 @@ class HBCIBackend : NSObject, HBCILog {
                     }
                     bankAccounts.append(bankRoot);
                     
-                    let bankAccount = NSEntityDescription.insertNewObject(forEntityName: "BankAccount", into: context!) as! BankAccount;
+                    let bankAccount = NSEntityDescription.insertNewObject(forEntityName: "BankAccount", into: context) as! BankAccount;
                     bankAccount.bankCode = account.bankCode;
                     bankAccount.setAccountNumber(account.number);
                     bankAccount.name = account.name;
@@ -348,6 +364,8 @@ class HBCIBackend : NSObject, HBCILog {
                     users.add(user);
                 }
             }
+        } else {
+            logInfo("Access to core data model failed");
         }
     }
     
@@ -424,14 +442,18 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func updateTanMethodsForUser(_ user:BankUser, methods:Array<HBCITanMethod>) {
-        let context = MOAssistant.shared().context;
+        guard let context = MOAssistant.shared().context else {
+            logError("Zugriff auf Datenbank-Kontext fehlgeschlagen (updateTanMethods)");
+            return;
+        }
         let oldMethods = user.tanMethods.allObjects as! [TanMethod];
         
         let secfunc = user.preferredTanMethod?.method;
         user.preferredTanMethod = nil;
         
+        logDebug("UpdateTanMethods: we have \(methods.count) TAN methods");
         for method in methods {
-            let tanMethod = NSEntityDescription.insertNewObject(forEntityName: "TanMethod", into: context!) as! TanMethod;
+            let tanMethod = NSEntityDescription.insertNewObject(forEntityName: "TanMethod", into: context) as! TanMethod;
             tanMethod.identifier = method.identifier;
             tanMethod.inputInfo = method.inputInfo;
             tanMethod.name = method.name;
@@ -455,19 +477,24 @@ class HBCIBackend : NSObject, HBCILog {
                     user.preferredTanMethod = tanMethod;
                 }
             }
+            logDebug("TAN method \(tanMethod.method) added");
         }
         
         // remove old methods
+        logDebug("UpdateTanMethods: we delete \(oldMethods.count) old TAN methods");
         for oldMethod in oldMethods {
-            context?.delete(oldMethod);
+            context.delete(oldMethod);
         }
         
         // set TAN method if not yet set
-        context?.processPendingChanges();
+        context.processPendingChanges();
     }
     
     func updateTanMediaForUser(_ user:BankUser, hbciUser:HBCIUser) {
-        let context = MOAssistant.shared().context;
+        guard let context = MOAssistant.shared().context else {
+            logError("Zugriff auf Datenbank-Kontext fehlgeschlagen (updateTanMedia)");
+            return;
+        }
         var tanMedia = Array<HBCITanMedium>();
         
         do {
@@ -479,7 +506,8 @@ class HBCIBackend : NSObject, HBCILog {
                     }
                     if let msg = HBCICustomMessage.newInstance(dialog) {
                         if let order = HBCITanMediaOrder(message: msg) {
-                            order.mediaType = "1";
+                            //order.mediaType = "1";                        not supported by DKB
+                            order.mediaType = "0";
                             order.mediaCategory = "A";
                             guard order.enqueue() else {
                                 return;
@@ -506,7 +534,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         let oldMedia = user.tanMedia.allObjects as! [TanMedium];
         for tanMedium in tanMedia {
-            let medium = NSEntityDescription.insertNewObject(forEntityName: "TanMedium", into: context!) as! TanMedium;
+            let medium = NSEntityDescription.insertNewObject(forEntityName: "TanMedium", into: context) as! TanMedium;
             medium.category = tanMedium.category;
             medium.status = tanMedium.status;
             medium.cardNumber = tanMedium.cardNumber;
@@ -535,10 +563,10 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         for oldMedium in oldMedia {
-            context?.delete(oldMedium);
+            context.delete(oldMedium);
         }
         
-        context?.processPendingChanges();
+        context.processPendingChanges();
     }
     
     func getBankSetupInfo(_ bankCode:String) ->BankSetupInfo? {
@@ -626,7 +654,9 @@ class HBCIBackend : NSObject, HBCILog {
             
             if let result = result {
                 if result.isOk() {
-                    let context = MOAssistant.shared().context;
+                    guard let context = MOAssistant.shared().context else {
+                        return NSError.errorWithMsg(msgId: "AP183", titleId: "AP83");
+                    }
                     
                     // update bank user
                     bankUser.hbciParameters = user.parameters.data();
@@ -664,7 +694,7 @@ class HBCIBackend : NSObject, HBCILog {
 
                     bankUser.hbciParameters = user.parameters.data();
 
-                    try context?.save();
+                    try context.save();
                     return nil;
                 }
             }
@@ -677,6 +707,7 @@ class HBCIBackend : NSObject, HBCILog {
             return NSError.fromHBCIError(error);
         }
         catch let error as NSError {
+            error.log();
             var userInfo = error.userInfo;
             userInfo[NSError.titleKey] = NSLocalizedString("AP53", comment: "HBCI-Fehler");
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo);
@@ -829,7 +860,7 @@ class HBCIBackend : NSObject, HBCILog {
         var error = false;
         
         guard let bankUser = bankAccount.defaultBankUser() else {
-            logError("Skip account \(bankAccount.accountNumber()), no user found");
+            logError("Konto \(bankAccount.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;
         }
         
@@ -906,7 +937,7 @@ class HBCIBackend : NSObject, HBCILog {
         // Organize accounts by user in order to get all statements for all accounts of a given user.
         for account in accounts {
             guard let _ = account.defaultBankUser() else {
-                logError("Skip account \(account.accountNumber()), no user found");
+                logError("Konto \(account.accountNumber()!) kann nicht verarbeitet werden da keine Bankkennung existiert");
                 continue;
             }
             
@@ -1181,7 +1212,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         guard let bankUser = bankAccounts.first?.defaultBankUser() else {
-            logError("Konto \(bankAccounts.first?.accountNumber() ?? "<unknown account>") kann nicht verarbeitet werden da keine Bankkennung existiert");
+            logError("Konto \(bankAccounts.first?.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return;
         }
         
@@ -1281,7 +1312,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         guard let bankUser = accounts.first?.defaultBankUser() else {
-            logError("Konto \(accounts.first?.accountNumber() ?? "<unknown account>") konnte nicht verarbeitet werden da keine Bankkennung existiert");
+            logError("Konto \(accounts.first?.accountNumber() ?? "<unbekannt>") konnte nicht verarbeitet werden da keine Bankkennung existiert");
             return;
         }
         
@@ -1340,7 +1371,7 @@ class HBCIBackend : NSObject, HBCILog {
                 
                 defer {
                     if error {
-                        logError("Fehler beim Abruf der Kontoauszüge zu Konto \(account.accountNumber()!)");
+                        logError("Fehler beim Abruf der Kontoumsätze zu Konto \(account.accountNumber() ?? "<unbekannt>")");
                     }
                 }
                 
@@ -1676,7 +1707,7 @@ class HBCIBackend : NSObject, HBCILog {
         for transfer in transfers {
             let account = transfer.account;
             guard let bankUser = account?.defaultBankUser() else {
-                logError("Überweisung wird nicht ausgeführt: für Bankkonto \(account?.accountNumber() ?? "<unknown account>") existiert keine Bankkennung");
+                logError("Überweisung wird nicht ausgeführt: für Bankkonto \(account?.accountNumber() ?? "<unbekannt>") existiert keine Bankkennung");
                 errorOccured = true;
                 continue;
             }
@@ -1800,7 +1831,7 @@ class HBCIBackend : NSObject, HBCILog {
         for stord in standingOrders {
             let bankAccount = stord.account;
             guard let bankUser = bankAccount?.defaultBankUser() else {
-                logError("Dauerauftrag wird nicht ausgeführt: für Bankkonto \(bankAccount?.accountNumber() ?? "<unknown account>") existiert keine Bankkennung");
+                logError("Dauerauftrag wird nicht ausgeführt: für Bankkonto \(bankAccount?.accountNumber() ?? "<unbekannt>") existiert keine Bankkennung");
                 errorOccured = true;
                 continue;
             }
@@ -1884,8 +1915,11 @@ class HBCIBackend : NSObject, HBCILog {
                                 error = true;
                                 continue;
                             }
-                            let context = MOAssistant.shared().context;
-                            context?.delete(stord);
+                            guard let context = MOAssistant.shared().context else {
+                                logError("Zugriff auf Datenbank-Kontext fehlgeschlagen (Dauerauftrag löschen)");
+                                continue;
+                            }
+                            context.delete(stord);
                             continue;
                         } else {
                             guard let msg = HBCICustomMessage.newInstance(dialog) else {
@@ -2086,7 +2120,7 @@ class HBCIBackend : NSObject, HBCILog {
         do {
             let bankUser = bankAccount.defaultBankUser();
             if bankUser == nil {
-                logError("Für Bankkonto \(bankAccount.accountNumber()!) existiert keine Bankkennung");
+                logError("Für Bankkonto \(bankAccount.accountNumber() ?? "<unbekannt>") existiert keine Bankkennung");
                 return nil;
             }
             let user = try HBCIUser(bankUser: bankAccount.defaultBankUser());
@@ -2274,7 +2308,7 @@ class HBCIBackend : NSObject, HBCILog {
     
     func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
         guard let bankUser = bankAccount.defaultBankUser() else {
-            logError("Konto \(bankAccount.accountNumber()) wird nicht verarbeitet, es existiert keine Bankkennung");
+            logError("Konto \(bankAccount.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;
         }
         let errorMsg = "Abholen des Kontoauszugs für Konto \(bankAccount.accountNumber()) ist fehlgeschlagen";

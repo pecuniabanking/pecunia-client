@@ -215,7 +215,7 @@
             return 4 * (toDate.year - (int)components.year) + (toDate.quarter - self.quarter);
 
         default:
-            LogError(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
+            LogError(@"Ungültige Kalendereinheit in ShortDate unitsToDate:byUnit:");
             return 0;
     }
 }
@@ -253,7 +253,7 @@
             comps.month += 3 * units;
             break;
         default:
-            LogError(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
+            LogError(@"Ungültige Kalendereinheit in ShortDate dateByAddingUnits:byUnit:");
             return nil;
     }
     comps.hour = 12;

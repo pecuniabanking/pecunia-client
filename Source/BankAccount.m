@@ -585,7 +585,7 @@
     if (users.count == 0) {
         users = [self mutableSetValueForKey: @"users"];
         if (users.count == 0) {
-            LogError(@"Account %@: no assigned users", self.accountNumber);
+            LogError(@"Konto %@: keine zugeordnete Bankkennung gefunden", self.accountNumber);
             return nil;
         }
     }

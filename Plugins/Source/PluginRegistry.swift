@@ -86,7 +86,7 @@ import WebKit;
                                             do {
                                                 try fileManager.removeItem(atPath: targetName);
                                             } catch let error as NSError {
-                                                logError("Cannot delete existing plugin: \(error.localizedDescription)");
+                                                logError("Plugin konnte nicht gelöscht werden: \(error.localizedDescription)");
                                                 continue;
                                             }
 
@@ -94,7 +94,7 @@ import WebKit;
                                             do {
                                                 try fileManager.moveItem(atPath: targetName, toPath: pluginPath! + "/" + newBackupName);
                                             } catch let error as NSError {
-                                                logError("Cannot backup existing plugin: \(error.localizedDescription)");
+                                                logError("Plugin konnte nicht gesichert werden: \(error.localizedDescription)");
                                                 continue;
                                             }
                                         }
@@ -143,7 +143,7 @@ import WebKit;
                 }
                 logDebug("Found \(plugins.count) valid plugins");
             } catch let error as NSError {
-                logError("Could not enumerate plugin folder: \(error.localizedDescription)");
+                logError("Plugin-Verzeichnis konnte nicht gelesen werden: \(error.localizedDescription)");
                 NSAlert(error: error).runModal();
             }
         }
@@ -236,7 +236,7 @@ import WebKit;
                 }
             }
         } else {
-            registry!.logError("Couldn't find plugin " + pluginId!);
+            registry!.logError("Plugin " + pluginId! + "konnte nicht gefunden werden");
             completion([]);
         }
 

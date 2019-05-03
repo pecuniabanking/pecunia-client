@@ -56,11 +56,11 @@ let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resource
 	            catch {
 	                // Currently default and variadic parameters don't work well together.
 	                // So we need to help a compiler a bit to pick up the variadics (here for the logError call).
-	                logError("Parser error for update info file %@", arguments: RemoteResourceUpdateInfo);
+	                logInfo("Parser error for update info file %@", arguments: RemoteResourceUpdateInfo);
 	                return;
 	            }
             } else {
-                logError("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
+                logInfo("Could not load update info file at %@", arguments: RemoteResourceUpdateInfo);
             }
 
             objc_sync_exit(self);
@@ -227,12 +227,12 @@ let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resource
         do {
             let fileData: Data = try Data(contentsOf: sourceURL, options: .uncached);
             if !((try? fileData.write(to: targetURL, options: [.atomic])) != nil) {
-                logError("Could not copy remote resource %@", arguments: sourceURL.path);
+                logInfo("Could not copy remote resource %@", arguments: sourceURL.path);
                 return false;
             }
         }
         catch {
-            logError("Could not open remote resource %@", arguments: sourceURL.path);
+            logInfo("Could not open remote resource %@", arguments: sourceURL.path);
             return false;
         }
 
