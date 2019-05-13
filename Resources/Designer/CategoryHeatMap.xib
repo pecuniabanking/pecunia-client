@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CategoryHeatMapController">
@@ -121,7 +122,7 @@
                     <rect key="frame" x="454" y="20" width="120" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Statistik" usesSingleLineMode="YES" id="124">
-                        <font key="font" size="18" name="LucidaSans-DemiItalic"/>
+                        <font key="font" metaFont="system" size="18"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -130,7 +131,7 @@
                     <rect key="frame" x="664" y="39" width="84" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100.000,00 €" usesSingleLineMode="YES" id="151">
-                        <font key="font" size="11" name="LucidaSans-DemiItalic"/>
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -139,7 +140,7 @@
                     <rect key="frame" x="564" y="38" width="98" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅ pro Tag" id="150">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -148,7 +149,7 @@
                     <rect key="frame" x="664" y="24" width="84" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="156">
-                        <font key="font" size="11" name="LucidaSans-DemiItalic"/>
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -157,7 +158,7 @@
                     <rect key="frame" x="576" y="23" width="86" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅ pro Monat" id="155">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -224,13 +225,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </customView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="175">
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="175">
                         <rect key="frame" x="-100" y="-100" width="739" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="176">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="176">
                         <rect key="frame" x="239" y="0.0" width="16" height="145"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -259,9 +259,6 @@
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100.000,00" id="183">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." id="184">
                             <textAttributesForNegativeValues/>
-                            <metadata>
-                                <real key="inspectorSampleValue" value="-1234.75"/>
-                            </metadata>
                         </numberFormatter>
                         <font key="font" size="11" name="HelveticaNeue"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>

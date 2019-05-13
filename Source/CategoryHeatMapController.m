@@ -244,20 +244,22 @@ static NSFont *smallNumberFont;
     frameColor = [NSColor colorWithCalibratedWhite: 193 / 255.0 alpha: 1];
     monthNameColor = [NSColor colorWithCalibratedRed: 226 green: 150 / 255.0 blue: 24 / 255.0 alpha: 1];
 
-    monthNameFont = [NSFont fontWithName: @"HelveticaNeue" size: 14];
+    monthNameFont = [NSFont fontWithName: @"HelveticaNeue" size: 16];
     monthTextAttributes = @{NSForegroundColorAttributeName: monthNameColor,
                             NSFontAttributeName: monthNameFont};
 
-    smallTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.6];
-    smallFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
+    //smallTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.6];
+    smallTextColor = [NSColor textColor];
+    smallFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
     smallTextAttributes = @{NSForegroundColorAttributeName: smallTextColor,
                             NSFontAttributeName: smallFont};
 
-    normalNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 11];
-    smallNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
+    normalNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 12];
+    smallNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
 
     grayColor = [NSColor colorWithCalibratedWhite: 239 / 255.0 alpha: 1];
-    darkTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.7];
+    //darkTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.7];
+    darkTextColor = [[NSColor textColor] colorWithAlphaComponent:0.7];
 }
 
 - (void)updateConstantValues

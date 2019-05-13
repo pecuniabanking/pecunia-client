@@ -834,6 +834,8 @@
 		B10C41B7196F2B5B00085983 /* AccountStatementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B10C41B5196F2B5B00085983 /* AccountStatementsController.m */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
+		B1137C37228764E000F0C012 /* BackgroundColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1137C36228764E000F0C012 /* BackgroundColors.xcassets */; };
+		B1137C38228764E000F0C012 /* BackgroundColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1137C36228764E000F0C012 /* BackgroundColors.xcassets */; };
 		B11F78D3162F0BFC00D7A8E5 /* container-migration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
@@ -1588,6 +1590,7 @@
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1137C36228764E000F0C012 /* BackgroundColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BackgroundColors.xcassets; sourceTree = "<group>"; };
 		B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HBCI4Swift.xcodeproj; path = Submodules/HBCI4Swift/HBCI4Swift/HBCI4Swift.xcodeproj; sourceTree = "<group>"; };
 		B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "container-migration.plist"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2455,6 +2458,7 @@
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 				B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */,
+				B1137C36228764E000F0C012 /* BackgroundColors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -3288,6 +3292,7 @@
 				275AC7E1186B5BDC002E6BED /* graph4-active@2x.png in Resources */,
 				27778999173CE22700430EBC /* edit-large.png in Resources */,
 				2777899A173CE22700430EBC /* edit-large@2x.png in Resources */,
+				B1137C38228764E000F0C012 /* BackgroundColors.xcassets in Resources */,
 				2777899B173CE22700430EBC /* csv.png in Resources */,
 				272F6E731955D72300096734 /* sequence-type-repeat@2x.png in Resources */,
 				2794FF6A1972D5BA000B69EC /* new-small-white.png in Resources */,
@@ -3435,6 +3440,7 @@
 				B1A6AA201A251D8B00141C39 /* StatSplitController.xib in Resources */,
 				272F6E6E1955D72300096734 /* sequence-type-end@2x.png in Resources */,
 				27E8461819E17D300026464E /* TanMediaWindow.xib in Resources */,
+				B1137C37228764E000F0C012 /* BackgroundColors.xcassets in Resources */,
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
 				27E845E419E17D300026464E /* DebitsListViewCell.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit.png in Resources */,

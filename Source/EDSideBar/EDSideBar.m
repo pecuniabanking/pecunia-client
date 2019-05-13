@@ -175,14 +175,12 @@
 @synthesize animateSelection;
 @synthesize animationDuration;
 @synthesize noiseAlpha;
-@synthesize toSelectIndex;
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
 		
         // Initialization code here.
-        self.toSelectIndex = -1;
 		layoutMode = ECSideBarLayoutCenter;
 		self.backgroundColor = [NSColor colorWithDeviceWhite:60.0/255.0 alpha:1.0];
 		animationDuration = ED_DEFAULT_ANIM_DURATION;
@@ -217,11 +215,6 @@
 
 -(void)drawBackground:(NSRect)rect
 {
-    if(self.toSelectIndex >=0 ) {
-        self.selectedIndex = self.toSelectIndex;
-        self.toSelectIndex = -1;
-    }
-    
 	[_backgroundColor set];
 	NSRectFill(rect);
 	if( self.noiseAlpha > 0 )
@@ -378,10 +371,6 @@
 
 -(void)setSelectedIndex: (NSInteger)row
 {
-    if([NSGraphicsContext currentContext] == nil) {
-        self.toSelectIndex = row;
-        return;
-    }
 	NSInteger rowToSelect = row;
 	if(  [_matrix numberOfRows] < row )
 		rowToSelect = 0;

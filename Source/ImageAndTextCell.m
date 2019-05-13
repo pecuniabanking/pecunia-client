@@ -340,10 +340,10 @@ static NSGradient *selectionGradient = nil;
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
                                                                attributes: attributes];
     } else {
-        textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
+        textColor = [[NSColor textColor] colorWithAlphaComponent:0.9];
 
         if (isDisabled) {
-            textColor = [NSColor applicationColorForKey: @"Disabled Tree Item"];
+            textColor = [textColor colorWithAlphaComponent:0.4];
         }
         if (isHidden) {
             textColor = [textColor colorWithAlphaComponent: 0.4];

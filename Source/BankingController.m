@@ -3713,11 +3713,14 @@ static BankingController *bankinControllerInstance;
     for (BankUser *user in BankUser.allUsers) {
         if (user.sysId == nil || user.hbciParameters == nil) {
             if (!migrationMessageSent) {
-                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                                NSLocalizedString(@"AP203", nil),
-                                NSLocalizedString(@"AP1", nil),
-                                nil, nil
-                                );
+                NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                                                NSLocalizedString(@"AP203", nil),
+                                                NSLocalizedString(@"AP1", nil),
+                                                NSLocalizedString(@"AP2", nil), nil
+                                                );
+                if(res == NSAlertAlternateReturn) {
+                    [NSApp terminate:nil];
+                }
                 migrationMessageSent = true;
             }
             

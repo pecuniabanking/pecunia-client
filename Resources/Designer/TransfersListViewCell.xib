@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -22,7 +23,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="87" customClass="NoAnimationTextField">
-                    <rect key="frame" x="13" y="2" width="198" height="17"/>
+                    <rect key="frame" x="13" y="2" width="226" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Bank name" placeholderString="" id="88">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
@@ -31,16 +32,13 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="15" customClass="NoAnimationTextField">
-                    <rect key="frame" x="528.99999969716998" y="24" width="80" height="20"/>
+                    <rect key="frame" x="529" y="24" width="80" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100.000,00" id="16">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." id="22">
                             <textAttributesForNegativeValues>
                                 <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </textAttributesForNegativeValues>
-                            <metadata>
-                                <real key="inspectorSampleValue" value="-1234.75"/>
-                            </metadata>
                         </numberFormatter>
                         <font key="font" size="13" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -48,7 +46,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="91" customClass="NoAnimationTextField">
-                    <rect key="frame" x="528.99999969716998" y="6" width="80" height="17"/>
+                    <rect key="frame" x="529" y="6" width="80" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="92">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
@@ -92,17 +90,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="cds-Bp-5kL" customClass="NoAnimationTextField">
-                    <rect key="frame" x="215" y="16" width="29" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="VeP-Fg-TFx">
-                        <font key="font" size="11" name="HelveticaNeue-Light"/>
-                        <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField verticalHuggingPriority="750" id="xpt-zK-NIe" customClass="NoAnimationTextField">
-                    <rect key="frame" x="55" y="16" width="192" height="17"/>
+                    <rect key="frame" x="55" y="16" width="184" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="Dit-j6-4HR">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
@@ -111,7 +100,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="YlR-3T-ibw" customClass="NoAnimationTextField">
-                    <rect key="frame" x="248" y="16" width="203" height="17"/>
+                    <rect key="frame" x="269" y="16" width="182" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="gD9-VQ-MFI">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
@@ -120,11 +109,20 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="118" userLabel="Purpose Label" customClass="NoAnimationTextField">
-                    <rect key="frame" x="215" y="2" width="236" height="17"/>
+                    <rect key="frame" x="243" y="2" width="208" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Purpose" id="119">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="cds-Bp-5kL" customClass="NoAnimationTextField">
+                    <rect key="frame" x="243" y="16" width="29" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="VeP-Fg-TFx">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
+                        <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -143,6 +141,7 @@
                 <outlet property="valueLabel" destination="15" id="109"/>
                 <outlet property="valueTitle" destination="94" id="133"/>
             </connections>
+            <point key="canvasLocation" x="139" y="153.5"/>
         </customView>
     </objects>
 </document>
