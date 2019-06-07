@@ -35,7 +35,7 @@ extension HBCIUser {
                 try setParameterData(bankUser.hbciParameters);
             }
             catch let error as NSError {
-                logError("Fehler beim Setzen der Parameter für Bankkennung \(bankUser.userId)");
+                logError("Fehler beim Setzen der Parameter für Bankkennung \(bankUser.userId ?? "?")");
                 throw error;
             }
         }
@@ -129,7 +129,7 @@ class HBCIBackendCallback : HBCICallback {
             }
         }
         
-        if let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""), bankUser != nil ? bankUser!.name: user.userId, challenge!)) {
+        if let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""), bankUser?.name ?? user.userId, challenge!)) {
             let res = NSApp.runModal(for: tanWindow.window!);
             tanWindow.close();
             if res == 0 {
@@ -307,13 +307,13 @@ class HBCIBackend : NSObject, HBCILog {
                         // update the user if there is none assigned yet
                         let users = bankAccount.mutableSetValue(forKey: "users");
                         if users.count > 0 {
-                            // there is already another user id assigned...
-                            break;
+                            // there is already another user id assigned...do nothing
+                        } else {
+                            // no user assigned yet
+                            bankAccount.userId = user.userId;
+                            bankAccount.customerId = user.customerId;
+                            users.add(user);
                         }
-                        
-                        bankAccount.userId = user.userId;
-                        bankAccount.customerId = user.customerId;
-                        users.add(user);
                         
                         if account.bic != nil {
                             bankAccount.bic = account.bic;
@@ -324,6 +324,9 @@ class HBCIBackend : NSObject, HBCILog {
                         if bankAccount.isManual.boolValue == true {
                             // check if account supports statement transfers - if yes,clear manual flag
                             // todo
+                        }
+                        if let type = account.type {
+                            bankAccount.type = NSNumber(value: type);
                         }
                         
                         break;
@@ -350,10 +353,10 @@ class HBCIBackend : NSObject, HBCILog {
                     bankAccount.accountSuffix = account.subNumber;
                     bankAccount.bic = account.bic;
                     bankAccount.iban = account.iban;
-                    if let type = account.type, let typeNum = Int(type) {
-                        bankAccount.type = NSNumber(value: typeNum);
+                    if let type = account.type {
+                        bankAccount.type = NSNumber(value: type);
                     }
-                    
+
                     bankAccount.plugin = PluginRegistry.pluginForAccount(account.number, bankCode: account.bankCode);
                     if bankAccount.plugin.length == 0 {
                         bankAccount.plugin = "hbci";
@@ -477,7 +480,7 @@ class HBCIBackend : NSObject, HBCILog {
                     user.preferredTanMethod = tanMethod;
                 }
             }
-            logDebug("TAN method \(tanMethod.method) added");
+            logDebug("TAN method \(tanMethod.method ?? "?") added");
         }
         
         // remove old methods
@@ -892,7 +895,7 @@ class HBCIBackend : NSObject, HBCILog {
                     if try msg.send() {
                         return order.settlement;
                     } else {
-                        logInfo("Failed to get credit card settlement for account \(account.number)");
+                        logInfo("Failed to get credit card settlement for account \(account.number ?? "?")");
                         error = true;
                         return nil;
                     }
@@ -1144,10 +1147,12 @@ class HBCIBackend : NSObject, HBCILog {
 
         for statement in statements {
             // get latest balance
-            if let balance = statement.endBalance {
-                if balance.postingDate > latest {
-                    result.balance = balance.value;
-                    latest = balance.postingDate;
+            if !statement.isPreliminary! {
+                if let balance = statement.endBalance {
+                    if balance.postingDate > latest {
+                        result.balance = balance.value;
+                        latest = balance.postingDate;
+                    }
                 }
             }
             
@@ -1178,7 +1183,7 @@ class HBCIBackend : NSObject, HBCILog {
                 stat.transactionCode = String(format: "%0.3d", transCode!);
                 stat.transactionText = item.transactionText;
                 stat.isStorno = NSNumber(value: (item.isCancellation ?? false));
-                stat.isPreliminary = NSNumber(value: false);
+                stat.isPreliminary = NSNumber(value: statement.isPreliminary ?? false);
                 
                 if let ccNumber = item.ccNumberUms {
                     stat.ccNumberUms = ccNumber;
@@ -1262,7 +1267,7 @@ class HBCIBackend : NSObject, HBCILog {
                         
                         defer {
                             if error {
-                                logError("Fehler beim Abruf der Daueraufträge für Konto \(account.number)");
+                                logError("Fehler beim Abruf der Daueraufträge für Konto \(account.number ?? "?")");
                             }
                         }
                         
@@ -1346,12 +1351,12 @@ class HBCIBackend : NSObject, HBCILog {
             let dialog = try HBCIDialog(user: user);
             
             guard let result = try dialog.dialogInit() else {
-                logError("Dialoginitialisierung für Bankkennung \(bankUser.userId) fehlgeschlagen");
+                logError("Dialoginitialisierung für Bankkennung \(bankUser.userId ?? "?") fehlgeschlagen");
                 return;
             }
             
             guard result.isOk() else {
-                logError("Dialogausführung für Bankkennung \(bankUser.userId) fehlgeschlagen");
+                logError("Dialogausführung für Bankkennung \(bankUser.userId ?? "?") fehlgeschlagen");
                 return;
             }
             
@@ -1435,29 +1440,29 @@ class HBCIBackend : NSObject, HBCILog {
                 } else if isTransactionSupportedForAccount(TransactionType.ccStatements, account: account) {
                     // credit card statements
                     guard let order = CCStatementOrder(message: msg, account: hbciAccount) else {
-                        logInfo("Fehler beim Aufbau der Umsatznachricht Kreditkarte zu Konto \(account.accountNumber())");
+                        logInfo("Fehler beim Aufbau der Umsatznachricht Kreditkarte zu Konto \(account.accountNumber() ?? "?")");
                         error = true;
                         continue;
                     }
                     order.dateFrom = dateFrom;
                     guard order.enqueue() else {
-                        logInfo("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber())")
+                        logInfo("Fehler beim Registrieren der Umsatznachricht zu Konto \(account.accountNumber() ?? "?")")
                         error = true;
                         continue;
                     }
                     guard try msg.send() else {
-                        logInfo("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber())")
+                        logInfo("Fehler beim Senden der Umsatznachricht zu Konto \(account.accountNumber() ?? "?")")
                         error = true;
                         continue;
                     }
                     for order in msg.orders {
                         guard let order = order as? CCStatementOrder else {
-                            logInfo("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber())")
+                            logInfo("Fehler beim Ermitteln des Umsatzauftrags zu Konto \(account.accountNumber() ?? "?")")
                             error = true;
                             continue;
                         }
                         guard let statements = order.statements else {
-                            logInfo("Kontoumsätze für Konto \(account.accountNumber()) konnten nicht ermittelt werden")
+                            logInfo("Kontoumsätze für Konto \(account.accountNumber() ?? "?") konnten nicht ermittelt werden")
                             error = true;
                             continue;
                         }
@@ -1503,7 +1508,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
         }
         catch {
-            logError("Beim Ermitteln der Umsätze zu Bankkennung \(bankUser.userId) sind Fehler aufgetreten");
+            logError("Beim Ermitteln der Umsätze zu Bankkennung \(bankUser.userId ?? "?") sind Fehler aufgetreten");
         }
         
         for result in bqResult {
@@ -1719,7 +1724,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         for bankUser in accountTransferRegister.keys {
             guard let option = signingOptionForUser(bankUser) else {
-                logInfo("Failed to get signing option for bank user \(bankUser.userId)");
+                logInfo("Failed to get signing option for bank user \(bankUser.userId ?? "?")");
                 errorOccured = true;
                 continue;
             }
@@ -1736,7 +1741,7 @@ class HBCIBackend : NSObject, HBCILog {
                         
                         defer {
                             if error {
-                                logError("Überweisungen für Konto \(account.number) konnten nicht ausgeführt werden");
+                                logError("Überweisungen für Konto \(account.number ?? "?") konnten nicht ausgeführt werden");
                                 errorOccured = true;
                             }
                         }
@@ -1843,7 +1848,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         for bankUser in accountTransferRegister.keys {
             guard let option = signingOptionForUser(bankUser) else {
-                logInfo("Failed to get signing option for bank user \(bankUser.userId)");
+                logInfo("Failed to get signing option for bank user \(bankUser.userId ?? "?")");
                 errorOccured = true;
                 continue;
             }
@@ -2311,7 +2316,7 @@ class HBCIBackend : NSObject, HBCILog {
             logError("Konto \(bankAccount.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;
         }
-        let errorMsg = "Abholen des Kontoauszugs für Konto \(bankAccount.accountNumber()) ist fehlgeschlagen";
+        let errorMsg = "Abholen des Kontoauszugs für Konto \(bankAccount.accountNumber() ?? "?") ist fehlgeschlagen";
         
         do {
             return try processHBCIDialog(bankUser) {user, dialog in

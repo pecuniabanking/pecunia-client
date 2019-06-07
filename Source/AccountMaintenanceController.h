@@ -47,6 +47,8 @@
     NSWindow                       *supportedTransactionsSheet;
 }
 
+@property(nonatomic, retain) NSString *accountTypeName;
+
 - (id)initWithAccount: (BankAccount *)acc;
 - (BOOL)check;
 

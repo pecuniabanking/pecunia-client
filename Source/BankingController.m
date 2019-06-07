@@ -2445,9 +2445,6 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(accountStatements:)) {
             return NO;
         }
-        if ([item action] == @selector(updateSupportedTransactions:)) {
-            return NO;
-        }
         if ([item action] == @selector(updateStatementBalances:)) {
             return NO;
         }
@@ -2465,9 +2462,6 @@ static BankingController *bankinControllerInstance;
             if ([item action] == @selector(deleteAccount:)) {
                 return NO;
             }
-            if ([item action] == @selector(startEuTransfer:)) {
-                return NO;
-            }
             if ([item action] == @selector(startSepaTransfer:)) {
                 return NO;
             }
@@ -2481,9 +2475,6 @@ static BankingController *bankinControllerInstance;
                 return NO;
             }
             if ([item action] == @selector(accountStatements:)) {
-                return NO;
-            }
-            if ([item action] == @selector(updateSupportedTransactions:)) {
                 return NO;
             }
             if ([item action] == @selector(updateStatementBalances:)) {

@@ -3673,7 +3673,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "test -e \"$SRCROOT/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -eq 0 ]\nthen\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -ne 0 ]\nthen\ncp -n \"$SRCROOT/Resources/hbci_cc_300.xml\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nfi\nfi";
+			shellScript = "test -e \"$SRCROOT/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -eq 0 ]\nthen\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nif [ \"$?\" -ne 0 ]\nthen\ncp -n \"$SRCROOT/Resources/hbci_cc_300.xml\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents/Resources/hbci_cc_300.xml\"\nfi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4427,7 +4427,7 @@
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				GCC_VERSION = "";
@@ -4480,7 +4480,7 @@
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
 				GCC_VERSION = "";
@@ -4531,6 +4531,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -4570,6 +4571,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -4607,6 +4609,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
