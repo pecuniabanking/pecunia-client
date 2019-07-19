@@ -39,6 +39,7 @@ AP33 = "Daueraufträge";
 AP34 = "Beenden nicht möglich";
 AP35 = "nicht angegeben";
 AP36 = "Weiter";
+AP37 = "Überspringen";
 
 // Validation strings
 // AP50..AP99
@@ -172,7 +173,7 @@ AP183 = "Fehler beim Öffnen der Datenbank";
 AP200 = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%():?";
 AP201 = "Unbekannte Bankkennung";
 AP202 = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
-AP203 = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
+AP203 = "Es sind noch nicht alle Bankkennungen migriert. Pecunia ermittelt jetzt für die betroffenen Bankkennungen Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert). Sie können die Migratin überspringen, müssen dann aber in Pecunia die Bankkennungen synchronisieren bzw. löschen und neu anlegen. Weitere Informationen finden Sie hier: https://www.pecuniabanking.de/index.php/9-uncategorised/84-pecunia-2-0-beta";
 AP204 = "Selektion unterstützte Geschäftsvorfälle";
 AP205 = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
 AP206 = "1 Umsatz";

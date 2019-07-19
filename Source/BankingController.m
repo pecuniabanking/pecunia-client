@@ -3701,16 +3701,17 @@ static BankingController *bankinControllerInstance;
     
     // check for users that are not converted to HBCI4Swift yet
     BOOL migrationMessageSent = false;
+    BOOL doNotMigrate = false;
     for (BankUser *user in BankUser.allUsers) {
         if (user.sysId == nil || user.hbciParameters == nil) {
             if (!migrationMessageSent) {
                 NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
                                                 NSLocalizedString(@"AP203", nil),
                                                 NSLocalizedString(@"AP1", nil),
-                                                NSLocalizedString(@"AP2", nil), nil
+                                                NSLocalizedString(@"AP37", nil), nil
                                                 );
                 if(res == NSAlertAlternateReturn) {
-                    [NSApp terminate:nil];
+                    doNotMigrate = true;
                 }
                 migrationMessageSent = true;
             }
@@ -3721,6 +3722,11 @@ static BankingController *bankinControllerInstance;
                 LogInfo(@"Bank URL changed to %@", user.bankURL);
             }
             
+            if(doNotMigrate == true) {
+                continue;
+            }
+            
+            // sync bank user
             NSError *error = [HBCIBackend.backend syncBankUser:user];
             if (error != nil) {
                 if (user.customerId == nil || user.customerId.length == 0) {

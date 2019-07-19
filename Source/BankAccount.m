@@ -91,6 +91,7 @@
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    NSError                *error;
     [request setEntity: entityDescription];
 
     // get old statements
@@ -98,21 +99,8 @@
         return;
     }
     
-    // first remove old preliminary statements
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isPreliminary = 1)", self];
-    [request setPredicate: predicate];
-
-    NSError *error;
-    NSArray *preliminaryStatements = [context executeFetchRequest: request error: &error];
-    for (BankStatement *statement in preliminaryStatements) {
-        [context deleteObject: statement];
-    }
-    if (preliminaryStatements.count > 0) {
-        [context processPendingChanges];
-    }
-    
     BankStatement *newStatement = (res.statements)[0]; // oldest statement
-    predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: newStatement.date] lowDate]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: newStatement.date] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
@@ -137,6 +125,7 @@
                 // Find new statement in old statements.
                 BOOL isMatched = NO;
                 for (BankStatement *oldStatment in oldStatements) {
+                    if (oldStatment.isPreliminary.boolValue) continue; // preliminary statements will be replaced
                     if ([newStatement matchesAndRepair: oldStatment]) {
                         isMatched = YES;
                         [oldStatements removeObject: oldStatment];
@@ -187,6 +176,11 @@
     NSDate                 *ltd = self.latestTransferDate;
     ShortDate              *currentDate = nil;
     NSMutableArray         *newStatements = [NSMutableArray arrayWithCapacity: 50];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    NSError                *error;
+
+    [request setEntity: entityDescription];
 
     // make sure that balance is defined
     if (self.balance == nil) {
@@ -199,6 +193,18 @@
     }
     if (result.statements == nil) {
         return 0;
+    }
+    
+    // first remove old preliminary statements
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isPreliminary = 1)", self];
+    [request setPredicate: predicate];
+    
+    NSArray *preliminaryStatements = [context executeFetchRequest: request error: &error];
+    for (BankStatement *statement in preliminaryStatements) {
+        [context deleteObject: statement];
+    }
+    if (preliminaryStatements.count > 0) {
+        [context processPendingChanges];
     }
 
     // Give statements at the given day a little offset each so they always sort the same way.

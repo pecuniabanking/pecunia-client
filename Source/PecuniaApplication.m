@@ -47,6 +47,7 @@ static void signalHandler(int sig, siginfo_t *info, void *context)
 - (id)init
 {
     self = [super init];
+    /*
     if (self != nil) {
         static PecuniaExceptionDelegate *exceptionDelegate = nil;
 
@@ -75,6 +76,7 @@ static void signalHandler(int sig, siginfo_t *info, void *context)
                 sigaction(signals[i], &sa, NULL);
         }
     }
+    */
     return self;
 }
 

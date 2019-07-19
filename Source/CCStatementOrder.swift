@@ -61,6 +61,7 @@ class CCStatementOrder: HBCIOrder {
         self.statements = [HBCIStatement]();
         for seg in resultSegments {
             let statement = HBCIStatement();
+            statement.isPreliminary = false;
             if let balance_deg = seg.elementForPath("balance") {
                 statement.endBalance = HBCIAccountBalance(element: balance_deg);
                 statement.localAccountNumber = self.account.number;

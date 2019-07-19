@@ -940,22 +940,27 @@ class HBCIBackend : NSObject, HBCILog {
         // Organize accounts by user in order to get all statements for all accounts of a given user.
         for account in accounts {
             guard let _ = account.defaultBankUser() else {
-                logError("Konto \(account.accountNumber()!) kann nicht verarbeitet werden da keine Bankkennung existiert");
+                logError("Konto \(account.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
                 continue;
             }
             
             // Take out those accounts and run them through their appropriate plugin if they have
             // one assigned. Since they don't need to use the same mechanism we have for HBCI,
             // we can just use a local list. All plugins run in parallel.
-            if account.plugin.length > 0 && account.plugin != "hbci" {
-                if !userPluginList.keys.contains(account.plugin) {
-                    userPluginList[account.plugin] = Array<BankAccount>();
+            if let plugin = account.plugin {
+                if plugin.length > 0 && plugin != "hbci" {
+                    if !userPluginList.keys.contains(plugin) {
+                        userPluginList[plugin] = Array<BankAccount>();
+                    }
+                    userPluginList[plugin]?.append(account);
                 }
-                userPluginList[account.plugin]!.append(account);
             }
         }
         self.pluginsRunning = userPluginList.count;
         for accounts in userPluginList.values {
+            if accounts.count == 0 {
+                continue;
+            }
             PluginRegistry.getStatements(accounts, completion: { (results: [BankQueryResult]) -> Void in
                 for result in results {
                     self.orderStatements(result);
@@ -1002,20 +1007,20 @@ class HBCIBackend : NSObject, HBCILog {
         // Organize accounts by user in order to get all statements for all accounts of a given user.
         for account in accounts {
             guard let user = account.defaultBankUser() else {
-                logError("Konto \(account.accountNumber()!) kann nicht verarbeitet werden da keine Bankkennung existiert");
+                logError("Konto \(account.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
                 continue;
             }
             
             // Take out those accounts and run them through their appropriate plugin if they have
             // one assigned. Since they don't need to use the same mechanism we have for HBCI,
             // we can just use a local list. All plugins run in parallel.
-            if account.plugin.length > 0 && account.plugin != "hbci" {
+            if account.plugin != nil && account.plugin.length > 0 && account.plugin != "hbci" {
                 // should be handled by Plugin
             } else {
                 if !userList.keys.contains(user) {
                     userList[user] = Array<BankAccount>();
                 }
-                userList[user]!.append(account);
+                userList[user]?.append(account);
             }
         }
         
@@ -1023,6 +1028,13 @@ class HBCIBackend : NSObject, HBCILog {
         let queue = DispatchQueue(label: "de.pecuniabanking.pecunia.statementsQueue", attributes: []);
 
         for user in userList.keys {
+            guard let accounts = userList[user] else {
+                continue;
+            }
+            if accounts.count == 0 {
+                continue;
+            }
+            
             if SecurityMethod(user.secMethod.uint32Value) == SecMethod_PinTan {
                 // make sure PIN is known
                 let request = AuthRequest();
@@ -1038,19 +1050,26 @@ class HBCIBackend : NSObject, HBCILog {
 
             self.hbciQueriesRunning += 1;
             queue.async(execute: {
-                userFunc(userList[user]!);
+                userFunc(accounts);
             });
         }
         
         // now we do the DDV access
         // the DDV access has to be strongly serialized
         for user in userList.keys {
+            guard let accounts = userList[user] else {
+                continue;
+            }
+            if accounts.count == 0 {
+                continue;
+            }
+
             if SecurityMethod(user.secMethod.uint32Value) == SecMethod_DDV {
                 let ccman = ChipcardManager.manager;
                 do {
                     try ccman.requestCardForUser(user);
                     self.hbciQueriesRunning += 1;
-                    userFunc(userList[user]!);
+                    userFunc(accounts);
                 }
                 catch let error as NSError {
                     let alert = NSAlert(error: error);
@@ -1147,7 +1166,7 @@ class HBCIBackend : NSObject, HBCILog {
 
         for statement in statements {
             // get latest balance
-            if !statement.isPreliminary! {
+            if !(statement.isPreliminary ?? false) {
                 if let balance = statement.endBalance {
                     if balance.postingDate > latest {
                         result.balance = balance.value;
@@ -2291,7 +2310,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         let dialog = try HBCIDialog(user: user);
         guard let result = try dialog.dialogInit() else {
-            logInfo("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen");
+            logError("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen");
             throw NSError.errorWithMsg(msgId: "2011", params: user.userId);
         }
         
@@ -2306,7 +2325,7 @@ class HBCIBackend : NSObject, HBCILog {
             
             return try block(user, dialog);
         } else {
-            logInfo("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen, Ergebnis fehlerhaft");
+            logError("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen, Ergebnis fehlerhaft");
             throw NSError.errorWithMsg(msgId: "2012", params: user.userId);
         }
     }
