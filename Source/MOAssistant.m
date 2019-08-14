@@ -47,6 +47,7 @@
     BOOL isSandboxed;
     BOOL isDefaultDir;
     BOOL isMaxIdleTimeExceeded;
+    BOOL isFilenameByParameter;
 }
 
 @end
@@ -98,8 +99,10 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
     }
 
     // customize data file name
+    isFilenameByParameter = NO;
     if ([LaunchParameters parameters].dataFile) {
         dataFilename = [LaunchParameters parameters].dataFile;
+        isFilenameByParameter = YES;
     }
 
     lockViewController = [LockViewController createController];
@@ -236,7 +239,9 @@ static NSString *sDir = @"~/Library/Application Support/Pecunia/Plugins";
 
 - (void)updateDefaults {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue: dataFilename forKey: dataFilenameKey];
+    if(!isFilenameByParameter) {
+        [defaults setValue: dataFilename forKey: dataFilenameKey];
+    }
     if (isDefaultDir == NO) {
         [defaults setValue: [[dataDirURL path] stringByReplacingOccurrencesOfString: @"file://localhost" withString: @""] forKey: dataDirKey];
     } else {
