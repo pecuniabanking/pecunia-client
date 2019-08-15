@@ -244,7 +244,6 @@ static BankingController *bankinControllerInstance;
 #endif
 
     comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    [PluginRegistry startup];
     
     LogLeave;
 }
@@ -798,8 +797,6 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    [self startRefreshAnimation];
-
     selectWindowController = nil;
 
     if (category.accountNumber != nil) {
@@ -815,7 +812,6 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             selectedNodes = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
-                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -832,7 +828,6 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             result = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
-                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -843,7 +838,6 @@ static BankingController *bankinControllerInstance;
 
     if ([selectedAccounts count] == 0) {
         LogWarning(@"No accounts selected, or all selected accounts have noAutomaticQuery == true");
-        [self stopRefreshAnimation];
         return;
     }
 
@@ -855,7 +849,6 @@ static BankingController *bankinControllerInstance;
         }
     }
     if (nInactive == selectedAccounts.count) {
-        [self stopRefreshAnimation];
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
@@ -896,33 +889,52 @@ static BankingController *bankinControllerInstance;
     }
 
     [self stopHomescreenUpdates];
+    [self startRefreshAnimation];
+
+    NSArray *queryResult = [[HBCIBackend backend] getStatements: selectedAccounts];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(statementsNotification:)
-                                                 name: PecuniaStatementsNotification
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(statementsFinalizeNotification:)
-                                                 name: PecuniaStatementsFinalizeNotification
-                                               object: nil];
-    [[HBCIBackend backend] getStatements: selectedAccounts];
+    [self processStatements:queryResult];
+    
+    [sc stopSpinning];
+    [sc clearMessage];
+    requestRunning = NO;
+    
+    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+        // todo: don't show window if there are no statements
+        [NSApp runModalForWindow: [selectWindowController window]];
+    } else {
+        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
+    }
+    
+    [self.currentSelection updateAssignmentsForReportRange];
+    
+    [self stopRefreshAnimation];
+    [self updateUnread];
+    [self resumeHomescreenUpdates];
+    
+    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
+    if (!suppressSound) {
+        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
+        if (doneSound != nil) {
+            [doneSound play];
+        }
+    }
 
     LogLeave;
 }
 
-- (void)statementsNotification: (NSNotification *)notification {
+- (void)processStatements: (NSArray*)resultList {
     LogEnter;
-
+    
     BankQueryResult *result;
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
     BOOL            noStatements = YES;
     BOOL            isImport = NO;
-
-    NSArray *resultList = [notification object];
-    if (resultList == nil) {
+    
+    if (resultList == nil || [resultList count] == 0) {
         return;
     }
-
+    
     // get Proposals
     for (result in resultList) {
         if ([result.statements count] > 0) {
@@ -952,7 +964,7 @@ static BankingController *bankinControllerInstance;
         }
         [self requestFinished: resultList];
     }
-
+    
     // check for updated login data
     for (result in resultList) {
         BankUser *user = [BankUser findUserWithId: result.account.userId bankCode: result.account.bankCode];
@@ -961,47 +973,8 @@ static BankingController *bankinControllerInstance;
         }
     }
     [self save];
-
+    
     LogLeave;
-}
-
-- (void)statementsFinalizeNotification: (NSNotification *)notification {
-    StatusBarController *sc = [StatusBarController controller];
-    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
-
-    [sc stopSpinning];
-    [sc clearMessage];
-    requestRunning = NO;
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: PecuniaStatementsNotification
-                                                  object: nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: PecuniaStatementsFinalizeNotification
-                                                  object: nil];
-
-    if ([defaults boolForKey: @"manualTransactionCheck"]) {
-        // todo: don't show window if there are no statements
-        [NSApp runModalForWindow: [selectWindowController window]];
-    } else {
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
-    }
-
-    autoSyncRunning = NO;
-    [self.currentSelection updateAssignmentsForReportRange];
-
-    [self stopRefreshAnimation];
-    [self updateUnread];
-    [self resumeHomescreenUpdates];
-
-    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
-    if (!suppressSound) {
-        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
-        if (doneSound != nil) {
-            [doneSound play];
-        }
-    }
 }
 
 - (void)requestFinished: (NSArray *)resultList {
@@ -1812,7 +1785,6 @@ static BankingController *bankinControllerInstance;
     NSModalResponse res = [NSApp runModalForWindow: [controller window]];
     if (res == 0) {
         NSArray        *results = @[controller.importResult];
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         newStatementsCount = 0;
 
@@ -1820,8 +1792,15 @@ static BankingController *bankinControllerInstance;
             selectWindowController = [[BSSelectWindowController alloc] init];
         }
 
-        [self statementsNotification: notification];
-        [self statementsFinalizeNotification: nil];
+        [self processStatements: results];
+        
+        if ([defaults boolForKey: @"manualTransactionCheck"]) {
+            // todo: don't show window if there are no statements
+            [NSApp runModalForWindow: [selectWindowController window]];
+        }
+        
+        [self updateUnread];
+
     }
 
     LogLeave;
@@ -2936,6 +2915,7 @@ static BankingController *bankinControllerInstance;
 
     autoSyncRunning = YES;
     [self synchronizeAccount: BankingCategory.bankRoot];
+    autoSyncRunning = NO;
 
     [defaults setObject: [NSDate date] forKey: @"lastSyncDate"];
 
@@ -3683,19 +3663,6 @@ static BankingController *bankinControllerInstance;
     }
 
     if (![settings boolForKey: @"Migrated121"]) {
-
-        // Update plugin settings accounts.
-        for (BankUser *user in BankUser.allUsers) {
-            for (BankAccount *account in user.accounts) {
-                if (account.plugin.length == 0) {
-                    account.plugin = [PluginRegistry pluginForAccount: account.accountNumber bankCode: account.bankCode];
-                    if (account.plugin.length == 0) {
-                        account.plugin = @"hbci";
-                    }
-                }
-            }
-        }
-
         settings[@"Migrated121"] = @YES;
     }
     

@@ -10,6 +10,9 @@ import Foundation
 import HBCI4Swift
 import CommonCrypto
 
+// Pecunia Product ID
+let productId = "BC467A7EB483C1F485107DCC5";
+
 var _backend:HBCIBackend!
 
 func ==(a:HBCIAccount, b:BankAccount) ->Bool {
@@ -143,7 +146,6 @@ class HBCIBackendCallback : HBCICallback {
 }
 
 class HBCIBackend : NSObject, HBCILog {
-    var pluginsRunning = 0;
     var hbciQueriesRunning = 0;
     var resultWindow = ResultWindowController( );
     
@@ -152,6 +154,7 @@ class HBCIBackend : NSObject, HBCILog {
             if _backend == nil {
                 _backend = HBCIBackend();
                 HBCILogManager.setLog(_backend);
+                HBCIDialog.callback = HBCIBackendCallback();
                 
                 // load syntax extension
                 if var path = Bundle.main.resourcePath {
@@ -267,7 +270,7 @@ class HBCIBackend : NSObject, HBCILog {
     func checkSepaInfo(_ accounts: Array<HBCIAccount>, user:HBCIUser) throws {
         if let account = accounts.first {
             if account.iban == nil || account.bic == nil {
-                let dialog = try HBCIDialog(user: user);
+                let dialog = try HBCIDialog(user: user, product: productId);
                 if let result = try dialog.dialogInit() {
                     if result.isOk() {
                         if let msg = HBCICustomMessage.newInstance(dialog) {
@@ -355,11 +358,6 @@ class HBCIBackend : NSObject, HBCILog {
                     bankAccount.iban = account.iban;
                     if let type = account.type {
                         bankAccount.type = NSNumber(value: type);
-                    }
-
-                    bankAccount.plugin = PluginRegistry.pluginForAccount(account.number, bankCode: account.bankCode);
-                    if bankAccount.plugin.length == 0 {
-                        bankAccount.plugin = "hbci";
                     }
                     
                     bankAccount.parent = bankRoot;
@@ -501,7 +499,7 @@ class HBCIBackend : NSObject, HBCILog {
         var tanMedia = Array<HBCITanMedium>();
         
         do {
-            let dialog = try HBCIDialog(user: hbciUser);
+            let dialog = try HBCIDialog(user: hbciUser, product: productId);
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
                     if result.hbciParameterUpdated {
@@ -575,7 +573,7 @@ class HBCIBackend : NSObject, HBCILog {
     func getBankSetupInfo(_ bankCode:String) ->BankSetupInfo? {
         do {
             if let info = infoForBankCode(bankCode), let url = URL(string: info.pinTanURL) {
-                let dialog = try HBCIAnonymousDialog(hbciVersion: info.hbciVersion);
+                let dialog = try HBCIAnonymousDialog(hbciVersion: info.hbciVersion, product: productId);
                 
                 
                 if let result = try dialog.dialogWithURL(url, bankCode: bankCode) {
@@ -646,7 +644,7 @@ class HBCIBackend : NSObject, HBCILog {
                 user.pin = password;
             }
 
-            let dialog = try HBCIDialog(user: user);
+            let dialog = try HBCIDialog(user: user, product: productId);
             
             var result:HBCIResultMessage?
             if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_PinTan {
@@ -923,85 +921,28 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     func checkGetStatementsFinalization() {
-        if self.pluginsRunning == 0 && self.hbciQueriesRunning == 0 {
-            // important: nofifications must be sent in main thread!
-            let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsFinalizeNotification), object: nil);
-            NotificationCenter.default.post(notification);
-        }
     }
     
-    func getPluginStatements(_ accounts:[BankAccount]) {
-        var userPluginList = Dictionary<String, Array<BankAccount>>();
-        
-        if accounts.count == 0 {
-            return;
-        }
-        
-        // Organize accounts by user in order to get all statements for all accounts of a given user.
-        for account in accounts {
-            guard let _ = account.defaultBankUser() else {
-                logError("Konto \(account.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
-                continue;
-            }
-            
-            // Take out those accounts and run them through their appropriate plugin if they have
-            // one assigned. Since they don't need to use the same mechanism we have for HBCI,
-            // we can just use a local list. All plugins run in parallel.
-            if let plugin = account.plugin {
-                if plugin.length > 0 && plugin != "hbci" {
-                    if !userPluginList.keys.contains(plugin) {
-                        userPluginList[plugin] = Array<BankAccount>();
-                    }
-                    userPluginList[plugin]?.append(account);
-                }
-            }
-        }
-        self.pluginsRunning = userPluginList.count;
-        for accounts in userPluginList.values {
-            if accounts.count == 0 {
-                continue;
-            }
-            PluginRegistry.getStatements(accounts, completion: { (results: [BankQueryResult]) -> Void in
-                for result in results {
-                    self.orderStatements(result);
-					if result.statements.count > 0 {
-						if let account = result.account {
-							account.evaluateQueryResult(result);
-						}
-					}
-                }
-				
-                DispatchQueue.main.async(execute: {
-                    // important: nofifications must be sent in main thread!
-                    let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: results);
-                    NotificationCenter.default.post(notification);
-                    self.pluginsRunning -= 1;
-                    self.checkGetStatementsFinalization();
-                });
-            });
-        }
-    }
-    
-    func getStandingOrders(_ accounts:[BankAccount]) {
+    func getStandingOrders(_ accounts:[BankAccount]) -> [BankQueryResult] {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
 
-        self.getStatements(accounts, userFunc: self.getUserStandingOrders);
+        return self.getStatements(accounts, userFunc: self.getUserStandingOrders);
     }
     
-    func getStatements(_ accounts:[BankAccount]) {
+    func getStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
         
-        self.getPluginStatements(accounts);
-        self.getStatements(accounts, userFunc: self.getUserStatements);
+        return self.getStatements(accounts, userFunc: self.getUserStatements);
     }
     
-    func getStatements(_ accounts:[BankAccount], userFunc:@escaping ([BankAccount]) -> Void) {
+    func getStatements(_ accounts:[BankAccount], userFunc:@escaping ([BankAccount]) -> [BankQueryResult]) -> [BankQueryResult] {
         var userList = Dictionary<BankUser, Array<BankAccount>>();
+        var bqResult = [BankQueryResult]();
 
-        if accounts.count == 0 || self.hbciQueriesRunning > 0 {
-            return;
+        if accounts.count == 0 {
+            return [];
         }
 
         // Organize accounts by user in order to get all statements for all accounts of a given user.
@@ -1011,22 +952,12 @@ class HBCIBackend : NSObject, HBCILog {
                 continue;
             }
             
-            // Take out those accounts and run them through their appropriate plugin if they have
-            // one assigned. Since they don't need to use the same mechanism we have for HBCI,
-            // we can just use a local list. All plugins run in parallel.
-            if account.plugin != nil && account.plugin.length > 0 && account.plugin != "hbci" {
-                // should be handled by Plugin
-            } else {
-                if !userList.keys.contains(user) {
-                    userList[user] = Array<BankAccount>();
-                }
-                userList[user]?.append(account);
+            if !userList.keys.contains(user) {
+                userList[user] = Array<BankAccount>();
             }
+            userList[user]?.append(account);
         }
         
-        // retrieve statements for each user id
-        let queue = DispatchQueue(label: "de.pecuniabanking.pecunia.statementsQueue", attributes: []);
-
         for user in userList.keys {
             guard let accounts = userList[user] else {
                 continue;
@@ -1034,7 +965,7 @@ class HBCIBackend : NSObject, HBCILog {
             if accounts.count == 0 {
                 continue;
             }
-            
+            // PIN/TAN
             if SecurityMethod(user.secMethod.uint32Value) == SecMethod_PinTan {
                 // make sure PIN is known
                 let request = AuthRequest();
@@ -1043,33 +974,15 @@ class HBCIBackend : NSObject, HBCILog {
                 if password == "<abort>" {
                     continue;
                 }
-            } else {
-                // DDV access must be strongly serialized
-                continue;
+                bqResult.append(contentsOf: userFunc(accounts));
             }
-
-            self.hbciQueriesRunning += 1;
-            queue.async(execute: {
-                userFunc(accounts);
-            });
-        }
-        
-        // now we do the DDV access
-        // the DDV access has to be strongly serialized
-        for user in userList.keys {
-            guard let accounts = userList[user] else {
-                continue;
-            }
-            if accounts.count == 0 {
-                continue;
-            }
-
+            
+            // DDV
             if SecurityMethod(user.secMethod.uint32Value) == SecMethod_DDV {
                 let ccman = ChipcardManager.manager;
                 do {
                     try ccman.requestCardForUser(user);
-                    self.hbciQueriesRunning += 1;
-                    userFunc(accounts);
+                    bqResult.append(contentsOf: userFunc(accounts));
                 }
                 catch let error as NSError {
                     let alert = NSAlert(error: error);
@@ -1078,6 +991,7 @@ class HBCIBackend : NSObject, HBCILog {
                 catch { }
             }
         }
+        return bqResult;
     }
     
     func convertStandingOrders(_ orders:[HBCIStandingOrder]) ->BankQueryResult {
@@ -1224,7 +1138,7 @@ class HBCIBackend : NSObject, HBCILog {
         return result;
     }
     
-    func getUserStandingOrders(_ bankAccounts:[BankAccount]) {
+    func getUserStandingOrders(_ bankAccounts:[BankAccount]) -> [BankQueryResult] {
         var accounts = [HBCIAccount]();
         var bqResult = [BankQueryResult]();
 
@@ -1237,7 +1151,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         guard let bankUser = bankAccounts.first?.defaultBankUser() else {
             logError("Konto \(bankAccounts.first?.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
-            return;
+            return bqResult;
         }
         
         defer {
@@ -1269,7 +1183,7 @@ class HBCIBackend : NSObject, HBCILog {
                 user.setSecurityMethod(secMethod);
             }
             
-            let dialog = try HBCIDialog(user: user);
+            let dialog = try HBCIDialog(user: user, product: productId);
             if let result = try dialog.dialogInit() {
                 if result.isOk() {
                     var error = false;
@@ -1317,16 +1231,12 @@ class HBCIBackend : NSObject, HBCILog {
         }
         catch {}
         
-        DispatchQueue.main.async(execute: {
-            // important: nofifications must be sent in main thread!
-            let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: bqResult);
-            NotificationCenter.default.post(notification);
-        });
+        return bqResult;
     }
     
-    func getUserStatements(_ accounts:[BankAccount]) {
-        var hbciAccounts = Array<HBCIAccount>();
-        var bqResult = Array<BankQueryResult>();
+    func getUserStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
+        var hbciAccounts = [HBCIAccount]();
+        var bqResult = [BankQueryResult]();
         
         defer {
             DispatchQueue.main.async(execute: {
@@ -1337,7 +1247,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         guard let bankUser = accounts.first?.defaultBankUser() else {
             logError("Konto \(accounts.first?.accountNumber() ?? "<unbekannt>") konnte nicht verarbeitet werden da keine Bankkennung existiert");
-            return;
+            return [];
         }
         
         for account in accounts {
@@ -1367,16 +1277,16 @@ class HBCIBackend : NSObject, HBCILog {
                 user.setSecurityMethod(secMethod);
             }
             
-            let dialog = try HBCIDialog(user: user);
+            let dialog = try HBCIDialog(user: user, product: productId);
             
             guard let result = try dialog.dialogInit() else {
                 logError("Dialoginitialisierung für Bankkennung \(bankUser.userId ?? "?") fehlgeschlagen");
-                return;
+                return [];
             }
             
             guard result.isOk() else {
                 logError("Dialogausführung für Bankkennung \(bankUser.userId ?? "?") fehlgeschlagen");
-                return;
+                return [];
             }
             
             defer {
@@ -1537,12 +1447,8 @@ class HBCIBackend : NSObject, HBCILog {
                 }
             }
         }
-                
-        DispatchQueue.main.async(execute: {
-            // important: nofifications must be sent in main thread!
-            let notification = Notification(name: Notification.Name(rawValue: PecuniaStatementsNotification), object: bqResult);
-            NotificationCenter.default.post(notification);
-        });
+        
+        return bqResult;
     }
     
     func signingOptionForUser(_ user:BankUser) ->SigningOption? {
@@ -2308,7 +2214,7 @@ class HBCIBackend : NSObject, HBCILog {
             user.pin = request.getPin(user.bankCode, userId: user.userId);
         }
         
-        let dialog = try HBCIDialog(user: user);
+        let dialog = try HBCIDialog(user: user, product: productId);
         guard let result = try dialog.dialogInit() else {
             logError("Dialoginitialisierung für Bankkennung \(user.userId) fehlgeschlagen");
             throw NSError.errorWithMsg(msgId: "2011", params: user.userId);

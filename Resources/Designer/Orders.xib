@@ -674,7 +674,7 @@ IA
                                     </connections>
                                 </button>
                                 <button verticalHuggingPriority="750" id="371">
-                                    <rect key="frame" x="124.5" y="18" width="160" height="25"/>
+                                    <rect key="frame" x="125" y="18" width="160" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <shadow key="shadow" blurRadius="2">
                                         <size key="offset" width="1" height="1"/>
@@ -694,7 +694,7 @@ IA
                                     </connections>
                                 </button>
                                 <button verticalHuggingPriority="750" id="373">
-                                    <rect key="frame" x="290.5" y="18" width="170" height="25"/>
+                                    <rect key="frame" x="291" y="18" width="170" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <shadow key="shadow" blurRadius="2">
                                         <size key="offset" width="1" height="1"/>

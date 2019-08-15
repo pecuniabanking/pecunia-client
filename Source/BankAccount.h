@@ -64,7 +64,6 @@ typedef enum {
 @property (nonatomic, strong) NSString        *accountSuffix;
 @property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
-@property (nonatomic, strong) NSString        *plugin;
 
 - (void)evaluateQueryResult: (BankQueryResult *)res;
 - (int)updateFromQueryResult: (BankQueryResult *)result;

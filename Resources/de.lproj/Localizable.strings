@@ -129,7 +129,6 @@ AP143 = "Zwischensaldo";
 AP144 = "Summe";
 AP145 = "Notizen";
 AP146 = "Standardkonto";
-AP147 = "Plugin Fehler";
 
 // Banking setup, migration, encryption, security
 // AP150..AP199
@@ -806,10 +805,6 @@ AP1704 = "Für die automatische Groß-/Kleinschreibung werden lexikalische Daten
 AP1705 = "Daten importieren";
 AP1706 = "Option deaktivert lassen";
 AP1707 = "Pecunia kann im Moment nicht beendet werden da noch Daten aktualisiert werden. Bitte versuchen Sie es später noch einmal.";
-
-// Plugin messages
-// AP1800..AP1849
-AP1800 = "Bei der Bearbeitung des Kontos %@ (%@) trat ein Fehler auf.";
 
 // Use a new block of IDs for the next set of strings!
 // AP1850..AP1899

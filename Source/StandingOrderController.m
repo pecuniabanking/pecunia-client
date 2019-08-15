@@ -717,8 +717,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             }
         }
     }
+    
     NSMutableArray *accountList = [NSMutableArray new];
     NSSet          *candidates = [BankingCategory.bankRoot allCategories];
+    
     for (BankingCategory *currentAccount in candidates) {
         if (![currentAccount isKindOfClass: [BankAccount class]]) {
             continue;
@@ -747,16 +749,16 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         [sc startSpinning];
         self.requestRunning = @YES;
         [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(ordersNotification:)
-                                                     name: PecuniaStatementsNotification
-                                                   object: nil];
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(ordersFinalizeNotification:)
-                                                     name: PecuniaStatementsFinalizeNotification
-                                                   object: nil];
 
-        [[HBCIBackend backend] getStandingOrders: accountList];
+        NSArray * resultList = [[HBCIBackend backend] getStandingOrders: accountList];
+        [self processOrders:resultList];
+        
+        [self validateNewOrders];
+        [orderController prepareContent];
+        
+        [sc stopSpinning];
+        [sc clearMessage];
+        self.requestRunning = @NO;
     } else {
         NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
                         NSLocalizedString(@"AP457", nil),
@@ -833,12 +835,11 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     }
 }
 
-- (void)ordersNotification: (NSNotification *)notification {
-    NSArray *resultList = [notification object];
+- (void)processOrders: (NSArray*)resultList {
     if (resultList == nil || resultList.count == 0) {
         return;
     }
-
+    
     for (BankQueryResult *result in resultList) {
         [result.account updateStandingOrders: result.standingOrders];
     }
@@ -849,20 +850,6 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         [alert runModal];
         return;
     }
-}
-
-- (void)ordersFinalizeNotification: (NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
-    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsFinalizeNotification object: nil];
-
-    StatusBarController *status = [StatusBarController controller];
-
-    [self validateNewOrders];
-    [orderController prepareContent];
-
-    [status stopSpinning];
-    [status clearMessage];
-    self.requestRunning = @NO;
 }
 
 - (void)validateNewOrders {

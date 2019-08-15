@@ -65,16 +65,12 @@ extern NSString *const CategoryKey;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
     account.balance = acc.balance;
-    account.plugin = acc.plugin;
     account.isManual = acc.isManual;
 
     return self;
 }
 
 - (void)awakeFromNib {
-    NSMutableArray *types = [[PluginRegistry getPluginList] mutableCopy];
-    [types insertObject: @{ @"id": @"hbci", @"name": NSLocalizedString(@"AP146", nil) } atIndex: 0];
-    accountTypesController.content = types;
     if ([changedAccount.isManual boolValue]) {
         
         // add special User
@@ -186,7 +182,6 @@ extern NSString *const CategoryKey;
     changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
-    changedAccount.plugin = account.plugin;
     
     NSString *oldUserId = changedAccount.userId;
 

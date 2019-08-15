@@ -451,8 +451,6 @@
 		277D1A721799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
 		277D1A731799B26900C0E4DF /* closed-sign@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */; };
 		27820B4C1AE3C811001505E4 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */; };
-		27820B4F1AE3C996001505E4 /* PluginRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27820B4E1AE3C996001505E4 /* PluginRegistry.swift */; };
-		27820B501AE3C996001505E4 /* PluginRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27820B4E1AE3C996001505E4 /* PluginRegistry.swift */; };
 		2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
@@ -494,10 +492,6 @@
 		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
 		279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */; };
-		27A062311B18DAD500EC6749 /* PluginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A0622F1B18DAD500EC6749 /* PluginWorker.swift */; };
-		27A062321B18DAD500EC6749 /* PluginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A0622F1B18DAD500EC6749 /* PluginWorker.swift */; };
-		27A062331B18DAD500EC6749 /* WebKitExports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A062301B18DAD500EC6749 /* WebKitExports.swift */; };
-		27A062341B18DAD500EC6749 /* WebKitExports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A062301B18DAD500EC6749 /* WebKitExports.swift */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */; };
@@ -1283,7 +1277,6 @@
 		277D1A6E1799B26900C0E4DF /* closed-sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign.png"; sourceTree = "<group>"; };
 		277D1A6F1799B26900C0E4DF /* closed-sign@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed-sign@2x.png"; sourceTree = "<group>"; };
 		27820B4B1AE3C811001505E4 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		27820B4E1AE3C996001505E4 /* PluginRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginRegistry.swift; path = ../Plugins/Source/PluginRegistry.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1324,8 +1317,6 @@
 		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		279F364B19EACC8400CC8F87 /* Pecunia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Pecunia-Bridging-Header.h"; path = "Source/Pecunia-Bridging-Header.h"; sourceTree = "<group>"; };
 		279F364E19EACD0100CC8F87 /* RemoteResourceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResourceManager.swift; sourceTree = "<group>"; wrapsLines = 0; };
-		27A0622F1B18DAD500EC6749 /* PluginWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PluginWorker.swift; path = Plugins/Source/PluginWorker.swift; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
-		27A062301B18DAD500EC6749 /* WebKitExports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebKitExports.swift; path = Plugins/Source/WebKitExports.swift; sourceTree = SOURCE_ROOT; wrapsLines = 0; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
 		27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in@2x.png"; sourceTree = "<group>"; };
@@ -2027,9 +2018,6 @@
 		27820B4D1AE3C963001505E4 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				27A0622F1B18DAD500EC6749 /* PluginWorker.swift */,
-				27A062301B18DAD500EC6749 /* WebKitExports.swift */,
-				27820B4E1AE3C996001505E4 /* PluginRegistry.swift */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -3745,7 +3733,6 @@
 				279F365019EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				B10A57DB2267B89B00A1028C /* Double.swift in Sources */,
-				27A062321B18DAD500EC6749 /* PluginWorker.swift in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
 				2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
@@ -3846,14 +3833,12 @@
 				277788F1173CE22700430EBC /* TransfersListViewCell.m in Sources */,
 				277788F2173CE22700430EBC /* BankingController+Tabs.m in Sources */,
 				B10A57CF2267B89B00A1028C /* String.swift in Sources */,
-				27A062341B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */,
 				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
 				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
 				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
 				277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */,
 				273C38DB1B13223200937C54 /* BlocksHelper.swift in Sources */,
-				27820B501AE3C996001505E4 /* PluginRegistry.swift in Sources */,
 				277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */,
 				277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */,
 				277788FA173CE22700430EBC /* SigningOption.m in Sources */,
@@ -3984,7 +3969,6 @@
 				B10A57DA2267B89B00A1028C /* Double.swift in Sources */,
 				279F364F19EACD0100CC8F87 /* RemoteResourceManager.swift in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
-				27A062311B18DAD500EC6749 /* PluginWorker.swift in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
@@ -4083,14 +4067,12 @@
 				279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */,
 				27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */,
 				B10A57CE2267B89B00A1028C /* String.swift in Sources */,
-				27A062331B18DAD500EC6749 /* WebKitExports.swift in Sources */,
 				2706F2091556C3BE0011A20E /* OnOffSwitchControl.m in Sources */,
 				2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */,
 				2736572A1559890E00E8ABDC /* TransferFormularView.m in Sources */,
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,
 				27E662B615A09BDA002F9277 /* TransferTemplatesListView.m in Sources */,
 				273C38DA1B13223200937C54 /* BlocksHelper.swift in Sources */,
-				27820B4F1AE3C996001505E4 /* PluginRegistry.swift in Sources */,
 				27E662B715A09BDA002F9277 /* TransferTemplateListViewCell.m in Sources */,
 				B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */,
 				B183586215CDC064003B93ED /* SigningOption.m in Sources */,
