@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 @interface MessageLog : NSObject {
 }
 
-@property (nonatomic, assign) BOOL       isComTraceActive;
 @property (nonatomic, assign) BOOL       hasError;         // Set when either logError or logComTraceForLevel:format: was called with an error level.
 @property (nonatomic, strong) ResultWindowController *resultWindow;
 
@@ -64,8 +63,6 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 - (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logDebug: (NSString *)format, ...; // A simpler form for enter/leave logging.
 - (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
-
-- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...;
 
 - (void)sendLog;
 - (void)showLog;

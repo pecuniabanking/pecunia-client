@@ -19,8 +19,6 @@
 		2704B8461573D39A00CB1320 /* internal-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8451573D39A00CB1320 /* internal-transfer-icon.png */; };
 		2704B8481573D3A800CB1320 /* eu-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8471573D3A800CB1320 /* eu-transfer-icon.png */; };
 		2704B84A1573D3BD00CB1320 /* sepa-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8491573D3BD00CB1320 /* sepa-transfer-icon.png */; };
-		2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704CC0518C0F173003C36F2 /* ComTraceHelper.m */; };
-		2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2704CC0518C0F173003C36F2 /* ComTraceHelper.m */; };
 		2706F2091556C3BE0011A20E /* OnOffSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2706F2031556C3BE0011A20E /* OnOffSwitchControl.m */; };
 		2706F20A1556C3BE0011A20E /* OnOffSwitchControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2706F2051556C3BE0011A20E /* OnOffSwitchControlCell.m */; };
 		270A3DFA18146E820079B37F /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A3DF918146E820079B37F /* calendar.png */; };
@@ -1100,8 +1098,6 @@
 		2704B8451573D39A00CB1320 /* internal-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internal-transfer-icon.png"; sourceTree = "<group>"; };
 		2704B8471573D3A800CB1320 /* eu-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "eu-transfer-icon.png"; sourceTree = "<group>"; };
 		2704B8491573D3BD00CB1320 /* sepa-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sepa-transfer-icon.png"; sourceTree = "<group>"; };
-		2704CC0418C0F173003C36F2 /* ComTraceHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComTraceHelper.h; sourceTree = "<group>"; };
-		2704CC0518C0F173003C36F2 /* ComTraceHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComTraceHelper.m; sourceTree = "<group>"; };
 		2706F2021556C3BE0011A20E /* OnOffSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffSwitchControl.h; sourceTree = "<group>"; };
 		2706F2031556C3BE0011A20E /* OnOffSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnOffSwitchControl.m; sourceTree = "<group>"; };
 		2706F2041556C3BE0011A20E /* OnOffSwitchControlCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnOffSwitchControlCell.h; sourceTree = "<group>"; };
@@ -2117,8 +2113,6 @@
 				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
 				2778C24718140984003BF49D /* ClickableImageView.h */,
 				2778C24818140984003BF49D /* ClickableImageView.m */,
-				2704CC0418C0F173003C36F2 /* ComTraceHelper.h */,
-				2704CC0518C0F173003C36F2 /* ComTraceHelper.m */,
 				B138B258139D52690026BEE2 /* DateAndValutaCell.h */,
 				B138B259139D52690026BEE2 /* DateAndValutaCell.m */,
 				27B9868315769132008907F3 /* GradientButtonCell.h */,
@@ -3873,7 +3867,6 @@
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
 				276D9C8D18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
-				2704CC0718C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				B19CA99319410C04005B1125 /* SepaData.m in Sources */,
@@ -4108,7 +4101,6 @@
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
 				276D9C8C18CB66ED002BEDA8 /* NSImage+PecuniaAdditions.m in Sources */,
-				2704CC0618C0F173003C36F2 /* ComTraceHelper.m in Sources */,
 				27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				B19CA99219410C04005B1125 /* SepaData.m in Sources */,

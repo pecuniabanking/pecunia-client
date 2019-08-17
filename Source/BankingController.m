@@ -68,7 +68,6 @@
 #import "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
-#import "ComTraceHelper.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
@@ -199,8 +198,6 @@ static BankingController *bankinControllerInstance;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
 
-    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
-
     NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
@@ -243,8 +240,6 @@ static BankingController *bankinControllerInstance;
     [developerMenu setHidden: NO];
 #endif
 
-    comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    
     LogLeave;
 }
 
@@ -1294,11 +1289,21 @@ static BankingController *bankinControllerInstance;
 }
 
 - (IBAction)openForum: (id)sender {
-    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.onlinebanking-forum.de/phpBB2/viewforum.php?f=56"]];
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://homebanking-hilfe.de/forum/index.php?f=56"]];
 }
 
 - (IBAction)sendErrorReport: (id)sender {
     NSMutableString *text = [NSMutableString string];
+    
+    // Data Privacy Check
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP1027", @""),
+                                            NSLocalizedString(@"AP1028", @""),
+                                            NSLocalizedString(@"AP2", @""),
+                                            NSLocalizedString(@"AP36", @""),
+                                            nil);
+    if (res == NSAlertDefaultReturn) {
+        return;
+    }
 
     for (BankUser *user in [BankUser allUsers]) {
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
@@ -1314,10 +1319,6 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)showLog: (id)sender {
     [MessageLog.log showLog];
-}
-
-- (IBAction)comTraceToggle: (id)sender {
-    [comTracePanel toggleComTrace: sender];
 }
 
 - (IBAction)openBugTracker: (id)sender {
@@ -3132,7 +3133,6 @@ static BankingController *bankinControllerInstance;
     shuttingDown = YES;
 
     [mainVSplit savePosition];
-    MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
     [LocalSettingsController.sharedSettings setInteger: sidebar.selectedIndex forKey: @"activePage"];
 
@@ -3388,15 +3388,6 @@ static BankingController *bankinControllerInstance;
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context {
-    if ([keyPath isEqualToString: @"isComTraceActive"]) {
-        if (MessageLog.log.isComTraceActive) {
-            comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
-        } else {
-            comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-        }
-        return;
-    }
-
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [categoryController prepareContent];
