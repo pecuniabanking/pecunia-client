@@ -1051,7 +1051,7 @@ class HBCIBackend : NSObject, HBCILog {
             if let first = result.statements.first?.date, let last = result.statements.last?.date {
                 if first > last {
                     var statements = Array<BankStatement>();
-                    for i in 0..<result.statements.count {
+                    for i in (0..<result.statements.count).reversed() {
                         statements.append(result.statements[i]);
                     }
                     result.statements = statements;
@@ -1128,6 +1128,7 @@ class HBCIBackend : NSObject, HBCILog {
                     stat.origCurrency = item.origCurrency;
                     stat.isSettled = NSNumber(booleanLiteral: item.isSettled ?? true);
                     stat.type = NSNumber(value: StatementType_CreditCard.rawValue);
+                    stat.docDate = item.docDate;
                 }
                 result.statements.append(stat);
             }

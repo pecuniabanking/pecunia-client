@@ -162,8 +162,7 @@
     }
 
     // PinTan
-    if (secMethod == SecMethod_PinTan ||
-        secMethod == SecMethod_Script) {
+    if (secMethod == SecMethod_PinTan) {
         if ([self check] == NO) {
             return;
         }
@@ -174,9 +173,7 @@
             return;
         }
 
-        if ((step == 2)
-            && (secMethod != SecMethod_Script)) //we do not want HBCI for scripts
-        {
+        if (step == 2) {
             // look if we have bank infos
             InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
             if (bi) {
@@ -236,15 +233,13 @@
         /* commented out to allow for no HBCI version for accounts
          * that are handled manually using a script
          ******************************/
-        if (step >= 3 && currentUser.hbciVersion == nil
-            && (secMethod != SecMethod_Script)) {
+        if (step >= 3 && currentUser.hbciVersion == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP79", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
-        if (step >= 3 && currentUser.bankURL == nil
-            && (secMethod != SecMethod_Script)) {
+        if (step >= 3 && currentUser.bankURL == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP80", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
@@ -371,9 +366,7 @@
         }
     }
 
-    if (step < 3) {
-        step += 1;
-    }
+    step += 1;
     [self prepareUserSheet];
 }
 
@@ -582,15 +575,14 @@
 
         [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
     }
-    else if (step == 3
-        && (secMethod != SecMethod_Script)) {
+    else if (step == 3) {
         for (NSView *view in views) {
             if ([view tag] > 110) {
                 [[view animator] setHidden: NO];
             }
         }
         NSRect frame = [userSheet frame];
-        frame.size.height += 151; frame.origin.y -= 151;
+        frame.size.height += 100; frame.origin.y -= 100;
         [[userSheet animator] setFrame: frame display: YES];
     }
 

@@ -36,11 +36,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.8</string>
+	<string>2.0.10</string>
 	<key>CFBundleSignature</key>
 	<string>EMMI</string>
 	<key>CFBundleVersion</key>
-	<string>218</string>
+	<string>222</string>
 	<key>HPDBookIconPath</key>
 	<string>Pecunia</string>
 	<key>LSApplicationCategoryType</key>
