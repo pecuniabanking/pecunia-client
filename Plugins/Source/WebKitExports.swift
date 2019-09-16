@@ -85,7 +85,6 @@ extension DOMNamedNodeMap : DOMNamedNodeMapJSExport {
     var nodeName: String! { get };
     var nodeValue: String! { get set };
     var nodeType: UInt16 { get };
-    var parentNode: DOMNode! { get };
     var childNodes: DOMNodeList! { get };
     var firstChild: DOMNode! { get };
     var lastChild: DOMNode! { get };
@@ -497,7 +496,6 @@ extension DOMXPathResult : DOMXPathResultJSExport {
     var title: String! { get set };
     var referrer: String! { get };
     var domain: String! { get };
-    var URL: String! { get };
     var cookie: String! { get set };
     var body: DOMHTMLElement! { get set };
     var images: DOMHTMLCollection! { get };
@@ -523,7 +521,6 @@ extension DOMXPathResult : DOMXPathResultJSExport {
     func createAttribute(_ name: String!) -> DOMAttr!;
     func createEntityReference(_ name: String!) -> DOMEntityReference!;
     func getElementsByTagName(_ tagname: String!) -> DOMNodeList!;
-    func importNode(_ importedNode: DOMNode!, deep: Bool) -> DOMNode!;
     func createElementNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMElement!;
     func createAttributeNS(_ namespaceURI: String!, qualifiedName: String!) -> DOMAttr!;
     func getElementsByTagNameNS(_ namespaceURI: String!, localName: String!) -> DOMNodeList!;
@@ -536,7 +533,6 @@ extension DOMXPathResult : DOMXPathResultJSExport {
     func getOverrideStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
     func createExpression(_ expression: String!, resolver: DOMXPathNSResolver!) -> DOMXPathExpression!;
     func createNSResolver(_ nodeResolver: DOMNode!) -> DOMXPathNSResolver!;
-    func evaluate(_ expression: String!, contextNode: DOMNode!, resolver: DOMXPathNSResolver!, type: UInt16, inResult: DOMXPathResult!) -> DOMXPathResult!;
     func getElementsByName(_ elementName: String!) -> DOMNodeList!;
     func createCSSStyleDeclaration() -> DOMCSSStyleDeclaration!;
     func getComputedStyle(_ element: DOMElement!, pseudoElement: String!) -> DOMCSSStyleDeclaration!;
@@ -558,8 +554,6 @@ extension DOMDocument : DOMDocumentJSExport {
     func stopLoading();
     func reload();
     func reloadFromOrigin();
-    func findFrameNamed(_ name: String!) -> WebFrame!;
-    var parentFrame: WebFrame! { get };
     var childFrames: [Any]! { get };
 }
 
@@ -583,12 +577,6 @@ extension WebFrame: WebFrameJSExport {
     
     // WebView exports.
     static func canShowMIMEType(_ MIMEType: String!) -> Bool;
-    static func canShowMIMETypeAsHTML(_ MIMEType: String!) -> Bool;
-    //static func MIMETypesShownAsHTML() -> [AnyObject]!;
-    //static func setMIMETypesShownAsHTML(_ MIMETypes: [AnyObject]!);
-    static func URLFromPasteboard(_ pasteboard: NSPasteboard!) -> Foundation.URL!;
-    static func URLTitleFromPasteboard(_ pasteboard: NSPasteboard!) -> String!;
-    static func registerURLSchemeAsLocal(_ scheme: String!);
 
     func close()
 
@@ -600,27 +588,17 @@ extension WebFrame: WebFrameJSExport {
     func setMaintainsBackForwardList(_ flag: Bool);
     func goBack() -> Bool;
     func goForward() -> Bool;
-    func goToBackForwardItem(_ item: WebHistoryItem!) -> Bool;
 
     var textSizeMultiplier: Float { get set };
     var applicationNameForUserAgent: String! { get set };
     var customUserAgent: String! { get set };
     
-    func userAgentForURL(_ URL: Foundation.URL!) -> String!;
-
     var supportsTextEncoding: Bool { get }
     var customTextEncodingName: String! { get set };
     var mediaStyle: String! { get set };
     
-    func stringByEvaluatingJavaScriptFromString(_ script: String!) -> String!;
-    func searchFor(_ string: String!, direction forward: Bool, caseSensitive caseFlag: Bool, wrap wrapFlag: Bool) -> Bool
-
     var groupName: String! { get set };
     var estimatedProgress: Double { get };
-    var loading: Bool { @objc(isLoading) get }
-    //var isLoading: Bool { get }
-    
-    func elementAtPoint(_ point: NSPoint) -> [AnyHashable: Any]!;
 
     var mainFrameURL: String! { get set };
     var mainFrameDocument: DOMDocument! { get };

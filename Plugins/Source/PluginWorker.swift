@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2015, 2019, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -131,7 +131,7 @@ class WebClient: WebView, WebViewJSExport {
                 }
 
                 if let account = entry["account"] as? String {
-                    queryResult.account = BankAccount.find(withNumber: account, bankCode: query!.bankCode);
+                    queryResult.account = BankAccount.findAccountWithNumber(account, bankCode: query!.bankCode);
                     if queryResult.type == .creditCard {
                         queryResult.ccNumber = account;
                     }

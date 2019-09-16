@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015, Pecunia Project. All rights reserved.
+ * Copyright (c) 2015, 2019, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +26,7 @@ open class AuthRequest {
 
   open var errorOccured = false;
 
-  open static func new() -> AuthRequest {
+  public static func new() -> AuthRequest {
     return AuthRequest();
   }
 
@@ -121,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     }
 
     if defaults.bool(forKey: "pptAutoLoad") {
-      autoLoadCheckbox.state = NSOnState;
+      autoLoadCheckbox.state = NSControl.StateValue.on;
       if FileManager.default.fileExists(atPath: pluginFileTextField.stringValue) {
         loadScript(self);
         NSFileCoordinator.addFilePresenter(self);
@@ -147,7 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     panel.allowedFileTypes = ["js"];
 
     let runResult = panel.runModal();
-    if runResult == NSModalResponseOK && panel.url != nil {
+    if runResult == NSApplication.ModalResponse.OK && panel.url != nil {
       pluginFileTextField.stringValue = panel.url!.path;
 
       let defaults = UserDefaults.standard;
@@ -158,7 +158,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   }
 
   @IBAction func close(_ sender: AnyObject) {
-    NSApplication.shared().terminate(self);
+    NSApplication.shared.terminate(self);
   }
 
   // MARK: - File Presenter protocol
@@ -206,7 +206,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   @objc func logError(_ message: String) -> Void {
     let text = String(format: "[Error] %@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.red]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!, convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): NSColor.red])));
   };
 
   @objc func logWarning(_ message: String) -> Void {
@@ -216,7 +216,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let text = String(format: "[Warning] %@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(red: 0.95, green: 0.75, blue: 0, alpha: 1)]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!, convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): NSColor(red: 0.95, green: 0.75, blue: 0, alpha: 1)])));
   };
 
   @objc func logInfo(_ message: String) -> Void {
@@ -226,7 +226,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let text = String(format: "[Info] %@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!])));
   };
 
   @objc func logDebug(_ message: String) -> Void {
@@ -236,7 +236,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let text = String(format: "[Debug] %@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.darkGray]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!, convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): NSColor.darkGray])));
   };
 
   @objc func logVerbose(_ message: String) -> Void {
@@ -246,13 +246,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
     let text = String(format: "[Verbose] %@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor.gray]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!, convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): NSColor.gray])));
   };
 
   func logIntern(_ message: String) -> Void {
     let text = String(format: "%@\n", message);
     logTextView.textStorage!.append(NSAttributedString(string: text,
-      attributes: [NSFontAttributeName: logFont!, NSForegroundColorAttributeName: NSColor(calibratedRed: 0.3, green: 0.5, blue: 0.3, alpha: 1)]));
+      attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font): logFont!, convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): NSColor(calibratedRed: 0.3, green: 0.5, blue: 0.3, alpha: 1)])));
   };
 
   // MARK: - User Interaction
@@ -292,9 +292,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     let bundle = Bundle(for: AppDelegate.self);
     do {
         if let scriptPath : String = bundle.path(forResource: "debug-helper", ofType: "js", inDirectory: "") {
-            if let script : NSString = try NSString(contentsOfFile: scriptPath, encoding: String.Encoding.utf8.rawValue) {
-                context?.addDebugScript(script as String);
-            }
+          let script : NSString = try NSString(contentsOfFile: scriptPath, encoding: String.Encoding.utf8.rawValue);
+          context?.addDebugScript(script as String);
         }
     }
     catch {/* error handling here */}
@@ -306,7 +305,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
     var text: String;
     let (name, _, description, _, _, _) = context!.pluginInfo();
 
-    if name.characters.count == 0 || name == "undefined" {
+    if name.count == 0 || name == "undefined" {
       logIntern("Plugin name missing or empty");
       text = "<plugin name not found>";
     } else {
@@ -316,7 +315,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
       text = name;
     }
 
-    if description.characters.count == 0 || description == "undefined" {
+    if description.count == 0 || description == "undefined" {
       logIntern("Warning: plugin description not found");
       text += ", <description not found>";
     } else {
@@ -373,19 +372,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
             self.logIntern("  Result for unknown account:");
           }
           self.logIntern("    type: \(value.type)");
-          self.logIntern("    ccNumber: \(value.ccNumber)");
-          self.logIntern("    lastSettleDate:\(value.lastSettleDate) ");
-          self.logIntern("    balance: \(value.balance)");
-          self.logIntern("    oldBalance: \(value.oldBalance)");
+          self.logIntern("    ccNumber: \(String(describing: value.ccNumber))");
+          self.logIntern("    lastSettleDate:\(String(describing: value.lastSettleDate)) ");
+          self.logIntern("    balance: \(String(describing: value.balance))");
+          self.logIntern("    oldBalance: \(String(describing: value.oldBalance))");
           self.logIntern("    statements (\(value.statements.count)):");
 
           for statement in value.statements {
             self.logIntern("      isPreliminary: \(statement.isPreliminary)");
-            self.logIntern("      date: \(statement.date)");
-            self.logIntern("      valutaDate: \(statement.valutaDate)");
-            self.logIntern("      value: \(statement.value)");
-            self.logIntern("      origValue: \(statement.origValue)");
-            self.logIntern("      purpose: \(statement.purpose)");
+            self.logIntern("      date: \(String(describing: statement.date))");
+            self.logIntern("      valutaDate: \(String(describing: statement.valutaDate))");
+            self.logIntern("      value: \(String(describing: statement.value))");
+            self.logIntern("      origValue: \(String(describing: statement.origValue))");
+            self.logIntern("      purpose: \(String(describing: statement.purpose))");
             self.logIntern("");
           }
 
@@ -420,7 +419,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
   
   @IBAction func autoLoadChanged(_ sender: AnyObject) {
     let defaults = UserDefaults.standard;
-    if autoLoadCheckbox.state == NSOnState {
+    if autoLoadCheckbox.state == NSControl.StateValue.on {
       defaults.set(true, forKey: "pptAutoLoad");
       NSFileCoordinator.addFilePresenter(self);
     } else {
@@ -431,3 +430,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, JSLog
 
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}

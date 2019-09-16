@@ -3070,16 +3070,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Frank Emminghaus";
 				TargetAttributes = {
 					27778872173CE22700430EBC = {
 						DevelopmentTeam = JY3Q678PYA;
 					};
 					8D1107260486CEB800E47090 = {
-						DevelopmentTeam = JY3Q678PYA;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -3093,15 +3091,14 @@
 			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				en,
 				de,
+				ja,
+				fr,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Pecunia */;
 			projectDirPath = "";
@@ -3660,7 +3657,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Checking keys in localizable strings\";\n\nc=`expr $SCRIPT_INPUT_FILE_COUNT - 1`\nfor i in $(seq 0 $c)\ndo\n  source=SCRIPT_INPUT_FILE_$i\n  source=${!source}\n\n  count=0\n  dupes=`cut -d' ' -f1 \"$source\" | sort | uniq -d`\n  while read -r line; do\n    if [ \"$line\" == \" \" ]; then\n      continue\n    fi\n    if [ \"$line\" == \"//\" ]; then\n      continue\n    fi\n    count=`expr $count + 1`\n    echo \"error: $line used multiple times\"\n  done <<< $dupes\n\n  if [ $count -ne 0 ]; then\n    exit 1;\n  fi\n\n  i=`expr $i + 1`\ndone";
+			shellScript = "echo \"Checking keys in localizable strings\";\n\nc=`expr $SCRIPT_INPUT_FILE_COUNT - 1`\nfor i in $(seq 0 $c)\ndo\n  source=SCRIPT_INPUT_FILE_$i\n  source=${!source}\n\n  count=0\n  dupes=`cut -d' ' -f1 \"$source\" | sort | uniq -d`\n  while read -r line; do\n    if [ \"$line\" == \" \" ]; then\n      continue\n    fi\n    if [ \"$line\" == \"//\" ]; then\n      continue\n    fi\n    count=`expr $count + 1`\n    echo \"error: $line used multiple times\"\n  done <<< $dupes\n\n  if [ $count -ne 0 ]; then\n    exit 1;\n  fi\n\n  i=`expr $i + 1`\ndone\n";
 		};
 		B1C56D612235BBB2006D9C6E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4234,7 +4231,7 @@
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4286,7 +4283,7 @@
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4336,7 +4333,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4348,9 +4345,6 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = "";
@@ -4396,14 +4390,13 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -4416,9 +4409,6 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = "";
@@ -4452,13 +4442,12 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -4471,9 +4460,6 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = "";
@@ -4507,13 +4493,12 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4525,12 +4510,20 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -4555,6 +4548,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Development;
@@ -4565,17 +4559,25 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4603,12 +4605,20 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

@@ -53,5 +53,3 @@ public func ==(lhs: Date, rhs: Date) -> Bool {
 public func <(lhs: Date, rhs: Date) -> Bool {
   return lhs.compare(rhs) == .orderedAscending
 }
-
-extension Date: Comparable { }
