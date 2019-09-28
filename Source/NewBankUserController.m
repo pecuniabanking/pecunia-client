@@ -276,6 +276,7 @@
                         currentUser.userId = data.userId;
                         currentUser.bankName = data.name;
                         currentUser.name = data.name;
+                        currentUser.customerId = data.userId;
                         
                         // get further bank infos
                         InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
@@ -788,9 +789,11 @@
         return;
     }
 
+    /*
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP129", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil, user.name);
+    */
 }
 
 - (IBAction)callHelp: (id)sender {

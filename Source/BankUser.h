@@ -71,6 +71,7 @@
 
 - (NSString*)description;
 - (NSString*)descriptionWithIndent: (NSString *)indent;
+- (NSString*)anonymizedId;
 
 + (NSArray *)allUsers;
 + (BankUser *)findUserWithId: (NSString *)userId bankCode: (NSString *)bankCode;

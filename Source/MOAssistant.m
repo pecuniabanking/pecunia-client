@@ -989,6 +989,7 @@ static NSString *rDir = @"~/Library/Application Support/Pecunia/Resources";
     }
 
     LogInfo(@"Adding main store from %@", accountsURL);
+    error = nil;
     [coordinator addPersistentStoreWithType: NSSQLiteStoreType
                               configuration: @"MainConfiguration"
                                         URL: accountsURL
