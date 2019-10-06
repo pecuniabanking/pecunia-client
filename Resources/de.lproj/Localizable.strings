@@ -79,6 +79,8 @@ AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur F
 AP83 = "Fehler";
 AP84 = "Warnung";
 AP85 = "Kritischer Fehler";
+AP86 = "Für das Konto %@ ist keine IBAN gepflegt. Bitte synchronisieren Sie die Bankkennung neu oder tragen die IBAN manuell ein.";
+AP87 = "Für das Konto %@ ist keine BIC gepflegt. Bitte synchronisieren Sie die Bankkennung neu oder tragen die BIC manuell ein.";
 
 // General + miscellaneous messages
 // AP100..AP149
@@ -564,7 +566,7 @@ AP972 = "In diesem Bereich können Sie den Tilgungsverlauf für einen Kredit (An
 
 // Logs
 // AP1000..AP1199
-AP1000 = "%@Konto: %@, Unterkonto: %@, Bankleitzahl: %@\n";
+AP1000 = "%@Konto: %@, Unterkonto: %@, Bankleitzahl: %@ (%@)\n";
 AP1001 = "%@Bankkennung: %@, IBAN: %@, BIC: %@\n";
 AP1002 = "%@Kreditkarte: %@\n";
 AP1003 = "%@Unbekannte Kontoart";

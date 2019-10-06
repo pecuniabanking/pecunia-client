@@ -450,7 +450,21 @@
     if (![self validateCharacters: currentTransfer.remoteName]) {
         return NO;
     }
+    
+    if (currentTransfer.account.iban == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP83", nil),
+                        NSLocalizedString(@"AP86", nil),
+                        NSLocalizedString(@"AP1", nil), currentTransfer.account.accountNumber, nil);
+        return NO;
+    }
 
+    if (currentTransfer.account.bic == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP83", nil),
+                        NSLocalizedString(@"AP87", nil),
+                        NSLocalizedString(@"AP1", nil), currentTransfer.account.accountNumber, nil);
+        return NO;
+    }
+    
     if (currentTransfer.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
@@ -511,7 +525,13 @@
             return NO;
         }
     }
-    // Purpose is not checked because it is not mandatory.
+    // Purpose is mandatory for SEPA documents
+    if (currentTransfer.purpose1 == nil || currentTransfer.purpose1.length == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP76", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
 
     // Check if the target date touches a weekend.
     if (transferType == TransferTypeSEPAScheduled) {

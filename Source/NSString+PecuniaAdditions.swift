@@ -42,7 +42,8 @@ extension NSString {
             options: NSLinguisticTagger.Options(rawValue: 0), orthography: nil,  using:
             { (tag: String, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
                 let item : NSString = self.substring(with: tokenRange) as NSString;
-                if tag == NSLinguisticTagOtherWhitespace {
+                if tag == NSLinguisticTagOtherWhitespace ||
+                   tag == NSLinguisticTagParagraphBreak {
                     // Copy over any whitespace.
                     if result.length > 0 {
                         result.append(item as String);

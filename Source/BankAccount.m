@@ -722,32 +722,32 @@
     return unread;
 }
 
+- (NSString *)typeName {
+    switch(self.type.intValue/10) {
+        case 0: return @"Kontokorrent-/Girokonto"; break;
+        case 1: return @"Sparkonto"; break;
+        case 2: return @"Festgeldkonto (Termineinlagen)"; break;
+        case 3: return @"Wertpapierdepot"; break;
+        case 4: return @"Kredit-/Darlehenskonto"; break;
+        case 5: return @"Kreditkartenkonto"; break;
+        case 6: return @"Fonds-Depot bei einer Kapitalanlagegesellschaft"; break;
+        case 7: return @"Bausparvertrag"; break;
+        case 8: return @"Versicherungsvertrag"; break;
+        case 9: return @"Sonstige (nicht zuordenbar)"; break;
+        default: return @"Unbekannt"; break;
+    }
+}
+
 - (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
 
 - (NSString *)descriptionWithIndent: (NSString *)indent {
     NSMutableString *s = [NSMutableString string];
-    switch (self.type.intValue) {
-        case AccountType_Standard: {
-            NSString *fs = NSLocalizedString(@"AP1000", @"");
-            [s appendFormat: fs, indent, [self.accountNumber anonymizedString], self.accountSuffix, self.bankCode];
-
-            fs = NSLocalizedString(@"AP1001", @"");
-            [s appendFormat: fs, indent, [self.userId anonymizedString], [self.iban anonymizedString], self.bic];
-
-            break;
-        }
-
-        case AccountType_CreditCart: {
-            [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, [self.accountNumber anonymizedString]];
-            break;
-        }
-
-        default:
-            [s appendFormat: NSLocalizedString(@"AP1003", @""), indent];
-            break;
-    }
+    NSString *fs = NSLocalizedString(@"AP1000", @"");
+    [s appendFormat: fs, indent, [self.accountNumber anonymizedString], self.accountSuffix, self.bankCode, [self typeName]];
+    fs = NSLocalizedString(@"AP1001", @"");
+    [s appendFormat: fs, indent, [self.userId anonymizedString], [self.iban anonymizedString], self.bic];
 
     [s appendFormat: NSLocalizedString(@"AP1004", @""), indent];
     if ([self.isManual boolValue]) {

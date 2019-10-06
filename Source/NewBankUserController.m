@@ -50,9 +50,6 @@
 }
 
 - (void)awakeFromNib {
-    [hbciVersions setContent: [[HBCIBackend backend] supportedVersions]];
-    [hbciVersions setSelectedObjects: @[@"220"]];
-
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
@@ -180,6 +177,9 @@
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
             }
+            if (currentUser.hbciVersion == nil || currentUser.hbciVersion.length == 0) {
+                currentUser.hbciVersion = @"300";
+            }
         }
 
         if (step >= 2 ) {
@@ -277,6 +277,7 @@
                         currentUser.bankName = data.name;
                         currentUser.name = data.name;
                         currentUser.customerId = data.userId;
+                        currentUser.chipCardId = manager.cardNumber;
                         
                         // get further bank infos
                         InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
@@ -789,11 +790,10 @@
         return;
     }
 
-    /*
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP129", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil, user.name);
-    */
+    
 }
 
 - (IBAction)callHelp: (id)sender {

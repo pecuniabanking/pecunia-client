@@ -321,7 +321,13 @@ var _manager:ChipcardManager!
         }
     }
     
-    open static var manager:ChipcardManager {
+    open var cardNumber:NSString? {
+        get {
+            return card.cardNumber;
+        }
+    }
+    
+    public static var manager:ChipcardManager {
         get {
             if let manager = _manager {
                 return manager;

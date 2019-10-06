@@ -105,6 +105,8 @@ class HBCIBackendCallback : HBCICallback {
     init() {}
     
     func getTan(_ user:HBCIUser, challenge:String?, challenge_hhd_uc:String?, type:HBCIChallengeType) throws ->String {
+        logDebug("Challenge: \(challenge ?? "<none>")");
+        logDebug("Challenge HHD UC: \(challenge_hhd_uc ?? "<none>")");
         let bankUser = BankUser.find(withId: user.userId, bankCode:user.bankCode);
         if let challenge_hhd_uc = challenge_hhd_uc {
             if type == .flicker {
@@ -118,7 +120,6 @@ class HBCIBackendCallback : HBCICallback {
                 }
             }
             if type == .photo {
-                logInfo("Challenge: "+challenge_hhd_uc);
                 if let data = NSData(base64Encoded: challenge_hhd_uc, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) {
                     let controller = PhotoTanWindowController(data as NSData, message: challenge);
                     if NSApp.runModal(for: (controller.window!)) == 0 {
@@ -136,6 +137,7 @@ class HBCIBackendCallback : HBCICallback {
             let res = NSApp.runModal(for: tanWindow.window!);
             tanWindow.close();
             if res == 0 {
+                logDebug("TAN entered");
                 return tanWindow.result();
             } else {
                 throw HBCIError.userAbort;
@@ -1401,6 +1403,8 @@ class HBCIBackend : NSObject, HBCILog {
                         continue;
                     }
                     order.dateFrom = dateFrom;
+                    logDebug("Request statements with start date: \(String(describing: dateFrom))");
+                    
                     guard order.enqueue() else {
                         logInfo("Failed to enqueue order");
                         error = true;

@@ -129,19 +129,7 @@ extern NSString *const CategoryKey;
             [collTransferButton setEnabled: NO];
         }
         
-        switch(changedAccount.type.intValue/10) {
-            case 0: self.accountTypeName = @"Kontokorrent-/Girokonto"; break;
-            case 1: self.accountTypeName = @"Sparkonto"; break;
-            case 2: self.accountTypeName = @"Festgeldkonto (Termineinlagen)"; break;
-            case 3: self.accountTypeName = @"Wertpapierdepot"; break;
-            case 4: self.accountTypeName = @"Kredit-/Darlehenskonto"; break;
-            case 5: self.accountTypeName = @"Kreditkartenkonto"; break;
-            case 6: self.accountTypeName = @"Fonds-Depot bei einer Kapitalanlagegesellschaft"; break;
-            case 7: self.accountTypeName = @"Bausparvertrag"; break;
-            case 8: self.accountTypeName = @"Versicherungsvertrag"; break;
-            case 9: self.accountTypeName = @"Sonstige (nicht zuordenbar)"; break;
-            default: self.accountTypeName = @"Unbekannt"; break;
-        }
+        self.accountTypeName = [changedAccount typeName];
     }
 
     // Manually set up properties which cannot be set via user defined runtime attributes
