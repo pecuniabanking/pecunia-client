@@ -98,6 +98,7 @@
 - (void)getBankSetupInfo {
     BankUser *currentUser = [currentUserController content];
 
+    currentUser.bankCode = [currentUser.bankCode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     BankSetupInfo *info = [[HBCIBackend backend] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {

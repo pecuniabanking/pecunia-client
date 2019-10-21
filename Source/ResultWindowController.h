@@ -26,8 +26,9 @@
     
 }
 
-@property (nonatomic, assign) BOOL forceHidden;
-@property (nonatomic, retain) NSDateFormatter *dateFormatter;
+@property (nonatomic, assign) BOOL              forceHidden;
+@property (nonatomic, retain) NSDateFormatter   *dateFormatter;
+@property (nonatomic, retain) NSFont            *logFont;
 
 - (IBAction)close: (id)sender;
 - (void)addMessage: (NSString *)info;

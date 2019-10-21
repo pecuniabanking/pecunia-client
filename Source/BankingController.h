@@ -149,7 +149,6 @@
 
 - (IBAction)categoryBudgets:(id)sender;
 
-- (void)statementsNotification: (NSNotification *)notification;
 - (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;

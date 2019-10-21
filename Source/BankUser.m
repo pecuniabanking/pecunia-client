@@ -255,6 +255,11 @@ static NSMutableDictionary *users = nil;
     }
     TanMedium *medium = method.preferredMedium;
 
+    // if we need a TAN media but none is defined, we don't have a valid option...
+    if (([method.needTanMedia isEqualToString: @"1"] || [method.needTanMedia isEqualToString: @"2"]) && medium == nil) {
+        return nil;
+    }
+
     SigningOption *option = [[SigningOption alloc] init];
     option.tanMethod = method.method;
     option.tanMethodName = method.name;

@@ -38,8 +38,7 @@ class CCSettlementListOrder : HBCIOrder {
         }
         
         // add to message
-        msg.addOrder(self);
-        return true;
+        return msg.addOrder(self);
     }
     
     override func updateResult(_ result:HBCIResultMessage) {

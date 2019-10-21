@@ -168,6 +168,7 @@ AP180 = "Bitte Passwort eingeben";
 AP181 = "Bitte PIN eingeben";
 AP182 = "Fehler beim Ändern des Pecunia-Passworts";
 AP183 = "Fehler beim Öffnen der Datenbank";
+AP184 = "Bitte geben Sie die TAN für Benutzerkennung '%@' ein";
 
 // Banking common + business transactions
 // AP200..AP249
@@ -825,6 +826,7 @@ AP2009 = "Es konnten nicht alle Daueraufträge verarbeitet werden. Nähere Infor
 AP2010 = "Die Aktion konnte nicht abgeschlossen werden. Nähere Informationen finden Sie im Fehlerlog";
 AP2011 = "Fehler beim Starten des HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
 AP2012 = "Die Bank verweigert den HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
+AP2013 = "Die angegebene PIN ist womöglich nicht korrekt. Nähere Informationen finden Sie im Fehlerlog";
 
 
 

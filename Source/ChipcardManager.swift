@@ -321,9 +321,18 @@ var _manager:ChipcardManager!
         }
     }
     
-    open var cardNumber:NSString? {
+    open var cardNumber:NSString {
         get {
-            return card.cardNumber;
+            if let cardNumber = card.cardNumber {
+                return cardNumber;
+            } else {
+                if card.getCardID() {
+                    if let cardNumber = card.cardNumber {
+                        return cardNumber;
+                    }
+                }
+                return "<unbekannt>";
+            }
         }
     }
     

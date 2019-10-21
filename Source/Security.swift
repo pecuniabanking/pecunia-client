@@ -94,7 +94,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
 
 @objc open class Security : NSObject {
 
-    open static var currentSigningOption: SigningOption? = nil;
+    public static var currentSigningOption: SigningOption? = nil;
 
     fileprivate static var currentPwService = "";
     fileprivate static var currentPwAccount = "";
@@ -102,7 +102,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
     fileprivate static var passwordCache: [String: String] = [:];
     fileprivate static var passwordController: PasswordController?;
 
-    open static func getPasswordForDataFile() -> String {
+    public static func getPasswordForDataFile() -> String {
         currentPwService = "Pecunia";
         currentPwAccount = "DataFile";
         var password = passwordForService(currentPwService, account: currentPwAccount);
@@ -129,99 +129,14 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
 
         return password!;
     }
-
-    /*
-    public static func getNewPassword(data: CallbackData) -> String {
-        if let password = passwordForService("Pecunia", account: "DataFile") {
-            return password;
-        }
-
-        // A local controller here. The member var is used for repeating password queries for the data file.
-        let controller = NewPasswordController(text: data.message, title: NSLocalizedString( "AP180", comment: ""));
-        if NSApp.runModalForWindow(controller!.window!) != 0 {
-            return "<abort>";
-        }
-
-        if let password = controller?.result() {
-            setPassword(password, forService: "Pecunia", account: "DataFile", store: false);
-            return password;
-        }
-        return "<abort>";
-    }
-
-    public static func getTanMethod(data: CallbackData) -> String {
-        if currentSigningOption?.tanMethod != nil {
-            return currentSigningOption!.tanMethod;
-        }
-
-        // TODO: old code, shouldn't be used anymore but stays in as fallback.
-        let user = BankUser.findUserWithId(data.userId, bankCode: data.bankCode);
-        if user.preferredTanMethod != nil {
-            return user.preferredTanMethod.method;
-        }
-
-        var tanMethods: [TanMethodOld] = [];
-        let methods = data.proposal.componentsSeparatedByString("|");
-        for method in methods {
-            let tanMethod = TanMethodOld();
-            let list = method.componentsSeparatedByString(":");
-            tanMethod.function = NSNumber(integer: Int(list[0])!);
-            tanMethod.description = list[1];
-            tanMethods.append(tanMethod);
-        }
-
-        let controller = TanMethodListController(methods: tanMethods);
-        if NSApp.runModalForWindow(controller.window!) != 0 {
-            return "<abort>";
-        }
-        return controller.selectedMethod.stringValue;
-    }
-
-    public static func removePin(data: CallbackData) -> Void {
-        currentPwService = "Pecunia PIN";
-        let s = "PIN_\(data.bankCode)_\(data.userId)";
-        deletePasswordForService("Pecunia PIN", account: s);
-    }
-
-    public static func getTan(data: CallbackData) -> String {
-        let user = BankUser.findUserWithId(data.userId, bankCode:data.bankCode);
-        if data.proposal != nil && !data.proposal.isEmpty {
-            // Flicker code.
-            let controller = ChipTanWindowController(code: data.proposal, message: data.message);
-            if NSApp.runModalForWindow(controller.window!) == 0 {
-                return controller.tan;
-            } else {
-                return "<abort>";
-            }
-        }
-
-        let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""),
-            user != nil ? user.name : data.userId, data.message));
-        let res = NSApp.runModalForWindow(tanWindow.window!);
-        tanWindow.close();
-        if res == 0 {
-            return tanWindow.result();
-        } else {
-            return "<abort>";
-        }
-    }
-
-    public static func getTanMedia(data: CallbackData) -> String {
-        if currentSigningOption?.tanMediumName != nil {
-            return currentSigningOption!.tanMediumName;
-        }
-
-        let controller = TanMediaWindowController(user: data.userId, bankCode: data.bankCode, message: data.message);
-        if NSApp.runModalForWindow(controller.window!) == 0 {
-            return controller.tanMedia;
-        } else {
-            return "<abort>";
-        }
-    }
-    */
     
+    public static func resetPin(bankCode: String, userId: String) {
+        let account = "PIN_\(bankCode)_\(userId)";
+        Security.deletePasswordForService("Pecunia PIN", account: account);
+    }
+
     // TODO: for all keychain functions, they could use a more generic implementation like Locksmith (see Github).
-    open static func setPassword(_ password: String, forService service: String, account: String, store: Bool) -> Bool {
+    public static func setPassword(_ password: String, forService service: String, account: String, store: Bool) -> Bool {
         let key = service + "/" + account;
         passwordCache[key] = password;
         if !store {
@@ -243,7 +158,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         return status == noErr;
     }
 
-    open static func passwordForService(_ service: String, account: String) -> String? {
+    public static func passwordForService(_ service: String, account: String) -> String? {
         let key = service + "/" + account;
         if let password = passwordCache[key] {
             return password;
@@ -276,7 +191,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         return nil;
     }
 
-    open static func deletePasswordForService(_ service: String, account: String) -> Void {
+    public static func deletePasswordForService(_ service: String, account: String) -> Void {
         let key = service + "/" + account;
         passwordCache.removeValue(forKey: key);
 
@@ -296,7 +211,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         }
     }
 
-    open static func deletePasswordsForService(_ service: String) -> Void {
+    public static func deletePasswordsForService(_ service: String) -> Void {
         let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
         let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
         var status: OSStatus;

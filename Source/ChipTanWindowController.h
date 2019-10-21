@@ -39,10 +39,11 @@
 
 }
 
-@property (nonatomic, copy) NSString *tan;
+@property (nonatomic, copy)     NSString *tan;
+@property (nonatomic, retain)   NSString *userMessage;
 
 
-- (id)initWithCode: (NSString *)flickerCode message: (NSString *)msg;
+- (id)initWithCode: (NSString *)flickerCode message: (NSString *)msg userName: (NSString *)name;
 
 - (IBAction)ok: (id)sender;
 - (IBAction)cancel: (id)sender;
