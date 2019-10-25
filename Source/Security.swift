@@ -76,7 +76,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
 
             let res = NSApp.runModal(for: self.passwordController!.window!);
             self.passwordController!.closeWindow();
-            if res == 0 {
+            if res.rawValue == 0 {
                 let pin = self.passwordController!.result();
                 if(!Security.setPassword(pin!, forService: self.service, account: self.account, store: false)) {};
                 result = pin!;
@@ -114,7 +114,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
                 passwordController!.retry();
             }
 
-            if NSApp.runModal(for: passwordController!.window!) > 0 {
+            if NSApp.runModal(for: passwordController!.window!).rawValue > 0 {
                 password = nil;
             } else {
                 password = passwordController!.result();

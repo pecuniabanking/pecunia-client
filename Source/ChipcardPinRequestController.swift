@@ -20,7 +20,7 @@ class ChipcardPinRequestController : NSWindowController {
         messageField.stringValue = String(format: NSLocalizedString("AP351", comment: ""));
         
         let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(checkPin), userInfo: nil, repeats: false);
-        RunLoop.current.add(timer, forMode: RunLoopMode.modalPanelRunLoopMode);
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.modalPanel);
         _timer = timer;
     }
     
@@ -34,10 +34,10 @@ class ChipcardPinRequestController : NSWindowController {
         
         if !card.verifyPin() {
             self.close();
-            NSApp.stopModal(withCode: 1);
+            NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
         } else {
             self.close();
-            NSApp.stopModal(withCode: 0);
+            NSApp.stopModal(withCode: NSApplication.ModalResponse.OK);
 
         }
     }
@@ -47,7 +47,7 @@ class ChipcardPinRequestController : NSWindowController {
             timer.invalidate();
         }
         self.close();
-        NSApp.stopModal(withCode: 1);
+        NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
     }
     
 }

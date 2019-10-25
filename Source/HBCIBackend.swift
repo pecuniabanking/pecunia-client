@@ -113,7 +113,7 @@ class HBCIBackendCallback : HBCICallback {
             if type == .flicker {
                 // Flicker code.
                 if let controller = ChipTanWindowController(code: challenge_hhd_uc, message: challenge, userName: bankUser?.name ?? user.userId) {
-                    if NSApp.runModal(for: (controller.window!)) == 0 {
+                    if NSApp.runModal(for: (controller.window!)).rawValue == 0 {
                         return controller.tan;
                     } else {
                         throw HBCIError.userAbort;
@@ -123,7 +123,7 @@ class HBCIBackendCallback : HBCICallback {
             if type == .photo {
                 if let data = NSData(base64Encoded: challenge_hhd_uc, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) {
                     let controller = PhotoTanWindowController(data as NSData, message: challenge, userName: bankUser?.name ?? user.userId);
-                    if NSApp.runModal(for: (controller.window!)) == 0 {
+                    if NSApp.runModal(for: (controller.window!)) == NSApplication.ModalResponse.OK {
                         return controller.tan ?? "";
                     } else {
                         throw HBCIError.userAbort;
@@ -135,7 +135,7 @@ class HBCIBackendCallback : HBCICallback {
         }
         
         if let tanWindow = TanWindow(text: String(format: NSLocalizedString("AP172", comment: ""), bankUser?.name ?? user.userId, challenge!)) {
-            let res = NSApp.runModal(for: tanWindow.window!);
+            let res = NSApp.runModal(for: tanWindow.window!).rawValue;
             tanWindow.close();
             if res == 0 {
                 logDebug("TAN entered");
@@ -1587,7 +1587,7 @@ class HBCIBackend : NSObject, HBCILog {
                 return options[0].tanMethod;
             }
             if let controller = SigningOptionsController(signingOptions: options, for: nil) {
-                let res = NSApp.runModal(for: controller.window!);
+                let res = NSApp.runModal(for: controller.window!).rawValue;
                 if res > 0 {
                     return nil;
                 }
@@ -1619,7 +1619,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         let controller = SigningOptionsController(signingOptions: options, for: nil);
-        let res = NSApp.runModal(for: (controller?.window!)!);
+        let res = NSApp.runModal(for: (controller?.window!)!).rawValue;
         if res > 0 {
             return nil;
         }
@@ -1853,7 +1853,7 @@ class HBCIBackend : NSObject, HBCILog {
         
         if errorOccured {
             let alert = NSAlert();
-            alert.alertStyle = NSAlertStyle.critical;
+            alert.alertStyle = NSAlert.Style.critical;
             alert.messageText = NSLocalizedString("AP128", comment: "");
             alert.informativeText = NSLocalizedString("AP2008", comment: "");
             

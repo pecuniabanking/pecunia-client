@@ -98,7 +98,7 @@ var _manager:ChipcardManager!
                 // no card inserted. Open dialog to wait for it
                 let controller = ChipcardRequestController(windowNibName: "ChipcardRequestController");
                 controller._userIdName = userIdName;
-                if NSApp.runModal(for: controller.window!) == 1 {
+                if NSApp.runModal(for: controller.window!) == NSApplication.ModalResponse.cancel {
                     // cancelled
                     throw HBCIError.userAbort;
                     //return false;
@@ -108,7 +108,7 @@ var _manager:ChipcardManager!
             
             // verify card
             let controller = ChipcardPinRequestController(windowNibName: "ChipcardPinRequestController");
-            if NSApp.runModal(for: controller.window!) == 1 {
+            if NSApp.runModal(for: controller.window!) == NSApplication.ModalResponse.cancel {
                 // verification not o.k.
                 throw NSError.errorWithMsg(msgId: "AP369", titleId: "AP368");
             }

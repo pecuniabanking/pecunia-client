@@ -59,14 +59,14 @@ class PhotoTanWindowController : NSWindowController {
     @IBAction func ok(_ sender:Any?) {
         if let tan = tan {
             if tan.length > 0 {
-                NSApp.stopModal(withCode: 0);
+                NSApp.stopModal(withCode: NSApplication.ModalResponse.OK);
                 self.window?.close();
             }
         }        
     }
     
     @IBAction func cancel(_ sender:Any?) {
-        NSApp.stopModal(withCode: 1);
+        NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
         self.window?.close();
     }
     

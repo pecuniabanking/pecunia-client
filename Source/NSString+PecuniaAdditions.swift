@@ -38,12 +38,12 @@ extension NSString {
 
         let result = NSMutableString();
         let range = NSMakeRange(0, self.length);
-        self.enumerateLinguisticTags(in: range, scheme: NSLinguisticTagSchemeLexicalClass,
+        self.enumerateLinguisticTags(in: range, scheme: NSLinguisticTagScheme.lexicalClass,
             options: NSLinguisticTagger.Options(rawValue: 0), orthography: nil,  using:
-            { (tag: String, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
+            { (tag: NSLinguisticTag?, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
                 let item : NSString = self.substring(with: tokenRange) as NSString;
-                if tag == NSLinguisticTagOtherWhitespace ||
-                   tag == NSLinguisticTagParagraphBreak {
+                if tag == NSLinguisticTag.otherWhitespace ||
+                   tag == NSLinguisticTag.paragraphBreak {
                     // Copy over any whitespace.
                     if result.length > 0 {
                         result.append(item as String);
