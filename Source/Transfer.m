@@ -179,16 +179,16 @@
     //self.remoteBankCode = other.remoteBankCode;
     if (other.remoteIBAN == nil) {
         // try to convert
-        NSDictionary *ibanResult = [IBANtools convertToIBAN: other.remoteAccount
-                                                   bankCode: other.remoteBankCode
-                                                countryCode: @"de"
-                                            validateAccount: YES];
+        NSDictionary *ibanResult = [SepaService convertToIBAN: other.remoteAccount
+                                                     bankCode: other.remoteBankCode
+                                                  countryCode: @"de"
+                                              validateAccount: YES];
         if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
             [ibanResult[@"result"] intValue] == IBANToolsResultOk) {
             self.remoteIBAN = ibanResult[@"iban"];
             
             if (self.remoteIBAN != nil) {
-                InstituteInfo *info = [HBCIBackend.backend infoForIBAN: self.remoteIBAN];
+                BankInfo *info = [HBCIBackend.backend infoForIBAN: self.remoteIBAN];
                 if (info != nil) {
                     self.remoteBIC = info.bic;
                 }

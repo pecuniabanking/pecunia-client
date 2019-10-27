@@ -265,7 +265,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
         @try {
             NSString *iban = values[@"IBAN"];
-            if ([IBANtools isValidIBAN: iban] && ![IBANtools isValidIBAN: self.remoteIBAN]) {
+            if ([SepaService isValidIBAN: iban] && ![SepaService isValidIBAN: self.remoteIBAN]) {
                 if (iban != nil && iban.length <= 34) {
                     self.remoteIBAN = iban;
                 } else {
@@ -273,7 +273,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
                 }
             }
             NSString *bic = values[@"BIC"];
-            if ([IBANtools isValidBIC: bic] && ![IBANtools isValidBIC: self.remoteBIC]) {
+            if ([SepaService isValidBIC: bic] && ![SepaService isValidBIC: self.remoteBIC]) {
                 if (bic != nil && bic.length <= 11) {
                     self.remoteBIC = bic;
                 } else {

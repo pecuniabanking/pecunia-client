@@ -601,7 +601,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         return NO;
     }
 
-    if (![IBANtools isValidIBAN: stord.remoteIBAN]) {
+    if (![SepaService isValidIBAN: stord.remoteIBAN]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);

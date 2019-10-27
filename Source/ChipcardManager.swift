@@ -11,7 +11,7 @@ import HBCI4Swift
 
 var _manager:ChipcardManager!
 
-@objc open class CardBankData : NSObject  {
+@objcMembers open class CardBankData : NSObject  {
     var name:String;
     var bankCode:String;
     var country:String;
@@ -65,7 +65,7 @@ var _manager:ChipcardManager!
     }
     
     
-    open func getReaders() ->Array<String>? {
+    @objc open func getReaders() ->Array<String>? {
         return HBCISmartcardDDV.readers();
     }
     
@@ -192,7 +192,7 @@ var _manager:ChipcardManager!
         }
     }
     
-    open func requestCardForReader(_ readerName:String) throws {
+    @objc open func requestCardForReader(_ readerName:String) throws {
         if card == nil {
             card = HBCISmartcardDDV(readerName: readerName);
         } else if card.readerName != readerName {
@@ -220,14 +220,14 @@ var _manager:ChipcardManager!
         return nil;
     }
     
-    open func getBankData() ->CardBankData? {
+    @objc open func getBankData() ->CardBankData? {
         if let data = card.getBankData(1) {
             return CardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, userId: data.userId);
         }
         return nil;
     }
     
-    open func writeBankData(_ data:CardBankData) ->Bool {
+    @objc open func writeBankData(_ data:CardBankData) ->Bool {
         let hbciData = HBCICardBankData(name: data.name, bankCode: data.bankCode, country: data.country, host: data.host, hostAdd: "", userId: data.userId, commtype: 0);
         return card.writeBankData(1, data: hbciData);
     }
@@ -321,7 +321,7 @@ var _manager:ChipcardManager!
         }
     }
     
-    open var cardNumber:NSString {
+    @objc open var cardNumber:NSString {
         get {
             if let cardNumber = card.cardNumber {
                 return cardNumber;
@@ -336,7 +336,7 @@ var _manager:ChipcardManager!
         }
     }
     
-    public static var manager:ChipcardManager {
+    @objc public static var manager:ChipcardManager {
         get {
             if let manager = _manager {
                 return manager;

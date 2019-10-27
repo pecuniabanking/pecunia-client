@@ -13,6 +13,8 @@
 		011DADE01EA37DD200A44EFE /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */; };
 		019702E11EA3CAC100E6B872 /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */; };
 		019702E31EA413F300E6B872 /* BankMessageWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011DADD81EA373D500A44EFE /* BankMessageWindowController.m */; };
+		01AD93382364FEA2008BB491 /* SepaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AD93372364FEA2008BB491 /* SepaService.swift */; };
+		01AD93392364FEA2008BB491 /* SepaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AD93372364FEA2008BB491 /* SepaService.swift */; };
 		2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2704B8441573C3FC00CB1320 /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
@@ -1087,6 +1089,7 @@
 		011DADDB1EA3749A00A44EFE /* BankMessageWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankMessageWindow.xib; sourceTree = "<group>"; };
 		011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardPinRequestController.xib; sourceTree = "<group>"; };
 		011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardPinRequestController.swift; sourceTree = "<group>"; };
+		01AD93372364FEA2008BB491 /* SepaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SepaService.swift; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -2493,6 +2496,7 @@
 				B163F0DB1CC955D3001E1009 /* CCStatementOrder.swift */,
 				B163F0D11CC2CF18001E1009 /* CCSettlementOrder.swift */,
 				B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */,
+				01AD93372364FEA2008BB491 /* SepaService.swift */,
 			);
 			name = "Banking Backend";
 			sourceTree = "<group>";
@@ -3881,6 +3885,7 @@
 				276B83C61811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */,
 				27778918173CE22700430EBC /* ColorPopup.m in Sources */,
 				27778919173CE22700430EBC /* BFIconTabBar.m in Sources */,
+				01AD93392364FEA2008BB491 /* SepaService.swift in Sources */,
 				019702E11EA3CAC100E6B872 /* ChipcardPinRequestController.swift in Sources */,
 				A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */,
 				27D902F8178826F800B7452B /* HomeScreenController.m in Sources */,
@@ -4114,6 +4119,7 @@
 				272454671871F89C00AF9042 /* BankDetailsParser.m in Sources */,
 				276B83C51811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */,
 				279918121711E97400C1AC3D /* ColorPopup.m in Sources */,
+				01AD93382364FEA2008BB491 /* SepaService.swift in Sources */,
 				2739FEF4171336580066F326 /* BFIconTabBar.m in Sources */,
 				A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */,
 				27D902F7178826F800B7452B /* HomeScreenController.m in Sources */,

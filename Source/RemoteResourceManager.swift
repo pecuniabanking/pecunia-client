@@ -67,16 +67,16 @@ let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resource
         }
     }
 
-    open class var sharedManager: RemoteResourceManager {
+    @objc open class var sharedManager: RemoteResourceManager {
         _ = RemoteResourceManager.__once
         return singleton!
     }
 
-    open class var pecuniaResourcesUpdatedNotification : String {
+    @objc open class var pecuniaResourcesUpdatedNotification : String {
         return "PecuniaResourcesUpdatedNotification";
     }
 
-    open func addManagedFile(_ fileName: String) {
+    @objc open func addManagedFile(_ fileName: String) {
         logEnter();
         
         let backgroundQueue = DispatchQueue.global(qos: .background);
@@ -87,7 +87,7 @@ let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resource
         logLeave();
     }
 
-    open func removeManagedFile(_ fileName: String) -> Bool {
+    @objc open func removeManagedFile(_ fileName: String) -> Bool {
         logEnter();
         let fm = FileManager.default;
         let assistant = MOAssistant.shared();
@@ -111,7 +111,7 @@ let RemoteResourceUpdateInfo = "https://www.pecuniabanking.de/downloads/resource
      * Checks if the given file would need an update, which requires that it must be one of
      * the downloadable files (but not necessarily be managed).
      */
-    open func fileNeedsUpdate(_ fileName: String) -> Bool {
+    @objc open func fileNeedsUpdate(_ fileName: String) -> Bool {
         let resourcePath = MOAssistant.shared().resourcesDir;
         let fm = FileManager.default;
         let dateFormatter = DateFormatter();

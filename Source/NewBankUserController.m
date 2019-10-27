@@ -173,7 +173,7 @@
 
         if (step == 2) {
             // look if we have bank infos
-            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
+            BankInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -281,7 +281,7 @@
                         currentUser.chipCardId = manager.cardNumber;
                         
                         // get further bank infos
-                        InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
+                        BankInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
                         if (bi) {
                             currentUser.hbciVersion = bi.hbciVersion;
                             if (bi.name != nil) {
@@ -451,7 +451,7 @@
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
-            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
+            BankInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];

@@ -23,6 +23,7 @@
 #import "TransferTemplate.h"
 #import "MOAssistant.h"
 #import "Transfer.h"
+#import "Pecunia-Swift.h"
 
 @interface TransferTemplateController ()
 
@@ -76,8 +77,8 @@
                                 NSLocalizedString(@"AP1", nil), nil, nil);
                 return NO;
             }
-
-            if (![IBANtools isValidIBAN: template.remoteIBAN]) {
+            
+            if (![SepaService isValidIBAN: template.remoteIBAN]) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
@@ -100,10 +101,10 @@
                                 NSLocalizedString(@"AP1", nil), nil, nil);
                 return NO;
             }
-            NSDictionary *checkResult = [IBANtools isValidAccount: template.remoteAccount
-                                                         bankCode: template.remoteBankCode
-                                                      countryCode: template.remoteCountry
-                                                          forIBAN: NO];
+            NSDictionary *checkResult = [SepaService isValidAccount: template.remoteAccount
+                                                           bankCode: template.remoteBankCode
+                                                        countryCode: template.remoteCountry
+                                                            forIBAN: NO];
             BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
             if (!valid) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),

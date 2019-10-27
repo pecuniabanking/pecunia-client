@@ -136,7 +136,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
     }
 
     // TODO: for all keychain functions, they could use a more generic implementation like Locksmith (see Github).
-    public static func setPassword(_ password: String, forService service: String, account: String, store: Bool) -> Bool {
+    @objc public static func setPassword(_ password: String, forService service: String, account: String, store: Bool) -> Bool {
         let key = service + "/" + account;
         passwordCache[key] = password;
         if !store {
@@ -158,7 +158,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         return status == noErr;
     }
 
-    public static func passwordForService(_ service: String, account: String) -> String? {
+    @objc public static func passwordForService(_ service: String, account: String) -> String? {
         let key = service + "/" + account;
         if let password = passwordCache[key] {
             return password;
@@ -191,7 +191,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         return nil;
     }
 
-    public static func deletePasswordForService(_ service: String, account: String) -> Void {
+    @objc public static func deletePasswordForService(_ service: String, account: String) -> Void {
         let key = service + "/" + account;
         passwordCache.removeValue(forKey: key);
 
@@ -211,7 +211,7 @@ internal var serialQueue: DispatchQueue = DispatchQueue(label: "de.pecunia.auth-
         }
     }
 
-    public static func deletePasswordsForService(_ service: String) -> Void {
+    @objc public static func deletePasswordsForService(_ service: String) -> Void {
         let serviceAsUtf8 = (service as NSString).cString(using: String.Encoding.utf8.rawValue);
         let serviceLength = UInt32(service.lengthOfBytes(using: String.Encoding.utf8));
         var status: OSStatus;

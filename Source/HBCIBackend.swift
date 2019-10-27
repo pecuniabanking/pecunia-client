@@ -82,7 +82,7 @@ extension NSError {
         return NSError(domain: "de.pecuniabanking.ErrorDomain", code: 1, userInfo: userInfo);
     }
     
-    func log() {
+    @objc func log() {
         logInfo(self.description);
         if (self.code == NSValidationMultipleErrorsError) {
             if let errors = self.userInfo[NSDetailedErrorsKey] as? [NSError] {
@@ -93,7 +93,7 @@ extension NSError {
         }
     }
     
-    static var genericHBCI:NSError {
+    @objc static var genericHBCI:NSError {
         get {
             return NSError.errorWithMsg(msgId: "AP127", titleId: "AP128");
         }
@@ -152,7 +152,7 @@ class HBCIBackend : NSObject, HBCILog {
     var hbciQueriesRunning = 0;
     var resultWindow = ResultWindowController( );
     
-    static var backend:HBCIBackend {
+    @objc public static var backend:HBCIBackend {
         get {
             if _backend == nil {
                 _backend = HBCIBackend();
@@ -199,22 +199,22 @@ class HBCIBackend : NSObject, HBCILog {
     }
 
     
-    func infoForBankCode(_ bankCode:String) -> InstituteInfo? {
+    @objc func infoForBankCode(_ bankCode:String) -> BankInfo? {
         let (bic, result) = IBANtools.bicForBankCode(bankCode, countryCode: "de");
         if result == .noBIC || result == .wrongValue {
             return nil;
         }
-        return IBANtools.instituteDetailsForBIC(bic);
+        return BankInfo(IBANtools.instituteDetailsForBIC(bic));
     }
     
-    func bankNameForCode(_ bankCode:String) ->String {
+    @objc func bankNameForCode(_ bankCode:String) ->String {
         if let info = IBANtools.instituteDetailsForBankCode(bankCode) {
             return info.name.length > 0 ? info.name : NSLocalizedString("AP13", comment: "");
         }
         return NSLocalizedString("AP13", comment: "");
     }
     
-    func infoForIBAN(_ iban:String?) ->InstituteInfo? {
+    @objc func infoForIBAN(_ iban:String?) ->BankInfo? {
         guard let iban = iban else {
             return nil;
         }
@@ -223,12 +223,12 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         if let bic = bicForIBAN(iban) {
-            return IBANtools.instituteDetailsForBIC(bic);
+            return BankInfo(IBANtools.instituteDetailsForBIC(bic));
         }
         return nil;
     }
     
-    func bankNameForIBAN(_ iban:String) ->String {
+    @objc func bankNameForIBAN(_ iban:String) ->String {
         if let bic = bicForIBAN(iban) {
             if let info = IBANtools.instituteDetailsForBIC(bic) {
                 return info.name.length > 0 ? info.name : NSLocalizedString("AP13", comment: "");
@@ -237,7 +237,7 @@ class HBCIBackend : NSObject, HBCILog {
         return NSLocalizedString("AP13", comment: "");
     }
     
-    func bicForIBAN(_ iban:String) ->String? {
+    @objc func bicForIBAN(_ iban:String) ->String? {
         let result:(String, IBANToolsResult) = IBANtools.bicForIBAN(iban);
         if result.1 != IBANToolsResult.noBIC {
             return result.0;
@@ -415,7 +415,7 @@ class HBCIBackend : NSObject, HBCILog {
         return false;
     }
     
-    func isTransactionSupportedForAccount(_ tt:TransactionType, account:BankAccount) ->Bool {
+    @objc func isTransactionSupportedForAccount(_ tt:TransactionType, account:BankAccount) ->Bool {
         if let orderName = transactionTypeToOrderName(tt) {
             return self.isOrderSupportedForAccount(orderName, account: account);
         }
@@ -433,7 +433,7 @@ class HBCIBackend : NSObject, HBCILog {
         return false;
     }
     
-    func isTransferSupportedForAccount(_ tt:TransferType, account:BankAccount) ->Bool {
+    @objc func isTransferSupportedForAccount(_ tt:TransferType, account:BankAccount) ->Bool {
         var transactionType:TransactionType?
         switch (tt) {
         case TransferTypeInternalSEPA: transactionType = TransactionType.transferInternalSEPA;
@@ -578,7 +578,7 @@ class HBCIBackend : NSObject, HBCILog {
         context.processPendingChanges();
     }
     
-    func getBankSetupInfo(_ bankCode:String) ->BankSetupInfo? {
+    @objc func getBankSetupInfo(_ bankCode:String) ->BankSetupInfo? {
         do {
             if let info = infoForBankCode(bankCode), let url = URL(string: info.pinTanURL) {
                 let dialog = try HBCIAnonymousDialog(hbciVersion: info.hbciVersion, product: productId);
@@ -624,7 +624,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    func syncBankUser(_ bankUser:BankUser) ->NSError? {
+    @objc func syncBankUser(_ bankUser:BankUser) ->NSError? {
         if bankUser.customerId == nil {
             bankUser.customerId = "";
         }
@@ -779,7 +779,7 @@ class HBCIBackend : NSObject, HBCILog {
         return NSError.errorWithMsg(msgId: "AP127", titleId: "AP128");
     }
     
-    func getParameterDescription(_ user:BankUser) ->String? {
+    @objc func getParameterDescription(_ user:BankUser) ->String? {
         do {
             let hbciUser = try HBCIUser(userId: user.userId, customerId: user.customerId, bankCode: user.bankCode, hbciVersion: user.hbciVersion, bankURLString: user.bankURL);
             if user.hbciParameters != nil {
@@ -793,7 +793,7 @@ class HBCIBackend : NSObject, HBCILog {
         return nil;
     }
     
-    func getBalanceForAccount(_ bankAccount:BankAccount) -> NSError? {
+    @objc func getBalanceForAccount(_ bankAccount:BankAccount) -> NSError? {
         var error = false;
         
         guard let bankUser = bankAccount.defaultBankUser() else {
@@ -858,7 +858,7 @@ class HBCIBackend : NSObject, HBCILog {
         return NSError.genericHBCI;
     }
     
-    func getCCSettlementListForAccount(_ bankAccount:BankAccount) ->CCSettlementList? {
+    @objc func getCCSettlementListForAccount(_ bankAccount:BankAccount) ->CCSettlementList? {
         var error = false;
         
         guard let bankUser = bankAccount.defaultBankUser() else {
@@ -929,7 +929,7 @@ class HBCIBackend : NSObject, HBCILog {
 
     }
     
-    func getCreditCardSettlement(_ settleID:String, bankAccount:BankAccount) ->CreditCardSettlement? {
+    @objc func getCreditCardSettlement(_ settleID:String, bankAccount:BankAccount) ->CreditCardSettlement? {
         var error = false;
         
         guard let bankUser = bankAccount.defaultBankUser() else {
@@ -1002,14 +1002,14 @@ class HBCIBackend : NSObject, HBCILog {
     func checkGetStatementsFinalization() {
     }
     
-    func getStandingOrders(_ accounts:[BankAccount]) -> [BankQueryResult] {
+    @objc func getStandingOrders(_ accounts:[BankAccount]) -> [BankQueryResult] {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
 
         return self.getStatements(accounts, userFunc: self.getUserStandingOrders);
     }
     
-    func getStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
+    @objc func getStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
         
@@ -1627,7 +1627,7 @@ class HBCIBackend : NSObject, HBCILog {
    
     }
     
-    func sendCollectiveTransfer(_ transfers: Array<Transfer>) ->NSError? {
+    @objc func sendCollectiveTransfer(_ transfers: Array<Transfer>) ->NSError? {
         var error = false;
         
         if transfers.count == 0 {
@@ -1728,7 +1728,7 @@ class HBCIBackend : NSObject, HBCILog {
         return NSError.genericHBCI;
     }
     
-    func sendTransfers(_ transfers:Array<Transfer>) {
+    @objc func sendTransfers(_ transfers:Array<Transfer>) {
         
         var accountTransferRegister = Dictionary<BankUser, Array<Transfer>>();
         var errorOccured = false;
@@ -1861,7 +1861,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    func sendStandingOrders(_ standingOrders:[StandingOrder]) ->NSError? {
+    @objc func sendStandingOrders(_ standingOrders:[StandingOrder]) ->NSError? {
         var accountTransferRegister = Dictionary<BankUser, Array<StandingOrder>>();
         var errorOccured = false;
         
@@ -2030,7 +2030,7 @@ class HBCIBackend : NSObject, HBCILog {
         return result;
     }
     
-    func standingOrderLimits(_ bankUser:BankUser, action:StandingOrderAction) ->TransactionLimits? {
+    @objc func standingOrderLimits(_ bankUser:BankUser, action:StandingOrderAction) ->TransactionLimits? {
         do {
             let user = try HBCIUser(bankUser: bankUser);
             switch action {
@@ -2080,7 +2080,7 @@ class HBCIBackend : NSObject, HBCILog {
         return nil;
     }
     
-    func transferLimits(_ bankUser:BankUser, type:TransferType) ->TransactionLimits? {
+    @objc func transferLimits(_ bankUser:BankUser, type:TransferType) ->TransactionLimits? {
         do {
             let user = try HBCIUser(bankUser: bankUser);
             switch type {
@@ -2098,7 +2098,7 @@ class HBCIBackend : NSObject, HBCILog {
         return nil;
     }
     
-    func supportedBusinessTransactions(_ bankAccount:BankAccount) ->Array<String>? {
+    @objc func supportedBusinessTransactions(_ bankAccount:BankAccount) ->Array<String>? {
         do {
             let bankUser = bankAccount.defaultBankUser();
             if bankUser == nil {
@@ -2206,7 +2206,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    func getAccountStatementParametersForUser(_ bankUser:BankUser) ->AccountStatementParameters? {
+    @objc func getAccountStatementParametersForUser(_ bankUser:BankUser) ->AccountStatementParameters? {
         do {
             let user = try HBCIUser(bankUser: bankUser);
             if let params = HBCIAccountStatementOrder.getParameters(user) {
@@ -2288,7 +2288,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
+    @objc func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
         guard let bankUser = bankAccount.defaultBankUser() else {
             logError("Konto \(bankAccount.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;

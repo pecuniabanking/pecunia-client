@@ -26,7 +26,7 @@ extension NSString {
     * This process depends on a large word library, so it's an optional feature. If the user decided
     * to disable it we do a simple capitalization.
     */
-    public func stringWithNaturalText() -> NSString {
+    @objc public func stringWithNaturalText() -> NSString {
         if !WordMapping.wordMappingsAvailable {
             // While our word list is being loaded return a simple capitalized string.
             return self.capitalized as NSString;

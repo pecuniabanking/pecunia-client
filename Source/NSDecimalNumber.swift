@@ -92,12 +92,12 @@ extension NSDecimalNumber : Comparable {
         return nil;
     }
 
-    func isNegative() -> Bool {
+    @objc func isNegative() -> Bool {
         // Useful mostly for legacy Obj-C code.
         return self < NSDecimalNumber.zero;
     }
 
-    func abs() -> NSDecimalNumber {
+    @objc func abs() -> NSDecimalNumber {
         if self < NSDecimalNumber.zero {
             return -self;
         }
@@ -106,7 +106,7 @@ extension NSDecimalNumber : Comparable {
 
     // Returns the number digits of this number (interpreting it in a 10-based system),
     // not counting any fractional parts.
-    func numberOfDigits() -> Int {
+    @objc func numberOfDigits() -> Int {
         var value = abs();
         var result = 0;
         let one = NSDecimalNumber.one;
@@ -128,7 +128,7 @@ extension NSDecimalNumber : Comparable {
     // are smaller than 5 then the result is rounded towards a 5 as the second MSD instead of increasing
     // the MSD.
     // Examples: 12 => 15, 17 => 20, 45 => 50, 61 => 70, 123456 => 150000, -77000 => -80000.
-    func roundedToUpperOuter() -> NSDecimalNumber {
+    @objc func roundedToUpperOuter() -> NSDecimalNumber {
         let digits = numberOfDigits();
 
         var value = self.decimalValue;
@@ -198,7 +198,7 @@ extension NSDecimalNumber : Comparable {
         return NSDecimalNumber(decimal: value);
     }
 
-    func rounded() -> NSDecimalNumber {
+    @objc func rounded() -> NSDecimalNumber {
         if NSDecimalNumber.numberHandler == nil {
             NSDecimalNumber.initHandlers();
         }

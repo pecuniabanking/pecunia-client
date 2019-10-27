@@ -30,11 +30,11 @@ let wordsLoadStride : Int = 50000;
 
     static fileprivate var mappingsAvailable : Bool?;
 
-    open class func pecuniaWordsLoadedNotification() -> String {
+    @objc open class func pecuniaWordsLoadedNotification() -> String {
         return "PecuniaWordsLoadedNotification";
     }
 
-    open class var wordMappingsAvailable : Bool {
+    @objc open class var wordMappingsAvailable : Bool {
         if mappingsAvailable == nil {
             let request = NSFetchRequest<NSFetchRequestResult>();
             request.entity = NSEntityDescription.entity(forEntityName: "WordMapping",
@@ -55,7 +55,7 @@ let wordsLoadStride : Int = 50000;
     /**
     * Called when a new (or first-time) word list was downloaded and updates the shared data store.
     */
-    open class func updateWordMappings() {
+    @objc open class func updateWordMappings() {
         logEnter();
 
         // First check if there's a word.zip file before removing the existing values.
@@ -136,7 +136,7 @@ let wordsLoadStride : Int = 50000;
     * Removes all shared word list data (e.g. for updates or if the user decided not to want
     * the overhead anymore.
     */
-    open class func removeWordMappings() {
+    @objc open class func removeWordMappings() {
         logDebug("Clearing word list");
 
         mappingsAvailable = false;
