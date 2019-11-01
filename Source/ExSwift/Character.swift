@@ -14,7 +14,7 @@ public extension Character {
         If the character represents an integer that fits into an Int, returns
         the corresponding integer.
     */
-    public func toInt () -> Int? {
+    func toInt () -> Int? {
         return Int(String(self))
     }
     

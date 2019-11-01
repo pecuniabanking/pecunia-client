@@ -24,7 +24,7 @@
 
 @synthesize useMonthNames;
 
-- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (NSCalendarUnit)unit
 {
     self = [super initWithDateFormatter: aDateFormatter];
     if (self != nil) {
@@ -64,6 +64,8 @@
         case NSCalendarUnitYear:
             result = [date yearDescription];
             break;
+            
+        default: break;
     }
     return result;
 }
@@ -72,13 +74,13 @@
 
 @interface StocksPlotTimeFormatter ()
 {
-    int calendarUnit;
+    NSCalendarUnit calendarUnit;
 }
 @end
 
 @implementation StocksPlotTimeFormatter
 
-- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (NSCalendarUnit)unit
 {
     self = [super initWithDateFormatter: aDateFormatter];
     if (self != nil) {
@@ -123,6 +125,8 @@
         case NSCalendarUnitYear:
             result = [NSString stringWithFormat: @"%li", components.year];
             break;
+            
+        default: break;
     }
     return result;
 }

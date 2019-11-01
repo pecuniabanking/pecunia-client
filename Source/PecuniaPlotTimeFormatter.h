@@ -25,10 +25,10 @@
  */
 @interface PecuniaPlotTimeFormatter : CPTTimeFormatter
 {
-    int calendarUnit;
+    NSCalendarUnit calendarUnit;
 }
 
-- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (NSCalendarUnit)unit;
 
 @property BOOL useMonthNames;
 
@@ -41,6 +41,6 @@
 {
 }
 
-- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (NSCalendarUnit)unit;
 
 @end

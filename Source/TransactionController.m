@@ -229,19 +229,6 @@
 }
 
 - (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer {
-    TransferType type;
-    
-    switch (transfer.type.intValue) {
-        case TransferTypeOldStandard:
-        case TransferTypeEU:
-            type = TransferTypeSEPA; break;
-        case TransferTypeOldStandardScheduled:
-            type = TransferTypeSEPAScheduled; break;
-        case TransferTypeInternal:
-            type = TransferTypeInternalSEPA; break;
-        default:
-            type = transfer.type.intValue;
-    }
     
     if (![self newTransferOfType: [self convertTransferType: transfer.type.intValue ]]) {
         return NO;

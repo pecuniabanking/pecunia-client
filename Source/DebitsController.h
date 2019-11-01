@@ -98,7 +98,7 @@
     IBOutlet NSTabView *debitTab;
 
 @private
-    TransactionLimits *limits;
+    //TransactionLimits *limits;
     NSUInteger        rowPositions[4];
 }
 

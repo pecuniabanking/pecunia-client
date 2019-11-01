@@ -444,7 +444,7 @@ extern void *UserDefaultsBindingContext;
     NSDictionary   *values = [userDefaults dictionaryForKey: @"categoryAnalysis"];
     if (values != nil) {
         groupingInterval = [values[@"grouping"] intValue];
-        groupingSlider.intValue = groupingInterval;
+        groupingSlider.intValue = (int)groupingInterval;
     }
 
     [self setupMainGraph];

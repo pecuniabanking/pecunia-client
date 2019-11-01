@@ -33,7 +33,7 @@
     NSDateFormatter *dateFormatter;
     ShortDate       *hunderedYearsLater;
 
-    BOOL pendingRefresh;
+    //BOOL pendingRefresh;
     BOOL pendingReload;
     BOOL autoCasing;
 }

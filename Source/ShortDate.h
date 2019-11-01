@@ -42,9 +42,9 @@
 - (NSDate *)highDate;
 
 - (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate;
-- (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit;
+- (int)unitsToDate: (ShortDate *)toDate byUnit: (NSCalendarUnit)calendarUnit;
 
-- (ShortDate *)dateByAddingUnits: (int)units byUnit: (int)calendarUnit;
+- (ShortDate *)dateByAddingUnits: (int)units byUnit: (NSCalendarUnit)calendarUnit;
 
 - (BOOL)isEqual: (ShortDate *)date;
 - (NSUInteger)hash;

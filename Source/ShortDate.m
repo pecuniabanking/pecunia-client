@@ -198,7 +198,7 @@
  *       e.g. Dec 22, 2010 and Dec 27, 2010 are only 5 days apart (so NSCalendar considers them 0 weeks apart)
  *       however they are actually in two different calendar weeks, so their week difference is 1.
  */
-- (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit {
+- (int)unitsToDate: (ShortDate *)toDate byUnit: (NSCalendarUnit)calendarUnit {
     switch (calendarUnit) {
         case NSCalendarUnitYear:
             return toDate.year - (int)components.year;
@@ -220,7 +220,7 @@
     }
 }
 
-- (ShortDate *)dateByAddingUnits: (int)units byUnit: (int)calendarUnit {
+- (ShortDate *)dateByAddingUnits: (int)units byUnit: (NSCalendarUnit)calendarUnit {
     NSDateComponents *comps = [components copy];
 
     // In order to avoid rounding up months to the next higher one if the original day value is beyond
@@ -269,6 +269,7 @@
             date = [date dateByAddingTimeInterval: (day - 1) * 24 * 3600];
             break;
         }
+        default: break;
     }
 
     return [ShortDate dateWithDate: date];

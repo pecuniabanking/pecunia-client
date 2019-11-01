@@ -2150,7 +2150,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
             
             guard let enc = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
-                md5Hash.deallocate(capacity: 16);
+                md5Hash.deallocate();
                 logError("Passport-Datei \(file) konnte nicht geöffnet werden");
                 return;
             }
@@ -2158,7 +2158,7 @@ class HBCIBackend : NSObject, HBCILog {
             var length = enc.count;
             let plain = UnsafeMutablePointer<UInt8>.allocate(capacity: enc.count);
             let rv = CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmDES), 0, md5Hash, kCCKeySizeDES, md5Hash.advanced(by:8), (enc as NSData).bytes, enc.count, plain, length, &length);
-            md5Hash.deallocate(capacity: 16);
+            md5Hash.deallocate();
             if rv == 0 {
                 var p = UnsafeMutablePointer<UInt8>(plain).advanced(by: 4);
                 var bankCode, userId, sysId:String?
@@ -2170,7 +2170,7 @@ class HBCIBackend : NSObject, HBCILog {
                 (sysId, p) = read(p);
                 
                 guard bankCode != nil && userId != nil && sysId != nil else {
-                    plain.deallocate(capacity: enc.count);
+                    plain.deallocate();
                     logError("Passport-Daten konnten nicht gelesen werden: \(String(describing: bankCode)) \(String(describing: userId)) \(String(describing: sysId))");
                     return;
                 }
@@ -2181,7 +2181,7 @@ class HBCIBackend : NSObject, HBCILog {
             } else {
                 logError("Entschlüsselung von Datei \(file) ist fehlgeschlagen");
             }
-            plain.deallocate(capacity: enc.count);
+            plain.deallocate();
         }
     }
     

@@ -44,7 +44,7 @@ var _manager:ChipcardManager!
         }
         
         let result = Data(bytes: UnsafePointer<UInt8>(buffer), count: s.length/2);
-        buffer.deinitialize();
+        buffer.deinitialize(count: s.length/2);
         return result;
     }
     

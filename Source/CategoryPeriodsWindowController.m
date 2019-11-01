@@ -102,7 +102,7 @@ extern void *UserDefaultsBindingContext;
         }
         if (values[@"grouping"]) {
             groupingInterval = [values[@"grouping"] intValue];
-            groupingSlider.intValue = groupingInterval;
+            groupingSlider.intValue = (int)groupingInterval;
         }
         if (values[@"sortIndex"]) {
             sortIndex = [values[@"sortIndex"] intValue];
