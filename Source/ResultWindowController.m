@@ -23,12 +23,17 @@
 @implementation ResultWindowController
 
 @synthesize forceHidden;
+@synthesize dateFormatter;
+@synthesize logFont;
 
 - (id)init
 {
     self = [super initWithWindowNibName: @"ResultWindow"];
     hasErrors = NO;
     logString = [[NSMutableAttributedString alloc] initWithString: @""];
+    dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd  HH:mm:ss:SSS";
+    logFont = [NSFont fontWithName:@"LucidaGrande-Bold" size:14];
     return self;
 }
 
@@ -44,28 +49,20 @@
     }
     hasErrors = YES;
 
-    /*
-    if ([info hasSubstring:@"org.kapott"]) {
-        return;
-    }
-    */
-    /*
-    if (![info hasPrefix:@"Message from Bank:"] ) {
-        return;
-    }
-    */
+    NSString *logString = [NSString stringWithFormat:@"[%@]    %@", [dateFormatter stringFromDate:[NSDate date]], info ];
     
-    NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
+    NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", logString]];
     [s addAttribute: NSForegroundColorAttributeName
               value: [NSColor redColor]
               range: NSMakeRange(0, [s length])];
+    [s addAttribute: NSFontAttributeName
+              value: logFont
+              range: NSMakeRange(0, [s length])];
     
-    if (logView == nil) {
-        [self showWindow:nil];
-    }
     [[logView textStorage] appendAttributedString: s];
     [logView moveToEndOfDocument: self];
     [logView display];
+    [self showWindow:nil];
 }
 
 - (void)showOnError

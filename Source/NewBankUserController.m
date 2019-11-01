@@ -50,9 +50,6 @@
 }
 
 - (void)awakeFromNib {
-    [hbciVersions setContent: [[HBCIBackend backend] supportedVersions]];
-    [hbciVersions setSelectedObjects: @[@"220"]];
-
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
@@ -101,6 +98,7 @@
 - (void)getBankSetupInfo {
     BankUser *currentUser = [currentUserController content];
 
+    currentUser.bankCode = [currentUser.bankCode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     BankSetupInfo *info = [[HBCIBackend backend] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {
@@ -162,8 +160,7 @@
     }
 
     // PinTan
-    if (secMethod == SecMethod_PinTan ||
-        secMethod == SecMethod_Script) {
+    if (secMethod == SecMethod_PinTan) {
         if ([self check] == NO) {
             return;
         }
@@ -174,14 +171,15 @@
             return;
         }
 
-        if ((step == 2)
-            && (secMethod != SecMethod_Script)) //we do not want HBCI for scripts
-        {
+        if (step == 2) {
             // look if we have bank infos
-            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
+            BankInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
+            }
+            if (currentUser.hbciVersion == nil || currentUser.hbciVersion.length == 0) {
+                currentUser.hbciVersion = @"300";
             }
         }
 
@@ -236,15 +234,13 @@
         /* commented out to allow for no HBCI version for accounts
          * that are handled manually using a script
          ******************************/
-        if (step >= 3 && currentUser.hbciVersion == nil
-            && (secMethod != SecMethod_Script)) {
+        if (step >= 3 && currentUser.hbciVersion == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP79", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
-        if (step >= 3 && currentUser.bankURL == nil
-            && (secMethod != SecMethod_Script)) {
+        if (step >= 3 && currentUser.bankURL == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP80", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
@@ -281,9 +277,11 @@
                         currentUser.userId = data.userId;
                         currentUser.bankName = data.name;
                         currentUser.name = data.name;
+                        currentUser.customerId = data.userId;
+                        currentUser.chipCardId = manager.cardNumber;
                         
                         // get further bank infos
-                        InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
+                        BankInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
                         if (bi) {
                             currentUser.hbciVersion = bi.hbciVersion;
                             if (bi.name != nil) {
@@ -371,9 +369,7 @@
         }
     }
 
-    if (step < 3) {
-        step += 1;
-    }
+    step += 1;
     [self prepareUserSheet];
 }
 
@@ -455,7 +451,7 @@
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         currentUser.bankCode = bankCode;
         if ([bankCode length] == 8) {
-            InstituteInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
+            BankInfo *bi = [[HBCIBackend backend] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];
@@ -582,15 +578,14 @@
 
         [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
     }
-    else if (step == 3
-        && (secMethod != SecMethod_Script)) {
+    else if (step == 3) {
         for (NSView *view in views) {
             if ([view tag] > 110) {
                 [[view animator] setHidden: NO];
             }
         }
         NSRect frame = [userSheet frame];
-        frame.size.height += 151; frame.origin.y -= 151;
+        frame.size.height += 100; frame.origin.y -= 100;
         [[userSheet animator] setFrame: frame display: YES];
     }
 
@@ -779,18 +774,6 @@
         return;
     }
 
-    /*
-    if (MessageLog.log.isComTraceActive == YES) {
-        LogInfo(@"Bankparameterdaten:\n%@", descr);
-        //LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
-    } else {
-        MessageLog.log.isComTraceActive = YES;
-        LogInfo(@"Bankparameterdaten:\n%@", descr);
-        //LogInfo(@"Anwenderparameterdaten:\n%@", bp.upd_raw);
-        [MessageLog.log sendLog];
-        MessageLog.log.isComTraceActive = NO;
-    }
-    */
     LogInfo(@"Bankparameterdaten:\n%@", descr);
     [MessageLog.log sendLog];
 }
@@ -811,6 +794,7 @@
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP129", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil, user.name);
+    
 }
 
 - (IBAction)callHelp: (id)sender {

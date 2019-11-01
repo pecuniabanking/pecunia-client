@@ -65,7 +65,7 @@
         }
         
         if (bankName == nil) {
-            InstituteInfo *bankInfo = [[HBCIBackend backend] infoForBankCode: message.bankCode];
+            BankInfo *bankInfo = [[HBCIBackend backend] infoForBankCode: message.bankCode];
             if (bankInfo.name == nil) {
                 bankName = message.bankCode;
             }

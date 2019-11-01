@@ -105,7 +105,7 @@
     if (idx > 0) {
         account.bankName = user.bankName;
         account.bankCode = user.bankCode;
-        InstituteInfo *info = [[HBCIBackend backend] infoForBankCode: user.bankCode];
+        BankInfo *info = [[HBCIBackend backend] infoForBankCode: user.bankCode];
         if (info) {
             account.bic = info.bic;
             account.bankName = info.name;
@@ -315,17 +315,17 @@
         return YES;
     }
 
-    if (![IBANtools isValidIBAN: account.iban]) {
+    if (![SepaService isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
         return NO;
     }
 
-    NSDictionary *checkResult = [IBANtools isValidAccount: account.accountNumber
-                                                 bankCode: account.bankCode
-                                              countryCode: @"DE"
-                                                  forIBAN: NO];
+    NSDictionary *checkResult = [SepaService isValidAccount: account.accountNumber
+                                                   bankCode: account.bankCode
+                                                countryCode: @"DE"
+                                                    forIBAN: NO];
     BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
     if (!valid) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),

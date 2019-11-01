@@ -25,23 +25,6 @@
 #import "PecuniaExceptionDelegate.h"
 #import "MOAssistant.h"
 
-static void signalHandler(int sig, siginfo_t *info, void *context)
-{
-    LogError(@"Caught signal %d", sig);
-
-    // Log the current call stack. Do this before saving the context or we might get intermittent log output.
-    [PecuniaExceptionDelegate printStackTraceForException: nil];
-
-    NSError *error;
-    if ([MOAssistant.sharedAssistant.context save: &error]) {
-        LogInfo(@"Successfully saved context.");
-    } else {
-        LogError(@"Daten konnten nicht gespeichert werden. Ursache: %@", error.description);
-    }
-
-    exit(102);
-}
-
 @implementation PecuniaApplication
 
 - (id)init

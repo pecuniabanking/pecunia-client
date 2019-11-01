@@ -29,11 +29,11 @@ class ChipcardRequestController : NSWindowController {
         }
         
         let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ChipcardRequestController.checkCard(_:)), userInfo: nil, repeats: true);
-        RunLoop.current.add(timer, forMode: RunLoopMode.modalPanelRunLoopMode);
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.modalPanel);
         _timer = timer;
     }
     
-    func checkCard(_ timer:Timer) {
+    @objc func checkCard(_ timer:Timer) {
         if card == nil {
             card = ChipcardManager.manager.card;
         }
@@ -47,9 +47,9 @@ class ChipcardRequestController : NSWindowController {
             self.close();
             if connectResult == HBCISmartcard.ConnectResult.connected ||
                connectResult == HBCISmartcard.ConnectResult.reconnected {
-                NSApp.stopModal(withCode: 0);
+                NSApp.stopModal(withCode: NSApplication.ModalResponse.OK);
             } else {
-                NSApp.stopModal(withCode: 1);
+                NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
             }
             return;
         }
@@ -60,7 +60,7 @@ class ChipcardRequestController : NSWindowController {
             timer.invalidate();
         }
         self.close();
-        NSApp.stopModal(withCode: 1);
+        NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
     }
     
 }

@@ -40,7 +40,7 @@ extension DDLog {
         static var logAsync : Bool?
     }
 
-    class var logLevel: DDLogLevel {
+    @objc class var logLevel: DDLogLevel {
         get {
             return Static.logLevel ?? DDLogLevel.error
         }

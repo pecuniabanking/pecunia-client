@@ -30,8 +30,6 @@
 @property (nonatomic, copy) NSURL    *dataDirURL;
 @property (nonatomic, copy) NSString *dataFilename;
 
-@property NSString *pluginDir;
-
 @property (nonatomic, assign) NSWindow *mainWindow; // Just a weak reference to our application window.
 @property (nonatomic, assign, readonly) BOOL isMaxIdleTimeExceeded;
 

@@ -68,7 +68,6 @@
 #import "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
-#import "ComTraceHelper.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
@@ -199,8 +198,6 @@ static BankingController *bankinControllerInstance;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
 
-    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
-
     NSFont *font = [PreferenceController mainFontOfSize: 13 bold: NO];
     accountsView.rowHeight = floor(font.pointSize) + 7;
 
@@ -243,9 +240,6 @@ static BankingController *bankinControllerInstance;
     [developerMenu setHidden: NO];
 #endif
 
-    comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    [PluginRegistry startup];
-    
     LogLeave;
 }
 
@@ -798,8 +792,6 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    [self startRefreshAnimation];
-
     selectWindowController = nil;
 
     if (category.accountNumber != nil) {
@@ -815,7 +807,6 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             selectedNodes = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
-                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -832,7 +823,6 @@ static BankingController *bankinControllerInstance;
             [request setPredicate: predicate];
             result = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
-                [self stopRefreshAnimation];
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
@@ -843,7 +833,6 @@ static BankingController *bankinControllerInstance;
 
     if ([selectedAccounts count] == 0) {
         LogWarning(@"No accounts selected, or all selected accounts have noAutomaticQuery == true");
-        [self stopRefreshAnimation];
         return;
     }
 
@@ -855,7 +844,6 @@ static BankingController *bankinControllerInstance;
         }
     }
     if (nInactive == selectedAccounts.count) {
-        [self stopRefreshAnimation];
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
@@ -896,33 +884,52 @@ static BankingController *bankinControllerInstance;
     }
 
     [self stopHomescreenUpdates];
+    [self startRefreshAnimation];
+
+    NSArray *queryResult = [[HBCIBackend backend] getStatements: selectedAccounts];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(statementsNotification:)
-                                                 name: PecuniaStatementsNotification
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(statementsFinalizeNotification:)
-                                                 name: PecuniaStatementsFinalizeNotification
-                                               object: nil];
-    [[HBCIBackend backend] getStatements: selectedAccounts];
+    [self processStatements:queryResult];
+    
+    [sc stopSpinning];
+    [sc clearMessage];
+    requestRunning = NO;
+    
+    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+        // todo: don't show window if there are no statements
+        [NSApp runModalForWindow: [selectWindowController window]];
+    } else {
+        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
+    }
+    
+    [self.currentSelection updateAssignmentsForReportRange];
+    
+    [self stopRefreshAnimation];
+    [self updateUnread];
+    [self resumeHomescreenUpdates];
+    
+    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
+    if (!suppressSound) {
+        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
+        if (doneSound != nil) {
+            [doneSound play];
+        }
+    }
 
     LogLeave;
 }
 
-- (void)statementsNotification: (NSNotification *)notification {
+- (void)processStatements: (NSArray*)resultList {
     LogEnter;
-
+    
     BankQueryResult *result;
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
     BOOL            noStatements = YES;
     BOOL            isImport = NO;
-
-    NSArray *resultList = [notification object];
-    if (resultList == nil) {
+    
+    if (resultList == nil || [resultList count] == 0) {
         return;
     }
-
+    
     // get Proposals
     for (result in resultList) {
         if ([result.statements count] > 0) {
@@ -952,7 +959,7 @@ static BankingController *bankinControllerInstance;
         }
         [self requestFinished: resultList];
     }
-
+    
     // check for updated login data
     for (result in resultList) {
         BankUser *user = [BankUser findUserWithId: result.account.userId bankCode: result.account.bankCode];
@@ -961,47 +968,8 @@ static BankingController *bankinControllerInstance;
         }
     }
     [self save];
-
+    
     LogLeave;
-}
-
-- (void)statementsFinalizeNotification: (NSNotification *)notification {
-    StatusBarController *sc = [StatusBarController controller];
-    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
-
-    [sc stopSpinning];
-    [sc clearMessage];
-    requestRunning = NO;
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: PecuniaStatementsNotification
-                                                  object: nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: PecuniaStatementsFinalizeNotification
-                                                  object: nil];
-
-    if ([defaults boolForKey: @"manualTransactionCheck"]) {
-        // todo: don't show window if there are no statements
-        [NSApp runModalForWindow: [selectWindowController window]];
-    } else {
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
-    }
-
-    autoSyncRunning = NO;
-    [self.currentSelection updateAssignmentsForReportRange];
-
-    [self stopRefreshAnimation];
-    [self updateUnread];
-    [self resumeHomescreenUpdates];
-
-    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
-    if (!suppressSound) {
-        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
-        if (doneSound != nil) {
-            [doneSound play];
-        }
-    }
 }
 
 - (void)requestFinished: (NSArray *)resultList {
@@ -1321,11 +1289,21 @@ static BankingController *bankinControllerInstance;
 }
 
 - (IBAction)openForum: (id)sender {
-    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.onlinebanking-forum.de/phpBB2/viewforum.php?f=56"]];
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://homebanking-hilfe.de/forum/index.php?f=56"]];
 }
 
 - (IBAction)sendErrorReport: (id)sender {
     NSMutableString *text = [NSMutableString string];
+    
+    // Data Privacy Check
+    NSInteger res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP1027", @""),
+                                            NSLocalizedString(@"AP1028", @""),
+                                            NSLocalizedString(@"AP2", @""),
+                                            NSLocalizedString(@"AP36", @""),
+                                            nil);
+    if (res == NSAlertDefaultReturn) {
+        return;
+    }
 
     for (BankUser *user in [BankUser allUsers]) {
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
@@ -1341,10 +1319,6 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)showLog: (id)sender {
     [MessageLog.log showLog];
-}
-
-- (IBAction)comTraceToggle: (id)sender {
-    [comTracePanel toggleComTrace: sender];
 }
 
 - (IBAction)openBugTracker: (id)sender {
@@ -1812,7 +1786,6 @@ static BankingController *bankinControllerInstance;
     NSModalResponse res = [NSApp runModalForWindow: [controller window]];
     if (res == 0) {
         NSArray        *results = @[controller.importResult];
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         newStatementsCount = 0;
 
@@ -1820,8 +1793,15 @@ static BankingController *bankinControllerInstance;
             selectWindowController = [[BSSelectWindowController alloc] init];
         }
 
-        [self statementsNotification: notification];
-        [self statementsFinalizeNotification: nil];
+        [self processStatements: results];
+        
+        if ([defaults boolForKey: @"manualTransactionCheck"]) {
+            // todo: don't show window if there are no statements
+            [NSApp runModalForWindow: [selectWindowController window]];
+        }
+        
+        [self updateUnread];
+
     }
 
     LogLeave;
@@ -2936,6 +2916,7 @@ static BankingController *bankinControllerInstance;
 
     autoSyncRunning = YES;
     [self synchronizeAccount: BankingCategory.bankRoot];
+    autoSyncRunning = NO;
 
     [defaults setObject: [NSDate date] forKey: @"lastSyncDate"];
 
@@ -3152,7 +3133,6 @@ static BankingController *bankinControllerInstance;
     shuttingDown = YES;
 
     [mainVSplit savePosition];
-    MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
     [LocalSettingsController.sharedSettings setInteger: sidebar.selectedIndex forKey: @"activePage"];
 
@@ -3408,15 +3388,6 @@ static BankingController *bankinControllerInstance;
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context {
-    if ([keyPath isEqualToString: @"isComTraceActive"]) {
-        if (MessageLog.log.isComTraceActive) {
-            comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
-        } else {
-            comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-        }
-        return;
-    }
-
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [categoryController prepareContent];
@@ -3683,19 +3654,6 @@ static BankingController *bankinControllerInstance;
     }
 
     if (![settings boolForKey: @"Migrated121"]) {
-
-        // Update plugin settings accounts.
-        for (BankUser *user in BankUser.allUsers) {
-            for (BankAccount *account in user.accounts) {
-                if (account.plugin.length == 0) {
-                    account.plugin = [PluginRegistry pluginForAccount: account.accountNumber bankCode: account.bankCode];
-                    if (account.plugin.length == 0) {
-                        account.plugin = @"hbci";
-                    }
-                }
-            }
-        }
-
         settings[@"Migrated121"] = @YES;
     }
     

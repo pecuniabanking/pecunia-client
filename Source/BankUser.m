@@ -124,7 +124,7 @@ static NSMutableDictionary *users = nil;
     NSSet          *media = [self tanMedia];
     NSMutableArray *options = [NSMutableArray arrayWithCapacity: 10];
 
-    LogDebug(@"getTanSigningOptions: we have %d TAN methods", methods.count);
+    LogDebug(@"getTanSigningOptions: we have %d TAN methods and %d TAN media", methods.count, media.count);
     
     for (TanMethod *method in methods) {
         SigningOption *option = [[SigningOption alloc] init];
@@ -152,7 +152,7 @@ static NSMutableDictionary *users = nil;
             // check which media fit
             for (TanMedium *medium in media) {
                 BOOL added = NO;
-                if ([zkamethod isEqualToString: @"mobileTAN"] && [medium.category isEqualToString: @"M"]) {
+                if ([medium.category isEqualToString: @"M"]) {
                     option.tanMediumName = medium.name;
                     option.mobileNumber = medium.mobileNumber;
                     option.tanMediumCategory = medium.category;
@@ -255,6 +255,11 @@ static NSMutableDictionary *users = nil;
     }
     TanMedium *medium = method.preferredMedium;
 
+    // if we need a TAN media but none is defined, we don't have a valid option...
+    if (([method.needTanMedia isEqualToString: @"1"] || [method.needTanMedia isEqualToString: @"2"]) && medium == nil) {
+        return nil;
+    }
+
     SigningOption *option = [[SigningOption alloc] init];
     option.tanMethod = method.method;
     option.tanMethodName = method.name;
@@ -327,6 +332,12 @@ static NSMutableDictionary *users = nil;
 - (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
+
+- (NSString *)anonymizedId {
+    if(self.userId == nil) return @"?";
+    return [self.userId anonymizedString];
+}
+
 
 /**
  * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).

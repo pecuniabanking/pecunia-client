@@ -32,8 +32,9 @@
 
 
 @synthesize tan;
+@synthesize userMessage;
 
-- (id)initWithCode: (NSString *)flickerCode message: (NSString *)msg
+- (id)initWithCode: (NSString *)flickerCode message: (NSString *)msg userName: (NSString *)name;
 {
     NSString   *code;
     NSUInteger i;
@@ -58,6 +59,7 @@
     clock = 1;
     currentCode = 0;
     message = [msg stringByReplacingOccurrencesOfString: @"\n" withString: @"<br>"];
+    self.userMessage = [NSString stringWithFormat:NSLocalizedString(@"AP184", ""), name];
     return self;
 }
 

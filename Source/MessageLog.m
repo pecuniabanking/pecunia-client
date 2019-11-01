@@ -28,27 +28,6 @@
 #import "LaunchParameters.h"
 #import "ResultWindowController.h"
 
-#define LOG_FLAG_COM_TRACE (1 << 5)
-
-// A log file manager to implement own file names.
-@interface ComTraceFileManager : DDLogFileManagerDefault
-
-- (NSString *)newLogFileName;
-- (BOOL)isLogFile: (NSString *)fileName;
-
-@end
-
-@implementation ComTraceFileManager
-
-- (NSString *)newLogFileName {
-    return @"Pecunia Com Trace.log";
-}
-
-- (BOOL)isLogFile: (NSString *)fileName {
-    return [fileName isEqualToString: @"Pecunia Com Trace.log"];
-}
-
-@end
 
 @interface MessageLog () {
     int          logLevel;        // One of the CocoaLumberjack log levels. Only used for the regular logger.
@@ -59,7 +38,6 @@
 
 @implementation MessageLog
 
-@synthesize isComTraceActive;
 @synthesize resultWindow;
 
 - (id)init {
@@ -136,37 +114,6 @@
         return;
     }
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
-}
-
-- (void)setIsComTraceActive: (BOOL)flag {
-    if (isComTraceActive != flag) {
-        if (isComTraceActive) {
-            // Going to switch off the com trace. Remove logger and log file.
-            NSArray *filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
-            NSError *error;
-            if ([filePaths count] > 0) {
-                if (![NSFileManager.defaultManager removeItemAtPath: filePaths[0] error: &error]) {
-                    // Removing the file faild. Take a notice.
-                    LogError(@"Couldn't delete trace log at %@. The error is: %@", filePaths[0], error.localizedDescription);
-                }
-            }
-
-            [DDLog removeLogger: comTraceLogger];
-            comTraceLogger = nil;
-        }
-
-        isComTraceActive = flag;
-        if (isComTraceActive) {
-            // Switching on the com trace. Add logger.
-            ComTraceFileManager *manager = [[ComTraceFileManager alloc] init];
-            manager.maximumNumberOfLogFiles = 0;
-
-            comTraceLogger = [[DDFileLogger alloc] initWithLogFileManager: manager];
-            comTraceLogger.rollingFrequency = 0;
-
-            [DDLog addLogger: comTraceLogger withLogLevel: LOG_FLAG_COM_TRACE];
-        }
-    }
 }
 
 /**
@@ -401,66 +348,6 @@
 }
 
 /**
- * Logs a communication trace message with the given level. For com traces we don't filter by log level, as we want
- * all messages logged at the moment. Communication traces are enabled only on demand, so this is ok.
- */
-- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...{
-    if (level == HBCILogError) {
-        self.hasError = YES;
-        [self.resultWindow addMessage: format];
-    }
-
-    if (isComTraceActive) {
-        va_list args;
-        va_start(args, format);
-
-        int      ddLevel = 0;
-        NSString *comTraceFormat;
-        switch (level) {
-            case HBCILogNone:
-                return;
-
-            case HBCILogError:
-                ddLevel = LOG_FLAG_ERROR;
-                comTraceFormat = [NSString stringWithFormat: @"[Error] %@", format];
-                break;
-
-            case HBCILogWarning:
-                ddLevel = LOG_FLAG_WARN;
-                comTraceFormat = [NSString stringWithFormat: @"[Warning] %@", format];
-                break;
-
-            case HBCILogInfo:
-                ddLevel = LOG_FLAG_INFO;
-                comTraceFormat = [NSString stringWithFormat: @"[Info] %@", format];
-                break;
-
-            case HBCILogDebug:
-                ddLevel = LOG_FLAG_DEBUG;
-                comTraceFormat = [NSString stringWithFormat: @"[Debug] %@", format];
-                break;
-
-            case HBCILogDebug2:
-            case HBCILogIntern:
-                ddLevel = LOG_FLAG_VERBOSE;
-                comTraceFormat = [NSString stringWithFormat: @"[Verbose] %@", format];
-                break;
-        }
-
-        [DDLog   log: YES
-               level: ddLevel
-                flag: LOG_FLAG_COM_TRACE
-             context: 0
-                file: NULL
-            function: NULL
-                line: 0
-                 tag:  nil
-              format: comTraceFormat
-                args: args];
-    }
-}
-
-/**
  * An attempt is made to compress the source file and add the created zip (the target file) to the given items array.
  * If that for any reason fails the source file is added to the items instead.
  */
@@ -506,18 +393,6 @@
         // We use fixed zip file names by intention, to avoid polluting the log folder with many zip files.
         NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Log.zip"];
         [self compressFileAndAndAddToItems: mailItems sourceFile: logURL targetFile: [NSURL fileURLWithPath: zip]];
-    }
-
-    // The com trace if active.
-    if (isComTraceActive) {
-        filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
-        if ([filePaths count] > 0) {
-            if ([NSFileManager.defaultManager fileExistsAtPath: filePaths[0]]) {
-                NSURL    *traceURL = [NSURL fileURLWithPath: filePaths[0]];
-                NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Com Trace.zip"];
-                [self compressFileAndAndAddToItems: mailItems sourceFile: traceURL targetFile: [NSURL fileURLWithPath: zip]];
-            }
-        }
     }
 
     // It's a weird oversight that there's no unified way of sending a mail to a given address with an attachment.

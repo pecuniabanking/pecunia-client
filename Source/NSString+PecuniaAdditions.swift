@@ -26,7 +26,7 @@ extension NSString {
     * This process depends on a large word library, so it's an optional feature. If the user decided
     * to disable it we do a simple capitalization.
     */
-    public func stringWithNaturalText() -> NSString {
+    @objc public func stringWithNaturalText() -> NSString {
         if !WordMapping.wordMappingsAvailable {
             // While our word list is being loaded return a simple capitalized string.
             return self.capitalized as NSString;
@@ -38,11 +38,12 @@ extension NSString {
 
         let result = NSMutableString();
         let range = NSMakeRange(0, self.length);
-        self.enumerateLinguisticTags(in: range, scheme: NSLinguisticTagSchemeLexicalClass,
+        self.enumerateLinguisticTags(in: range, scheme: NSLinguisticTagScheme.lexicalClass,
             options: NSLinguisticTagger.Options(rawValue: 0), orthography: nil,  using:
-            { (tag: String, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
+            { (tag: NSLinguisticTag?, tokenRange: NSRange, sentenceRange: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> () in
                 let item : NSString = self.substring(with: tokenRange) as NSString;
-                if tag == NSLinguisticTagOtherWhitespace {
+                if tag == NSLinguisticTag.otherWhitespace ||
+                   tag == NSLinguisticTag.paragraphBreak {
                     // Copy over any whitespace.
                     if result.length > 0 {
                         result.append(item as String);

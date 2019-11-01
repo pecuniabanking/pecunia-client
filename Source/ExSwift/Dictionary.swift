@@ -211,27 +211,6 @@ internal extension Dictionary {
     }
 
     /**
-        Constructs a dictionary containing every [key: value] pair from self
-        for which testFunction evaluates to true.
-    
-        - parameter testFunction: Function called to test each key, value
-        - returns: Filtered dictionary
-    */
-    func filter (_ test: (Key, Value) -> Bool) -> Dictionary {
-
-        var result = Dictionary()
-
-        for (key, value) in self {
-            if test(key, value) {
-                result[key] = value
-            }
-        }
-
-        return result
-
-    }
-
-    /**
         Creates a dictionary composed of keys generated from the results of
         running each element of self through groupingFunction. The corresponding
         value of each key is an array of the elements responsible for generating the key.

@@ -331,10 +331,10 @@
         return NO;
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
-        NSDictionary *checkResult = [IBANtools isValidAccount: currentStatement.remoteAccount
-                                                     bankCode: currentStatement.remoteBankCode
-                                                  countryCode: @"DE"
-                                                      forIBAN: NO];
+        NSDictionary *checkResult = [SepaService isValidAccount: currentStatement.remoteAccount
+                                                       bankCode: currentStatement.remoteBankCode
+                                                    countryCode: @"DE"
+                                                        forIBAN: NO];
         BOOL valid = checkResult && [[checkResult valueForKey:@"valid"] boolValue];
         if (!valid) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),

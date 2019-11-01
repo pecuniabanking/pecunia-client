@@ -99,10 +99,10 @@
                 }
 
                 LogInfo(@"Convert account %@, BLZ %@ to IBAN", template.remoteAccount, template.remoteBankCode);
-                NSDictionary *ibanResult = [IBANtools convertToIBAN: template.remoteAccount
-                                                           bankCode: template.remoteBankCode
-                                                        countryCode: @"de"
-                                                    validateAccount: YES];
+                NSDictionary *ibanResult = [SepaService convertToIBAN: template.remoteAccount
+                                                             bankCode: template.remoteBankCode
+                                                          countryCode: @"de"
+                                                      validateAccount: YES];
                 if ([ibanResult[@"result"] intValue] == IBANToolsResultDefaultIBAN ||
                     [ibanResult[@"result"] intValue] == IBANToolsResultOk) {
                     template.remoteIBAN = ibanResult[@"iban"];
@@ -112,7 +112,7 @@
         }
 
         if (template.remoteBIC == nil || template.remoteBankName == nil) {
-            InstituteInfo *info = nil;
+            BankInfo *info = nil;
             if (template.remoteIBAN != nil) {
                 info = [HBCIBackend.backend infoForIBAN: template.remoteIBAN];
             } else {
@@ -450,7 +450,21 @@
     if (![self validateCharacters: currentTransfer.remoteName]) {
         return NO;
     }
+    
+    if (currentTransfer.account.iban == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP83", nil),
+                        NSLocalizedString(@"AP86", nil),
+                        NSLocalizedString(@"AP1", nil), currentTransfer.account.accountNumber, nil);
+        return NO;
+    }
 
+    if (currentTransfer.account.bic == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP83", nil),
+                        NSLocalizedString(@"AP87", nil),
+                        NSLocalizedString(@"AP1", nil), currentTransfer.account.accountNumber, nil);
+        return NO;
+    }
+    
     if (currentTransfer.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
@@ -478,7 +492,7 @@
         currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
-        if (![IBANtools isValidIBAN: currentTransfer.remoteIBAN]) {
+        if (![SepaService isValidIBAN: currentTransfer.remoteIBAN]) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP70", nil),
                             NSLocalizedString(@"AP61", nil), nil, nil);
@@ -511,7 +525,13 @@
             return NO;
         }
     }
-    // Purpose is not checked because it is not mandatory.
+    // Purpose is mandatory for SEPA documents
+    if (currentTransfer.purpose1 == nil || currentTransfer.purpose1.length == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP76", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
 
     // Check if the target date touches a weekend.
     if (transferType == TransferTypeSEPAScheduled) {
@@ -535,7 +555,7 @@
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
         case TransferTypeInternalSEPA:
-            if (![IBANtools isValidIBAN: currentTransfer.remoteIBAN]) {
+            if (![SepaService isValidIBAN: currentTransfer.remoteIBAN]) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
@@ -545,11 +565,11 @@
 
         default: {
             // TODO: is it still necessary to limit account check to those countries?
-            bool valid = [IBANtools isValidAccount: currentTransfer.remoteAccount
-                                          bankCode: currentTransfer.remoteBankCode
-                                       countryCode: currentTransfer.remoteCountry
-                                           forIBAN: false];
-
+            NSDictionary *result = [SepaService isValidAccount: currentTransfer.remoteAccount
+                                                      bankCode: currentTransfer.remoteBankCode
+                                                   countryCode: currentTransfer.remoteCountry
+                                                       forIBAN: false];
+            BOOL valid = result && [[result valueForKey:@"valid"] boolValue];
             if (!valid) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP60", nil),

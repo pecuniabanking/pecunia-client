@@ -56,7 +56,6 @@
 #import "ClickableImageView.h"
 #import "ColorPopup.h"
 #import "ColumnLayoutCorePlotLayer.h"
-#import "ComTraceHelper.h"
 #import "CreditCardSettlement.h"
 #import "CreditCardSettlementController.h"
 #import "CustomerMessage.h"

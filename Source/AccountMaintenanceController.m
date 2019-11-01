@@ -65,16 +65,12 @@ extern NSString *const CategoryKey;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
     account.balance = acc.balance;
-    account.plugin = acc.plugin;
     account.isManual = acc.isManual;
 
     return self;
 }
 
 - (void)awakeFromNib {
-    NSMutableArray *types = [[PluginRegistry getPluginList] mutableCopy];
-    [types insertObject: @{ @"id": @"hbci", @"name": NSLocalizedString(@"AP146", nil) } atIndex: 0];
-    accountTypesController.content = types;
     if ([changedAccount.isManual boolValue]) {
         
         // add special User
@@ -133,19 +129,7 @@ extern NSString *const CategoryKey;
             [collTransferButton setEnabled: NO];
         }
         
-        switch(changedAccount.type.intValue/10) {
-            case 0: self.accountTypeName = @"Kontokorrent-/Girokonto"; break;
-            case 1: self.accountTypeName = @"Sparkonto"; break;
-            case 2: self.accountTypeName = @"Festgeldkonto (Termineinlagen)"; break;
-            case 3: self.accountTypeName = @"Wertpapierdepot"; break;
-            case 4: self.accountTypeName = @"Kredit-/Darlehenskonto"; break;
-            case 5: self.accountTypeName = @"Kreditkartenkonto"; break;
-            case 6: self.accountTypeName = @"Fonds-Depot bei einer Kapitalanlagegesellschaft"; break;
-            case 7: self.accountTypeName = @"Bausparvertrag"; break;
-            case 8: self.accountTypeName = @"Versicherungsvertrag"; break;
-            case 9: self.accountTypeName = @"Sonstige (nicht zuordenbar)"; break;
-            default: self.accountTypeName = @"Unbekannt"; break;
-        }
+        self.accountTypeName = [changedAccount typeName];
     }
 
     // Manually set up properties which cannot be set via user defined runtime attributes
@@ -186,7 +170,6 @@ extern NSString *const CategoryKey;
     changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
-    changedAccount.plugin = account.plugin;
     
     NSString *oldUserId = changedAccount.userId;
 
@@ -237,7 +220,7 @@ extern NSString *const CategoryKey;
 }
 
 - (BOOL)check {
-    if (!account.isManual.boolValue && account.iban.length > 0 && ![IBANtools isValidIBAN: account.iban]) {
+    if (!account.isManual.boolValue && account.iban.length > 0 && ![SepaService isValidIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);

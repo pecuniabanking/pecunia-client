@@ -1242,7 +1242,7 @@ internal extension Array {
         - returns: an array sorted by that block, in ascending order
     */
     func sortUsing <U:Comparable> (_ block: ((Element) -> U)) -> [Element] {
-        return self.sorted(by: { block($0.0) < block($0.1) })
+        return self.sorted(by:  { x,y in block(x) < block(y) } )
     }
 
     /**

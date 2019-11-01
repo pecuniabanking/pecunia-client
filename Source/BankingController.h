@@ -28,7 +28,6 @@
 @class EDSideBar;
 @class CategoryView;
 @class DockIconController;
-@class ComTraceHelper;
 @class BankAccount;
 @class BankStatement;
 
@@ -68,12 +67,10 @@
     IBOutlet NSView                *sectionPlaceholder;
     IBOutlet NSView                *rightPane;
     IBOutlet NSButton              *refreshButton;
-    IBOutlet ComTraceHelper        *comTracePanel;
     IBOutlet NSButton              *decreaseFontButton;
     IBOutlet NSButton              *increaseButton;
 
     IBOutlet NSMenuItem *developerMenu;
-    IBOutlet NSMenuItem *comTraceMenuItem;
 
     IBOutlet JMModalOverlay     *waitOverlay;
     IBOutlet WaitViewController *waitViewController;
@@ -152,7 +149,6 @@
 
 - (IBAction)categoryBudgets:(id)sender;
 
-- (void)statementsNotification: (NSNotification *)notification;
 - (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;

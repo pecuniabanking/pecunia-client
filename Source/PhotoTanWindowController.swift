@@ -17,11 +17,12 @@ class PhotoTanWindowController : NSWindowController {
     var tan:String?
     var image:NSImage?
     var mimeType:String?
-    
+    let userMessage:String?
     let message: String?
     
-    init(_ code: NSData, message msg: String?) {
+    init(_ code: NSData, message msg: String?, userName: String) {
         message = msg;
+        userMessage = String(format: NSLocalizedString("AP184", comment: ""), userName);
         super.init(window: nil);
         parse(code);
     }
@@ -58,14 +59,14 @@ class PhotoTanWindowController : NSWindowController {
     @IBAction func ok(_ sender:Any?) {
         if let tan = tan {
             if tan.length > 0 {
-                NSApp.stopModal(withCode: 0);
+                NSApp.stopModal(withCode: NSApplication.ModalResponse.OK);
                 self.window?.close();
             }
         }        
     }
     
     @IBAction func cancel(_ sender:Any?) {
-        NSApp.stopModal(withCode: 1);
+        NSApp.stopModal(withCode: NSApplication.ModalResponse.cancel);
         self.window?.close();
     }
     
@@ -87,7 +88,6 @@ class PhotoTanWindowController : NSWindowController {
         } else {
             self.window?.makeFirstResponder(secureTanField);
         }
-
         
     }
     
