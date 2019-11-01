@@ -114,7 +114,7 @@ class HBCIBackendCallback : HBCICallback {
                 // Flicker code.
                 if let controller = ChipTanWindowController(code: challenge_hhd_uc, message: challenge, userName: bankUser?.name ?? user.userId) {
                     if NSApp.runModal(for: (controller.window!)).rawValue == 0 {
-                        return controller.tan;
+                        return controller.tan.trimmed();
                     } else {
                         throw HBCIError.userAbort;
                     }
@@ -124,7 +124,7 @@ class HBCIBackendCallback : HBCICallback {
                 if let data = NSData(base64Encoded: challenge_hhd_uc, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) {
                     let controller = PhotoTanWindowController(data as NSData, message: challenge, userName: bankUser?.name ?? user.userId);
                     if NSApp.runModal(for: (controller.window!)) == NSApplication.ModalResponse.OK {
-                        return controller.tan ?? "";
+                        return controller.tan?.trimmed() ?? "";
                     } else {
                         throw HBCIError.userAbort;
                     }
@@ -139,7 +139,7 @@ class HBCIBackendCallback : HBCICallback {
             tanWindow.close();
             if res == 0 {
                 logDebug("TAN entered");
-                return tanWindow.result();
+                return tanWindow.result()?.trimmed() ?? "";
             } else {
                 throw HBCIError.userAbort;
             }
