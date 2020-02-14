@@ -59,7 +59,6 @@
 
     NSNumber *requestRunning;
     BOOL     initializing;
-    BOOL     editable;
 }
 
 @property (nonatomic, strong) NSNumber          *requestRunning;
@@ -69,6 +68,7 @@
 @property (nonatomic, strong) NSNumber          *oldWeekDay;
 @property (nonatomic, strong) TransactionLimits *currentLimits;
 @property (nonatomic, strong) StandingOrder     *currentOrder;
+@property (nonatomic, assign) BOOL              editable;
 
 - (NSView *)mainView;
 - (void)disableCycles;

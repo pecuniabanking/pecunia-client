@@ -114,7 +114,7 @@ class HBCIBackendCallback : HBCICallback {
                 // Flicker code.
                 if let controller = ChipTanWindowController(code: challenge_hhd_uc, message: challenge, userName: bankUser?.name ?? user.userId) {
                     if NSApp.runModal(for: (controller.window!)).rawValue == 0 {
-                        return controller.tan.trimmed();
+                        return controller.tan;
                     } else {
                         throw HBCIError.userAbort;
                     }
@@ -124,7 +124,7 @@ class HBCIBackendCallback : HBCICallback {
                 if let data = NSData(base64Encoded: challenge_hhd_uc, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) {
                     let controller = PhotoTanWindowController(data as NSData, message: challenge, userName: bankUser?.name ?? user.userId);
                     if NSApp.runModal(for: (controller.window!)) == NSApplication.ModalResponse.OK {
-                        return controller.tan?.trimmed() ?? "";
+                        return controller.tan ?? "";
                     } else {
                         throw HBCIError.userAbort;
                     }
@@ -139,7 +139,7 @@ class HBCIBackendCallback : HBCICallback {
             tanWindow.close();
             if res == 0 {
                 logDebug("TAN entered");
-                return tanWindow.result()?.trimmed() ?? "";
+                return tanWindow.result() ?? "";
             } else {
                 throw HBCIError.userAbort;
             }
@@ -500,7 +500,7 @@ class HBCIBackend : NSObject, HBCILog {
             return;
         }
         var tanMedia = Array<HBCITanMedium>();
-        guard hbciUser.parameters.isOrderSupported("TANMediaList") else {
+        guard hbciUser.parameters.isOrderSupportedByBank("TANMediaList") else {
             logInfo("TANMediaList is not supported");
             return;
         }
@@ -581,7 +581,7 @@ class HBCIBackend : NSObject, HBCILog {
     @objc func getBankSetupInfo(_ bankCode:String) ->BankSetupInfo? {
         do {
             if let info = infoForBankCode(bankCode), let url = URL(string: info.pinTanURL) {
-                let dialog = try HBCIAnonymousDialog(hbciVersion: info.hbciVersion, product: productId);
+                let dialog = try HBCIAnonymousDialog(hbciVersion: info.pinTanVersion, product: productId);
                 
                 
                 if let result = try dialog.dialogWithURL(url, bankCode: bankCode) {
@@ -656,7 +656,6 @@ class HBCIBackend : NSObject, HBCILog {
             
             var result:HBCIResultMessage?
             if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_PinTan {
-                //_ = try dialog.getTanMethods();
                 result = try dialog.syncInit();
             } else {
                 result = try dialog.dialogInit();
@@ -965,7 +964,7 @@ class HBCIBackend : NSObject, HBCILog {
                     if try msg.send() {
                         return order.settlement;
                     } else {
-                        logInfo("Failed to get credit card settlement for account \(account.number ?? "?")");
+                        logInfo("Failed to get credit card settlement for account \(account.number)");
                         error = true;
                         return nil;
                     }
@@ -1280,7 +1279,7 @@ class HBCIBackend : NSObject, HBCILog {
                         
                         defer {
                             if error {
-                                logError("Fehler beim Abruf der Daueraufträge für Konto \(account.number ?? "?")");
+                                logError("Fehler beim Abruf der Daueraufträge für Konto \(account.number)");
                             }
                         }
                         
@@ -1767,7 +1766,7 @@ class HBCIBackend : NSObject, HBCILog {
                         
                         defer {
                             if error {
-                                logError("Überweisungen für Konto \(account.number ?? "?") konnten nicht ausgeführt werden");
+                                logError("Überweisungen für Konto \(account.number) konnten nicht ausgeführt werden");
                                 errorOccured = true;
                             }
                         }
@@ -2043,6 +2042,18 @@ class HBCIBackend : NSObject, HBCILog {
                     limits.weekCyclesString = params.cycleWeeks;
                     limits.execDaysMonthString = params.daysPerMonth;
                     limits.execDaysWeekString = params.daysPerWeek;
+                    limits.allowMonthly = true;
+                    limits.allowWeekly = (params.cycleWeeks != nil);
+                    limits.allowChangeCycle = true;
+                    limits.allowChangePeriod = true;
+                    limits.allowChangeValue = true;
+                    limits.allowChangeCycle = true;
+                    limits.allowChangeExecDay = true;
+                    limits.allowChangePurpose = true;
+                    limits.allowChangeRemoteName = true;
+                    limits.allowChangeFirstExecDate = true;
+                    limits.allowChangeLastExecDate = true;
+                    limits.allowChangeRemoteAccount = true;
                     return limits;
                 }
             case stord_change:
@@ -2063,6 +2074,8 @@ class HBCIBackend : NSObject, HBCILog {
                     limits.execDaysMonthString = params.daysPerMonth;
                     limits.weekCyclesString = params.cycleWeeks;
                     limits.execDaysWeekString = params.daysPerWeek;
+                    limits.allowMonthly = true;
+                    limits.allowWeekly = (params.cycleWeeks != nil);
                     return limits;
                 }
             case stord_delete:
@@ -2192,7 +2205,10 @@ class HBCIBackend : NSObject, HBCILog {
         let files = try fm.contentsOfDirectory(atPath: passportDir!);
         for file in files {
             if file.hasSuffix(".dat") {
-                let name = file.substring(to: file.index(file.endIndex, offsetBy: -4));
+                guard let name = file[0..<file.length-4] else {
+                    continue;
+                }
+                //let name = file.substring(to: file.index(file.endIndex, offsetBy: -4));
                 let info = name.components(separatedBy: "_");
                 if info.count == 2 {
                     if let bankUser = BankUser.find(withId: info[1], bankCode: info[0]) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,16 +32,16 @@
         <window title="Bankkennungen" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" id="5" userLabel="BankUser" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES"/>
             <rect key="contentRect" x="828" y="667" width="895" height="301"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="6" userLabel="Background Gradient" customClass="BWGradientBox">
                 <rect key="frame" x="0.0" y="0.0" width="895" height="301"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView id="904" userLabel="Top Gradient" customClass="BWGradientBox">
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="904" userLabel="Top Gradient" customClass="BWGradientBox">
                         <rect key="frame" x="0.0" y="215" width="896" height="88"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" id="713">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="713">
                                 <rect key="frame" x="265" y="46" width="96" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Bankleitzahl:" id="714">
@@ -50,7 +50,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="712">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="712">
                                 <rect key="frame" x="386" y="47" width="118" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankCode" id="715">
@@ -69,7 +69,7 @@
                                     <outlet property="delegate" destination="-2" id="871"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="734">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="734">
                                 <rect key="frame" x="266" y="22" width="128" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Benutzerkennung:" id="735">
@@ -78,7 +78,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="733">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="733">
                                 <rect key="frame" x="386" y="22" width="118" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" title="userId" id="736">
@@ -95,7 +95,7 @@
                                     </binding>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="782">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="782">
                                 <rect key="frame" x="506" y="46" width="85" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Bankname:" id="783">
@@ -104,7 +104,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="781">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="781">
                                 <rect key="frame" x="619" y="47" width="185" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankName" id="784">
@@ -122,7 +122,7 @@
                                     </binding>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="739">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="739">
                                 <rect key="frame" x="506" y="22" width="116" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kundennummer:" id="740">
@@ -131,7 +131,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="738">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="738">
                                 <rect key="frame" x="619" y="22" width="185" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" title="customerId" id="741">
@@ -153,12 +153,12 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="hasGradient" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </customView>
-                    <imageView id="860">
+                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="860">
                         <rect key="frame" x="791" y="133" width="163" height="167"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="Bank large" id="861"/>
                     </imageView>
-                    <button toolTip="Benutzerkennung mit der Bank synchronisieren" verticalHuggingPriority="750" id="155">
+                    <button toolTip="Benutzerkennung mit der Bank synchronisieren" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="155">
                         <rect key="frame" x="282" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Synchronisieren" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="575">
@@ -180,7 +180,7 @@
                             </binding>
                         </connections>
                     </button>
-                    <button toolTip="Bankparameter ins Nachrichtenlog schreiben" verticalHuggingPriority="750" id="667">
+                    <button toolTip="Bankparameter ins Nachrichtenlog schreiben" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="667">
                         <rect key="frame" x="439" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="BP ausgeben" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="668">
@@ -193,7 +193,7 @@
                             <binding destination="76" name="enabled" keyPath="canRemove" id="846"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="654">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="654">
                         <rect key="frame" x="781" y="11" width="100" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Schließen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="655">
@@ -204,7 +204,7 @@
                             <action selector="close:" target="-2" id="887"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="77">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="77">
                         <rect key="frame" x="28" y="23" width="24" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="plus-8" imagePosition="only" alignment="center" borderStyle="border" inset="2" id="573">
@@ -215,7 +215,7 @@
                             <action selector="addEntry:" target="-2" id="85"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="123">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="123">
                         <rect key="frame" x="51" y="23" width="24" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="minus-8" imagePosition="only" alignment="center" borderStyle="border" inset="2" id="574">
@@ -227,10 +227,10 @@
                             <binding destination="76" name="enabled" keyPath="canRemove" id="726"/>
                         </connections>
                     </button>
-                    <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="698">
+                    <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="698">
                         <rect key="frame" x="28" y="48" width="195" height="236"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
-                        <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="AWW-93-wmA">
+                        <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="AWW-93-wmA">
                             <rect key="frame" x="1" y="0.0" width="193" height="235"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -278,7 +278,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
-                    <textField verticalHuggingPriority="750" id="744">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="744">
                         <rect key="frame" x="285" y="93" width="96" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="HBCI Version:" id="745">
@@ -287,7 +287,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="748">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="748">
                         <rect key="frame" x="408" y="143" width="361" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="bankUrl" id="751">
@@ -304,7 +304,7 @@
                             </binding>
                         </connections>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="749">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="749">
                         <rect key="frame" x="285" y="142" width="96" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bank URL" id="750">
@@ -313,7 +313,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button id="757">
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="757">
                         <rect key="frame" x="286" y="81" width="22" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="758">
@@ -329,7 +329,7 @@
                             </binding>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" id="762">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="762">
                         <rect key="frame" x="306" y="82" width="130" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Base64 Kodierung" id="763">
@@ -338,7 +338,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="801">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="801">
                         <rect key="frame" x="285" y="173" width="128" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Signierverfahren:" id="802">
@@ -347,7 +347,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button id="963">
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="963">
                         <rect key="frame" x="286" y="60" width="22" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="966">
@@ -362,7 +362,7 @@
                             </binding>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" id="964">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="964">
                         <rect key="frame" x="306" y="61" width="130" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Zertifikate prüfen" id="965">
@@ -371,7 +371,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="970">
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="970">
                         <rect key="frame" x="408" y="112" width="91" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" id="971">
@@ -388,7 +388,7 @@
                             </binding>
                         </connections>
                     </textField>
-                    <popUpButton verticalHuggingPriority="750" id="974">
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="974">
                         <rect key="frame" x="408" y="167" width="361" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="977" id="975">
@@ -409,7 +409,7 @@
                             <binding destination="980" name="selectedIndex" keyPath="selectionIndex" previousBinding="984" id="986"/>
                         </connections>
                     </popUpButton>
-                    <button toolTip="Neue PIN vergeben" verticalHuggingPriority="750" id="YFo-GD-qSX">
+                    <button toolTip="Neue PIN vergeben" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YFo-GD-qSX">
                         <rect key="frame" x="596" y="11" width="157" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="PIN ändern" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WN4-Pd-xga">
@@ -430,6 +430,7 @@
                 <outlet property="delegate" destination="-2" id="21"/>
                 <outlet property="initialFirstResponder" destination="701" id="862"/>
             </connections>
+            <point key="canvasLocation" x="140" y="444"/>
         </window>
         <objectController mode="entity" entityName="BankUser" id="22" userLabel="NewBankAccount">
             <declaredKeys>
@@ -456,17 +457,17 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="356" y="312" width="679" height="390"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="51">
                 <rect key="frame" x="0.0" y="0.0" width="679" height="390"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <imageView alphaValue="0.5" id="885">
+                    <imageView fixedFrame="YES" alphaValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="885">
                         <rect key="frame" x="45" y="224" width="120" height="121"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="Tresor" id="886"/>
                     </imageView>
-                    <button verticalHuggingPriority="750" id="60">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60">
                         <rect key="frame" x="557" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Weiter" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" inset="2" id="584">
@@ -480,7 +481,7 @@ DQ
                             <action selector="ok:" target="-2" id="910"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="61">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61">
                         <rect key="frame" x="449" y="12" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Abbrechen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="585">
@@ -492,14 +493,14 @@ DQ
                             <outlet property="nextKeyView" destination="1083" id="kWG-Ww-oau"/>
                         </connections>
                     </button>
-                    <box autoresizesSubviews="NO" boxType="custom" borderType="line" cornerRadius="8" titlePosition="noTitle" id="876">
+                    <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" cornerRadius="8" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="876">
                         <rect key="frame" x="113" y="60" width="546" height="307"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="contentView" id="J8P-CN-Gk5">
                             <rect key="frame" x="1" y="1" width="544" height="305"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField verticalHuggingPriority="750" tag="100" id="54">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="100" translatesAutoresizingMaskIntoConstraints="NO" id="54">
                                     <rect key="frame" x="8" y="168" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Benutzerkennung" id="578">
@@ -508,7 +509,7 @@ DQ
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="120" id="57">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="120" translatesAutoresizingMaskIntoConstraints="NO" id="57">
                                     <rect key="frame" x="8" y="136" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Kundennummer" id="581">
@@ -517,7 +518,7 @@ DQ
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="110" id="55">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="110" translatesAutoresizingMaskIntoConstraints="NO" id="55">
                                     <rect key="frame" x="161" y="166" width="180" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="579">
@@ -531,7 +532,7 @@ DQ
                                         <outlet property="nextKeyView" destination="56" id="NEI-Xl-MIg"/>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="11" id="328">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="328">
                                     <rect key="frame" x="161" y="198" width="253" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="589">
@@ -550,7 +551,7 @@ IA
                                         <outlet property="nextKeyView" destination="55" id="Dn2-DS-GqG"/>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="329">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="329">
                                     <rect key="frame" x="8" y="200" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name" id="590">
@@ -559,7 +560,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="130" id="65">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="130" translatesAutoresizingMaskIntoConstraints="NO" id="65">
                                     <rect key="frame" x="346" y="138" width="209" height="13"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="(meist identisch mit Benutzerkennung)" id="587">
@@ -568,7 +569,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="53">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="53">
                                     <rect key="frame" x="8" y="232" width="144" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Bankleitzahl" id="577">
@@ -577,7 +578,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="332">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="332">
                                     <rect key="frame" x="419" y="200" width="121" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(frei wählbar)" id="591">
@@ -586,7 +587,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField toolTip="Kundennummer bei der Bank, meist identisch mit Benutzerkennung" verticalHuggingPriority="750" tag="130" id="56">
+                                <textField toolTip="Kundennummer bei der Bank, meist identisch mit Benutzerkennung" verticalHuggingPriority="750" fixedFrame="YES" tag="130" translatesAutoresizingMaskIntoConstraints="NO" id="56">
                                     <rect key="frame" x="161" y="134" width="180" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="580">
@@ -598,7 +599,7 @@ IA
                                         <binding destination="22" name="value" keyPath="selection.customerId" id="111"/>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="10" id="52">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="52">
                                     <rect key="frame" x="161" y="230" width="126" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="576">
@@ -619,7 +620,7 @@ IA
                                         <outlet property="nextKeyView" destination="328" id="Voz-8K-Mfd"/>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="877">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="877">
                                     <rect key="frame" x="12" y="277" width="266" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung PIN/TAN hinzufügen" id="878">
@@ -628,7 +629,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button tag="160" id="379">
+                                <button fixedFrame="YES" tag="160" translatesAutoresizingMaskIntoConstraints="NO" id="379">
                                     <rect key="frame" x="159" y="71" width="22" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="592">
@@ -644,7 +645,7 @@ IA
                                         <outlet property="nextKeyView" destination="933" id="11C-9V-4kH"/>
                                     </connections>
                                 </button>
-                                <textField verticalHuggingPriority="750" tag="160" id="931">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="160" translatesAutoresizingMaskIntoConstraints="NO" id="931">
                                     <rect key="frame" x="22" y="68" width="130" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Base64-Kodierung" id="932">
@@ -653,7 +654,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button tag="170" id="933">
+                                <button fixedFrame="YES" tag="170" translatesAutoresizingMaskIntoConstraints="NO" id="933">
                                     <rect key="frame" x="159" y="45" width="22" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="934">
@@ -665,7 +666,7 @@ IA
                                         <outlet property="nextKeyView" destination="60" id="2dF-Uc-wAJ"/>
                                     </connections>
                                 </button>
-                                <textField verticalHuggingPriority="750" tag="170" id="935">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="170" translatesAutoresizingMaskIntoConstraints="NO" id="935">
                                     <rect key="frame" x="22" y="42" width="130" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Zertifikate prüfen" id="936">
@@ -674,11 +675,11 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="944">
+                                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="944">
                                     <rect key="frame" x="295" y="232" width="16" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 </progressIndicator>
-                                <textField verticalHuggingPriority="750" tag="20" id="945">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="945">
                                     <rect key="frame" x="314" y="229" width="218" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="946">
@@ -687,7 +688,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="150" id="1063">
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="150" translatesAutoresizingMaskIntoConstraints="NO" id="1063">
                                     <rect key="frame" x="18" y="101" width="134" height="19"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="PIN/TAN-URL" id="1066">
@@ -696,7 +697,7 @@ IA
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" tag="150" id="1064">
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="150" translatesAutoresizingMaskIntoConstraints="NO" id="1064">
                                     <rect key="frame" x="161" y="101" width="363" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1065">
@@ -714,7 +715,7 @@ IA
                         <color key="borderColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="0.30000001189999997" colorSpace="calibratedRGB"/>
                         <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                     </box>
-                    <button verticalHuggingPriority="750" id="1083">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1083">
                         <rect key="frame" x="14" y="12" width="116" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Hilfe" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1084">
@@ -765,14 +766,14 @@ IA
             <rect key="frame" x="0.0" y="0.0" width="510" height="144"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" cornerRadius="8" title="Box" titlePosition="noTitle" id="1008">
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1008">
                     <rect key="frame" x="17" y="16" width="476" height="108"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <view key="contentView" id="O1r-Bf-ISC">
                         <rect key="frame" x="1" y="1" width="474" height="106"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" id="993">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="993">
                                 <rect key="frame" x="74" y="37" width="153" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sicherheitsverfahren" id="994">
@@ -781,7 +782,7 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="1009">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1009">
                                 <rect key="frame" x="15" y="75" width="241" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung hinzufügen" id="1010">
@@ -790,7 +791,7 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <popUpButton verticalHuggingPriority="750" id="995">
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="995">
                                 <rect key="frame" x="223" y="31" width="236" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="PIN/TAN" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="998" id="996">
@@ -813,19 +814,20 @@ IA
                     <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                 </box>
             </subviews>
+            <point key="canvasLocation" x="139" y="154"/>
         </customView>
         <customView id="1015" userLabel="ddvView">
             <rect key="frame" x="0.0" y="0.0" width="583" height="380"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" cornerRadius="8" title="Box" titlePosition="noTitle" id="1016">
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1016">
                     <rect key="frame" x="20" y="53" width="546" height="307"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <view key="contentView" id="jMt-9n-oFb">
                         <rect key="frame" x="1" y="1" width="544" height="305"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" id="1019">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1019">
                                 <rect key="frame" x="15" y="274" width="426" height="18"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkennung DDV-Chipkarte hinzufügen" id="1020">
@@ -834,7 +836,7 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" tag="12" id="1041">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="1041">
                                 <rect key="frame" x="189" y="193" width="253" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1050">
@@ -853,7 +855,7 @@ IA
                                     <outlet property="nextKeyView" destination="efw-NX-kuB" id="Qa8-D8-UG6"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" tag="11" id="1042">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="1042">
                                 <rect key="frame" x="35" y="195" width="144" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Name" id="1049">
@@ -862,35 +864,8 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" tag="140" id="915">
-                                <rect key="frame" x="29" y="158" width="150" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="HBCI-Version" id="916">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <popUpButton verticalHuggingPriority="750" tag="140" id="919">
-                                <rect key="frame" x="187" y="153" width="132" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <popUpButtonCell key="cell" type="push" title="220" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="922" id="920">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
-                                    <menu key="menu" title="OtherViews" id="921">
-                                        <items>
-                                            <menuItem title="220" state="on" id="922"/>
-                                            <menuItem title="300" id="923"/>
-                                        </items>
-                                    </menu>
-                                </popUpButtonCell>
-                                <connections>
-                                    <binding destination="635" name="contentValues" keyPath="arrangedObjects" id="955"/>
-                                    <binding destination="22" name="selectedValue" keyPath="selection.hbciVersion" previousBinding="955" id="956"/>
-                                </connections>
-                            </popUpButton>
-                            <textField verticalHuggingPriority="750" tag="150" id="925">
-                                <rect key="frame" x="0.0" y="119" width="179" height="19"/>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="150" translatesAutoresizingMaskIntoConstraints="NO" id="925">
+                                <rect key="frame" x="0.0" y="157" width="179" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Kommunikationsaddresse" id="926">
                                     <font key="font" metaFont="system"/>
@@ -898,8 +873,8 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" tag="150" id="927">
-                                <rect key="frame" x="189" y="119" width="253" height="22"/>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" tag="150" translatesAutoresizingMaskIntoConstraints="NO" id="927">
+                                <rect key="frame" x="189" y="157" width="253" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="928">
                                     <font key="font" metaFont="system"/>
@@ -910,7 +885,7 @@ IA
                                     <binding destination="22" name="value" keyPath="selection.bankURL" id="1076"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="xYi-vS-eTS">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xYi-vS-eTS">
                                 <rect key="frame" x="103" y="231" width="74" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kartenleser" id="83E-AI-jYD">
@@ -919,7 +894,7 @@ IA
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <popUpButton focusRingType="none" verticalHuggingPriority="750" tag="10" id="efw-NX-kuB">
+                            <popUpButton focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="efw-NX-kuB">
                                 <rect key="frame" x="185" y="225" width="258" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" focusRingType="none" imageScaling="proportionallyDown" inset="2" selectedItem="cc0-58-Hjk" id="KZP-yc-oUF">
@@ -938,7 +913,7 @@ IA
                                     <binding destination="22" name="selectedIndex" keyPath="selection.ddvReaderIdx" previousBinding="kOX-4f-AlD" id="nQ0-Bj-aMz"/>
                                 </connections>
                             </popUpButton>
-                            <textField verticalHuggingPriority="750" tag="13" id="1044">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="1044">
                                 <rect key="frame" x="449" y="193" width="76" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(frei wählbar)" id="1047">
@@ -953,6 +928,7 @@ IA
                     <color key="fillColor" white="1" alpha="0.69999998809999997" colorSpace="calibratedWhite"/>
                 </box>
             </subviews>
+            <point key="canvasLocation" x="190" y="-773"/>
         </customView>
     </objects>
     <resources>

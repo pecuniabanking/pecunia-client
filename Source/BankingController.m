@@ -3622,41 +3622,6 @@ static BankingController *bankinControllerInstance;
 - (void)migrate {
     LogEnter;
 
-    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    NSManagedObjectContext  *context = MOAssistant.sharedAssistant.context;
-
-    BOOL migrated112 = [settings boolForKey: @"Migrated112"];
-    if (!migrated112) {
-        NSError *error = nil;
-
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
-                                                             inManagedObjectContext: context];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity: entityDescription];
-        NSArray *statements = [context executeFetchRequest: request error: &error];
-        if (statements.count > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                            NSLocalizedString(@"AP178", nil),
-                            NSLocalizedString(@"AP1", nil),
-                            nil, nil
-                            );
-
-            for (BankStatement *stat in statements) {
-                @try {
-                    [stat extractSEPADataUsingContext: context];
-                }
-                @catch (NSException *exception) {
-                    NSLog(@"Exception inside SEPA data extract for purpose %@", stat.purpose);
-                }
-            }
-        }
-        settings[@"Migrated112"] = @YES;
-    }
-
-    if (![settings boolForKey: @"Migrated121"]) {
-        settings[@"Migrated121"] = @YES;
-    }
-    
     // check for users that are not converted to HBCI4Swift yet
     BOOL migrationMessageSent = false;
     BOOL doNotMigrate = false;
@@ -3675,12 +3640,15 @@ static BankingController *bankinControllerInstance;
             }
             
             // Synchronize user
-            if (![[user.bankURL substringToIndex:5] isEqualToString:@"https"]) {
-                user.bankURL = [@"https://" stringByAppendingString:user.bankURL];
-                LogInfo(@"Bank URL changed to %@", user.bankURL);
+            if (user.bankURL != nil) {
+                if (![[user.bankURL substringToIndex:5] isEqualToString:@"https"] && user.secMethod.intValue == SecMethod_PinTan) {
+                    user.bankURL = [@"https://" stringByAppendingString:user.bankURL];
+                    LogInfo(@"Bank URL changed to %@", user.bankURL);
+                }
             }
             
             if(doNotMigrate == true) {
+                LogInfo(@"Skipped migration for %@", user.name);
                 continue;
             }
             

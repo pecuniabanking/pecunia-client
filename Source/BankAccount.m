@@ -98,8 +98,15 @@
         return;
     }
     
-    BankStatement *newStatement = (res.statements)[0]; // oldest statement
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: newStatement.date] lowDate]];
+    // find earliest date in newStatments (the list is not always sorted!!)
+    NSDate *earliest_date = nil;
+    for (BankStatement *statement in res.statements) {
+        if (earliest_date == nil) earliest_date = statement.date; else {
+            if ([statement.date compare:earliest_date] == NSOrderedAscending) earliest_date = statement.date;
+        }
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: earliest_date] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
@@ -113,7 +120,7 @@
         NSMutableArray *oldStatements = oldDayStats[date];
         NSMutableArray *newStatments = newDayStats[date];
 
-        for (newStatement in newStatments) {
+        for (BankStatement *newStatement in newStatments) {
             if (newStatement.isPreliminary.boolValue) {
                 continue;
             }

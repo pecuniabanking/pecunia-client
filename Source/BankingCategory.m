@@ -1132,9 +1132,9 @@ static ShortDate *endReportDate = nil;
  * Recreate the 3 implicit root categories. Called when the entire managed context was cleared.
  */
 + (void)recreateRoots {
-    catRootSingleton = nil, [self catRoot];
-    bankRootSingleton = nil, [self bankRoot];
-    notAssignedRootSingleton = nil, [self nassRoot];
+    catRootSingleton = [self catRoot];
+    bankRootSingleton = [self bankRoot];
+    notAssignedRootSingleton = [self nassRoot];
 }
 
 + (void)createCategoryWithName: (NSString *)name {

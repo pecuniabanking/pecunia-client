@@ -14,12 +14,13 @@ class PhotoTanWindowController : NSWindowController {
     @IBOutlet var tanField: NSTextField!
     @IBOutlet var secureTanField: NSSecureTextField!
     
-    var tan:String?
     var image:NSImage?
     var mimeType:String?
-    let userMessage:String?
     let message: String?
     
+    @objc var tan:String?
+    @objc let userMessage:String?
+
     init(_ code: NSData, message msg: String?, userName: String) {
         message = msg;
         userMessage = String(format: NSLocalizedString("AP184", comment: ""), userName);
@@ -88,7 +89,6 @@ class PhotoTanWindowController : NSWindowController {
         } else {
             self.window?.makeFirstResponder(secureTanField);
         }
-        
     }
     
     

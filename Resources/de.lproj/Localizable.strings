@@ -81,6 +81,7 @@ AP84 = "Warnung";
 AP85 = "Kritischer Fehler";
 AP86 = "Für das Konto %@ ist keine IBAN gepflegt. Bitte synchronisieren Sie die Bankkennung neu oder tragen die IBAN manuell ein.";
 AP87 = "Für das Konto %@ ist keine BIC gepflegt. Bitte synchronisieren Sie die Bankkennung neu oder tragen die BIC manuell ein.";
+AP88 = "Bitte Kundennummer eingeben";
 
 // General + miscellaneous messages
 // AP100..AP149

@@ -282,17 +282,13 @@
                         
                         // get further bank infos
                         BankInfo *bi = [[HBCIBackend backend] infoForBankCode: currentUser.bankCode];
+                        currentUser.hbciVersion = @"300";
                         if (bi) {
-                            currentUser.hbciVersion = bi.hbciVersion;
                             if (bi.name != nil) {
                                 currentUser.name = bi.name;
                             }
+                            //currentUser.hbciVersion = bi.hbciVersion;
                             //currentUser.bankURL = bi.hostURL;
-                            if (currentUser.hbciVersion == nil) {
-                                step = 3;
-                            }
-                        } else {
-                            step = 3;
                         }
                     } else {
                         // cound not read bank data
@@ -435,6 +431,12 @@
         if ([currentUser userId] == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP52", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return NO;
+        }
+        if ([currentUser customerId] == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP88", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }

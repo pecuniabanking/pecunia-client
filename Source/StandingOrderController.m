@@ -536,12 +536,14 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     NSInteger tag = [aNotification.object tag];
     if (tag == 11) {
-        NSString *bankName = [[HBCIBackend backend] bankNameForIBAN: [aNotification.object stringValue]];
+        NSString *iban = [[aNotification.object stringValue] stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSString *bankName = [[HBCIBackend backend] bankNameForIBAN: iban];
         currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
-        NSString *bic = [[HBCIBackend backend] bicForIBAN: [aNotification.object stringValue]];
+        NSString *bic = [[HBCIBackend backend] bicForIBAN: iban];
         if (bic != nil) {
             currentOrder.remoteBIC = bic;
         }
+        currentOrder.remoteIBAN = iban;
     }
 }
 
@@ -790,9 +792,12 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
+            self.editable = YES;
         } else {
+            self.editable = NO;
             if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_StandingOrderSEPAEdit account:currentOrder.account]) {
                 self.currentLimits = [HBCIBackend.backend standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
+                self.editable = YES;
             }
         }
 
@@ -878,6 +883,10 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
             return;
         }
         self.currentOrder = selection[0];
+        
+        if(currentOrder.account == nil) {
+            return;
+        }
 
         deleteButton.hidden = [currentOrder.toDelete boolValue];
 
@@ -889,12 +898,12 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIBackend backend] standingOrderLimits: currentOrder.account.defaultBankUser action: stord_create];
-            editable = YES;
+            self.editable = YES;
         } else {
-            editable = NO;
+            self.editable = NO;
             if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_StandingOrderSEPAEdit account:currentOrder.account]) {
                 self.currentLimits = [HBCIBackend.backend standingOrderLimits: currentOrder.account.defaultBankUser action: stord_change];
-                editable = YES;
+                self.editable = YES;
             }
         }
 
@@ -911,14 +920,14 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         if (currentLimits != nil) {
             StandingOrderPeriod period = [currentOrder.period intValue];
             if (period == stord_weekly) {
-                [self enableWeekly: YES];
+                //[self enableWeekly: YES];
                 [weekCell setState: NSOnState];
                 [monthCell setState: NSOffState];
                 [self updateWeekCycles];
                 [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
                 [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
             } else {
-                [self enableWeekly: NO];
+                //[self enableWeekly: NO];
                 [weekCell setState: NSOffState];
                 [monthCell setState: NSOnState];
                 [self updateMonthCycles];
@@ -949,7 +958,7 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         // update account selector
         [self updateSourceAccountSelection];
         
-        if (!editable) {
+        if (!self.editable) {
             [self disableCycles];
         }
 
