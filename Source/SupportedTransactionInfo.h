@@ -38,5 +38,6 @@ typedef NS_ENUM(NSInteger, TransactionType) {
     TransactionType_AccountStatements,
     TransactionType_TransferInternalSEPA,
     TransactionType_AccountBalance,
-    TransactionType_StandingOrderSEPAEdit
+    TransactionType_StandingOrderSEPAEdit,
+    TransactionType_CamtStatements
 };

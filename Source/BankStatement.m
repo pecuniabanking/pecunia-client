@@ -397,7 +397,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
         }
     }
 
-    [self extractSEPADataUsingContext: MOAssistant.sharedAssistant.context];
+    //[self extractSEPADataUsingContext: MOAssistant.sharedAssistant.context];
 }
 
 - (BOOL)matches: (BankStatement *)stat {
@@ -450,39 +450,51 @@ BOOL stringEqual(NSString *a, NSString *b) {
 
     LogDebug(@"-------------------matchesAndRepair------------------------------------");
     if ([d1 isEqual: d2] == NO) {
-        LogDebug(@"Dates different: %@, %@", d1.description, d2.description);
+        LogDebug(@"Dates different: %@ <> %@", d1.description, d2.description);
         return NO;
     }
 
-    if (stringEqualIgnoreWhitespace(self.purpose, stat.purpose) == NO) {
-        LogDebug(@"Purpose different: %@, %@", self.purpose, stat.purpose);
-        return NO;
+    // if we have an end to end reference, take this instead of comparing purpose
+    if (self.sepa != nil && stat.sepa != nil) {
+        if (self.sepa.endToEndId != nil && [self.sepa.endToEndId isEqualToString:stat.sepa.endToEndId]) {
+            return YES;
+        }
+        if (stringEqualIgnoreWhitespace(self.sepa.purpose, stat.sepa.purpose) == NO) {
+            LogDebug(@"Purpose different: %@ <> %@", self.sepa.purpose, stat.sepa.purpose);
+            return NO;
+        }
+    } else {
+        if (stringEqualIgnoreWhitespace(self.purpose, stat.purpose) == NO) {
+            LogDebug(@"Purpose different: %@ <> %@", self.purpose, stat.purpose);
+            return NO;
+        }
     }
+    
     if (stringEqualIgnoreWhitespace(self.remoteName, stat.remoteName) == NO) {
-        LogDebug(@"Name different: %@, %@", self.remoteName, stat.remoteName);
+        LogDebug(@"Name different: %@ <> %@", self.remoteName, stat.remoteName);
         return NO;
     }
 
     if (stringEqualIgnoringMissing(self.remoteAccount, stat.remoteAccount) == NO) {
-        LogDebug(@"RemoteAccount different: %@, %@", self.remoteAccount, stat.remoteAccount);
+        LogDebug(@"RemoteAccount different: %@ <> %@", self.remoteAccount, stat.remoteAccount);
         return NO;
     }
     if (stringEqualIgnoringMissing(self.remoteBankCode, stat.remoteBankCode) == NO) {
-        LogDebug(@"RemoteBankCode different: %@, %@", self.remoteBankCode, stat.remoteBankCode);
+        LogDebug(@"RemoteBankCode different: %@ <> %@", self.remoteBankCode, stat.remoteBankCode);
         return NO;
     }
     if (stringEqualIgnoringMissing(self.remoteBIC, stat.remoteBIC) == NO) {
-        LogDebug(@"RemoteBIC different: %@, %@", self.remoteBIC, stat.remoteBIC);
+        LogDebug(@"RemoteBIC different: %@ <> %@", self.remoteBIC, stat.remoteBIC);
         return NO;
     }
     if (stringEqualIgnoringMissing(self.remoteIBAN, stat.remoteIBAN) == NO) {
-        LogDebug(@"RemoteIBAN different: %@, %@", self.remoteIBAN, stat.remoteIBAN);
+        LogDebug(@"RemoteIBAN different: %@ <> %@", self.remoteIBAN, stat.remoteIBAN);
         return NO;
     }
 
     NSDecimalNumber *d = [[self.value decimalNumberBySubtracting: stat.value] abs];
     if ([d compare: e] == NSOrderedDescending) {
-        LogDebug(@"Value different: %f, %f", self.value.doubleValue, stat.value.doubleValue);
+        LogDebug(@"Value different: %f <> %f", self.value.doubleValue, stat.value.doubleValue);
         return NO;
     }
     if ([d compare: e] == NSOrderedSame) {

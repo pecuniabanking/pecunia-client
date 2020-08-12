@@ -230,11 +230,23 @@
         NSEntityDescription *entity = [stat entity];
         NSArray             *attributeKeys = [[entity attributesByName] allKeys];
         NSDictionary        *attributeValues = [stat dictionaryWithValuesForKeys: attributeKeys];
-
-        BankStatement *bankStatement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
-                                                            inManagedObjectContext: context];
+        
+        BankStatement       *bankStatement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
+                                                                           inManagedObjectContext: context];
 
         [bankStatement setValuesForKeysWithDictionary: attributeValues];
+
+        if (stat.sepa != nil) {
+            NSEntityDescription *sepaEntity = [stat.sepa entity];
+            NSArray             *sepaAttributeKeys = [[sepaEntity attributesByName] allKeys];
+            NSDictionary        *sepaValues = [stat.sepa dictionaryWithValuesForKeys:sepaAttributeKeys];
+            
+            SepaData *sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
+                                                           inManagedObjectContext: context];
+            [sepa setValuesForKeysWithDictionary:sepaValues];
+            bankStatement.sepa = sepa;
+        }
+
         if (!bankStatement.isPreliminary.boolValue) {
             bankStatement.isNew = @YES;
         }

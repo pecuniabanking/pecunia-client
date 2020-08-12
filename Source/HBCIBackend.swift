@@ -399,6 +399,8 @@ class HBCIBackend : NSObject, HBCILog {
             return "AccountBalance";
         case TransactionType.standingOrderSEPAEdit:
             return "SepaStandingOrderEdit";
+        case TransactionType.camtStatements:
+            return "CamtStatements";
         default: return nil;
         }
     }
@@ -1155,18 +1157,34 @@ class HBCIBackend : NSObject, HBCILog {
         result.bankCode = account.bankCode;
         result.accountNumber = account.number;
         result.accountSuffix = account.subNumber;
-
+        
         for statement in statements {
             // get latest balance
             if !(statement.isPreliminary ?? false) {
                 if let balance = statement.endBalance {
-                    if balance.postingDate > latest {
+                    if balance.postingDate > latest && balance.type == AccountBalanceType.ClosingBooked {
                         result.balance = balance.value;
                         latest = balance.postingDate;
                     }
                 }
             }
-            
+        }
+        if latest == Date.distantPast {
+            logInfo("No closing balance found!");
+            for statement in statements {
+                // get latest balance
+                if !(statement.isPreliminary ?? false) {
+                    if let balance = statement.endBalance {
+                        if balance.postingDate > latest && balance.type == AccountBalanceType.InterimBooked {
+                            result.balance = balance.value;
+                            latest = balance.postingDate;
+                        }
+                    }
+                }
+            }
+        }
+
+        for statement in statements {
             for item in statement.items {
                 let stat = NSEntityDescription.insertNewObject(forEntityName: "BankStatement", into: context!) as! BankStatement;
                 stat.localAccount = account.number;
@@ -1208,11 +1226,34 @@ class HBCIBackend : NSObject, HBCILog {
                     stat.type = NSNumber(value: StatementType_CreditCard.rawValue);
                     stat.docDate = item.docDate;
                 }
+                
+                // Sepa
+                if item.endToEndId != nil || item.mandateId != nil || item.debitorId != nil || item.creditorId != nil ||
+                   item.ultimateCreditorId != nil || item.ultimateDebitorId != nil || item.purposeCode != nil {
+                    let sepa = NSEntityDescription.insertNewObject(forEntityName: "SepaData", into: context!) as! SepaData;
+                    sepa.creditorId = item.creditorId;
+                    sepa.debitorId = item.debitorId;
+                    sepa.endToEndId = item.endToEndId;
+                    sepa.mandateId = item.mandateId;
+                    sepa.purpose = item.purpose;
+                    sepa.ultimateCreditorId = item.ultimateCreditorId;
+                    sepa.ultimateDebitorId = item.ultimateDebitorId;
+                    sepa.purposeCode = item.purposeCode;
+                    stat.sepa = sepa;
+                }
+                
+                stat.extractSEPAData(using: context!);
+                /*
+                if stat.sepa == nil {
+                    stat.extractSEPAData(using: context!);
+                }
+                */
                 result.statements.append(stat);
             }
         }
         // check the order - oldest statement must be first
         orderStatements(result);
+        logDebug("We have \(result.statements.count) converted statement items");
         
         return result;
     }
@@ -1434,7 +1475,31 @@ class HBCIBackend : NSObject, HBCILog {
                     dateFrom = fromDate;
                 }
                 
-                if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
+                if isTransactionSupportedForAccount(TransactionType.camtStatements, account: account) {
+                    // camt statements
+                    guard let order = HBCICamtStatementsOrder(message: msg, account: hbciAccount) else {
+                        logInfo("Failed to create order");
+                        error = true;
+                        continue;
+                    }
+                    order.dateFrom = dateFrom;
+                    logDebug("Request statements with start date: \(String(describing: dateFrom))");
+                    
+                    guard order.enqueue() else {
+                        logInfo("Failed to enqueue order");
+                        error = true;
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logInfo("Failed to send message");
+                        error = true;
+                        continue;
+                    }
+                    let statements = order.statements
+                    let result = convertStatements(order.account, statements:statements);
+                    result.account = account;
+                    bqResult.append(result);
+                } else if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
                     // normal statements
                     guard let order = HBCIStatementsOrder(message: msg, account: hbciAccount) else {
                         logInfo("Failed to create order");
@@ -1454,11 +1519,7 @@ class HBCIBackend : NSObject, HBCILog {
                         error = true;
                         continue;
                     }
-                    guard let statements = order.statements else {
-                        logInfo("Failed to get statements for account \(account.accountNumber()!)");
-                        error = true;
-                        continue;
-                    }
+                    let statements = order.statements
                     let result = convertStatements(order.account, statements:statements);
                     result.account = account;
                     bqResult.append(result);                    
