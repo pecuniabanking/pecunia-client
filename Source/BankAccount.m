@@ -796,4 +796,28 @@
     return s;
 }
 
+- (NSString *)localAccountName {
+    return [NSString stringWithFormat:@"%@ (%@/%@)", self.localName, self.accountNumber, self.bankCode];
+}
+
+- (void)moveStatementsFromAccount: (BankAccount *)sourceAccount {
+
+    NSArray *statements = [[sourceAccount mutableSetValueForKey:@"statements"] allObjects];
+    NSArray *assignments = [[sourceAccount mutableSetValueForKey:@"assignments"] allObjects];
+    
+    for(BankStatement *statement in statements) {
+        statement.account = self;
+        statement.localAccount = self.accountNumber;
+        statement.localSuffix = self.accountSuffix;
+        statement.localBankCode = self.bankCode;
+    }
+    
+    for(StatCatAssignment *assignment in assignments) {
+        assignment.category = self;
+    }
+    
+    
+}
+
+
 @end

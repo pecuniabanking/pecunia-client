@@ -168,7 +168,7 @@ var _manager:ChipcardManager!
                 return;
             } else {
                 // card is connected but wrong user
-                logError("HBCIChipcard: Karte vorhandne aber falscher Anwender(%@)", bankData.userId);
+                logError("HBCIChipcard: Karte vorhanden aber falscher Anwender(%@)", bankData.userId);
                 throw NSError.errorWithMsg(msgId: "AP362", titleId: "AP368");
                 /*
                 let alert = NSAlert();

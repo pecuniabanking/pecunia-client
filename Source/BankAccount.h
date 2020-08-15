@@ -64,6 +64,7 @@ typedef enum {
 @property (nonatomic, strong) NSString        *accountSuffix;
 @property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
+@property (nonatomic, readonly) NSString      *localAccountName;
 
 - (void)evaluateQueryResult: (BankQueryResult *)res;
 - (int)updateFromQueryResult: (BankQueryResult *)result;
@@ -71,6 +72,7 @@ typedef enum {
 - (void)copyStatement: (BankStatement *)stat;
 - (void)copyStatementsToManualAccounts: (NSArray *)statements;
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value;
+- (void)moveStatementsFromAccount: (BankAccount *)sourceAccount;
 
 // correction functions
 - (void)updateStatementBalances;

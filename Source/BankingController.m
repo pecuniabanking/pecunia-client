@@ -1146,6 +1146,25 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)mergeAccounts: (id)sender {
+    LogEnter;
+    AccountMergeWindowController *controller = [[AccountMergeWindowController alloc] init];
+    NSModalResponse result = [NSApp runModalForWindow:controller.window];
+    
+    if(result == NSModalResponseOK) {
+        [self save];
+        [timeSlicer updateDelegate];
+        NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
+                        NSLocalizedString(@"AP2201", nil),
+                        NSLocalizedString(@"AP1", nil),
+                        nil, nil
+                        );
+    }
+
+    LogLeave;
+}
+
+
 - (IBAction)updateStatementBalances: (id)sender {
     LogEnter;
 
@@ -2464,7 +2483,7 @@ static BankingController *bankinControllerInstance;
                 return NO;
             }
         }
-        if ([cat isKindOfClass: [BankAccount class]]) {
+        if ([cat isKindOfClass: [BankAccount class]] && cat.accountNumber != nil) {
             BankAccount *account = (BankAccount *)cat;
             if ([[account isManual] boolValue] == YES) {
                 if ([item action] == @selector(startSepaTransfer:)) {

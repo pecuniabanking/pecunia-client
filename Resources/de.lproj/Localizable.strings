@@ -40,6 +40,7 @@ AP34 = "Beenden nicht möglich";
 AP35 = "nicht angegeben";
 AP36 = "Weiter";
 AP37 = "Überspringen";
+AP38 = "Bitte bestätigen";
 
 // Validation strings
 // AP50..AP99
@@ -829,6 +830,7 @@ AP2011 = "Fehler beim Starten des HBCI-Dialog für Benutzerkennung %@. Nähere I
 AP2012 = "Die Bank verweigert den HBCI-Dialog für Benutzerkennung %@. Nähere Informationen finden Sie im Fehlerlog";
 AP2013 = "Die angegebene PIN ist womöglich nicht korrekt. Nähere Informationen finden Sie im Fehlerlog";
 
-
+AP2200 = "Die Umsätze von Konto %@ werden jetzt auf das Konto %@ übertragen. Die Aktion kann nicht rückgängig gemacht werden! Bitte erstellen Sie zur Sicherheit ein Backup der Datendatei (%@)";
+AP2201 = "Die Umsätze wurden erfolgreich übertragen";
 
 

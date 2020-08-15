@@ -136,6 +136,7 @@
 
 - (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
+- (IBAction)mergeAccounts: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
 

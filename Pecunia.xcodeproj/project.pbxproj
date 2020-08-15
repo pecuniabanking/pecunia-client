@@ -12,6 +12,8 @@
 		011DADDE1EA37D3200A44EFE /* ChipcardPinRequestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */; };
 		011DADE01EA37DD200A44EFE /* ChipcardPinRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */; };
 		01AD93382364FEA2008BB491 /* SepaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AD93372364FEA2008BB491 /* SepaService.swift */; };
+		01D0C78D24E3E985005D023A /* AccountMergeWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01D0C78C24E3E985005D023A /* AccountMergeWindow.xib */; };
+		01D0C79024E3F10F005D023A /* AccountMergeWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D0C78F24E3F10F005D023A /* AccountMergeWindowController.swift */; };
 		2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2704B8441573C3FC00CB1320 /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
@@ -579,6 +581,8 @@
 		011DADDD1EA37D3200A44EFE /* ChipcardPinRequestController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChipcardPinRequestController.xib; sourceTree = "<group>"; };
 		011DADDF1EA37DD200A44EFE /* ChipcardPinRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipcardPinRequestController.swift; sourceTree = "<group>"; };
 		01AD93372364FEA2008BB491 /* SepaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SepaService.swift; sourceTree = "<group>"; };
+		01D0C78C24E3E985005D023A /* AccountMergeWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountMergeWindow.xib; sourceTree = "<group>"; };
+		01D0C78F24E3F10F005D023A /* AccountMergeWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMergeWindowController.swift; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../InfoPlist.strings; sourceTree = "<group>"; };
 		2701A849165E827F00A9A1C7 /* SystemNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotification.h; sourceTree = "<group>"; };
 		2701A84A165E827F00A9A1C7 /* SystemNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotification.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -1776,6 +1780,7 @@
 				27E845BB19E17D2F0026464E /* TransferTemplateListViewCell.xib */,
 				27E845BC19E17D2F0026464E /* TransferTemplates.xib */,
 				27E845BD19E17D2F0026464E /* WaitView.xib */,
+				01D0C78C24E3E985005D023A /* AccountMergeWindow.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -2268,6 +2273,7 @@
 				B1A1377311B6FD9400622D6C /* AccountDefController.m */,
 				B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */,
 				B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */,
+				01D0C78F24E3F10F005D023A /* AccountMergeWindowController.swift */,
 			);
 			name = Accounts;
 			sourceTree = "<group>";
@@ -2596,6 +2602,7 @@
 				B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */,
 				2778C24218140027003BF49D /* gear.png in Resources */,
 				B165B51F0D340C5800447DD8 /* plus-8.png in Resources */,
+				01D0C78D24E3E985005D023A /* AccountMergeWindow.xib in Resources */,
 				27E845F419E17D300026464E /* Institutes.xib in Resources */,
 				B165B5210D340C7D00447DD8 /* minus-8.png in Resources */,
 				2732F6B0186B21E900809CF2 /* graph3@2x.png in Resources */,
@@ -2958,6 +2965,7 @@
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
+				01D0C79024E3F10F005D023A /* AccountMergeWindowController.swift in Sources */,
 				B1C56D57222B2BF6006D9C6E /* PhotoTanWindowController.swift in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */,

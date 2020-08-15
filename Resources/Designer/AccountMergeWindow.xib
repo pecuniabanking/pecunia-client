@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AccountMergeWindowController" customModule="Pecunia" customModuleProvider="target">
+            <connections>
+                <outlet property="sourceAccounts" destination="Cty-DJ-rb9" id="ode-Me-Oz7"/>
+                <outlet property="targetAccounts" destination="3re-dp-2HZ" id="xDn-q6-Bzw"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="WcK-RE-uy0"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Konten zusammenführen" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="392" y="311" width="478" height="149"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="478" height="149"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pGr-ec-PJi">
+                        <rect key="frame" x="124" y="109" width="337" height="21"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="vRs-Xn-x8z" id="O84-Sk-4zS">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" id="KAu-lJ-2EC">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="vRs-Xn-x8z"/>
+                                    <menuItem title="Item 2" id="vsn-NO-tea"/>
+                                    <menuItem title="Item 3" id="JJN-zb-VwE"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="Cty-DJ-rb9" name="contentValues" keyPath="arrangedObjects.localAccountName" id="Y1I-Sk-660"/>
+                            <binding destination="Cty-DJ-rb9" name="selectedIndex" keyPath="selectionIndex" previousBinding="Y1I-Sk-660" id="WTx-WJ-sYo"/>
+                        </connections>
+                    </popUpButton>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vrm-tO-Rhf">
+                        <rect key="frame" x="18" y="113" width="88" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Quellkonto" id="seb-f7-e7o">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kaw-6l-Tvj">
+                        <rect key="frame" x="18" y="75" width="84" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Zielkonto" id="b88-f8-4PD">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="icX-Mk-AiE">
+                        <rect key="frame" x="124" y="72" width="337" height="21"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="sII-i2-OCq" id="hHW-wb-FlJ">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <menu key="menu" id="99W-Q6-8z7">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="sII-i2-OCq"/>
+                                    <menuItem title="Item 2" id="5Qb-3H-wAb"/>
+                                    <menuItem title="Item 3" id="6SG-Q7-uR3"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="3re-dp-2HZ" name="contentValues" keyPath="arrangedObjects.localAccountName" id="dAm-jV-j7j"/>
+                            <binding destination="3re-dp-2HZ" name="selectedIndex" keyPath="selectionIndex" previousBinding="dAm-jV-j7j" id="rWN-CI-PR2"/>
+                        </connections>
+                    </popUpButton>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P4d-vj-ZY2">
+                        <rect key="frame" x="357" y="13" width="107" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mfJ-ae-U3n">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="okWithSender:" target="-1" id="Ef2-eE-D41"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JC4-3Q-deA">
+                        <rect key="frame" x="250" y="13" width="107" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Abbrechen" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5zo-Yh-KAC">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelOperation:" target="-2" id="ylW-z3-SNm"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="138" y="86.5"/>
+        </window>
+        <arrayController mode="entity" entityName="BankAccount" fetchPredicateFormat="accountNumber != nil AND isManual == FALSE" automaticallyPreparesContent="YES" id="Cty-DJ-rb9" userLabel="SourceAccounts">
+            <connections>
+                <binding destination="-2" name="managedObjectContext" keyPath="context" id="4ll-el-pBF"/>
+            </connections>
+        </arrayController>
+        <arrayController mode="entity" entityName="BankAccount" fetchPredicateFormat="accountNumber != nil AND isManual == FALSE" automaticallyPreparesContent="YES" id="3re-dp-2HZ" userLabel="TargetAccounts">
+            <connections>
+                <binding destination="-2" name="managedObjectContext" keyPath="context" id="VDU-HC-mLE"/>
+            </connections>
+        </arrayController>
+    </objects>
+</document>
