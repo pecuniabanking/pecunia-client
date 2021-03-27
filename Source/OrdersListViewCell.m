@@ -75,7 +75,7 @@ extern NSDictionary    *whiteAttributes;
              BankingCategory *category = (notification.userInfo)[CategoryKey];
              BankAccount *account = [self.representedObject account];
              if (category == (id)account) { // Weird warning without cast.
-                 categoryColor = category.categoryColor;
+                 self->categoryColor = category.categoryColor;
                  [self setNeedsDisplay: YES];
              }
          }

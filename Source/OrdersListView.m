@@ -288,15 +288,27 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     return YES;
 }
 
+
 // The listview as drag source.
+- (NSDragOperation)draggingSession: (NSDraggingSession *)session sourceOperationMaskForDraggingContext: (NSDraggingContext)context {
+    return (context == NSDraggingContextWithinApplication) ? NSDragOperationMove : NSDragOperationNone;
+}
+
+/*
 - (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag
 {
     return flag ? NSDragOperationMove : NSDragOperationNone;
 }
+*/
 
+- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session {
+    return YES;
+}
+
+/*
 - (BOOL)ignoreModifierKeysWhileDragging
 {
     return YES;
 }
-
+*/
 @end

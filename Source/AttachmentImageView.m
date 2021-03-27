@@ -265,6 +265,18 @@ static NSCursor *moveCursor;
     sender.numberOfValidItemsForDrop = 1;
 }
 
+- (void)draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
+    // NSDragOperationNone is returned outside of instances of this class. So it's good as
+    // a delete indicator too.
+    screenPoint.x += 100;
+    NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
+    NSView *view = [self.window.contentView hitTest: windowRect.origin];
+    if (![view isKindOfClass: [AttachmentImageView class]] && (operation == NSDragOperationDelete || operation == NSDragOperationNone)) {
+        [self processAttachment: nil];
+        NSShowAnimationEffect(NSAnimationEffectPoof, screenPoint, self.bounds.size, nil, nil, NULL);
+    }
+}
+/*
 - (void)draggedImage: (NSImage *)image
              endedAt: (NSPoint)screenPoint
            operation: (NSDragOperation)operation {
@@ -278,6 +290,7 @@ static NSCursor *moveCursor;
         NSShowAnimationEffect(NSAnimationEffectPoof, screenPoint, self.bounds.size, nil, nil, NULL);
     }
 }
+*/
 
 - (void)resetCursorRects {
     [super resetCursorRects];

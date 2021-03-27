@@ -252,14 +252,26 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     return YES;
 }
 
+- (NSDragOperation)draggingSession: (NSDraggingSession *)session sourceOperationMaskForDraggingContext: (NSDraggingContext)context {
+    return (context == NSDraggingContextWithinApplication) ? NSDragOperationMove : NSDragOperationNone;
+}
+
+/*
 // The listview as drag source.
 - (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)flag {
     return flag ? NSDragOperationMove : NSDragOperationNone;
 }
+*/
 
+- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session {
+    return YES;
+}
+
+/*
 - (BOOL)ignoreModifierKeysWhileDragging {
     return YES;
 }
+*/
 
 // The listview as drag destination.
 

@@ -160,8 +160,8 @@
         CGContextFillRect([[NSGraphicsContext currentContext] graphicsPort], textRect);
         CGContextSetShadowWithColor([[NSGraphicsContext currentContext] graphicsPort],
                                     CGSizeMake(shadowX, shadowY),
-                                    [shadowBlur floatValue],
-                                    [shadowColor CGColor]);
+                                    [self->shadowBlur floatValue],
+                                    [self->shadowColor CGColor]);
         [cutout drawAtPoint: CGPointZero
                    fromRect: NSZeroRect
                   operation: NSCompositeSourceOver

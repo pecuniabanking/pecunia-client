@@ -2347,7 +2347,7 @@ extern void *UserDefaultsBindingContext;
     plotDataSource = [CPTFunctionDataSource dataSourceForPlot: mainRegressionPlot
                                                     withBlock: ^double(double x) {
                                                         // Square trend function.
-                                                        return factors[0] + x * factors[1] + x * x * factors[2];
+        return self->factors[0] + x * self->factors[1] + x * x * self->factors[2];
                                                     }];
     plotDataSource.resolution = 10;
 }

@@ -159,17 +159,39 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 }
 
+-(NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
+    if(context == NSDraggingContextWithinApplication) {
+        return NSDragOperationCopy;
+    } else {
+        return NSDragOperationNone;
+    }
+    
+}
+/*
 - (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)isLocal {
     return isLocal ? NSDragOperationCopy : NSDragOperationNone;
 }
+*/
 
+- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session {
+    return YES;
+}
+    
+/*
 - (BOOL)ignoreModifierKeysWhileDragging {
     return YES;
 }
+*/
 
+- (void)draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
+    canDrag = NO;
+}
+
+/*
 - (void)draggedImage: (NSImage *)image endedAt: (NSPoint)screenPoint operation: (NSDragOperation)operation {
     canDrag = NO;
 }
+*/
 
 @end
 

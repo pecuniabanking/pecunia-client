@@ -215,10 +215,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return YES;
 }
 
-- (void)draggedImage: (NSImage *)image endedAt: (NSPoint)screenPoint operation: (NSDragOperation)operation {
+- (void)draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
     canDrag = NO;
 }
 
+/*
+- (void)draggedImage: (NSImage *)image endedAt: (NSPoint)screenPoint operation: (NSDragOperation)operation {
+    canDrag = NO;
+}
+*/
 @end
 
 //--------------------------------------------------------------------------------------------------

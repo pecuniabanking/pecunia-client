@@ -82,7 +82,7 @@ extern NSDictionary    *whiteAttributes;
                                                     usingBlock:
          ^(NSNotification *notification) {
             BankingCategory *category = (notification.userInfo)[CategoryKey];
-            categoryColor = category.categoryColor;
+            self->categoryColor = category.categoryColor;
             [self setNeedsDisplay: YES];
         }
 

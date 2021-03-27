@@ -754,7 +754,7 @@
             
             // save updates
             NSError *error = nil;
-            if (![context save: &error]) {
+            if (![self->context save: &error]) {
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
