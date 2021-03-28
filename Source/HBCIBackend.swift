@@ -1863,6 +1863,17 @@ class HBCIBackend : NSObject, HBCILog {
                                 error = true;
                                 continue;
                             }
+                        } else if TransferType(transfer.type.uint32Value) == TransferTypeInternalSEPA {
+                            guard let order = HBCISepaInternalTransferOrder(message: msg, transfer: sepaTransfer) else {
+                                logInfo("Failed to create internal transfer order");
+                                error = true;
+                                continue;
+                            }
+                            if !order.enqueue() {
+                                logInfo("Failed to enqueue internal transfer order");
+                                error = true;
+                                continue;
+                            }
                         } else {
                             guard let order = HBCISepaTransferOrder(message: msg, transfer: sepaTransfer) else {
                                 logInfo("Failed to create transfer order");
