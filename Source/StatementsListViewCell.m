@@ -34,6 +34,7 @@ extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
 
 extern void *UserDefaultsBindingContext;
+void *isNewBindingContext;
 
 extern NSDateFormatter *dateFormatter;
 extern NSDictionary    *whiteAttributes;
@@ -171,6 +172,11 @@ extern NSDictionary    *whiteAttributes;
 
         return;
     }
+    
+    if([keyPath isEqualToString:@"isNew"]) {
+        [self setNeedsDisplay: YES];
+        return;
+    }
 
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
@@ -189,7 +195,9 @@ extern NSDictionary    *whiteAttributes;
 }
 
 - (void)setRepresentedObject: (id)object {
-    [self.representedObject removeObserver: self forKeyPath: @"userInfo"];
+    StatCatAssignment *oldAssignment = (StatCatAssignment*)self.representedObject;
+    [oldAssignment removeObserver: self forKeyPath: @"userInfo"];
+    [oldAssignment.statement removeObserver:self forKeyPath:@"isNew"];
 
     [super setRepresentedObject: object];
     [object addObserver: self forKeyPath: @"userInfo" options: 0 context: nil];
@@ -248,7 +256,8 @@ extern NSDictionary    *whiteAttributes;
 
     [self showBalance: [defaults boolForKey: @"showBalances"]];
     self.isNew = [assignment.statement.isNew boolValue];
-    [self bind: @"isNew" toObject: self.representedObject withKeyPath: @"statement.isNew.boolValue" options: 0];
+    [self bind: @"isNew" toObject: assignment.statement withKeyPath: @"isNew" options: 0];
+    [assignment.statement addObserver:self forKeyPath:@"isNew" options:0 context:isNewBindingContext];
 
     NSDecimalNumber *nassValue = assignment.statement.nassValue;
     self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;

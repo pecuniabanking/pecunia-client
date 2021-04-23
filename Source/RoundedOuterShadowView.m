@@ -27,18 +27,13 @@
 @synthesize topMargin;
 @synthesize bottomMargin;
 
-- (id)initWithFrame: (NSRect)frameRect
-{
-    self = [super initWithFrame: frameRect];
-    if (self != nil) {
-        leftMargin = 10;
-        rightMargin = 10;
-        topMargin = 10;
-        bottomMargin = 10;
-    }
-
-    return self;
+- (void)awakeFromNib {
+    leftMargin = 10;
+    rightMargin = 10;
+    topMargin = 10;
+    bottomMargin = 10;
 }
+
 
 // Shared objects.
 static NSShadow *borderShadow = nil;

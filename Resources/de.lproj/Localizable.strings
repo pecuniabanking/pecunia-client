@@ -34,6 +34,7 @@ AP30 = "Tabelle";
 AP31 = "Zuordnung";
 AP32 = "Überweisungen";
 AP33 = "Daueraufträge";
+AP33_1 = "Kontoauszüge";
 
 // Other base strings
 AP34 = "Beenden nicht möglich";

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AccountStatementsWindowController">
+            <connections>
+                <outlet property="clearButton" destination="GiW-lA-Nr2" id="0ch-Yc-JIJ"/>
+                <outlet property="pdfView" destination="MqM-if-awy" id="PKe-8m-e1N"/>
+                <outlet property="statusField" destination="n0J-vb-v4Q" id="4DN-VG-sep"/>
+                <outlet property="toggleButton" destination="8wt-DQ-vm4" id="BzK-YQ-3Hp"/>
+                <outlet property="topView" destination="c22-O7-iKe" id="Ojc-kJ-cCA"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView wantsLayer="YES" id="c22-O7-iKe" userLabel="Top View" customClass="RoundedOuterShadowView">
+            <rect key="frame" x="0.0" y="0.0" width="1099" height="610"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <pdfView autoresizesSubviews="NO" wantsLayer="YES" fixedFrame="YES" autoScales="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MqM-if-awy">
+                    <rect key="frame" x="20" y="47" width="1002" height="543"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </pdfView>
+                <segmentedControl verticalHuggingPriority="750" id="8wt-DQ-vm4">
+                    <rect key="frame" x="967" y="16" width="57" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="oUV-Zh-wlj"/>
+                    </constraints>
+                    <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="UZj-zW-8Qb">
+                        <font key="font" metaFont="system"/>
+                        <segments>
+                            <segment image="NSGoLeftTemplate"/>
+                            <segment image="NSGoRightTemplate" tag="1"/>
+                        </segments>
+                    </segmentedCell>
+                    <connections>
+                        <action selector="togglePage:" target="-2" id="Lug-cU-DOB"/>
+                    </connections>
+                </segmentedControl>
+                <button toolTip="Alle geladenen Auszüge löschen ..." wantsLayer="YES" verticalHuggingPriority="750" id="GiW-lA-Nr2">
+                    <rect key="frame" x="1044" y="518" width="41" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="29" id="KkD-17-hHd"/>
+                    </constraints>
+                    <shadow key="shadow">
+                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    </shadow>
+                    <buttonCell key="cell" type="push" bezelStyle="rounded" image="delete3" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PEv-ej-Y25">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="clear:" target="-2" id="EEy-Km-fRS"/>
+                    </connections>
+                </button>
+                <button toolTip="Anzeige verkleinern" verticalHuggingPriority="750" id="hu2-G5-vX2">
+                    <rect key="frame" x="1055" y="566" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="AHp-8F-8Ct"/>
+                        <constraint firstAttribute="height" constant="24" id="Yjr-dv-hHc"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="zoom-out" imagePosition="only" alignment="center" inset="2" id="Lws-h6-yHT">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="zoomOut:" target="-2" id="oJg-wz-xQm"/>
+                    </connections>
+                </button>
+                <button toolTip="Anzeige vergrößern" verticalHuggingPriority="750" id="dCe-Dt-8ol">
+                    <rect key="frame" x="1030" y="566" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="77u-Ir-eVP"/>
+                        <constraint firstAttribute="width" constant="24" id="hpe-Y3-VBc"/>
+                    </constraints>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="zoom-in" imagePosition="only" alignment="center" inset="2" id="i2V-M1-h0m">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="zoomIn:" target="-2" id="wwq-DZ-o1J"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="n0J-vb-v4Q">
+                    <rect key="frame" x="599" y="14" width="364" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="n51-q5-Ecl"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Status" id="nEM-eU-aQT">
+                        <font key="font" size="14" name="HelveticaNeue-Light"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="kcC-kH-5c4" userLabel="Load Button">
+                    <rect key="frame" x="19.5" y="16" width="181" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <shadow key="shadow" blurRadius="2">
+                        <size key="offset" width="2" height="2"/>
+                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
+                    </shadow>
+                    <buttonCell key="cell" type="roundTextured" title="Kontoauszüge abrufen" bezelStyle="texturedRounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cPp-3p-BNr" customClass="GradientButtonCell">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatements:" target="-2" id="wSO-RV-XDk"/>
+                        <binding destination="-2" name="enabled" keyPath="self.account" id="lYn-c1-kBH">
+                            <dictionary key="options">
+                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="267.5" y="126"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSGoLeftTemplate" width="9" height="12"/>
+        <image name="NSGoRightTemplate" width="9" height="12"/>
+        <image name="delete3" width="16" height="16"/>
+        <image name="zoom-in" width="24" height="24"/>
+        <image name="zoom-out" width="24" height="24"/>
+    </resources>
+</document>

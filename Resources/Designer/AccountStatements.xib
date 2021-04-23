@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +21,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Kontoauszüge" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" frameAutosaveName="accountStatements" animationBehavior="default" id="1">
+        <window title="Kontoauszüge" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" frameAutosaveName="accountStatements" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="495" y="140" width="729" height="762"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
@@ -62,8 +62,8 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon95-1" id="nvI-97-tAR"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="36" userLabel="Load Button">
-                                <rect key="frame" x="474" y="7" width="207" height="32"/>
-                                <buttonCell key="cell" type="push" title="Kontoauszüge aktualisieren" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
+                                <rect key="frame" x="500" y="8" width="181" height="32"/>
+                                <buttonCell key="cell" type="push" title="Kontoauszüge abrufen" bezelStyle="rounded" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="37">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -72,7 +72,7 @@
                                 </connections>
                             </button>
                             <button toolTip="Alle geladenen Auszüge löschen ..." verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KP0-qj-p9i">
-                                <rect key="frame" x="674" y="7" width="41" height="32"/>
+                                <rect key="frame" x="674" y="8" width="41" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="29" id="TaP-nv-KEE"/>
                                 </constraints>
@@ -113,13 +113,6 @@
                             <pdfView autoresizesSubviews="NO" autoScales="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3" userLabel="PDF Viewer">
                                 <rect key="frame" x="20" y="105" width="689" height="555"/>
                             </pdfView>
-                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="mKU-ij-9xw">
-                                <rect key="frame" x="20" y="64" width="16" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="16" id="Egx-Ql-zXR"/>
-                                    <constraint firstAttribute="height" constant="16" id="aDU-3Q-RP5"/>
-                                </constraints>
-                            </progressIndicator>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ntu-4z-vtl">
                                 <rect key="frame" x="42" y="61" width="608" height="23"/>
                                 <constraints>
@@ -188,9 +181,15 @@
                                     <action selector="zoomIn:" target="-2" id="ACo-Qo-d19"/>
                                 </connections>
                             </button>
+                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="mKU-ij-9xw">
+                                <rect key="frame" x="20" y="668" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="Egx-Ql-zXR"/>
+                                    <constraint firstAttribute="height" constant="32" id="aDU-3Q-RP5"/>
+                                </constraints>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="mKU-ij-9xw" firstAttribute="centerY" secondItem="Ntu-4z-vtl" secondAttribute="centerY" id="0Rx-nY-vQF"/>
                             <constraint firstItem="3" firstAttribute="top" secondItem="NgJ-z0-PGK" secondAttribute="bottom" constant="8" id="9rV-0I-9mf"/>
                             <constraint firstAttribute="trailing" secondItem="Ntu-4z-vtl" secondAttribute="trailing" constant="81" id="9sZ-r9-hje"/>
                             <constraint firstAttribute="trailing" secondItem="NgJ-z0-PGK" secondAttribute="trailing" constant="20" id="Hwa-fG-Isq"/>
@@ -198,11 +197,13 @@
                             <constraint firstItem="3" firstAttribute="leading" secondItem="xo8-6Q-G6e" secondAttribute="leading" constant="20" id="PDg-dJ-SGV"/>
                             <constraint firstAttribute="bottom" secondItem="3" secondAttribute="bottom" constant="105" id="Pqt-om-eoa"/>
                             <constraint firstItem="hDy-MF-1h6" firstAttribute="leading" secondItem="Ntu-4z-vtl" secondAttribute="trailing" constant="8" id="RpN-8H-0sq"/>
-                            <constraint firstItem="mKU-ij-9xw" firstAttribute="leading" secondItem="xo8-6Q-G6e" secondAttribute="leading" constant="20" id="Toe-Lj-SaT"/>
                             <constraint firstItem="3" firstAttribute="top" secondItem="xo8-6Q-G6e" secondAttribute="top" constant="52" id="V0I-d8-4qP"/>
                             <constraint firstItem="Ntu-4z-vtl" firstAttribute="leading" secondItem="xo8-6Q-G6e" secondAttribute="leading" constant="44" id="W02-HV-gwh"/>
                             <constraint firstItem="Ntu-4z-vtl" firstAttribute="centerY" secondItem="hDy-MF-1h6" secondAttribute="centerY" id="W9l-Hk-16o"/>
+                            <constraint firstItem="mKU-ij-9xw" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="WP8-qX-nWz"/>
+                            <constraint firstItem="3" firstAttribute="top" secondItem="mKU-ij-9xw" secondAttribute="bottom" constant="8" symbolic="YES" id="boa-RY-yxe"/>
                             <constraint firstAttribute="trailing" secondItem="CBG-Eb-2ie" secondAttribute="trailing" constant="20" id="hNi-38-npb"/>
+                            <constraint firstItem="mKU-ij-9xw" firstAttribute="top" secondItem="xo8-6Q-G6e" secondAttribute="top" constant="12" id="klf-48-Nre"/>
                             <constraint firstItem="3" firstAttribute="top" secondItem="LYg-M1-iy9" secondAttribute="bottom" constant="8" id="mws-5b-RSA"/>
                             <constraint firstAttribute="bottom" secondItem="CBG-Eb-2ie" secondAttribute="bottom" constant="20" id="q32-gt-Uc0"/>
                             <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="20" id="u0N-uP-OGD"/>
@@ -229,6 +230,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="22"/>
             </connections>
+            <point key="canvasLocation" x="-259" y="160"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="6lc-Qh-n1g"/>
     </objects>

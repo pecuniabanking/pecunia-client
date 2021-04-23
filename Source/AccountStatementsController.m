@@ -176,11 +176,39 @@
     [statusField display];
 }
 
+- (void)retrieveStatements {
+    NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
+    
+    [spinner setHidden: NO];
+    [spinner startAnimation: self];
+    
+    AccountStatementsHandler *handler = [[AccountStatementsHandler alloc] init:account context:context];
+    if (handler != nil) {
+        [handler getAccountStatements];
+    }
+    
+    // Show the latest document.
+    [self readStatements];
+    [self updateDisplayIncludingStatus: YES];
+
+    [spinner stopAnimation: self];
+    [spinner setHidden: YES];
+
+    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
+    if (!suppressSound) {
+        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
+        if (doneSound != nil) {
+            [doneSound play];
+        }
+    }
+
+}
+
 /**
  * Retrieves all currently available statements from the given account that are newer than the latest one stored already.
  * If there's no statement yet everything is retrieved.
  */
-- (void)retrieveStatements {
+- (void)retrieveStatements_old {
     NSManagedObjectContext *context = MOAssistant.sharedAssistant.context;
 
     [spinner setHidden: NO];
@@ -212,7 +240,7 @@
             // The returned statement is always valid, but contains no values if there's no data returned from the bank.
             [self setProgress: NSLocalizedString(@"AP831", nil) number: 1 year: year];
             AccountStatement *statement = [HBCIBackend.backend getAccountStatement: 1 year: year bankAccount: account];
-
+            
             // If there's no first document for a year then we have found something to start from. Except it fails for
             // the current year. In that case it could be that there's no document yet. Try the previous year too then.
             if ((statement == nil || statement.document == nil) && year < currentYear) {
@@ -274,6 +302,11 @@
         }
 
         if (statement) {
+            // if MT940 statements then convert to PDF (we only support PDF here)
+            if(statement.format.intValue == AccountStatement_MT940) {
+                [statement convertStatementsToPDFForAccount:account];
+            }
+            
             // Now insert a new instance in our main store.
             NSEntityDescription *entity = statement.entity;
             

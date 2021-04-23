@@ -35,7 +35,7 @@
 #import "ZipException.h"
 #import "ZipReadStream.h"
 #import "ZipWriteStream.h"
-#import "FIleInZipInfo.h"
+#import "FileInZipInfo.h"
 
 #define FILE_IN_ZIP_MAX_NAME_LENGTH (256)
 

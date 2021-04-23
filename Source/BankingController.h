@@ -43,6 +43,7 @@
 @class CategoryHeatMapController;
 @class BSSelectWindowController;
 @class BankMessageWindowController;
+@class AccountStatementsWindowController;
 
 @class JMModalOverlay;
 @class WaitViewController;
@@ -92,6 +93,8 @@
     CategoryHeatMapController        *heatMapController;
     BSSelectWindowController         *selectWindowController;
     BankMessageWindowController      *bankMessageController;
+    
+    AccountStatementsWindowController   *accountStatementsController;
 }
 
 @property (strong) IBOutlet CategoryView *accountsView;
@@ -167,6 +170,8 @@
 - (void)checkBalances: (NSArray *)resultList;
 - (void)stopHomescreenUpdates;
 - (void)resumeHomescreenUpdates;
+- (void)startRefreshAnimation;
+- (void)stopRefreshAnimation;
 
 + (BankingController *)controller;
 

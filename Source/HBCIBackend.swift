@@ -151,6 +151,7 @@ class HBCIBackendCallback : HBCICallback {
 class HBCIBackend : NSObject, HBCILog {
     var hbciQueriesRunning = 0;
     var resultWindow = ResultWindowController( );
+    var supportedTransactionsCache = Dictionary<BankAccount, Dictionary<TransactionType, Bool>>();
     
     @objc public static var backend:HBCIBackend {
         get {
@@ -418,16 +419,57 @@ class HBCIBackend : NSObject, HBCILog {
     }
     
     @objc func isTransactionSupportedForAccount(_ tt:TransactionType, account:BankAccount) ->Bool {
-        if let orderName = transactionTypeToOrderName(tt) {
-            return self.isOrderSupportedForAccount(orderName, account: account);
+        var result = false;
+        
+        guard let bankUser = account.defaultBankUser() else {
+            return false;
         }
-        return false;
+
+        if let accountCache = supportedTransactionsCache[account] {
+            if let result = accountCache[tt] {
+                return result;
+            }
+        }
+        
+        defer {
+            if !supportedTransactionsCache.has(account) {
+                supportedTransactionsCache[account] = Dictionary<TransactionType, Bool>();
+            }
+            supportedTransactionsCache[account]![tt] = result;
+        }
+        
+        if !isTransactionSupportedForUser(tt, bankUser: bankUser) {
+            result = false;
+            return result;
+        }
+        
+        if let orderName = transactionTypeToOrderName(tt) {
+            result = self.isOrderSupportedForAccount(orderName, account: account);
+            return result;
+        }
+        result = false;
+        return result;
     }
     
     func isTransactionSupportedForUser(_ tt:TransactionType, bankUser:BankUser) ->Bool {
         do {
             let user = try HBCIUser(bankUser: bankUser);
             if let orderName = transactionTypeToOrderName(tt) {
+                /*
+                // we currently support only PDF for accountstatements
+                if tt == TransactionType.accountStatements {
+                    if user.parameters.isOrderSupported(orderName) {
+                        guard let params = HBCIAccountStatementOrder.getParameters(user) else {
+                            logInfo("AccountStatement: user parameters not found");
+                            return false;
+                        }
+                        if params.formats.contains(HBCIAccountStatementFormat.pdf) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                */
                 return user.parameters.isOrderSupported(orderName);
             }
         }
@@ -514,6 +556,7 @@ class HBCIBackend : NSObject, HBCILog {
                 if result.isOk() {
                     if result.hbciParameterUpdated {
                         user.hbciParameters = hbciUser.parameters.data();
+                        supportedTransactionsCache.removeAll();
                     }
                     if let msg = HBCICustomMessage.newInstance(dialog) {
                         if let order = HBCITanMediaOrder(message: msg) {
@@ -1309,6 +1352,7 @@ class HBCIBackend : NSObject, HBCILog {
                     var error = false;
                     if result.hbciParameterUpdated {
                         bankUser.hbciParameters = user.parameters.data();
+                        supportedTransactionsCache.removeAll();
                     }
                     
                     defer {
@@ -1437,6 +1481,7 @@ class HBCIBackend : NSObject, HBCILog {
             
             if result.hbciParameterUpdated {
                 bankUser.hbciParameters = user.parameters.data();
+                supportedTransactionsCache.removeAll();
             }
 
             handleBankMessages(bankCode: user.bankCode, messages: result.bankMessages());
@@ -2221,7 +2266,7 @@ class HBCIBackend : NSObject, HBCILog {
         let iterations = 987;
         let bytes:[UInt8] = [0x26,0x19,0x38,0xa7,0x99,0xbc,0xf1,0x55];
         let md5Hash = UnsafeMutablePointer<UInt8>.allocate(capacity: 16);
-        let salt = Data(bytes: UnsafePointer<UInt8>(bytes), count: 8);
+        let salt = Data(bytes);
         if var pwData = "PecuniaData".data(using: String.Encoding.isoLatin1) {
             pwData.append(salt);
             
@@ -2313,7 +2358,7 @@ class HBCIBackend : NSObject, HBCILog {
         return nil;
     }
     
-    func convertAccountStatement(_ statement:HBCIAccountStatement) ->AccountStatement {
+    func convertAccountStatement(_ statement:HBCIAccountStatement, _ account:HBCIAccount) ->AccountStatement {
         let context = MOAssistant.shared().context;
         let stat = NSEntityDescription.insertNewObject(forEntityName: "AccountStatement", into: context!) as! AccountStatement;
         stat.document = statement.booked;
@@ -2328,6 +2373,10 @@ class HBCIBackend : NSObject, HBCILog {
         stat.name = statement.name;
         if let number = statement.number {
             stat.number = NSNumber(value: number);
+        }
+        if let bankStatements = statement.bookedStatements {
+            let result = self.convertStatements(account, statements: bankStatements);
+            stat.statements = result.statements;
         }
         return stat;
     }
@@ -2367,6 +2416,7 @@ class HBCIBackend : NSObject, HBCILog {
             
             if result.hbciParameterUpdated {
                 bankUser.hbciParameters = user.parameters.data();
+                supportedTransactionsCache.removeAll();
             }
             
             return try block(user, dialog);
@@ -2410,7 +2460,6 @@ class HBCIBackend : NSObject, HBCILog {
                             order.format = HBCIAccountStatementFormat.mt940;
                         } else {
                             logInfo("AccountStatement: format not supported");
-                            logError(errorMsg);
                             return nil;
                         }
                     }
@@ -2423,7 +2472,7 @@ class HBCIBackend : NSObject, HBCILog {
                     }
                     if try msg.send() {
                         if let stat = order.statements.first {
-                            return self.convertAccountStatement(stat);
+                            return self.convertAccountStatement(stat, account);
                         }
                     } else {
                         logError(errorMsg);
@@ -2454,6 +2503,20 @@ class HBCIBackend : NSObject, HBCILog {
         }
         catch {}
         return nil;
+    }
+    
+    @objc func getAccountStatements(_ accounts:[BankAccount]) {
+        guard let context = MOAssistant.shared()?.context else {
+            logError("Invalid Managed Object Context")
+            return;
+        }
+        
+        for account in accounts {
+            if self.isTransactionSupportedForAccount(TransactionType.accountStatements, account: account) {
+                let handler = AccountStatementsHandler(account, context: context)
+                handler.getAccountStatements()
+            }
+        }
     }
  
     func handleBankMessages(bankCode: String, messages:Array<HBCIBankMessage>) {

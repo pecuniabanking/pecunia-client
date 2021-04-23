@@ -86,6 +86,7 @@
 #import "BankMessageWindowController.h"
 #import "BudgetWindowController.h"
 #import "ChipcardDataWindowController.h"
+#import "AccountStatementsWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"pecunia.BankStatementDataType";
@@ -122,6 +123,8 @@ static BankingController *bankinControllerInstance;
     NSImage  *bankImage;
 
     NSMutableArray *bankAccountItemsExpandState;
+    NSMutableArray *categoryItemsExpandState;
+    
     BankingCategory       *lastSelection;
 
     NSInteger currentPage; // Current main page.
@@ -879,13 +882,32 @@ static BankingController *bankinControllerInstance;
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
 
+    [self stopHomescreenUpdates];
+    [self startRefreshAnimation];
+    
+    // if we are in the AccountStatements-Section, we only retrieve account statements
+    if (currentSection == accountStatementsController) {
+        [[HBCIBackend backend] getAccountStatements:selectedAccounts];
+        [self stopRefreshAnimation];
+        BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
+        if (!suppressSound) {
+            NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
+            if (doneSound != nil) {
+                [doneSound play];
+            }
+        }
+        LogLeave;
+        return;
+    }
+    
+    if ([defaults boolForKey: @"loadAccountStatements"]) {
+        [[HBCIBackend backend] getAccountStatements:selectedAccounts];
+    }
+
     if ([defaults boolForKey: @"manualTransactionCheck"] && selectWindowController == nil) {
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
-
-    [self stopHomescreenUpdates];
-    [self startRefreshAnimation];
-
+    
     NSArray *queryResult = [[HBCIBackend backend] getStatements: selectedAccounts];
     
     [self processStatements:queryResult];
@@ -1590,13 +1612,17 @@ static BankingController *bankinControllerInstance;
         // the category periods or rules definition view.
         BOOL oldSectionHidesAccounts = currentSectionIndex == 3 || currentSectionIndex == 4;
         BOOL newSectionHidesAccounts = sectionIndex == 3 || sectionIndex == 4;
-        if (oldSectionHidesAccounts && !newSectionHidesAccounts) {
+        BOOL oldSectionHidesCategories = currentSectionIndex == 5;
+        BOOL newSectionHidesCategories = sectionIndex == 5;
+        if ((oldSectionHidesAccounts && !newSectionHidesAccounts) ||
+            (oldSectionHidesCategories && !newSectionHidesCategories)) {
             NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil"];
             [categoryController setFetchPredicate: predicate];
 
             // Restore the previous expand state and selection (after a delay, to let the controller
             // propagate the changed content to the outline.
-            [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
+            if (oldSectionHidesAccounts) [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
+            if (oldSectionHidesCategories) [self performSelector: @selector(restoreCategoryItemsStates) withObject: nil afterDelay: 0.1];
 
             [timeSlicer showControls: YES];
         }
@@ -1753,6 +1779,36 @@ static BankingController *bankinControllerInstance;
                 [timeSlicer updateDelegate];
 
                 break;
+                
+            case 5:
+                if (accountStatementsController == nil) {
+                    accountStatementsController = [[AccountStatementsWindowController alloc] init];
+                    if ([NSBundle.mainBundle loadNibNamed:@"AccountStatementsView" owner:accountStatementsController topLevelObjects:nil]) {
+                        NSView * view = [accountStatementsController mainView];
+                        view.frame = frame;
+                    }
+                    // initialize
+                }
+                if (currentSection != accountStatementsController) {
+                    [currentSection deactivate];
+                    [[accountStatementsController mainView] setFrame:frame];
+                    [rightPane replaceSubview:currentView with:[accountStatementsController mainView]];
+                    currentSection = accountStatementsController;
+                    
+                    // initialize
+                    if (!oldSectionHidesCategories) {
+                        [self saveCategoryItemsStates];
+                        
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil && isBankAcc == YES"];
+                        [categoryController setFetchPredicate: predicate];
+                        [categoryController prepareContent];
+                    }
+
+                    pageHasChanged = YES;
+                }
+                [timeSlicer updateDelegate];
+                break;
+                
 
             case 6:
                 if (heatMapController == nil) {
@@ -2007,6 +2063,16 @@ static BankingController *bankinControllerInstance;
             if ([categoryDefinitionController categoryShouldChange] == NO) {
                 return NO;
             }
+        }
+        if (currentSection == accountStatementsController) {
+            BankingCategory *category = [item representedObject];
+            if ([category isBankAccount] && category.accountNumber != nil) {
+                BankAccount *account = (BankAccount *)category;
+                if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_AccountStatements account:account]) {
+                    return YES;
+                }
+            }
+            return NO;
         }
     }
 
@@ -2318,6 +2384,14 @@ static BankingController *bankinControllerInstance;
         if (currentSection == categoryDefinitionController && [cat isBankAccount]) {
             itemIsDisabled = YES;
         }
+        if (currentSection == accountStatementsController) {
+            if ([cat isBankAccount] && cat.accountNumber != nil) {
+                BankAccount *account = (BankAccount *)cat;
+                if (![HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_AccountStatements account:account]) {
+                    itemIsDisabled = YES;
+                }
+            }
+        }
     }
 
     BOOL itemIsRoot = [cat isRoot];
@@ -2397,7 +2471,8 @@ static BankingController *bankinControllerInstance;
             break;
 
         case 9: // Direct debits.
-            [self switchMainPage: 4];
+            [self switchMainPage: 1];
+            [self switchToAccountPage:5];
             break;
     }
 }
@@ -2898,6 +2973,19 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (void)saveCategoryItemsStates {
+    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+    categoryItemsExpandState = [NSMutableArray array];
+    for (row = 0; row < numberOfRows; row++) {
+        id       item = [accountsView itemAtRow: row];
+        BankingCategory *category = [item representedObject];
+        if ([category isBankAccount]) continue;
+        if ([accountsView isItemExpanded: item]) {
+            [categoryItemsExpandState addObject: category];
+        }
+    }
+}
+
 /**
  * Restores the previously saved expand states of all bank account nodes and sets the
  * last selection if it was on a bank account node.
@@ -2926,6 +3014,21 @@ static BankingController *bankinControllerInstance;
     lastSelection = nil;
 
     LogLeave;
+}
+
+- (void)restoreCategoryItemsStates {
+    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+    for (BankingCategory *savedItem in categoryItemsExpandState) {
+        for (row = 0; row < numberOfRows; row++) {
+            id       item = [accountsView itemAtRow: row];
+            BankingCategory *object = [item representedObject];
+            if ([object.name isEqualToString: savedItem.name]) {
+                [accountsView expandItem: item];
+                numberOfRows = [accountsView numberOfRows];
+                break;
+            }
+        }
+    }
 }
 
 - (void)syncAllAccounts {
@@ -3159,7 +3262,11 @@ static BankingController *bankinControllerInstance;
     [userDefaults setObject: NSStringFromRect(mainWindow.frame) forKey: @"mcmain"];
 
     [currentSection deactivate];
-    [accountsView saveState];
+    if (currentSection != accountStatementsController &&
+        currentSection != categoryDefinitionController &&
+        currentSection != categoryPeriodsController) {
+        [accountsView saveState];
+    }
 
     // Remove explicit bindings and observers to speed up shutdown.
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
@@ -3392,6 +3499,9 @@ static BankingController *bankinControllerInstance;
     [sidebar addButtonWithTitle: NSLocalizedString(@"AP33", nil)
                           image: [NSImage imageNamed: @"send3-active"]
                  alternateImage: [NSImage imageNamed: @"send3"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP33_1", nil)
+                          image: [NSImage imageNamed: @"kontoauszug-active"]
+                 alternateImage: [NSImage imageNamed: @"kontoauszug"]];
 
     NSFont *font = [PreferenceController mainFontOfSize: 11 bold: NO];
     if (font != nil) {

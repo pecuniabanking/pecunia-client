@@ -395,6 +395,8 @@
 		B13CE56F1C12397D00B5B750 /* HBCIBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13CE56E1C12397D00B5B750 /* HBCIBackend.swift */; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
+		B1480147261F8F85005ECCEA /* AccountStatementsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1480146261F8F85005ECCEA /* AccountStatementsView.xib */; };
+		B1480149261F941E005ECCEA /* AccountStatementsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1480148261F941E005ECCEA /* AccountStatementsWindowController.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
 		B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
 		B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B14C6224115C04FA009324A6 /* 030.xcmappingmodel */; };
@@ -418,6 +420,8 @@
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
+		B17BED54262A1DD8008B12BB /* kontoauszug-active.png in Resources */ = {isa = PBXBuildFile; fileRef = B17BED52262A1DD8008B12BB /* kontoauszug-active.png */; };
+		B17BED5A262A23A3008B12BB /* kontoauszug.png in Resources */ = {isa = PBXBuildFile; fileRef = B17BED59262A23A3008B12BB /* kontoauszug.png */; };
 		B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */; };
 		B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */; };
 		B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE44414CA091E00F6FAFE /* CustomerMessage.m */; };
@@ -458,6 +462,7 @@
 		B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
+		B1AF84C62618C41F00CC14A5 /* AccountStatementsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AF84C52618C41F00CC14A5 /* AccountStatementsHandler.swift */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
 		B1AFAA0512A061C100B115A7 /* StandingOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderController.m */; };
 		B1AFC67117F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
@@ -470,6 +475,8 @@
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
 		B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
+		B1D45AFE26336703003B5383 /* kontoauszug2-active.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D45AFC26336703003B5383 /* kontoauszug2-active.png */; };
+		B1D45AFF26336703003B5383 /* kontoauszug2.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D45AFD26336703003B5383 /* kontoauszug2.png */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */; };
 		B1E26C49220E1AAD0033603E /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C46220E1AAC0033603E /* BudgetWindowController.m */; };
 		B1E26C4C220E1AD00033603E /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */; };
@@ -1108,6 +1115,9 @@
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14587A41289ED8D00848683 /* CategoryReportingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryReportingNode.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1480144261F8D0A005ECCEA /* AccountStatementsWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountStatementsWindowController.h; sourceTree = "<group>"; };
+		B1480146261F8F85005ECCEA /* AccountStatementsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountStatementsView.xib; sourceTree = "<group>"; };
+		B1480148261F941E005ECCEA /* AccountStatementsWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountStatementsWindowController.m; sourceTree = "<group>"; };
 		B14C5FFF1148467A009324A6 /* BankStatementController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C60001148467A009324A6 /* BankStatementController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C61B9115AB4FB009324A6 /* BankStatementPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1154,6 +1164,8 @@
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4213EC921200739E7A /* FlickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = FlickerView.m; sourceTree = "<group>"; tabWidth = 4; };
+		B17BED52262A1DD8008B12BB /* kontoauszug-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kontoauszug-active.png"; sourceTree = "<group>"; };
+		B17BED59262A23A3008B12BB /* kontoauszug.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kontoauszug.png; sourceTree = "<group>"; };
 		B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 5.xcdatamodel"; sourceTree = "<group>"; };
 		B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 102.xcmappingmodel; sourceTree = "<group>"; };
 		B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -1225,6 +1237,7 @@
 		B1AA6336140990EF00ADE1D0 /* ImportSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportSettings.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640A140C074E00ADE1D0 /* ImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640B140C074E00ADE1D0 /* ImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1AF84C52618C41F00CC14A5 /* AccountStatementsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatementsHandler.swift; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1AFAA0312A061C100B115A7 /* StandingOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1242,6 +1255,8 @@
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementListOrder.swift; sourceTree = "<group>"; };
+		B1D45AFC26336703003B5383 /* kontoauszug2-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kontoauszug2-active.png"; sourceTree = "<group>"; };
+		B1D45AFD26336703003B5383 /* kontoauszug2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kontoauszug2.png; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1E26C46220E1AAC0033603E /* BudgetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BudgetWindowController.m; sourceTree = "<group>"; };
@@ -1781,6 +1796,7 @@
 				27E845BC19E17D2F0026464E /* TransferTemplates.xib */,
 				27E845BD19E17D2F0026464E /* WaitView.xib */,
 				01D0C78C24E3E985005D023A /* AccountMergeWindow.xib */,
+				B1480146261F8F85005ECCEA /* AccountStatementsView.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -1852,6 +1868,8 @@
 				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
 				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
+				B1480144261F8D0A005ECCEA /* AccountStatementsWindowController.h */,
+				B1480148261F941E005ECCEA /* AccountStatementsWindowController.m */,
 			);
 			name = Sections;
 			sourceTree = "<group>";
@@ -2044,6 +2062,10 @@
 				276D9C9418CB79ED002BEDA8 /* Magnify */,
 				27AA5679186C3E9100B113E7 /* assign-active.png */,
 				27AA567A186C3E9100B113E7 /* assign-active@2x.png */,
+				B17BED52262A1DD8008B12BB /* kontoauszug-active.png */,
+				B17BED59262A23A3008B12BB /* kontoauszug.png */,
+				B1D45AFC26336703003B5383 /* kontoauszug2-active.png */,
+				B1D45AFD26336703003B5383 /* kontoauszug2.png */,
 				27AA567B186C3E9100B113E7 /* assign.png */,
 				27AA567C186C3E9100B113E7 /* assign@2x.png */,
 				27D1172A15288C3600CD7E83 /* background-pattern.png */,
@@ -2274,6 +2296,7 @@
 				B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */,
 				B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */,
 				01D0C78F24E3F10F005D023A /* AccountMergeWindowController.swift */,
+				B1AF84C52618C41F00CC14A5 /* AccountStatementsHandler.swift */,
 			);
 			name = Accounts;
 			sourceTree = "<group>";
@@ -2616,6 +2639,7 @@
 				B132F84B0F8FE9DB00263F3B /* ins-8.png in Resources */,
 				27F975E21956F8E700FF9DA0 /* cross-mark.png in Resources */,
 				27E845D619E17D300026464E /* CategoryHeatMap.xib in Resources */,
+				B17BED5A262A23A3008B12BB /* kontoauszug.png in Resources */,
 				27E3E77E194C7D4300C1DF97 /* de.lproj in Resources */,
 				27E845C219E17D2F0026464E /* AccountMaintenance.xib in Resources */,
 				B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */,
@@ -2664,6 +2688,7 @@
 				276D9C9F18CB79FF002BEDA8 /* magnify-busy2@2x.png in Resources */,
 				27AA5659186C330A00B113E7 /* graph3.png in Resources */,
 				27E8460C19E17D300026464E /* SigningOptions.xib in Resources */,
+				B1D45AFE26336703003B5383 /* kontoauszug2-active.png in Resources */,
 				275CF077181420F40035EBEC /* disclose.png in Resources */,
 				27AA5675186C3C7C00B113E7 /* table.png in Resources */,
 				27E8460E19E17D300026464E /* StatementDetails.xib in Resources */,
@@ -2700,6 +2725,7 @@
 				2794FF6B1972D5BA000B69EC /* new-small-white@2x.png in Resources */,
 				27AA5687186C439F00B113E7 /* favorite.png in Resources */,
 				2720D2D11AC8048900B86AD0 /* eu_all_mfi.txt in Resources */,
+				B1480147261F8F85005ECCEA /* AccountStatementsView.xib in Resources */,
 				27E8460619E17D300026464E /* Preferences.xib in Resources */,
 				27E845EE19E17D300026464E /* HomeScreenNextTransfers.xib in Resources */,
 				27E8462019E17D300026464E /* TransfersListViewCell.xib in Resources */,
@@ -2748,6 +2774,7 @@
 				2732F69E186B06CE00809CF2 /* home.png in Resources */,
 				27AA5677186C3C7C00B113E7 /* table@2x.png in Resources */,
 				275AC7E4186B5BDC002E6BED /* graph4@2x.png in Resources */,
+				B1D45AFF26336703003B5383 /* kontoauszug2.png in Resources */,
 				27E845E619E17D300026464E /* Donation.xib in Resources */,
 				2732F6AA186B202400809CF2 /* overview.png in Resources */,
 				27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */,
@@ -2798,6 +2825,7 @@
 				275AC7ED186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F31900359E00DCF0DB /* font-increase.png in Resources */,
 				27E845DE19E17D300026464E /* ChipTanWindow.xib in Resources */,
+				B17BED54262A1DD8008B12BB /* kontoauszug-active.png in Resources */,
 				2791FBD716CFCA4C00953116 /* delete3@2x.png in Resources */,
 				27C202FD16E3894100D696BF /* reset.png in Resources */,
 				27C202FE16E3894100D696BF /* reset@2x.png in Resources */,
@@ -2920,6 +2948,7 @@
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
+				B1480149261F941E005ECCEA /* AccountStatementsWindowController.m in Sources */,
 				27F1F0401AEBE656000495CC /* BankQueryResult.swift in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				27686E43193B5B3E0038067D /* JMOverlayView.m in Sources */,
@@ -2963,6 +2992,7 @@
 				B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */,
 				B1E26C49220E1AAD0033603E /* BudgetWindowController.m in Sources */,
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
+				B1AF84C62618C41F00CC14A5 /* AccountStatementsHandler.swift in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 				01D0C79024E3F10F005D023A /* AccountMergeWindowController.swift in Sources */,
@@ -3138,7 +3168,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 31.9;
+				CURRENT_PROJECT_VERSION = 31.10;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3209,7 +3239,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 31.9;
+				CURRENT_PROJECT_VERSION = 31.10;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3267,7 +3297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 31.9;
+				CURRENT_PROJECT_VERSION = 31.10;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
