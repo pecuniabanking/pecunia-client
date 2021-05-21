@@ -181,6 +181,9 @@
             if (currentUser.hbciVersion == nil || currentUser.hbciVersion.length == 0) {
                 currentUser.hbciVersion = @"300";
             }
+            if ([currentUser.bankCode isEqualToString:@"50010517"]) {
+                currentUser.hbciVersion = @"220";
+            }
         }
 
         if (step >= 2 ) {

@@ -402,6 +402,8 @@ class HBCIBackend : NSObject, HBCILog {
             return "SepaStandingOrderEdit";
         case TransactionType.camtStatements:
             return "CamtStatements";
+        case TransactionType.custodyAccountBalance:
+            return "CustodyAccountBalance";
         default: return nil;
         }
     }
@@ -1625,6 +1627,37 @@ class HBCIBackend : NSObject, HBCILog {
                     result.balance = balance.value;
                     result.account = account;
                     bqResult.append(result);
+                } else if isTransactionSupportedForAccount(TransactionType.custodyAccountBalance, account: account) {
+                    guard let order = HBCICustodyAccountBalanceOrder(message: msg, account: hbciAccount) else {
+                        logInfo("Failed to create custody account balance order for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard order.enqueue() else {
+                        logInfo("Failed to register custody account balance order for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logInfo("Failed to send custody account balance message for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard let balance = order.balance else {
+                        continue;
+                    }
+                    if let depotValue = balance.depotValue {
+                        let result = BankQueryResult();
+                        
+                        result.bankCode = hbciAccount.bankCode;
+                        result.accountNumber = hbciAccount.number;
+                        result.accountSuffix = hbciAccount.subNumber;
+                        
+                        result.balance = depotValue.value;
+                        result.currency = depotValue.currency;
+                        result.account = account;
+                        bqResult.append(result);
+                    }
                 } else {
                     logError("Konto \(account.accountNumber()!) unterstützt weder Umsatz- noch Saldoabruf")
                     continue;
