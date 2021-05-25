@@ -38,8 +38,6 @@
 		2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
 		271AD6B318E85741005BE90D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B118E85741005BE90D /* key.png */; };
 		271AD6B518E85741005BE90D /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B218E85741005BE90D /* key@2x.png */; };
-		2720D2CF1AC8048900B86AD0 /* de in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CD1AC8048900B86AD0 /* de */; };
-		2720D2D11AC8048900B86AD0 /* eu_all_mfi.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2720D2CE1AC8048900B86AD0 /* eu_all_mfi.txt */; };
 		2722DE8115B2F03300503E95 /* templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 2722DE8015B2F03300503E95 /* templates.png */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
@@ -477,6 +475,10 @@
 		B1D1A0DA1CBD7ED200D2E486 /* CCSettlementListOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */; };
 		B1D45AFE26336703003B5383 /* kontoauszug2-active.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D45AFC26336703003B5383 /* kontoauszug2-active.png */; };
 		B1D45AFF26336703003B5383 /* kontoauszug2.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D45AFD26336703003B5383 /* kontoauszug2.png */; };
+		B1D5A778265D2C3F00531EB9 /* eu_all_mfi.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1D5A777265D2C3F00531EB9 /* eu_all_mfi.txt */; };
+		B1D5A7A2265D381500531EB9 /* bank_codes.txt in Copy Files */ = {isa = PBXBuildFile; fileRef = B1D5A7A0265D37B000531EB9 /* bank_codes.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B1D5A7A3265D381500531EB9 /* fints_institute.csv in Copy Files */ = {isa = PBXBuildFile; fileRef = B1D5A79F265D37B000531EB9 /* fints_institute.csv */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B1D5A7A4265D381500531EB9 /* mappings.txt in Copy Files */ = {isa = PBXBuildFile; fileRef = B1D5A7A1265D37B000531EB9 /* mappings.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */; };
 		B1E26C49220E1AAD0033603E /* BudgetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E26C46220E1AAC0033603E /* BudgetWindowController.m */; };
 		B1E26C4C220E1AD00033603E /* BudgetWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E26C4B220E1AD00033603E /* BudgetWindowController.xib */; };
@@ -577,6 +579,19 @@
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D5A795265D36CF00531EB9 /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = de;
+			dstSubfolderSpec = 7;
+			files = (
+				B1D5A7A2265D381500531EB9 /* bank_codes.txt in Copy Files */,
+				B1D5A7A3265D381500531EB9 /* fints_institute.csv in Copy Files */,
+				B1D5A7A4265D381500531EB9 /* mappings.txt in Copy Files */,
+			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1257,6 +1272,10 @@
 		B1D1A0D91CBD7ED200D2E486 /* CCSettlementListOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettlementListOrder.swift; sourceTree = "<group>"; };
 		B1D45AFC26336703003B5383 /* kontoauszug2-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kontoauszug2-active.png"; sourceTree = "<group>"; };
 		B1D45AFD26336703003B5383 /* kontoauszug2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kontoauszug2.png; sourceTree = "<group>"; };
+		B1D5A777265D2C3F00531EB9 /* eu_all_mfi.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = eu_all_mfi.txt; sourceTree = "<group>"; };
+		B1D5A79F265D37B000531EB9 /* fints_institute.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = fints_institute.csv; sourceTree = "<group>"; };
+		B1D5A7A0265D37B000531EB9 /* bank_codes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = bank_codes.txt; sourceTree = "<group>"; };
+		B1D5A7A1265D37B000531EB9 /* mappings.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mappings.txt; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSOutlineView+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOutlineView+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1E26C46220E1AAC0033603E /* BudgetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BudgetWindowController.m; sourceTree = "<group>"; };
@@ -1915,6 +1934,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B1D5A7A0265D37B000531EB9 /* bank_codes.txt */,
+				B1D5A79F265D37B000531EB9 /* fints_institute.csv */,
+				B1D5A7A1265D37B000531EB9 /* mappings.txt */,
 				B1E3E4BD16BC6DE500DC1638 /* de.lproj */,
 				27E55355146EDA59001DE9BE /* Designer */,
 				27E844E019E173AD0026464E /* External Libs */,
@@ -1925,6 +1947,7 @@
 				27C930F5149508280055EAD5 /* Colors.acf */,
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
+				B1D5A777265D2C3F00531EB9 /* eu_all_mfi.txt */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -2510,6 +2533,7 @@
 				27A85F8A1B1A09260017D863 /* Copy Pecunia Plugins */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
+				B1D5A795265D36CF00531EB9 /* Copy Files */,
 				B1C56D612235BBB2006D9C6E /* ShellScript */,
 			);
 			buildRules = (
@@ -2660,12 +2684,12 @@
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
 				27E845E419E17D300026464E /* DebitsListViewCell.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit.png in Resources */,
+				B1D5A778265D2C3F00531EB9 /* eu_all_mfi.txt in Resources */,
 				27AA569B186C562300B113E7 /* send2-active@2x.png in Resources */,
 				011DADDC1EA3749A00A44EFE /* BankMessageWindow.xib in Resources */,
 				276D9C9D18CB79FF002BEDA8 /* magnify-busy2.png in Resources */,
 				276B5EFB194DAC1F00B12400 /* gray-hatch2.png in Resources */,
 				27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */,
-				2720D2CF1AC8048900B86AD0 /* de in Resources */,
 				B134357212EB7FDF006C4687 /* split-cursor.png in Resources */,
 				B138AC4A1391946E0026BEE2 /* money_18.png in Resources */,
 				B138AC4B1391946E0026BEE2 /* money_sync_18.png in Resources */,
@@ -2724,7 +2748,6 @@
 				276D9C8F18CB6BD0002BEDA8 /* magnify.png in Resources */,
 				2794FF6B1972D5BA000B69EC /* new-small-white@2x.png in Resources */,
 				27AA5687186C439F00B113E7 /* favorite.png in Resources */,
-				2720D2D11AC8048900B86AD0 /* eu_all_mfi.txt in Resources */,
 				B1480147261F8F85005ECCEA /* AccountStatementsView.xib in Resources */,
 				27E8460619E17D300026464E /* Preferences.xib in Resources */,
 				27E845EE19E17D300026464E /* HomeScreenNextTransfers.xib in Resources */,
