@@ -50,7 +50,7 @@
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <clipView key="contentView" copiesOnScroll="NO" id="WcI-He-wNN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="298" height="580"/>
-                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveName="category-outline" rowHeight="20" indentationPerLevel="14" outlineTableColumn="282" id="281" customClass="CategoryView">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="298" height="580"/>
@@ -126,7 +126,7 @@
                                                                     <rect key="frame" x="20" y="49" width="298" height="1"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                                     <view key="contentView" id="pve-sG-e53">
-                                                                        <rect key="frame" x="1" y="0.5" width="296" height="0.0"/>
+                                                                        <rect key="frame" x="1" y="1" width="296" height="0.0"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     </view>
                                                                     <color key="borderColor" red="0.75294117647058822" green="0.75294117647058822" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>

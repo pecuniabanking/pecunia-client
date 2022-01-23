@@ -22,6 +22,7 @@
 @class BankQueryResult;
 @class BankStatement;
 @class BankUser;
+@class DepotValueEntry;
 
 typedef enum {
     CTM_none = 0,
@@ -65,6 +66,7 @@ typedef enum {
 @property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
 @property (nonatomic, readonly) NSString      *localAccountName;
+@property (nonatomic, strong) DepotValueEntry *depotValueEntry;
 
 - (void)evaluateQueryResult: (BankQueryResult *)res;
 - (int)updateFromQueryResult: (BankQueryResult *)result;

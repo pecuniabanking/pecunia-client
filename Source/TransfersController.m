@@ -1299,14 +1299,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
-    [[BankingController controller] stopHomescreenUpdates];
-    
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
     [[HBCIBackend backend] sendTransfers: transfers];
-    
-    [[BankingController controller] resumeHomescreenUpdates];
     
     // Save updates and refresh UI.
     NSError                *error = nil;

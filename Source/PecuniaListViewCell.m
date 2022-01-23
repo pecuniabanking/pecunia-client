@@ -151,6 +151,7 @@ NSDictionary    *whiteAttributes;
         for (NSDictionary* entry  in numberLabels) {
             [[[entry[@"field"] cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
             [[[entry[@"field"] cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
+            [entry[@"field"] setNeedsDisplay:TRUE];
         }
 
         for (NSDictionary* entry in standardLabels) {
@@ -197,6 +198,7 @@ NSDictionary    *whiteAttributes;
         for (NSDictionary* entry in numberLabels) {
             [[[entry[@"field"] cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
             [[[entry[@"field"] cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+            [entry[@"field"] setNeedsDisplay:TRUE];
         }
 
         NSColor *paleColor = [[NSColor applicationColorForKey: @"Pale Text"] colorWithAlphaComponent: blendFactor];

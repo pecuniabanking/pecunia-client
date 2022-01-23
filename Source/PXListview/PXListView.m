@@ -150,6 +150,35 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
     _updating = NO;
 }
 
+- (void)rebuild
+{
+    _updating = YES;
+    
+    id <PXListViewDelegate> delegate = [self delegate];
+    
+    [_reusableCells removeAllObjects];
+    [_visibleCells removeAllObjects];
+    free(_cellYOffsets);
+    _cellYOffsets = NULL;
+    
+    [_selectedRows removeAllIndexes];
+    _selectionAnchor = -1;
+    
+    if([delegate conformsToProtocol:@protocol(PXListViewDelegate)])
+    {
+        _numberOfRows = [delegate numberOfRowsInListView:self];
+        [self cacheCellLayout];
+        
+        NSRange visibleRange = [self visibleRange];
+        _currentRange = visibleRange;
+        [self addCellsFromVisibleRange];
+        
+        [self layoutCells];
+    }
+    
+    _updating = NO;
+}
+
 - (NSUInteger)numberOfRows
 {
 	return _numberOfRows;

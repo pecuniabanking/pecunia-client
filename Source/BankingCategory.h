@@ -98,6 +98,7 @@ typedef struct {
 - (BOOL)isCategoryRoot;
 - (BOOL)checkMoveToCategory: (BankingCategory *)cat;
 - (BOOL)canSynchronize;
+- (BOOL)isDepotAccount;
 
 - (NSDecimalNumber *)budgetForPeriod:(NSNumber *)period;
 

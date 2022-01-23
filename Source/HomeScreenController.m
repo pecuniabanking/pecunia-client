@@ -121,10 +121,12 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     card.title =  NSLocalizedString(@"AP954", nil);
     [self addSubview: card];
     
+    /*
     card = [[StockCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     stockCard = (StockCard *)card;
     card.title =  NSLocalizedString(@"AP950", nil);
     [self addSubview: card];
+    */
     
     card = [[SaveAndRedeemCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     card.title =  NSLocalizedString(@"AP955", nil);
@@ -250,20 +252,6 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (void)deactivate {
 }
-
-- (void)stopUpdate {
-    HomeScreenContent *content = (HomeScreenContent*)self.view;
-    StockCard *card = content->stockCard;
-    [card stopUpdate];
-}
-
-- (void)resumeUpdate {
-    HomeScreenContent *content = (HomeScreenContent*)self.view;
-    StockCard *card = content->stockCard;
-    [card resumeUpdate];
-}
-
-
 
 @end
 

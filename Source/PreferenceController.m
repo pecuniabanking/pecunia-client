@@ -239,11 +239,11 @@ static NSDictionary *heightMappings;
 
 + (void)initialize
 {
-    heightMappings = @{@"general": @420,
-                       @"home": @400,
+    heightMappings = @{@"general": @425,
+                       @"home": @340,
                        @"security": @270,
                        @"persistence": @260,
-                       @"display": @390,
+                       @"display": @450,
                        @"colors": @450,
                        @"export": @375,
                        @"print": @220};

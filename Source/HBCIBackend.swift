@@ -246,7 +246,7 @@ class HBCIBackend : NSObject, HBCILog {
         return nil;
     }
     
-    func getBankNodeWithAccount(_ account:HBCIAccount) ->BankAccount? {
+    func getBankNodeWithAccount(_ account:HBCIAccount, user:BankUser) ->BankAccount? {
         let context = MOAssistant.shared().context;
         let bankNode = BankAccount.bankRoot(forCode: account.bankCode);
 
@@ -258,7 +258,8 @@ class HBCIBackend : NSObject, HBCILog {
             
             // create bank node
             if let bankNode = NSEntityDescription.insertNewObject(forEntityName: "BankAccount", into: context!) as? BankAccount  {
-                //bankNode.name = account.bankName;
+                bankNode.name = user.name;
+                bankNode.bankName = user.bankName;
                 bankNode.bankCode = account.bankCode;
                 bankNode.currency = account.currency;
                 bankNode.bic = account.bic;
@@ -342,7 +343,7 @@ class HBCIBackend : NSObject, HBCILog {
                 if found == false {
                     // bank account was not found - create it
                     
-                    guard let bankRoot = getBankNodeWithAccount(account) else {
+                    guard let bankRoot = getBankNodeWithAccount(account, user: user) else {
                         return;
                     }
                     bankAccounts.append(bankRoot);
@@ -351,6 +352,7 @@ class HBCIBackend : NSObject, HBCILog {
                     bankAccount.bankCode = account.bankCode;
                     bankAccount.setAccountNumber(account.number);
                     bankAccount.name = account.name;
+                    bankAccount.bankName = user.bankName;
                     bankAccount.currency = account.currency;
                     bankAccount.country = user.country;
                     bankAccount.owner = account.owner;
@@ -1361,8 +1363,13 @@ class HBCIBackend : NSObject, HBCILog {
                         _ = dialog.dialogEnd();
                     }
 
-                    for account in accounts {
+                    for bankAccount in bankAccounts {
                         error = false;
+                        
+                        let account = HBCIAccount(account: bankAccount);
+                        if !user.parameters.isOrderSupportedForAccount("SepaStandingOrderList", number: account.number, subNumber: account.subNumber) {
+                            continue;
+                        }
                         
                         defer {
                             if error {
@@ -1383,8 +1390,9 @@ class HBCIBackend : NSObject, HBCILog {
                                     error = true;
                                     continue;
                                 }
-                                
-                                bqResult.append(convertStandingOrders(order.standingOrders));
+                                let result = convertStandingOrders(order.standingOrders);
+                                result.account = bankAccount;
+                                bqResult.append(result);
                             }
                         }
                     }
@@ -1596,6 +1604,61 @@ class HBCIBackend : NSObject, HBCILog {
                     let result = convertStatements(order.account, statements:statements);
                     result.account = account;
                     bqResult.append(result);
+                } else if isTransactionSupportedForAccount(TransactionType.custodyAccountBalance, account: account) {
+                    guard let order = HBCICustodyAccountBalanceOrder(message: msg, account: hbciAccount) else {
+                        logInfo("Failed to create custody account balance order for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard order.enqueue() else {
+                        logInfo("Failed to register custody account balance order for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard try msg.send() else {
+                        logInfo("Failed to send custody account balance message for account \(account.accountNumber()!)");
+                        error = true;
+                        continue;
+                    }
+                    guard let balance = order.balance else {
+                        continue;
+                    }
+                    if let context = MOAssistant.shared().context {
+                        /*
+                        let calendar = Calendar.init(identifier: Calendar.Identifier.gregorian);
+                        let day = calendar.component(Calendar.Component.day, from: balance.date);
+                        let month = calendar.component(Calendar.Component.month, from: balance.date);
+                        let year = calendar.component(Calendar.Component.year, from: balance.date);
+                        let key = Int32(year*10000 + month*100 + day);
+                        
+                        let request = NSFetchRequest<DepotValueEntry>.init();
+                        //request.predicate = NSPredicate(format: "day = %d", key);
+                        request.entity = NSEntityDescription.entity(forEntityName: "DepotValueEntry", in: context);
+                        let entries = try context.fetch(request);
+                        for entry in entries {
+                            context.delete(entry);
+                        }
+                        */
+                        if let entry = account.depotValueEntry {
+                            context.delete(entry);
+                        }
+                        let depotEntry = DepotValueEntry.createWithHBCIData(balance: balance, context: context);
+                        depotEntry.account = account;
+                    }
+                    
+                    
+                    if let depotValue = balance.depotValue {
+                        let result = BankQueryResult();
+                        
+                        result.bankCode = hbciAccount.bankCode;
+                        result.accountNumber = hbciAccount.number;
+                        result.accountSuffix = hbciAccount.subNumber;
+                        
+                        result.balance = depotValue.value;
+                        result.currency = depotValue.currency;
+                        result.account = account;
+                        bqResult.append(result);
+                    }
                 } else if isTransactionSupportedForAccount(TransactionType.accountBalance, account: account) {
                     // Statement are not supported but Account Balance
                     guard let order = HBCIBalanceOrder(message: msg, account: hbciAccount) else {
@@ -1627,37 +1690,6 @@ class HBCIBackend : NSObject, HBCILog {
                     result.balance = balance.value;
                     result.account = account;
                     bqResult.append(result);
-                } else if isTransactionSupportedForAccount(TransactionType.custodyAccountBalance, account: account) {
-                    guard let order = HBCICustodyAccountBalanceOrder(message: msg, account: hbciAccount) else {
-                        logInfo("Failed to create custody account balance order for account \(account.accountNumber()!)");
-                        error = true;
-                        continue;
-                    }
-                    guard order.enqueue() else {
-                        logInfo("Failed to register custody account balance order for account \(account.accountNumber()!)");
-                        error = true;
-                        continue;
-                    }
-                    guard try msg.send() else {
-                        logInfo("Failed to send custody account balance message for account \(account.accountNumber()!)");
-                        error = true;
-                        continue;
-                    }
-                    guard let balance = order.balance else {
-                        continue;
-                    }
-                    if let depotValue = balance.depotValue {
-                        let result = BankQueryResult();
-                        
-                        result.bankCode = hbciAccount.bankCode;
-                        result.accountNumber = hbciAccount.number;
-                        result.accountSuffix = hbciAccount.subNumber;
-                        
-                        result.balance = depotValue.value;
-                        result.currency = depotValue.currency;
-                        result.account = account;
-                        bqResult.append(result);
-                    }
                 } else {
                     logError("Konto \(account.accountNumber()!) unterstützt weder Umsatz- noch Saldoabruf")
                     continue;

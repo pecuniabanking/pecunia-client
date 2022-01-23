@@ -564,6 +564,13 @@ static ShortDate *endReportDate = nil;
     return [self isMemberOfClass: [BankingCategory class]];
 }
 
+- (BOOL)isDepotAccount {
+    if ([self isBankAccount] && self.accountNumber != nil) {
+        if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_CustodyAccountBalance account:(BankAccount*)self]) return TRUE;
+    }
+    return FALSE;
+}
+
 - (BOOL)isInsertable {
     if (self.isBankAcc.boolValue) {
         return NO;

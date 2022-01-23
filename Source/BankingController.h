@@ -44,6 +44,7 @@
 @class BSSelectWindowController;
 @class BankMessageWindowController;
 @class AccountStatementsWindowController;
+@class DepotOverviewController;
 
 @class JMModalOverlay;
 @class WaitViewController;
@@ -83,6 +84,7 @@
 
     HomeScreenController             *homeScreenController;
     StatementsOverviewController     *overviewController;
+    DepotOverviewController          *depotOverviewController;
     CategoryAnalysisWindowController *categoryAnalysisController;
     CategoryRepWindowController      *categoryReportingController;
     CategoryDefWindowController      *categoryDefinitionController;
@@ -168,8 +170,6 @@
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;
-- (void)stopHomescreenUpdates;
-- (void)resumeHomescreenUpdates;
 - (void)startRefreshAnimation;
 - (void)stopRefreshAnimation;
 

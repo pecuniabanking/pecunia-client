@@ -62,7 +62,8 @@
 @property (nonatomic, assign) BOOL usesLiveResize;
 
 - (void)reloadData;
--(void)reloadRowAtIndex:(NSInteger)inIndex;
+- (void)rebuild;
+- (void)reloadRowAtIndex:(NSInteger)inIndex;
 
 - (PXListViewCell*)dequeueCellWithReusableIdentifier:(NSString*)identifier;
 

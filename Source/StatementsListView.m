@@ -65,6 +65,9 @@ extern void *UserDefaultsBindingContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     [defaults addObserver: self forKeyPath: @"showHeadersInLists" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"variableRemoteNameCol" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"variableCategoryCol" options: 0 context: UserDefaultsBindingContext];
+
     showHeaders = YES;
     canShowHeaders = YES;
     if ([defaults objectForKey: @"showHeadersInLists"] != nil) {
@@ -121,6 +124,11 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"showHeadersInLists"]) {
             showHeaders = [NSUserDefaults.standardUserDefaults boolForKey: @"showHeadersInLists"];
             [self reloadData];
+            return;
+        }
+        if ([keyPath isEqualToString:@"variableRemoteNameCol"] || [keyPath isEqualToString:@"variableCategoryCol"]) {
+            [self rebuild];
+            [self setNeedsDisplay:TRUE];
             return;
         }
     }

@@ -127,6 +127,36 @@ extern NSDictionary    *whiteAttributes;
     [self registerPaleLabel: monthLabel];
 
     [self adjustLabelsAndSize];
+    
+    NSUInteger sizingMask;
+    if ([NSUserDefaults.standardUserDefaults boolForKey: @"variableRemoteNameCol"]) {
+        sizingMask = [remoteNameLabel autoresizingMask];
+        sizingMask |= NSViewWidthSizable;
+        [remoteNameLabel setAutoresizingMask:sizingMask];
+        sizingMask = [transactionTypeLabel autoresizingMask];
+        sizingMask |= NSViewWidthSizable;
+        [transactionTypeLabel setAutoresizingMask:sizingMask];
+        
+        sizingMask = [purposeLabel autoresizingMask];
+        sizingMask |= NSViewMinXMargin;
+        [purposeLabel setAutoresizingMask:sizingMask];
+        sizingMask = [noteLabel autoresizingMask];
+        sizingMask |= NSViewMinXMargin;
+        [noteLabel setAutoresizingMask:sizingMask];
+    }
+    
+    if ([NSUserDefaults.standardUserDefaults boolForKey: @"variableCategoryCol"]) {
+        sizingMask = [categoriesLabel autoresizingMask];
+        sizingMask |= NSViewWidthSizable;
+        [categoriesLabel setAutoresizingMask:sizingMask];
+        sizingMask = [purposeLabel autoresizingMask];
+        sizingMask |= NSViewMaxXMargin;
+        [purposeLabel setAutoresizingMask:sizingMask];
+        sizingMask = [noteLabel autoresizingMask];
+        sizingMask |= NSViewMaxXMargin;
+        [noteLabel setAutoresizingMask:sizingMask];
+    }
+ 
 }
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
@@ -474,6 +504,19 @@ static NSImage    *stripeImage;
 
     NSGraphicsContext *context = [NSGraphicsContext currentContext];
     [context saveGraphicsState];
+    
+    // redraw background
+    [[NSColor whiteColor] set];
+    [NSBezierPath fillRect:dirtyRect];
+    
+    // resize subviews as autoresizing does not adjust the widths correctly
+    NSRect r = purposeLabel.frame;
+    r.size.width = categoriesLabel.frame.origin.x - r.origin.x -7;
+    [purposeLabel setFrame:r];
+    
+    r = remoteNameLabel.frame;
+    r.size.width = purposeLabel.frame.origin.x - r.origin.x - 7;
+    [remoteNameLabel setFrame:r];
 
     NSRect bounds = [self bounds];
     if (headerHeight > 0) {

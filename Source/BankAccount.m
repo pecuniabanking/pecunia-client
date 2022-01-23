@@ -51,6 +51,7 @@
 @dynamic isStandingOrderSupported;
 @dynamic accountSuffix;
 @dynamic users;
+@dynamic depotValueEntry;
 
 @synthesize dbStatements;
 @synthesize unread;

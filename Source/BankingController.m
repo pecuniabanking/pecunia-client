@@ -882,7 +882,6 @@ static BankingController *bankinControllerInstance;
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
 
-    [self stopHomescreenUpdates];
     [self startRefreshAnimation];
     
     // if we are in the AccountStatements-Section, we only retrieve account statements
@@ -927,7 +926,6 @@ static BankingController *bankinControllerInstance;
     
     [self stopRefreshAnimation];
     [self updateUnread];
-    [self resumeHomescreenUpdates];
     
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
@@ -1596,6 +1594,55 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (BOOL)activateOverviewSectionViews {
+    BankingCategory *cat = [self currentSelection];
+    
+    if (currentSectionIndex == 0) {
+        NSView *currentView;
+        if (currentSection != nil) {
+            currentView = [currentSection mainView];
+        } else {
+            currentView = sectionPlaceholder;
+        }
+        NSRect frame = [currentView frame];
+
+        if ([cat isDepotAccount]) {
+            if (depotOverviewController == nil) {
+                depotOverviewController = [[DepotOverviewController alloc] init];
+                if ([NSBundle.mainBundle loadNibNamed: @"DepotOverview" owner: depotOverviewController topLevelObjects: nil]) {
+                    NSView *view = [overviewController mainView];
+                    view.frame = frame;
+                }
+                [depotOverviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != depotOverviewController) {
+                [currentSection deactivate];
+                [[depotOverviewController mainView] setFrame: frame];
+                [rightPane replaceSubview: currentView with: [depotOverviewController mainView]];
+                currentSection = depotOverviewController;
+                return TRUE;
+            }
+        } else {
+            if (overviewController == nil) {
+                overviewController = [[StatementsOverviewController alloc] init];
+                if ([NSBundle.mainBundle loadNibNamed: @"StatementsOverview" owner: overviewController topLevelObjects: nil]) {
+                    NSView *view = [overviewController mainView];
+                    view.frame = frame;
+                }
+                [overviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != overviewController) {
+                [currentSection deactivate];
+                [[overviewController mainView] setFrame: frame];
+                [rightPane replaceSubview: currentView with: [overviewController mainView]];
+                currentSection = overviewController;
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;  // nothing changed
+}
+
 - (void)switchToAccountPage: (NSInteger)sectionIndex {
     LogEnter;
 
@@ -1633,25 +1680,45 @@ static BankingController *bankinControllerInstance;
 
         currentSectionIndex = sectionIndex;
         NSRect frame = [currentView frame];
+        BankingCategory *cat = [self currentSelection];
         switch (sectionIndex) {
             case 0:
-                if (overviewController == nil) {
-                    overviewController = [[StatementsOverviewController alloc] init];
-                    if ([NSBundle.mainBundle loadNibNamed: @"StatementsOverview" owner: overviewController topLevelObjects: nil]) {
-                        NSView *view = [overviewController mainView];
-                        view.frame = frame;
+                /*
+                if ([cat isDepotAccount]) {
+                    if (depotOverviewController == nil) {
+                        depotOverviewController = [[DepotOverviewController alloc] init];
+                        if ([NSBundle.mainBundle loadNibNamed: @"DepotOverview" owner: depotOverviewController topLevelObjects: nil]) {
+                            NSView *view = [overviewController mainView];
+                            view.frame = frame;
+                        }
+                        [depotOverviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                     }
-                    [overviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                    if (currentSection != depotOverviewController) {
+                        [currentSection deactivate];
+                        [[depotOverviewController mainView] setFrame: frame];
+                        [rightPane replaceSubview: currentView with: [depotOverviewController mainView]];
+                        currentSection = depotOverviewController;
+                        pageHasChanged = YES;
+                    }
+                } else {
+                    if (overviewController == nil) {
+                        overviewController = [[StatementsOverviewController alloc] init];
+                        if ([NSBundle.mainBundle loadNibNamed: @"StatementsOverview" owner: overviewController topLevelObjects: nil]) {
+                            NSView *view = [overviewController mainView];
+                            view.frame = frame;
+                        }
+                        [overviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                    }
+                    if (currentSection != overviewController) {
+                        [currentSection deactivate];
+                        [[overviewController mainView] setFrame: frame];
+                        [rightPane replaceSubview: currentView with: [overviewController mainView]];
+                        currentSection = overviewController;
+                        pageHasChanged = YES;
+                    }
                 }
-
-                if (currentSection != overviewController) {
-                    [currentSection deactivate];
-                    [[overviewController mainView] setFrame: frame];
-                    [rightPane replaceSubview: currentView with: [overviewController mainView]];
-                    currentSection = overviewController;
-
-                    pageHasChanged = YES;
-                }
+                */
+                pageHasChanged = [self activateOverviewSectionViews];
 
                 // Update values in category tree to reflect time slicer interval again.
                 [timeSlicer updateDelegate];
@@ -2285,8 +2352,57 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
+    if (currentSectionIndex == 0) {
+        [self activateOverviewSectionViews];
+    }
+
     BankingCategory *cat = [self currentSelection];
 
+/*
+    if (currentSectionIndex == 0) {
+        NSView *currentView;
+        if (currentSection != nil) {
+            currentView = [currentSection mainView];
+        } else {
+            currentView = sectionPlaceholder;
+        }
+        NSRect frame = [currentView frame];
+
+        if ([cat isDepotAccount]) {
+            if (depotOverviewController == nil) {
+                depotOverviewController = [[DepotOverviewController alloc] init];
+                if ([NSBundle.mainBundle loadNibNamed: @"DepotOverview" owner: depotOverviewController topLevelObjects: nil]) {
+                    NSView *view = [overviewController mainView];
+                    view.frame = frame;
+                }
+                [depotOverviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != depotOverviewController) {
+                [currentSection deactivate];
+                [[depotOverviewController mainView] setFrame: frame];
+                [rightPane replaceSubview: currentView with: [depotOverviewController mainView]];
+                currentSection = depotOverviewController;
+            }
+        } else {
+            if (overviewController == nil) {
+                overviewController = [[StatementsOverviewController alloc] init];
+                if ([NSBundle.mainBundle loadNibNamed: @"StatementsOverview" owner: overviewController topLevelObjects: nil]) {
+                    NSView *view = [overviewController mainView];
+                    view.frame = frame;
+                }
+                [overviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != overviewController) {
+                [currentSection deactivate];
+                [[overviewController mainView] setFrame: frame];
+                [rightPane replaceSubview: currentView with: [overviewController mainView]];
+                currentSection = overviewController;
+            }
+        }
+
+    }
+*/
+    
     // Update current section if the default is not active.
     if (currentSection != nil) {
         currentSection.selectedCategory = cat;
@@ -3386,10 +3502,8 @@ static BankingController *bankinControllerInstance;
     }
 
     // send transfers
-    [homeScreenController stopUpdate];
     [[HBCIBackend backend] sendTransfers: transfers];
     [self save];
-    [homeScreenController resumeUpdate];
 
     LogLeave;
 
@@ -3797,6 +3911,20 @@ static BankingController *bankinControllerInstance;
         }
     }
     
+    // add missing bank Names and BICs to account nodes
+    for (BankUser *user in BankUser.allUsers) {
+        if (user.sysId != nil) {
+            for (BankAccount *account in user.accounts) {
+                if ((account.bankName == nil || account.bankName.length == 0) && user.bankName != nil) account.bankName = user.bankName;
+                if (account.parent != nil) {
+                    BankAccount *parent = (BankAccount*)account.parent;
+                    if ((parent.bankName == nil || parent.bankName.length == 0) && parent.parent != nil && user.bankName != nil) parent.bankName = user.bankName;
+                    if ((parent.bic == nil || parent.bic.length == 0) && parent.parent != nil && account.bic != nil) parent.bic = account.bic;
+                }
+            }            
+        }
+    }
+
     LogLeave;
 }
 
@@ -3816,14 +3944,6 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 
     return YES;
-}
-
-- (void)stopHomescreenUpdates {
-    [homeScreenController stopUpdate];
-}
-
-- (void)resumeHomescreenUpdates {
-    [homeScreenController resumeUpdate];
 }
 
 + (BankingController *)controller {

@@ -36,7 +36,4 @@
 - (void)activate;
 - (void)deactivate;
 
-- (void)stopUpdate;
-- (void)resumeUpdate;
-
 @end

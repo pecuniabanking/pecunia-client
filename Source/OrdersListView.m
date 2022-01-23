@@ -55,6 +55,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 @synthesize owner;
 @synthesize dataSource;
+@synthesize currentSelections;
 
 - (id)initWithCoder: (NSCoder *)decoder
 {
@@ -162,14 +163,20 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     if (context == DataSourceBindingContext) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
         pendingReload = YES;
+        self.currentSelections = [[self selectedRows] copy];
         [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
 
         return;
     }
-/*
+
     // If there's already a full reload pending do nothing.
     if (!pendingReload) {
         // If there's another property change pending cancel it and do a full reload instead.
+        pendingReload = YES;
+        self.currentSelections = [[self selectedRows] copy];
+        [self performSelector: @selector(reload) withObject: nil afterDelay: 0.1];
+
+/*
         if (pendingRefresh) {
             pendingRefresh = NO;
             [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
@@ -179,8 +186,14 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
             pendingRefresh = YES;
             [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
         }
+*/
     }
- */
+ 
+}
+
+- (void)reload {
+    [self reloadData];
+    [self setSelectedRows: self.currentSelections];
 }
 
 #pragma mark - PXListViewDelegate protocol implementation

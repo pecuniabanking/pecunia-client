@@ -40,5 +40,6 @@
 
 @property (nonatomic, strong) id      owner;
 @property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, strong) NSIndexSet *currentSelections;
 
 @end
