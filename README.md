@@ -7,8 +7,8 @@ HBCI is mostly supported by <a href="http://de.wikipedia.org/wiki/Homebanking_Co
 
 Home screen:
 
-<img src="http://www.pecuniabanking.de/images/showcase-1.1/Pecunia1.png"/>
+<img src="https://www.pecuniabanking.de/images/Pecunia1_joomla.jpg"/>
 
 Transfers with accounts and categories:
 
-<img src="http://www.pecuniabanking.de/images/showcase-1.1/Pecunia2.png" />
+<img src="https://www.pecuniabanking.de/images/Pecunia2_joomla.jpg" />
