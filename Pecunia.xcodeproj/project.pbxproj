@@ -509,13 +509,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		27C999D41E74050800CD3039 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B1AFEC481B5B9E7D002F1DDF;
-			remoteInfo = CommonCrypto;
-		};
 		27C999D61E74050C00CD3039 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
@@ -536,13 +529,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = B19B359D1AF1792B00F20B9A;
 			remoteInfo = HBCI4SwiftTests;
-		};
-		B11E61481C0125770031F368 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B11E613D1C0125770031F368 /* HBCI4Swift.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B1AFEC491B5B9E7D002F1DDF;
-			remoteInfo = CommonCrypto;
 		};
 		B11E614A1C0125770031F368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1989,7 +1975,6 @@
 			children = (
 				B11E61451C0125770031F368 /* HBCI4Swift.framework */,
 				B11E61471C0125770031F368 /* HBCI4SwiftTests.xctest */,
-				B11E61491C0125770031F368 /* CommonCrypto.framework */,
 				B11E614B1C0125770031F368 /* PCSCard.framework */,
 			);
 			name = Products;
@@ -2556,7 +2541,6 @@
 			);
 			dependencies = (
 				27C999D71E74050C00CD3039 /* PBXTargetDependency */,
-				27C999D51E74050800CD3039 /* PBXTargetDependency */,
 				B174E8981CA08F12004FD3F0 /* PBXTargetDependency */,
 			);
 			name = Pecunia;
@@ -2578,7 +2562,7 @@
 					8D1107260486CEB800E47090 = {
 						DevelopmentTeam = JY3Q678PYA;
 						LastSwiftMigration = 1110;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.HardenedRuntime = {
 								enabled = 1;
@@ -2632,13 +2616,6 @@
 			fileType = wrapper.cfbundle;
 			path = HBCI4SwiftTests.xctest;
 			remoteRef = B11E61461C0125770031F368 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		B11E61491C0125770031F368 /* CommonCrypto.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CommonCrypto.framework;
-			remoteRef = B11E61481C0125770031F368 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B11E614B1C0125770031F368 /* PCSCard.framework */ = {
@@ -3183,11 +3160,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		27C999D51E74050800CD3039 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CommonCrypto;
-			targetProxy = 27C999D41E74050800CD3039 /* PBXContainerItemProxy */;
-		};
 		27C999D71E74050C00CD3039 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PCSCard;
@@ -3208,12 +3180,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 33.02;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 33.06;
+				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Build/Products/Debug",
@@ -3258,7 +3230,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Pecunia;
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3280,12 +3252,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 33.02;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 33.06;
+				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Build/Products/Debug",
@@ -3318,7 +3290,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Pecunia;
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3339,12 +3311,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 33.02;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 33.06;
+				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/Build/Products/Debug",
@@ -3377,7 +3349,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.pecuniabanking.pecunia;
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Pecunia;
 				SDKROOT = macosx;
 				SKIP_INSTALL = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -3433,6 +3405,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = singlefile;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Development;

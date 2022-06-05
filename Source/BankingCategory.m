@@ -566,7 +566,13 @@ static ShortDate *endReportDate = nil;
 
 - (BOOL)isDepotAccount {
     if ([self isBankAccount] && self.accountNumber != nil) {
-        if ([HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_CustodyAccountBalance account:(BankAccount*)self]) return TRUE;
+        if (![HBCIBackend.backend isTransactionSupportedForAccount:TransactionType_CustodyAccountBalance account:(BankAccount*)self]) return FALSE;
+        BankAccount *account = (BankAccount*)self;
+        if (account.type == nil || account.type.intValue == 0) {
+            return TRUE; // Fallback e.g. for DIBA
+        }
+        BankAccountType type = [account accountType];
+        if (type == AccountType_Depot || type == AccountType_FundDepot) return TRUE;
     }
     return FALSE;
 }

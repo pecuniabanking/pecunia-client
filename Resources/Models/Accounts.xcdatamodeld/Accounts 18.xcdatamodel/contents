@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H1217" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H1615" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountStatement" representedClassName="AccountStatement" syncable="YES">
         <attribute name="advertisement" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
@@ -210,7 +210,7 @@
         <attribute name="startPriceCurrency" optional="YES" attributeType="String" minValueString="3" maxValueString="3" syncable="YES"/>
         <attribute name="totalNumber" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
         <attribute name="totalNumberType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="wkn" attributeType="String" syncable="YES"/>
+        <attribute name="wkn" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="balances" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InstrumentBalance" inverseName="instrument" inverseEntity="InstrumentBalance" syncable="YES"/>
         <relationship name="valueEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DepotValueEntry" inverseName="instruments" inverseEntity="DepotValueEntry" syncable="YES"/>
     </entity>

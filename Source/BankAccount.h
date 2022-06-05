@@ -30,9 +30,32 @@ typedef enum {
     CTM_ask
 } CollectiveTransferMethod;
 
+/*
+ Klassifizierung der Konten. Innerhalb der vorgegebenen Codebereiche sind kreditinstitutsindividuell bei Bedarf weitere Kontoarten möglich.
+ Codierung:
+ 1 – 9: Kontokorrent-/Girokonto
+ 10 – 19: Sparkonto
+ 20 –29: Festgeldkonto (Termineinlagen)
+ 30 – 39: Wertpapierdepot
+ 40 – 49: Kredit-/Darlehenskonto
+ 50 – 59: Kreditkartenkonto
+ 60 – 69: Fonds-Depot bei einer Kapitalanlagegesellschaft
+ 70 – 79: Bausparvertrag
+ 80 – 89: Versicherungsvertrag
+ 90 – 99: Sonstige (nicht zuordenbar)
+*/
+
 typedef enum {
     AccountType_Standard = 0,
-    AccountType_CreditCart
+    AccountType_Savings,
+    AccountType_TermDeposit,
+    AccountType_Depot,
+    AccountType_LoanAccount,
+    AccountType_CreditCard,
+    AccountType_FundDepot,
+    AccountType_HomeLoanAccount,
+    AccountType_InsuranceContract,
+    AccountType_Others
 } BankAccountType;
 
 
@@ -75,6 +98,8 @@ typedef enum {
 - (void)copyStatementsToManualAccounts: (NSArray *)statements;
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value;
 - (void)moveStatementsFromAccount: (BankAccount *)sourceAccount;
+
+- (BankAccountType)accountType;
 
 // correction functions
 - (void)updateStatementBalances;

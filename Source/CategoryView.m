@@ -93,14 +93,14 @@
                     [item setAction: nil];
                 }
 
-                if (account.type.intValue == AccountType_CreditCart) {
+                if ([[HBCIBackend backend] isTransactionSupportedForAccount: TransactionType_CCSettlementList account: account]) {
                     [menu addItem: NSMenuItem.separatorItem];
                     item = [menu addItemWithTitle: NSLocalizedString(@"AP1210", nil)
                                            action: @selector(getCreditCardSettlements:)
                                     keyEquivalent: @""];
                     item.indentationLevel = 1;
-                }
 
+                }
             }
 
             [menu addItem: NSMenuItem.separatorItem];

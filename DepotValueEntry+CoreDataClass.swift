@@ -18,8 +18,10 @@ public class DepotValueEntry: NSManagedObject {
         result.accountNumber = balance.accountNumber;
         result.bankCode = balance.bankCode;
         result.date = balance.date;
-        result.depotValue = balance.depotValue.value;
-        result.depotValueCurrency = balance.depotValue.currency;
+        if let depotValue = balance.depotValue {
+            result.depotValue = depotValue.value;
+            result.depotValueCurrency = depotValue.currency;
+        }
         result.prepDate = balance.prepDate;
         let calendar = Calendar.init(identifier: Calendar.Identifier.gregorian);
         let day = calendar.component(Calendar.Component.day, from: balance.date);

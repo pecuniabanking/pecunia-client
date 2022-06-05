@@ -1530,31 +1530,32 @@ class HBCIBackend : NSObject, HBCILog {
                     dateFrom = fromDate;
                 }
                 
+                // we first try to create CAMT statements. If that is not successful, we fall back to standard (MT940)
                 if isTransactionSupportedForAccount(TransactionType.camtStatements, account: account) {
                     // camt statements
-                    guard let order = HBCICamtStatementsOrder(message: msg, account: hbciAccount) else {
-                        logInfo("Failed to create order");
-                        error = true;
-                        continue;
+                    if let order = HBCICamtStatementsOrder(message: msg, account: hbciAccount) {
+                        order.dateFrom = dateFrom;
+                        logDebug("Request statements with start date: \(String(describing: dateFrom))");
+
+                        if order.enqueue() {
+                            if try msg.send() {
+                                let statements = order.statements
+                                let result = convertStatements(order.account, statements:statements);
+                                result.account = account;
+                                bqResult.append(result);
+                                continue;
+                            } else {
+                                logInfo("Failed to send message");
+                            }
+                        } else {
+                            logInfo("Failed to enqueue order");
+                        }
+                    } else {
+                        logInfo("Failed to create CAMT order");
                     }
-                    order.dateFrom = dateFrom;
-                    logDebug("Request statements with start date: \(String(describing: dateFrom))");
-                    
-                    guard order.enqueue() else {
-                        logInfo("Failed to enqueue order");
-                        error = true;
-                        continue;
-                    }
-                    guard try msg.send() else {
-                        logInfo("Failed to send message");
-                        error = true;
-                        continue;
-                    }
-                    let statements = order.statements
-                    let result = convertStatements(order.account, statements:statements);
-                    result.account = account;
-                    bqResult.append(result);
-                } else if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
+                }
+                
+                if isTransactionSupportedForAccount(TransactionType.bankStatements, account: account) {
                     // normal statements
                     guard let order = HBCIStatementsOrder(message: msg, account: hbciAccount) else {
                         logInfo("Failed to create order");

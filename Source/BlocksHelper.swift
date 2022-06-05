@@ -22,6 +22,7 @@ import AppKit;
 // Helper code for working with blocks (especially when using GCD).
 // Original cancelable block code from Sebastien Thiebaud.
 
+/*
 typealias dispatch_cancelable_block_t = (_ cancel: Bool) -> Void;
 
 func dispatch_after_delay(_ queue: DispatchQueue, delay: CGFloat, block: @escaping ()->()) -> dispatch_cancelable_block_t {
@@ -55,3 +56,5 @@ func dispatch_after_delay(_ queue: DispatchQueue, delay: CGFloat, block: @escapi
 func cancel_block(_ block: dispatch_cancelable_block_t) -> Void {
     block(true);
 }
+ 
+*/

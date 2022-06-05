@@ -60,6 +60,10 @@
     return self;
 }
 
+- (BankAccountType)accountType {
+    return self.type.intValue / 10;
+}
+
 - (NSInteger)calcUnread {
     NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
