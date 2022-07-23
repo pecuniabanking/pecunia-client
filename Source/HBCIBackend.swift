@@ -1054,17 +1054,47 @@ class HBCIBackend : NSObject, HBCILog {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
 
-        return self.getStatements(accounts, userFunc: self.getUserStandingOrders);
+        do {
+            return try self.getStatements(accounts, userFunc: self.getUserStandingOrders);
+        }
+        catch {
+            return [];
+        }
     }
     
-    @objc func getStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
+    @objc func getStatements(_ accounts:[BankAccount], withAccountStatements:Bool) -> [BankQueryResult] {
         // first reset memory context
         MOAssistant.shared().memContext.reset();
         
-        return self.getStatements(accounts, userFunc: self.getUserStatements);
+        if withAccountStatements {
+            guard let context = MOAssistant.shared()?.context else {
+                logError("Invalid Managed Object Context")
+                return [];
+            }
+            
+            do {
+                for account in accounts {
+                    if self.isTransactionSupportedForAccount(TransactionType.accountStatements, account: account) {
+                        let handler = AccountStatementsHandler(account, context: context)
+                        try handler.getAccountStatements()
+                    }
+                }
+            }
+            catch {
+                return [];
+            }
+        }
+        
+        do {
+            let result = try self.getStatements(accounts, userFunc: self.getUserStatements);
+            return result;
+        }
+        catch {
+            return [];
+        }
     }
     
-    func getStatements(_ accounts:[BankAccount], userFunc:@escaping ([BankAccount]) -> [BankQueryResult]) -> [BankQueryResult] {
+    func getStatements(_ accounts:[BankAccount], userFunc:@escaping ([BankAccount]) throws -> [BankQueryResult]) throws -> [BankQueryResult] {
         var userList = Dictionary<BankUser, Array<BankAccount>>();
         var bqResult = [BankQueryResult]();
 
@@ -1101,7 +1131,12 @@ class HBCIBackend : NSObject, HBCILog {
                 if password == "<abort>" {
                     continue;
                 }
-                bqResult.append(contentsOf: userFunc(accounts));
+                do {
+                    try bqResult.append(contentsOf: userFunc(accounts));
+                }
+                catch HBCIError.userAbort {
+                    continue; // if the user aborts for this bank user, we continue with the next
+                }
             }
             
             // DDV
@@ -1109,7 +1144,10 @@ class HBCIBackend : NSObject, HBCILog {
                 let ccman = ChipcardManager.manager;
                 do {
                     try ccman.requestCardForUser(user);
-                    bqResult.append(contentsOf: userFunc(accounts));
+                    try bqResult.append(contentsOf: userFunc(accounts));
+                }
+                catch HBCIError.userAbort {
+                    continue;
                 }
                 catch let error as NSError {
                     let alert = NSAlert(error: error);
@@ -1305,7 +1343,7 @@ class HBCIBackend : NSObject, HBCILog {
         return result;
     }
     
-    func getUserStandingOrders(_ bankAccounts:[BankAccount]) -> [BankQueryResult] {
+    func getUserStandingOrders(_ bankAccounts:[BankAccount]) throws -> [BankQueryResult] {
         var accounts = [HBCIAccount]();
         var bqResult = [BankQueryResult]();
 
@@ -1343,8 +1381,14 @@ class HBCIBackend : NSObject, HBCILog {
                 
                 // get PIN
                 let request = AuthRequest();
-                user.pin = request.getPin(user.bankCode, userId: bankUser.userId);
+                let pin = request.getPin(user.bankCode, userId: bankUser.userId);
+                if pin == "<abort>" {
+                    logInfo("Abbruch durch Benutzer");
+                    throw HBCIError.userAbort;
+                }
+                user.pin = pin;
             }
+            
             if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_DDV {
                 let secMethod = HBCISecurityMethodDDV(card: ChipcardManager.manager.card);
                 user.setSecurityMethod(secMethod);
@@ -1400,7 +1444,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
         }
         catch HBCIError.userAbort {
-            return [];
+            throw HBCIError.userAbort;
         }
         catch let error as HBCIError {
             if error == .PINError {
@@ -1424,7 +1468,7 @@ class HBCIBackend : NSObject, HBCILog {
         return bqResult;
     }
     
-    func getUserStatements(_ accounts:[BankAccount]) -> [BankQueryResult] {
+    func getUserStatements(_ accounts:[BankAccount]) throws -> [BankQueryResult] {
         var hbciAccounts = [HBCIAccount]();
         var bqResult = [BankQueryResult]();
         
@@ -1466,7 +1510,13 @@ class HBCIBackend : NSObject, HBCILog {
                 
                 // get PIN
                 let request = AuthRequest();
-                user.pin = request.getPin(user.bankCode, userId: bankUser.userId);
+                let pin = request.getPin(user.bankCode, userId: bankUser.userId);
+                if pin == "<abort>" {
+                    logInfo("Abbruch durch Benutzer");
+                    throw HBCIError.userAbort;
+                }
+                user.pin = pin;
+                
             }
             if SecurityMethod(bankUser.secMethod.uint32Value) == SecMethod_DDV {
                 let secMethod = HBCISecurityMethodDDV(card: ChipcardManager.manager.card);
@@ -1698,7 +1748,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
         }
         catch HBCIError.userAbort {
-            return [];
+            throw HBCIError.userAbort;
         }
         catch let error as HBCIError {
             if error == .PINError {
@@ -2466,13 +2516,19 @@ class HBCIBackend : NSObject, HBCILog {
             
             // get PIN
             let request = AuthRequest();
-            user.pin = request.getPin(user.bankCode, userId: user.userId);
+            let pin = request.getPin(user.bankCode, userId: user.userId);
+            if pin != "<abort>" {
+                user.pin = pin;
+            } else {
+                logInfo("Abbruch durch Benutzer");
+                throw HBCIError.userAbort;
+            }
         }
         
         let dialog = try HBCIDialog(user: user, product: productId);
         guard let result = try dialog.dialogInit() else {
             logError("Dialoginitialisierung für Bankkennung \(user.anonymizedId) fehlgeschlagen");
-            throw NSError.errorWithMsg(msgId: "2011", params: user.anonymizedId);
+            throw NSError.errorWithMsg(msgId: "AP2011", params: user.anonymizedId);
         }
         
         if result.isOk() {
@@ -2492,7 +2548,7 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    @objc func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) ->AccountStatement? {
+    func getAccountStatement(_ number:Int, year:Int, bankAccount:BankAccount) throws ->AccountStatement? {
         guard let bankUser = bankAccount.defaultBankUser() else {
             logError("Konto \(bankAccount.accountNumber() ?? "<unbekannt>") kann nicht verarbeitet werden da keine Bankkennung existiert");
             return nil;
@@ -2549,8 +2605,7 @@ class HBCIBackend : NSObject, HBCILog {
             } as? AccountStatement;
         }
         catch HBCIError.userAbort {
-            // do nothing
-            return nil;
+            throw HBCIError.userAbort;
         }
         catch let error as HBCIError {
             if error == .PINError {
@@ -2567,21 +2622,26 @@ class HBCIBackend : NSObject, HBCILog {
             let alert = NSAlert(error: error);
             alert.runModal();
         }
-        catch {}
         return nil;
     }
     
+    //  used in SynchronizeAccount
     @objc func getAccountStatements(_ accounts:[BankAccount]) {
         guard let context = MOAssistant.shared()?.context else {
             logError("Invalid Managed Object Context")
             return;
         }
         
-        for account in accounts {
-            if self.isTransactionSupportedForAccount(TransactionType.accountStatements, account: account) {
-                let handler = AccountStatementsHandler(account, context: context)
-                handler.getAccountStatements()
+        do {
+            for account in accounts {
+                if self.isTransactionSupportedForAccount(TransactionType.accountStatements, account: account) {
+                    let handler = AccountStatementsHandler(account, context: context)
+                    try handler.getAccountStatements()
+                }
             }
+        }
+        catch {  // catch all kind of errors and abort
+            return;
         }
     }
  

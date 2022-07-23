@@ -44,7 +44,7 @@ typedef NSMutableArray<__kindof CPTAxis *> CPTMutableAxisArray;
 /**
  *  @brief Axis labeling delegate.
  **/
-@protocol CPTAxisDelegate<NSObject>
+@protocol CPTAxisDelegate<CPTLayerDelegate>
 
 @optional
 
@@ -200,7 +200,7 @@ typedef NSMutableArray<__kindof CPTAxis *> CPTMutableAxisArray;
 /// @{
 @property (nonatomic, readwrite, copy, nullable) CPTLineStyle *axisLineStyle;
 @property (nonatomic, readwrite, assign) CPTCoordinate coordinate;
-@property (nonatomic, readwrite, strong, nullable) NSNumber *labelingOrigin;
+@property (nonatomic, readwrite, strong, nonnull) NSNumber *labelingOrigin;
 @property (nonatomic, readwrite, assign) CPTSign tickDirection;
 @property (nonatomic, readwrite, copy, nullable) CPTPlotRange *visibleRange;
 @property (nonatomic, readwrite, copy, nullable) CPTPlotRange *visibleAxisRange;
@@ -283,9 +283,9 @@ typedef NSMutableArray<__kindof CPTAxis *> CPTMutableAxisArray;
 /// @name Layers
 /// @{
 @property (nonatomic, readwrite, assign) BOOL separateLayers;
-@property (nonatomic, readwrite, cpt_weak_property, nullable) cpt_weak CPTPlotArea *plotArea;
-@property (nonatomic, readonly, nullable) cpt_weak CPTGridLines *minorGridLines;
-@property (nonatomic, readonly, nullable) cpt_weak CPTGridLines *majorGridLines;
+@property (nonatomic, readwrite, cpt_weak_property, nullable) CPTPlotArea *plotArea;
+@property (nonatomic, readonly, cpt_weak_property, nullable) CPTGridLines *minorGridLines;
+@property (nonatomic, readonly, cpt_weak_property, nullable) CPTGridLines *majorGridLines;
 @property (nonatomic, readonly, nullable) CPTAxisSet *axisSet;
 /// @}
 

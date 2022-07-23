@@ -1,6 +1,6 @@
 // Software License Agreement (BSD License)
 //
-// Copyright (c) 2010-2014, Deusty, LLC
+// Copyright (c) 2010-2022, Deusty, LLC
 // All rights reserved.
 //
 // Redistribution and use of this software in source and binary forms,
@@ -13,20 +13,34 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import "DDASLLogger.h"
+#import <CocoaLumberjack/DDASLLogger.h>
 
 @protocol DDLogger;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  This class provides the ability to capture the ASL (Apple System Logs)
  */
+API_DEPRECATED("Use DDOSLogger instead", macosx(10.4,10.12), ios(2.0,10.0), watchos(2.0,3.0), tvos(9.0,10.0))
 @interface DDASLLogCapture : NSObject
 
+/**
+ *  Start capturing logs
+ */
 + (void)start;
+
+/**
+ *  Stop capturing logs
+ */
 + (void)stop;
 
-// Default log level: LOG_LEVEL_VERBOSE (i.e. capture all ASL messages).
-+ (DDLogLevel)captureLogLevel;
-+ (void)setCaptureLogLevel:(DDLogLevel)LOG_LEVEL_XXX;
+/**
+ *  The current capture level.
+ *  @note Default log level: DDLogLevelVerbose (i.e. capture all ASL messages).
+ */
+@property (class) DDLogLevel captureLevel;
 
 @end
+
+NS_ASSUME_NONNULL_END

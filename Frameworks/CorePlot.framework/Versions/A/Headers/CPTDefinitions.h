@@ -10,13 +10,6 @@
  **/
 
 /**
- *  @def cpt_weak
- *  @hideinitializer
- *  @brief A custom definition for automatic reference counting (ARC) weak references that falls back to
- *  <code>__unsafe_unretained</code> values on older platforms.
- **/
-
-/**
  *  @def cpt_weak_property
  *  @hideinitializer
  *  @brief A custom definition for automatic reference counting (ARC) weak properties that falls back to
@@ -34,15 +27,9 @@
 #endif
 
 #if CPT_SDK_SUPPORTS_WEAK
-#define cpt_weak          __weak
 #define cpt_weak_property weak
 #else
-#if __clang__ && (__clang_major__ >= 3)
-#define cpt_weak __unsafe_unretained
-#else
-#define cpt_weak
-#endif
-#define cpt_weak_property assign
+#define cpt_weak_property unsafe_unretained
 #endif
 
 // Deprecated method attribute
@@ -53,7 +40,37 @@
  *  @brief Marks a method declaration as deprecated.
  **/
 
-#define cpt_deprecated __attribute__( (deprecated) )
+#define cpt_deprecated __attribute__((deprecated))
+
+// Unused parameter attribute (DEBUG only)
+
+/**
+ *  @def cpt_unused
+ *  @hideinitializer
+ *  @brief Marks a parameter value as unused only in RELEASE builds.
+ **/
+
+#ifdef DEBUG
+#define cpt_unused
+#else
+#define cpt_unused __unused
+#endif
+
+// Swift wrappers
+
+/**
+ *  @def cpt_swift_enum
+ *  @hideinitializer
+ *  @brief Marks a type definition to be imported into Swift as an enumeration.
+ **/
+#define cpt_swift_enum __attribute__((swift_wrapper(enum)))
+
+/**
+ *  @def cpt_swift_struct
+ *  @hideinitializer
+ *  @brief Marks a type definition to be imported into Swift as a structure.
+ **/
+#define cpt_swift_struct __attribute__((swift_wrapper(struct)))
 
 // Type safety defines
 
@@ -63,7 +80,7 @@
  *  @param x The number to cast.
  *  @brief Casts a number to @ref CGFloat.
  **/
-#define CPTFloat(x) ( (CGFloat)(x) )
+#define CPTFloat(x) ((CGFloat)(x))
 
 /**
  *  @def CPTPointMake
@@ -72,7 +89,7 @@
  *  @param y The y-coordinate of the point.
  *  @brief A replacement for @ref CGPointMake(), casting each parameter to @ref CGFloat.
  **/
-#define CPTPointMake(x, y) CGPointMake( (CGFloat)(x), (CGFloat)(y) )
+#define CPTPointMake(x, y) CGPointMake((CGFloat)(x), (CGFloat)(y))
 
 /**
  *  @def CPTSizeMake
@@ -81,7 +98,7 @@
  *  @param h The height of the size.
  *  @brief A replacement for @ref CGSizeMake(), casting each parameter to @ref CGFloat.
  **/
-#define CPTSizeMake(w, h) CGSizeMake( (CGFloat)(w), (CGFloat)(h) )
+#define CPTSizeMake(w, h) CGSizeMake((CGFloat)(w), (CGFloat)(h))
 
 /**
  *  @def CPTRectMake
@@ -92,7 +109,7 @@
  *  @param h The height of the rectangle.
  *  @brief A replacement for @ref CGRectMake(), casting each parameter to @ref CGFloat.
  **/
-#define CPTRectMake(x, y, w, h) CGRectMake( (CGFloat)(x), (CGFloat)(y), (CGFloat)(w), (CGFloat)(h) )
+#define CPTRectMake(x, y, w, h) CGRectMake((CGFloat)(x), (CGFloat)(y), (CGFloat)(w), (CGFloat)(h))
 
 /**
  *  @def CPTRectInset
@@ -102,7 +119,14 @@
  *  @param dy The y-offset.
  *  @brief A replacement for @ref CGRectInset(), casting each offset parameter to @ref CGFloat.
  **/
-#define CPTRectInset(rect, dx, dy) CGRectInset( rect, (CGFloat)(dx), (CGFloat)(dy) )
+#define CPTRectInset(rect, dx, dy) CGRectInset(rect, (CGFloat)(dx), (CGFloat)(dy))
+
+/**
+ *  @def CPTNAN
+ *  @hideinitializer
+ *  @brief The not-a-number constant (@NAN), cast to @ref CGFloat.
+ **/
+#define CPTNAN ((CGFloat)NAN)
 
 /**
  *  @brief Enumeration of numeric types
@@ -158,7 +182,7 @@ CPTRGBAColor;
 /**
  *  @brief Enumeration of label positioning offset directions
  **/
-typedef NS_ENUM (NSInteger, CPTSign) {
+typedef NS_CLOSED_ENUM(NSInteger, CPTSign) {
     CPTSignNone     = 0,  ///< No offset
     CPTSignPositive = +1, ///< Positive offset
     CPTSignNegative = -1  ///< Negative offset
@@ -204,6 +228,8 @@ CPTEdgeInsets;
 
 extern const CPTEdgeInsets CPTEdgeInsetsZero; ///< Defines a set of stretchable image edge insets where all of the values are zero (@num{0}).
 
+extern const NSStringDrawingOptions CPTStringDrawingOptions; ///< String drawing options used when measuring and drawing text.
+
 /**
  *  @brief An array of numbers.
  **/
@@ -233,6 +259,16 @@ typedef NSArray<NSString *> CPTStringArray;
  *  @brief A mutable array of strings.
  **/
 typedef NSMutableArray<NSString *> CPTMutableStringArray;
+
+/**
+ *  @brief An array of values.
+ **/
+typedef NSArray<NSValue *> CPTValueArray;
+
+/**
+ *  @brief A mutable array of values.
+ **/
+typedef NSMutableArray<NSValue *> CPTMutableValueArray;
 
 /**
  *  @brief An array of strings.

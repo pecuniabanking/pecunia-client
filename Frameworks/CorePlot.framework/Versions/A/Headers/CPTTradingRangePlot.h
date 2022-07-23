@@ -7,18 +7,24 @@
 
 @class CPTTradingRangePlot;
 
+/**
+ *  @brief Trading range plot bindings.
+ **/
+typedef NSString *CPTTradingRangePlotBinding cpt_swift_struct;
+
 /// @ingroup plotBindingsTradingRangePlot
 /// @{
-extern NSString *__nonnull const CPTTradingRangePlotBindingXValues;
-extern NSString *__nonnull const CPTTradingRangePlotBindingOpenValues;
-extern NSString *__nonnull const CPTTradingRangePlotBindingHighValues;
-extern NSString *__nonnull const CPTTradingRangePlotBindingLowValues;
-extern NSString *__nonnull const CPTTradingRangePlotBindingCloseValues;
-extern NSString *__nonnull const CPTTradingRangePlotBindingIncreaseFills;
-extern NSString *__nonnull const CPTTradingRangePlotBindingDecreaseFills;
-extern NSString *__nonnull const CPTTradingRangePlotBindingLineStyles;
-extern NSString *__nonnull const CPTTradingRangePlotBindingIncreaseLineStyles;
-extern NSString *__nonnull const CPTTradingRangePlotBindingDecreaseLineStyles;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingXValues;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingOpenValues;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingHighValues;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingLowValues;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingCloseValues;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingIncreaseFills;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingDecreaseFills;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingLineStyles;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingIncreaseLineStyles;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingDecreaseLineStyles;
+extern CPTTradingRangePlotBinding __nonnull const CPTTradingRangePlotBindingBarWidths;
 /// @}
 
 /**
@@ -85,6 +91,23 @@ typedef NS_ENUM (NSInteger, CPTTradingRangePlotField) {
  *  If the data source returns an NSNull object, no fill is drawn.
  **/
 -(nullable CPTFill *)decreaseFillForTradingRangePlot:(nonnull CPTTradingRangePlot *)plot recordIndex:(NSUInteger)idx;
+
+/** @brief @optional Gets an array of bar widths for the given trading range plot.
+ *  @param plot The trading range plot.
+ *  @param indexRange The range of the data indexes of interest.
+ *  @return An array of bar widths.
+ **/
+-(nullable CPTNumberArray *)barWidthsForTradingRangePlot:(nonnull CPTTradingRangePlot *)barPlot recordIndexRange:(NSRange)indexRange;
+
+/** @brief @optional Gets a bar width for the given trading range plot.
+ *  This method will not be called if
+ *  @link CPTTradingRangePlotDataSource::barWidthForTradingRangePlot:recordIndexRange: -barWidthForTradingRangePlot:recordIndexRange: @endlink
+ *  is also implemented in the datasource.
+ *  @param plot The tradingrange plot.
+ *  @param idx The data index of interest.
+ *  @return The bar width for the bar with the given index. If the data source returns @nil, the default barWidth is used.
+ **/
+-(nullable NSNumber *)barWidthForTradingRangePlot:(nonnull CPTTradingRangePlot *)plot recordIndex:(NSUInteger)idx;
 
 /// @}
 
@@ -256,6 +279,8 @@ typedef NS_ENUM (NSInteger, CPTTradingRangePlotField) {
 -(void)reloadBarFillsInIndexRange:(NSRange)indexRange;
 -(void)reloadBarLineStyles;
 -(void)reloadBarLineStylesInIndexRange:(NSRange)indexRange;
+-(void)reloadBarWidths;
+-(void)reloadBarWidthsInIndexRange:(NSRange)indexRange;
 /// @}
 
 @end

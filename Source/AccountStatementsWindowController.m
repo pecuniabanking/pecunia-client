@@ -137,7 +137,7 @@
     
     AccountStatementsHandler *handler = [[AccountStatementsHandler alloc] init:account context:context];
     if (handler != nil) {
-        [handler getAccountStatements];
+        [handler getAccountStatementsNoException];
     }
     
     // Show the latest document.

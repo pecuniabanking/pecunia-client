@@ -66,6 +66,13 @@
 - (void)awakeFromNib
 {
     NSMutableAttributedString *msgString = [[NSMutableAttributedString alloc] initWithHTML: [message dataUsingEncoding: NSISOLatin1StringEncoding] documentAttributes: nil];
+    if (msgString != nil) {
+        [[messageView textStorage] setAttributedString: msgString];
+    } else {
+        LogInfo(@"ChipTanWindowController: message could not be converted from HTML");
+        NSData *data = [message dataUsingEncoding:NSISOLatin1StringEncoding];
+        LogInfo(@"Data in base64: %@", data.base64Encoding);
+    }
     [[messageView textStorage] setAttributedString: msgString];
     [frequencySlider setMaxValue: FREQ_MAX];
     [frequencySlider setMinValue: FREQ_MIN];

@@ -1,6 +1,6 @@
 // Software License Agreement (BSD License)
 //
-// Copyright (c) 2010-2014, Deusty, LLC
+// Copyright (c) 2010-2022, Deusty, LLC
 // All rights reserved.
 //
 // Redistribution and use of this software in source and binary forms,
@@ -14,23 +14,47 @@
 //   prior written permission of Deusty, LLC.
 
 #import <Foundation/Foundation.h>
-#import "DDLog.h"
+
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
+#import <CocoaLumberjack/DDLog.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  * This formatter can be used to chain different formatters together.
  * The log message will processed in the order of the formatters added.
  **/
-
 @interface DDMultiFormatter : NSObject <DDLogFormatter>
 
 /**
  *  Array of chained formatters
  */
-@property (readonly) NSArray *formatters;
+@property (nonatomic, readonly) NSArray<id<DDLogFormatter>> *formatters;
 
-- (void)addFormatter:(id<DDLogFormatter>)formatter;
-- (void)removeFormatter:(id<DDLogFormatter>)formatter;
-- (void)removeAllFormatters;
+/**
+ *  Add a new formatter
+ */
+- (void)addFormatter:(id<DDLogFormatter>)formatter NS_SWIFT_NAME(add(_:));
+
+/**
+ *  Remove a formatter
+ */
+- (void)removeFormatter:(id<DDLogFormatter>)formatter NS_SWIFT_NAME(remove(_:));
+
+/**
+ *  Remove all existing formatters
+ */
+- (void)removeAllFormatters NS_SWIFT_NAME(removeAll());
+
+/**
+ *  Check if a certain formatter is used
+ */
 - (BOOL)isFormattingWithFormatter:(id<DDLogFormatter>)formatter;
 
 @end
+
+NS_ASSUME_NONNULL_END

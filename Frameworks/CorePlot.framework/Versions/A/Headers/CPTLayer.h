@@ -5,7 +5,13 @@
 /// @file
 
 @class CPTGraph;
+@class CPTLayer;
 @class CPTShadow;
+
+/**
+ *  @brief Layer notification type.
+ **/
+typedef NSString *CPTLayerNotification cpt_swift_struct;
 
 /// @name Layout
 /// @{
@@ -13,9 +19,29 @@
 /** @brief Notification sent by all layers when the layer @link CALayer::bounds bounds @endlink change.
  *  @ingroup notification
  **/
-extern NSString *__nonnull const CPTLayerBoundsDidChangeNotification;
+extern CPTLayerNotification __nonnull const CPTLayerBoundsDidChangeNotification NS_SWIFT_NAME(boundsDidChange);
 
 /// @}
+
+/**
+ *  @brief An array of CPTLayer objects.
+ **/
+typedef NSArray<CPTLayer *> CPTLayerArray;
+
+/**
+ *  @brief A mutable array of CPTLayer objects.
+ **/
+typedef NSMutableArray<CPTLayer *> CPTMutableLayerArray;
+
+/**
+ *  @brief A set of CPTLayer objects.
+ **/
+typedef NSSet<CPTLayer *> CPTLayerSet;
+
+/**
+ *  @brief A mutable set of CPTLayer objects.
+ **/
+typedef NSMutableSet<CPTLayer *> CPTMutableLayerSet;
 
 /**
  *  @brief An array of CALayer objects.
@@ -37,11 +63,28 @@ typedef NSSet<CALayer *> CPTSublayerSet;
  **/
 typedef NSMutableSet<CALayer *> CPTMutableSublayerSet;
 
+#pragma mark -
+
+/**
+ *  @brief Layer delegate.
+ **/
+#if ((TARGET_OS_SIMULATOR || TARGET_OS_IPHONE || TARGET_OS_TV) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)) \
+    || (TARGET_OS_MAC && (MAC_OS_X_VERSION_MAX_ALLOWED >= 101200))
+// CALayerDelegate is defined by Core Animation in iOS 10.0+, macOS 10.12+, and tvOS 10.0+
+@protocol CPTLayerDelegate<CALayerDelegate>
+#else
+@protocol CPTLayerDelegate<NSObject>
+#endif
+
+@end
+
+#pragma mark -
+
 @interface CPTLayer : CALayer<CPTResponder, NSSecureCoding>
 
 /// @name Graph
 /// @{
-@property (nonatomic, readwrite, cpt_weak_property, nullable) cpt_weak CPTGraph *graph;
+@property (nonatomic, readwrite, cpt_weak_property, nullable) CPTGraph *graph;
 /// @}
 
 /// @name Padding
@@ -82,12 +125,13 @@ typedef NSMutableSet<CALayer *> CPTMutableSublayerSet;
 /// @name Initialization
 /// @{
 -(nonnull instancetype)initWithFrame:(CGRect)newFrame NS_DESIGNATED_INITIALIZER;
--(nonnull instancetype)initWithCoder:(nonnull NSCoder *)coder NS_DESIGNATED_INITIALIZER;
+-(nullable instancetype)initWithCoder:(nonnull NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 -(nonnull instancetype)initWithLayer:(nonnull id)layer NS_DESIGNATED_INITIALIZER;
 /// @}
 
 /// @name Drawing
 /// @{
+-(void)setNeedsDisplayAllLayers;
 -(void)renderAsVectorInContext:(nonnull CGContextRef)context;
 -(void)recursivelyRenderInContext:(nonnull CGContextRef)context;
 -(void)layoutAndRenderInContext:(nonnull CGContextRef)context;

@@ -1,6 +1,6 @@
 // Software License Agreement (BSD License)
 //
-// Copyright (c) 2010-2014, Deusty, LLC
+// Copyright (c) 2010-2022, Deusty, LLC
 // All rights reserved.
 //
 // Redistribution and use of this software in source and binary forms,
@@ -14,10 +14,18 @@
 //   prior written permission of Deusty, LLC.
 
 #import <Foundation/Foundation.h>
-#import "DDLog.h"
+
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
+#import <CocoaLumberjack/DDLog.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * This class provides a log formatter that filters log statements from a logging context not on the whitelist.
+ * This class provides a log formatter that filters log statements from a logging context not on the allowlist.
  *
  * A log formatter can be added to any logger to format and/or filter its output.
  * You can learn more about log formatters here:
@@ -35,35 +43,75 @@
  * For example, logically separate parts of your app each have a different logging context.
  * Also 3rd party frameworks that make use of Lumberjack generally use their own dedicated logging context.
  **/
-@interface DDContextWhitelistFilterLogFormatter : NSObject <DDLogFormatter>
-
-- (id)init;
-
-- (void)addToWhitelist:(int)loggingContext;
-- (void)removeFromWhitelist:(int)loggingContext;
-
-- (NSArray *)whitelist;
-
-- (BOOL)isOnWhitelist:(int)loggingContext;
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark -
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@interface DDContextAllowlistFilterLogFormatter : NSObject <DDLogFormatter>
 
 /**
- * This class provides a log formatter that filters log statements from a logging context on the blacklist.
- **/
-@interface DDContextBlacklistFilterLogFormatter : NSObject <DDLogFormatter>
+ *  Designated default initializer
+ */
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
-- (id)init;
+/**
+ *  Add a context to the allowlist
+ *
+ *  @param loggingContext the context
+ */
+- (void)addToAllowlist:(NSInteger)loggingContext;
 
-- (void)addToBlacklist:(int)loggingContext;
-- (void)removeFromBlacklist:(int)loggingContext;
+/**
+ *  Remove context from allowlist
+ *
+ *  @param loggingContext the context
+ */
+- (void)removeFromAllowlist:(NSInteger)loggingContext;
 
-- (NSArray *)blacklist;
+/**
+ *  Return the allowlist
+ */
+@property (nonatomic, readonly, copy) NSArray<NSNumber *> *allowlist;
 
-- (BOOL)isOnBlacklist:(int)loggingContext;
+/**
+ *  Check if a context is on the allowlist
+ *
+ *  @param loggingContext the context
+ */
+- (BOOL)isOnAllowlist:(NSInteger)loggingContext;
 
 @end
+
+
+/**
+ * This class provides a log formatter that filters log statements from a logging context on the denylist.
+ **/
+@interface DDContextDenylistFilterLogFormatter : NSObject <DDLogFormatter>
+
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+/**
+ *  Add a context to the denylist
+ *
+ *  @param loggingContext the context
+ */
+- (void)addToDenylist:(NSInteger)loggingContext;
+
+/**
+ *  Remove context from denylist
+ *
+ *  @param loggingContext the context
+ */
+- (void)removeFromDenylist:(NSInteger)loggingContext;
+
+/**
+ *  Return the denylist
+ */
+@property (readonly, copy) NSArray<NSNumber *> *denylist;
+
+/**
+ *  Check if a context is on the denylist
+ *
+ *  @param loggingContext the context
+ */
+- (BOOL)isOnDenylist:(NSInteger)loggingContext;
+
+@end
+
+NS_ASSUME_NONNULL_END

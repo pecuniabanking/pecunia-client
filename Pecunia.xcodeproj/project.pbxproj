@@ -368,8 +368,6 @@
 		B10A57DA2267B89B00A1028C /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A57BF2267B89B00A1028C /* Double.swift */; };
 		B10A57DC2267B89B00A1028C /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A57C12267B89B00A1028C /* Character.swift */; };
 		B10A57E02267B89B00A1028C /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A57C32267B89B00A1028C /* Int.swift */; };
-		B10C41B3196F2B2400085983 /* AccountStatementsController.h in Resources */ = {isa = PBXBuildFile; fileRef = B10C41B2196F2B2400085983 /* AccountStatementsController.h */; };
-		B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B10C41B5196F2B5B00085983 /* AccountStatementsController.m */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B1137C37228764E000F0C012 /* BackgroundColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1137C36228764E000F0C012 /* BackgroundColors.xcassets */; };
@@ -1076,8 +1074,6 @@
 		B10A57C02267B89B00A1028C /* ExSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExSwift.h; path = Source/ExSwift/ExSwift.h; sourceTree = SOURCE_ROOT; };
 		B10A57C12267B89B00A1028C /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Character.swift; path = Source/ExSwift/Character.swift; sourceTree = SOURCE_ROOT; };
 		B10A57C32267B89B00A1028C /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Int.swift; path = Source/ExSwift/Int.swift; sourceTree = SOURCE_ROOT; };
-		B10C41B2196F2B2400085983 /* AccountStatementsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatementsController.h; sourceTree = "<group>"; };
-		B10C41B5196F2B5B00085983 /* AccountStatementsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStatementsController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2310,8 +2306,6 @@
 		B1C7B193130B12870091CD72 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
-				B10C41B2196F2B2400085983 /* AccountStatementsController.h */,
-				B10C41B5196F2B5B00085983 /* AccountStatementsController.m */,
 				B1A1377211B6FD9400622D6C /* AccountDefController.h */,
 				B1A1377311B6FD9400622D6C /* AccountDefController.m */,
 				B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */,
@@ -2838,7 +2832,6 @@
 				2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */,
 				27E845E219E17D300026464E /* Debits.xib in Resources */,
 				2791FBD616CFCA4C00953116 /* delete3.png in Resources */,
-				B10C41B3196F2B2400085983 /* AccountStatementsController.h in Resources */,
 				275AC7ED186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F31900359E00DCF0DB /* font-increase.png in Resources */,
 				27E845DE19E17D300026464E /* ChipTanWindow.xib in Resources */,
@@ -3111,7 +3104,6 @@
 				B10A57CA2267B89B00A1028C /* NSDate.swift in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
-				B10C41B6196F2B5B00085983 /* AccountStatementsController.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
 				011DADE01EA37DD200A44EFE /* ChipcardPinRequestController.swift in Sources */,
@@ -3239,7 +3231,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = "i386 x86_64";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -3298,7 +3289,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Source/Pecunia-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = "i386 x86_64";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -3406,7 +3396,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = singlefile;
-				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Development;
 		};
@@ -3452,7 +3441,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Deployment;
 		};

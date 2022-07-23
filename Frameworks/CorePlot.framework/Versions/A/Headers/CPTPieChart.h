@@ -9,11 +9,16 @@
 @class CPTTextLayer;
 @class CPTLineStyle;
 
+/**
+ *  @brief Pie chart bindings.
+ **/
+typedef NSString *CPTPieChartBinding cpt_swift_struct;
+
 /// @ingroup plotBindingsPieChart
 /// @{
-extern NSString *__nonnull const CPTPieChartBindingPieSliceWidthValues;
-extern NSString *__nonnull const CPTPieChartBindingPieSliceFills;
-extern NSString *__nonnull const CPTPieChartBindingPieSliceRadialOffsets;
+extern CPTPieChartBinding __nonnull const CPTPieChartBindingPieSliceWidthValues;
+extern CPTPieChartBinding __nonnull const CPTPieChartBindingPieSliceFills;
+extern CPTPieChartBinding __nonnull const CPTPieChartBindingPieSliceRadialOffsets;
 /// @}
 
 /**
@@ -28,7 +33,7 @@ typedef NS_ENUM (NSInteger, CPTPieChartField) {
 /**
  *  @brief Enumeration of pie slice drawing directions.
  **/
-typedef NS_ENUM (NSInteger, CPTPieDirection) {
+typedef NS_CLOSED_ENUM(NSInteger, CPTPieDirection) {
     CPTPieDirectionClockwise,       ///< Pie slices are drawn in a clockwise direction.
     CPTPieDirectionCounterClockwise ///< Pie slices are drawn in a counter-clockwise direction.
 };

@@ -1,6 +1,6 @@
 // Software License Agreement (BSD License)
 //
-// Copyright (c) 2010-2014, Deusty, LLC
+// Copyright (c) 2010-2022, Deusty, LLC
 // All rights reserved.
 //
 // Redistribution and use of this software in source and binary forms,
@@ -13,7 +13,14 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#import "DDLog.h"
+// Disable legacy macros
+#ifndef DD_LEGACY_MACROS
+    #define DD_LEGACY_MACROS 0
+#endif
+
+#import <CocoaLumberjack/DDLog.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  * This class provides an abstract implementation of a database logger.
@@ -22,7 +29,6 @@
  * All that is needed for a concrete database logger is to extend this class
  * and override the methods in the implementation file that are prefixed with "db_".
  **/
-
 @interface DDAbstractDatabaseLogger : DDAbstractLogger {
     
 @protected
@@ -32,7 +38,7 @@
     NSTimeInterval _deleteInterval;
     BOOL _deleteOnEverySave;
     
-    BOOL _saveTimerSuspended;
+    NSInteger _saveTimerSuspended;
     NSUInteger _unsavedCount;
     dispatch_time_t _unsavedTime;
     dispatch_source_t _saveTimer;
@@ -62,6 +68,10 @@
  * The default saveInterval is 60 seconds.
  **/
 @property (assign, readwrite) NSUInteger saveThreshold;
+
+/**
+ *  See the description for the `saveThreshold` property
+ */
 @property (assign, readwrite) NSTimeInterval saveInterval;
 
 /**
@@ -91,7 +101,15 @@
  * The default deleteOnEverySave is NO.
  **/
 @property (assign, readwrite) NSTimeInterval maxAge;
+
+/**
+ *  See the description for the `maxAge` property
+ */
 @property (assign, readwrite) NSTimeInterval deleteInterval;
+
+/**
+ *  See the description for the `maxAge` property
+ */
 @property (assign, readwrite) BOOL deleteOnEverySave;
 
 /**
@@ -105,3 +123,5 @@
 - (void)deleteOldLogEntries;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -63,11 +63,7 @@ extension DDLog {
         let async: Bool = (level != DDLogLevel.error) && DDLog.logAsync
 
         if (flag.rawValue & level.rawValue) != 0 {
-
             
-            let fileName : UnsafePointer<Int8>? = (file != nil) ? (file!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: file!.data(using: String.Encoding.utf8)!.count):nil;
-            let functionName : UnsafePointer<Int8>? = (function != nil) ? (function!.data(using: String.Encoding.utf8)! as NSData).bytes.bindMemory(to: Int8.self, capacity: function!.data(using: String.Encoding.utf8)!.count) : nil
-
             var format : String;
             switch (flag) {
             case DDLogFlag.error:
@@ -95,16 +91,16 @@ extension DDLog {
                 break;
             }
 
-            DDLog.log(async,
-                level: level,
-                flag: flag,
-                context: 0,
-                file: fileName,
-                function: functionName,
-                line: line,
-                tag:  nil,
-                format: format,
-                args: getVaList(arguments));
+            DDLog.log(asynchronous: async,
+                      level: level,
+                      flag: flag,
+                      context: 0,
+                      file: file ?? "<unknown>",
+                      function: function ?? "<unknown>",
+                      line: UInt(line),
+                      tag:  nil,
+                      format: format,
+                      arguments: getVaList(arguments));
         }
     }
 }
@@ -134,9 +130,9 @@ func logVerbose(_ message: String, _ function: String = #function, _ file: Strin
 }
 
 func logEnter(_ f: String = #function) {
-    DDLog.doLog(DDLogFlag.debug, message: "Entering \(f)", function: nil, file: nil, line: -1, arguments: [])
+    DDLog.doLog(DDLogFlag.debug, message: "Entering \(f)", function: nil, file: nil, line: 0, arguments: [])
 }
 
 func logLeave(_ f: String = #function ) {
-    DDLog.doLog(DDLogFlag.debug, message: "Leaving \(f)", function: nil, file: nil, line: -1, arguments: [])
+    DDLog.doLog(DDLogFlag.debug, message: "Leaving \(f)", function: nil, file: nil, line: 0, arguments: [])
 }

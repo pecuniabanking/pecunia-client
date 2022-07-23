@@ -20,7 +20,7 @@
 
 /// @name Delegate
 /// @{
-@property (nonatomic, cpt_weak_property, nullable) cpt_weak id<CPTAnimationDelegate> delegate;
+@property (nonatomic, cpt_weak_property, nullable) id<CPTAnimationDelegate> delegate;
 /// @}
 
 /// @name Status
@@ -32,6 +32,11 @@
 /// @{
 @property (nonatomic, readwrite, copy, nullable) id<NSCopying, NSObject> identifier;
 @property (nonatomic, readwrite, copy, nullable) NSDictionary *userInfo;
+/// @}
+
+/// @name Initialization
+/// @{
+-(nonnull instancetype)initWithAnimationPeriod:(nonnull CPTAnimationPeriod *)animationPeriod animationCurve:(CPTAnimationCurve)curve object:(nonnull id)object getter:(nonnull SEL)getter setter:(nonnull SEL)setter NS_DESIGNATED_INITIALIZER;
 /// @}
 
 @end

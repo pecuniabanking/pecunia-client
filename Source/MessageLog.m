@@ -47,14 +47,14 @@
         // As long as we have this and MessageLog.swift separated we also have to set the log level there.
 #ifdef DEBUG
         // Logging to console only for debug builds. Otherwise use the log file only.
-        logLevel = LOG_LEVEL_DEBUG;
+        logLevel = DDLogLevelDebug;
         [DDLog addLogger: DDTTYLogger.sharedInstance];
         DDTTYLogger.sharedInstance.colorsEnabled = YES;
 
         // Swift.
         DDLog.logLevel = DDLogLevelDebug;
 #else
-        logLevel = LOG_LEVEL_INFO;
+        logLevel = DDLogLevelInfo;
         DDLog.logLevel = DDLogLevelInfo;
 #endif
 
@@ -87,27 +87,27 @@
         NSInteger level = [defaults integerForKey: @"logLevel"];
         switch (level) {
             case 0:
-                logLevel = LOG_LEVEL_ERROR;
+                logLevel = DDLogLevelError;
                 DDLog.logLevel = DDLogLevelError;
                 break;
 
             case 1:
-                logLevel = LOG_LEVEL_WARN;
+                logLevel = DDLogLevelWarning;
                 DDLog.logLevel = DDLogLevelWarning;
                 break;
 
             case 3:
-                logLevel = LOG_LEVEL_DEBUG;
+                logLevel = DDLogLevelDebug;
                 DDLog.logLevel = DDLogLevelDebug;
                 break;
 
             case 4:
-                logLevel = LOG_LEVEL_VERBOSE;
+                logLevel = DDLogLevelVerbose;
                 DDLog.logLevel = DDLogLevelVerbose;
                 break;
 
             default:
-                logLevel = LOG_LEVEL_INFO;
+                logLevel = DDLogLevelInfo;
                 DDLog.logLevel = DDLogLevelInfo;
                 break;
         }
@@ -234,13 +234,13 @@
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
     self.hasError = YES;
-    if ((logLevel & LOG_FLAG_ERROR) != 0) {
+    if ((logLevel & DDLogFlagError) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog   log: LOG_ASYNC_ERROR
+        [DDLog   log: NO
                level: logLevel
-                flag: LOG_FLAG_ERROR
+                flag: DDLogFlagError
              context: 0
                 file: file
             function: function
@@ -258,13 +258,13 @@
 
 
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
-    if ((logLevel & LOG_FLAG_WARN) != 0) {
+    if ((logLevel & DDLogFlagWarning) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog   log: LOG_ASYNC_WARN
+        [DDLog   log: YES
                level: logLevel
-                flag: LOG_FLAG_WARN
+                flag: DDLogFlagWarning
              context: 0
                 file: file
             function: function
@@ -276,13 +276,13 @@
 }
 
 - (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
-    if ((logLevel & LOG_FLAG_INFO) != 0) {
+    if ((logLevel & DDLogFlagInfo) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog   log: LOG_ASYNC_INFO
+        [DDLog   log: YES
                level: logLevel
-                flag: LOG_FLAG_INFO
+                flag: DDLogFlagInfo
              context: 0
                 file: file
             function: function
@@ -294,13 +294,13 @@
 }
 
 - (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
-    if ((logLevel & LOG_FLAG_DEBUG) != 0) {
+    if ((logLevel & DDLogFlagDebug) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog   log: LOG_ASYNC_DEBUG
+        [DDLog   log: YES
                level: logLevel
-                flag: LOG_FLAG_DEBUG
+                flag: DDLogFlagDebug
              context: 0
                 file: file
             function: function
@@ -312,16 +312,16 @@
 }
 
 - (void)logDebug: (NSString *)format, ...{
-    if ((logLevel & LOG_FLAG_DEBUG) != 0) {
+    if ((logLevel & DDLogFlagDebug) != 0) {
         va_list args;
         va_start(args, format);
 
-        [DDLog   log: LOG_ASYNC_DEBUG
+        [DDLog   log: YES
                level: logLevel
-                flag: LOG_FLAG_DEBUG
+                flag: DDLogFlagDebug
              context: 0
-                file: NULL
-            function: NULL
+                file: ""
+            function: ""
                 line: 0
                  tag:  nil
               format: [NSString stringWithFormat: @"[Debug] %@", format]
@@ -330,13 +330,13 @@
 }
 
 - (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...{
-    if ((logLevel & LOG_FLAG_VERBOSE) != 0) {
+    if ((logLevel & DDLogFlagVerbose) != 0) {
         va_list args;
         va_start(args, line);
 
-        [DDLog   log: LOG_ASYNC_VERBOSE
+        [DDLog   log: YES
                level: logLevel
-                flag: LOG_FLAG_VERBOSE
+                flag: DDLogFlagVerbose
              context: 0
                 file: file
             function: function
@@ -469,7 +469,3 @@
 }
 
 @end
-
-void logEnter() {
-    [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__];
-}

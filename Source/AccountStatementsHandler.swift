@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HBCI4Swift
 
 class AccountStatementsHandler : NSObject {
     let account:BankAccount;
@@ -38,11 +39,11 @@ class AccountStatementsHandler : NSObject {
         return nil;
     }
     
-    func getStatementsForYear(year:Int, fromNumber:Int) ->Bool {
+    func getStatementsForYear(year:Int, fromNumber:Int) throws ->Bool {
         var number = fromNumber
        
         while true {
-            guard let statement = HBCIBackend.backend.getAccountStatement(number, year: year, bankAccount: self.account) else {
+            guard let statement = try HBCIBackend.backend.getAccountStatement(number, year: year, bankAccount: self.account) else {
                 break;
             }
             guard statement.document != nil else {
@@ -68,27 +69,44 @@ class AccountStatementsHandler : NSObject {
         return number > fromNumber;
     }
     
-    @objc func getAccountStatements() {
-        
-        if let (year, number) = getLastStatement() {
-           _ = getStatementsForYear(year: year, fromNumber: number+1);
-        } else {
-            // we start with the current year and then go back
-            var startYear = Int(ShortDate.current()!.year);
-            
-            while getStatementsForYear(year: startYear, fromNumber: 1) {
-                startYear -= 1
-            }
-        }
-        
+    func getAccountStatements() throws {
+        // AccountStatementList transaction (HKKAU) is not supported by all institutes. So we try to get the
+        // account statements one by one
+        var startYear = Int(ShortDate.current()!.year);
+
         do {
+            if var (year, number) = getLastStatement() {
+                while year <= startYear {
+                    _ = try getStatementsForYear(year: year, fromNumber: number+1);
+                    year += 1;
+                    number = 0;
+                }
+            } else {
+                // we start with the current year and then go back
+                while try getStatementsForYear(year: startYear, fromNumber: 1) {
+                    startYear -= 1
+                }
+            }
+
             try self.context.save()
+        }
+        catch HBCIError.userAbort {
+            throw HBCIError.userAbort;
         }
         catch let error as NSError {
             let alert = NSAlert(error: error);
             alert.runModal();
         }
-
+    }
+    
+    @objc func getAccountStatementsNoException() -> Bool {
+        do {
+            try self.getAccountStatements();
+        }
+        catch {
+            return false;
+        }
+        return true;
     }
     
     

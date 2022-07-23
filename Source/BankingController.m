@@ -82,7 +82,7 @@
 #import "Tag.h"
 #import "AssignmentController.h"
 #import "AboutWindowController.h"
-#import "AccountStatementsController.h"
+//#import "AccountStatementsController.h"
 #import "BankMessageWindowController.h"
 #import "BudgetWindowController.h"
 #import "ChipcardDataWindowController.h"
@@ -899,15 +899,13 @@ static BankingController *bankinControllerInstance;
         return;
     }
     
-    if ([defaults boolForKey: @"loadAccountStatements"]) {
-        [[HBCIBackend backend] getAccountStatements:selectedAccounts];
-    }
-
     if ([defaults boolForKey: @"manualTransactionCheck"] && selectWindowController == nil) {
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
-    
-    NSArray *queryResult = [[HBCIBackend backend] getStatements: selectedAccounts];
+
+    BOOL loadAccountStatements = [defaults boolForKey: @"loadAccountStatements"];
+
+    NSArray *queryResult = [[HBCIBackend backend] getStatements: selectedAccounts withAccountStatements:loadAccountStatements];
     
     [self processStatements:queryResult];
     
@@ -3772,22 +3770,6 @@ static BankingController *bankinControllerInstance;
     }
 
     CreditCardSettlementController *controller = [[CreditCardSettlementController alloc] init];
-    controller.account = account;
-
-    [NSApp runModalForWindow: [controller window]];
-
-    LogLeave;
-}
-
-- (IBAction)accountStatements: (id)sender {
-    LogEnter;
-
-    BankAccount *account = [self selectedBankAccount];
-    if (account == nil) {
-        return;
-    }
-
-    AccountStatementsController *controller = [[AccountStatementsController alloc] init];
     controller.account = account;
 
     [NSApp runModalForWindow: [controller window]];

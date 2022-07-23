@@ -8,30 +8,47 @@
 @class CPTLineStyle;
 @class CPTTextStyle;
 
+/**
+ *  @brief Graph notification type.
+ **/
+typedef NSString *CPTLegendNotification cpt_swift_struct;
+
 /// @name Legend
 /// @{
 
 /** @brief Notification sent by plots to tell the legend it should redraw itself.
  *  @ingroup notification
  **/
-extern NSString *__nonnull const CPTLegendNeedsRedrawForPlotNotification;
+extern CPTLegendNotification __nonnull const CPTLegendNeedsRedrawForPlotNotification NS_SWIFT_NAME(needsRedrawForPlot);
 
 /** @brief Notification sent by plots to tell the legend it should update its layout and redraw itself.
  *  @ingroup notification
  **/
-extern NSString *__nonnull const CPTLegendNeedsLayoutForPlotNotification;
+extern CPTLegendNotification __nonnull const CPTLegendNeedsLayoutForPlotNotification NS_SWIFT_NAME(needsLayoutForPlot);
 
 /** @brief Notification sent by plots to tell the legend it should reload all legend entries.
  *  @ingroup notification
  **/
-extern NSString *__nonnull const CPTLegendNeedsReloadEntriesForPlotNotification;
+extern CPTLegendNotification __nonnull const CPTLegendNeedsReloadEntriesForPlotNotification NS_SWIFT_NAME(needsReloadEntriesForPlot);
 
 /// @}
 
 /**
+ *  @brief Enumeration of legend layout options.
+ **/
+typedef NS_ENUM (NSInteger, CPTLegendSwatchLayout) {
+    CPTLegendSwatchLayoutLeft,  ///< Lay out the swatch to the left side of the title.
+    CPTLegendSwatchLayoutRight, ///< Lay out the swatch to the right side of the title.
+    CPTLegendSwatchLayoutTop,   ///< Lay out the swatch above the title.
+    CPTLegendSwatchLayoutBottom ///< Lay out the swatch below the title.
+};
+
+#pragma mark -
+
+/**
  *  @brief Legend delegate.
  **/
-@protocol CPTLegendDelegate<NSObject>
+@protocol CPTLegendDelegate<CPTLayerDelegate>
 
 @optional
 
@@ -197,6 +214,7 @@ extern NSString *__nonnull const CPTLegendNeedsReloadEntriesForPlotNotification;
 @property (nonatomic, readwrite, assign) CGFloat columnMargin;
 @property (nonatomic, readwrite, assign) CGFloat rowMargin;
 @property (nonatomic, readwrite, assign) CGFloat titleOffset;
+@property (nonatomic, readwrite, assign) CPTLegendSwatchLayout swatchLayout;
 /// @}
 
 /// @name Factory Methods
