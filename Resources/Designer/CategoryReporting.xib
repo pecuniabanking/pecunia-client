@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CategoryRepWindowController">
@@ -21,11 +22,11 @@
             <rect key="frame" x="0.0" y="0.0" width="844" height="572"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <customView wantsLayer="YES" id="105" customClass="RoundedOuterShadowView">
+                <customView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="105" customClass="RoundedOuterShadowView">
                     <rect key="frame" x="0.0" y="0.0" width="845" height="572"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <button id="16">
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="16">
                             <rect key="frame" x="25" y="27" width="95" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <buttonCell key="cell" type="check" title="Saldieren" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="43">
@@ -37,11 +38,11 @@
                                 <binding destination="99" name="value" keyPath="values.balanceCategories" id="102"/>
                             </connections>
                         </button>
-                        <customView wantsLayer="YES" focusRingType="exterior" id="103" userLabel="Main Graph Host" customClass="PecuniaGraphHost">
+                        <customView wantsLayer="YES" focusRingType="exterior" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="103" userLabel="Main Graph Host" customClass="PecuniaGraphHost">
                             <rect key="frame" x="25" y="62" width="792" height="410"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </customView>
-                        <button id="116">
+                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="116">
                             <rect key="frame" x="791" y="20" width="34" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="help-button" imagePosition="only" alignment="left" inset="2" id="117">
@@ -55,13 +56,14 @@
                     </subviews>
                 </customView>
             </subviews>
+            <point key="canvasLocation" x="139" y="154"/>
         </view>
         <userDefaultsController representsSharedInstance="YES" id="99"/>
         <customView id="120" userLabel="Help Text">
             <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="121">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="276" translatesAutoresizingMaskIntoConstraints="NO" id="121">
                     <rect key="frame" x="10" y="10" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Help" allowsEditingTextAttributes="YES" id="122">

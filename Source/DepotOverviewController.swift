@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class DepotOverviewController : NSObject, PecuniaSectionItem {
+@objc class DepotOverviewController : NSObject, PecuniaSectionItem, NSTableViewDelegate {
     var selectedCategory: BankingCategory! {
         set {
             if newValue.isBankAccount() {
@@ -21,13 +21,18 @@ import Foundation
                     currentAccount = account;
                     
                     entryController.content = account.depotValueEntry;
-                    /*
+                    
                     if let entry = account.depotValueEntry {
-                        entryController.content = entry;
-                    } else {
-                        entryController.content = nil;
+                        if entry.depotChange() < 0 {
+                            totalChangeField.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                            totalChangeTextField.stringValue = "Verlust";
+                            totalChangeTextField.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                        } else {
+                            totalChangeField.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                            totalChangeTextField.stringValue = "Gewinn";
+                            totalChangeTextField.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                        }
                     }
-                    */
                 }
             }
         }
@@ -42,6 +47,8 @@ import Foundation
     @IBOutlet var instrumentsController:NSArrayController!
     @IBOutlet var context:NSManagedObjectContext!
     @IBOutlet var mainView: NSView!
+    @IBOutlet var totalChangeField:NSTextField!
+    @IBOutlet var totalChangeTextField:NSTextField!
     
     override func awakeFromNib() {
         self.context = MOAssistant.shared().context;
@@ -54,8 +61,53 @@ import Foundation
             if let account = object as? BankAccount {
                 if let entry = account.depotValueEntry {
                     entryController.content = entry;
+                    
+                    if entry.depotChange() < 0 {
+                        totalChangeField.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                        totalChangeTextField.stringValue = "Verlust";
+                        totalChangeTextField.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                    } else {
+                        totalChangeField.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                        totalChangeTextField.stringValue = "Gewinn";
+                        totalChangeTextField.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                    }
                 }
             }
+        }
+    }
+    
+    func tableView(_ tableView: NSTableView, willDisplayCell cell: Any, for tableColumn: NSTableColumn?, row: Int) {
+        
+        if let instruments = instrumentsController.arrangedObjects as? [Instrument] {
+            if let identifier = tableColumn?.identifier {
+                if identifier.rawValue == "percentChange" {
+                    if let cell = cell as? NSTextFieldCell {
+                        if tableView.isRowSelected(row) {
+                            cell.textColor = NSColor.white;
+                            return;
+                        }
+                        if instruments[row].percentChange().isNegative() {
+                            cell.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                        } else {
+                            cell.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                        }
+                    }
+                }
+                if identifier.rawValue == "valueChange" {
+                    if let cell = cell as? NSTextFieldCell {
+                        if tableView.isRowSelected(row) {
+                            cell.textColor = NSColor.white;
+                            return;
+                        }
+                        if instruments[row].valueChange().isNegative() {
+                            cell.textColor = NSColor.init(red: 0.7, green: 0, blue: 0, alpha: 1.0);
+                        } else {
+                            cell.textColor = NSColor.init(red: 0, green: 0.5, blue: 0, alpha: 1.0);
+                        }
+                    }
+                }
+            }
+
         }
     }
     

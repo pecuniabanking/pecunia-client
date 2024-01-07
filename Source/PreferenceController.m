@@ -239,7 +239,7 @@ static NSDictionary *heightMappings;
 
 + (void)initialize
 {
-    heightMappings = @{@"general": @425,
+    heightMappings = @{@"general": @445,
                        @"home": @340,
                        @"security": @270,
                        @"persistence": @260,
@@ -490,6 +490,13 @@ static NSDictionary *heightMappings;
     }
 
     [Security deletePasswordsForService: @"Pecunia PIN"];
+}
+
+- (IBAction)useUltmID: (id)sender
+{
+    NSRunAlertPanel(NSLocalizedString(@"AP11", nil),
+                    NSLocalizedString(@"AP735", nil),
+                    NSLocalizedString(@"AP1", nil), nil, nil);
 }
 
 - (IBAction)changePassword:(id)sender

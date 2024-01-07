@@ -34,5 +34,28 @@ public class DepotValueEntry: NSManagedObject {
         }
         return result;
     }
+    
+    func depotChange() -> NSDecimalNumber {
+        var oldValue = NSDecimalNumber.zero;
+        if let instruments = self.instruments {
+            for instrument in instruments.allObjects as! [Instrument] {
+                if let startPrice = instrument.startPrice, let totalNumber = instrument.totalNumber {
+                    oldValue = oldValue.adding(startPrice.multiplying(by: totalNumber));
+                }
+            }
+        }
+        if let depotValue = self.depotValue {
+            return depotValue.subtracting(oldValue);
+        } else {
+            return NSDecimalNumber.zero;
+        }
+    }
+    
+    public override func value(forKey key: String) -> Any? {
+        if key.contains("depotChange") {
+            return self.depotChange();
+        }
+        return super.value(forKey: key);
+    }
 
 }

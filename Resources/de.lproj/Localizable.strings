@@ -456,6 +456,7 @@ AP732 = "Hintergrund Umsätze ohne Kategoriezuordnung (wenn aktiviert)";
 
 AP733 = "Geben Sie wenigstens einen Buchstaben zum Nachschlagen an";
 AP734 = "Kein Eintrag gefunden";
+AP735 = "Das Ändern der Einstellung kann zu doppelten Umsätzen führen da der Empfänger Teil der Duplettenprüfung ist. Bitte prüfen Sie Ihre Umsätze bei den nächsten Umstzabfragen und löschen Sie nicht gewünschte Umsätze.";
 
 // Heat maps
 // AP750..AP799

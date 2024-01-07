@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <development version="6000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CategoryPeriodsWindowController">
@@ -29,7 +30,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1106" height="688"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <customView wantsLayer="YES" focusRingType="none" id="238" customClass="MBTableGrid">
+                <customView wantsLayer="YES" focusRingType="none" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="238" customClass="MBTableGrid">
                     <rect key="frame" x="20" y="113" width="1066" height="555"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
@@ -37,11 +38,11 @@
                         <outlet property="delegate" destination="-2" id="240"/>
                     </connections>
                 </customView>
-                <customView id="283" customClass="BWGradientBox">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="283" customClass="BWGradientBox">
                     <rect key="frame" x="20" y="21" width="535" height="73"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <textField verticalHuggingPriority="750" id="253">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="253">
                             <rect key="frame" x="217" y="12" width="38" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Jahre" id="254">
@@ -50,7 +51,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <slider verticalHuggingPriority="750" id="246">
+                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="246">
                             <rect key="frame" x="18" y="26" width="237" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" minValue="2" maxValue="4" doubleValue="2" tickMarkPosition="below" numberOfTickMarks="3" allowsTickMarkValuesOnly="YES" sliderType="linear" id="249"/>
@@ -58,7 +59,7 @@
                                 <action selector="setGrouping:" target="-2" id="306"/>
                             </connections>
                         </slider>
-                        <textField verticalHuggingPriority="750" id="252">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="252">
                             <rect key="frame" x="107" y="12" width="58" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Quartale" id="255">
@@ -67,7 +68,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="247">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="247">
                             <rect key="frame" x="17" y="43" width="241" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Gruppierungsintervall" usesSingleLineMode="YES" id="248">
@@ -76,7 +77,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="251">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="251">
                             <rect key="frame" x="20" y="12" width="51" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Monate" id="256">
@@ -85,7 +86,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="291">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="291">
                             <rect key="frame" x="306" y="43" width="212" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Anzeigebereich" usesSingleLineMode="YES" id="292">
@@ -94,7 +95,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <slider verticalHuggingPriority="750" id="293">
+                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="293">
                             <rect key="frame" x="311" y="31" width="100" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="294"/>
@@ -102,7 +103,7 @@
                                 <action selector="fromChanged:" target="-2" id="304"/>
                             </connections>
                         </slider>
-                        <slider verticalHuggingPriority="750" id="295">
+                        <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="295">
                             <rect key="frame" x="415" y="31" width="100" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <sliderCell key="cell" controlSize="small" state="on" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="296"/>
@@ -110,7 +111,7 @@
                                 <action selector="toChanged:" target="-2" id="305"/>
                             </connections>
                         </slider>
-                        <textField verticalHuggingPriority="750" id="297">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="297">
                             <rect key="frame" x="308" y="12" width="106" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Datum" id="298">
@@ -119,7 +120,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="299">
+                        <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="299">
                             <rect key="frame" x="412" y="12" width="106" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Datum" id="300">
@@ -131,6 +132,7 @@
                     </subviews>
                 </customView>
             </subviews>
+            <point key="canvasLocation" x="139" y="-36"/>
         </customView>
         <arrayController mode="entity" entityName="StatCatAssignment" editable="NO" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" automaticallyRearrangesObjects="YES" id="76" userLabel="Statements">
             <declaredKeys>
@@ -153,30 +155,29 @@
             <rect key="frame" x="0.0" y="0.0" width="875" height="386"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="5" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="267" customClass="StatementsListView">
+                <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="5" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="267" customClass="StatementsListView">
                     <rect key="frame" x="20" y="20" width="835" height="309"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="nz3-UT-uB3">
                         <rect key="frame" x="1" y="1" width="833" height="307"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView id="268" customClass="PXListDocumentView">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="268" customClass="PXListDocumentView">
                                 <rect key="frame" x="0.0" y="0.0" width="735" height="203"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </customView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="269">
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="269">
                         <rect key="frame" x="-100" y="-100" width="739" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="270">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="270">
                         <rect key="frame" x="739" y="0.0" width="15" height="220"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <searchField verticalHuggingPriority="750" id="266">
+                <searchField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="266">
                     <rect key="frame" x="671" y="339" width="184" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="271">
@@ -188,10 +189,10 @@
                         <action selector="filterStatements:" target="-2" id="278"/>
                     </connections>
                 </searchField>
-                <segmentedControl verticalHuggingPriority="750" id="264">
+                <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="264">
                     <rect key="frame" x="123" y="339" width="297" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="automatic" trackingMode="selectOne" id="273">
+                    <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="273">
                         <font key="font" metaFont="smallSystem"/>
                         <segments>
                             <segment label="Datum" image="sort-indicator-dec" imageScaling="none" selected="YES"/>
@@ -205,7 +206,7 @@
                         <action selector="sortingChanged:" target="-2" id="311"/>
                     </connections>
                 </segmentedControl>
-                <textField verticalHuggingPriority="750" id="265">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="265">
                     <rect key="frame" x="19" y="342" width="104" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sortieren nach" id="272">

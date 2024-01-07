@@ -39,5 +39,45 @@ public class Instrument: NSManagedObject {
         }
         return result;
     }
+    
+    public override func value(forKey key: String) -> Any? {
+        if key.contains("valueChange") {
+            return self.valueChange();
+        }
+        if key.contains("percentChange") {
+            return self.percentChange();
+        }
+        return super.value(forKey: key);
+    }
+ 
+    func valueChange() -> NSDecimalNumber {
+        if self.currentPrice == nil || self.startPrice == nil || self.totalNumber == nil {
+            return NSDecimalNumber.zero;
+        }
+        return self.currentPrice!.subtracting(self.startPrice!).multiplying(by: self.totalNumber!);
+    }
+    
+    func percentChange() ->NSDecimalNumber {
+        if self.startPrice == nil || self.currentPrice == nil {
+            return NSDecimalNumber.zero;
+        }
+        return self.currentPrice!.subtracting(self.startPrice!).dividing(by: self.startPrice!).multiplying(byPowerOf10: 2);
+    }
+    
+    /*
+    var valueChange: NSDecimalNumber {
+        if self.currentPrice == nil || self.startPrice == nil || self.totalNumber == nil {
+            return NSDecimalNumber.zero;
+        }
+        return self.currentPrice!.subtracting(self.startPrice!).multiplying(by: self.totalNumber!);
+    }
+    
+    var percentChange: NSDecimalNumber {
+        if self.startPrice == nil {
+            return NSDecimalNumber.zero;
+        }
+        return self.valueChange.dividing(by: self.startPrice!).multiplying(byPowerOf10: 2);
+    }
+    */
 
 }

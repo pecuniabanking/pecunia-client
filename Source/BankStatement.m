@@ -285,41 +285,41 @@ BOOL stringEqual(NSString *a, NSString *b) {
             NSLog(@"Exception while checking IBAN/BIC");
         }
 
-        self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.
-        self.sepa.purpose = values[@"SVWZ"];
-        self.sepa.ultimateDebitorId = values[@"ABWA"];
-        self.sepa.ultimateCreditorId = values[@"ABWE"];
-        self.sepa.purposeCode = values[@"PURP"];
-        self.sepa.mandateId = values[@"MREF"];
-        self.sepa.creditorId = values[@"CRED"];
-        if (values[@"MDAT"] != nil) {
-            NSDate *date = [sepaDateFormatter dateFromString: values[@"MDAT"]];
-            if (date != nil) {
-            self.sepa.mandateSignatureDate = date;
+        if (self.sepa.endToEndId == nil) self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.
+        if (values[@"SVWZ"] != nil) self.sepa.purpose = values[@"SVWZ"];
+        if (self.sepa.ultimateDebitorId == nil) self.sepa.ultimateDebitorId = values[@"ABWA"];
+        if (self.sepa.ultimateCreditorId == nil) self.sepa.ultimateCreditorId = values[@"ABWE"];
+        if (self.sepa.purposeCode == nil) self.sepa.purposeCode = values[@"PURP"];
+        if (self.sepa.mandateId == nil) self.sepa.mandateId = values[@"MREF"];
+        if (self.sepa.creditorId == nil) self.sepa.creditorId = values[@"CRED"];
+        if (self.sepa.mandateSignatureDate == nil) {
+            if (values[@"MDAT"] != nil) {
+                NSDate *date = [sepaDateFormatter dateFromString: values[@"MDAT"]];
+                if (date != nil) {
+                    self.sepa.mandateSignatureDate = date;
+                }
             }
-        } else {
-            self.sepa.mandateSignatureDate = nil;
         }
-        self.sepa.sequenceType = values[@"SQTP"];
-        self.sepa.oldCreditorId = values[@"ORCR"];
-        self.sepa.oldMandateId = values[@"ORMR"];
-        if (values[@"DDAT"] != nil) {
-            NSDate *date = [sepaDateFormatter dateFromString: values[@"DDAT"]];
-            if (date != nil) {
-            self.sepa.settlementDate = date;
+        if (self.sepa.sequenceType == nil) self.sepa.sequenceType = values[@"SQTP"];
+        if (self.sepa.oldCreditorId == nil) self.sepa.oldCreditorId = values[@"ORCR"];
+        if (self.sepa.oldMandateId == nil) self.sepa.oldMandateId = values[@"ORMR"];
+        if (self.sepa.settlementDate == nil) {
+            if (values[@"DDAT"] != nil) {
+                NSDate *date = [sepaDateFormatter dateFromString: values[@"DDAT"]];
+                if (date != nil) {
+                    self.sepa.settlementDate = date;
+                }
             }
-        } else {
-            self.sepa.settlementDate = nil;
         }
-        self.sepa.debitorId = values[@"DEBT"];
-        self.customerReference = values[@"KREF"];
-        if (values[@"COAM"] != nil) {
-            self.charge = [[NSDecimalNumber alloc] initWithString: values[@"COAM"]
-                                                           locale: @{NSLocaleDecimalSeparator: @"."}];
-        } else {
-            self.charge = nil;
+        if (self.sepa.debitorId == nil) self.sepa.debitorId = values[@"DEBT"];
+        if (self.customerReference == nil) self.customerReference = values[@"KREF"];
+        if (self.charge == nil) {
+            if (values[@"COAM"] != nil) {
+                self.charge = [[NSDecimalNumber alloc] initWithString: values[@"COAM"]
+                                                               locale: @{NSLocaleDecimalSeparator: @"."}];
+            }
         }
-        if (values[@"OAMT"] != nil) {
+        if (values[@"OAMT"] != nil && self.origValue == nil) {
             // Currently not yet clear, but assume there can be a currency attached.
             static NSRegularExpression *amountRegEx;
             if (amountRegEx == nil) {

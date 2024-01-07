@@ -619,9 +619,13 @@ static ShortDate *endReportDate = nil;
     }
     NSMutableSet *result = [[NSMutableSet alloc] init];
 
-    [result addObject: self];
     for (BankingCategory *child in self.children) {
         [result unionSet: [child allCategories]];
+    }
+    
+    // add parent only if there are any children
+    if (result.count > 0) {
+        [result addObject: self];
     }
     return result;
 }

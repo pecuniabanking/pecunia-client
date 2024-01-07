@@ -159,7 +159,7 @@ static NSMutableDictionary *users = nil;
                     [options addObject: option];
                     added = YES;
                 }
-                if ([zkamethod isEqualToString: @"BestSign"] && [medium.category isEqualToString: @"G"] && [[medium.name substringToIndex: 3] isEqualToString: @"SO:"]) {
+                if ([zkamethod isEqualToString: @"BestSign"] && [medium.category isEqualToString: @"G"]) {
                     // Spezialfall Postbank Bestsign
                     option.tanMediumName = medium.name;
                     option.tanMediumCategory = medium.category;
@@ -173,6 +173,12 @@ static NSMutableDictionary *users = nil;
                     added = YES;
                 }
                 if ([medium.category isEqualToString:@"A"]) {
+                    option.tanMediumName = medium.name;
+                    option.tanMediumCategory = medium.category;
+                    [options addObject: option];
+                    added = YES;
+                }
+                if([medium.category isEqualToString:@"G"] && [method.name isEqualToString:@"Cronto"]) {
                     option.tanMediumName = medium.name;
                     option.tanMediumCategory = medium.category;
                     [options addObject: option];

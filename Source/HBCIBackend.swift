@@ -322,7 +322,8 @@ class HBCIBackend : NSObject, HBCILog {
                             bankAccount.customerId = user.customerId;
                             users.add(user);
                         }
-                        
+                        users.add(user);
+
                         if account.bic != nil {
                             bankAccount.bic = account.bic;
                         }
@@ -1333,6 +1334,15 @@ class HBCIBackend : NSObject, HBCILog {
                     stat.extractSEPAData(using: context!);
                 }
                 */
+                if UserDefaults.standard.bool(forKey: "useUltmID")  && stat.sepa != nil {
+                    if stat.sepa.ultimateCreditorId != nil  {
+                        stat.remoteName = stat.sepa.ultimateCreditorId;
+                    }
+                    if stat.sepa.ultimateDebitorId != nil  {
+                        stat.remoteName = stat.sepa.ultimateDebitorId;
+                    }
+                }
+                
                 result.statements.append(stat);
             }
         }
