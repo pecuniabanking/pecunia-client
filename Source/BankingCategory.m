@@ -622,11 +622,12 @@ static ShortDate *endReportDate = nil;
     for (BankingCategory *child in self.children) {
         [result unionSet: [child allCategories]];
     }
-    
-    // add parent only if there are any children
-    if (result.count > 0) {
+
+    // avoid to add bank nodes with no accounts
+    if (!(self.isBankAccount && self.accountNumber == nil && result.count == 0)) {
         [result addObject: self];
     }
+    
     return result;
 }
 

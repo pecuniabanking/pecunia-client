@@ -37,7 +37,7 @@
 - (void)drawRect: (NSRect)dirtyRect
 {
     [[NSColor colorWithCalibratedWhite: 0.169 alpha: 1] set];
-    NSRectFill(dirtyRect);
+    NSRectFill(NSIntersectionRect(dirtyRect, self.bounds));
 }
 
 @end

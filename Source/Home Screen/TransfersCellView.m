@@ -106,11 +106,12 @@ static NSGradient *headerGradient;
 
 - (void)drawBackgroundInRect: (NSRect)dirtyRect
 {
+    NSRect rect = NSIntersectionRect(dirtyRect, self.bounds);
     if (self.isGroupRowStyle) {
-        dirtyRect.origin.x++;
-        dirtyRect.size.width -= 3;
-        dirtyRect.size.height -= 1;
-        NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: dirtyRect xRadius: 2 yRadius: 2];
+        rect.origin.x++;
+        rect.size.width -= 3;
+        rect.size.height -= 1;
+        NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: rect xRadius: 2 yRadius: 2];
         [headerGradient drawInBezierPath: path angle: 90.0];
     }
 }

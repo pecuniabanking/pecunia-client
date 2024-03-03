@@ -214,11 +214,11 @@ extern NSDictionary    *whiteAttributes;
 - (void)setHeaderHeight: (int)aHeaderHeight {
     headerHeight = aHeaderHeight;
     if (headerHeight > 0) {
-        [dateLabel setEnabled: YES];
-        [turnoversLabel setEnabled: YES];
+        dateLabel.textColor = NSColor.whiteColor;
+        turnoversLabel.textColor = NSColor.whiteColor;
     } else {
-        [dateLabel setEnabled: NO];
-        [turnoversLabel setEnabled: NO];
+        dateLabel.textColor = [NSColor colorWithWhite:0.0 alpha:0.0];
+        turnoversLabel.textColor = [NSColor colorWithWhite:0.0 alpha:0.0];
     }
 
     [self setNeedsDisplay: YES];
@@ -507,7 +507,7 @@ static NSImage    *stripeImage;
     
     // redraw background
     [[NSColor whiteColor] set];
-    [NSBezierPath fillRect:dirtyRect];
+    [NSBezierPath fillRect:NSIntersectionRect(dirtyRect, self.bounds)];
     
     // resize subviews as autoresizing does not adjust the widths correctly
     NSRect r = purposeLabel.frame;
@@ -518,7 +518,7 @@ static NSImage    *stripeImage;
     r.size.width = purposeLabel.frame.origin.x - r.origin.x - 7;
     [remoteNameLabel setFrame:r];
 
-    NSRect bounds = [self bounds];
+    NSRect bounds = self.bounds;
     if (headerHeight > 0) {
         NSBezierPath *path = [NSBezierPath bezierPathWithRect: NSMakeRect(bounds.origin.x,
                                                                           bounds.size.height - headerHeight,

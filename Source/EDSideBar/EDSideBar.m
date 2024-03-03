@@ -186,7 +186,6 @@
 		animationDuration = ED_DEFAULT_ANIM_DURATION;
 		animateSelection = NO;
 		_matrix = [[NSMatrix alloc] initWithFrame:NSZeroRect];
-		[_matrix setBackgroundColor:_backgroundColor];
 		[_matrix setMode:NSRadioModeMatrix];
 		[_matrix setAllowsEmptySelection:NO];
         
@@ -194,7 +193,6 @@
 		[_matrix setCellClass:[ECSideBarButtonCell class]];
 		[self addSubview:_matrix];
 		[self setButtonsHeight :ED_DEFAULT_BUTTON_HEIGHT];
-		[_matrix setDrawsBackground:YES];
 		
 		// Setup resize notification
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewResized:)
@@ -238,7 +236,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
 	
-	[self drawBackground:dirtyRect];
+	[self drawBackground:NSIntersectionRect(dirtyRect, self.bounds)];
 }
 
 
