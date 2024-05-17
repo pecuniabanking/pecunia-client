@@ -46,6 +46,7 @@
     IBOutlet NSComboBox            *receiverComboBox;
     IBOutlet DeleteOrderTargetView *deleteImage;
     IBOutlet NSButton              *deleteButton;
+    IBOutlet NSTextField           *accountNumber;
 
 @private
     NSManagedObjectContext *managedObjectContext;

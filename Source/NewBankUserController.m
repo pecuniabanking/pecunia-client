@@ -795,6 +795,8 @@
         [alert runModal];
         return;
     }
+    
+    [self updateSigningOptions];
 
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP129", nil),

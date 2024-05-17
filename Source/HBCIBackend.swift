@@ -105,6 +105,13 @@ class HBCIBackendCallback : HBCICallback {
     
     init() {}
     
+    func decoupledNotification(_ user: HBCIUser, challenge: String?) {
+        SystemNotification.showMessage(challenge ?? "", withTitle: "Auftrag bestätigen");
+        
+        // give the notification a chance to pop up
+        RunLoop.current.run(until: Date.init(timeIntervalSinceNow: 1));
+    }
+    
     func getTan(_ user:HBCIUser, challenge:String?, challenge_hhd_uc:String?, type:HBCIChallengeType) throws ->String {
         logDebug("Challenge: \(challenge ?? "<none>")");
         logDebug("Challenge HHD UC: \(challenge_hhd_uc ?? "<none>")");
@@ -510,7 +517,11 @@ class HBCIBackend : NSObject, HBCILog {
             tanMethod.identifier = method.identifier;
             tanMethod.inputInfo = method.inputInfo;
             tanMethod.name = method.name;
-            tanMethod.maxTanLength = NSNumber(value: method.maxTanLength);
+            if let maxTanLength = method.maxTanLength {
+                tanMethod.maxTanLength = NSNumber(value: maxTanLength);
+            } else {
+                tanMethod.maxTanLength = NSNumber(value: 0);
+            }
             tanMethod.method = method.secfunc;
             tanMethod.needTanMedia = method.needTanMedia;
             tanMethod.process = method.process.rawValue;
@@ -678,6 +689,13 @@ class HBCIBackend : NSObject, HBCILog {
         if bankUser.customerId == nil {
             bankUser.customerId = "";
         }
+        
+        // we update the PinTAN URL, the one in the BankUser might be outdated
+        if let info = infoForBankCode(bankUser.bankCode), let url = URL(string: info.pinTanURL) {
+            bankUser.bankURL = info.pinTanURL;
+        }
+        
+        resultWindow.clear();
         
         do {
             let user = try HBCIUser(bankUser: bankUser);
@@ -849,6 +867,8 @@ class HBCIBackend : NSObject, HBCILog {
             logError("Konto \(bankAccount.accountNumber()!) konnte nicht verarbeitet werden da keine Bankkennung existiert");
             return NSError.genericHBCI;
         }
+        
+        resultWindow.clear();
         
         defer {
             if error {
@@ -1102,6 +1122,8 @@ class HBCIBackend : NSObject, HBCILog {
         if accounts.count == 0 {
             return [];
         }
+        
+        resultWindow.clear();
 
         // Organize accounts by user in order to get all statements for all accounts of a given user.
         for account in accounts {
@@ -1587,6 +1609,7 @@ class HBCIBackend : NSObject, HBCILog {
                 
                 if let latestDate = account.latestTransferDate {
                     let fromDate = Date(timeInterval: -605000, since: latestDate);
+                    //let fromDate = Date(timeInterval: -10000000, since: latestDate);  // force TAN
                     dateFrom = fromDate;
                 }
                 
@@ -1966,6 +1989,8 @@ class HBCIBackend : NSObject, HBCILog {
         
         HBCIDialog.callback = HBCIBackendCallback();
         
+        resultWindow.clear();
+        
         for transfer in transfers {
             let account = transfer.account;
             guard let bankUser = account?.defaultBankUser() else {
@@ -2108,6 +2133,8 @@ class HBCIBackend : NSObject, HBCILog {
         var errorOccured = false;
         
         HBCIDialog.callback = HBCIBackendCallback();
+        
+        resultWindow.clear();
         
         for stord in standingOrders {
             let bankAccount = stord.account;
@@ -2441,30 +2468,6 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
-    func migrateHBCI4JavaUsers() throws {
-        let passportDir = MOAssistant.shared().passportDirectory;
-        let fm = FileManager.default;
-        
-        let files = try fm.contentsOfDirectory(atPath: passportDir!);
-        for file in files {
-            if file.hasSuffix(".dat") {
-                guard let name = file[0..<file.length-4] else {
-                    continue;
-                }
-                //let name = file.substring(to: file.index(file.endIndex, offsetBy: -4));
-                let info = name.components(separatedBy: "_");
-                if info.count == 2 {
-                    if let bankUser = BankUser.find(withId: info[1], bankCode: info[0]) {
-                        if bankUser.sysId == nil {
-                            decryptPassportFile(file);
-                        }
-                    }
-                }
-                
-            }
-        }
-    }
-    
     @objc func getAccountStatementParametersForUser(_ bankUser:BankUser) ->AccountStatementParameters? {
         do {
             let user = try HBCIUser(bankUser: bankUser);
@@ -2641,6 +2644,8 @@ class HBCIBackend : NSObject, HBCILog {
             logError("Invalid Managed Object Context")
             return;
         }
+        
+        resultWindow.clear();
         
         do {
             for account in accounts {

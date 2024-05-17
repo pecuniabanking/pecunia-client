@@ -879,7 +879,6 @@ static BankingController *bankinControllerInstance;
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
 
     [self startRefreshAnimation];
@@ -3254,7 +3253,7 @@ static BankingController *bankinControllerInstance;
 
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
+    //[sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
 
     mainVSplit.fixedIndex = 0;
 
@@ -3284,7 +3283,7 @@ static BankingController *bankinControllerInstance;
     if (assistant.isEncrypted) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
-        [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
+        //[sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
 
         @try {
             [assistant decrypt];
@@ -3847,49 +3846,13 @@ static BankingController *bankinControllerInstance;
 - (void)migrate {
     LogEnter;
 
-    // check for users that are not converted to HBCI4Swift yet
-    BOOL migrationMessageSent = false;
-    BOOL doNotMigrate = false;
     for (BankUser *user in BankUser.allUsers) {
-        if (user.sysId == nil || user.hbciParameters == nil) {
-            if (!migrationMessageSent) {
-                NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                                                NSLocalizedString(@"AP203", nil),
-                                                NSLocalizedString(@"AP1", nil),
-                                                NSLocalizedString(@"AP37", nil), nil
-                                                );
-                if(res == NSAlertAlternateReturn) {
-                    doNotMigrate = true;
-                }
-                migrationMessageSent = true;
-            }
-            
-            // Synchronize user
-            if (user.bankURL != nil) {
-                if (![[user.bankURL substringToIndex:5] isEqualToString:@"https"] && user.secMethod.intValue == SecMethod_PinTan) {
-                    user.bankURL = [@"https://" stringByAppendingString:user.bankURL];
-                    LogInfo(@"Bank URL changed to %@", user.bankURL);
-                }
-            }
-            
-            if(doNotMigrate == true) {
-                LogInfo(@"Skipped migration for %@", user.name);
-                continue;
-            }
-            
-            // sync bank user
-            NSError *error = [HBCIBackend.backend syncBankUser:user];
-            if (error != nil) {
-                if (user.customerId == nil || user.customerId.length == 0) {
-                    user.customerId = user.userId;
-                    error = [HBCIBackend.backend syncBankUser:user];
-                    
-                    if (error != nil) {
-                        NSAlert *alert = [NSAlert alertWithError: error];
-                        [alert runModal];
-                    }
-                }
-            }
+        // migration of PIN/TAN URLs, as far as known...
+        if ([user.bankURL isEqualToString: @"https://hbci-pintan.gad.de/cgi-bin/hbciservlet"]) {
+            user.bankURL = @"https://fints1.atruvia.de/cgi-bin/hbciservlet";
+        }
+        if ([user.bankURL isEqualToString: @"https://hbci11.fiducia.de/cgi-bin/hbciservlet"]) {
+            user.bankURL = @"https://fints2.atruvia.de/cgi-bin/hbciservlet";
         }
     }
     

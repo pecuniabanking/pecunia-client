@@ -32,6 +32,7 @@
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
 #import "BankingController.h"
+#import "IBANFormatter.h"
 
 #import "NSButton+PecuniaAdditions.h"
 
@@ -536,14 +537,13 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     NSInteger tag = [aNotification.object tag];
     if (tag == 11) {
-        NSString *iban = [[aNotification.object stringValue] stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSString *iban = currentOrder.remoteIBAN;
         NSString *bankName = [[HBCIBackend backend] bankNameForIBAN: iban];
         currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
         NSString *bic = [[HBCIBackend backend] bicForIBAN: iban];
         if (bic != nil) {
             currentOrder.remoteBIC = bic;
         }
-        currentOrder.remoteIBAN = iban;
     }
 }
 
@@ -551,6 +551,14 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
     if (!currentOrder.isChanged.boolValue) {
         currentOrder.isChanged = @YES;
     }
+    NSTextField *te = [aNotification object];
+
+    if (te == accountNumber) {
+        NSString *s = [te stringValue];
+        NSString *result = [IBANFormatter formatIBAN:s];
+        [te setStringValue:result];
+    }
+
 }
 
 - (BOOL)checkOrder: (StandingOrder *)stord {
@@ -746,7 +754,6 @@ NSString *const OrderDataType = @"pecunia.OrderDataType"; // For dragging an exi
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
         self.requestRunning = @YES;
-        [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
 
         NSArray * resultList = [[HBCIBackend backend] getStandingOrders: accountList];
         [self processOrders:resultList];

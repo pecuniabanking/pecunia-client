@@ -30,6 +30,7 @@
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
 #import "ShadowedTextField.h"
+#import "IBANFormatter.h"
 
 #import "NSString+PecuniaAdditions.h"
 
@@ -1839,6 +1840,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)controlTextDidChange: (NSNotification *)aNotification {
     NSTextField *te = [aNotification object];
     NSUInteger  maxLen;
+    
+    if (te == accountNumber) {
+        NSString *s = [te stringValue];
+        NSString *result = [IBANFormatter formatIBAN:s];
+        [te setStringValue:result];
+    }
 
     if (te == purpose1) {
         maxLen = 140;
@@ -1859,8 +1866,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     NSTextField *textField = [aNotification object];
     NSString    *bankName = nil;
+    
+    NSString *iban = transactionController.currentTransfer.remoteIBAN;
 
-    if (textField == bankCode || textField == accountNumber) {
+    if (textField == bankCode) {
         NSString *s = [textField stringValue];
         s = [s stringByRemovingWhitespaces: s];
         s = [s uppercaseString];
@@ -1869,12 +1878,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     if ([transactionController.currentTransfer isSEPAorEU]) {
         if (textField == accountNumber) {
-            bankName = [[HBCIBackend backend] bankNameForIBAN: textField.stringValue];
-            NSString *bic = [[HBCIBackend backend] bicForIBAN: [aNotification.object stringValue]];
+            bankName = [[HBCIBackend backend] bankNameForIBAN: iban];
+            NSString *bic = [[HBCIBackend backend] bicForIBAN: iban];
             if (bic != nil) {
                 transactionController.currentTransfer.remoteBIC = bic;
             }
-
         }
     } else {
         if (textField == bankCode) {
