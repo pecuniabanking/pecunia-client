@@ -109,6 +109,44 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@interface PreprocessingInfo : NSObject
+
+@property (assign, readonly) NSUInteger errors;
+@property (assign, readonly) NSUInteger ignoredCount;
+@property (copy, readonly) NSDate *minDate;
+@property (copy, readonly) NSDate *maxDate;
+@property (assign, readonly) BOOL canContinue;
+
+- (instancetype)initWithErrorCount: (NSUInteger)errors
+                      ignoredCount: (NSUInteger)ignoredCount
+                           minDate: (NSDate *)minDate
+                           maxDate: (NSDate *)maxDate
+                       canContinue: (BOOL)canContinue;
+
+@end
+
+@implementation PreprocessingInfo
+
+- (instancetype)initWithErrorCount: (NSUInteger)errors
+                      ignoredCount: (NSUInteger)ignoredCount
+                           minDate: (NSDate *)minDate
+                           maxDate: (NSDate *)maxDate
+                       canContinue: (BOOL)canContinue {
+    self = [super init];
+    if (self) {
+        _errors = errors;
+        _ignoredCount = ignoredCount;
+        _minDate = [minDate copy];
+        _maxDate = [maxDate copy];
+        _canContinue = canContinue;
+    }
+    return self;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
 @interface ProcessingPanel : NSPanel <NSWindowDelegate> {
 @public
     IBOutlet NSProgressIndicator *progressBar;
@@ -168,12 +206,8 @@
     }
 }
 
-- (void)preprocessingDoneWithErrorCount: (NSUInteger)errors
-                           ignoredCount: (NSUInteger)ignored
-                                minDate: (NSDate *)minDate
-                                maxDate: (NSDate *)maxDate
-                            canContinue: (BOOL)flag {
-    if (minDate == nil) { // If a min date is set then there's always also a max date.
+- (void)preprocessingDone: (PreprocessingInfo *)info {
+    if ([info minDate] == nil) { // If a min date is set then there's always also a max date.
         dateWarnLabel.hidden = NO;
         toLabel.hidden = YES;
         dateRadioGroup.hidden = YES;
@@ -189,27 +223,27 @@
         fromDatePicker.hidden = NO;
         toDatePicker.hidden = NO;
 
-        fromDatePicker.minDate = minDate;
-        fromDatePicker.maxDate = maxDate;
-        fromDatePicker.dateValue = minDate;
-        toDatePicker.minDate = minDate;
-        toDatePicker.maxDate = maxDate;
-        toDatePicker.dateValue = maxDate;
+        fromDatePicker.minDate = [info minDate];
+        fromDatePicker.maxDate = [info maxDate];
+        fromDatePicker.dateValue = [info minDate];
+        toDatePicker.minDate = [info minDate];
+        toDatePicker.maxDate = [info maxDate];
+        toDatePicker.dateValue = [info maxDate];
 
-        startButton.enabled = flag;
-        noDataWarningLabel.hidden = flag;
+        startButton.enabled = [info canContinue];
+        noDataWarningLabel.hidden = [info canContinue];
     }
 
-    if (errors == 0) {
+    if ([info errors] == 0) {
         errorsLabel.stringValue = NSLocalizedString(@"AP18", nil);
     } else {
-        errorsLabel.stringValue = [NSString stringWithFormat: @"%lu", errors];
+        errorsLabel.stringValue = [NSString stringWithFormat: @"%lu", [info errors]];
     }
 
-    if (ignored == 0) {
+    if ([info ignoredCount] == 0) {
         ignoreLabel.stringValue = NSLocalizedString(@"AP18", nil);
     } else {
-        ignoreLabel.stringValue = [NSString stringWithFormat: @"%lu", ignored];
+        ignoreLabel.stringValue = [NSString stringWithFormat: @"%lu", [info ignoredCount]];
     }
 
     [progressBar stopAnimation: self];
@@ -225,7 +259,7 @@
     detailsView.frame = NSMakeRect(0, detailsPosition, detailsView.frame.size.width, detailsView.frame.size.height);
 }
 
-- (void)preprocessingDoneWithFatalError {
+- (void)preprocessingDoneWithFatalError: (id)object {
     [progressBar stopAnimation: self];
     processingTaskLabel.stringValue = NSLocalizedString(@"AP628", nil);
     processingTaskLabel.textColor = [NSColor redColor];
@@ -905,15 +939,21 @@
                 }
             }
         }
-        [processingSheet preprocessingDoneWithErrorCount: errorCount
-                                            ignoredCount: nonImportedLineCount
-                                                 minDate: minDate
-                                                 maxDate: maxDate
-                                             canContinue: parsedValues.count > 0];
+        PreprocessingInfo *preprocessingInfo =
+            [[PreprocessingInfo alloc] initWithErrorCount: errorCount
+                                             ignoredCount: nonImportedLineCount
+                                                  minDate: minDate
+                                                  maxDate: maxDate
+                                              canContinue: parsedValues.count > 0];
+        [processingSheet performSelectorOnMainThread: @selector(preprocessingDone:)
+                                          withObject: preprocessingInfo
+                                       waitUntilDone: TRUE];
     }
     @catch (NSException *error) {
         LogError(@"%@", error.debugDescription);
-        [processingSheet preprocessingDoneWithFatalError];
+        [processingSheet performSelectorOnMainThread: @selector(preprocessingDoneWithFatalError:)
+                                          withObject: nil
+                                       waitUntilDone: TRUE];
     }
 }
 
