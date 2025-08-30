@@ -800,6 +800,9 @@ static BankingController *bankinControllerInstance;
     if (category.accountNumber != nil) {
         // A bank account.
         [selectedAccounts addObject: category];
+        
+        BankAccount *account = (BankAccount*)category;
+        LogDebug([account description]);
     } else {
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
         NSFetchRequest      *request = [[NSFetchRequest alloc] init];
@@ -3853,6 +3856,12 @@ static BankingController *bankinControllerInstance;
         }
         if ([user.bankURL isEqualToString: @"https://hbci11.fiducia.de/cgi-bin/hbciservlet"]) {
             user.bankURL = @"https://fints2.atruvia.de/cgi-bin/hbciservlet";
+        }
+        if ([user.bankURL isEqualToString: @"https://fints.ing-diba.de/fints"]) {
+            user.bankURL = @"https://fints.ing.de/fints/";
+        }
+        if ([user.bankCode isEqualToString:@"12030000"]) {
+            user.bankURL = @"https://fints.dkb.de/fints";
         }
     }
     

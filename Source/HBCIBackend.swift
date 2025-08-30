@@ -19,6 +19,9 @@ func ==(a:HBCIAccount, b:BankAccount) ->Bool {
     if a.number != b.accountNumber() {
         return false;
     }
+    if a.bankCode != b.bankCode {
+        return false;
+    }
     if a.subNumber == nil && b.accountSuffix == nil {
         return true;
     }
@@ -300,6 +303,38 @@ class HBCIBackend : NSObject, HBCILog {
         }
     }
     
+    // this function checks if the bank added a subaccount number to an existing account like
+    // currently for DKB. It returns true if we find an account with the same account number and empty subaccount number,
+    // provided this is the only instance, i.e. the account does not exist with subaccount number
+    func checkForAddedSubaccounts(_ account: HBCIAccount, bankAccount: BankAccount,  bankAccounts: [BankAccount]) ->Bool {
+        
+        // we currently restrict to DKB only
+        if account.bankCode != "12030000" {
+            return false;
+        }
+        
+        if account.bankCode != bankAccount.bankCode {
+            return false;
+        }
+        if account.number != bankAccount.accountNumber() {
+            return false;
+        }
+        if account.subNumber != nil && bankAccount.accountSuffix == nil {
+            var found = false;
+            for ba in bankAccounts {
+                if ba.bankCode == account.bankCode &&
+                    ba.accountNumber() == account.number &&
+                    ba.accountSuffix != nil {
+                    found = true;
+                }
+            }
+            if found == false {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     func updateBankAccounts(_ accounts: Array<HBCIAccount>, user:BankUser) throws {
         guard let context = MOAssistant.shared().context else {
             logError("Zugriff auf Datenbank-Kontext fehlgeschlagen");
@@ -316,7 +351,7 @@ class HBCIBackend : NSObject, HBCILog {
             for account in accounts {
                 found = false;
                 for bankAccount in bankAccounts {
-                    if account == bankAccount {
+                    if account == bankAccount || checkForAddedSubaccounts(account, bankAccount: bankAccount, bankAccounts: bankAccounts) {
                         found = true;
 
                         // update the user if there is none assigned yet
@@ -343,6 +378,12 @@ class HBCIBackend : NSObject, HBCILog {
                         }
                         if let type = account.type {
                             bankAccount.type = NSNumber(value: type);
+                        }
+                        
+                        // if subnumber was added...
+                        if account.subNumber != nil && bankAccount.accountSuffix == nil {
+                            bankAccount.accountSuffix = account.subNumber;
+                            bankAccount.name = account.name;
                         }
                         
                         break;
@@ -781,7 +822,19 @@ class HBCIBackend : NSObject, HBCILog {
                         }
                         
                         // update TAN Media
-                        updateTanMediaForUser(bankUser, hbciUser: user);
+                        // first check if we have any TAN method that requires a medium
+                        for tanMethod in user.parameters.getTanMethods() {
+                            if let needMedia = tanMethod.needTanMedia {
+                                if needMedia == "2" {
+                                    if let num = tanMethod.numActiveMedia {
+                                        if num > 0 {
+                                            updateTanMediaForUser(bankUser, hbciUser: user);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         
                         // now we have the TAN media - let the user select a signing option
                         if let option = signingOptionForUser(bankUser) {
@@ -1588,7 +1641,7 @@ class HBCIBackend : NSObject, HBCILog {
                     }
                 }
                 
-                guard let msg = HBCICustomMessage.newInstance(dialog) else {
+                guard var msg = HBCICustomMessage.newInstance(dialog) else {
                     logInfo("Failed to create bank statemement message");
                     error = true;
                     continue;
@@ -1608,7 +1661,14 @@ class HBCIBackend : NSObject, HBCILog {
                 }
                 
                 if let latestDate = account.latestTransferDate {
-                    let fromDate = Date(timeInterval: -605000, since: latestDate);
+                    
+                    var fromDate = Date(timeInterval: -605000, since: latestDate);
+
+                    let histStatementDays = UserDefaults.standard.integer(forKey: "histStatDays");
+                    if histStatementDays > 14 {
+                        fromDate = Date(timeInterval: TimeInterval(-86400 * histStatementDays), since: latestDate);
+                    }
+
                     //let fromDate = Date(timeInterval: -10000000, since: latestDate);  // force TAN
                     dateFrom = fromDate;
                 }
@@ -1629,6 +1689,14 @@ class HBCIBackend : NSObject, HBCILog {
                                 continue;
                             } else {
                                 logInfo("Failed to send message");
+                                // if CAMT statements did fail, we need a new message instance...
+                                if let newmsg = HBCICustomMessage.newInstance(dialog) {
+                                    msg = newmsg;
+                                } else {
+                                    logInfo("Failed to create bank statemement message");
+                                    error = true;
+                                    continue;
+                                }
                             }
                         } else {
                             logInfo("Failed to enqueue order");
@@ -1815,6 +1883,7 @@ class HBCIBackend : NSObject, HBCILog {
     
     func getSetupTanMethod(_ user:HBCIUser) throws ->String? {
         var options = [SigningOption]();
+        var tanMethods:[HBCITanMethod]?
         
         // DiBa
         if user.bankCode == "50010517" {
@@ -1822,7 +1891,13 @@ class HBCIBackend : NSObject, HBCILog {
         }
         
         let dialog = try HBCIDialog(user: user, product: productId);
-        if let tanMethods = dialog.getBankTanMethods() {
+        tanMethods = dialog.getTanMethods();
+        if tanMethods == nil || tanMethods!.count == 0 {
+            let dialog = try HBCIDialog(user: user, product: productId);
+            tanMethods = dialog.getBankTanMethods();
+        }
+        
+        if let tanMethods = tanMethods {
             for method in tanMethods {
                 let option = SigningOption();
                 option.secMethod = SecMethod_PinTan;
@@ -1838,6 +1913,7 @@ class HBCIBackend : NSObject, HBCILog {
             }
             if options.count == 1 {
                 // there can be only one...
+                logInfo("We found only one TAN method: \(options[0].tanMethod ?? "nil")");
                 return options[0].tanMethod;
             }
             if let controller = SigningOptionsController(signingOptions: options, for: nil) {

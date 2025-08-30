@@ -87,9 +87,7 @@
 - (IBAction)cancelSheet: (id)sender;
 - (IBAction)endSheet: (id)sender;
 
-- (IBAction)expSepTab: (id)sender;
-- (IBAction)expSepSemi: (id)sender;
-- (IBAction)expSepLine: (id)sender;
+- (IBAction)separatorButton:(id)sender;
 
 - (IBAction)removePINs: (id)sender;
 - (IBAction)changePassword:(id)sender;

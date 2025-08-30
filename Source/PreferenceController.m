@@ -705,22 +705,16 @@ static NSDictionary *heightMappings;
     [NSApp endSheet: encryptionSheet returnCode: 0];
 }
 
-- (IBAction)expSepTab: (id)sender
+- (IBAction)separatorButton: (id)sender
 {
+    NSInteger tag = [sender tag];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @"\t" forKey: EXPORT_SEPARATOR];
-}
-
-- (IBAction)expSepSemi: (id)sender
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @";" forKey: EXPORT_SEPARATOR];
-}
-
-- (IBAction)expSepLine: (id)sender
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @"|" forKey: EXPORT_SEPARATOR];
+    switch(tag) {
+        case 0: [defaults setObject: @"\t" forKey: EXPORT_SEPARATOR]; break;
+        case 1: [defaults setObject: @"|" forKey: EXPORT_SEPARATOR]; break;
+        case 2: [defaults setObject: @";" forKey: EXPORT_SEPARATOR]; break;
+        default: break;
+    }
 }
 
 - (void)setHeight: (NSNumber *)value

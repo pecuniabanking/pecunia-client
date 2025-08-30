@@ -214,6 +214,10 @@ extern NSString *const CategoryKey;
             if (oldUserId == nil || ![oldUserId isEqualToString:user.userId]) {
                 changedAccount.userId = user.userId;
             }
+            if (![changedAccount.users containsObject: user]) {
+                NSMutableSet *users = [changedAccount mutableSetValueForKey:@"users"];
+                [users addObject:user];                
+            }
         }
     }
 

@@ -795,9 +795,15 @@
 
     NSArray *codes = [HBCIBackend.backend supportedBusinessTransactions:self];
     for (NSString *code in codes) {
-        [s appendFormat: @"    %@", code];
+        [s appendFormat: @" %@", code];
     }
-    [s appendFormat: @"%@}", indent];
+    [s appendString: @" }"];
+    [s appendFormat: @"\n%@BankUser: { ", indent];
+    for(BankUser *user in self.users) {
+        [s appendFormat: @"%@(%@) ", user.userId, user.bankName];
+    }
+    [s appendString: @"}\n"];
+    
     return s;
 }
 

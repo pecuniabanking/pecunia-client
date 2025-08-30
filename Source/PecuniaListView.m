@@ -265,7 +265,7 @@
                 positionAnimation = [[PopoverAnimation alloc] initWithPopover: detailsPopover
                                                                     startRect: detailsPopover.positioningRect
                                                                       endRect: rect];
-                positionAnimation.animationBlockingMode = NSAnimationNonblockingThreaded;
+                positionAnimation.animationBlockingMode = NSAnimationNonblocking;
                 positionAnimation.delegate = self;
                 [positionAnimation startAnimation];
             } else {

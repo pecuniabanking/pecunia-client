@@ -164,7 +164,8 @@
         startButton.enabled = NO;
         [progressBar startAnimation: self];
 
-        [controller performSelectorInBackground: @selector(preprocessValues:) withObject: nil];
+        //[controller performSelectorInBackground: @selector(preprocessValues:) withObject: nil];
+        [controller performSelector: @selector(preprocessValues:) withObject: nil];
     }
 }
 
@@ -338,6 +339,7 @@
 
     dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.formatterBehavior = NSDateFormatterBehavior10_4;
+    dateFormatter.dateFormat = @"dd.MM.yyyy";
 
     numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
@@ -654,6 +656,7 @@
     }
     if (currentSettings.dateFormat == nil) {
         currentSettings.dateFormat = @"dd.MM.yyyy";
+        dateFormatter.dateFormat = @"dd.MM.yyyy";
     }
     if (currentSettings.encoding == nil) {
         currentSettings.encoding = @(NSISOLatin1StringEncoding);
@@ -823,25 +826,22 @@
                     NSString *field = fields[j];
                     id       object = (field.length == 0) ? nil : field;
                     if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
-                        NSRange range = NSMakeRange(0, field.length);
-                        NSError *error;
                         @synchronized(dateFormatter) {
-                            if ([dateFormatter getObjectValue: &object
-                                                    forString: field
-                                                        range: &range
-                                                        error: &error] && range.length == field.length) {
-                                if (minDate == nil || [minDate isGreaterThan: object]) {
-                                    minDate = object;
+                            NSDate *rawDate = [dateFormatter dateFromString:field];
+                            if (rawDate != nil) {
+                                if (minDate == nil || [minDate isGreaterThan: rawDate]) {
+                                    minDate = rawDate;
                                 }
-                                if (maxDate == nil || [object isGreaterThan: maxDate]) {
-                                    maxDate = object;
+                                if (maxDate == nil || [rawDate isGreaterThan: maxDate]) {
+                                    maxDate = rawDate;
                                 }
-                                ShortDate *date = [ShortDate dateWithDate: object];
+                                ShortDate *date = [ShortDate dateWithDate: rawDate];
                                 if (date.year < 1970 || date.year > 2100) {
                                     LogError(@"Datei: %@\n\tZeile: %lu, Datum ist ungültig: %@", file, index, field);
                                     errorCount++;
                                     object = nil;
                                 }
+                                object = rawDate;
                             } else {
                                 LogError(@"Datei: %@\n\tZeile: %lu, Datum ist ungültig: %@", file, index, field);
                                 errorCount++;
@@ -1299,15 +1299,10 @@
                 }
             } else {
                 if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
-                    id      parsedObject;
-                    NSRange range = NSMakeRange(0, value.length);
-                    NSError *error;
                     @synchronized(dateFormatter) {
-                        if ([dateFormatter getObjectValue: &parsedObject
-                                                forString: value
-                                                    range: &range
-                                                    error: &error] && range.length == value.length) {
-                            ShortDate *date = [ShortDate dateWithDate: parsedObject];
+                        NSDate *rawDate = [dateFormatter dateFromString:value];
+                        if (rawDate != nil) {
+                            ShortDate *date = [ShortDate dateWithDate: rawDate];
                             hasError = date.year < 1970 || date.year > 2100;
                         } else {
                             hasError = YES;
