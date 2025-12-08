@@ -46,7 +46,9 @@
     NSRect newRect = startRect;
     newRect.origin.x += progress * (NSMinX(endRect) - NSMinX(startRect));
     newRect.origin.y += progress * (NSMinY(endRect) - NSMinY(startRect));
-    target.positioningRect = newRect;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->target.positioningRect = newRect;
+    });
 }
 
 @end
