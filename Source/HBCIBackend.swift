@@ -104,15 +104,64 @@ extension NSError {
 
 }
 
+class PaddedLabel: NSView {
+    private let label: NSTextField
+    
+    init(text: String) {
+        self.label = NSTextField(labelWithString: text)
+        super.init(frame: .zero)
+        
+        wantsLayer = true
+        layer?.backgroundColor = NSColor.black.withAlphaComponent(0.7).cgColor
+        layer?.cornerRadius = 8
+        self.enclosingScrollView?.drawsBackground = true
+        
+        label.textColor = .white
+        label.alignment = .center
+        label.font = .systemFont(ofSize: 14)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+        
+        // Padding = constraints around the label
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 6),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
 class HBCIBackendCallback : HBCICallback {
     
     init() {}
     
     func decoupledNotification(_ user: HBCIUser, challenge: String?) {
-        SystemNotification.showMessage(challenge ?? "", withTitle: "Auftrag bestätigen");
+        //SystemNotification.showMessage(challenge ?? "", withTitle: "Auftrag bestätigen");
+        if let message = challenge {
+            HBCIBackend.backend.showNotification(message: message)
+        }
         
         // give the notification a chance to pop up
         RunLoop.current.run(until: Date.init(timeIntervalSinceNow: 1));
+    }
+    
+    func vopConfirmation(_ vopResult: HBCIVoPResult) -> HBCIVopConfirmationCallbackResult {
+        if vopResult.status == HBCIVoPResultStatus.match {
+            return .proceed;
+        }
+        let controller = VoPConfirmationWindowController(vopResult: vopResult);
+        let result = NSApp.runModal(for: controller.window!);
+        if result == NSApplication.ModalResponse.OK {
+            return .proceed;
+        }
+        return .abort;
     }
     
     func getTan(_ user:HBCIUser, challenge:String?, challenge_hhd_uc:String?, type:HBCIChallengeType) throws ->String {
@@ -189,6 +238,85 @@ class HBCIBackend : NSObject, HBCILog {
             }
             return _backend;
         }
+    }
+    
+    func showNotification(message:String) {
+        guard let window = NSApplication.shared.mainWindow else { return }
+        
+        let hintLabel = PaddedLabel(text: message)
+        /*
+        hintLabel.textColor = .white
+        hintLabel.backgroundColor = NSColor.black.withAlphaComponent(0.7)
+        hintLabel.alignment = .center
+        hintLabel.font = .systemFont(ofSize: 14)
+        hintLabel.wantsLayer = true
+        hintLabel.layer?.cornerRadius = 8
+        hintLabel.layer?.masksToBounds = true
+        hintLabel.drawsBackground = true;
+        
+        var ofs = 100.0
+        if let size = hintLabel.cell?.cellSize {
+            ofs = (window.contentView!.bounds.height - size.height) / 2
+        }
+        */
+        
+        hintLabel.translatesAutoresizingMaskIntoConstraints = false
+        window.contentView?.addSubview(hintLabel)
+
+        NSLayoutConstraint.activate([
+            hintLabel.centerXAnchor.constraint(equalTo: window.contentView!.centerXAnchor),
+            hintLabel.bottomAnchor.constraint(equalTo: window.contentView!.topAnchor, constant: 150),
+            // Auto-size: allow shrinking but cap the max width
+            hintLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 1000)
+        ])
+
+        // Start hidden
+        hintLabel.alphaValue = 0
+
+        // Fade in
+        NSAnimationContext.runAnimationGroup({ ctx in
+            ctx.duration = 0.3
+            hintLabel.animator().alphaValue = 1
+        }) {
+            // After 2 seconds fade out
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                NSAnimationContext.runAnimationGroup({ ctx in
+                    ctx.duration = 0.3
+                    hintLabel.animator().alphaValue = 0
+                }) {
+                    hintLabel.removeFromSuperview()
+                }
+            }
+        }
+
+    }
+    
+    @objc func test() {
+        showNotification(message: "01234 12345 23456 34567 45678 56789\n01234 12345 23456 34567 45678 56789")
+        
+        
+        /*
+        let path = "~/Pecunia/pain.002.001.10_1.xml" as NSString;
+
+        do {
+            
+            let document = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:pain.002.001.10\"><CstmrPmtStsRpt><GrpHdr><MsgId>ATRUVIA-20250911-215009-830951</MsgId><CreDtTm>2025-09-11T21:50:09.831+02:00</CreDtTm><DbtrAgt><FinInstnId><BICFI>GENODEF09A9</BICFI></FinInstnId></DbtrAgt></GrpHdr><OrgnlGrpInfAndSts><OrgnlMsgId>2025-09-11T21:50:07.7690</OrgnlMsgId><OrgnlMsgNmId>pain.001</OrgnlMsgNmId><OrgnlNbOfTxs>1</OrgnlNbOfTxs><OrgnlCtrlSum>20.00</OrgnlCtrlSum><GrpSts>RCVC</GrpSts><StsRsnInf><AddtlInf>RCVC Der von Ihnen eingegebene Name des Zahlungsempfängers stimmt mit dem für diese IBAN</AddtlInf><AddtlInf>RCVC hinterlegten Namen bei der Zahlungsempfängerbank überein.</AddtlInf><AddtlInf>RVMC Der von Ihnen eingegebene Name des Zahlungsempfängers stimmt nahezu mit dem für diese IBAN</AddtlInf><AddtlInf>RVMC hinterlegten Namen bei der Zahlungsempfängerbank überein. Die Autorisierung der Zahlung</AddtlInf><AddtlInf>RVMC kann dazu führen, dass das Geld auf ein Konto überwiesen wird, dessen Inhaber nicht</AddtlInf><AddtlInf>RVMC der von Ihnen angegebene Empfänger ist. In diesem Fall haften die Zahlungsdienstleister nicht für</AddtlInf><AddtlInf>RVMC die Folgen der fehlenden Übereinstimmung, insbesondere besteht kein Anspruch auf Rückerstattung.</AddtlInf><AddtlInf>RVNM Der von Ihnen eingegebene Name des Zahlungsempfängers stimmt nicht mit dem für diese IBAN hinter-</AddtlInf><AddtlInf>RVNM legten Namen bei der Zahlungsempfängerbank überein. Bitte prüfen Sie den Empfängernamen. Die Autori-</AddtlInf><AddtlInf>RVNM sierung der Zahlung kann dazu führen, dass das Geld auf ein Konto überwiesen wird, dessen Inhaber</AddtlInf><AddtlInf>RVNM nicht der von Ihnen angegebene Empfänger ist. In diesem Fall haften die Zahlungsdienstleister nicht</AddtlInf><AddtlInf>RVNM für die Folgen der fehlenden Übereinstimmung, insbesondere besteht kein Anspruch auf Rückerstattung.</AddtlInf><AddtlInf>RVNA Der von Ihnen eingegebene Name des Zahlungsempfängers konnte nicht mit dem für diese IBAN hinter-</AddtlInf><AddtlInf>RVNA legten Namen bei der Zahlungsempfängerbank abgeglichen werden (z.B. technischer Fehler). Die Autori-</AddtlInf><AddtlInf>RVNA sierung der Zahlung kann dazu führen, dass das Geld auf ein Konto überwiesen wird, dessen Inhaber</AddtlInf><AddtlInf>RVNA nicht der von Ihnen angegebene Empfänger ist. In diesem Fall haften die Zahlungsdienstleister nicht</AddtlInf><AddtlInf>RVNA für die Folgen der fehlenden Übereinstimmung, insbesondere besteht kein Anspruch auf Rückerstattung.</AddtlInf></StsRsnInf><NbOfTxsPerSts><DtldNbOfTxs>1</DtldNbOfTxs><DtldSts>RCVC</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVMC</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVNM</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVNA</DtldSts></NbOfTxsPerSts></OrgnlGrpInfAndSts><OrgnlPmtInfAndSts><OrgnlPmtInfId>2025-09-11T21:50:07.7700</OrgnlPmtInfId><OrgnlNbOfTxs>1</OrgnlNbOfTxs><NbOfTxsPerSts><DtldNbOfTxs>1</DtldNbOfTxs><DtldSts>RCVC</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVMC</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVNM</DtldSts></NbOfTxsPerSts><NbOfTxsPerSts><DtldNbOfTxs>0</DtldNbOfTxs><DtldSts>RVNA</DtldSts></NbOfTxsPerSts><TxInfAndSts><OrgnlEndToEndId>NOTPROVIDED</OrgnlEndToEndId><TxSts>RVMC</TxSts><OrgnlTxRef><Cdtr><Pty><Nm>Julia Maria Heckler</Nm></Pty></Cdtr><CdtrAcct><Id><IBAN>DE84699686251690111566</IBAN></Id></CdtrAcct></OrgnlTxRef></TxInfAndSts></OrgnlPmtInfAndSts></CstmrPmtStsRpt></Document>"
+                
+            let parser = HBCISepaPaymentStatusParser_002_001_10();
+            if let data = document.data(using: String.Encoding.utf8) {
+                if let result = parser.parse(data) {
+                    let controller = VoPConfirmationWindowController(vopResult: result);
+                    NSApp.runModal(for: controller.window!)
+
+                }
+                
+                
+                
+            }
+        }
+        catch {
+        }
+        */
     }
     
     // Logging

@@ -154,6 +154,8 @@
 
 - (IBAction)categoryBudgets:(id)sender;
 
+- (IBAction)test:(id)sender;
+
 - (BankingCategory *)getBankingRoot;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;

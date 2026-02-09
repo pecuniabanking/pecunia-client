@@ -461,6 +461,8 @@
 		B1A6E8350FC890E400566C55 /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordController.m */; };
 		B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
+		B1AB665C2E75997100EE36B4 /* VoPConfirmationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AB665B2E75997100EE36B4 /* VoPConfirmationWindow.xib */; };
+		B1AB665F2E759ED600EE36B4 /* VoPConfirmationWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AB665E2E759ED600EE36B4 /* VoPConfirmationWindowController.swift */; };
 		B1AF84C62618C41F00CC14A5 /* AccountStatementsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AF84C52618C41F00CC14A5 /* AccountStatementsHandler.swift */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
 		B1AFAA0512A061C100B115A7 /* StandingOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderController.m */; };
@@ -1244,6 +1246,8 @@
 		B1AA6336140990EF00ADE1D0 /* ImportSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportSettings.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640A140C074E00ADE1D0 /* ImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640B140C074E00ADE1D0 /* ImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1AB665B2E75997100EE36B4 /* VoPConfirmationWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VoPConfirmationWindow.xib; sourceTree = "<group>"; };
+		B1AB665E2E759ED600EE36B4 /* VoPConfirmationWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoPConfirmationWindowController.swift; sourceTree = "<group>"; };
 		B1AF84C52618C41F00CC14A5 /* AccountStatementsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatementsHandler.swift; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
@@ -1816,6 +1820,7 @@
 				01D0C78C24E3E985005D023A /* AccountMergeWindow.xib */,
 				B1480146261F8F85005ECCEA /* AccountStatementsView.xib */,
 				B10937B9265FC33E0043D005 /* DepotOverview.xib */,
+				B1AB665B2E75997100EE36B4 /* VoPConfirmationWindow.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -2424,6 +2429,7 @@
 				B1E26C4F220F1F140033603E /* ChipcardDataWindowController.m */,
 				011DADD71EA373D500A44EFE /* BankMessageWindowController.h */,
 				011DADD81EA373D500A44EFE /* BankMessageWindowController.m */,
+				B1AB665E2E759ED600EE36B4 /* VoPConfirmationWindowController.swift */,
 			);
 			name = "Windows + Views";
 			sourceTree = "<group>";
@@ -2697,6 +2703,7 @@
 				27DF7E1219C49A54009E2101 /* zoom-out@2x.png in Resources */,
 				27D240EA145302A900EDC8C7 /* done.mp3 in Resources */,
 				27AA568F186C4F4600B113E7 /* send3@2x.png in Resources */,
+				B1AB665C2E75997100EE36B4 /* VoPConfirmationWindow.xib in Resources */,
 				27AA5671186C3C7C00B113E7 /* table-active.png in Resources */,
 				27A3C0C517FF15D800FCF8BF /* time-zoom-out@2x.png in Resources */,
 				2732F6AC186B202400809CF2 /* overview@2x.png in Resources */,
@@ -3106,6 +3113,7 @@
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
+				B1AB665F2E759ED600EE36B4 /* VoPConfirmationWindowController.swift in Sources */,
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				B10A57CA2267B89B00A1028C /* NSDate.swift in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
@@ -3182,7 +3190,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 38.05;
+				CURRENT_PROJECT_VERSION = 39.07;
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3218,7 +3226,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 2.1.9;
+				MARKETING_VERSION = 2.2.1;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -3255,7 +3263,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 38.05;
+				CURRENT_PROJECT_VERSION = 39.07;
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3282,7 +3290,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 2.1.9;
+				MARKETING_VERSION = 2.2.1;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
@@ -3315,7 +3323,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 38.05;
+				CURRENT_PROJECT_VERSION = 39.07;
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3342,7 +3350,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Resources";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 2.1.9;
+				MARKETING_VERSION = 2.2.1;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";

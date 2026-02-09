@@ -3882,6 +3882,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)test:(id)sender {
+    [[HBCIBackend backend] test];
+    
+}
+
 - (BOOL)save {
     LogEnter;
 

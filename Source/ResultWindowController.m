@@ -49,9 +49,9 @@
     }
     hasErrors = YES;
 
-    NSString *logString = [NSString stringWithFormat:@"[%@]    %@", [dateFormatter stringFromDate:[NSDate date]], info ];
+    NSString *ls = [NSString stringWithFormat:@"[%@]    %@", [dateFormatter stringFromDate:[NSDate date]], info ];
     
-    NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", logString]];
+    NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", ls]];
     [s addAttribute: NSForegroundColorAttributeName
               value: [NSColor redColor]
               range: NSMakeRange(0, [s length])];
@@ -59,9 +59,13 @@
               value: logFont
               range: NSMakeRange(0, [s length])];
     
-    [[logView textStorage] appendAttributedString: s];
-    [logView moveToEndOfDocument: self];
-    [logView display];
+    if (logView) {
+        [[logView textStorage] appendAttributedString: s];
+        [logView moveToEndOfDocument: self];
+        [logView display];
+    } else {
+        [logString appendAttributedString:s];
+    }
     [self showWindow:nil];
 }
 
