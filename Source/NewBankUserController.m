@@ -181,16 +181,13 @@
             if (currentUser.hbciVersion == nil || currentUser.hbciVersion.length == 0) {
                 currentUser.hbciVersion = @"300";
             }
-            if ([currentUser.bankCode isEqualToString:@"50010517"]) {
-                currentUser.hbciVersion = @"220";
-            }
         }
 
         if (step >= 2 ) {
             // create user
             if (bankUserCreated == NO) {
                 // first check if user with same userid already exists
-                if ([BankUser existsUserWithId:currentUser.userId]) {
+                if ([BankUser existsUserWithId:currentUser.userId bankCode:currentUser.bankCode]) {
                     NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
                                     NSLocalizedString(@"AP838", nil),
                                     NSLocalizedString(@"AP1", nil), nil, nil,
@@ -317,7 +314,7 @@
             // Create User
             if (bankUserCreated == NO) {
                 // first check if user with same userid already exists
-                if ([BankUser existsUserWithId:currentUser.userId]) {
+                if ([BankUser existsUserWithId:currentUser.userId bankCode:currentUser.bankCode]) {
                     NSRunAlertPanel(NSLocalizedString(@"AP839", nil),
                                     NSLocalizedString(@"AP838", nil),
                                     NSLocalizedString(@"AP1", nil), nil, nil,
