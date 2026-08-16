@@ -63,7 +63,7 @@
 	<key>NSUserNotificationAlertStyle</key>
 	<string>banner</string>
 	<key>SUFeedURL</key>
-	<string>http://www.pecuniabanking.de/appcast10.xml</string>
+	<string>https://www.pecuniabanking.de/appcast10.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>

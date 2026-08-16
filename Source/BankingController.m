@@ -1130,13 +1130,37 @@ static BankingController *bankinControllerInstance;
         return;
     }
     BankAccount  *account = (BankAccount *)category;
-    NSDictionary *details = @{
+    NSMutableDictionary *details = [[NSMutableDictionary alloc] initWithDictionary: @{
         @"title": account.name,
         @"message": NSLocalizedString(@"AP818", nil),
         @"details": NSLocalizedString(@"AP819", nil)
-    };
+    }];
     [waitViewController startWaiting: details];
+    
+    details[@"title"] = account.name;
+    details[@"message"] = NSLocalizedString(@"AP816", nil);
+    @try {
+        [account doMaintenance];
+        details[@"details"] = NSLocalizedString(@"AP817", nil);
+    }
+    @catch (NSException *exception) {
+        LogInfo(@"Fehler bei der Kontenpflege:\n%@", exception.debugDescription);
 
+        details[@"details"] = NSLocalizedString(@"AP824", nil);
+        details[@"failed"] = @YES;
+    }
+    @finally {
+        [self cleanupAfterMaintenance:details];
+    }
+    
+    NSRunAlertPanel(details[@"title"],
+                    details[@"message"],
+                    NSLocalizedString(@"AP1", nil),
+                    nil, nil
+                    );
+
+
+    /*
     // Run maintenance in a background block.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableDictionary *details = [NSMutableDictionary new];
@@ -1162,7 +1186,8 @@ static BankingController *bankinControllerInstance;
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
     [waitOverlay showInWindow: mainWindow];
-
+    */
+    
     LogLeave;
 }
 
@@ -1194,13 +1219,36 @@ static BankingController *bankinControllerInstance;
     }
     BankAccount *account = (BankAccount *)category;
 
-    NSDictionary *details = @{
+    NSMutableDictionary *details = [[NSMutableDictionary alloc] initWithDictionary: @{
         @"title": account.name,
         @"message": NSLocalizedString(@"AP818", nil),
         @"details": NSLocalizedString(@"AP821", nil)
-    };
+    }];
     [waitViewController startWaiting: details];
 
+    details[@"title"] = account.name;
+    details[@"message"] = NSLocalizedString(@"AP822", nil);
+    @try {
+        [account updateStatementBalances];
+        details[@"details"] = NSLocalizedString(@"AP817", nil);
+    }
+    @catch (NSException *exception) {
+        LogInfo(@"Error while updating statement balances:\n%@", exception.debugDescription);
+
+        details[@"details"] = NSLocalizedString(@"AP824", nil);
+        details[@"failed"] = @YES;
+    }
+    @finally {
+        [self cleanupAfterMaintenance:details];
+    }
+    
+    NSRunAlertPanel(details[@"title"],
+                    details[@"message"],
+                    NSLocalizedString(@"AP1", nil),
+                    nil, nil
+                    );
+
+    /*
     // Run maintenance in a background block.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableDictionary *details = [NSMutableDictionary new];
@@ -1224,7 +1272,7 @@ static BankingController *bankinControllerInstance;
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
     [waitOverlay showInWindow: mainWindow];
-
+    */
     LogLeave;
 }
 
@@ -1232,7 +1280,8 @@ static BankingController *bankinControllerInstance;
     [self save];
     [overviewController reload];
     [waitViewController markDone: details];
-    [waitOverlay performSelector: @selector(performClose:) withObject: nil afterDelay: 5 inModes: @[NSModalPanelRunLoopMode]];
+    
+    //[waitOverlay performSelector: @selector(performClose:) withObject: nil afterDelay: 5 inModes: @[NSModalPanelRunLoopMode]];
 }
 
 
@@ -1324,7 +1373,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (IBAction)openHomepage: (id)sender {
-    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"http://www.pecuniabanking.de"]];
+    [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: @"https://www.pecuniabanking.de"]];
 }
 
 - (IBAction)openForum: (id)sender {
@@ -2904,9 +2953,10 @@ static BankingController *bankinControllerInstance;
     if (!self.currentSelection.isBankAcc.boolValue) {
         return;
     }
-
+    
     [(id)currentSection deleteSelectedStatements];
     [overviewController clearStatementFilter];
+    [self updateUnread];
 
     [self save];
 

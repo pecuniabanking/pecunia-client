@@ -368,11 +368,13 @@
     // repair balances
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
     NSArray          *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
+    int              repaired = 0;
 
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
         if (![statement.saldo isEqual: balance]) {
             statement.saldo = balance;
+            repaired++;
         }
         if (!statement.isPreliminary.boolValue) {
             // Preliminary statements have no representation in the balance yet, so don't
@@ -380,6 +382,11 @@
             balance = [balance decimalNumberBySubtracting: statement.value];
         }
     }
+    
+    if(repaired > 0) {
+        LogDebug(@"repaired balance of %d statements", repaired);
+    }
+
 }
 
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value {
@@ -395,16 +402,23 @@
  */
 - (void)doMaintenance {
     NSArray *statementsArray = [self valueForKey: @"statements"];
+    int repaired = 0;
 
     // first repair date if not defined
     for (BankStatement *statement in statementsArray) {
         if (statement.date == nil && statement.valutaDate != nil) {
             statement.date = statement.valutaDate;
+            repaired++;
         }
     }
+    if(repaired > 0) {
+        LogDebug(@"repaired NULL date of %d statements", repaired);
+    }
+    
     // Then ensure that statements on a single day have a little time offset each,
     // so they can maintain a fixed sort order.
     // For now we don't fix valutaDate, though.
+    repaired = 0;
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: YES];
     NSArray          *sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
     NSDictionary     *statements = [self statementsByDay: sortedStatements];
@@ -426,10 +440,16 @@
                 if (doRepair) {
                     statement.date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: newDate];
                     newDate = statement.date;
+                    repaired++;
                 }
             }
         }
     }
+ 
+    if(repaired > 0) {
+        LogDebug(@"repaired date order of %d statements", repaired);
+    }
+
     // repair balances
     [self updateStatementBalances];
 

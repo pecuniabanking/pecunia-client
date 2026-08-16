@@ -805,7 +805,7 @@
 }
 
 - (IBAction)callHelp: (id)sender {
-    NSURL *url = [NSURL URLWithString: @"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
+    NSURL *url = [NSURL URLWithString: @"https://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
     [[NSWorkspace sharedWorkspace] openURL: url];
 }
 

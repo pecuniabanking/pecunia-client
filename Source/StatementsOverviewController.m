@@ -305,6 +305,7 @@ extern void *UserDefaultsBindingContext;
     
     for (BankAccount *account in affectedAccounts) {
         [account invalidateCacheIncludeParents: YES recursive: NO];
+        [account calcUnread];
     }
     
     [context processPendingChanges];
