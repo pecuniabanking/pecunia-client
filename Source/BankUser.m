@@ -461,15 +461,15 @@ static NSMutableDictionary *users = nil;
     return bankUsers.lastObject;
 }
 
-+ (BOOL)existsUserWithId:(NSString *)userId
++ (BOOL)existsUserWithId:(NSString *)userId bankCode:(NSString *)bankCode
 {
     NSError *error = nil;
-    
+
     NSManagedObjectContext *context = [[MOAssistant sharedAssistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId = %@", userId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId = %@ AND bankCode = %@", userId, bankCode];
     [request setPredicate: predicate];
     NSArray *bankUsers = [context executeFetchRequest: request error: &error];
     if (error) {
